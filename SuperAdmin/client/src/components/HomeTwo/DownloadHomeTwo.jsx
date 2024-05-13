@@ -9,26 +9,25 @@ function DownloadHomeTwo({ className }) {
             <section className={`appie-download-area pt-150 pb-160 mb-90 ${className || ''}`}>
                 <div className="container">
                     <div className="row">
-                        <div className="col-lg-5">
+                        <div className="col-lg-6">
                             <div className="appie-download-content">
                                 <span>Download Our App</span>
                                 <h3 className="title">
-                                    App is available <br />
-                                    for free on app store
+                                Download Apps  <br />
+                                Managing Business
                                 </h3>
                                 <p>
-                                    Jolly good quaint james bond victoria sponge happy days cras
-                                    arse over blatant.
+                                Building your Apps busines helps attract more potential clients. Our integrated marketing team will work directly long-term high-impact convergence.
                                 </p>
                                 <ul>
-                                    <li>
+                                    {/* <li>
                                         <a href="#">
                                             <i className="fab fa-apple" />
                                             <span>
                                                 Download for <span>iOS</span>
                                             </span>
                                         </a>
-                                    </li>
+                                    </li> */}
                                     <li>
                                         <a className="item-2" href="#">
                                             <i className="fab fa-google-play" />
