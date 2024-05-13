@@ -13,11 +13,11 @@ function PricingHomeTwo() {
                     <div className="row">
                         <div className="col-lg-12">
                             <div className="appie-section-title text-center">
-                                <h3 className="appie-title">Simple pricing for Everyone</h3>
-                                <p>
-                                    The full monty spiffing good time no biggie cack grub fantastic.
+                                <h3 className="appie-title ">What We Serve To You</h3>
+                                <p className=''>
+                                A Retailer can start a PAN center with minimum investment only. Retailer can makes unlimited PAN cards through proper channel. A Distributor can makes unlimited PAN cards.He/She can create unlimited Retailers with low cost investment only. T&C apply. Super Distributor can makes unlimited PAN cards.He/She can create unlimited Distributors & Retailers with low cost investment.
                                 </p>
-                                <div className="appie-pricing-tab-btn">
+                                {/* <div className="appie-pricing-tab-btn">
                                     <ul
                                         className="nav nav-pills mb-3"
                                         id="pills-tab"
@@ -53,12 +53,12 @@ function PricingHomeTwo() {
                                             </a>
                                         </li>
                                     </ul>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-lg-12">
+                        <div className="col-lg-12 mt-5">
                             <div className="tab-content" id="pills-tabContent">
                                 <div
                                     className={`tab-pane fade ${toggleSwitch ? 'active show' : ''}`}
@@ -67,7 +67,7 @@ function PricingHomeTwo() {
                                     aria-labelledby="pills-home-tab"
                                 >
                                     <div className="row justify-content-center">
-                                        <div className="col-lg-4 col-md-6">
+                                        <div className="col-lg-3 col-md-6">
                                             <div
                                                 className="
                         pricing-one__single pricing-one__single_2
@@ -77,15 +77,15 @@ function PricingHomeTwo() {
                       "
                                             >
                                                 <div className="pricig-heading">
-                                                    <h6>Fresh</h6>
+                                                    <h6>Own Brand Portal</h6>
                                                     <div className="price-range">
-                                                        <sup>$</sup> <span>04</span>
-                                                        <p>/month</p>
+                                                        <sup>₹</sup> <span>5500</span>
+                                                        {/* <p>/month</p> */}
                                                     </div>
-                                                    <p>Get your 14 day free trial</p>
+                                                    {/* <p>Get your 14 day free trial</p> */}
                                                 </div>
-                                                <div className="pricig-body">
-                                                    <ul>
+                                                <div className="pricig-body text-center">
+                                                    {/* <ul>
                                                         <li>
                                                             <i className="fal fa-check" /> 60-day
                                                             chat history
@@ -98,7 +98,8 @@ function PricingHomeTwo() {
                                                             <i className="fal fa-check" /> 24/7
                                                             Support
                                                         </li>
-                                                    </ul>
+                                                    </ul> */}
+                                                    Start Own brand portal with own website.Here you can access your control panel & manage Retailers, Distributors, Super Distributors
                                                     <div className="pricing-btn mt-35">
                                                         <a className="main-btn" href="#">
                                                             Choose plan
@@ -107,7 +108,7 @@ function PricingHomeTwo() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-lg-4 col-md-6">
+                                        <div className="col-lg-3 col-md-6">
                                             <div
                                                 className="
                         pricing-one__single pricing-one__single_2
@@ -118,15 +119,15 @@ function PricingHomeTwo() {
                       "
                                             >
                                                 <div className="pricig-heading">
-                                                    <h6>Sweet</h6>
+                                                    <h6>Super Distributor</h6>
                                                     <div className="price-range">
-                                                        <sup>$</sup> <span>16</span>
-                                                        <p>/month</p>
+                                                        <sup>₹</sup> <span>200</span>
+                                                        {/* <p>/month</p> */}
                                                     </div>
-                                                    <p>Billed $276 per website annually.</p>
+                                                    {/* <p>Billed $276 per website annually.</p> */}
                                                 </div>
-                                                <div className="pricig-body">
-                                                    <ul>
+                                                <div className="pricig-body text-center">
+                                                    {/* <ul>
                                                         <li>
                                                             <i className="fal fa-check" /> 60-day
                                                             chat history
@@ -139,7 +140,8 @@ function PricingHomeTwo() {
                                                             <i className="fal fa-check" /> 24/7
                                                             Support
                                                         </li>
-                                                    </ul>
+                                                    </ul> */}
+                                                    Super Distributor can makes unlimited PAN cards.He/She can create unlimited Distributors & Retailers with low cost investment.T&C apply.
                                                     <div className="pricing-btn mt-35">
                                                         <a className="main-btn" href="#">
                                                             Choose plan
@@ -151,7 +153,7 @@ function PricingHomeTwo() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-lg-4 col-md-6">
+                                        <div className="col-lg-3 col-md-6">
                                             <div
                                                 className="
                         pricing-one__single pricing-one__single_2
@@ -162,15 +164,15 @@ function PricingHomeTwo() {
                       "
                                             >
                                                 <div className="pricig-heading">
-                                                    <h6>Juicy</h6>
+                                                    <h6>Distributor</h6>
                                                     <div className="price-range">
-                                                        <sup>$</sup> <span>27</span>
-                                                        <p>/month</p>
+                                                        <sup>₹</sup> <span>100</span>
+                                                        {/* <p>/month</p> */}
                                                     </div>
-                                                    <p>Billed $276 per website annually.</p>
+                                                    {/* <p>Billed $276 per website annually.</p> */}
                                                 </div>
                                                 <div className="pricig-body">
-                                                    <ul>
+                                                    {/* <ul>
                                                         <li>
                                                             <i className="fal fa-check" /> 60-day
                                                             chat history
@@ -187,7 +189,54 @@ function PricingHomeTwo() {
                                                             <i className="fal fa-check" /> 24/7
                                                             Support
                                                         </li>
-                                                    </ul>
+                                                    </ul> */}
+                                                    A Distributor can makes unlimited PAN cards.He/She can create unlimited Retailers with low cost investment only.
+                                                    <div className="pricing-btn mt-35">
+                                                        <a className="main-btn" href="#">
+                                                            Choose plan
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-lg-3 col-md-6">
+                                            <div
+                                                className="
+                        pricing-one__single pricing-one__single_2
+                        item-2
+                        wow
+                        animated
+                        fadeInRight
+                      "
+                                            >
+                                                <div className="pricig-heading">
+                                                    <h6>Retailer</h6>
+                                                    <div className="price-range">
+                                                        <sup>₹</sup> <span>10</span>
+                                                        {/* <p>/month</p> */}
+                                                    </div>
+                                                    {/* <p>Billed $276 per website annually.</p> */}
+                                                </div>
+                                                <div className="pricig-body">
+                                                    {/* <ul>
+                                                        <li>
+                                                            <i className="fal fa-check" /> 60-day
+                                                            chat history
+                                                        </li>
+                                                        <li>
+                                                            <i className="fal fa-check" /> Data
+                                                            security
+                                                        </li>
+                                                        <li>
+                                                            <i className="fal fa-check" /> 100 GB
+                                                            cloud storage
+                                                        </li>
+                                                        <li>
+                                                            <i className="fal fa-check" /> 24/7
+                                                            Support
+                                                        </li>
+                                                    </ul> */}
+                                                    A Retailer can start a PAN center with minimum investment only.Retailer can makes unlimited PAN cards through proper channel.
                                                     <div className="pricing-btn mt-35">
                                                         <a className="main-btn" href="#">
                                                             Choose plan
