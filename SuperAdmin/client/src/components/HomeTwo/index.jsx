@@ -30,7 +30,7 @@ function HomeTwo() {
             <DownloadHomeTwo />
             <PricingHomeTwo />
             <TestimonialHomeTwo />
-            <SponserHomeTwo />
+            {/* <SponserHomeTwo /> */}
             <FooterHomeTwo />
             <BackToTop className="back-to-top-2" />
         </>
