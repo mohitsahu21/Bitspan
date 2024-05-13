@@ -66,7 +66,7 @@ function VideoPlayerHomeTwo({ className }) {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-lg-4">
+                        {/* <div className="col-lg-4">
                             <div
                                 className="appie-video-player-slider"
                                 style={{ position: 'relative' }}
@@ -94,7 +94,7 @@ function VideoPlayerHomeTwo({ className }) {
                                     <i className="fal fa-arrow-right" />
                                 </span>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </section>

@@ -3807,7 +3807,7 @@ p {
 .pricing-one__single .pricig-heading h6 {
   font-size: 20px;
   font-weight: 500;
-  margin-bottom: 17px;
+  margin-top: 17px;
 }
 .pricing-one__single .pricig-heading .price-range {
   font-size: 24px;
@@ -6761,20 +6761,7 @@ blockquote cite {
     padding-bottom: 80px;
   }
 }
-.appie-download-area::before {
-  position: absolute;
-  content: "";
-  right: 170px;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 100%;
-  width: 860px;
-  background-image: url(./../images/download-thumb.png);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: -1;
-}
+
 @media only screen and (min-width: 992px) and (max-width: 1200px) {
   .appie-download-area::before {
     right: 0;
