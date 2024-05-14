@@ -14,6 +14,7 @@ import ServicesHomeTwo from './ServicesHomeTwo.jsx';
 import SponserHomeTwo from './SponserHomeTwo.jsx';
 import TestimonialHomeTwo from './TestimonialHomeTwo.jsx';
 import VideoPlayerHomeTwo from './VideoPlayerHomeTwo.jsx';
+import WhatWeDo from './WhatWeDo.jsx';
 
 function HomeTwo() {
     const [drawer, drawerAction] = useToggle(false);
@@ -23,12 +24,14 @@ function HomeTwo() {
             <HeaderHomeTwo action={drawerAction.toggle} />
             <HeroHomeTwo />
             <ServicesHomeTwo />
-            <AboutHomeTwo />
+            {/* <AboutHomeTwo /> */}
             <FeaturesHomeTwo />
             <CounterArea />
+            <WhatWeDo/>
+            <PricingHomeTwo />
             <VideoPlayerHomeTwo />
             <DownloadHomeTwo />
-            <PricingHomeTwo />
+           
             <TestimonialHomeTwo />
             {/* <SponserHomeTwo /> */}
             <FooterHomeTwo />

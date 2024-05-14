@@ -16,11 +16,11 @@ function FooterHomeTwo() {
                                     </a>
                                 </div>
                                 <p>
-                                    Appie WordPress is theme is the last theme you will ever have.
+                                BITS PAN SERVICE CENTER PROVIDER. Now PAN CARD is mandatory for all citizens in India. We are providing a smart business solution. PAN AGENCY is working two years over in India.There are more than six thousands Retailers-Distributors & Super Distributors is working now smoothly.
                                 </p>
-                                <a href="#">
+                                {/* <a href="#">
                                     Read More <i className="fal fa-arrow-right" />
-                                </a>
+                                </a> */}
                                 <div className="social mt-30">
                                     <ul>
                                         <li>
@@ -49,19 +49,19 @@ function FooterHomeTwo() {
                         </div>
                         <div className="col-lg-2 col-md-6">
                             <div className="footer-navigation footer-navigation-2">
-                                <h4 className="title">Company</h4>
+                                <h4 className="title">Useful links</h4>
                                 <ul>
                                     <li>
-                                        <Link to="/about-us">About Us</Link>
+                                        <Link to="/about-us">Home</Link>
                                     </li>
                                     <li>
-                                        <Link to="/Service">Service</Link>
+                                        <Link to="/Service">Photo & Sign Croping Tool</Link>
                                     </li>
                                     <li>
-                                        <a href="#">Case Studies</a>
+                                        <a href="#">Find User ID</a>
                                     </li>
                                     <li>
-                                        <Link to="/news">Blog</Link>
+                                        <Link to="/news">Login</Link>
                                     </li>
                                     <li>
                                         <Link to="/contact">Contact</Link>
@@ -71,23 +71,18 @@ function FooterHomeTwo() {
                         </div>
                         <div className="col-lg-3 col-md-6">
                             <div className="footer-navigation footer-navigation-2">
-                                <h4 className="title">Support</h4>
+                                <h4 className="title">Policies</h4>
                                 <ul>
                                     <li>
-                                        <Link to="/about-us">Community</Link>
+                                        <Link to="/about-us">Refund and Cancellation Policies</Link>
                                     </li>
                                     <li>
-                                        <a href="#">Resources</a>
+                                        <a href="#">Privacy Policies</a>
                                     </li>
                                     <li>
-                                        <a href="#">Faqs</a>
+                                        <a href="#">Terms and Conditions</a>
                                     </li>
-                                    <li>
-                                        <a href="#">Privacy Policy</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Careers</a>
-                                    </li>
+                                  
                                 </ul>
                             </div>
                         </div>
@@ -97,18 +92,17 @@ function FooterHomeTwo() {
                                 <ul>
                                     <li>
                                         <a href="#">
-                                            <i className="fal fa-envelope" /> support@appie.com
+                                            <i className="fal fa-envelope" /> admin@bitspan.in
                                         </a>
                                     </li>
                                     <li>
                                         <a href="#">
-                                            <i className="fal fa-phone" /> +(642) 342 762 44
+                                            <i className="fal fa-phone" /> 8770109518
                                         </a>
                                     </li>
                                     <li>
                                         <a href="#">
-                                            <i className="fal fa-map-marker-alt" /> 442 Belle Terre
-                                            St Floor 7, San Francisco, AV 4206
+                                            <i className="fal fa-map-marker-alt" />INDORE MP
                                         </a>
                                     </li>
                                 </ul>
@@ -126,7 +120,7 @@ function FooterHomeTwo() {
                 pt-35
               "
                             >
-                                <div className="apps-download-btn">
+                                {/* <div className="apps-download-btn">
                                     <ul>
                                         <li>
                                             <a href="#">
@@ -140,9 +134,9 @@ function FooterHomeTwo() {
                                             </a>
                                         </li>
                                     </ul>
-                                </div>
+                                </div> */}
                                 <div className="copyright-text">
-                                    <p>Copyright © 2021 Appie. All rights reserved.</p>
+                                    <p>Copyright 2017-2023 © BITS PAN. All rights reserved.</p>
                                 </div>
                             </div>
                         </div>
