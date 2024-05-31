@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo-2.png';
 
 function FooterHomeTwo() {
+    const date = new Date();
+  const year = date.getFullYear();
     return (
         <>
             <section className="appie-footer-area">
@@ -136,7 +138,8 @@ function FooterHomeTwo() {
                                     </ul>
                                 </div> */}
                                 <div className="copyright-text">
-                                    <p>Copyright 2017-2023 © BITS PAN. All rights reserved.</p>
+                                    {/* <p>Copyright 2017-2023 © BITS PAN. All rights reserved.</p> */}
+                                    <p>DOAGuru InfoSystems © {year} All rights reserved.</p>
                                 </div>
                             </div>
                         </div>
