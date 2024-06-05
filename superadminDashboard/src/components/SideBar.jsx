@@ -702,6 +702,8 @@ const Sider = () => {
     };
   }, []);
 
+  // comment by mohit
+
   return (
     <>
       <IconContext.Provider value={{ color: "#fff" }}>
