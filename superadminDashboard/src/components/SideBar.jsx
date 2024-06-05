@@ -716,6 +716,7 @@ const Sider = () => {
             window.removeEventListener("resize", handleResize);
         };
     }, []);
+	
  
     return (
         <>
