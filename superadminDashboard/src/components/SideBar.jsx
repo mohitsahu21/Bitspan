@@ -686,6 +686,11 @@ const SidebarData = [
 		// path: "https://www.trackpan.utiitsl.com/PANONLINE/#forward",
 		icon: <IoIcons.IoMdHelpCircle />,
 	},
+    {
+		title: "mohit",
+		// path: "https://www.trackpan.utiitsl.com/PANONLINE/#forward",
+		icon: <IoIcons.IoMdHelpCircle />,
+	},
 ];
  
 const Sider = () => {
