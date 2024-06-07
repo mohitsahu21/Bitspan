@@ -287,19 +287,27 @@ import { IconContext } from "react-icons/lib";
 import * as IoIcons from "react-icons/io";
 import * as RiIcons from "react-icons/ri";
 import Logo from "./../assets/images/logo.png";
+import profileLogo from "./../assets/images/Placeholder_Person.jpg";
+import { FaUserAlt } from "react-icons/fa";
+import Dropdown from 'react-bootstrap/Dropdown';
+import Container from 'react-bootstrap/Container';
+
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 
 const Nav = styled.div`
   background-color: white;
   height: 80px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between; /* Add this line */
   align-items: center;
   /* box-shadow: 1px 1px 6px black; */
   box-shadow: 0 0 20px rgba(89, 102, 122, 0.1);
+  padding: 0 2rem; /* Optional: Add padding to space out content from edges */
 `;
 
 const NavIcon = styled(Link)`
-  margin-left: 2rem;
+  /* margin-left: 2rem; */
   font-size: 2rem;
   height: 80px;
   display: flex;
@@ -396,7 +404,7 @@ const SidebarData = [
   {
     title: "Wallet",
     path: "/wallet",
-    icon: <FaIcons.FaPhone />,
+    icon: <FaIcons.FaPhone color="black"/>,
     iconClosed: <RiIcons.RiArrowDownSFill color="black" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="black" />,
 
@@ -404,36 +412,36 @@ const SidebarData = [
       {
         title: "Add Money to Wallet",
         path: "/add-money",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
         cName: "sub-nav",
       },
       {
         title: "Add Wallet Summary",
         path: "/add-money-transaction-report",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
         cName: "sub-nav",
       },
       {
         title: "Add Wallet Offline",
         path: "/add-wallet-money-offline",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "Wallet Offline Request",
         path: "/wallet-offline-request",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "Wallet Full Summary",
         path: "/wallet-transaction-report",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
     ],
   },
   {
     title: "Training Video",
     path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText />,
+    icon: <FaIcons.FaEnvelopeOpenText color="black"/>,
 
     // iconClosed: <RiIcons.RiArrowDownSFill />,
     // iconOpened: <RiIcons.RiArrowUpSFill />,
@@ -454,17 +462,17 @@ const SidebarData = [
   {
     title: "Set PIN and 2 Step",
     path: "/2-step-verification",
-    icon: <IoIcons.IoMdHelpCircle />,
+    icon: <IoIcons.IoMdHelpCircle color="black"/>,
   },
   {
     title: "Important Links",
     path: "/important-links",
-    icon: <IoIcons.IoMdHelpCircle />,
+    icon: <IoIcons.IoMdHelpCircle color="black"/>,
   },
   {
     title: "UTI 2.0",
     // path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText />,
+    icon: <FaIcons.FaEnvelopeOpenText color="black"/>,
     iconClosed: <RiIcons.RiArrowDownSFill color="black" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="black" />,
 
@@ -472,19 +480,19 @@ const SidebarData = [
       {
         title: "Apply PAN Card",
         path: "/utilogin",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "UTI Transaction History",
         path: "/uti-transaction-report",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
     ],
   },
   {
     title: "UTI New",
     // path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText />,
+    icon: <FaIcons.FaEnvelopeOpenText color="black"/>,
     iconClosed: <RiIcons.RiArrowDownSFill color="black" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="black" />,
 
@@ -492,34 +500,34 @@ const SidebarData = [
       {
         title: "User ID Activate",
         path: "/retailer-id-revamp-activate",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "Password Reset",
         path: "/password-reset",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "Buy Coupon",
         path: "/buy-uti-coupon",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "UTI Coupon History",
         path: "/uti-coupon-history",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
     ],
   },
   {
     title: "PAN Track",
     path: "https://www.trackpan.utiitsl.com/PANONLINE/#forward",
-    icon: <IoIcons.IoMdHelpCircle />,
+    icon: <IoIcons.IoMdHelpCircle color="black"/>,
   },
   {
     title: "NSDL PAN Application",
     // path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText />,
+    icon: <FaIcons.FaEnvelopeOpenText color="black"/>,
     iconClosed: <RiIcons.RiArrowDownSFill color="black" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="black" />,
 
@@ -527,44 +535,44 @@ const SidebarData = [
       {
         title: "NSDL New PAN Card",
         path: "/pan-apply-49",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "NSDL Correction PAN",
         path: "/pan-apply-cr",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "NSDL PAN Track Status",
         path: "https://tin.tin.nsdl.com/pantan/StatusTrack.html",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "PAN Status",
         path: "/pan-status",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "PAN Transaction History",
         path: "/pan-transaction-report",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "PAN Refund",
         path: "/pan-transaction-refund-report",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "PAN Re Apply",
         path: "/pan-transaction-resume-report",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
     ],
   },
   {
     title: "PAN Document",
     // path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText />,
+    icon: <FaIcons.FaEnvelopeOpenText color="black"/>,
     iconClosed: <RiIcons.RiArrowDownSFill color="black" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="black" />,
 
@@ -572,19 +580,19 @@ const SidebarData = [
       {
         title: "Upload PAN Document",
         path: "/pan-document-upload",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "PAN Uploaded Docs",
         path: "/pan-document",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
     ],
   },
   {
     title: "Recharge",
     // path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText />,
+    icon: <FaIcons.FaEnvelopeOpenText color="black"/>,
     iconClosed: <RiIcons.RiArrowDownSFill color="black" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="black" />,
 
@@ -592,49 +600,49 @@ const SidebarData = [
       {
         title: "Prepaid Recharge",
         path: "/prepaid-recharge",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "Postpaid Recharge",
         path: "/prepaid-recharge",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "DTH Recharge",
         path: "/dth-recharge",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "Prepaid Recharge History",
         path: "/prepaid-recharge-history",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "Postpaid Recharge History",
         path: "/postpaid-recharge-history",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "DTH Recharge History",
         path: "/dth-recharge-history",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "Recharge Refund Request",
         path: "/recharge-refund-report",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "My Commission",
         path: "/my-commission",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
     ],
   },
   {
     title: "Complaint",
     // path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText />,
+    icon: <FaIcons.FaEnvelopeOpenText color="black"/>,
     iconClosed: <RiIcons.RiArrowDownSFill color="black" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="black" />,
 
@@ -642,19 +650,19 @@ const SidebarData = [
       {
         title: "Complaint",
         path: "/raise-complaint",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "All Complaint List",
         path: "/complaint-raised-list",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
     ],
   },
   {
     title: "Other Settings",
     // path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText />,
+    icon: <FaIcons.FaEnvelopeOpenText color="black"/>,
     iconClosed: <RiIcons.RiArrowDownSFill color="black" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="black" />,
 
@@ -662,19 +670,19 @@ const SidebarData = [
       {
         title: "Download Certificate",
         path: "/download-certificate",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
       {
         title: "Change Password",
         path: "/change-password",
-        icon: <IoIcons.IoIosPaper />,
+        icon: <IoIcons.IoIosPaper color="black"/>,
       },
     ],
   },
   {
     title: "Logout",
     // path: "https://www.trackpan.utiitsl.com/PANONLINE/#forward",
-    icon: <IoIcons.IoMdHelpCircle />,
+    icon: <IoIcons.IoMdHelpCircle color="black"/>,
   },
 ];
 
@@ -706,44 +714,63 @@ const Sider = () => {
 
   return (
     <>
+    <Wrapper>
       <IconContext.Provider value={{ color: "#fff" }}>
         <Nav>
           <NavIcon to="#">
-            <FaIcons.FaBars onClick={showSidebar} />
+            <FaIcons.FaBars onClick={showSidebar} color="black"/>
           </NavIcon>
-          {/* <h1
-                        style={{
-                            textAlign: "center",
-                            marginLeft: "200px",
-                            color: "green",
-                        }}
-                    >
-                        Bitspan.in
-                    </h1> */}
+          <div className="d-flex">
+               <img src={profileLogo} width={50} height={75} className="p-2"/>
+               <div className="ms-2 p-2 lh-sm">
+                <p className="m-0 fw-bold">Mohit Sahu </p>
+                
+                 
+            <NavDropdown
+              id="nav-dropdown-dark-example"
+              title="Retailer"
+              menuVariant="dark"
+              className="text-muted"
+            >
+              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">
+                Another action
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              
+             
+            </NavDropdown>
+            <p className="m-0 text-muted">Mohit1234</p>
+               
+               </div>
+
+          </div>
         </Nav>
 
         <SidebarNav sidebar={sidebar}>
           <SidebarWrap>
-            {closeButton ? (
+           <div className="sticky-top">
+           {closeButton ? (
               <div className="d-flex">
                 <img
-                  className="img-fluid p-3"
+                  className="img-fluid p-3 logo"
                   src={Logo}
                   width={180}
                   height={60}
                 ></img>
                 <NavIcon to="#">
-                  <AiIcons.AiOutlineClose onClick={showSidebar} />
+                  <AiIcons.AiOutlineClose onClick={showSidebar} color="black"/>
                 </NavIcon>
               </div>
             ) : (
               <img
-                className="img-fluid p-3"
+                className="img-fluid p-3 logo"
                 src={Logo}
                 width={180}
                 height={60}
               ></img>
             )}
+            </div>
 
             {SidebarData.map((item, index) => {
               return <SubMenu item={item} key={index} />;
@@ -751,8 +778,39 @@ const Sider = () => {
           </SidebarWrap>
         </SidebarNav>
       </IconContext.Provider>
+      </Wrapper>
     </>
   );
 };
 
 export default Sider;
+
+const Wrapper = styled.div`
+.sticky-top{
+  background-color: white;
+  
+  
+}
+.logo{
+  
+}
+#userid{
+    
+    margin-left: -5rem;
+    list-style-type: none;
+    margin-top: 1rem;
+    margin-right: 50px;
+    @media screen and  (max-width: 1000px) {
+        margin-left: 0rem;
+        margin-top: 1rem;
+    }
+}
+.dropdown-menu{
+   margin-left: -8rem;
+   @media screen and  (max-width: 1000px) {
+        margin-left: 0rem;
+        
+    }
+}
+  
+`
