@@ -3,6 +3,7 @@ import LoginBitspan from "./components/LoginBitspan";
 import Dashboard from "./pages/Dashboard";
 import MultiStepForm from "./components/PanCardForm/MultiStepForm";
 import Sider from "./components/SideBar";
+import UtiPan from "./components/DashBoard/UtiPan";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/prepaid-recharge" element={<MobileRecharge />} />
         <Route path="/raise-complaint" element={<Complaints/>} />
         <Route path="/add-money" element={<AddMoney/>} />
+        <Route path="/uti-login" element={<UtiPan />} />
       </Routes>
     </>
   );
