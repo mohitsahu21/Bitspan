@@ -8,6 +8,7 @@ import { FaIdCard } from "react-icons/fa";
 import { BiSolidContact } from "react-icons/bi";
 import { FaRegBuilding } from "react-icons/fa";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import { BiHomeAlt } from "react-icons/bi";
 
 const Profile = () => {
   return (
@@ -16,16 +17,20 @@ const Profile = () => {
         {/* <HeadBar /> */}
         <div className="main">
           <div className="container-fluid bg-body-tertiary">
-            <div className="row flex-nowrap justify-content-center ">
+            <div className="row flex-wrap justify-content-center ">
               <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-3 col-sm-3 p-0">
                 {/* <Sider /> */}
               </div>
               <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-9 col-sm-9 mt-5 bg-body-tertiary">
-                <div className="main shadow-none bg-body-tertiary">
-                  <div className="row shadow-none bg-body-tertiary">
-                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      <div className="text-start">
-                        <h3>Update Profile</h3>
+                <div className="container-fluid m-0 rechargeNav">
+                  <div className="row">
+                    <div className="col-12">
+                      <div className="d-flex justify-content-between align-items-center raisecomp flex-wrap">
+                        <h4>Prepaid Recharge</h4>
+                        <h6>
+                          {" "}
+                          <BiHomeAlt /> &nbsp; / &nbsp; Prepaid Recharge
+                        </h6>
                       </div>
                     </div>
                   </div>

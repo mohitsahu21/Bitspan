@@ -294,6 +294,7 @@ import Container from "react-bootstrap/Container";
 
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+// import { FaUserAlt } from "react-icons/fa";
 
 const Nav = styled.div`
   background-color: white;
@@ -403,7 +404,7 @@ const SidebarData = [
   },
   {
     title: "Wallet",
-    path: "/wallet",
+    path: "#",
     icon: <FaIcons.FaPhone color="black" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="black" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="black" />,
@@ -679,11 +680,11 @@ const SidebarData = [
       },
     ],
   },
-  {
-    title: "Logout",
-    path: "/",
-    icon: <IoIcons.IoMdHelpCircle color="black" />,
-  },
+  // {
+  //   title: "Logout",
+  //   path: "/",
+  //   icon: <IoIcons.IoMdHelpCircle color="black" />,
+  // },
 ];
 
 const Sider = () => {
@@ -731,13 +732,13 @@ const Sider = () => {
                   menuVariant="dark"
                   className="text-muted"
                 >
-                  <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.2">
-                    Another action
+                  <NavDropdown.Item href="/update-profile">
+                    Profile
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.3">
+                  <NavDropdown.Item href="/">Log out</NavDropdown.Item>
+                  {/* <NavDropdown.Item href="#action/3.3">
                     Something
-                  </NavDropdown.Item>
+                  </NavDropdown.Item> */}
                 </NavDropdown>
                 <p className="m-0 text-muted">Mohit1234</p>
               </div>
