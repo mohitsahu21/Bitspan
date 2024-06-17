@@ -403,7 +403,7 @@ const SidebarData = [
   },
   {
     title: "Wallet",
-    path: "/wallet",
+    path: "#",
     icon: <FaIcons.FaPhone color="black" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="black" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="black" />,

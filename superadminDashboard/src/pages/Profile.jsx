@@ -8,6 +8,7 @@ import { FaIdCard } from "react-icons/fa";
 import { BiSolidContact } from "react-icons/bi";
 import { FaRegBuilding } from "react-icons/fa";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import { BiHomeAlt } from "react-icons/bi";
 
 const Profile = () => {
   return (
@@ -16,20 +17,24 @@ const Profile = () => {
         {/* <HeadBar /> */}
         <div className="main">
           <div className="container-fluid bg-body-tertiary">
-            <div className="row flex-nowrap justify-content-center ">
+            <div className="row flex-wrap justify-content-center ">
               <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-3 col-sm-3 p-0">
                 {/* <Sider /> */}
               </div>
               <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-9 col-sm-9 mt-5 bg-body-tertiary">
-                <div className="main shadow-none bg-body-tertiary">
-                  <div className="row shadow-none bg-body-tertiary">
-                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      <div className="text-start">
-                        <h3>Update Profile</h3>
+                <div className="container-fluid m-0 rechargeNav">
+                  <div className="row">
+                    <div className="col-12">
+                      <div className="d-flex justify-content-between align-items-center raisecomp flex-wrap">
+                        <h4>Update Profile</h4>
+                        <h6>
+                          {" "}
+                          <BiHomeAlt /> &nbsp; / &nbsp; Update Profile
+                        </h6>
                       </div>
                     </div>
                   </div>
-                  <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
+                  <div className="row g-4 shadow bg-body-tertiary rounded px-3 proForm">
                     <div className="text-center">
                       <h4>Profile Information</h4>
                     </div>
@@ -219,5 +224,35 @@ const Wrapper = styled.div`
   button {
     color: #fff;
     background: #6d70ff;
+  }
+  .raisecomp {
+    width: 100%;
+    margin-bottom: 1rem;
+    @media (min-width: 450px) and (max-width: 575px) {
+      width: 80%;
+      margin-left: 5rem;
+    }
+    @media (min-width: 576px) and (max-width: 767px) {
+      width: 80%;
+      margin-left: 5rem;
+    }
+    @media (min-width: 768px) and (max-width: 1024px) {
+      width: 90%;
+      margin-left: 4rem;
+    }
+    @media (min-width: 1025px) and (max-width: 1280px) {
+      width: 85%;
+      margin-left: 4.9rem;
+    }
+  }
+
+  .proForm {
+    margin: 24px;
+    @media (min-width: 1024px) and (max-width: 1280px) {
+      margin-left: 4.9rem;
+    }
+    @media (min-width: 768px) and (max-width: 1024px) {
+      margin-left: 4.9rem;
+    }
   }
 `;

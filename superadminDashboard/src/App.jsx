@@ -19,6 +19,9 @@ import PanTransactionRefundReport from "./components/DashBoard/PanTransactionRef
 import PanTransactionResumeReport from "./components/DashBoard/PanTransactionResumeReport";
 import AddMoney from "./components/DashBoard/AddMoney";
 import DthRecharge from "./components/DashBoard/DthRecharge";
+import AadharLinkingStatus from "./components/DashBoard/AadharLinkingStatus";
+import TrainingVideo from "./components/DashBoard/TrainingVideo";
+import StepVerification from "./components/DashBoard/StepVerification";
 
 function App() {
   const location = useLocation();
@@ -66,6 +69,9 @@ function App() {
         <Route path="/add-money" element={<AddMoney />} />
         <Route path="/uti-login" element={<UtiPan />} />
         <Route path="/dth-recharge" element={<DthRecharge />} />
+        <Route path="/aadhar-linking-status" element={<AadharLinkingStatus/>} />
+        <Route path="/training-video" element={<TrainingVideo/>} />
+        <Route path="/2-step-verification" element={<StepVerification/>} />
       </Routes>
     </>
   );
