@@ -7,7 +7,6 @@ import Sider from "./components/SideBar";
 import UtiPan from "./components/DashBoard/UtiPan";
 import MobileRecharge from "./components/DashBoard/MobileRecharge";
 import Complaints from "./components/DashBoard/Complaints";
-import AddMoney from "./components/DashBoard/AddMoney";
 import AddWalletSummary from "./components/DashBoard/AddWalletSummary";
 import AddMoneyOffline from "./components/DashBoard/AddMoneyOffline";
 import AddWalletOfflineSummary from "./components/DashBoard/AddWalletOfflineSummary";
@@ -18,9 +17,6 @@ import PanStatus from "./components/DashBoard/PanStatus";
 import PanTransactionReport from "./components/DashBoard/PanTransactionReport";
 import PanTransactionRefundReport from "./components/DashBoard/PanTransactionRefundReport";
 import PanTransactionResumeReport from "./components/DashBoard/PanTransactionResumeReport";
-import Profile from "./pages/Profile";
-import MobileRecharge from "./components/DashBoard/MobileRecharge";
-import Complaints from "./components/DashBoard/Complaints";
 import AddMoney from "./components/DashBoard/AddMoney";
 import DthRecharge from "./components/DashBoard/DthRecharge";
 
