@@ -1,7 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const LoginBitspan = () => {
+  const navigate = useNavigate();
   return (
     <>
       <Wrapper>
@@ -68,7 +70,8 @@ const LoginBitspan = () => {
                       <button
                         data-mdb-ripple-init
                         type="button"
-                        class="btn btn-primary btn-block mb-4 "
+                        class="btn btn-primary btn-block mb-4"
+                        onClick={() => navigate("/dashboard")}
                       >
                         Sign in
                       </button>

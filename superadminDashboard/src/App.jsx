@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import LoginBitspan from "./components/LoginBitspan";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
@@ -21,28 +21,47 @@ import AddMoney from "./components/DashBoard/AddMoney";
 import DthRecharge from "./components/DashBoard/DthRecharge";
 
 function App() {
+  const location = useLocation();
   return (
     <>
-      <Sider />
+      {location.pathname !== "/" && <Sider />}
       <Routes>
         <Route path="/" element={<LoginBitspan />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/pan-card-apply" element={<MultiStepForm />} />
         <Route path="/update-profile" element={<Profile />} />
         <Route path="/prepaid-recharge" element={<MobileRecharge />} />
-        <Route path="/raise-complaint" element={<Complaints/>} />
+        <Route path="/raise-complaint" element={<Complaints />} />
         <Route path="/uti-login" element={<UtiPan />} />
-        <Route path="/add-money" element={<AddMoney/>} />
-        <Route path="/add-wallet-money-offline" element={<AddMoneyOffline/>} />
-        <Route path="/add-money-transaction-report" element={<AddWalletSummary/>} />
-        <Route path="/wallet-offline-request" element={<AddWalletOfflineSummary/>} />
-        <Route path="/wallet-transaction-report" element={<WalletTransactionReport/>} />
-        <Route path="/pan-apply-49" element={<NsdlNewPanCard/>} />
-        <Route path="/pan-apply-cr" element={<NsdlPanCorrection/>} />
-        <Route path="/pan-status" element={<PanStatus/>} />
-        <Route path="/pan-transaction-report" element={<PanTransactionReport/>} />
-        <Route path="/pan-transaction-refund-report" element={<PanTransactionRefundReport/>} />
-        <Route path="/pan-transaction-resume-report" element={<PanTransactionResumeReport/>} />
+        <Route path="/add-money" element={<AddMoney />} />
+        <Route path="/add-wallet-money-offline" element={<AddMoneyOffline />} />
+        <Route
+          path="/add-money-transaction-report"
+          element={<AddWalletSummary />}
+        />
+        <Route
+          path="/wallet-offline-request"
+          element={<AddWalletOfflineSummary />}
+        />
+        <Route
+          path="/wallet-transaction-report"
+          element={<WalletTransactionReport />}
+        />
+        <Route path="/pan-apply-49" element={<NsdlNewPanCard />} />
+        <Route path="/pan-apply-cr" element={<NsdlPanCorrection />} />
+        <Route path="/pan-status" element={<PanStatus />} />
+        <Route
+          path="/pan-transaction-report"
+          element={<PanTransactionReport />}
+        />
+        <Route
+          path="/pan-transaction-refund-report"
+          element={<PanTransactionRefundReport />}
+        />
+        <Route
+          path="/pan-transaction-resume-report"
+          element={<PanTransactionResumeReport />}
+        />
         <Route path="/raise-complaint" element={<Complaints />} />
         <Route path="/add-money" element={<AddMoney />} />
         <Route path="/uti-login" element={<UtiPan />} />
