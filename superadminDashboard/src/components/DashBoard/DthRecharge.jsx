@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { FaMobileAlt } from "react-icons/fa";
 import { BiHomeAlt } from "react-icons/bi";
+import { FaMobileAlt } from "react-icons/fa";
 
-const MobileRecharge = () => {
+const DthRecharge = () => {
   const [activeTab, setActiveTab] = useState("tab1");
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-
   return (
     <>
       <Wrapper>
@@ -25,10 +24,9 @@ const MobileRecharge = () => {
                   <div className="row">
                     <div className="col-12">
                       <div className="d-flex justify-content-between align-items-center raisecomp flex-wrap">
-                        <h4>Prepaid Recharge</h4>
+                        <h4>DTH Recharge</h4>
                         <h6>
-                          {" "}
-                          <BiHomeAlt /> &nbsp; / &nbsp; Prepaid Recharge
+                          <BiHomeAlt /> &nbsp; / &nbsp; DTH Recharge
                         </h6>
                       </div>
                     </div>
@@ -63,7 +61,7 @@ const MobileRecharge = () => {
                             <div className="card">
                               <div className="p-4">
                                 <div className="text-center">
-                                  <h3 className="mb-4">Prepaid Recharge</h3>
+                                  <h3 className="mb-4">DTH Recharge</h3>
                                   <div>
                                     <form action="">
                                       <div class="input-group mb-3">
@@ -92,19 +90,6 @@ const MobileRecharge = () => {
                                           />
                                           <label for="floatingInputGroup1">
                                             Select Operator
-                                          </label>
-                                        </div>
-                                      </div>
-                                      <div class="input-group mb-3">
-                                        <div class="form-floating">
-                                          <input
-                                            type="text"
-                                            class="form-control"
-                                            id="floatingInputGroup1"
-                                            placeholder="Username"
-                                          />
-                                          <label for="floatingInputGroup1">
-                                            Select Circle
                                           </label>
                                         </div>
                                       </div>
@@ -157,7 +142,7 @@ const MobileRecharge = () => {
                             <div className="card">
                               <div className="p-4">
                                 <div className="text-center">
-                                  <h3 className="mb-4">Prepaid Recharge 2</h3>
+                                  <h3 className="mb-4">DTH Recharge 2</h3>
                                   <div>
                                     <form action="">
                                       <div class="input-group mb-3">
@@ -186,19 +171,6 @@ const MobileRecharge = () => {
                                           />
                                           <label for="floatingInputGroup1">
                                             Select Operator
-                                          </label>
-                                        </div>
-                                      </div>
-                                      <div class="input-group mb-3">
-                                        <div class="form-floating">
-                                          <input
-                                            type="text"
-                                            class="form-control"
-                                            id="floatingInputGroup1"
-                                            placeholder="Username"
-                                          />
-                                          <label for="floatingInputGroup1">
-                                            Select Circle
                                           </label>
                                         </div>
                                       </div>
@@ -251,7 +223,7 @@ const MobileRecharge = () => {
   );
 };
 
-export default MobileRecharge;
+export default DthRecharge;
 const Wrapper = styled.div`
   .raisecomp {
     width: 100%;
@@ -274,26 +246,11 @@ const Wrapper = styled.div`
     }
   }
 
-  /* .rechargeForm {
-    width: 100%;
-    @media (min-width: 375px) and (max-width: 540px) {
-      padding: 0 15px;
-    }
-  } */
-
   .rechargeNav {
     @media (min-width: 375px) and (max-width: 540px) {
       width: 300px;
     }
   }
-
-  /* .rechargeForm {
-    width: 100%;
-    @media (min-width: 375px) and (max-width: 540px) {
-      position: absolute;
-      left: 0;
-    }
-  } */
 
   .circle-nav {
     width: 100%;

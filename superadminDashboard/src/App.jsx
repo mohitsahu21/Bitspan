@@ -18,6 +18,11 @@ import PanStatus from "./components/DashBoard/PanStatus";
 import PanTransactionReport from "./components/DashBoard/PanTransactionReport";
 import PanTransactionRefundReport from "./components/DashBoard/PanTransactionRefundReport";
 import PanTransactionResumeReport from "./components/DashBoard/PanTransactionResumeReport";
+import Profile from "./pages/Profile";
+import MobileRecharge from "./components/DashBoard/MobileRecharge";
+import Complaints from "./components/DashBoard/Complaints";
+import AddMoney from "./components/DashBoard/AddMoney";
+import DthRecharge from "./components/DashBoard/DthRecharge";
 
 function App() {
   return (
@@ -42,6 +47,10 @@ function App() {
         <Route path="/pan-transaction-report" element={<PanTransactionReport/>} />
         <Route path="/pan-transaction-refund-report" element={<PanTransactionRefundReport/>} />
         <Route path="/pan-transaction-resume-report" element={<PanTransactionResumeReport/>} />
+        <Route path="/raise-complaint" element={<Complaints />} />
+        <Route path="/add-money" element={<AddMoney />} />
+        <Route path="/uti-login" element={<UtiPan />} />
+        <Route path="/dth-recharge" element={<DthRecharge />} />
       </Routes>
     </>
   );
