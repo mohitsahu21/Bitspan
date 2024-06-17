@@ -4,8 +4,9 @@ import { MdOutlineFormatListNumbered } from "react-icons/md";
 import { FaMobileAlt } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { FaRupeeSign } from "react-icons/fa";
+import { TbTransactionRupee } from "react-icons/tb";
 
-const AddMoney = () => {
+const AddMoneyOffline = () => {
     return (
         <>
             <Wrapper>
@@ -21,7 +22,7 @@ const AddMoney = () => {
                                     <div className="row shadow-none bg-body-tertiary">
                                         <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-9">
                                             <div className="text-center">
-                                                <h3>Add Money To Wallet</h3>
+                                                <h3>Add Money To Wallet Offline</h3>
                                             </div>
                                         </div>
                                     </div>
@@ -29,13 +30,25 @@ const AddMoney = () => {
                                         <div className="col-xxl-6 col-xl-9 col-lg-9 col-md-10 col-sm-9 shadow bg-body-tertiary rounded m-4 px-3 py-5">
                                             <div className="row d-flex flex-column g-4">
 
-                                            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                                     <div class="input-group mb-3">
                                                         <span class="input-group-text"><MdOutlineFormatListNumbered /></span>
                                                         <div class="form-floating">
                                                             <input type="text" class="form-control" id="floatingInputGroup1" placeholder="Transaction Number" readOnly value="ASHI6462"/>
                                                             <label for="floatingInputGroup1">Your User Id</label>
                                                         </div>
+                                                    </div>
+                                                </div> */}
+
+                                                <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                    <div class="form-floating">
+                                                        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                                            <option selected>Choose Bank</option>
+                                                            <option value="1">UPI ID</option>
+                                                            <option value="2">QR Code</option>
+
+                                                        </select>
+                                                        <label for="floatingSelect">Select Payment Mode</label>
                                                     </div>
                                                 </div>
 
@@ -49,31 +62,32 @@ const AddMoney = () => {
                                                     </div>
                                                 </div>
                                                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                                    <p className="fw-bold">Wallete Available Amount : Rs. 200.00</p>
-                                                </div>
-
-
-                                                <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                                    <div class="form-floating">
-                                                        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                                            <option selected>Select Payment Method</option>
-                                                            <option value="1">UPI Payment</option>
-                                                            <option value="2">Debit Card/ Credit Card / Netbanking</option>
-                                                            
-                                                        </select>
-                                                        <label for="floatingSelect">Payment Method</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><TbTransactionRupee /></span>
+                                                        <div class="form-floating">
+                                                            <input type="text" class="form-control" id="floatingInputGroup2" placeholder="" />
+                                                            <label for="floatingInputGroup2">Transaction Reference (If any)</label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                           
-                                                
+
                                                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                                  <p className="m-0">UPI Payment - Free</p>
-                                                  <p className="m-0">Debit Card/ Credit Card / Netbanking - 3% Additional Charges</p>
-                                                </div>
-                                              
+                                            <div>
+                                                <label for="formFileLg" class="form-label">Receiept Attechment</label>
+                                                <input class="form-control form-control-lg" id="formFileLg" type="file" />
+                                            </div>
+                                        </div>
+                                               
+
+
+
+
+
+                                             
+
                                                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                                     <div className="text-start mb-3">
-                                                        <button className="btn p-2">Pay Now</button>
+                                                        <button className="btn p-2">Add Wallet Amount Request</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -89,7 +103,7 @@ const AddMoney = () => {
     );
 }
 
-export default AddMoney
+export default AddMoneyOffline;
 
 const Wrapper = styled.div`
   .main {

@@ -1,9 +1,23 @@
 import { Route, Routes } from "react-router-dom";
 import LoginBitspan from "./components/LoginBitspan";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 import MultiStepForm from "./components/PanCardForm/MultiStepForm";
 import Sider from "./components/SideBar";
 import UtiPan from "./components/DashBoard/UtiPan";
+import MobileRecharge from "./components/DashBoard/MobileRecharge";
+import Complaints from "./components/DashBoard/Complaints";
+import AddMoney from "./components/DashBoard/AddMoney";
+import AddWalletSummary from "./components/DashBoard/AddWalletSummary";
+import AddMoneyOffline from "./components/DashBoard/AddMoneyOffline";
+import AddWalletOfflineSummary from "./components/DashBoard/AddWalletOfflineSummary";
+import WalletTransactionReport from "./components/DashBoard/WalletTransactionReport";
+import NsdlNewPanCard from "./components/DashBoard/NsdlNewPanCard";
+import NsdlPanCorrection from "./components/DashBoard/NsdlPanCorrection";
+import PanStatus from "./components/DashBoard/PanStatus";
+import PanTransactionReport from "./components/DashBoard/PanTransactionReport";
+import PanTransactionRefundReport from "./components/DashBoard/PanTransactionRefundReport";
+import PanTransactionResumeReport from "./components/DashBoard/PanTransactionResumeReport";
 
 function App() {
   return (
@@ -16,8 +30,18 @@ function App() {
         <Route path="/update-profile" element={<Profile />} />
         <Route path="/prepaid-recharge" element={<MobileRecharge />} />
         <Route path="/raise-complaint" element={<Complaints/>} />
-        <Route path="/add-money" element={<AddMoney/>} />
         <Route path="/uti-login" element={<UtiPan />} />
+        <Route path="/add-money" element={<AddMoney/>} />
+        <Route path="/add-wallet-money-offline" element={<AddMoneyOffline/>} />
+        <Route path="/add-money-transaction-report" element={<AddWalletSummary/>} />
+        <Route path="/wallet-offline-request" element={<AddWalletOfflineSummary/>} />
+        <Route path="/wallet-transaction-report" element={<WalletTransactionReport/>} />
+        <Route path="/pan-apply-49" element={<NsdlNewPanCard/>} />
+        <Route path="/pan-apply-cr" element={<NsdlPanCorrection/>} />
+        <Route path="/pan-status" element={<PanStatus/>} />
+        <Route path="/pan-transaction-report" element={<PanTransactionReport/>} />
+        <Route path="/pan-transaction-refund-report" element={<PanTransactionRefundReport/>} />
+        <Route path="/pan-transaction-resume-report" element={<PanTransactionResumeReport/>} />
       </Routes>
     </>
   );
