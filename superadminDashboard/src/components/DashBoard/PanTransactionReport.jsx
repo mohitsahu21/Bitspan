@@ -10,12 +10,12 @@ const PanTransactionReport = () => {
             <Wrapper>
                 <div className="main">
                     <div className="container-fluid ">
-                        <div className="row flex-wrap justify-content-lg-end justify-content-center">
+                        <div className="row flex-wrap justify-content-lg-center justify-content-center">
                             <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
                                 {/* <Sider /> */}
                             </div>
-                            <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10  col-sm-10  col-12
-                             mt-5">
+                            <div className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
+                             mt-5 formdata">
                                 <div className="main shadow-none ">
                                     <div className="row shadow-none ">
                                         <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -25,7 +25,7 @@ const PanTransactionReport = () => {
                                         </div>
                                     </div>
 
-                                    <div className="row  justify-content-end pe-4 ">
+                                    <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                                         <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow bg-body-tertiary rounded  p-5 m-4">
                                         <div className="row d-flex flex-column g-4">
 
@@ -156,5 +156,17 @@ const Wrapper = styled.div`
   td{
    font-size: 14px;
    
+  }
+  @media (min-width: 1025px) and (max-width : 1500px){
+    .formdata {
+     
+      padding-left: 15rem;
+    }
+  }
+  @media (min-width: 1500px) {
+    .formdata {
+     
+      padding-left: 13rem;
+    }
   }
 `;

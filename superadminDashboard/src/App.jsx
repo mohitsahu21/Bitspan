@@ -22,6 +22,7 @@ import DthRecharge from "./components/DashBoard/DthRecharge";
 import AadharLinkingStatus from "./components/DashBoard/AadharLinkingStatus";
 import TrainingVideo from "./components/DashBoard/TrainingVideo";
 import StepVerification from "./components/DashBoard/StepVerification";
+import UTIPanTransactionReport from "./components/DashBoard/UTIPanTransactionReport";
 
 function App() {
   const location = useLocation();
@@ -72,6 +73,7 @@ function App() {
         <Route path="/aadhar-linking-status" element={<AadharLinkingStatus/>} />
         <Route path="/training-video" element={<TrainingVideo/>} />
         <Route path="/2-step-verification" element={<StepVerification/>} />
+        <Route path="/uti-transaction-report" element={<UTIPanTransactionReport/>} />
       </Routes>
     </>
   );

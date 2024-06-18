@@ -9,22 +9,23 @@ const WalletTransactionReport = () => {
         <>
             <Wrapper>
                 <div className="main">
-                    <div className="container-fluid bg-body-tertiary">
+                    <div className="container-fluid">
                         <div className="row flex-wrap justify-content-center ">
-                            <div className="col-xxl-2 col-xl-2 col-lg-3 col-md-4 col-sm-1 p-0">
+                            <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
                                 {/* <Sider /> */}
                             </div>
-                            <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-9 col-sm-9 mt-5 bg-body-tertiary">
-                                <div className="main shadow-none bg-body-tertiary">
-                                    <div className="row shadow-none bg-body-tertiary">
-                                        <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-12 col-sm-12">
+                            <div className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
+                             mt-5 formdata">
+                                <div className="main shadow-none">
+                                    <div className="row shadow-none">
+                                        <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                             <div className="text-center">
                                                 <h3>Wallet Transaction Report</h3>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="row justify-content-center ">
-                                        <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-12 shadow bg-body-tertiary rounded m-4 px-3 py-5">
+                                    <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
+                                        <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
                                             <div className="row d-flex flex-column g-4">
 
                                                 <div className="d-flex flex-column flex-md-row gap-3">
@@ -143,5 +144,17 @@ const Wrapper = styled.div`
   td{
    font-size: 14px;
    
+  }
+  @media (min-width: 1025px) and (max-width : 1500px){
+    .formdata {
+     
+      padding-left: 15rem;
+    }
+  }
+  @media (min-width: 1500px) {
+    .formdata {
+     
+      padding-left: 13rem;
+    }
   }
 `;

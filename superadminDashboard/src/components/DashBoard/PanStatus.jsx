@@ -10,12 +10,12 @@ const PanStatus = () => {
             <Wrapper>
                 <div className="main">
                     <div className="container-fluid ">
-                        <div className="row flex-wrap justify-content-lg-end justify-content-center">
+                        <div className="row flex-wrap justify-content-lg-center justify-content-center">
                             <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
                                 {/* <Sider /> */}
                             </div>
-                            <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10  col-sm-10  col-12
-                             mt-5">
+                            <div className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
+                             mt-5 formdata">
                                 <div className="main shadow-none ">
                                     <div className="row shadow-none ">
                                         <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -25,11 +25,11 @@ const PanStatus = () => {
                                         </div>
                                     </div>
 
-                                    <div className="row  justify-content-center pe-4">
-                                        <div className="col-xxl-9 col-xl-9 col-lg-10 col-md-12 col-sm-12  rounded  px-3">
+                                    <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
+                                        <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow bg-body-tertiary rounded  py-5 m-4">
                                       
                                         
-                                        <div className="guidline px-3 py-5 p-md-5 mt-5 shadow bg-body-tertiary rounded">
+                                       
                                         <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 mx-auto">
                           <div class="input-group">
                             <span class="input-group-text">
@@ -54,7 +54,7 @@ const PanStatus = () => {
                             <button className="btn p-2">Submit</button>
                           </div>
                         </div>
-                                        </div>
+                                        
                                         </div>
                                       
                                     </div>
@@ -90,5 +90,17 @@ const Wrapper = styled.div`
     list-style: none;
     padding-left: 0;
     font-size: 14px;
+  }
+  @media (min-width: 1025px) and (max-width : 1500px){
+    .formdata {
+     
+      padding-left: 15rem;
+    }
+  }
+  @media (min-width: 1500px) {
+    .formdata {
+     
+      padding-left: 13rem;
+    }
   }
 `;

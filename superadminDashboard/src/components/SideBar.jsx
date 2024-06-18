@@ -480,7 +480,7 @@ const SidebarData = [
     subNav: [
       {
         title: "Apply PAN Card",
-        path: "/utilogin",
+        path: "/uti-login",
         icon: <IoIcons.IoIosPaper color="black" />,
       },
       {
