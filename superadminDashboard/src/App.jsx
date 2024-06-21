@@ -24,6 +24,9 @@ import TrainingVideo from "./components/DashBoard/TrainingVideo";
 import StepVerification from "./components/DashBoard/StepVerification";
 import UTIPanTransactionReport from "./components/DashBoard/UTIPanTransactionReport";
 import UTIRetailerIdActivate from "./components/DashBoard/UTIRetailerIdActivate";
+import UTIPasswordReset from "./components/DashBoard/UTIPasswordReset";
+import UTICouponHistory from "./components/DashBoard/UTICouponHistory";
+import PanDocumentUpload from "./components/DashBoard/PanDocumentUpload";
 
 function App() {
   const location = useLocation();
@@ -76,6 +79,9 @@ function App() {
         <Route path="/2-step-verification" element={<StepVerification/>} />
         <Route path="/uti-transaction-report" element={<UTIPanTransactionReport/>} />
         <Route path="/retailer-id-revamp-activate" element={<UTIRetailerIdActivate/>} />
+        <Route path="/password-reset" element={<UTIPasswordReset/>} />
+        <Route path="/uti-coupon-history" element={<UTICouponHistory/>} />
+        <Route path="/pan-document-upload" element={<PanDocumentUpload/>} />
       </Routes>
     </>
   );
