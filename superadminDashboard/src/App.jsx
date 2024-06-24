@@ -27,6 +27,9 @@ import UTIRetailerIdActivate from "./components/DashBoard/UTIRetailerIdActivate"
 import UTIPasswordReset from "./components/DashBoard/UTIPasswordReset";
 import UTICouponHistory from "./components/DashBoard/UTICouponHistory";
 import PanDocumentUpload from "./components/DashBoard/PanDocumentUpload";
+import PanUploadedDocsList from "./components/DashBoard/PanUploadedDocsList";
+import ImportantLink from "./components/DashBoard/ImportantLink";
+import AllComplaintsList from "./components/DashBoard/AllComplaintsList";
 
 function App() {
   const location = useLocation();
@@ -82,6 +85,9 @@ function App() {
         <Route path="/password-reset" element={<UTIPasswordReset/>} />
         <Route path="/uti-coupon-history" element={<UTICouponHistory/>} />
         <Route path="/pan-document-upload" element={<PanDocumentUpload/>} />
+        <Route path="/pan-document" element={<PanUploadedDocsList/>} />
+        <Route path="/important-links" element={<ImportantLink/>} />
+        <Route path="/complaint-raised-list" element={<AllComplaintsList/>} />
       </Routes>
     </>
   );
