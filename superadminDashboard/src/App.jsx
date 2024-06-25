@@ -30,6 +30,8 @@ import PanDocumentUpload from "./components/DashBoard/PanDocumentUpload";
 import PanUploadedDocsList from "./components/DashBoard/PanUploadedDocsList";
 import ImportantLink from "./components/DashBoard/ImportantLink";
 import AllComplaintsList from "./components/DashBoard/AllComplaintsList";
+import DownloadCertificate from "./components/DashBoard/DownloadCertificate";
+import ChangePassword from "./components/DashBoard/ChangePassword";
 
 function App() {
   const location = useLocation();
@@ -88,6 +90,8 @@ function App() {
         <Route path="/pan-document" element={<PanUploadedDocsList/>} />
         <Route path="/important-links" element={<ImportantLink/>} />
         <Route path="/complaint-raised-list" element={<AllComplaintsList/>} />
+        <Route path="/download-certificate" element={<DownloadCertificate/>} />
+        <Route path="/change-password" element={<ChangePassword/>} />
       </Routes>
     </>
   );
