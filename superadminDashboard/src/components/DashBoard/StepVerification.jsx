@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { BiHomeAlt } from "react-icons/bi";
+import { FaLock } from "react-icons/fa6";
+import { FaQuestion } from "react-icons/fa";
 
 const StepVerification = () => {
   return (
@@ -36,25 +38,38 @@ const StepVerification = () => {
                     <form>
                       <hr />
                       <br />
-                      <div className="form-floating mb-3">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="floatingInput"
-                          placeholder="name@example.com"
-                        />
-                        <label for="floatingInput">Set 4 Digit PIN</label>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text">
+                          <FaLock />
+                        </span>
+                        <div class="form-floating">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="floatingInputGroup1"
+                            placeholder="Set 4 Digit PIN"
+                          />
+                          <label for="floatingInputGroup1">
+                            Set 4 Digit PIN
+                          </label>
+                        </div>
                       </div>
-                      <div className="form-floating">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="floatingPassword"
-                          placeholder="Password"
-                        />
-                        <label for="floatingPassword">
-                          2 Step Verification
-                        </label>
+
+                      <div class="input-group mb-3">
+                        <span class="input-group-text">
+                          <FaQuestion />
+                        </span>
+                        <div class="form-floating">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="floatingInputGroup1"
+                            placeholder="2 Step Verification"
+                          />
+                          <label for="floatingInputGroup1">
+                            2 Step Verification
+                          </label>
+                        </div>
                       </div>
 
                       <br />
@@ -90,12 +105,14 @@ const Wrapper = styled.div`
       margin-left: 5rem;
     }
     @media (min-width: 576px) and (max-width: 767px) {
-      width: 80%;
-      margin-left: 5rem;
+      width: 100%;
+      display: flex;
+      justify-content: center;
     }
     @media (min-width: 768px) and (max-width: 1024px) {
-      width: 90%;
-      margin-left: 4rem;
+      width: 100%;
+      display: flex;
+      justify-content: center;
     }
     @media (min-width: 1025px) and (max-width: 1280px) {
       width: 85%;
@@ -109,7 +126,16 @@ const Wrapper = styled.div`
       margin-left: 4.9rem;
     }
     @media (min-width: 768px) and (max-width: 1024px) {
-      margin-left: 4.9rem;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-left: -5rem;
+    }
+    @media (min-width: 576px) and (max-width: 767px) {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-left: -5rem;
     }
   }
 `;

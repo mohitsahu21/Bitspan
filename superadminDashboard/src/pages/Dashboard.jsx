@@ -13,7 +13,7 @@ import { MdCrop } from "react-icons/md";
 import { MdAddCard } from "react-icons/md";
 import { AiOutlineForm } from "react-icons/ai";
 import { MdAddShoppingCart } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -65,7 +65,8 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-3">
+                      <div className="card card-3"
+                      onClick={() => navigate("/dth-recharge")}>
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <RiCoupon2Line />
@@ -79,7 +80,8 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-4">
+                      <div className="card card-4"
+                      onClick={() => navigate("/raise-complaint")}>
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <FaRegMessage />
@@ -93,7 +95,9 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-1">
+                      <div className="card card-1"
+                      >
+                       <Link to='https://www.trackpan.utiitsl.com/PANONLINE/forms/TrackPan/trackApp#forward'>
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <MdManageSearch />
@@ -106,10 +110,12 @@ const Dashboard = () => {
                             </h4>{" "}
                           </div>
                         </div>
+                        </Link>
                       </div>
                     </div>
                     <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-2">
+                      <div className="card card-2"
+                      onClick={() => navigate("/uti-login")}>
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <IoIosLogIn />
@@ -139,7 +145,8 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-4">
+                      <div className="card card-4"
+                      onClick={() => navigate("/add-money")}>
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <MdAddCard />
@@ -153,7 +160,8 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-1">
+                      <div className="card card-1"
+                      onClick={() => navigate("/pan-apply-49")}>
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <AiOutlineForm />
@@ -335,5 +343,8 @@ const Wrapper = styled.div`
       rgba(131, 204, 255, 1) 0.4%,
       rgba(66, 144, 251, 1) 100.3%
     );
+  }
+  a{
+    text-decoration: none;
   }
 `;
