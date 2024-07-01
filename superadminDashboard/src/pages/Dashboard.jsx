@@ -23,14 +23,14 @@ const Dashboard = () => {
         {/* <HeadBar /> */}
         <div className="main">
           <div className="container-fluid">
-            <div className="row flex-nowrap justify-content-center">
-              <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-3 col-sm-3 p-0">
+            <div className="row flex-wrap justify-content-center">
+              <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2 d-none ">
                 {/* <Sider /> */}
               </div>
-              <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-9 col-sm-9 mt-5">
+              <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-10 mt-5">
                 <div className="container-fluid">
-                  <div className="row  d-flex justify-content-around">
-                    <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
+                  <div className="row  d-flex formdata justify-content-center">
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div
                         className="card card-1"
                         onClick={() => navigate("/prepaid-recharge")}
@@ -47,7 +47,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div
                         className="card card-2"
                         onClick={() => navigate("/dth-recharge")}
@@ -64,7 +64,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
+                    {/* <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div
                         className="card card-3"
                         onClick={() => navigate("/dth-recharge")}
@@ -80,8 +80,8 @@ const Dashboard = () => {
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
+                    </div> */}
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div
                         className="card card-4"
                         onClick={() => navigate("/raise-complaint")}
@@ -98,7 +98,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-1">
                         <Link to="https://www.trackpan.utiitsl.com/PANONLINE/forms/TrackPan/trackApp#forward">
                           <div className="d-flex">
@@ -116,7 +116,7 @@ const Dashboard = () => {
                         </Link>
                       </div>
                     </div>
-                    <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div
                         className="card card-2"
                         onClick={() => navigate("/uti-login")}
@@ -133,7 +133,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div
                         className="card card-3"
                         onClick={() => navigate("/crop-tool")}
@@ -152,7 +152,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div
                         className="card card-4"
                         onClick={() => navigate("/add-money")}
@@ -169,7 +169,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div
                         className="card card-1"
                         onClick={() => navigate("/pan-apply-49")}
@@ -188,7 +188,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-2">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
@@ -204,7 +204,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-3">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
@@ -220,7 +220,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-4">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
@@ -234,7 +234,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
+                    {/* <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-1">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
@@ -249,8 +249,8 @@ const Dashboard = () => {
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
+                    </div> */}
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-2">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
@@ -266,7 +266,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-3">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
@@ -281,6 +281,12 @@ const Dashboard = () => {
                           </div>
                         </div>
                       </div>
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                     
                     </div>
                   </div>
                 </div>
@@ -299,10 +305,12 @@ const Wrapper = styled.div`
   height: 100%;
 
   .card {
-    width: 80%;
+    width: 100%;
     padding: 10px;
+    margin: 0 15px;
     border-radius: 10px;
     cursor: pointer;
+    white-space: nowrap;
 
     transition: transform 0.3s ease-in-out, border 0.3s ease,
       border-radius 0.3s ease;
@@ -362,5 +370,17 @@ const Wrapper = styled.div`
   }
   a {
     text-decoration: none;
+  }
+  @media (min-width: 1025px) and (max-width : 1500px){
+    .formdata {
+     
+      padding-left: 15rem;
+    }
+  }
+  @media (min-width: 1500px) {
+    .formdata {
+     
+      padding-left: 13rem;
+    }
   }
 `;

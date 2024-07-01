@@ -11,7 +11,7 @@ const PanDocumentUpload = () => {
             <Wrapper>
                 <div className="main">
                     <div className="container-fluid ">
-                        <div className="row flex-wrap justify-content-center  bg-body-tertiary">
+                        <div className="row flex-wrap justify-content-center ">
                             <div className="col-xxl-3 col-xl-5 col-lg-5 col-md-5 me-md-5 p-0 pe-md-5 d-none ">
                                 {/* <Sider /> */}
                             </div>
@@ -28,7 +28,7 @@ const PanDocumentUpload = () => {
                                         </div>
                                     </div>
                                     <div className="row justify-content-center ">
-                                        <div className="col-xxl-6 col-xl-9 col-lg-9 col-md-10 col-sm-9 shadow  rounded m-4 px-5 py-5 bg-white">
+                                        <div className="col-xxl-6 col-xl-9 col-lg-9 col-md-10 col-sm-9 shadow  rounded m-4 px-5 py-5 bg-body-tertiary">
                                             <div className="row d-flex flex-column g-4">
                                                 <div className="d-flex justify-content-center flex-column flex-xl-row gap-3">
                                                     <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">

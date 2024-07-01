@@ -2,13 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import ImageResizer from "./ImageResizer";
 import ImageResizerSign from "./ImageResizerSign";
+import { Link } from "react-router-dom";
 
 const CropingTool = () => {
   return (
     <>
       <Wrapper>
         <div className="container">
-          <div className="row p-3 mb-5 rounded main-container">
+          <div className="row p-3 rounded main-container">
             <div className="col-lg-6 col-md-12 col-sm-12">
               <div className="shadow p-3 mb-2 bg-body rounded section-container">
                 <ImageResizer />
@@ -18,7 +19,20 @@ const CropingTool = () => {
               <div className="shadow p-3 mb-2 bg-body rounded section-container">
                 <ImageResizerSign />
               </div>
+             
             </div>
+          </div>
+          <div className="row p-3">
+          <div className="col-lg-3 col-md-6 col-sm-12 mb-4 p-3">
+                    <Link to="https://www.ilovepdf.com/jpg_to_pdf" target="_blank">
+                      <div
+                        className="p-3 border rounded jpg-to-pdf"
+                        style={{ background: "#4aa821", color: "#fff" , textAlign: "center"}}
+                      >
+                        Convert JPG to PDF
+                      </div>
+                      </Link>
+                    </div>
           </div>
         </div>
       </Wrapper>
@@ -67,5 +81,12 @@ const Wrapper = styled.div`
     @media (min-width: 1601px) and (max-width: 2000px) {
       height: 14rem;
     }
+  }
+  .jpg-to-pdf{
+    font-size: larger;
+    font-weight: bold;
+  }
+  a{
+    text-decoration: none;
   }
 `;

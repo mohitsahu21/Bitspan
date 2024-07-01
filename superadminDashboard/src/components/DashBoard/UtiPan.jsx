@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const UtiPan = () => {
@@ -8,24 +9,25 @@ const UtiPan = () => {
         {/* <HeadBar /> */}
         <div className="main">
           <div className="container-fluid">
-            <div className="row flex-nowrap justify-content-center">
-              <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-3 col-sm-3 p-0">
+            <div className="row flex-wrap justify-content-center">
+              <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-3 col-sm-3 col-sm-2  d-none">
                 {/* <Sider /> */}
               </div>
-              <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-9 col-sm-9 mt-5">
-                <div className="container-fluid">
+              <div className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
+                             mt-5 formdata ">
+                <div className="main">
                   <div className="row">
-                    <div className="col-12">
-                      <div className="d-flex justify-content-between align-items-center raisecomp flex-wrap">
+                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 ">
+                      <div className="d-flex justify-content-between align-items-center flex-wrap mx-lg-5 px-lg-5">
                         <h4>UTI PAN Card</h4>
                         <h6>/ &nbsp; UTI PAN Card </h6>
                       </div>
                     </div>
                   </div>
-                  <div className="row shadow p-3 mb-5 bg-body rounded raisecomp">
-                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                  <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
+                    <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11  shadow  rounded m-4 px-3 py-5 bg-body-tertiary">
                       <div className="text-start m-3">
-                        <button className="btn p-2">Login to UTI Portal</button>
+                       <Link target="_blank" to="https://www.psaonline.utiitsl.com/psaonline/showLogin"> <button className="btn p-2">Login to UTI Portal</button> </Link>
                       </div>
                     </div>
                   </div>
@@ -41,22 +43,20 @@ const UtiPan = () => {
 
 export default UtiPan;
 const Wrapper = styled.div`
-  .raisecomp {
-    width: 100%;
-    margin-bottom: 1rem;
-    @media (min-width: 576px) and (max-width: 767px) {
-      width: 80%;
-      margin-left: 5rem;
-    }
-    @media (min-width: 768px) and (max-width: 1024px) {
-      width: 90%;
-      margin-left: 3.5rem;
-    }
-    @media (min-width: 1025px) and (max-width: 1280px) {
-      width: 85%;
-      margin-left: 2.9rem;
+
+@media (min-width: 1025px) and (max-width : 1500px){
+    .formdata {
+     
+      padding-left: 15rem;
     }
   }
+  @media (min-width: 1500px) {
+    .formdata {
+     
+      padding-left: 13rem;
+    }
+  }
+ 
 
   button {
     color: #fff;

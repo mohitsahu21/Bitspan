@@ -9,18 +9,18 @@ const AddMoney = () => {
   return (
     <>
       <Wrapper>
-        <div className="main">
-          <div className="container-fluid bg-body-tertiary">
+        <div className="main ">
+          <div className="container-fluid">
             <div className="row flex-wrap justify-content-center ">
               <div className="col-xxl-3 col-xl-5 col-lg-5 col-md-5 me-md-5 p-0 pe-md-5 d-none ">
                 {/* <Sider /> */}
               </div>
               <div
                 className="col-xxl-10 col-xl-7 col-lg-7 col-md-7 ms-md-5 ps-md-5 col-9
-                             mt-5 bg-body-tertiary"
+                             mt-5"
               >
-                <div className="main shadow-none bg-body-tertiary">
-                  <div className="row shadow-none bg-body-tertiary">
+                <div className="main shadow-none ">
+                  <div className="row shadow-none ">
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-9">
                       <div className="text-center">
                         <h3>Add Money To Wallet</h3>

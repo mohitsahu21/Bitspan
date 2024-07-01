@@ -11,17 +11,17 @@ const NsdlPanCorrection = () => {
     <>
       <Wrapper>
         <div className="main">
-          <div className="container-fluid bg-body-tertiary">
+          <div className="container-fluid ">
             <div className="row flex-wrap justify-content-lg-end justify-content-center">
               <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
                 {/* <Sider /> */}
               </div>
               <div
                 className="col-xxl-10 col-xl-10 col-lg-10 col-md-10  col-sm-10  col-9
-                             mt-5 bg-body-tertiary"
+                             mt-5 "
               >
-                <div className="main shadow-none bg-body-tertiary">
-                  <div className="row shadow-none bg-body-tertiary">
+                <div className="main shadow-none ">
+                  <div className="row shadow-none ">
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="text-center">
                         <h3>NSDL Correction Apply</h3>

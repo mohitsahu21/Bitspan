@@ -19,8 +19,10 @@ const UTICouponHistory = () => {
                                 <div className="main shadow-none">
                                     <div className="row shadow-none ">
                                         <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div className="text-center">
-                                                <h3>UTI Coupon History</h3>
+                                          
+                                            <div className="d-flex justify-content-between align-items-center flex-wrap mx-lg-5 px-lg-5">
+                                                <h4>UTI Coupon History</h4>
+                                                <h6>/ &nbsp; UTI Coupon History </h6>
                                             </div>
                                         </div>
                                     </div>
@@ -38,12 +40,12 @@ const UTICouponHistory = () => {
                                                         <input id="toDate" className="form-control " type="date" />
                                                     </div>
                                                     <div className="col-12 col-md-3 col-lg-3 d-flex align-items-end">
-                                                    
-                                                    <select className="form-select" aria-label="Default select example">
+
+                                                        <select className="form-select" aria-label="Default select example">
                                                             <option selected>---Distributed---</option>
                                                             <option value="1">---Wallet Bought---</option>
-                                                          
-                                                            
+
+
                                                         </select>
                                                     </div>
                                                     <div className="d-flex align-items-end">
@@ -58,7 +60,7 @@ const UTICouponHistory = () => {
                                                         <table class="table table-striped">
                                                             <thead className="table-dark">
                                                                 <tr>
-                                                                    
+
                                                                     <th scope="col">Date</th>
                                                                     <th scope="col">Order Id</th>
                                                                     <th scope="col">Transaction Id</th>

@@ -8,8 +8,8 @@ const PanUploadedDocsList = () => {
     return (
         <>
             <Wrapper>
-                <div className="main bg-body-tertiary">
-                    <div className="container-fluid  bg-body-tertiary">
+                <div className="main ">
+                    <div className="container-fluid  ">
                         <div className="row flex-wrap justify-content-lg-center justify-content-center ">
                             <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
                                 {/* <Sider /> */}
@@ -26,7 +26,7 @@ const PanUploadedDocsList = () => {
                                     </div>
 
                                     <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
-                                        <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-white">
+                                        <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
                                         <div className="row d-flex flex-column g-4">
 
                                                 <div className="d-flex flex-column flex-md-row gap-3">
@@ -119,7 +119,7 @@ export default PanUploadedDocsList
 
 const Wrapper = styled.div`
   .main {
-    height: 100vh;
+    height: 100%;
     width: 100%;
   }
   button {

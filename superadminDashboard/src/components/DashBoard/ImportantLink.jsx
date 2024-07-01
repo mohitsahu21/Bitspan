@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { BiHomeAlt } from "react-icons/bi";
 import { LuArrowBigRightDash } from "react-icons/lu";
+import { Link } from "react-router-dom";
 
 const ImportantLink = () => {
   return (
@@ -29,76 +30,95 @@ const ImportantLink = () => {
                   </div>
                   <div className="row raisecomp">
                     <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
+                      <Link to="/crop-tool" className="link">
                       <div
                         className="p-3 border rounded"
                         style={{ background: "#706fff", color: "#fff" }}
                       >
                         Photo & Sign Croping Tool{" "}
                       </div>
+                      </Link>
                     </div>
+                   
                     <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
+                    <Link to="https://www.ilovepdf.com/jpg_to_pdf" target="_blank">
                       <div
                         className="p-3 border rounded"
                         style={{ background: "#4aa821", color: "#fff" }}
                       >
                         Convert JPG to PDF
                       </div>
+                      </Link>
                     </div>
                     <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
+                    <Link to='https://www.trackpan.utiitsl.com/PANONLINE/forms/TrackPan/trackApp#forward' target="_blank">
                       <div
                         className="p-3 border rounded"
                         style={{ background: "#ff4763", color: "#fff" }}
                       >
                         PAN Track
                       </div>
+                      </Link>
                     </div>
                     <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
+                      <Link to="https://www.psaonline.utiitsl.com/psaonline/showLogin" target="_blank"> 
                       <div
                         className="p-3 border rounded"
                         style={{ background: "#2d323f", color: "#fff" }}
                       >
                         PSA Login
                       </div>
+                      </Link>
                     </div>
                     <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
+                    <Link to='https://www.trackpan.utiitsl.com/PANONLINE/forms/TrackPan/trackApp#forward' target="_blank">
                       <div
                         className="p-3 border rounded"
                         style={{ background: "#ff4763", color: "#fff" }}
                       >
                         PSA Application Status
                       </div>
+                      </Link>
                     </div>
                     <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
+                      <Link to="https://www.utiitsl.com/aocodedetails" target="_blank">
                       <div
                         className="p-3 border rounded"
                         style={{ background: "#706fff", color: "#fff" }}
                       >
                         PSA Aocode
                       </div>
+                      </Link>
                     </div>
                     <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
+                      <Link to="https://download.mantratecapp.com/StaticDownload/MantraRDService_1.0.6.exe" >
                       <div
                         className="p-3 border rounded"
                         style={{ background: "#2d323f", color: "#fff" }}
                       >
                         Download MFS100 RD Services (1.0.6)
                       </div>
+                      </Link>
                     </div>
                     <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
+                      <Link to="https://download.mantratecapp.com/StaticDownload/MFS100ClientService_9.0.3.8.exe">
                       <div
                         className="p-3 border rounded"
                         style={{ background: "#4aa821", color: "#fff" }}
                       >
                         Download MFS100 Client Services (9.0.3.8)
                       </div>
+                      </Link>
                     </div>
                     <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
+                      <Link to="https://download.mantratecapp.com/StaticDownload/MFS100Driver_9.2.0.0.exe">
                       <div
                         className="p-3 border rounded"
                         style={{ background: "#2d323f", color: "#fff" }}
                       >
                         Download MFS100 Client Services (9.2.0.0)
                       </div>
+                      </Link>
                     </div>
                   </div>
                   <div className="row raisecomp">
@@ -420,5 +440,8 @@ const Wrapper = styled.div`
   }
   .contxt {
     font-size: 14px;
+  }
+  a{
+    text-decoration: none;
   }
 `;
