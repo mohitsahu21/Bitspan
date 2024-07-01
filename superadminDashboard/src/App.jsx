@@ -37,6 +37,7 @@ import PostpaidRechargeHistory from "./components/DashBoard/PostpaidRechargeHist
 import DTHRechargeHistory from "./components/DashBoard/DTHRechargeHistory";
 import RechargeRefundReport from "./components/DashBoard/RechargeRefundReport";
 import MyCommission from "./components/DashBoard/MyCommission";
+import Tool from "./components/DashBoard/Tool";
 
 function App() {
   const location = useLocation();
@@ -84,11 +85,20 @@ function App() {
         <Route path="/add-money" element={<AddMoney />} />
         <Route path="/uti-login" element={<UtiPan />} />
         <Route path="/dth-recharge" element={<DthRecharge />} />
-        <Route path="/aadhar-linking-status" element={<AadharLinkingStatus />} />
+        <Route
+          path="/aadhar-linking-status"
+          element={<AadharLinkingStatus />}
+        />
         <Route path="/training-video" element={<TrainingVideo />} />
         <Route path="/2-step-verification" element={<StepVerification />} />
-        <Route path="/uti-transaction-report" element={<UTIPanTransactionReport />} />
-        <Route path="/retailer-id-revamp-activate" element={<UTIRetailerIdActivate />} />
+        <Route
+          path="/uti-transaction-report"
+          element={<UTIPanTransactionReport />}
+        />
+        <Route
+          path="/retailer-id-revamp-activate"
+          element={<UTIRetailerIdActivate />}
+        />
         <Route path="/password-reset" element={<UTIPasswordReset />} />
         <Route path="/uti-coupon-history" element={<UTICouponHistory />} />
         <Route path="/pan-document-upload" element={<PanDocumentUpload />} />
@@ -97,11 +107,21 @@ function App() {
         <Route path="/complaint-raised-list" element={<AllComplaintsList />} />
         <Route path="/download-certificate" element={<DownloadCertificate />} />
         <Route path="/change-password" element={<ChangePassword />} />
-        <Route path="/prepaid-recharge-history" element={<PrepaidRechargeHistory />} />
-        <Route path="/postpaid-recharge-history" element={<PostpaidRechargeHistory />} />
+        <Route
+          path="/prepaid-recharge-history"
+          element={<PrepaidRechargeHistory />}
+        />
+        <Route
+          path="/postpaid-recharge-history"
+          element={<PostpaidRechargeHistory />}
+        />
         <Route path="/dth-recharge-history" element={<DTHRechargeHistory />} />
-        <Route path="/recharge-refund-report" element={<RechargeRefundReport />} />
+        <Route
+          path="/recharge-refund-report"
+          element={<RechargeRefundReport />}
+        />
         <Route path="/my-commission" element={<MyCommission />} />
+        <Route path="/crop-tool" element={<Tool />} />
       </Routes>
     </>
   );

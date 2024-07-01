@@ -65,8 +65,10 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-3"
-                      onClick={() => navigate("/dth-recharge")}>
+                      <div
+                        className="card card-3"
+                        onClick={() => navigate("/dth-recharge")}
+                      >
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <RiCoupon2Line />
@@ -80,8 +82,10 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-4"
-                      onClick={() => navigate("/raise-complaint")}>
+                      <div
+                        className="card card-4"
+                        onClick={() => navigate("/raise-complaint")}
+                      >
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <FaRegMessage />
@@ -95,27 +99,28 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-1"
-                      >
-                       <Link to='https://www.trackpan.utiitsl.com/PANONLINE/forms/TrackPan/trackApp#forward'>
-                        <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <MdManageSearch />
+                      <div className="card card-1">
+                        <Link to="https://www.trackpan.utiitsl.com/PANONLINE/forms/TrackPan/trackApp#forward">
+                          <div className="d-flex">
+                            <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                              <MdManageSearch />
+                            </div>
+                            <div></div>
+                            <div className="d-flex flex-column cardtext">
+                              <p className="mb-0 px-2 my-0 fs-6">Pan Card</p>
+                              <h4 className="px-2 my-0">
+                                Track Application
+                              </h4>{" "}
+                            </div>
                           </div>
-                          <div></div>
-                          <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">Pan Card</p>
-                            <h4 className="px-2 my-0">
-                              Track Application
-                            </h4>{" "}
-                          </div>
-                        </div>
                         </Link>
                       </div>
                     </div>
                     <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-2"
-                      onClick={() => navigate("/uti-login")}>
+                      <div
+                        className="card card-2"
+                        onClick={() => navigate("/uti-login")}
+                      >
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <IoIosLogIn />
@@ -129,7 +134,10 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-3">
+                      <div
+                        className="card card-3"
+                        onClick={() => navigate("/crop-tool")}
+                      >
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <MdCrop />
@@ -145,8 +153,10 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-4"
-                      onClick={() => navigate("/add-money")}>
+                      <div
+                        className="card card-4"
+                        onClick={() => navigate("/add-money")}
+                      >
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <MdAddCard />
@@ -160,8 +170,10 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-1"
-                      onClick={() => navigate("/pan-apply-49")}>
+                      <div
+                        className="card card-1"
+                        onClick={() => navigate("/pan-apply-49")}
+                      >
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <AiOutlineForm />
@@ -312,39 +324,43 @@ const Wrapper = styled.div`
     color: white;
   }
   .icon {
-    color: white;
+    color: #fe662b;
   }
 
   .card-1 {
-    background-image: linear-gradient(
+    /* background-image: linear-gradient(
       91.3deg,
       rgba(240, 73, 207, 1) 15.7%,
       rgba(186, 90, 238, 1) 74.1%
-    );
+    ); */
+    background: #6e6e6e;
   }
 
   .card-2 {
-    background-image: radial-gradient(
+    /* background-image: radial-gradient(
       circle farthest-corner at 10% 20%,
       rgba(87, 195, 155, 1) 0%,
       rgba(155, 218, 71, 0.66) 76.9%
-    );
+    ); */
+    background: #6e6e6e;
   }
   .card-3 {
-    background-image: radial-gradient(
+    /* background-image: radial-gradient(
       circle 897px at 9% 80.3%,
       rgba(55, 60, 245, 1) 0%,
       rgba(234, 161, 15, 0.9) 100.2%
-    );
+    ); */
+    background: #6e6e6e;
   }
   .card-4 {
-    background-image: linear-gradient(
+    /* background-image: linear-gradient(
       89.5deg,
       rgba(131, 204, 255, 1) 0.4%,
       rgba(66, 144, 251, 1) 100.3%
-    );
+    ); */
+    background: #6e6e6e;
   }
-  a{
+  a {
     text-decoration: none;
   }
 `;

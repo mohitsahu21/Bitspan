@@ -295,9 +295,22 @@ import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 // import { FaUserAlt } from "react-icons/fa";
+import { IoIosPerson } from "react-icons/io";
+import { FaPowerOff } from "react-icons/fa6";
 
 const Nav = styled.div`
-  background-color: white;
+  background-color: #e4e4e1;
+  background-image: radial-gradient(
+      at top center,
+      rgba(255, 255, 255, 0.03) 0%,
+      rgba(0, 0, 0, 0.03) 100%
+    ),
+    linear-gradient(
+      to top,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(143, 152, 157, 0.6) 100%
+    );
+  background-blend-mode: normal, multiply;
   height: 80px;
   display: flex;
   justify-content: space-between; /* Add this line */
@@ -317,7 +330,7 @@ const NavIcon = styled(Link)`
 `;
 
 const SidebarNav = styled.nav`
-  background-color: white;
+  background-color: black;
   box-shadow: 0 0 20px rgba(89, 102, 122, 0.1);
   width: 250px;
   height: 100vh;
@@ -358,7 +371,7 @@ const SidebarData = [
   {
     title: "Dashboard",
     path: "/dashboard",
-    icon: <AiIcons.AiFillHome color="black" />,
+    icon: <AiIcons.AiFillHome color="#fe662b" />,
     // iconClosed: <RiIcons.RiArrowDownSFill />,
     // iconOpened: <RiIcons.RiArrowUpSFill />,
 
@@ -378,7 +391,8 @@ const SidebarData = [
   {
     title: "Aadhar Linking Status",
     path: "/aadhar-linking-status",
-    icon: <IoIcons.IoIosPaper color="black" />,
+    // icon: <IoIcons.IoIosPaper color="black" />,
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
     // iconClosed: <RiIcons.RiArrowDownSFill color="black"/>,
     // iconOpened: <RiIcons.RiArrowUpSFill color="black"/>,
 
@@ -405,44 +419,44 @@ const SidebarData = [
   {
     title: "Wallet",
     path: "#",
-    icon: <FaIcons.FaPhone color="black" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="black" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="black" />,
+    icon: <FaIcons.FaPhone color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
       {
         title: "Add Money to Wallet",
         path: "/add-money",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
         cName: "sub-nav",
       },
       {
         title: "Add Wallet Summary",
         path: "/add-money-transaction-report",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
         cName: "sub-nav",
       },
       {
         title: "Add Wallet Offline",
         path: "/add-wallet-money-offline",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "Wallet Offline Request",
         path: "/wallet-offline-request",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "Wallet Full Summary",
         path: "/wallet-transaction-report",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],
   },
   {
     title: "Training Video",
     path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText color="black" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
 
     // iconClosed: <RiIcons.RiArrowDownSFill />,
     // iconOpened: <RiIcons.RiArrowUpSFill />,
@@ -463,119 +477,119 @@ const SidebarData = [
   {
     title: "Set PIN and 2 Step",
     path: "/2-step-verification",
-    icon: <IoIcons.IoMdHelpCircle color="black" />,
+    icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
   },
   {
     title: "Important Links",
     path: "/important-links",
-    icon: <IoIcons.IoMdHelpCircle color="black" />,
+    icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
   },
   {
     title: "UTI 2.0",
     // path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText color="black" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="black" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="black" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
       {
         title: "Apply PAN Card",
         path: "/uti-login",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "UTI Transaction History",
         path: "/uti-transaction-report",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],
   },
   {
     title: "UTI New",
     // path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText color="black" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="black" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="black" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
       {
         title: "User ID Activate",
         path: "/retailer-id-revamp-activate",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "Password Reset",
         path: "/password-reset",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "Buy Coupon",
         path: "/buy-uti-coupon",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "UTI Coupon History",
         path: "/uti-coupon-history",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],
   },
   {
     title: "PAN Track",
     path: "https://www.trackpan.utiitsl.com/PANONLINE/#forward",
-    icon: <IoIcons.IoMdHelpCircle color="black" />,
+    icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
   },
   {
     title: "NSDL PAN Application",
     // path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText color="black" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="black" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="black" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
       {
         title: "NSDL New PAN Card",
         path: "/pan-apply-49",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "NSDL Correction PAN",
         path: "/pan-apply-cr",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "NSDL PAN Track Status",
         path: "https://tin.tin.nsdl.com/pantan/StatusTrack.html",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "PAN Status",
         path: "/pan-status",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "PAN Transaction History",
         path: "/pan-transaction-report",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "PAN Refund",
         path: "/pan-transaction-refund-report",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "PAN Re Apply",
         path: "/pan-transaction-resume-report",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],
   },
   {
     title: "PAN Document",
     // path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText color="black" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="black" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="black" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
       {
@@ -593,90 +607,90 @@ const SidebarData = [
   {
     title: "Recharge",
     // path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText color="black" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="black" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="black" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
       {
         title: "Prepaid Recharge",
         path: "/prepaid-recharge",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "Postpaid Recharge",
         path: "/prepaid-recharge",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "DTH Recharge",
         path: "/dth-recharge",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "Prepaid Recharge History",
         path: "/prepaid-recharge-history",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "Postpaid Recharge History",
         path: "/postpaid-recharge-history",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "DTH Recharge History",
         path: "/dth-recharge-history",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "Recharge Refund Request",
         path: "/recharge-refund-report",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "My Commission",
         path: "/my-commission",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],
   },
   {
     title: "Complaint",
     // path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText color="black" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="black" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="black" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
       {
         title: "Complaint",
         path: "/raise-complaint",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "All Complaint List",
         path: "/complaint-raised-list",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],
   },
   {
     title: "Other Settings",
     // path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText color="black" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="black" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="black" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
       {
         title: "Download Certificate",
         path: "/download-certificate",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "Change Password",
         path: "/change-password",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],
   },
@@ -733,9 +747,13 @@ const Sider = () => {
                   className="text-muted"
                 >
                   <NavDropdown.Item href="/update-profile">
-                    Profile
+                    <IoIosPerson size={20} color="#fe662b" />
+                    &nbsp;Profile
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="/">Log out</NavDropdown.Item>
+                  <NavDropdown.Item href="/">
+                    <FaPowerOff size={20} color="#fe662b" />
+                    &nbsp; Log out
+                  </NavDropdown.Item>
                   {/* <NavDropdown.Item href="#action/3.3">
                     Something
                   </NavDropdown.Item> */}
@@ -788,7 +806,7 @@ export default Sider;
 
 const Wrapper = styled.div`
   .sticky-top {
-    background-color: white;
+    background-color: black;
   }
   .logo {
   }
