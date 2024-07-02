@@ -16,16 +16,17 @@ const DthRecharge = () => {
         <div className="main">
           <div className="container-fluid">
             <div className="row flex-wrap justify-content-center">
-              <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-3 col-sm-3 p-0">
+              <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none">
                 {/* <Sider /> */}
               </div>
-              <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-9 col-sm-9 mt-5">
-                <div className="container-fluid m-0 rechargeNav">
-                  <div className="row">
-                    <div className="col-12">
-                      <div className="d-flex justify-content-between align-items-center raisecomp flex-wrap">
-                        <h4>DTH Recharge</h4>
-                        <h6>
+              <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12  col-sm-12  col-11
+                             mt-5 formdata">
+                <div className="main shadow-none">
+                  <div className="row shadow-none mb-5">
+                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                      <div className="d-flex justify-content-between align-items-center flex-wrap">
+                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">DTH Recharge</h4>
+                        <h6 className="mx-lg-5">
                           <BiHomeAlt /> &nbsp; / &nbsp; DTH Recharge
                         </h6>
                       </div>
@@ -49,7 +50,7 @@ const DthRecharge = () => {
                       Provider 2
                     </button>
                   </div>
-                  <div className="tab-content mt-3">
+                  <div className="tab-content">
                     <div
                       className={`tab-pane ${
                         activeTab === "tab1" ? "active" : ""
@@ -58,7 +59,7 @@ const DthRecharge = () => {
                       <div className="container rechargeForm">
                         <div className="row justify-content-center">
                           <div className="col-md-8 col-lg-6 col-xl-6">
-                            <div className="card">
+                            <div className="card bg-body-tertiary shadow">
                               <div className="p-4">
                                 <div className="text-center">
                                   <h3 className="mb-4">DTH Recharge</h3>
@@ -139,7 +140,7 @@ const DthRecharge = () => {
                       <div className="container rechargeForm">
                         <div className="row justify-content-center">
                           <div className="col-md-8 col-lg-6 col-xl-6">
-                            <div className="card">
+                            <div className="card bg-body-tertiary shadow">
                               <div className="p-4">
                                 <div className="text-center">
                                   <h3 className="mb-4">DTH Recharge 2</h3>
@@ -225,32 +226,9 @@ const DthRecharge = () => {
 
 export default DthRecharge;
 const Wrapper = styled.div`
-  .raisecomp {
-    width: 100%;
-    margin-bottom: 1rem;
-    @media (min-width: 450px) and (max-width: 575px) {
-      width: 80%;
-      margin-left: 5rem;
-    }
-    @media (min-width: 576px) and (max-width: 767px) {
-      width: 80%;
-      margin-left: 5rem;
-    }
-    @media (min-width: 768px) and (max-width: 1024px) {
-      width: 90%;
-      margin-left: 3.5rem;
-    }
-    @media (min-width: 1025px) and (max-width: 1280px) {
-      width: 85%;
-      margin-left: 2.9rem;
-    }
-  }
+ 
 
-  .rechargeNav {
-    @media (min-width: 375px) and (max-width: 540px) {
-      width: 300px;
-    }
-  }
+ 
 
   .circle-nav {
     width: 100%;
@@ -322,5 +300,17 @@ const Wrapper = styled.div`
   }
   .p-4 {
     padding: 1.5rem !important;
+  }
+  @media (min-width: 1025px) and (max-width : 1500px){
+    .formdata {
+     
+      padding-left: 15rem;
+    }
+  }
+  @media (min-width: 1500px) {
+    .formdata {
+     
+      padding-left: 15rem;
+    }
   }
 `;

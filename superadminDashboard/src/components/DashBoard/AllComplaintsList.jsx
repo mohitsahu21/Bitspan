@@ -8,8 +8,8 @@ const AllComplaintsList = () => {
     return (
         <>
             <Wrapper>
-                <div className="main bg-body-tertiary">
-                    <div className="container-fluid  bg-body-tertiary">
+                <div className="main">
+                    <div className="container-fluid">
                         <div className="row flex-wrap justify-content-lg-center justify-content-center ">
                             <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
                                 {/* <Sider /> */}
@@ -19,14 +19,18 @@ const AllComplaintsList = () => {
                                 <div className="main shadow-none ">
                                     <div className="row shadow-none ">
                                         <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                            <div className="text-center">
+                                            {/* <div className="text-center">
                                                 <h3>Complaint Raised List</h3>
-                                            </div>
+                                            </div> */}
+                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
+                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Complaint Raised List</h4>
+                        <h6 className="mx-lg-5">/ &nbsp; Complaint Raised List </h6>
+                      </div>
                                         </div>
                                     </div>
 
                                     <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
-                                        <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-white">
+                                        <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
                                         <div className="row d-flex flex-column g-4">
 
                                                 <div className="d-flex flex-column flex-md-row gap-3">

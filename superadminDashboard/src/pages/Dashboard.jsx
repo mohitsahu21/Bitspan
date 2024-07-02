@@ -27,7 +27,18 @@ const Dashboard = () => {
               <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2 d-none ">
                 {/* <Sider /> */}
               </div>
-              <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-10 mt-5">
+              <div className="row shadow-none  formdata mt-4">
+                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 ">
+                      {/* <div className="text-center">
+                        <h3>Change Password</h3>
+                      </div> */}
+                       <div className="d-flex justify-content-between align-items-center flex-wrap">
+                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Dashboard</h4>
+                        <h6 className="mx-lg-5">/ &nbsp; Dashboard </h6>
+                      </div>
+                    </div>
+                  </div>
+              <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10 mt-5">
                 <div className="container-fluid">
                   <div className="row  d-flex formdata justify-content-center">
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">

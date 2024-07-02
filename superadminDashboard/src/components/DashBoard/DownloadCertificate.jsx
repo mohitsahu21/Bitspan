@@ -6,25 +6,25 @@ const DownloadCertificate = () => {
     <>
       <Wrapper>
         {/* <HeadBar /> */}
-        <div className="main bg-body-tertiary">
-          <div className="container-fluid bg-body-tertiary">
+        <div className="main">
+          <div className="container-fluid">
             <div className="row flex-wrap justify-content-center">
               <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
                 {/* <Sider /> */}
               </div>
-              <div className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
+              <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-10  col-sm-10  col-11
                              mt-5 formdata">
                 <div className=" shadow-none">
                   <div className="row shadow-none">
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                      <div className="d-flex justify-content-between align-items-center flex-wrap mx-lg-5 px-lg-5">
-                        <h4>Download Certificate</h4>
-                        <h6>/ &nbsp; Download Certificate </h6>
+                      <div className="d-flex justify-content-between align-items-center flex-wrap">
+                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Download Certificate</h4>
+                        <h6 className="mx-lg-5">/ &nbsp; Download Certificate </h6>
                       </div>
                     </div>
                   </div>
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
-                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow  rounded  p-5 m-4 bg-white">
+                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow  rounded  p-5 m-4 bg-body-tertiary">
                       <div className="text-start">
                         <button className="btn px-4 py-2">Download</button>
                       </div>

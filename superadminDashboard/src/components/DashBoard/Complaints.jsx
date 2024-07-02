@@ -10,17 +10,21 @@ const Complaints = () => {
       <Wrapper>
         {/* <HeadBar /> */}
         <div className="main">
-          <div className="container-fluid bg-body-tertiary">
-            <div className="row flex-nowrap justify-content-center ">
-              <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-3 col-sm-3 p-0">
+          <div className="container-fluid">
+            <div className="row flex-wrap justify-content-center ">
+              <div className="col-xxl-3 col-xl-5 col-lg-5 col-md-5 me-md-5 p-0 pe-md-5 d-none">
                 {/* <Sider /> */}
               </div>
-              <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-9 col-sm-9 mt-5 bg-body-tertiary">
-                <div className="main shadow-none bg-body-tertiary">
-                  <div className="row shadow-none bg-body-tertiary">
+              <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11 mt-5 formdata">
+                <div className="main shadow-none ">
+                  <div className="row shadow-none ">
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      <div className="text-start">
+                      {/* <div className="text-start">
                         <h3>Raise Complaint</h3>
+                      </div> */}
+                      <div className="d-flex justify-content-between align-items-center flex-wrap">
+                        <h4 className="px-lg-3">Raise Complaint</h4>
+                        <h6 className="mx-lg-5">/ &nbsp; Raise Complaint </h6>
                       </div>
                     </div>
                   </div>
@@ -140,5 +144,17 @@ const Wrapper = styled.div`
   button {
     color: #fff;
     background: #6d70ff;
+  }
+  @media (min-width: 1025px) and (max-width : 1500px){
+    .formdata {
+     
+      padding-left: 15rem;
+    }
+  }
+  @media (min-width: 1500px) {
+    .formdata {
+     
+      padding-left: 13rem;
+    }
   }
 `;

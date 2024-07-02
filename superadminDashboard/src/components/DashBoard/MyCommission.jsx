@@ -8,13 +8,13 @@ const MyCommission = () => {
     return (
         <>
             <Wrapper>
-                <div className="main bg-body-tertiary">
-                    <div className="container-fluid  bg-body-tertiary">
+                <div className="main">
+                    <div className="container-fluid">
                         <div className="row flex-wrap justify-content-lg-center justify-content-center ">
                             <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
                                 {/* <Sider /> */}
                             </div>
-                            <div className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
+                            <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-10  col-sm-10  col-11
                              mt-5 formdata ">
                                 <div className="main shadow-none ">
                                     <div className="row shadow-none ">
@@ -22,9 +22,9 @@ const MyCommission = () => {
                                             {/* <div className="text-center">
                                                 <h3>Prepaid Recharge History</h3>
                                             </div> */}
-                                            <div className="d-flex justify-content-between align-items-center flex-wrap mx-lg-5 px-lg-5">
-                                                <h4>My Commission</h4>
-                                                <h6>/ &nbsp; MyCommission</h6>
+                                            <div className="d-flex justify-content-between align-items-center flex-wrap">
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">My Commission</h4>
+                                                <h6 className="mx-lg-5">/ &nbsp; MyCommission</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -289,7 +289,7 @@ export default MyCommission
 
 const Wrapper = styled.div`
   .main {
-    height: 100vh;
+    height: 100%;
     width: 100%;
   }
   button {
