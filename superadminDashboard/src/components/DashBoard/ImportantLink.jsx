@@ -188,7 +188,7 @@ const ImportantLink = () => {
                       >
                         <div
                           className="text-start fs-5 fw-bold"
-                          style={{ whiteSpace: "nowrap" }}
+                          
                         >
                           North (New Delhi) Zone Jurisdiction (State under the
                           zone)
@@ -424,6 +424,10 @@ const Wrapper = styled.div`
       margin-left: -6rem;
     }
     @media (min-width: 1025px) and (max-width: 1280px) {
+      width: 85%;
+      margin-left: 4.9rem;
+    }
+    @media (min-width: 1280px) and (max-width: 1500px) {
       width: 85%;
       margin-left: 4.9rem;
     }
