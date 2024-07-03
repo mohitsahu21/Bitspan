@@ -463,19 +463,19 @@ const SidebarData = [
     subNav: [
       {
         title: "Download Forms",
-        path: "/offline-pan-card",
+        path: "/download-offline-forms",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
       },
       {
-        title: "Submit Form",
-        path: "/submit-pan-card",
+        title: "Apply Pan Card Offline",
+        path: "/submit-pan-card-offline",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
       },
       {
         title: "View All History",
-        path: "/all-pan-card-form",
+        path: "/view-all-offline-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
       },
@@ -805,7 +805,7 @@ const Sider = () => {
                     <NavIcon to="#">
                       <AiIcons.AiOutlineClose
                         onClick={showSidebar}
-                        color="black"
+                        // color="black"
                       />
                     </NavIcon>
                   </div>

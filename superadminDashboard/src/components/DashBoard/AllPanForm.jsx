@@ -1,4 +1,5 @@
 import React from "react";
+import { BiHomeAlt } from "react-icons/bi";
 import styled from "styled-components";
 
 const AllPanForm = () => {
@@ -23,9 +24,9 @@ const AllPanForm = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          All Pan List
+                        View All Offline History
                         </h4>
-                        <h6 className="mx-lg-5">/ &nbsp; All Pan List </h6>
+                        <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; View All Offline History </h6>
                       </div>
                     </div>
                   </div>

@@ -18,15 +18,19 @@ const Profile = () => {
         <div className="main">
           <div className="container-fluid bg-body-tertiary">
             <div className="row flex-nowrap justify-content-center ">
-              <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-3 col-sm-3 p-0">
+              <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none">
                 {/* <Sider /> */}
               </div>
-              <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-9 col-sm-9 mt-5 bg-body-tertiary">
+              <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11 mt-5 bg-body-tertiary formdata">
                 <div className="main shadow-none bg-body-tertiary">
                   <div className="row shadow-none bg-body-tertiary">
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      <div className="text-start">
+                      {/* <div className="text-start">
                         <h3>Update Profile</h3>
+                      </div> */}
+                      <div className="d-flex justify-content-between align-items-center flex-wrap">
+                        <h4 className="mx-lg-5 ">Update Profile</h4>
+                        <h6 className=""><BiHomeAlt /> &nbsp;/ &nbsp; Update Profile</h6>
                       </div>
                     </div>
                   </div>
@@ -221,26 +225,7 @@ const Wrapper = styled.div`
     color: #fff;
     background: #6d70ff;
   }
-  .raisecomp {
-    width: 100%;
-    margin-bottom: 1rem;
-    @media (min-width: 450px) and (max-width: 575px) {
-      width: 80%;
-      margin-left: 5rem;
-    }
-    @media (min-width: 576px) and (max-width: 767px) {
-      width: 80%;
-      margin-left: 5rem;
-    }
-    @media (min-width: 768px) and (max-width: 1024px) {
-      width: 90%;
-      margin-left: 4rem;
-    }
-    @media (min-width: 1025px) and (max-width: 1280px) {
-      width: 85%;
-      margin-left: 4.9rem;
-    }
-  }
+
 
   .proForm {
     margin: 24px;
@@ -249,6 +234,16 @@ const Wrapper = styled.div`
     }
     @media (min-width: 768px) and (max-width: 1024px) {
       margin-left: 4.9rem;
+    }
+  }
+  @media (min-width: 1025px) and (max-width: 1500px) {
+    .formdata {
+      padding-left: 15rem;
+    }
+  }
+  @media (min-width: 1500px) {
+    .formdata {
+      padding-left: 13rem;
     }
   }
 `;

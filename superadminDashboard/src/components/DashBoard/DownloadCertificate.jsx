@@ -1,4 +1,5 @@
 import React from "react";
+import { BiHomeAlt } from "react-icons/bi";
 import styled from "styled-components";
 
 const DownloadCertificate = () => {
@@ -19,7 +20,7 @@ const DownloadCertificate = () => {
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Download Certificate</h4>
-                        <h6 className="mx-lg-5">/ &nbsp; Download Certificate </h6>
+                        <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; Download Certificate </h6>
                       </div>
                     </div>
                   </div>

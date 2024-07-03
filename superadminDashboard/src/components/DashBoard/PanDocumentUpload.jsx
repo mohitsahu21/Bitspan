@@ -4,6 +4,7 @@ import { MdOutlineFormatListNumbered } from "react-icons/md";
 import { FaMobileAlt } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { FaRupeeSign } from "react-icons/fa";
+import { BiHomeAlt } from "react-icons/bi";
 
 const PanDocumentUpload = () => {
     return (
@@ -16,15 +17,20 @@ const PanDocumentUpload = () => {
                                 {/* <Sider /> */}
                             </div>
                             <div
-                                className="col-xxl-10 col-xl-7 col-lg-7 col-md-7 ms-md-5 ps-md-5 col-9
+                                className="col-xxl-10 col-xl-9 col-lg-9 col-md-9 ms-md-5 ps-md-5 col-9
                              mt-5 "
                             >
                                 <div className="main shadow-none ">
                                     <div className="row shadow-none">
                                         <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-9">
-                                            <div className="text-center">
+                                            {/* <div className="text-center">
                                                 <h3>Upload Pan Card Document</h3>
+                                            </div> */}
+                                            <div className="d-flex justify-content-between align-items-center flex-wrap">
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Upload Pan Card Document</h4>
+                                                <h6 className=""><BiHomeAlt /> &nbsp;/ &nbsp; Upload Pan Card Document</h6>
                                             </div>
+
                                         </div>
                                     </div>
                                     <div className="row justify-content-center ">
@@ -33,7 +39,7 @@ const PanDocumentUpload = () => {
                                                 <div className="d-flex justify-content-center flex-column flex-xl-row gap-3">
                                                     <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
                                                         <div class="input-group mb-3">
-                                                          
+
                                                             <div class="form-floating">
                                                                 <input
                                                                     type="text"
@@ -51,7 +57,7 @@ const PanDocumentUpload = () => {
                                                     </div>
                                                     <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
                                                         <div class="input-group mb-3">
-                                                            
+
                                                             <div class="form-floating">
                                                                 <input
                                                                     type="text"
@@ -76,7 +82,7 @@ const PanDocumentUpload = () => {
 
                                                         <div >
 
-                                                          
+
                                                             <div class="mb-3">
                                                                 <label for="exampleFormControlTextarea1" class="form-label"> Application Details ( Input multiple application no and it should be (space) separated)</label>
                                                                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Enter Appication Details"></textarea>
@@ -88,15 +94,15 @@ const PanDocumentUpload = () => {
                                                 <div className="d-flex justify-content-center flex-column flex-xl-row gap-3">
                                                     <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
                                                         <div class="input-group mb-3">
-                                                         
+
                                                             <div class="form-floating">
                                                                 <input
                                                                     type="text"
                                                                     class="form-control"
                                                                     id="floatingInputGroup1"
                                                                     placeholder="Transaction Number"
-                                                                    
-                                                                    
+
+
                                                                 />
                                                                 <label for="floatingInputGroup1">
                                                                     No. of Document
@@ -106,15 +112,15 @@ const PanDocumentUpload = () => {
                                                     </div>
                                                     <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
                                                         <div class="input-group mb-3">
-                                                         
+
                                                             <div class="form-floating">
                                                                 <input
                                                                     type="date"
                                                                     class="form-control"
                                                                     id="floatingInputGroup1"
                                                                     placeholder="Transaction Number"
-                                                                   
-                                                                    
+
+
                                                                 />
                                                                 <label for="floatingInputGroup1">
                                                                     Date of Courier
@@ -126,15 +132,15 @@ const PanDocumentUpload = () => {
                                                 <div className="d-flex justify-content-center flex-column flex-xl-row gap-3">
                                                     <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
                                                         <div class="input-group mb-3">
-                                                           
+
                                                             <div class="form-floating">
                                                                 <input
                                                                     type="text"
                                                                     class="form-control"
                                                                     id="floatingInputGroup1"
                                                                     placeholder="Transaction Number"
-                                                                    
-                                                                    
+
+
                                                                 />
                                                                 <label for="floatingInputGroup1">
                                                                     POD/Tracking Number
@@ -144,15 +150,15 @@ const PanDocumentUpload = () => {
                                                     </div>
                                                     <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
                                                         <div class="input-group mb-3">
-                                                           
+
                                                             <div class="form-floating">
                                                                 <input
                                                                     type="text"
                                                                     class="form-control"
                                                                     id="floatingInputGroup1"
                                                                     placeholder="Transaction Number"
-                                                                   
-                                                                    
+
+
                                                                 />
                                                                 <label for="floatingInputGroup1">
                                                                     Courier Company Name
@@ -164,15 +170,15 @@ const PanDocumentUpload = () => {
                                                 <div className="d-flex justify-content-center flex-column flex-xl-row gap-3">
                                                     <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
                                                         <div class="input-group mb-3">
-                                                           
+
                                                             <div class="form-floating">
                                                                 <input
                                                                     type="date"
                                                                     class="form-control"
                                                                     id="floatingInputGroup1"
                                                                     placeholder="Transaction Number"
-                                                                    
-                                                                    
+
+
                                                                 />
                                                                 <label for="floatingInputGroup1">
                                                                     Delivery Date
@@ -182,18 +188,18 @@ const PanDocumentUpload = () => {
                                                     </div>
                                                     <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
                                                         <div class="input-group mb-3">
-                                                          
+
                                                             <div class="form-floating">
                                                                 <input
                                                                     type="text"
                                                                     class="form-control"
                                                                     id="floatingInputGroup1"
                                                                     placeholder="Transaction Number"
-                                                                   
-                                                                    
+
+
                                                                 />
                                                                 <label for="floatingInputGroup1">
-                                                                     Delivery Location
+                                                                    Delivery Location
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -202,15 +208,15 @@ const PanDocumentUpload = () => {
                                                 <div className="d-flex justify-content-center flex-column flex-xl-row gap-3">
                                                     <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
                                                         <div class="input-group">
-                                                           
+
                                                             <div class="form-floating">
                                                                 <input
                                                                     type="text"
                                                                     class="form-control"
                                                                     id="floatingInputGroup1"
                                                                     placeholder="Transaction Number"
-                                                                    
-                                                                    
+
+
                                                                 />
                                                                 <label for="floatingInputGroup1">
                                                                     Confirm the Address
@@ -219,21 +225,21 @@ const PanDocumentUpload = () => {
                                                         </div>
                                                     </div>
                                                     <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                                                    <div class="mb-3">
-                                                               
-                                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Remark"></textarea>
-                                                            </div>
+                                                        <div class="mb-3">
+
+                                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Remark"></textarea>
+                                                        </div>
                                                     </div>
                                                 </div>
 
                                                 <div className="d-flex  flex-column flex-xl-row gap-3">
                                                     <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                                                    <div>
-                                                <label for="formFileLg" class="form-label">Tab to upload scan copy of POD</label>
-                                                <input class="form-control form-control-lg" id="formFileLg" type="file" />
-                                            </div>
+                                                        <div>
+                                                            <label for="formFileLg" class="form-label">Tab to upload scan copy of POD</label>
+                                                            <input class="form-control form-control-lg" id="formFileLg" type="file" />
+                                                        </div>
                                                     </div>
-                                                   
+
                                                 </div>
 
 

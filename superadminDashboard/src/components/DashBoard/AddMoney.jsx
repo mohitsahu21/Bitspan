@@ -4,6 +4,7 @@ import { MdOutlineFormatListNumbered } from "react-icons/md";
 import { FaMobileAlt } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { FaRupeeSign } from "react-icons/fa";
+import { BiHomeAlt } from "react-icons/bi";
 
 const AddMoney = () => {
   return (
@@ -27,7 +28,7 @@ const AddMoney = () => {
                       </div> */}
                        <div className="d-flex justify-content-between align-items-center flex-wrap ">
                                                 <h4 className="mx-lg-5  px-lg-5  px-xl-5" >Add Money To Wallet</h4>
-                                                <h6 className="">/ &nbsp; Add Money To Wallet</h6>
+                                                <h6 className=""> <BiHomeAlt /> &nbsp;/ &nbsp; Add Money To Wallet</h6>
                                             </div>
                     </div>
                   </div>

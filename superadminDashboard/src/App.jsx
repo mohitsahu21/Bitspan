@@ -125,9 +125,9 @@ function App() {
         />
         <Route path="/my-commission" element={<MyCommission />} />
         <Route path="/crop-tool" element={<Tool />} />
-        <Route path="/offline-pan-card" element={<OffilnePanCard />} />
-        <Route path="/submit-pan-card" element={<PanForm />} />
-        <Route path="/all-pan-card-form" element={<AllPanForm />} />
+        <Route path="/download-offline-forms" element={<OffilnePanCard />} />
+        <Route path="/submit-pan-card-offline" element={<PanForm />} />
+        <Route path="/view-all-offline-history" element={<AllPanForm />} />
       </Routes>
     </>
   );
