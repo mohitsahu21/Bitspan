@@ -16,18 +16,22 @@ const AddMoneyOffline = () => {
                             <div className="col-xxl-3 col-xl-5 col-lg-5 col-md-5 me-md-5 p-0 pe-md-5 d-none ">
                                 {/* <Sider /> */}
                             </div>
-                            <div className="col-xxl-10 col-xl-7 col-lg-7 col-md-7 ms-md-5 ps-md-5 col-9
-                             mt-5 ">
+                            <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 ms-md-10 ps-md-5 col-9
+                             mt-5 formdata">
                                 <div className="main shadow-none ">
                                     <div className="row shadow-none ">
-                                        <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-9">
-                                            <div className="text-center">
+                                        <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 ms-lg-5">
+                                            {/* <div className="text-center">
                                                 <h3>Add Money To Wallet Offline</h3>
+                                            </div> */}
+                                              <div className="d-flex justify-content-between align-items-center flex-wrap ">
+                                                <h4 className="mx-lg-5  px-lg-5  px-xl-5" >Add Money To Wallet Offline</h4>
+                                                <h6 className="">/ &nbsp; Add Money To Wallet Offline</h6>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="row justify-content-center ">
-                                        <div className="col-xxl-6 col-xl-9 col-lg-9 col-md-10 col-sm-9 shadow bg-body-tertiary rounded m-4 px-3 py-5">
+                                    <div className="row justify-content-lg-end justify-content-center pe-lg-4">
+                                        <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-10 col-sm-10 shadow bg-body-tertiary rounded m-4 px-3 py-5">
                                             <div className="row d-flex flex-column g-4">
 
                                                 {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -117,5 +121,17 @@ const Wrapper = styled.div`
   .form-container {
     width: 50%;
     margin: auto;
+  }
+  @media (min-width: 1025px) and (max-width : 1500px){
+    .formdata {
+     
+      padding-left: 15rem;
+    }
+  }
+  @media (min-width: 1500px) {
+    .formdata {
+     
+      padding-left: 13rem;
+    }
   }
 `;

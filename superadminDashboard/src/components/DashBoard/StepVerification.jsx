@@ -20,8 +20,8 @@ const StepVerification = () => {
                   <div className="row">
                     <div className="col-12">
                       <div className="d-flex justify-content-between align-items-center raisecomp flex-wrap">
-                        <h4>Step PIN And 2 Step Verification</h4>
-                        <h6>
+                        <h4 className="mx-lg-5 ">Step PIN And 2 Step Verification</h4>
+                        <h6 className="mx-lg-5">
                           {" "}
                           <BiHomeAlt /> &nbsp; / &nbsp; Step PIN And 2 Step
                           Verification
@@ -112,7 +112,7 @@ const Wrapper = styled.div`
     @media (min-width: 768px) and (max-width: 1024px) {
       width: 100%;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
     }
     @media (min-width: 1025px) and (max-width: 1280px) {
       width: 85%;

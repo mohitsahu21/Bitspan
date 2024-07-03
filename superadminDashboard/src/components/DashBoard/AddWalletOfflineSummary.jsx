@@ -19,8 +19,12 @@ const AddWalletOfflineSummary = () => {
                                 <div className="main shadow-none">
                                     <div className="row shadow-none">
                                         <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                            <div className="text-center">
+                                            {/* <div className="text-center">
                                                 <h3>Wallet Offline Request Status</h3>
+                                            </div> */}
+                                              <div className="d-flex justify-content-between align-items-center flex-wrap">
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Wallet Offline Request Status</h4>
+                                                <h6 className="mx-lg-5">/ &nbsp; Wallet Offline Request Status</h6>
                                             </div>
                                         </div>
                                     </div>
