@@ -106,4 +106,9 @@ const Wrapper = styled.div`
     padding: 5px;
     border: 1px solid #ccc;
   }
+  @media (max-width: 576px) {
+    input {
+      width: 98%;
+    }
+  }
 `;

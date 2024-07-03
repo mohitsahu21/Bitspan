@@ -291,7 +291,7 @@ import profileLogo from "./../assets/images/Placeholder_Person.jpg";
 import { FaUserAlt } from "react-icons/fa";
 import Dropdown from "react-bootstrap/Dropdown";
 import Container from "react-bootstrap/Container";
-
+import { MdFilterListOff } from "react-icons/md";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 // import { FaUserAlt } from "react-icons/fa";
@@ -450,6 +450,34 @@ const SidebarData = [
         title: "Wallet Full Summary",
         path: "/wallet-transaction-report",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+    ],
+  },
+  {
+    title: "Offline Services",
+    path: "#",
+    icon: <MdFilterListOff color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+      {
+        title: "Download Forms",
+        path: "/offline-pan-card",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "Submit Form",
+        path: "/submit-pan-card",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "View All History",
+        path: "/all-pan-card-form",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
       },
     ],
   },
