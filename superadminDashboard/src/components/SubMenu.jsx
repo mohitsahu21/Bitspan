@@ -46,27 +46,28 @@ const DropdownLink = styled(Link)`
   }
 `;
 
-const SubMenu = ({ item }) => {
+const SubMenu = ({ item ,activeDropdown, handleDropdownClick }) => {
   const [subnav, setSubnav] = useState(false);
+  const isOpen = activeDropdown === item.title;
 
   const showSubnav = () => setSubnav(!subnav);
 
   return (
     <>
-      <SidebarLink to={item.path} onClick={item.subNav && showSubnav}>
+      <SidebarLink to={item.path} onClick={item.subNav  && (() => handleDropdownClick(item.title))}>
         <div>
           <span className="icon">{item.icon}</span>
           <SidebarLabel>{item.title}</SidebarLabel>
         </div>
         <div>
-          {item.subNav && subnav
+          {item.subNav && isOpen
             ? item.iconOpened
             : item.subNav
             ? item.iconClosed
             : null}
         </div>
       </SidebarLink>
-      {subnav &&
+      {isOpen &&
         item.subNav.map((item, index) => {
           return (
             <DropdownLink to={item.path} key={index}>

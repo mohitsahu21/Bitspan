@@ -41,6 +41,8 @@ import Tool from "./components/DashBoard/Tool";
 import OffilnePanCard from "./components/DashBoard/OffilnePanCard";
 import PanForm from "./components/DashBoard/PanForm";
 import AllPanForm from "./components/DashBoard/AllPanForm";
+import SuperDistributerDashboard from "./pages/SuperDistributerDashboard";
+import './App.css'
 
 function App() {
   const location = useLocation();
@@ -128,6 +130,9 @@ function App() {
         <Route path="/download-offline-forms" element={<OffilnePanCard />} />
         <Route path="/submit-pan-card-offline" element={<PanForm />} />
         <Route path="/view-all-offline-history" element={<AllPanForm />} />
+
+        {/* super distributer routes */}
+        <Route path="/super-distributer-dashboard" element={<SuperDistributerDashboard />} />
       </Routes>
     </>
   );
