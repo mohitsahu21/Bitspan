@@ -786,28 +786,28 @@ const SuperDisData = [
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
-      {
-        title: "Add Money to Wallet",
-        path: "/add-money",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-        cName: "sub-nav",
-      },
-      {
-        title: "Add Wallet Summary",
-        path: "/add-money-transaction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-        cName: "sub-nav",
-      },
-      {
-        title: "Add Wallet Offline",
-        path: "/add-wallet-money-offline",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Wallet Offline Request",
-        path: "/wallet-offline-request",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
+      // {
+      //   title: "Add Money to Wallet",
+      //   path: "/add-money",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   cName: "sub-nav",
+      // },
+      // {
+      //   title: "Add Wallet Summary",
+      //   path: "/add-money-transaction-report",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   cName: "sub-nav",
+      // },
+      // {
+      //   title: "Add Wallet Offline",
+      //   path: "/add-wallet-money-offline",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
+      // {
+      //   title: "Wallet Offline Request",
+      //   path: "/wallet-offline-request",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
       {
         title: "Wallet Full Summary",
         path: "/wallet-transaction-report",

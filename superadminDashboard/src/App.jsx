@@ -43,15 +43,20 @@ import PanForm from "./components/DashBoard/PanForm";
 import AllPanForm from "./components/DashBoard/AllPanForm";
 import SuperDistributerDashboard from "./pages/SuperDistributerDashboard";
 import './App.css'
+import { useState } from "react";
+import SdWalletTransactionReport from "./components/SuperDistributer/SdWalletTransactionReport";
+import SdStepVerification from "./components/SuperDistributer/SdStepVerification";
+import CreateDistributor from "./components/SuperDistributer/CreateDistributor";
 
 function App() {
   const location = useLocation();
+  const [user, setUser] = useState("SuperDistributer");
   return (
     <>
       {location.pathname !== "/" && <Sider />}
       <Routes>
         <Route path="/" element={<LoginBitspan />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        {user === "retailer" && <Route path="/dashboard" element={<Dashboard />} />}
         <Route path="/pan-card-apply" element={<MultiStepForm />} />
         <Route path="/update-profile" element={<Profile />} />
         <Route path="/prepaid-recharge" element={<MobileRecharge />} />
@@ -131,8 +136,13 @@ function App() {
         <Route path="/submit-pan-card-offline" element={<PanForm />} />
         <Route path="/view-all-offline-history" element={<AllPanForm />} />
 
+
         {/* super distributer routes */}
-        <Route path="/super-distributer-dashboard" element={<SuperDistributerDashboard />} />
+        {user === "SuperDistributer" && <Route path="/dashboard" element={<SuperDistributerDashboard />} />}
+        {user === "SuperDistributer" && <Route path="/wallet-transaction-report" element={<SdWalletTransactionReport/>}/>}
+        {user === "SuperDistributer" && <Route path="/2-step-verification" element={<SdStepVerification />} />}
+        {user === "SuperDistributer" && <Route path="/create-distributor" element={<CreateDistributor />} />}
+
       </Routes>
     </>
   );

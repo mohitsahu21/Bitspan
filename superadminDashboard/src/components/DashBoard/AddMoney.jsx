@@ -76,7 +76,7 @@ const AddMoney = () => {
                         </div>
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <p className="fw-bold">
-                            Wallete Available Amount : Rs. 200.00
+                            Wallet Available Amount : Rs. 200.00
                           </p>
                         </div>
 
