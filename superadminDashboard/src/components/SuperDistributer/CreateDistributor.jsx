@@ -1,9 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { MdOutlineFormatListNumbered } from "react-icons/md";
-import { FaMobileAlt } from "react-icons/fa";
+import { MdCurrencyRupee, MdEmail, MdOutlineFormatListNumbered } from "react-icons/md";
+import { FaAddressCard, FaMobileAlt, FaRupeeSign, FaUser } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
+import { PiAddressBook } from "react-icons/pi";
+import { LuTextSelect, LuUserCheck } from "react-icons/lu";
+import { SlLocationPin } from "react-icons/sl";
+
 
 const CreateDistributor = () => {
   return (
@@ -58,7 +62,7 @@ const CreateDistributor = () => {
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">Enter Name</label>
                       <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"> <FaMobileAlt /></span>
+                        <span class="input-group-text" id="addon-wrapping"> <FaUser /></span>
                         <input type="text" id="name" class="form-control" placeholder="Enter Name" />
                       </div>
                     </div>
@@ -72,35 +76,35 @@ const CreateDistributor = () => {
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">Enter E-mail</label>
                       <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"> <FaMobileAlt /></span>
+                        <span class="input-group-text" id="addon-wrapping"> <MdEmail /></span>
                         <input type="text" id="name" class="form-control" placeholder="Enter E-mail" />
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">Enter Pan Card Number</label>
                       <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"> <FaMobileAlt /></span>
+                        <span class="input-group-text" id="addon-wrapping"><FaAddressCard /></span>
                         <input type="text" id="name" class="form-control" placeholder="Enter Pan Card Number" />
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">Enter Aadhar No.</label>
                       <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"> <FaMobileAlt /></span>
+                        <span class="input-group-text" id="addon-wrapping"> <FaAddressCard /></span>
                         <input type="text" id="name" class="form-control" placeholder="Enter Aadhar No." />
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">Enter Shop/ Company Name</label>
                       <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"> <FaMobileAlt /></span>
+                        <span class="input-group-text" id="addon-wrapping"> <PiAddressBook /></span>
                         <input type="text" id="name" class="form-control" placeholder="Enter Shop/ Company Name" />
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">Enter City</label>
                       <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"> <FaMobileAlt /></span>
+                        <span class="input-group-text" id="addon-wrapping"><PiAddressBook /></span>
                         <input type="text" id="name" class="form-control" placeholder="Enter City" />
                       </div>
                     </div>
@@ -109,7 +113,7 @@ const CreateDistributor = () => {
 
                       <label for="name" class="form-label">Enter State</label>
                       <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"> <FaMobileAlt /></span>
+                        <span class="input-group-text" id="addon-wrapping"> <LuTextSelect /></span>
                         <select
                           class="form-select" aria-label="Default select example"
                         >
@@ -159,63 +163,63 @@ const CreateDistributor = () => {
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">Enter Pin Code</label>
                       <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"> <FaMobileAlt /></span>
+                        <span class="input-group-text" id="addon-wrapping"> <SlLocationPin /></span>
                         <input type="text" id="name" class="form-control" placeholder="Enter Pin Code" />
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">User Type</label>
                       <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"> <FaMobileAlt /></span>
+                        <span class="input-group-text" id="addon-wrapping"> <LuUserCheck /></span>
                         <input type="text" id="name" class="form-control" placeholder="User Type" value={"Distributor"} disabled/>
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">NSDL Phycial PAN Price (Your Price - 105.00)</label>
                       <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"> <FaMobileAlt /></span>
+                        <span class="input-group-text" id="addon-wrapping"> <FaRupeeSign /></span>
                         <input type="text" id="name" class="form-control" placeholder="Enter NSDL Phycial PAN Price" />
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">NSDL E - PAN Price (Your Price - 73.00)</label>
                       <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"> <FaMobileAlt /></span>
+                        <span class="input-group-text" id="addon-wrapping"> <FaRupeeSign /></span>
                         <input type="text" id="name" class="form-control" placeholder="Enter NSDL E - PAN Price" />
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">UTI Physical P Price (Your Price - 99.00)</label>
                       <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"> <FaMobileAlt /></span>
+                        <span class="input-group-text" id="addon-wrapping"> <FaRupeeSign /></span>
                         <input type="text" id="name" class="form-control" placeholder="Enter UTI Physical P Price" />
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">UTI Physical E Price (Your Price - 81.00)</label>
                       <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"> <FaMobileAlt /></span>
+                        <span class="input-group-text" id="addon-wrapping"> <FaRupeeSign /></span>
                         <input type="text" id="name" class="form-control" placeholder="Enter UTI Physical E Price" />
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">UTI Digital P Price (Your Price - 104.00)</label>
                       <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"> <FaMobileAlt /></span>
+                        <span class="input-group-text" id="addon-wrapping"> <FaRupeeSign /></span>
                         <input type="text" id="name" class="form-control" placeholder="Enter UTI Digital P Price" />
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">UTI Digital E Price (Your Price - 97.00)</label>
                       <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"> <FaMobileAlt /></span>
+                        <span class="input-group-text" id="addon-wrapping"> <FaRupeeSign /></span>
                         <input type="text" id="name" class="form-control" placeholder="Enter UTI Digital E Price" />
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">UTI Digital New Coupon Price (Your Price - 107.00)</label>
                       <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"> <FaMobileAlt /></span>
+                        <span class="input-group-text" id="addon-wrapping"> <FaRupeeSign /></span>
                         <input type="text" id="name" class="form-control" placeholder="Enter UTI Digital New Coupon Price" />
                       </div>
                     </div>
