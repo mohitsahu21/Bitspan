@@ -10,16 +10,28 @@ import SdUTICouponHistory from "../components/SuperDistributer/SdUTICouponHistor
 import SdPanTransactionReport from "../components/SuperDistributer/SdPanTransactionReport";
 import AadharLinkingStatus from "../components/DashBoard/AadharLinkingStatus";
 import TrainingVideo from "../components/DashBoard/TrainingVideo";
+import SdAllOfflineForm from "../components/SuperDistributer/SdAllOfflineForm";
+import SdProfile from "../components/SuperDistributer/SdProfile";
+import SdActiveUsersList from "../components/SuperDistributer/SdActiveUsersList";
+import SdDeactiveUsersList from "../components/SuperDistributer/SdDeactiveUsersList";
+import SdAllUsersJoinedList from "../components/SuperDistributer/SdAllUsersJoinedList";
+import SdComplaints from "../components/SuperDistributer/SdComplaints";
+import SdAllComplaintsList from "../components/SuperDistributer/SdAllComplaintsList";
+import SdDownloadCertificate from "../components/SuperDistributer/SdDownloadCertificate";
+import SdChangePassword from "../components/SuperDistributer/SdChangePassword";
+import SdChangePrice from "../components/SuperDistributer/SdChangePrice";
 
 const SuperDistributorRoutes = () => {
   return (
     <React.Fragment>
         <Routes>
       <Route path="/dashboard" element={<SuperDistributerDashboard />} />
+      <Route path="/update-profile" element={<SdProfile />} />
       <Route path="/aadhar-linking-status"element={<AadharLinkingStatus />}/>
       <Route path="/training-video" element={<TrainingVideo />} />
 
       <Route path="/wallet-transaction-report" element={<SdWalletTransactionReport />}/>
+      <Route path="/view-all-offline-history" element={<SdAllOfflineForm />} />
 
       <Route path="/2-step-verification" element={<SdStepVerification />} />
 
@@ -32,6 +44,14 @@ const SuperDistributorRoutes = () => {
       <Route path="/uti-coupon-history" element={<SdUTICouponHistory />} />
 
       <Route path="/pan-transaction-report" element={<SdPanTransactionReport />} />
+      <Route path="/active-users" element={<SdActiveUsersList />} />
+      <Route path="/deactive-users" element={<SdDeactiveUsersList />} />
+      <Route path="/users-joining-list" element={<SdAllUsersJoinedList />} />
+      <Route path="/change-price" element={<SdChangePrice />} />
+      <Route path="/raise-complaint" element={<SdComplaints />} />
+      <Route path="/complaint-raised-list" element={<SdAllComplaintsList />} />
+      <Route path="/download-certificate" element={<SdDownloadCertificate />} />
+      <Route path="/change-password" element={<SdChangePassword />} />
       </Routes>
       </React.Fragment>
   );
