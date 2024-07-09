@@ -278,7 +278,7 @@
 
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 // import { SidebarData } from "./SidebarData";
@@ -297,6 +297,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 // import { FaUserAlt } from "react-icons/fa";
 import { IoIosPerson } from "react-icons/io";
 import { FaPowerOff } from "react-icons/fa6";
+import Swal from "sweetalert2";
 
 const Nav = styled.div`
   background-color: #e4e4e1;
@@ -1018,11 +1019,12 @@ const SuperDisData = [
   
 ];
 
+
 const Sider = () => {
   const [sidebar, setSidebar] = useState(true);
   const [closeButton, setCloseButton] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
-
+  const navigate = useNavigate();
   const handleDropdownClick = (path) => {
     setActiveDropdown((prev) => (prev === path ? null : path));
   };
@@ -1046,6 +1048,29 @@ const Sider = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const handleLogout = ()=>{
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout!"
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+        navigate("/")
+        Swal.fire({
+          title: "Logged Out!",
+          text: "You have successfully logged out.",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+    });
+  }
 
   // comment by mohit
   const [user,setUser] = useState("SuperDistributer");
@@ -1072,7 +1097,7 @@ const Sider = () => {
                     <IoIosPerson size={20} color="#fe662b" />
                     &nbsp;Profile
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="/">
+                  <NavDropdown.Item onClick={handleLogout}>
                     <FaPowerOff size={20} color="#fe662b" />
                     &nbsp; Log out
                   </NavDropdown.Item>

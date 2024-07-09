@@ -20,6 +20,8 @@ import SdAllComplaintsList from "../components/SuperDistributer/SdAllComplaintsL
 import SdDownloadCertificate from "../components/SuperDistributer/SdDownloadCertificate";
 import SdChangePassword from "../components/SuperDistributer/SdChangePassword";
 import SdChangePrice from "../components/SuperDistributer/SdChangePrice";
+import SdBankAccountSetup from "../components/SuperDistributer/SdBankAccountSetup";
+import SdFundTransferStatus from "../components/SuperDistributer/SdFundTransferStatus";
 
 const SuperDistributorRoutes = () => {
   return (
@@ -52,6 +54,8 @@ const SuperDistributorRoutes = () => {
       <Route path="/complaint-raised-list" element={<SdAllComplaintsList />} />
       <Route path="/download-certificate" element={<SdDownloadCertificate />} />
       <Route path="/change-password" element={<SdChangePassword />} />
+      <Route path="/bank-account-setup" element={<SdBankAccountSetup />} />
+      <Route path="/fund-transfer-status" element={<SdFundTransferStatus />} />
       </Routes>
       </React.Fragment>
   );
