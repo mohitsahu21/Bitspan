@@ -146,6 +146,7 @@ const PanForm = () => {
                           class="form-control form-control-lg"
                           id="formFileLg"
                           type="file"
+                          accept="application/pdf"
                           onChange={handleFileChange}
                         />
                       </div>
