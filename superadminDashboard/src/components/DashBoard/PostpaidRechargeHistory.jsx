@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { MdFormatListNumberedRtl } from "react-icons/md";
+import { BiHomeAlt } from "react-icons/bi";
 
 
 
@@ -24,7 +25,7 @@ const PostpaidRechargeHistory = () => {
                                             </div> */}
                                             <div className="d-flex justify-content-between align-items-center flex-wrap ">
                                                 <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Postpaid Recharge History</h4>
-                                                <h6 className="mx-lg-5">/ &nbsp; Postpaid Recharge History</h6>
+                                                <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; Postpaid Recharge History</h6>
                                             </div>
                                         </div>
                                     </div>

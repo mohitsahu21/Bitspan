@@ -278,7 +278,7 @@
 
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 // import { SidebarData } from "./SidebarData";
@@ -297,6 +297,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 // import { FaUserAlt } from "react-icons/fa";
 import { IoIosPerson } from "react-icons/io";
 import { FaPowerOff } from "react-icons/fa6";
+import Swal from "sweetalert2";
 
 const Nav = styled.div`
   background-color: #e4e4e1;
@@ -339,7 +340,8 @@ const SidebarNav = styled.nav`
   position: fixed;
   top: 0;
   left: ${({ sidebar }) => (sidebar ? "0" : "-100%")};
-  transition: 350ms;
+  /* transition: 350ms; */
+  transition: 1s;
   z-index: 10;
 `;
 
@@ -367,7 +369,7 @@ const SidebarWrap = styled.div`
   }
 `;
 
-const SidebarData = [
+const RetailerSidebarData = [
   {
     title: "Dashboard",
     path: "/dashboard",
@@ -463,19 +465,19 @@ const SidebarData = [
     subNav: [
       {
         title: "Download Forms",
-        path: "/offline-pan-card",
+        path: "/download-offline-forms",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
       },
       {
-        title: "Submit Form",
-        path: "/submit-pan-card",
+        title: "Apply Pan Card Offline",
+        path: "/submit-pan-card-offline",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
       },
       {
         title: "View All History",
-        path: "/all-pan-card-form",
+        path: "/view-all-offline-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
       },
@@ -728,10 +730,304 @@ const SidebarData = [
   //   icon: <IoIcons.IoMdHelpCircle color="black" />,
   // },
 ];
+const SuperDisData = [
+  {
+    title: "Dashboard",
+    path: "/dashboard",
+    icon: <AiIcons.AiFillHome color="#fe662b" />,
+    // iconClosed: <RiIcons.RiArrowDownSFill />,
+    // iconOpened: <RiIcons.RiArrowUpSFill />,
+
+    // subNav: [
+    // 	{
+    // 		title: "Our Aim",
+    // 		path: "/about-us/aim",
+    // 		icon: <IoIcons.IoIosPaper />,
+    // 	},
+    // 	{
+    // 		title: "Our Vision",
+    // 		path: "/about-us/vision",
+    // 		icon: <IoIcons.IoIosPaper />,
+    // 	},
+    // ],
+  },
+  {
+    title: "Aadhar Linking Status",
+    path: "/aadhar-linking-status",
+    // icon: <IoIcons.IoIosPaper color="black" />,
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    // iconClosed: <RiIcons.RiArrowDownSFill color="black"/>,
+    // iconOpened: <RiIcons.RiArrowUpSFill color="black"/>,
+
+    // subNav: [
+    // 	{
+    // 		title: "Service 1",
+    // 		path: "/services/services1",
+    // 		icon: <IoIcons.IoIosPaper />,
+    // 		cName: "sub-nav",
+    // 	},
+    // 	{
+    // 		title: "Service 2",
+    // 		path: "/services/services2",
+    // 		icon: <IoIcons.IoIosPaper />,
+    // 		cName: "sub-nav",
+    // 	},
+    // 	{
+    // 		title: "Service 3",
+    // 		path: "/services/services3",
+    // 		icon: <IoIcons.IoIosPaper />,
+    // 	},
+    // ],
+  },
+  {
+    title: "Wallet",
+    path: "#",
+    icon: <FaIcons.FaPhone color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+      // {
+      //   title: "Add Money to Wallet",
+      //   path: "/add-money",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   cName: "sub-nav",
+      // },
+      // {
+      //   title: "Add Wallet Summary",
+      //   path: "/add-money-transaction-report",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   cName: "sub-nav",
+      // },
+      // {
+      //   title: "Add Wallet Offline",
+      //   path: "/add-wallet-money-offline",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
+      // {
+      //   title: "Wallet Offline Request",
+      //   path: "/wallet-offline-request",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
+      {
+        title: "Wallet Full Summary",
+        path: "/wallet-transaction-report",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+    ],
+  },
+  {
+    title: "Offline Services",
+    path: "#",
+    icon: <MdFilterListOff color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+      // {
+      //   title: "Download Forms",
+      //   path: "/download-offline-forms",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   // cName: "sub-nav",
+      // },
+      // {
+      //   title: "Apply Pan Card Offline",
+      //   path: "/submit-pan-card-offline",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   // cName: "sub-nav",
+      // },
+      {
+        title: "View All History",
+        path: "/view-all-offline-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+    ],
+  },
+  {
+    title: "Training Video",
+    path: "/training-video",
+    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+
+    // iconClosed: <RiIcons.RiArrowDownSFill />,
+    // iconOpened: <RiIcons.RiArrowUpSFill />,
+
+    // subNav: [
+    // 	{
+    // 		title: "Event 1",
+    // 		path: "/events/events1",
+    // 		icon: <IoIcons.IoIosPaper />,
+    // 	},
+    // 	{
+    // 		title: "Event 2",
+    // 		path: "/events/events2",
+    // 		icon: <IoIcons.IoIosPaper />,
+    // 	},
+    // ],
+  },
+  {
+    title: "Set PIN and 2 Step",
+    path: "/2-step-verification",
+    icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
+  },
+  {
+    title: "Create A Parter",
+    // path: "/training-video",
+    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+      {
+        title: "Create Distributor",
+        path: "/create-distributor",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      }
+    ],
+  },
+  {
+    title: "UTI 2.0",
+    // path: "/training-video",
+    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+      {
+        title: "Wallet Full Summary",
+        path: "/wallet-transaction-report",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "UTI Transaction History",
+        path: "/uti-transaction-report",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+    ],
+  },
+  {
+    title: "UTI New",
+    // path: "/training-video",
+    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+      
+      {
+        title: "Buy Coupon",
+        path: "/buy-uti-coupon",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Distribute UTI Coupon",
+        path: "/distribute-uti-coupon",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "UTI Coupon History",
+        path: "/uti-coupon-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+    ],
+  },
+  {
+    title: "PAN Transaction History",
+    path: "pan-transaction-report",
+    icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
+  },
+  {
+    title: "User List",
+    // path: "/training-video",
+    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+      {
+        title: "Active Users",
+        path: "/active-users",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Deactive Users",
+        path: "/deactive-users",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "All Users Joined List",
+        path: "/users-joining-list",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+    ],
+  },
+  {
+    title: "Complaint",
+    // path: "/training-video",
+    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+      {
+        title: "Complaint",
+        path: "/raise-complaint",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "All Complaint List",
+        path: "/complaint-raised-list",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+    ],
+  },
+  {
+    title: "Other Settings",
+    // path: "/training-video",
+    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+      {
+        title: "Download Certificate",
+        path: "/download-certificate",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Change Password",
+        path: "/change-password",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Bank Account Setup",
+        path: "/bank-account-setup",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Wallet Withdraw",
+        path: "/wallet-withdraw",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Fund Transfer Status",
+        path: "/fund-transfer-status",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+    ],
+  },
+  
+];
+
 
 const Sider = () => {
   const [sidebar, setSidebar] = useState(true);
   const [closeButton, setCloseButton] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const navigate = useNavigate();
+  const handleDropdownClick = (path) => {
+    setActiveDropdown((prev) => (prev === path ? null : path));
+  };
 
   const showSidebar = () => setSidebar(!sidebar);
 
@@ -753,8 +1049,31 @@ const Sider = () => {
     };
   }, []);
 
-  // comment by mohit
+  const handleLogout = ()=>{
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout!"
+    }).then((result) => {
 
+      if (result.isConfirmed) {
+        navigate("/")
+        Swal.fire({
+          title: "Logged Out!",
+          text: "You have successfully logged out.",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+    });
+  }
+
+  // comment by mohit
+  const [user,setUser] = useState("SuperDistributer");
   return (
     <>
       <Wrapper>
@@ -778,7 +1097,7 @@ const Sider = () => {
                     <IoIosPerson size={20} color="#fe662b" />
                     &nbsp;Profile
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="/">
+                  <NavDropdown.Item onClick={handleLogout}>
                     <FaPowerOff size={20} color="#fe662b" />
                     &nbsp; Log out
                   </NavDropdown.Item>
@@ -805,7 +1124,7 @@ const Sider = () => {
                     <NavIcon to="#">
                       <AiIcons.AiOutlineClose
                         onClick={showSidebar}
-                        color="black"
+                        // color="black"
                       />
                     </NavIcon>
                   </div>
@@ -819,9 +1138,16 @@ const Sider = () => {
                 )}
               </div>
 
-              {SidebarData.map((item, index) => {
-                return <SubMenu item={item} key={index} />;
+              {user == "Retailer" && RetailerSidebarData.map((item, index) => {
+                return <SubMenu item={item} key={index} activeDropdown={activeDropdown}
+                handleDropdownClick={handleDropdownClick}/>;
               })}
+              {
+               user == "SuperDistributer" && SuperDisData.map((item,index) =>{
+                  return <SubMenu item={item} key={index} activeDropdown={activeDropdown}
+                  handleDropdownClick={handleDropdownClick}/>
+                })
+              }
             </SidebarWrap>
           </SidebarNav>
         </IconContext.Provider>

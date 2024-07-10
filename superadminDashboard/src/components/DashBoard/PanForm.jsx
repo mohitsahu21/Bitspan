@@ -4,6 +4,7 @@ import { FaMobileAlt } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { IoMail } from "react-icons/io5";
 import { IoPerson } from "react-icons/io5";
+import { BiHomeAlt } from "react-icons/bi";
 
 const PanForm = () => {
   const [fileError, setFileError] = useState("");
@@ -35,15 +36,15 @@ const PanForm = () => {
                         <h3>Raise Complaint</h3>
                       </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
-                        <h4 className="px-lg-3">Offline Pan Submit</h4>
-                        <h6 className="mx-lg-5">/ &nbsp; Offline Pan Submit</h6>
+                        <h4 className="px-lg-3">Apply Pan Card Offline</h4>
+                        <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; Apply Pan Card Offline</h6>
                       </div>
                     </div>
                   </div>
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
-                    <div className="text-center">
+                    {/* <div className="text-center">
                       <h4>Apply Pan Card Offline </h4>
-                    </div>
+                    </div> */}
                     {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div class="form-floating">
                         <select

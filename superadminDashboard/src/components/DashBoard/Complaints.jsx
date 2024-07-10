@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { MdOutlineFormatListNumbered } from "react-icons/md";
 import { FaMobileAlt } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
+import { BiHomeAlt } from "react-icons/bi";
 
 const Complaints = () => {
   return (
@@ -24,7 +25,7 @@ const Complaints = () => {
                       </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="px-lg-3">Raise Complaint</h4>
-                        <h6 className="mx-lg-5">/ &nbsp; Raise Complaint </h6>
+                        <h6 className="mx-lg-5"> <BiHomeAlt /> &nbsp;/ &nbsp; Raise Complaint </h6>
                       </div>
                     </div>
                   </div>

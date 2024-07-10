@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { MdOutlineFormatListNumbered } from "react-icons/md";
 import { FaMobileAlt } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
+import { BiHomeAlt } from "react-icons/bi";
 
 const UTICouponHistory = () => {
     return (
@@ -22,7 +23,7 @@ const UTICouponHistory = () => {
                                           
                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
                                                 <h4 className="mx-lg-5 px-lg-3 px-xxl-5">UTI Coupon History</h4>
-                                                <h6 className="mx-lg-5">/ &nbsp; UTI Coupon History </h6>
+                                                <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; UTI Coupon History </h6>
                                             </div>
                                         </div>
                                     </div>

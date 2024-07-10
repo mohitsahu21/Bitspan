@@ -1,12 +1,26 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Swal from 'sweetalert2'
+
+
 
 const LoginBitspan = () => {
   const navigate = useNavigate();
+  const handelLogin = ()=>{
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Login Successfull",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    navigate("/dashboard")
+}
   return (
     <>
       <Wrapper>
+      
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-md-8 col-lg-8 col-xl-4">
@@ -71,10 +85,11 @@ const LoginBitspan = () => {
                         data-mdb-ripple-init
                         type="button"
                         class="btn btn-primary btn-block mb-4"
-                        onClick={() => navigate("/dashboard")}
+                        onClick={handelLogin}
                       >
                         Sign in
                       </button>
+                    
                     </div>
 
                     {/* <div class="text-center">

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { MdOutlineFormatListNumbered } from "react-icons/md";
 import { FaMobileAlt } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
+import { BiHomeAlt } from "react-icons/bi";
 
 const AddWalletSummary = () => {
     return (
@@ -24,7 +25,7 @@ const AddWalletSummary = () => {
                                             </div> */}
                                               <div className="d-flex justify-content-between align-items-center flex-wrap">
                                                 <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Add Money To Wallet</h4>
-                                                <h6 className="mx-lg-5">/ &nbsp; Add Money To Wallet</h6>
+                                                <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp; / &nbsp; Add Money To Wallet</h6>
                                             </div>
                                         </div>
                                     </div>

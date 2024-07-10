@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { FaRupeeSign } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
+import { BiHomeAlt } from "react-icons/bi";
 
 const ChangePassword = () => {
   return (
@@ -26,7 +27,7 @@ const ChangePassword = () => {
                       </div> */}
                        <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Change Password</h4>
-                        <h6 className="mx-lg-5">/ &nbsp; Change Password </h6>
+                        <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; Change Password </h6>
                       </div>
                     </div>
                   </div>

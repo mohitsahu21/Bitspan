@@ -14,6 +14,7 @@ import { MdAddCard } from "react-icons/md";
 import { AiOutlineForm } from "react-icons/ai";
 import { MdAddShoppingCart } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
+import { BiHomeAlt } from "react-icons/bi";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const Dashboard = () => {
                       </div> */}
                        <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Dashboard</h4>
-                        <h6 className="mx-lg-5">/ &nbsp; Dashboard </h6>
+                        <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;  / &nbsp; Dashboard </h6>
                       </div>
                     </div>
                   </div>
