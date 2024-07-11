@@ -12,7 +12,8 @@ function App() {
   const [user, setUser] = useState("SuperDistributor");
   return (
     <>
-      {location.pathname !== "/" && <Sider />}
+      {(location.pathname !== "/" && location.pathname !== "/download-certificate-print") && <Sider />}
+      
       <Routes>
         <Route path="/" element={<LoginBitspan />} /> 
       </Routes>

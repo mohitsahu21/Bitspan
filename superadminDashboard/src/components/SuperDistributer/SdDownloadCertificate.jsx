@@ -1,5 +1,6 @@
 import React from "react";
 import { BiHomeAlt } from "react-icons/bi";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const SdDownloadCertificate = () => {
@@ -27,7 +28,7 @@ const SdDownloadCertificate = () => {
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow  rounded  p-5 m-4 bg-body-tertiary">
                       <div className="text-start">
-                        <button className="btn px-4 py-2">Download</button>
+                      <Link to={"/download-certificate-print"} target="_blank"> <button className="btn px-4 py-2">Download</button></Link> 
                       </div>
                     </div>
                   </div>

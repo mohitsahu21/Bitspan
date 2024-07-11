@@ -22,6 +22,7 @@ import SdChangePassword from "../components/SuperDistributer/SdChangePassword";
 import SdChangePrice from "../components/SuperDistributer/SdChangePrice";
 import SdBankAccountSetup from "../components/SuperDistributer/SdBankAccountSetup";
 import SdFundTransferStatus from "../components/SuperDistributer/SdFundTransferStatus";
+import Certificate from "../components/SuperDistributer/Certificate";
 
 const SuperDistributorRoutes = () => {
   return (
@@ -56,6 +57,11 @@ const SuperDistributorRoutes = () => {
       <Route path="/change-password" element={<SdChangePassword />} />
       <Route path="/bank-account-setup" element={<SdBankAccountSetup />} />
       <Route path="/fund-transfer-status" element={<SdFundTransferStatus />} />
+      <Route path="/download-certificate-print" element={<Certificate name="Aashish Kumar"
+        address="Jabalpur, BIHAR - 482001"
+        date="02-Jul-2024"
+        id="AASHISD29164"/>} />
+       
       </Routes>
       </React.Fragment>
   );
