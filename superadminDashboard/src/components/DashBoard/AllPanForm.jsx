@@ -1,6 +1,7 @@
 import React from "react";
 import { BiHomeAlt } from "react-icons/bi";
 import styled from "styled-components";
+import { Dropdown, DropdownButton } from "react-bootstrap";
 
 const AllPanForm = () => {
   return (
@@ -24,9 +25,11 @@ const AllPanForm = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                        View All Offline History
+                          View All Offline History
                         </h4>
-                        <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; View All Offline History </h6>
+                        <h6 className="mx-lg-5">
+                          <BiHomeAlt /> &nbsp;/ &nbsp; View All Offline History{" "}
+                        </h6>
                       </div>
                     </div>
                   </div>
@@ -63,6 +66,16 @@ const AllPanForm = () => {
                               Search
                             </button>
                           </div>
+                          <div className="col-12 col-md-4 col-lg-3 d-flex align-items-end">
+                            <DropdownButton
+                              id="dropdown-basic-button"
+                              title="Status"
+                            >
+                              <Dropdown.Item href="#">Approve</Dropdown.Item>
+                              <Dropdown.Item href="#">Reject</Dropdown.Item>
+                              <Dropdown.Item href="#">Pending</Dropdown.Item>
+                            </DropdownButton>
+                          </div>
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -72,32 +85,31 @@ const AllPanForm = () => {
                                 <tr>
                                   <th scope="col">Sr.No</th>
                                   <th scope="col">Applicant Name</th>
-                                  <th scope="col">Applicant Email</th>
+                                  <th scope="col">Applicant Father Name</th>
                                   <th scope="col">Applicant Number</th>
-                                  <th scope="col">Remark</th>
+                                  <th scope="col">Service</th>
                                   <th scope="col">View Form</th>
+                                  <th scope="col">View Photo</th>
+                                  <th scope="col">View Signature</th>
+                                  <th scope="col">View KYC</th>
+                                  <th scope="col">Status</th>
+                                  <th scope="col">Note</th>
                                 </tr>
                               </thead>
                               {/* <tbody>
-                                                                <tr>
-                                                                    <th scope="row">Refund</th>
-                                                                    <td>23/05/2024 14:35:58</td>
-                                                                    <td>PAN465484654</td>
-                                                                    <td>NSDL464444416785165</td>
-                                                                    <td>EKYC 49A</td>
-                                                                    <td>Individual</td> 
-                                                                    <td>107.00</td>
-                                                                    <td>Mohit Sahu</td>
-                                                                    <td>30/05/2000</td>
-                                                                    <td>M</td>
-                                                                    <td>9856325698</td>
-                                                                    <td>mohitsahu@gmail.com</td>
-                                                                    <td>SUCCESS</td>
-                                                                    <td>Transaction Successfull</td>
-                                                                </tr>
-                                                               
-
-                                                            </tbody> */}
+                                <tr>
+                                  <th scope="row">Refund</th>
+                                  <td>23/05/2024 14:35:58</td>
+                                  <td>PAN465484654</td>
+                                  <td>NSDL464444416785165</td>
+                                  <td>EKYC 49A</td>
+                                  <td>Individual</td>
+                                  <td>107.00</td>
+                                  <td>Mohit Sahu</td>
+                                  <td>30/05/2000</td>
+                                  <td>M</td>
+                                </tr>
+                              </tbody> */}
                             </table>
                           </div>
                           <div className="float-end">
@@ -150,6 +162,9 @@ const Wrapper = styled.div`
   .form-container {
     width: 50%;
     margin: auto;
+  }
+  table {
+    overflow-x: scroll;
   }
   th {
     font-weight: 500;

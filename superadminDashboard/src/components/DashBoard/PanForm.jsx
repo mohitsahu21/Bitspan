@@ -8,6 +8,7 @@ import { BiHomeAlt } from "react-icons/bi";
 
 const PanForm = () => {
   const [fileError, setFileError] = useState("");
+  const [selectOption, setSelectOption] = useState(false);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -17,6 +18,62 @@ const PanForm = () => {
     } else {
       setFileError("");
     }
+  };
+
+  const optionsDrop = [
+    {
+      id: 1,
+      name: "Pan Card Form",
+    },
+    {
+      id: 2,
+      name: "Income",
+    },
+    {
+      id: 3,
+      name: "Domicile",
+    },
+    {
+      id: 4,
+      name: "Birth Certificate",
+    },
+    {
+      id: 5,
+      name: "Death Certificate",
+    },
+    {
+      id: 6,
+      name: "Pan Find",
+    },
+    {
+      id: 7,
+      name: "E-Stamp",
+    },
+    {
+      id: 8,
+      name: "ITR Registration",
+    },
+    {
+      id: 9,
+      name: "GST Registration",
+    },
+    {
+      id: 10,
+      name: "Udyog Aadhar",
+    },
+    {
+      id: 11,
+      name: "Pan Card Services",
+    },
+    {
+      id: 12,
+      name: "New Bank ID",
+    },
+  ];
+
+  const handleSelect = (e) => {
+    const selectItem = e.target.value;
+    setSelectOption(selectItem === "E-Stamp");
   };
   return (
     <>
@@ -37,7 +94,9 @@ const PanForm = () => {
                       </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="px-lg-3">Apply Pan Card Offline</h4>
-                        <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; Apply Pan Card Offline</h6>
+                        <h6 className="mx-lg-5">
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Apply Pan Card Offline
+                        </h6>
                       </div>
                     </div>
                   </div>
@@ -98,7 +157,7 @@ const PanForm = () => {
                             placeholder="Username"
                           />
                           <label for="floatingInputGroup1">
-                            Applicant Mail ID
+                            Applicant Father Name
                           </label>
                         </div>
                       </div>
@@ -122,7 +181,7 @@ const PanForm = () => {
                       </div>
                     </div>
 
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div class="input-group">
                         <span class="input-group-text">
                           <RiMarkPenLine />
@@ -137,11 +196,55 @@ const PanForm = () => {
                           <label for="floatingInputGroup1">Remarks</label>
                         </div>
                       </div>
+                    </div> */}
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <div className="input-group">
+                        <span className="input-group-text">
+                          <RiMarkPenLine />
+                        </span>
+                        <div className="form-floating">
+                          <select
+                            className="form-select custom-dropdown"
+                            id="floatingSelect"
+                            aria-label="Floating label select example"
+                            onChange={handleSelect}
+                          >
+                            <option value="">Select an option ....</option>
+                            {optionsDrop.map((item) => (
+                              <option key={item.id} value={item.name}>
+                                {item.name}
+                              </option>
+                            ))}
+                          </select>
+                          <label htmlFor="floatingSelect">Choose Option</label>
+                        </div>
+                      </div>
                     </div>
+                    {selectOption && (
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="floatingInputGroup1">Other</label>
+                        <div class="input-group">
+                          <span class="input-group-text">
+                            <FaMobileAlt />
+                          </span>
+                          <div class="form-floating">
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="floatingInputGroup1"
+                              placeholder="Username"
+                            />
+                            <label for="floatingInputGroup1">
+                              E-Stamp type{" "}
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div>
                         <label for="formFileLg" class="form-label">
-                          Attechment
+                          Attachment Form
                         </label>
                         <input
                           class="form-control form-control-lg"
@@ -155,6 +258,48 @@ const PanForm = () => {
                         {fileError && (
                           <p className="text-danger fs-6">{fileError}</p>
                         )}
+                      </div>
+                    </div>
+
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <div>
+                        <label for="formFileLg" class="form-label">
+                          Attachment Photo
+                        </label>
+                        <input
+                          class="form-control form-control-lg"
+                          id="formFileLg"
+                          type="file"
+                          accept=".jpg,.jpeg,.png"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <div>
+                        <label for="formFileLg" class="form-label">
+                          Attachment Signature
+                        </label>
+                        <input
+                          class="form-control form-control-lg"
+                          id="formFileLg"
+                          type="file"
+                          accept=".jpg,.jpeg,.png"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <div>
+                        <label for="formFileLg" class="form-label">
+                          Attachment KYC
+                        </label>
+                        <input
+                          class="form-control form-control-lg"
+                          id="formFileLg"
+                          type="file"
+                          accept=".jpg,.jpeg,.png"
+                        />
                       </div>
                     </div>
 
@@ -194,5 +339,15 @@ const Wrapper = styled.div`
     .formdata {
       padding-left: 13rem;
     }
+  }
+  .custom-dropdown {
+    /* padding: 8px 12px; */
+    font-size: 16px; /* Example font size */
+    border-radius: 5px; /* Example border radius */
+  }
+
+  .custom-dropdown option {
+    background-color: #e8e4f0; /* Example option background color */
+    color: #343a40; /* Example option text color */
   }
 `;
