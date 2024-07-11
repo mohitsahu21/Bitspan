@@ -278,7 +278,7 @@
 
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link , useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 // import { SidebarData } from "./SidebarData";
@@ -882,7 +882,7 @@ const SuperDisData = [
         title: "Create Distributor",
         path: "/create-distributor",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      }
+      },
     ],
   },
   {
@@ -913,7 +913,6 @@ const SuperDisData = [
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
-      
       {
         title: "Buy Coupon",
         path: "/buy-uti-coupon",
@@ -1016,9 +1015,7 @@ const SuperDisData = [
       },
     ],
   },
-  
 ];
-
 
 const Sider = () => {
   const [sidebar, setSidebar] = useState(true);
@@ -1049,31 +1046,30 @@ const Sider = () => {
     };
   }, []);
 
-  const handleLogout = ()=>{
+  const handleLogout = () => {
     Swal.fire({
       title: "Are you sure?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Logout!"
+      confirmButtonText: "Yes, Logout!",
     }).then((result) => {
-
       if (result.isConfirmed) {
-        navigate("/")
+        navigate("/");
         Swal.fire({
           title: "Logged Out!",
           text: "You have successfully logged out.",
           icon: "success",
           showConfirmButton: false,
-          timer: 1500
+          timer: 1500,
         });
       }
     });
-  }
+  };
 
   // comment by mohit
-  const [user,setUser] = useState("SuperDistributer");
+  const [user, setUser] = useState("Retailer");
   return (
     <>
       <Wrapper>
@@ -1138,16 +1134,28 @@ const Sider = () => {
                 )}
               </div>
 
-              {user == "Retailer" && RetailerSidebarData.map((item, index) => {
-                return <SubMenu item={item} key={index} activeDropdown={activeDropdown}
-                handleDropdownClick={handleDropdownClick}/>;
-              })}
-              {
-               user == "SuperDistributer" && SuperDisData.map((item,index) =>{
-                  return <SubMenu item={item} key={index} activeDropdown={activeDropdown}
-                  handleDropdownClick={handleDropdownClick}/>
-                })
-              }
+              {user == "Retailer" &&
+                RetailerSidebarData.map((item, index) => {
+                  return (
+                    <SubMenu
+                      item={item}
+                      key={index}
+                      activeDropdown={activeDropdown}
+                      handleDropdownClick={handleDropdownClick}
+                    />
+                  );
+                })}
+              {user == "SuperDistributer" &&
+                SuperDisData.map((item, index) => {
+                  return (
+                    <SubMenu
+                      item={item}
+                      key={index}
+                      activeDropdown={activeDropdown}
+                      handleDropdownClick={handleDropdownClick}
+                    />
+                  );
+                })}
             </SidebarWrap>
           </SidebarNav>
         </IconContext.Provider>
