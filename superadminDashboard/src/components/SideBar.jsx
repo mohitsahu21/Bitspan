@@ -1145,7 +1145,7 @@ const Sider = () => {
                     />
                   );
                 })}
-              {user == "SuperDistributer" &&
+              {user == "SuperDistributor" &&
                 SuperDisData.map((item, index) => {
                   return (
                     <SubMenu
