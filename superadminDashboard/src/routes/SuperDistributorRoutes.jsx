@@ -57,7 +57,7 @@ const SuperDistributorRoutes = () => {
       <Route path="/change-password" element={<SdChangePassword />} />
       <Route path="/bank-account-setup" element={<SdBankAccountSetup />} />
       <Route path="/fund-transfer-status" element={<SdFundTransferStatus />} />
-      <Route path="/download-certificate-print" element={<Certificate name="Aashish Kumar"
+      <Route path="/download-certificate-print" element={<Certificate user="SUPER DISTRIBUTOR" name="Aashish Kumar"
         address="Jabalpur, BIHAR - 482001"
         date="02-Jul-2024"
         id="AASHISD29164"/>} />

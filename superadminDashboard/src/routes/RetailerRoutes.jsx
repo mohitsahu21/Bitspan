@@ -41,6 +41,7 @@ import Tool from '../components/DashBoard/Tool';
 import OffilnePanCard from '../components/DashBoard/OffilnePanCard';
 import PanForm from '../components/DashBoard/PanForm';
 import AllPanForm from '../components/DashBoard/AllPanForm';
+import Certificate from '../components/SuperDistributer/Certificate';
 const RetailerRoutes = () => {
     return (
         <>
@@ -127,6 +128,10 @@ const RetailerRoutes = () => {
                 <Route path="/download-offline-forms" element={<OffilnePanCard />} />
                 <Route path="/submit-pan-card-offline" element={<PanForm />} />
                 <Route path="/view-all-offline-history" element={<AllPanForm />} />
+                <Route path="/download-certificate-print" element={<Certificate user="RETAILER" name="Aashish Kumar"
+        address="Jabalpur, BIHAR - 482001"
+        date="02-Jul-2024"
+        id="AASHISD29164"/>} />
 
 
             </Routes>

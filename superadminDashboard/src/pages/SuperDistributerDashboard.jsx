@@ -16,9 +16,30 @@ import { MdAddShoppingCart } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { BiHomeAlt } from "react-icons/bi";
 import { LuUserPlus } from "react-icons/lu";
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+import { BsInfoSquare } from "react-icons/bs";
 
 const SuperDistributerDashboard = () => {
   const navigate = useNavigate();
+  // Define the custom tooltip styled component
+const CustomTooltip = styled(Tooltip)`
+.tooltip-inner {
+  background-color: #fdded1; /* Change the background color */
+  color: #fb510d; /* Change the text color */
+  width: 150px;
+  /* border: 1px solid black; */
+}
+.tooltip-arrow::before {
+  border-top-color: white; /* Change the arrow color */
+}
+`;
+
+  const User = ({ id, children, title }) => (
+    <OverlayTrigger overlay={<CustomTooltip id={id}> {`Total Distributor - ${5}` } <br/> {`Total Retailer - ${5}` }</CustomTooltip>}>
+      {children}
+    </OverlayTrigger>
+  );
   return (
     <>
       <Wrapper>
@@ -40,8 +61,18 @@ const SuperDistributerDashboard = () => {
                       </div>
                     </div>
                   </div>
-              <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10 mt-5">
+              <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10 mt-4">
                 <div className="container-fluid">
+                  <div className="row d-flex formdata justify-content-center mb-3">
+                       <div className="col-12 boarder bg-white p-2">
+                           <div className="news d-flex align-items-center">
+                            <span className="p-3 bg-info news-icon">
+                           <BsInfoSquare/>  
+                           </span>
+                          <p className="d-flex align-items-center mb-0 ms-2">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio asperiores, autem optio, obcaecati consequatur deleniti soluta eius sequi assumenda, accusantium maxime! Voluptatibus aut corrupti dolores veniam? Eveniet, nemo quod? Inventore.</p>
+                          </div>
+                       </div>
+                  </div>
                   <div className="row  d-flex formdata justify-content-center">
                 
                  
@@ -72,6 +103,7 @@ const SuperDistributerDashboard = () => {
                  
                   
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      
                       <div className="card card-4">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
@@ -84,7 +116,9 @@ const SuperDistributerDashboard = () => {
                           </div>
                         </div>
                       </div>
+                     
                     </div>
+                    <User  id="t-1">
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-4">
                         <div className="d-flex">
@@ -99,6 +133,7 @@ const SuperDistributerDashboard = () => {
                         </div>
                       </div>
                     </div>
+                    </User>
                     {/* <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-1">
                         <div className="d-flex">
@@ -247,5 +282,31 @@ const Wrapper = styled.div`
      
       padding-left: 13rem;
     }
+  }
+  .news {
+    border: 1px solid black;
+    position: relative;
+    overflow: hidden;
+  }
+
+  @keyframes moveLeftToRight {
+    0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+  }
+
+  .news p {
+    display: inline-block;
+    white-space: nowrap;
+    animation: moveLeftToRight 30s linear infinite;
+    position: absolute;
+    right: 0;
+  }
+  .news-icon{
+    z-index: 100;
+    font-size: large;
   }
 `;

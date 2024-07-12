@@ -15,6 +15,7 @@ import { AiOutlineForm } from "react-icons/ai";
 import { MdAddShoppingCart } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { BiHomeAlt } from "react-icons/bi";
+import { BsInfoSquare } from "react-icons/bs";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -39,8 +40,18 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-              <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10 mt-5">
+              <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10 mt-4">
                 <div className="container-fluid">
+                <div className="row d-flex formdata justify-content-center mb-3">
+                       <div className="col-12 boarder bg-white p-2">
+                           <div className="news d-flex align-items-center">
+                            <span className="p-3 bg-info news-icon">
+                           <BsInfoSquare/>  
+                           </span>
+                          <p className="d-flex align-items-center mb-0 ms-2">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio asperiores, autem optio, obcaecati consequatur deleniti soluta eius sequi assumenda, accusantium maxime! Voluptatibus aut corrupti dolores veniam? Eveniet, nemo quod? Inventore.</p>
+                          </div>
+                       </div>
+                  </div>
                   <div className="row  d-flex formdata justify-content-center">
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div
@@ -394,5 +405,31 @@ const Wrapper = styled.div`
      
       padding-left: 13rem;
     }
+  }
+  .news {
+    border: 1px solid black;
+    position: relative;
+    overflow: hidden;
+  }
+
+  @keyframes moveLeftToRight {
+    0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+  }
+
+  .news p {
+    display: inline-block;
+    white-space: nowrap;
+    animation: moveLeftToRight 30s linear infinite;
+    position: absolute;
+    right: 0;
+  }
+  .news-icon{
+    z-index: 100;
+    font-size: large;
   }
 `;
