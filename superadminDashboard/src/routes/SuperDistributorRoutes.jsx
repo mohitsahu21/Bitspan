@@ -27,43 +27,73 @@ import Certificate from "../components/SuperDistributer/Certificate";
 const SuperDistributorRoutes = () => {
   return (
     <React.Fragment>
-        <Routes>
-      <Route path="/dashboard" element={<SuperDistributerDashboard />} />
-      <Route path="/update-profile" element={<SdProfile />} />
-      <Route path="/aadhar-linking-status"element={<AadharLinkingStatus />}/>
-      <Route path="/training-video" element={<TrainingVideo />} />
+      <Routes>
+        <Route path="/dashboard" element={<SuperDistributerDashboard />} />
+        <Route path="/update-profile" element={<SdProfile />} />
+        <Route
+          path="/aadhar-linking-status"
+          element={<AadharLinkingStatus />}
+        />
+        <Route path="/training-video" element={<TrainingVideo />} />
 
-      <Route path="/wallet-transaction-report" element={<SdWalletTransactionReport />}/>
-      <Route path="/view-all-offline-history" element={<SdAllOfflineForm />} />
+        <Route
+          path="/wallet-transaction-report"
+          element={<SdWalletTransactionReport />}
+        />
+        <Route
+          path="/view-all-offline-history"
+          element={<SdAllOfflineForm />}
+        />
 
-      <Route path="/2-step-verification" element={<SdStepVerification />} />
+        <Route path="/2-step-verification" element={<SdStepVerification />} />
 
-      <Route path="/create-distributor" element={<CreateDistributor />} />
+        <Route path="/create-distributor" element={<CreateDistributor />} />
 
-      <Route path="/uti-transaction-report" element={<SdUTIPanTransactionReport />} />
+        <Route
+          path="/uti-transaction-report"
+          element={<SdUTIPanTransactionReport />}
+        />
 
-      <Route path="/distribute-uti-coupon" element={<SdDistributeCoupon />} />
+        <Route path="/distribute-uti-coupon" element={<SdDistributeCoupon />} />
 
-      <Route path="/uti-coupon-history" element={<SdUTICouponHistory />} />
+        <Route path="/uti-coupon-history" element={<SdUTICouponHistory />} />
 
-      <Route path="/pan-transaction-report" element={<SdPanTransactionReport />} />
-      <Route path="/active-users" element={<SdActiveUsersList />} />
-      <Route path="/deactive-users" element={<SdDeactiveUsersList />} />
-      <Route path="/users-joining-list" element={<SdAllUsersJoinedList />} />
-      <Route path="/change-price" element={<SdChangePrice />} />
-      <Route path="/raise-complaint" element={<SdComplaints />} />
-      <Route path="/complaint-raised-list" element={<SdAllComplaintsList />} />
-      <Route path="/download-certificate" element={<SdDownloadCertificate />} />
-      <Route path="/change-password" element={<SdChangePassword />} />
-      <Route path="/bank-account-setup" element={<SdBankAccountSetup />} />
-      <Route path="/fund-transfer-status" element={<SdFundTransferStatus />} />
-      <Route path="/download-certificate-print" element={<Certificate name="Aashish Kumar"
-        address="Jabalpur, BIHAR - 482001"
-        date="02-Jul-2024"
-        id="AASHISD29164"/>} />
-       
+        <Route
+          path="/pan-transaction-report"
+          element={<SdPanTransactionReport />}
+        />
+        <Route path="/active-users" element={<SdActiveUsersList />} />
+        <Route path="/deactive-users" element={<SdDeactiveUsersList />} />
+        <Route path="/users-joining-list" element={<SdAllUsersJoinedList />} />
+        <Route path="/change-price" element={<SdChangePrice />} />
+        <Route path="/raise-complaint" element={<SdComplaints />} />
+        <Route
+          path="/complaint-raised-list"
+          element={<SdAllComplaintsList />}
+        />
+        <Route
+          path="/download-certificate"
+          element={<SdDownloadCertificate />}
+        />
+        <Route path="/change-password" element={<SdChangePassword />} />
+        <Route path="/bank-account-setup" element={<SdBankAccountSetup />} />
+        <Route
+          path="/fund-transfer-status"
+          element={<SdFundTransferStatus />}
+        />
+        <Route
+          path="/download-certificate-print"
+          element={
+            <Certificate
+              name="Aashish Kumar"
+              address="Jabalpur, BIHAR - 482001"
+              date="02-Jul-2024"
+              id="AASHISD29164"
+            />
+          }
+        />
       </Routes>
-      </React.Fragment>
+    </React.Fragment>
   );
 };
 

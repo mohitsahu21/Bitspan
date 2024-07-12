@@ -1069,7 +1069,7 @@ const Sider = () => {
   };
 
   // comment by mohit
-  const [user, setUser] = useState("Retailer");
+  const [user, setUser] = useState("SuperDistributor");
   return (
     <>
       <Wrapper>
