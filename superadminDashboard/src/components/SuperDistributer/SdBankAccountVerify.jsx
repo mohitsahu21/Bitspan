@@ -16,9 +16,8 @@ import { BiHomeAlt } from "react-icons/bi";
 import { PiAddressBook } from "react-icons/pi";
 import { LuTextSelect, LuUserCheck } from "react-icons/lu";
 import { SlLocationPin } from "react-icons/sl";
-import { Link } from "react-router-dom";
 
-const SdBankAccountSetup = () => {
+const SdBankAccountVerify = () => {
   return (
     <>
       <Wrapper>
@@ -54,7 +53,7 @@ const SdBankAccountSetup = () => {
                   </div>
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
                     <div className="text-center">
-                      <h5>Add New Bank Account</h5>
+                      <h5>Verify Bank Account</h5>
                     </div>
                     {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="form-floating">
@@ -145,6 +144,22 @@ const SdBankAccountSetup = () => {
                         />
                       </div>
                     </div>
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <label for="name" class="form-label">
+                        OTP
+                      </label>
+                      <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping">
+                          <FaAddressCard />
+                        </span>
+                        <input
+                          type="text"
+                          id="name"
+                          class="form-control"
+                          placeholder="Enter OTP"
+                        />
+                      </div>
+                    </div>
 
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="text-start mb-3">
@@ -181,7 +196,7 @@ const SdBankAccountSetup = () => {
                                                                     <td>sbin0001503</td>
                                                                     <td>sbi</td>
                                                                     <td>PENDING</td>
-                                                                    <td><Link to={"/bank-account-setup/1/2"}><button className="btn btn-primary btn-sm">Verify</button></Link></td>
+                                                                    <td><button className="btn btn-primary btn-sm">Verify</button></td>
                                                              
                                                                 </tr>
                                                                
@@ -223,7 +238,7 @@ const SdBankAccountSetup = () => {
   );
 };
 
-export default SdBankAccountSetup;
+export default SdBankAccountVerify;
 
 const Wrapper = styled.div`
   .main {

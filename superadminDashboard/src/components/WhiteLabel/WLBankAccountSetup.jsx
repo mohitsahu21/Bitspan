@@ -18,7 +18,7 @@ import { LuTextSelect, LuUserCheck } from "react-icons/lu";
 import { SlLocationPin } from "react-icons/sl";
 import { Link } from "react-router-dom";
 
-const SdBankAccountSetup = () => {
+const WLBankAccountSetup = () => {
   return (
     <>
       <Wrapper>
@@ -223,7 +223,7 @@ const SdBankAccountSetup = () => {
   );
 };
 
-export default SdBankAccountSetup;
+export default WLBankAccountSetup;
 
 const Wrapper = styled.div`
   .main {

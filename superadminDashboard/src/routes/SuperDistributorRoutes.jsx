@@ -23,6 +23,8 @@ import SdChangePrice from "../components/SuperDistributer/SdChangePrice";
 import SdBankAccountSetup from "../components/SuperDistributer/SdBankAccountSetup";
 import SdFundTransferStatus from "../components/SuperDistributer/SdFundTransferStatus";
 import Certificate from "../components/SuperDistributer/Certificate";
+import SdBankAccountVerify from "../components/SuperDistributer/SdBankAccountVerify";
+import SdWalletWithdraw from "../components/SuperDistributer/SdWalletWithdraw";
 
 const SuperDistributorRoutes = () => {
   return (
@@ -68,6 +70,8 @@ const SuperDistributorRoutes = () => {
       <Route path="/download-certificate" element={<SdDownloadCertificate />} />
       <Route path="/change-password" element={<SdChangePassword />} />
       <Route path="/bank-account-setup" element={<SdBankAccountSetup />} />
+      <Route path="/bank-account-setup/:bank_id/:user_id" element={<SdBankAccountVerify />} />
+      <Route path="/wallet-withdraw" element={<SdWalletWithdraw/>} />
       <Route path="/fund-transfer-status" element={<SdFundTransferStatus />} />
       <Route path="/download-certificate-print" element={<Certificate user="SUPER DISTRIBUTOR" name="Aashish Kumar"
         address="Jabalpur, BIHAR - 482001"

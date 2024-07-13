@@ -6,10 +6,11 @@ import { useState } from "react";
 import SuperDistributorRoutes from "./routes/SuperDistributorRoutes";
 import RetailerRoutes from "./routes/RetailerRoutes";
 import Distributor from "./routes/Distributor";
+import WhiteLabelRoutes from "./routes/WhiteLabelRoutes";
 
 function App() {
   const location = useLocation();
-  const [user, setUser] = useState("Distributor");
+  const [user, setUser] = useState("WhiteLabel");
   return (
     <>
       {location.pathname !== "/" &&
@@ -21,6 +22,7 @@ function App() {
       {user === "Retailer" && <RetailerRoutes />}
       {user === "SuperDistributor" && <SuperDistributorRoutes />}
       {user === "Distributor" && <Distributor />}
+      {user === "WhiteLabel" && <WhiteLabelRoutes/>}
     </>
   );
 }
