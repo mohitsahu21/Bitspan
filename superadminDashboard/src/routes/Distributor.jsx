@@ -15,6 +15,14 @@ import DActiveUsersList from "../components/Distributor/DActiveUsersList";
 import DDeactiveUsersList from "../components/Distributor/DDeactiveUsersList";
 import DAllUsersJoinedList from "../components/Distributor/DAllUsersJoinedList";
 import DUTICouponHistory from "../components/Distributor/DUTICouponHistory";
+import DChangePrice from "../components/Distributor/DChangePrice";
+import DComplaints from "../components/Distributor/DComplaints";
+import DAllComplaintsList from "../components/Distributor/DAllComplaintsList";
+import DChangePassword from "../components/Distributor/DChangePassword";
+import DBankAccountSetup from "../components/Distributor/DBankAccountSetup";
+import DFundTransferStatus from "../components/Distributor/DFundTransferStatus";
+import Certificate from "../components/Distributor/Certificate";
+import DDownloadCertificate from "../components/Distributor/DDownloadCertificate";
 
 const Distributor = () => {
   return (
@@ -48,6 +56,28 @@ const Distributor = () => {
         <Route path="/active-users" element={<DActiveUsersList />} />
         <Route path="/deactive-users" element={<DDeactiveUsersList />} />
         <Route path="/users-joining-list" element={<DAllUsersJoinedList />} />
+        <Route path="/change-price" element={<DChangePrice />} />
+        <Route path="/raise-complaint" element={<DComplaints />} />
+        <Route path="/complaint-raised-list" element={<DAllComplaintsList />} />
+        <Route path="/change-password" element={<DChangePassword />} />
+        <Route path="/bank-account-setup" element={<DBankAccountSetup />} />
+        <Route path="/fund-transfer-status" element={<DFundTransferStatus />} />
+        <Route
+          path="/download-certificate"
+          element={<DDownloadCertificate />}
+        />
+        <Route
+          path="/download-certificate-print"
+          element={
+            <Certificate
+              user="DISTRIBUTOR"
+              name="Aashish Kumar"
+              address="Jabalpur, BIHAR - 482001"
+              date="02-Jul-2024"
+              id="AASHISD29164"
+            />
+          }
+        />
       </Routes>
     </>
   );
