@@ -26,6 +26,7 @@ import WLBankAccountVerify from "../components/WhiteLabel/WLBankAccountVerify";
 import WLWalletWithdraw from "../components/WhiteLabel/WLWalletWithdraw";
 import WLFundTransferStatus from "../components/WhiteLabel/WLFundTransferStatus";
 import Certificate from "../components/SuperDistributer/Certificate";
+import WebsiteSetting from "../components/WhiteLabel/WebsiteSetting";
 
 
 
@@ -51,6 +52,7 @@ const WhiteLabelRoutes = () => {
         />
 
         <Route path="/2-step-verification" element={<WLStepVerification />} />
+        <Route path="/website-setting" element={<WebsiteSetting />} />
 
         <Route path="/create-distributor" element={<CreateDistributor />} />
 

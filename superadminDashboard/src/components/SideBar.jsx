@@ -1158,6 +1158,11 @@ const WhiteLabelData = [
     icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
   },
   {
+    title: "Web Settings",
+    path: "/website-setting",
+    icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
+  },
+  {
     title: "Create A Parter",
     // path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
@@ -1643,7 +1648,7 @@ const Sider = () => {
   };
 
   // comment by mohit
-  const [user, setUser] = useState("Distributor");
+  const [user, setUser] = useState("WhiteLabel");
   return (
     <>
       <Wrapper>
