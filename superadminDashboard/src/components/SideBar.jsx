@@ -1171,8 +1171,18 @@ const WhiteLabelData = [
 
     subNav: [
       {
-        title: "Create Distributor",
-        path: "/create-distributor",
+        title: "Create White Label Account",
+        path: "/create-white-label",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Create Super Distributor",
+        path: "/create-super-distributor",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Buy User ID Limit",
+        path: "/buy-admin-id",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],
@@ -1246,8 +1256,28 @@ const WhiteLabelData = [
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
+        title: "Pending Payment Users",
+        path: "/pending-payment-users",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
         title: "All Users Joined List",
         path: "/users-joining-list",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "White Label Joined List",
+        path: "/white-label-joining-list",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Buy User ID Summary",
+        path: "/buy-user-id-summary",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "PAN Transaction History",
+        path: "/pan-transaction-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],
