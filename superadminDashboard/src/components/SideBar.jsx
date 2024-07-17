@@ -1232,11 +1232,11 @@ const WhiteLabelData = [
       },
     ],
   },
-  {
-    title: "PAN Transaction History",
-    path: "pan-transaction-report",
-    icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
-  },
+  // {
+  //   title: "PAN Transaction History",
+  //   path: "pan-transaction-report",
+  //   icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
+  // },
   {
     title: "User List",
     // path: "/training-video",
@@ -1277,7 +1277,7 @@ const WhiteLabelData = [
       },
       {
         title: "PAN Transaction History",
-        path: "/pan-transaction-history",
+        path: "/pan-transaction-report",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],
@@ -1313,6 +1313,26 @@ const WhiteLabelData = [
       {
         title: "Download Certificate",
         path: "/download-certificate",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "ID Set Rate",
+        path: "/change-coupon-price",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Change NSDL Price",
+        path: "/download-certificate",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Change UTI 2.0 Price",
+        path: "/change-uti-price",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Change UTI New Price",
+        path: "/change-uti-new-price",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {

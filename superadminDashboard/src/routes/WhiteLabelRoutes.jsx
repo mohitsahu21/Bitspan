@@ -31,6 +31,10 @@ import CreateWhiteLabel from "../components/WhiteLabel/CreateWhiteLabel";
 import BuyUserId from "../components/WhiteLabel/BuyUserId";
 import CreateSuperDistributor from "../components/WhiteLabel/CreateSuperDistributor";
 import WLPendingPaymentUsers from "../components/WhiteLabel/WLPendingPaymentUsers";
+import WhiteLabelJoiningList from "../components/WhiteLabel/WhiteLabelJoiningList";
+import BuyUserIdSummary from "../components/WhiteLabel/BuyUserIdSummary";
+import ChangeIdSetRate from "../components/WhiteLabel/ChangeIdSetRate";
+import ChangeUTINewCouponPrice from "../components/WhiteLabel/ChangeUTINewCouponPrice";
 
 
 
@@ -71,15 +75,20 @@ const WhiteLabelRoutes = () => {
 
         <Route path="/uti-coupon-history" element={<WLUTICouponHistory />} />
 
-      <Route path="/pan-transaction-report" element={<WLPanTransactionReport />} />
+      
       <Route path="/active-users" element={<WLActiveUsersList />} />
       <Route path="/deactive-users" element={<WLDeactiveUsersList />} />
       <Route path="/users-joining-list" element={<WLAllUsersJoinedList />} />
       <Route path="/pending-payment-users" element={<WLPendingPaymentUsers />} />
+      <Route path="/white-label-joining-list" element={<WhiteLabelJoiningList />} />
+      <Route path="/buy-user-id-summary" element={<BuyUserIdSummary />} />
+      <Route path="/pan-transaction-report" element={<WLPanTransactionReport />} />
       <Route path="/change-price" element={<WLChangePrice />} />
       <Route path="/raise-complaint" element={<WLComplaints />} />
       <Route path="/complaint-raised-list" element={<WLAllComplaintsList />} />
       <Route path="/download-certificate" element={<WLDownloadCertificate />} />
+      <Route path="/change-coupon-price" element={<ChangeIdSetRate />} />
+      <Route path="/change-uti-new-price" element={<ChangeUTINewCouponPrice />} />
       <Route path="/change-password" element={<WLChangePassword />} />
       <Route path="/bank-account-setup" element={<WLBankAccountSetup />} />
       <Route path="/bank-account-setup/:bank_id/:user_id" element={<WLBankAccountVerify />} />
