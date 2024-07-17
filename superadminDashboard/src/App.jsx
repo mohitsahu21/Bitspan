@@ -10,7 +10,7 @@ import WhiteLabelRoutes from "./routes/WhiteLabelRoutes";
 
 function App() {
   const location = useLocation();
-  const [user, setUser] = useState("WhiteLabel");
+  const [user, setUser] = useState("Retailer");
   return (
     <>
       {location.pathname !== "/" &&
@@ -22,7 +22,7 @@ function App() {
       {user === "Retailer" && <RetailerRoutes />}
       {user === "SuperDistributor" && <SuperDistributorRoutes />}
       {user === "Distributor" && <Distributor />}
-      {user === "WhiteLabel" && <WhiteLabelRoutes/>}
+      {user === "WhiteLabel" && <WhiteLabelRoutes />}
     </>
   );
 }

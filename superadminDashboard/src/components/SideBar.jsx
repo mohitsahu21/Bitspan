@@ -1648,7 +1648,7 @@ const Sider = () => {
   };
 
   // comment by mohit
-  const [user, setUser] = useState("WhiteLabel");
+  const [user, setUser] = useState("Retailer");
   return (
     <>
       <Wrapper>
