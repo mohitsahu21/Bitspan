@@ -27,6 +27,10 @@ import WLWalletWithdraw from "../components/WhiteLabel/WLWalletWithdraw";
 import WLFundTransferStatus from "../components/WhiteLabel/WLFundTransferStatus";
 import Certificate from "../components/SuperDistributer/Certificate";
 import WebsiteSetting from "../components/WhiteLabel/WebsiteSetting";
+import CreateWhiteLabel from "../components/WhiteLabel/CreateWhiteLabel";
+import BuyUserId from "../components/WhiteLabel/BuyUserId";
+import CreateSuperDistributor from "../components/WhiteLabel/CreateSuperDistributor";
+import WLPendingPaymentUsers from "../components/WhiteLabel/WLPendingPaymentUsers";
 
 
 
@@ -54,7 +58,9 @@ const WhiteLabelRoutes = () => {
         <Route path="/2-step-verification" element={<WLStepVerification />} />
         <Route path="/website-setting" element={<WebsiteSetting />} />
 
-        <Route path="/create-distributor" element={<CreateDistributor />} />
+        <Route path="/create-super-distributor" element={<CreateSuperDistributor />} />
+        <Route path="/create-white-label" element={<CreateWhiteLabel />} />
+        <Route path="/buy-admin-id" element={<BuyUserId />} />
 
         <Route
           path="/uti-transaction-report"
@@ -69,6 +75,7 @@ const WhiteLabelRoutes = () => {
       <Route path="/active-users" element={<WLActiveUsersList />} />
       <Route path="/deactive-users" element={<WLDeactiveUsersList />} />
       <Route path="/users-joining-list" element={<WLAllUsersJoinedList />} />
+      <Route path="/pending-payment-users" element={<WLPendingPaymentUsers />} />
       <Route path="/change-price" element={<WLChangePrice />} />
       <Route path="/raise-complaint" element={<WLComplaints />} />
       <Route path="/complaint-raised-list" element={<WLAllComplaintsList />} />
