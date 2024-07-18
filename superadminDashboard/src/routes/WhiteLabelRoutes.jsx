@@ -35,6 +35,8 @@ import WhiteLabelJoiningList from "../components/WhiteLabel/WhiteLabelJoiningLis
 import BuyUserIdSummary from "../components/WhiteLabel/BuyUserIdSummary";
 import ChangeIdSetRate from "../components/WhiteLabel/ChangeIdSetRate";
 import ChangeUTINewCouponPrice from "../components/WhiteLabel/ChangeUTINewCouponPrice";
+import ChangeNSDLPrice from "../components/WhiteLabel/ChangeNSDLPrice";
+import ChangeUTIPanPrice from "../components/WhiteLabel/ChangeUTIPanPrice";
 
 
 
@@ -88,6 +90,8 @@ const WhiteLabelRoutes = () => {
       <Route path="/complaint-raised-list" element={<WLAllComplaintsList />} />
       <Route path="/download-certificate" element={<WLDownloadCertificate />} />
       <Route path="/change-coupon-price" element={<ChangeIdSetRate />} />
+      <Route path="/change-nsdl-price" element={<ChangeNSDLPrice/>} />
+      <Route path="/change-uti-price" element={<ChangeUTIPanPrice/>} />
       <Route path="/change-uti-new-price" element={<ChangeUTINewCouponPrice />} />
       <Route path="/change-password" element={<WLChangePassword />} />
       <Route path="/bank-account-setup" element={<WLBankAccountSetup />} />

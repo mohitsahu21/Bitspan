@@ -1322,7 +1322,7 @@ const WhiteLabelData = [
       },
       {
         title: "Change NSDL Price",
-        path: "/download-certificate",
+        path: "/change-nsdl-price",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
@@ -1698,7 +1698,7 @@ const Sider = () => {
   };
 
   // comment by mohit
-  const [user, setUser] = useState("Retailer");
+  const [user, setUser] = useState("WhiteLabel");
   return (
     <>
       <Wrapper>

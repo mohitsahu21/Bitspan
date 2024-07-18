@@ -5,7 +5,7 @@ import { FaMobileAlt, FaRupeeSign } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
 
-const ChangeUTINewCouponPrice = () => {
+const ChangeNSDLPrice = () => {
     return (
         <>
             <Wrapper>
@@ -24,19 +24,19 @@ const ChangeUTINewCouponPrice = () => {
                         <h3>Raise Complaint</h3>
                       </div> */}
                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 className="px-lg-3">Change UTI New Price </h4>
-                                                <h6 className="mx-lg-5"> <BiHomeAlt /> &nbsp;/ &nbsp; Change UTI New Price  </h6>
+                                                <h4 className="px-lg-3">Change NSDL Price </h4>
+                                                <h6 className="mx-lg-5"> <BiHomeAlt /> &nbsp;/ &nbsp; Change NSDL Price  </h6>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
-                                        <div className="text-center  my-5">
-                                            <h2>Change UTI New Coupon Price </h2>
+                                        <div className="text-center my-5">
+                                            <h2>Change NSDL P Price</h2>
                                         </div>
 
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                                Enter Retailer UTI New Coupon Price
+                                                Enter Retailer NSDL P Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -55,7 +55,7 @@ const ChangeUTINewCouponPrice = () => {
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter Distributor UTI New Coupon Price
+                                            Enter Distributor NSDL P Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -74,7 +74,7 @@ const ChangeUTINewCouponPrice = () => {
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter Super Distributor UTI New Coupon Price
+                                            Enter Super Distributor NSDL P Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -93,7 +93,99 @@ const ChangeUTINewCouponPrice = () => {
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter White Label UTI New Coupon Price
+                                            Enter White Label NSDL P Price
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <FaRupeeSign />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+                                                    
+                                                />
+                                            </div>
+                                        </div>
+
+
+
+
+
+                                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div className="text-center mb-5 mt-3">
+                                                <button className="btn p-2">Change</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3">
+                                        <div className="text-center  my-5">
+                                            <h2>Change NSDL E-PAN Price</h2>
+                                        </div>
+
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Retailer NSDL E-PAN Price
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <FaRupeeSign />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+                                                    
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                            Enter Distributor NSDL E-PAN Price
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <FaRupeeSign />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+                                                    
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                            Enter Super Distributor NSDL E-PAN Price
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <FaRupeeSign />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+                                                   
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                            Enter White Label NSDL E-PAN Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -131,7 +223,7 @@ const ChangeUTINewCouponPrice = () => {
     );
 };
 
-export default ChangeUTINewCouponPrice;
+export default ChangeNSDLPrice;
 
 const Wrapper = styled.div`
   .main {

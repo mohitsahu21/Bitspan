@@ -10,7 +10,7 @@ import WhiteLabelRoutes from "./routes/WhiteLabelRoutes";
 
 function App() {
   const location = useLocation();
-  const [user, setUser] = useState("Retailer");
+  const [user, setUser] = useState("WhiteLabel");
   return (
     <>
       {location.pathname !== "/" &&

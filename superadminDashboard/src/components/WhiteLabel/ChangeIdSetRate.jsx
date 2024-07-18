@@ -30,8 +30,8 @@ const ChangeIdSetRate = () => {
                                         </div>
                                     </div>
                                     <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
-                                        <div className="text-center">
-                                            <h4>Change Joining Price</h4>
+                                        <div className="text-center my-5">
+                                            <h2>Change Joining Price</h2>
                                         </div>
 
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
@@ -116,7 +116,7 @@ const ChangeIdSetRate = () => {
 
 
                                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                            <div className="text-center mb-3">
+                                            <div className="text-center mb-5 mt-3">
                                                 <button className="btn p-2">Change</button>
                                             </div>
                                         </div>
