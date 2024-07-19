@@ -1,9 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BiHomeAlt } from "react-icons/bi";
 import styled from "styled-components";
 import { Dropdown, DropdownButton } from "react-bootstrap";
+import axios from "axios";
 
 const AllPanForm = () => {
+  const [formData, setFormData] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:7777/api/auth/retailer/getApplyOfflineForm`
+      );
+      setFormData(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <>
       <Wrapper>
@@ -88,6 +106,7 @@ const AllPanForm = () => {
                                   <th scope="col">Applicant Father Name</th>
                                   <th scope="col">Applicant Number</th>
                                   <th scope="col">Service</th>
+                                  <th scope="col">other</th>
                                   <th scope="col">View Form</th>
                                   <th scope="col">View Photo</th>
                                   <th scope="col">View Signature</th>
@@ -96,20 +115,51 @@ const AllPanForm = () => {
                                   <th scope="col">Note</th>
                                 </tr>
                               </thead>
-                              {/* <tbody>
-                                <tr>
-                                  <th scope="row">Refund</th>
-                                  <td>23/05/2024 14:35:58</td>
-                                  <td>PAN465484654</td>
-                                  <td>NSDL464444416785165</td>
-                                  <td>EKYC 49A</td>
-                                  <td>Individual</td>
-                                  <td>107.00</td>
-                                  <td>Mohit Sahu</td>
-                                  <td>30/05/2000</td>
-                                  <td>M</td>
-                                </tr>
-                              </tbody> */}
+                              <tbody>
+                                {formData.map((item, index) => (
+                                  <tr key={index}>
+                                    <th scope="row">{index + 1}</th>
+                                    <td>{item.applicant_name}</td>
+                                    <td>{item.applicant_father}</td>
+                                    <td>{item.applicant_number}</td>
+                                    <td>{item.applicant_select_service}</td>
+                                    <td>{item.other}</td>
+                                    <td>
+                                      <a
+                                        href={item.attached_form}
+                                        target="_blank"
+                                      >
+                                        View Form
+                                      </a>
+                                    </td>
+                                    <td>
+                                      <a href={item.attached_photo}>
+                                        View Photo
+                                      </a>
+                                    </td>
+                                    <td>
+                                      <a href={item.attached_sign}>View Sign</a>
+                                    </td>
+                                    <td>
+                                      {item.attached_kyc
+                                        .split(",")
+                                        .map((kycurl, kycindx) => (
+                                          <div key={kycindx}>
+                                            <a
+                                              href={kycurl}
+                                              target="_blank"
+                                              rel="noopener noreferrer"
+                                            >
+                                              View KYC {kycindx + 1}
+                                            </a>
+                                          </div>
+                                        ))}
+                                    </td>
+                                    <td>{item.status}</td>
+                                    <td>{item.note}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
                             </table>
                           </div>
                           <div className="float-end">

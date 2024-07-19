@@ -2,201 +2,194 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FaMobileAlt } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
-import { IoMail } from "react-icons/io5";
-import { IoPerson } from "react-icons/io5";
+import { IoMail, IoPerson } from "react-icons/io5";
 import { BiHomeAlt } from "react-icons/bi";
+import axios from "axios";
 
 const PanForm = () => {
   const [fileError, setFileError] = useState("");
   const [selectOption, setSelectOption] = useState(false);
+  const [formData, setFormData] = useState({
+    applicant_name: "",
+    applicant_father: "",
+    applicant_number: "",
+    applicant_select_service: "",
+    other: "",
+    attached_form: null,
+    attached_photo: null,
+    attached_sign: null,
+    attached_kyc: [],
+  });
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-
-    if (file && file.type !== "application/pdf") {
-      setFileError("Only PDF files are allowed.");
-    } else {
-      setFileError("");
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const optionsDrop = [
-    {
-      id: 1,
-      name: "Pan Card Form",
-    },
-    {
-      id: 2,
-      name: "Income",
-    },
-    {
-      id: 3,
-      name: "Domicile",
-    },
-    {
-      id: 4,
-      name: "Birth Certificate",
-    },
-    {
-      id: 5,
-      name: "Death Certificate",
-    },
-    {
-      id: 6,
-      name: "Pan Find",
-    },
-    {
-      id: 7,
-      name: "E-Stamp",
-    },
-    {
-      id: 8,
-      name: "ITR Registration",
-    },
-    {
-      id: 9,
-      name: "GST Registration",
-    },
-    {
-      id: 10,
-      name: "Udyog Aadhar",
-    },
-    {
-      id: 11,
-      name: "Pan Card Services",
-    },
-    {
-      id: 12,
-      name: "New Bank ID",
-    },
-  ];
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    if (name === "attached_kyc") {
+      setFormData({ ...formData, [name]: Array.from(files) });
+    } else {
+      setFormData({ ...formData, [name]: files[0] });
+    }
+  };
 
   const handleSelect = (e) => {
     const selectItem = e.target.value;
     setSelectOption(selectItem === "E-Stamp");
   };
+
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.applicant_name) errors.applicant_name = "Name is required";
+    if (!formData.applicant_father)
+      errors.applicant_father = "Father's name is required";
+    if (!formData.applicant_number)
+      errors.applicant_number = "Number is required";
+    if (!formData.applicant_select_service)
+      errors.applicant_select_service = "Service selection is required";
+    return errors;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length > 0) {
+      setFileError("Please fill all required fields.");
+      return;
+    }
+
+    const formDataObj = new FormData();
+    formDataObj.append("applicant_name", formData.applicant_name);
+    formDataObj.append("applicant_father", formData.applicant_father);
+    formDataObj.append("applicant_number", formData.applicant_number);
+    formDataObj.append(
+      "applicant_select_service",
+      formData.applicant_select_service
+    );
+    formDataObj.append("other", formData.other);
+    if (formData.attached_form)
+      formDataObj.append("attached_form", formData.attached_form);
+    if (formData.attached_photo)
+      formDataObj.append("attached_photo", formData.attached_photo);
+    if (formData.attached_sign)
+      formDataObj.append("attached_sign", formData.attached_sign);
+    formData.attached_kyc.forEach((file) => {
+      formDataObj.append("attached_kyc", file);
+    });
+
+    try {
+      const response = await axios.post(
+        "http://localhost:7777/api/auth/retailer/applyOfflineForm",
+        formDataObj,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      alert(response.data.message);
+    } catch (error) {
+      alert("An error occurred. Please try again.");
+    }
+  };
+
+  const optionsDrop = [
+    { id: 1, name: "Pan Card Form" },
+    { id: 2, name: "Income" },
+    { id: 3, name: "Domicile" },
+    { id: 4, name: "Birth Certificate" },
+    { id: 5, name: "Death Certificate" },
+    { id: 6, name: "Pan Find" },
+    { id: 7, name: "E-Stamp" },
+    { id: 8, name: "ITR Registration" },
+    { id: 9, name: "GST Registration" },
+    { id: 10, name: "Udyog Aadhar" },
+    { id: 11, name: "Pan Card Services" },
+    { id: 12, name: "New Bank ID" },
+  ];
+
   return (
-    <>
-      <Wrapper>
-        {/* <HeadBar /> */}
-        <div className="main">
-          <div className="container-fluid">
-            <div className="row flex-wrap justify-content-center ">
-              <div className="col-xxl-3 col-xl-5 col-lg-5 col-md-5 me-md-5 p-0 pe-md-5 d-none">
-                {/* <Sider /> */}
-              </div>
-              <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11 mt-5 formdata">
-                <div className="main shadow-none ">
-                  <div className="row shadow-none ">
-                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      {/* <div className="text-start">
-                        <h3>Raise Complaint</h3>
-                      </div> */}
-                      <div className="d-flex justify-content-between align-items-center flex-wrap">
-                        <h4 className="px-lg-3">Apply Pan Card Offline</h4>
-                        <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; Apply Pan Card Offline
-                        </h6>
-                      </div>
+    <Wrapper>
+      <div className="main">
+        <div className="container-fluid">
+          <div className="row flex-wrap justify-content-center">
+            <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11 mt-5 formdata">
+              <div className="main shadow-none">
+                <div className="row shadow-none">
+                  <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                    <div className="d-flex justify-content-between align-items-center flex-wrap">
+                      <h4 className="px-lg-3">Apply Pan Card Offline</h4>
+                      <h6 className="mx-lg-5">
+                        <BiHomeAlt /> &nbsp;/ &nbsp; Apply Pan Card Offline
+                      </h6>
                     </div>
                   </div>
+                </div>
+                <form onSubmit={handleSubmit}>
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
-                    {/* <div className="text-center">
-                      <h4>Apply Pan Card Offline </h4>
-                    </div> */}
-                    {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div class="form-floating">
-                        <select
-                          class="form-select"
-                          id="floatingSelect"
-                          aria-label="Floating label select example"
-                        >
-                          <option selected>Select complaint type</option>
-                          <option value="1">Coupon Issue</option>
-                          <option value="2">UTI PAN Debit</option>
-                          <option value="3">UTI PAN Refund</option>
-                          <option value="3">Nsdl Refund</option>
-                          <option value="3">Recharge Refund</option>
-                          <option value="3">Account Support</option>
-                          <option value="3">Report a Bug</option>
-                          <option value="3">Feature Support</option>
-                          <option value="3">API Support</option>
-                          <option value="3">Others</option>
-                        </select>
-                        <label for="floatingSelect">Complaint Type</label>
-                      </div>
-                    </div> */}
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div class="input-group mb-3">
-                        <span class="input-group-text">
+                      <div className="input-group mb-3">
+                        <span className="input-group-text">
                           <IoPerson />
                         </span>
-                        <div class="form-floating">
+                        <div className="form-floating">
                           <input
                             type="text"
-                            class="form-control"
+                            className="form-control"
                             id="floatingInputGroup1"
                             placeholder="Username"
+                            name="applicant_name"
+                            value={formData.applicant_name}
+                            onChange={handleChange}
                           />
-                          <label for="floatingInputGroup1">
+                          <label htmlFor="floatingInputGroup1">
                             Applicant Name
                           </label>
                         </div>
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div class="input-group mb-3">
-                        <span class="input-group-text">
+                      <div className="input-group mb-3">
+                        <span className="input-group-text">
                           <IoMail />
                         </span>
-                        <div class="form-floating">
+                        <div className="form-floating">
                           <input
                             type="text"
-                            class="form-control"
-                            id="floatingInputGroup1"
+                            className="form-control"
+                            id="floatingInputGroup2"
                             placeholder="Username"
+                            name="applicant_father"
+                            value={formData.applicant_father}
+                            onChange={handleChange}
                           />
-                          <label for="floatingInputGroup1">
+                          <label htmlFor="floatingInputGroup2">
                             Applicant Father Name
                           </label>
                         </div>
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div class="input-group">
-                        <span class="input-group-text">
+                      <div className="input-group">
+                        <span className="input-group-text">
                           <FaMobileAlt />
                         </span>
-                        <div class="form-floating">
+                        <div className="form-floating">
                           <input
                             type="text"
-                            class="form-control"
-                            id="floatingInputGroup1"
+                            className="form-control"
+                            id="floatingInputGroup3"
                             placeholder="Username"
+                            name="applicant_number"
+                            value={formData.applicant_number}
+                            onChange={handleChange}
                           />
-                          <label for="floatingInputGroup1">
+                          <label htmlFor="floatingInputGroup3">
                             Applicant Number
                           </label>
                         </div>
                       </div>
                     </div>
-
-                    {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div class="input-group">
-                        <span class="input-group-text">
-                          <RiMarkPenLine />
-                        </span>
-                        <div class="form-floating">
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="floatingInputGroup1"
-                            placeholder="Username"
-                          />
-                          <label for="floatingInputGroup1">Remarks</label>
-                        </div>
-                      </div>
-                    </div> */}
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="input-group">
                         <span className="input-group-text">
@@ -207,7 +200,12 @@ const PanForm = () => {
                             className="form-select custom-dropdown"
                             id="floatingSelect"
                             aria-label="Floating label select example"
-                            onChange={handleSelect}
+                            name="applicant_select_service"
+                            value={formData.applicant_select_service}
+                            onChange={(e) => {
+                              handleChange(e);
+                              handleSelect(e);
+                            }}
                           >
                             <option value="">Select an option ....</option>
                             {optionsDrop.map((item) => (
@@ -222,20 +220,22 @@ const PanForm = () => {
                     </div>
                     {selectOption && (
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                        <label for="floatingInputGroup1">Other</label>
-                        <div class="input-group">
-                          <span class="input-group-text">
+                        <div className="input-group">
+                          <span className="input-group-text">
                             <FaMobileAlt />
                           </span>
-                          <div class="form-floating">
+                          <div className="form-floating">
                             <input
                               type="text"
-                              class="form-control"
-                              id="floatingInputGroup1"
+                              className="form-control"
+                              id="floatingInputGroup4"
                               placeholder="Username"
+                              name="other"
+                              value={formData.other}
+                              onChange={handleChange}
                             />
-                            <label for="floatingInputGroup1">
-                              E-Stamp type{" "}
+                            <label htmlFor="floatingInputGroup4">
+                              E-Stamp Type
                             </label>
                           </div>
                         </div>
@@ -243,79 +243,83 @@ const PanForm = () => {
                     )}
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div>
-                        <label for="formFileLg" class="form-label">
-                          Attachment Form
+                        <label htmlFor="formFileLg1" className="form-label">
+                          Attachment Form (PDF only)
                         </label>
                         <input
-                          class="form-control form-control-lg"
-                          id="formFileLg"
+                          className="form-control form-control-lg"
+                          id="formFileLg1"
                           type="file"
+                          name="attached_form"
                           accept="application/pdf"
                           onChange={handleFileChange}
                         />
-                      </div>
-                      <div className="m-2">
                         {fileError && (
                           <p className="text-danger fs-6">{fileError}</p>
                         )}
                       </div>
                     </div>
-
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div>
-                        <label for="formFileLg" class="form-label">
-                          Attachment Photo
+                        <label htmlFor="formFileLg2" className="form-label">
+                          Attachment Photo (JPG, JPEG, PNG)
                         </label>
                         <input
-                          class="form-control form-control-lg"
-                          id="formFileLg"
+                          className="form-control form-control-lg"
+                          id="formFileLg2"
                           type="file"
                           accept=".jpg,.jpeg,.png"
+                          name="attached_photo"
+                          onChange={handleFileChange}
                         />
                       </div>
                     </div>
-
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div>
-                        <label for="formFileLg" class="form-label">
-                          Attachment Signature
+                        <label htmlFor="formFileLg3" className="form-label">
+                          Attachment Signature (JPG, JPEG, PNG)
                         </label>
                         <input
-                          class="form-control form-control-lg"
-                          id="formFileLg"
+                          className="form-control form-control-lg"
+                          id="formFileLg3"
                           type="file"
+                          name="attached_sign"
                           accept=".jpg,.jpeg,.png"
+                          onChange={handleFileChange}
                         />
                       </div>
                     </div>
-
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div>
-                        <label for="formFileLg" class="form-label">
-                          Attachment KYC
+                        <label htmlFor="formFileLg4" className="form-label">
+                          Attachment KYC (JPG, JPEG, PNG)
                         </label>
                         <input
-                          class="form-control form-control-lg"
-                          id="formFileLg"
+                          className="form-control form-control-lg"
+                          id="formFileLg4"
                           type="file"
+                          name="attached_kyc"
+                          multiple
                           accept=".jpg,.jpeg,.png"
+                          onChange={handleFileChange}
                         />
                       </div>
                     </div>
-
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="text-start mb-3">
-                        <button className="btn p-2">Submit</button>
+                        <button className="btn p-2" type="submit">
+                          Submit
+                        </button>
                       </div>
                     </div>
                   </div>
-                </div>
+                </form>
               </div>
             </div>
           </div>
         </div>
-      </Wrapper>
-    </>
+      </div>
+    </Wrapper>
   );
 };
 
@@ -341,13 +345,12 @@ const Wrapper = styled.div`
     }
   }
   .custom-dropdown {
-    /* padding: 8px 12px; */
-    font-size: 16px; /* Example font size */
-    border-radius: 5px; /* Example border radius */
+    font-size: 16px;
+    border-radius: 5px;
   }
 
   .custom-dropdown option {
-    background-color: #e8e4f0; /* Example option background color */
-    color: #343a40; /* Example option text color */
+    background-color: #e8e4f0;
+    color: #343a40;
   }
 `;
