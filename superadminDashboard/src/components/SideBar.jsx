@@ -298,6 +298,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { IoIosPerson } from "react-icons/io";
 import { FaPowerOff } from "react-icons/fa6";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
 
 const Nav = styled.div`
   background-color: #e4e4e1;
@@ -1650,6 +1651,9 @@ const Sider = () => {
   const [sidebar, setSidebar] = useState(true);
   const [closeButton, setCloseButton] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const {  currentUser } = useSelector((state) => state.user);
+  
+  const user = currentUser.role;
   const navigate = useNavigate();
   const handleDropdownClick = (path) => {
     setActiveDropdown((prev) => (prev === path ? null : path));
@@ -1698,7 +1702,6 @@ const Sider = () => {
   };
 
   // comment by mohit
-  const [user, setUser] = useState("WhiteLabel");
   return (
     <>
       <Wrapper>

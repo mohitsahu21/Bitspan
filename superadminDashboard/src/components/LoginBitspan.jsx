@@ -19,7 +19,7 @@ const LoginBitspan = () => {
     userName : "MOHIT0001",
     password: "mohit",
     email: "mohit@gmail.com",
-    role: "whiteLabel"
+    role: "WhiteLabel"
   },
   {
     id: 2,
@@ -27,7 +27,7 @@ const LoginBitspan = () => {
     userName : "DEV0002",
     password: "dev",
     email: "dev@gmail.com",
-    role: "retailor"
+    role: "Retailer"
   },
   {
     id: 3,
@@ -35,7 +35,15 @@ const LoginBitspan = () => {
     userName : "SHUBH0003",
     password: "shubh",
     email: "shubh@gmail.com",
-    role: "distributor"
+    role: "Distributor"
+  },
+  {
+    id: 3,
+    name: "Vinay dhariya",
+    userName : "VINAY0003",
+    password: "vinay",
+    email: "vinay@gmail.com",
+    role: "SuperDistributor"
   },
 
 ]
