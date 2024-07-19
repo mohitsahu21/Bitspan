@@ -25,7 +25,17 @@ const ChangeIdSetRate = () => {
                       </div> */}
                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
                                                 <h4 className="px-lg-3">Change Price</h4>
-                                                <h6 className="mx-lg-5"> <BiHomeAlt /> &nbsp;/ &nbsp; Change Price </h6>
+                                                <p className="mx-lg-5">
+                          {" "}
+                          <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
+                          <span
+                            className="text-body-secondary"
+                            style={{ fontSize: "13px" }}
+                          >
+                            {" "}
+                            Change Price
+                          </span>{" "}
+                        </p>
                                             </div>
                                         </div>
                                     </div>

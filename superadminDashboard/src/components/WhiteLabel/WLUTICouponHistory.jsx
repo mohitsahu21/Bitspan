@@ -23,7 +23,17 @@ const WLUTICouponHistory = () => {
                                           
                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
                                                 <h4 className="mx-lg-5 px-lg-3 px-xxl-5">UTI Coupon History</h4>
-                                                <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; UTI Coupon History </h6>
+                                                <p className="mx-lg-5">
+                                                    {" "}
+                                                    <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
+                                                    <span
+                                                        className="text-body-secondary"
+                                                        style={{ fontSize: "13px" }}
+                                                    >
+                                                        {" "}
+                                                        UTI Coupon History
+                                                    </span>{" "}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>

@@ -25,7 +25,17 @@ const WLComplaints = () => {
                       </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="px-lg-3">Raise Complaint</h4>
-                        <h6 className="mx-lg-5"> <BiHomeAlt /> &nbsp;/ &nbsp; Raise Complaint </h6>
+                        <p className="mx-lg-5">
+                                                    {" "}
+                                                    <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
+                                                    <span
+                                                        className="text-body-secondary"
+                                                        style={{ fontSize: "13px" }}
+                                                    >
+                                                        {" "}
+                                                        Raise Complaint
+                                                    </span>{" "}
+                                                </p>
                       </div>
                     </div>
                   </div>

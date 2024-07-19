@@ -23,16 +23,26 @@ const BuyUserIdSummary = () => {
                                             {/* <div className="text-center">
                                                 <h3>Complaint Raised List</h3>
                                             </div> */}
-                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
-                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Buy User Id Summary</h4>
-                        <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; Buy User Id Summary </h6>
-                      </div>
+                                            <div className="d-flex justify-content-between align-items-center flex-wrap">
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Buy User Id Summary</h4>
+                                                <p className="mx-lg-5">
+                                                    {" "}
+                                                    <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
+                                                    <span
+                                                        className="text-body-secondary"
+                                                        style={{ fontSize: "13px" }}
+                                                    >
+                                                        {" "}
+                                                        Buy User Id Summary
+                                                    </span>{" "}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                                         <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
-                                        <div className="row d-flex flex-column g-4">
+                                            <div className="row d-flex flex-column g-4">
 
                                                 <div className="d-flex flex-column flex-md-row gap-3">
                                                     <div className="col-12 col-md-4 col-lg-3">
@@ -48,8 +58,8 @@ const BuyUserIdSummary = () => {
                                                         <select className="form-select" aria-label="Default select example">
                                                             <option selected>---Online Brought---</option>
                                                             <option value="1">---Offline Brought---</option>
-                                                            
-                                                            
+
+
                                                         </select>
                                                     </div>
                                                     <div className="d-flex align-items-end">
@@ -64,18 +74,18 @@ const BuyUserIdSummary = () => {
                                                         <table class="table table-striped">
                                                             <thead className="table-dark">
                                                                 <tr>
-                                                                    
+
                                                                     <th scope="col">Type</th>
                                                                     <th scope="col">Date</th>
-                                                                    
+
                                                                     <th scope="col">Order Id</th>
                                                                     <th scope="col">Transaction Id</th>
                                                                     <th scope="col">User Id</th>
                                                                     <th scope="col">No Of User Id</th>
                                                                     <th scope="col">Total Amount</th>
                                                                     <th scope="col">Type</th>
-                                                                    
-                                                                 
+
+
                                                                 </tr>
                                                             </thead>
                                                             {/* <tbody>
@@ -112,10 +122,10 @@ const BuyUserIdSummary = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                        
-                                        
+
+
                                         </div>
-                                      
+
                                     </div>
                                 </div>
                             </div>
