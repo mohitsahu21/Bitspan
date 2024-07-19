@@ -5,36 +5,34 @@ import { BiHomeAlt } from "react-icons/bi";
 
 
 
-const WLPanTransactionReport = () => {
+const BuyUserIdSummary = () => {
     return (
         <>
             <Wrapper>
                 <div className="main">
-                    <div className="container-fluid ">
-                        <div className="row flex-wrap justify-content-lg-center justify-content-center">
+                    <div className="container-fluid">
+                        <div className="row flex-wrap justify-content-lg-center justify-content-center ">
                             <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
                                 {/* <Sider /> */}
                             </div>
                             <div className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
-                             mt-5 formdata">
+                             mt-5 formdata ">
                                 <div className="main shadow-none ">
                                     <div className="row shadow-none ">
                                         <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                             {/* <div className="text-center">
-                                                <h3>PAN Transaction Report</h3>
+                                                <h3>Complaint Raised List</h3>
                                             </div> */}
-                                            <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">PAN Transaction Report</h4>
-                                                <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; PAN Transaction Report</h6>
-                                            </div>
-
-
+                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
+                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Buy User Id Summary</h4>
+                        <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; Buy User Id Summary </h6>
+                      </div>
                                         </div>
                                     </div>
 
                                     <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
-                                        <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow bg-body-tertiary rounded  p-5 m-4">
-                                            <div className="row d-flex flex-column g-4">
+                                        <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
+                                        <div className="row d-flex flex-column g-4">
 
                                                 <div className="d-flex flex-column flex-md-row gap-3">
                                                     <div className="col-12 col-md-4 col-lg-3">
@@ -44,6 +42,15 @@ const WLPanTransactionReport = () => {
                                                     <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="toDate" className="form-label">To</label>
                                                         <input id="toDate" className="form-control " type="date" />
+                                                    </div>
+                                                    <div className="col-12 col-md-4 col-lg-3">
+                                                        <label for="toDate" className="form-label">Type</label>
+                                                        <select className="form-select" aria-label="Default select example">
+                                                            <option selected>---Online Brought---</option>
+                                                            <option value="1">---Offline Brought---</option>
+                                                            
+                                                            
+                                                        </select>
                                                     </div>
                                                     <div className="d-flex align-items-end">
                                                         <button type="button" className="btn btn-primary button">Search</button>
@@ -57,36 +64,28 @@ const WLPanTransactionReport = () => {
                                                         <table class="table table-striped">
                                                             <thead className="table-dark">
                                                                 <tr>
-                                                                    <th scope="col">#</th>
+                                                                    
+                                                                    <th scope="col">Type</th>
                                                                     <th scope="col">Date</th>
-                                                                    <th scope="col">P-Order Id</th>
+                                                                    
                                                                     <th scope="col">Order Id</th>
+                                                                    <th scope="col">Transaction Id</th>
                                                                     <th scope="col">User Id</th>
-                                                                    <th scope="col">Retailer Name</th>
-                                                                    <th scope="col">Application <br /> Type</th>
-                                                                    <th scope="col">Category</th>
-                                                                    <th scope="col">Ack No.</th>
-                                                                    <th scope="col">Amount</th>
-                                                                    <th scope="col">Name</th>
-                                                                    <th scope="col">Date of <br />Birth</th>
-                                                                    <th scope="col">Gender</th>
-                                                                    <th scope="col">Mobile No</th>
-                                                                    <th scope="col">Email</th>
-                                                                    <th scope="col">Status</th>
-                                                                    <th scope="col">Message</th>
+                                                                    <th scope="col">No Of User Id</th>
+                                                                    <th scope="col">Total Amount</th>
+                                                                    <th scope="col">Type</th>
+                                                                    
+                                                                 
                                                                 </tr>
                                                             </thead>
-                                                            <tbody>
+                                                            {/* <tbody>
                                                                 <tr>
-                                                                    <th scope="row">1</th>
+                                                                    <th scope="row">Refund</th>
                                                                     <td>23/05/2024 14:35:58</td>
                                                                     <td>PAN465484654</td>
                                                                     <td>NSDL464444416785165</td>
-                                                                    <td>BHANU1234</td>
-                                                                    <td>Bhanu Pratap</td>
                                                                     <td>EKYC 49A</td>
-                                                                    <td>Individual</td>
-                                                                    <td>984616846516846</td>
+                                                                    <td>Individual</td> 
                                                                     <td>107.00</td>
                                                                     <td>Mohit Sahu</td>
                                                                     <td>30/05/2000</td>
@@ -96,27 +95,9 @@ const WLPanTransactionReport = () => {
                                                                     <td>SUCCESS</td>
                                                                     <td>Transaction Successfull</td>
                                                                 </tr>
-                                                                <tr>
-                                                                    <th scope="row">2</th>
-                                                                    <td>23/05/2024 14:35:58</td>
-                                                                    <td>PAN465484654</td>
-                                                                    <td>NSDL464444416785165</td>
-                                                                    <td>BHANU1234</td>
-                                                                    <td>Bhanu Pratap</td>
-                                                                    <td>EKYC 49A</td>
-                                                                    <td>Individual</td>
-                                                                    <td>984616846516846</td>
-                                                                    <td>107.00</td>
-                                                                    <td>Mohit Sahu</td>
-                                                                    <td>30/05/2000</td>
-                                                                    <td>M</td>
-                                                                    <td>9856325698</td>
-                                                                    <td>mohitsahu@gmail.com</td>
-                                                                    <td>Failed</td>
-                                                                    <td>Transaction is pending- Transaction Failed ( - Wallet Amount has been refunded)</td>
-                                                                </tr>
+                                                               
 
-                                                            </tbody>
+                                                            </tbody> */}
                                                         </table>
                                                     </div>
                                                     <div className="float-end">
@@ -131,10 +112,10 @@ const WLPanTransactionReport = () => {
                                                     </div>
                                                 </div>
                                             </div>
-
-
+                                        
+                                        
                                         </div>
-
+                                      
                                     </div>
                                 </div>
                             </div>
@@ -146,11 +127,11 @@ const WLPanTransactionReport = () => {
     );
 }
 
-export default WLPanTransactionReport
+export default BuyUserIdSummary
 
 const Wrapper = styled.div`
   .main {
-    height: 100%;
+    height: 100vh;
     width: 100%;
   }
   button {

@@ -298,6 +298,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { IoIosPerson } from "react-icons/io";
 import { FaPowerOff } from "react-icons/fa6";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
 
 const Nav = styled.div`
   background-color: #e4e4e1;
@@ -1232,11 +1233,11 @@ const WhiteLabelData = [
       },
     ],
   },
-  {
-    title: "PAN Transaction History",
-    path: "pan-transaction-report",
-    icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
-  },
+  // {
+  //   title: "PAN Transaction History",
+  //   path: "pan-transaction-report",
+  //   icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
+  // },
   {
     title: "User List",
     // path: "/training-video",
@@ -1277,7 +1278,7 @@ const WhiteLabelData = [
       },
       {
         title: "PAN Transaction History",
-        path: "/pan-transaction-history",
+        path: "/pan-transaction-report",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],
@@ -1313,6 +1314,26 @@ const WhiteLabelData = [
       {
         title: "Download Certificate",
         path: "/download-certificate",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "ID Set Rate",
+        path: "/change-coupon-price",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Change NSDL Price",
+        path: "/change-nsdl-price",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Change UTI 2.0 Price",
+        path: "/change-uti-price",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Change UTI New Price",
+        path: "/change-uti-new-price",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
@@ -1630,6 +1651,9 @@ const Sider = () => {
   const [sidebar, setSidebar] = useState(true);
   const [closeButton, setCloseButton] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const {  currentUser } = useSelector((state) => state.user);
+  
+  const user = currentUser.role;
   const navigate = useNavigate();
   const handleDropdownClick = (path) => {
     setActiveDropdown((prev) => (prev === path ? null : path));
@@ -1678,7 +1702,6 @@ const Sider = () => {
   };
 
   // comment by mohit
-  const [user, setUser] = useState("Retailer");
   return (
     <>
       <Wrapper>

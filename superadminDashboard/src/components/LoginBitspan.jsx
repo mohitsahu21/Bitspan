@@ -1,14 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Swal from 'sweetalert2'
+import { useDispatch } from "react-redux";
+import { setUser } from '../redux/user/userSlice';
 
 
 
 const LoginBitspan = () => {
+  
+  const dispatch = useDispatch();
+  const [userName,setUserName] = useState("")
+  const [password, setPassword] = useState("");
+
+  const users = [{
+    id: 1,
+    name: "Mohit Sahu",
+    userName : "MOHIT0001",
+    password: "mohit",
+    email: "mohit@gmail.com",
+    role: "WhiteLabel"
+  },
+  {
+    id: 2,
+    name: "Dev ansh",
+    userName : "DEV0002",
+    password: "dev",
+    email: "dev@gmail.com",
+    role: "Retailer"
+  },
+  {
+    id: 3,
+    name: "Shubham Soni",
+    userName : "SHUBH0003",
+    password: "shubh",
+    email: "shubh@gmail.com",
+    role: "Distributor"
+  },
+  {
+    id: 3,
+    name: "Vinay dhariya",
+    userName : "VINAY0003",
+    password: "vinay",
+    email: "vinay@gmail.com",
+    role: "SuperDistributor"
+  },
+
+]
+
   const navigate = useNavigate();
   const handelLogin = ()=>{
-    Swal.fire({
+
+    const  getUser = ()=>{
+      const user = users.find((user)=> user.userName === userName && user.password === password)
+      console.log(user)
+      if(user){
+        dispatch(setUser(user))
+        Swal.fire({
       position: "center",
       icon: "success",
       title: "Login Successfull",
@@ -16,7 +64,19 @@ const LoginBitspan = () => {
       timer: 1500
     });
     navigate("/dashboard")
-}
+    }
+    else{
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+        
+      });
+    }
+    
+  }
+  getUser()
+  }
   return (
     <>
       <Wrapper>
@@ -38,12 +98,14 @@ const LoginBitspan = () => {
                   <form>
                     <div data-mdb-input-init class="form-outline mb-4">
                       <label class="form-label" for="form2Example1">
-                        Email
+                        User Name
                       </label>
                       <input
                         type="email"
                         id="form2Example1"
                         class="form-control"
+                        value={userName}
+                        onChange={(e)=> setUserName(e.target.value)}
                       />
                     </div>
 
@@ -55,6 +117,8 @@ const LoginBitspan = () => {
                         type="password"
                         id="form2Example2"
                         class="form-control"
+                        value={password}
+                        onChange={(e)=> setPassword(e.target.value)}
                       />
                     </div>
 

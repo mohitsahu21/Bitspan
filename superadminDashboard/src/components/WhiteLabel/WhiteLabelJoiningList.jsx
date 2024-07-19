@@ -6,7 +6,7 @@ import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
 
-const WLPendingPaymentUsers = () => {
+const WhiteLabelJoiningList = () => {
     return ( 
         <>
             <Wrapper>
@@ -25,8 +25,8 @@ const WLPendingPaymentUsers = () => {
                                                 <h3>Wallet Transaction Report</h3>
                                             </div> */}
                                               <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Pending Payment Users</h4>
-                                                <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; Pending Payment Users</h6>
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">White Label Joining List</h4>
+                                                <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; White Label Joining List</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -60,18 +60,17 @@ const WLPendingPaymentUsers = () => {
                                                                     <th scope="col">Action</th>
                                                                     <th scope="col">User Id</th>
                                                                     <th scope="col">User <br/> Name</th>
-                                                                    <th scope="col">Email</th>
-                                                                    <th scope="col">Mobile</th>
-                                                                    <th scope="col">Address</th>
-                                                                    <th scope="col">PAN No</th>
-                                                                    <th scope="col">P-Coupon <br/>Price</th>
-                                                                    <th scope="col">E-Coupon <br/>Price</th>
+                                                                    <th scope="col">Location</th>
+                                                                    <th scope="col">Pin</th>
+                                                                    <th scope="col">State</th>
+                                                                    <th scope="col">Pan No</th>
+                                                                    <th scope="col">P-Coupon <br/> Price</th>
+                                                                    <th scope="col">E-Coupon <br/> Price</th>
                                                                     <th scope="col">Role</th>
                                                                     <th scope="col">Created By</th>
                                                                     <th scope="col">Website Name</th>
-                                                                    <th scope="col">Payment Status</th>
+                                                                    <th scope="col">Payment <br/> Status</th>
                                                                     <th scope="col">Status</th>
-                                                                
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -80,22 +79,18 @@ const WLPendingPaymentUsers = () => {
                                                                     <td>23/05/2024 14:35:58</td>
                                                                     <td> <Link to={'/change-price'}>Change Price </Link></td>
                                                                     <td>MOHIT29605</td>
-                                                                   
-                                                                    <td>Mohit Sahu</td>
-                                                                    <td>mohitsahu1993@gmail.com</td>
-                                                                    <td>9806324244</td>
-                                                                    <td>JABALPUR
-                                                                    MADHYA PRADESH - 482002</td>
-                                                                    <td>FTIPS334546L</td>
-                                                                    <td>107.00</td>
-                                                                    <td>107.00</td>
-                                                                    
-                                                               
-                                                                    <td>Retailer</td>
-                                                                    <td>Online Registration</td>
-                                                                    <td>Bitspan.in</td>
-                                                                    <td>Pending</td>
-                                                                    <td>Pending</td>
+                                                                    <td>Mohit Sahu	</td>
+                                                                    <td>JABALPUR</td>
+                                                                    <td>482002</td>
+                                                                    <td>MADHYA PRADESH</td>
+                                                                    <td>FTIPS3345K</td>
+                                                                    <td>0.00</td>
+                                                                    <td>0.00</td>
+                                                                    <td>White Label</td>
+                                                                    <td>ID : AASHISD29164 - Aashish Kumar</td>
+                                                                    <td>www.bitspan.in</td>
+                                                                    <td>COMPLETE</td>
+                                                                    <td>ACTIVE</td>
                                                                 </tr>
                                                                 
                                                         
@@ -127,7 +122,7 @@ const WLPendingPaymentUsers = () => {
     );
 }
 
-export default WLPendingPaymentUsers;
+export default WhiteLabelJoiningList;
 
 const Wrapper = styled.div`
   .main {

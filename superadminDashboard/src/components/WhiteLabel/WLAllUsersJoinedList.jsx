@@ -32,7 +32,60 @@ const WLAllUsersJoinedList = () => {
                                     </div>
                                     <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                                         <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
-                                            <div className="row d-flex flex-column g-4">
+                                        <div className="form-container d-flex flex-column gap-3">
+                                        <div className="d-flex flex-wrap gap-3">
+                                                    <div className="field-group col-11 col-md-4 col-lg-2">
+                                                        {/* <label for="fromDate" className="form-label fw-bold"></label> */}
+                                                        <input id="fromDate" className="form-control" type="text" placeholder="Enter User Id"/>
+                                                    </div>
+                                                    <div className="field-group col-11 col-md-4 col-lg-2">
+                                                        {/* <label for="toDate" className="form-label fw-bold">To</label> */}
+                                                        <input id="toDate" className="form-control " type="text" placeholder="Enter User Name/Mobile/Email Id" />
+                                                    </div>
+                                                    <div className="field-group col-11 col-md-4 col-lg-2">
+                                                        {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
+                                                        <select className="form-select" aria-label="Default select example">
+                                                            <option selected>---Select User Type---</option>
+                                                            <option value="1">Retailer</option>
+                                                            <option value="2">Distributor</option>
+                                                            
+                                                        </select>
+                                                    </div>
+                                                    <div className="field-group col-11 col-md-4 col-lg-2">
+                                                        {/* <label for="toDate" className="form-label fw-bold">PAN Type</label> */}
+                                                        <select className="form-select" aria-label="Default select example">
+                                                            <option selected>---All---</option>
+                                                            <option value="1">Active</option>
+                                                            <option value="2">Pending</option>
+                                                         
+                                                            </select>
+                                                    </div>
+                                                    <div className="field-group  col-11 col-md-4 col-lg-2 ">
+                                                        {/* <label for="toDate" className="form-label fw-bold">Status</label> */}
+                                                        <select className="form-select" aria-label="Default select example">
+                                                            <option selected>--Row Per Page---</option>
+                                                            <option value="1">10</option>
+                                                            <option value="2">25</option>
+                                                            <option value="3">50</option>
+                                                            <option value="3">100</option>
+                                                            </select>
+                                                    </div>
+                                                    
+                                                    <div className=" col-11 col-md-4 col-lg-2">
+                                                        <button type="button" className="btn btn-primary button">Search</button>
+                                                    </div>
+
+                                                </div>
+                                               
+
+
+
+
+
+
+
+
+                                            
 
                                                 {/* <div className="d-flex flex-column flex-md-row gap-3">
                                                     <div className="col-12 col-md-4 col-lg-3">
@@ -73,6 +126,9 @@ const WLAllUsersJoinedList = () => {
                                                                     <th scope="col">Available <br/> UTI New <br/> Coupon</th>
                                                                     <th scope="col">Wallet <br/> Balance</th>
                                                                     <th scope="col">Role</th>
+                                                                    <th scope="col">Created By</th>
+                                                                    <th scope="col">Website Name</th>
+                                                                    <th scope="col">Payment Status</th>
                                                                     <th scope="col">Status</th>
                                                                 </tr>
                                                             </thead>
@@ -98,6 +154,35 @@ const WLAllUsersJoinedList = () => {
                                                                     <td>0</td>
                                                                     <td>0.00</td>
                                                                     <td>RETAILER</td>
+                                                                    <td>Online Registration</td>
+                                                                    <td>Bitspan.in</td>
+                                                                    <td>Pending</td>
+                                                                    <td>ACTIVE</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">1</th>
+                                                                    <td>23/05/2024 14:35:58</td>
+                                                                    <td> <Link to={'/change-price'}>Change Price </Link></td>
+                                                                    <td>MOHIT29605</td>
+                                                                   
+                                                                    <td>Mohit Sahu</td>
+                                                                    <td>mohitsahu1993@gmail.com</td>
+                                                                    <td>9806324244</td>
+                                                                    <td>JABALPUR
+                                                                    MADHYA PRADESH - 482002</td>
+                                                                    <td>107.00</td>
+                                                                    <td>107.00</td>
+                                                                    <td>107.00</td>
+                                                                    <td>107.00</td>
+                                                                    <td>107.00</td>
+                                                                    <td>107.00</td>
+                                                                    <td>107.00</td>
+                                                                    <td>0</td>
+                                                                    <td>0.00</td>
+                                                                    <td>Distributor</td>
+                                                                    <td>ID : DHIRASD3245 - Dhiraj Kumar</td>
+                                                                    <td>Bitspan.in</td>
+                                                                    <td>COMPLETE</td>
                                                                     <td>ACTIVE</td>
                                                                 </tr>
                                                                 
@@ -120,11 +205,12 @@ const WLAllUsersJoinedList = () => {
                                             </div>
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+               
             </Wrapper>
         </>
     );
@@ -149,8 +235,13 @@ const Wrapper = styled.div`
     
   }
   .form-container {
-    width: 50%;
-    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .field-group {
+    display: flex;
+    flex-direction: column;
   }
   th{
     font-weight: 500;
@@ -176,5 +267,21 @@ const Wrapper = styled.div`
   }
   a{
     text-decoration: none;
+  }
+  @media (max-width: 768px) {
+    .field-group {
+      flex: 1 1 100%;
+    }
+  }
+  @media (min-width: 769px) and (max-width: 1200px) {
+    .field-group {
+      flex: 1 1 45%;
+    }
+  }
+
+  @media (min-width: 1201px) {
+    .field-group {
+      width: 30%;
+    }
   }
 `;
