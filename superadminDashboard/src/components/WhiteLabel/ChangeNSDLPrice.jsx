@@ -25,7 +25,17 @@ const ChangeNSDLPrice = () => {
                       </div> */}
                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
                                                 <h4 className="px-lg-3">Change NSDL Price </h4>
-                                                <h6 className="mx-lg-5"> <BiHomeAlt /> &nbsp;/ &nbsp; Change NSDL Price  </h6>
+                                                <p className="mx-lg-5">
+                                                    {" "}
+                                                    <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
+                                                    <span
+                                                        className="text-body-secondary"
+                                                        style={{ fontSize: "13px" }}
+                                                    >
+                                                        {" "}
+                                                        Change NSDL Price
+                                                    </span>{" "}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -49,13 +59,13 @@ const ChangeNSDLPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                    
+
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter Distributor NSDL P Price
+                                                Enter Distributor NSDL P Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -68,13 +78,13 @@ const ChangeNSDLPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                    
+
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter Super Distributor NSDL P Price
+                                                Enter Super Distributor NSDL P Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -87,13 +97,13 @@ const ChangeNSDLPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                   
+
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter White Label NSDL P Price
+                                                Enter White Label NSDL P Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -106,7 +116,7 @@ const ChangeNSDLPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                    
+
                                                 />
                                             </div>
                                         </div>
@@ -141,13 +151,13 @@ const ChangeNSDLPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                    
+
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter Distributor NSDL E-PAN Price
+                                                Enter Distributor NSDL E-PAN Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -160,13 +170,13 @@ const ChangeNSDLPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                    
+
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter Super Distributor NSDL E-PAN Price
+                                                Enter Super Distributor NSDL E-PAN Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -179,13 +189,13 @@ const ChangeNSDLPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                   
+
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter White Label NSDL E-PAN Price
+                                                Enter White Label NSDL E-PAN Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -198,7 +208,7 @@ const ChangeNSDLPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                    
+
                                                 />
                                             </div>
                                         </div>

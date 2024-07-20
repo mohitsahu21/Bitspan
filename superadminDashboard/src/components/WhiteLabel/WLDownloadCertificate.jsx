@@ -21,14 +21,24 @@ const WLDownloadCertificate = () => {
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Download Certificate</h4>
-                        <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; Download Certificate </h6>
+                        <p className="mx-lg-5">
+                          {" "}
+                          <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
+                          <span
+                            className="text-body-secondary"
+                            style={{ fontSize: "13px" }}
+                          >
+                            {" "}
+                            Download Certificate
+                          </span>{" "}
+                        </p>
                       </div>
                     </div>
                   </div>
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow  rounded  p-5 m-4 bg-body-tertiary">
                       <div className="text-start">
-                      <Link to={"/download-certificate-print"} target="_blank"> <button className="btn px-4 py-2">Download</button></Link> 
+                        <Link to={"/download-certificate-print"} target="_blank"> <button className="btn px-4 py-2">Download</button></Link>
                       </div>
                     </div>
                   </div>

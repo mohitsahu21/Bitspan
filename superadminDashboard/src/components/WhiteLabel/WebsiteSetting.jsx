@@ -31,7 +31,17 @@ const WebsiteSetting = () => {
                                             </div> */}
                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
                                                 <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Website Setting</h4>
-                                                <h6 className="mx-lg-5 px-sm-5 px-2"><BiHomeAlt /> &nbsp;/ &nbsp; Website Setting</h6>
+                                                <p className="mx-lg-5">
+                                                    {" "}
+                                                    <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
+                                                    <span
+                                                        className="text-body-secondary"
+                                                        style={{ fontSize: "13px" }}
+                                                    >
+                                                        {" "}
+                                                        Website Setting
+                                                    </span>{" "}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>

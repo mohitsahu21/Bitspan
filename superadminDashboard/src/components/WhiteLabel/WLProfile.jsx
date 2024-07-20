@@ -30,7 +30,17 @@ const WLProfile = () => {
                       </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 ">Update Profile</h4>
-                        <h6 className=""><BiHomeAlt /> &nbsp;/ &nbsp; Update Profile</h6>
+                        <p className="mx-lg-5">
+                          {" "}
+                          <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
+                          <span
+                            className="text-body-secondary"
+                            style={{ fontSize: "13px" }}
+                          >
+                            {" "}
+                            Update Profile
+                          </span>{" "}
+                        </p>
                       </div>
                     </div>
                   </div>

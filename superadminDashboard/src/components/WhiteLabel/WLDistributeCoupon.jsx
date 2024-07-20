@@ -31,10 +31,17 @@ const WLDistributeCoupon = () => {
                         <h4 className="mx-lg-5  px-lg-5  px-xl-5">
                         Distribute UTI Coupon
                         </h4>
-                        <h6 className="">
-                          {" "}
-                          <BiHomeAlt /> &nbsp;/ &nbsp; Distribute UTI Coupon
-                        </h6>
+                        <p className="">
+                                                    {" "}
+                                                    <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
+                                                    <span
+                                                        className="text-body-secondary"
+                                                        style={{ fontSize: "13px" }}
+                                                    >
+                                                        {" "}
+                                                        Distribute UTI Coupon
+                                                    </span>{" "}
+                                                </p>
                       </div>
                     </div>
                   </div>

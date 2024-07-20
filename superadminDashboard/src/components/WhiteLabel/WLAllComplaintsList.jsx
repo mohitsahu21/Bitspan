@@ -23,16 +23,26 @@ const WLAllComplaintsList = () => {
                                             {/* <div className="text-center">
                                                 <h3>Complaint Raised List</h3>
                                             </div> */}
-                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
-                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Complaint Raised List</h4>
-                        <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; Complaint Raised List </h6>
-                      </div>
+                                            <div className="d-flex justify-content-between align-items-center flex-wrap">
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Complaint Raised List</h4>
+                                                <p className="mx-lg-5">
+                                                    {" "}
+                                                    <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
+                                                    <span
+                                                        className="text-body-secondary"
+                                                        style={{ fontSize: "13px" }}
+                                                    >
+                                                        {" "}
+                                                        Complaint Raised List
+                                                    </span>{" "}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                                         <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
-                                        <div className="row d-flex flex-column g-4">
+                                            <div className="row d-flex flex-column g-4">
 
                                                 <div className="d-flex flex-column flex-md-row gap-3">
                                                     <div className="col-12 col-md-4 col-lg-3">
@@ -55,17 +65,17 @@ const WLAllComplaintsList = () => {
                                                         <table class="table table-striped">
                                                             <thead className="table-dark">
                                                                 <tr>
-                                                                    
+
                                                                     <th scope="col">Complaint ID</th>
                                                                     <th scope="col">Ticket Raised Date</th>
-                                                                    
+
                                                                     <th scope="col">Complaint Type</th>
                                                                     <th scope="col">Remark</th>
                                                                     <th scope="col">Transaction No.</th>
                                                                     <th scope="col">Status</th>
                                                                     <th scope="col">Response</th>
-                                                                    
-                                                                 
+
+
                                                                 </tr>
                                                             </thead>
                                                             {/* <tbody>
@@ -102,10 +112,10 @@ const WLAllComplaintsList = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                        
-                                        
+
+
                                         </div>
-                                      
+
                                     </div>
                                 </div>
                             </div>

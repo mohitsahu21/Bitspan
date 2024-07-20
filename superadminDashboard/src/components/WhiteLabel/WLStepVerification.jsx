@@ -21,11 +21,17 @@ const WLStepVerification = () => {
                     <div className="col-12">
                       <div className="d-flex justify-content-between align-items-center raisecomp flex-wrap">
                         <h4 className="mx-lg-5 ">Step PIN And 2 Step Verification</h4>
-                        <h6 className="mx-lg-5">
+                        <p className="mx-lg-5">
                           {" "}
-                          <BiHomeAlt /> &nbsp; / &nbsp; Step PIN And 2 Step
-                          Verification
-                        </h6>
+                          <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
+                          <span
+                            className="text-body-secondary"
+                            style={{ fontSize: "13px" }}
+                          >
+                            {" "}
+                            Step PIN And 2 Step Verification
+                          </span>{" "}
+                        </p>
                       </div>
                     </div>
                   </div>

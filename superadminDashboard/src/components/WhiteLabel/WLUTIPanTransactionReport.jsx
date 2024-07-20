@@ -23,9 +23,19 @@ const WLUTIPanTransactionReport = () => {
                                             {/* <div className="text-center">
                                                 <h3>UTI PAN Transaction Report</h3>
                                             </div> */}
-                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
+                                            <div className="d-flex justify-content-between align-items-center flex-wrap">
                                                 <h4 className="mx-lg-5 px-lg-3 px-xxl-5">UTI PAN Transaction Report</h4>
-                                                <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; UTI PAN Transaction Report</h6>
+                                                <p className="mx-lg-5">
+                                                    {" "}
+                                                    <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
+                                                    <span
+                                                        className="text-body-secondary"
+                                                        style={{ fontSize: "13px" }}
+                                                    >
+                                                        {" "}
+                                                        UTI PAN Transaction Report
+                                                    </span>{" "}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -49,7 +59,7 @@ const WLUTIPanTransactionReport = () => {
                                                             <option selected>---All---</option>
                                                             <option value="1">Physical</option>
                                                             <option value="2">Digital</option>
-                                                            
+
                                                         </select>
                                                     </div>
                                                     <div className="field-group col-11 col-md-4 col-lg-2">
@@ -58,8 +68,8 @@ const WLUTIPanTransactionReport = () => {
                                                             <option selected>---All---</option>
                                                             <option value="1">Both</option>
                                                             <option value="2">e-PAN Only</option>
-                                                         
-                                                            </select>
+
+                                                        </select>
                                                     </div>
                                                     <div className="field-group col-11 col-md-4 col-lg-2">
                                                         <label for="toDate" className="form-label fw-bold">Status</label>
@@ -69,14 +79,14 @@ const WLUTIPanTransactionReport = () => {
                                                             <option value="2">PROCESSED</option>
                                                             <option value="3">FAILED</option>
                                                             <option value="3">SUCCESS</option>
-                                                            </select>
+                                                        </select>
                                                     </div>
-                                                    
+
 
                                                 </div>
                                                 <div className="col-11 col-md-4 col-lg-2">
-                                                        <button type="button" className="btn btn-primary button">Search</button>
-                                                    </div>
+                                                    <button type="button" className="btn btn-primary button">Search</button>
+                                                </div>
 
 
                                                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">

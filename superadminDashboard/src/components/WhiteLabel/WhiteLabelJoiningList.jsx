@@ -26,7 +26,17 @@ const WhiteLabelJoiningList = () => {
                                             </div> */}
                                               <div className="d-flex justify-content-between align-items-center flex-wrap">
                                                 <h4 className="mx-lg-5 px-lg-3 px-xxl-5">White Label Joining List</h4>
-                                                <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; White Label Joining List</h6>
+                                                <p className="mx-lg-5">
+                                                    {" "}
+                                                    <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
+                                                    <span
+                                                        className="text-body-secondary"
+                                                        style={{ fontSize: "13px" }}
+                                                    >
+                                                        {" "}
+                                                        White Label Joining List
+                                                    </span>{" "}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>

@@ -25,7 +25,17 @@ const ChangeUTIPanPrice = () => {
                       </div> */}
                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
                                                 <h4 className="px-lg-3">Change UTI PAN Price </h4>
-                                                <h6 className="mx-lg-5"> <BiHomeAlt /> &nbsp;/ &nbsp; Change UTI PAN Price  </h6>
+                                                <p className="mx-lg-5">
+                                                    {" "}
+                                                    <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
+                                                    <span
+                                                        className="text-body-secondary"
+                                                        style={{ fontSize: "13px" }}
+                                                    >
+                                                        {" "}
+                                                        Change UTI PAN Price
+                                                    </span>{" "}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -49,13 +59,13 @@ const ChangeUTIPanPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                    
+
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter Distributor Price
+                                                Enter Distributor Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -68,13 +78,13 @@ const ChangeUTIPanPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                    
+
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter Super Distributor Price
+                                                Enter Super Distributor Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -87,13 +97,13 @@ const ChangeUTIPanPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                   
+
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter White Label Price
+                                                Enter White Label Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -106,7 +116,7 @@ const ChangeUTIPanPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                    
+
                                                 />
                                             </div>
                                         </div>
@@ -141,13 +151,13 @@ const ChangeUTIPanPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                    
+
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter Distributor Price
+                                                Enter Distributor Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -160,13 +170,13 @@ const ChangeUTIPanPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                    
+
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter Super Distributor Price
+                                                Enter Super Distributor Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -179,13 +189,13 @@ const ChangeUTIPanPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                   
+
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter White Label NSDL Price
+                                                Enter White Label NSDL Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -198,7 +208,7 @@ const ChangeUTIPanPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                    
+
                                                 />
                                             </div>
                                         </div>
@@ -233,13 +243,13 @@ const ChangeUTIPanPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                    
+
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter Distributor Price
+                                                Enter Distributor Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -252,13 +262,13 @@ const ChangeUTIPanPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                    
+
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter Super Distributor Price
+                                                Enter Super Distributor Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -271,13 +281,13 @@ const ChangeUTIPanPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                   
+
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter White Label NSDL Price
+                                                Enter White Label NSDL Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -290,7 +300,7 @@ const ChangeUTIPanPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                    
+
                                                 />
                                             </div>
                                         </div>
@@ -325,13 +335,13 @@ const ChangeUTIPanPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                    
+
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter Distributor Price
+                                                Enter Distributor Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -344,13 +354,13 @@ const ChangeUTIPanPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                    
+
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter Super Distributor Price
+                                                Enter Super Distributor Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -363,13 +373,13 @@ const ChangeUTIPanPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                   
+
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter White Label NSDL Price
+                                                Enter White Label NSDL Price
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -382,7 +392,7 @@ const ChangeUTIPanPrice = () => {
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
-                                                    
+
                                                 />
                                             </div>
                                         </div>

@@ -29,9 +29,17 @@ const BuyUserId = () => {
                         <h4 className="mx-lg-5 mx-xl-5 mx-xxl-2  px-lg-3 px-xxl-0">
                           Buy Admin ID
                         </h4>
-                        <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; Buy Admin ID
-                        </h6>
+                        <p className="mx-lg-5">
+                          {" "}
+                          <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
+                          <span
+                            className="text-body-secondary"
+                            style={{ fontSize: "13px" }}
+                          >
+                            {" "}
+                            Buy Admin ID
+                          </span>{" "}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -72,12 +80,12 @@ const BuyUserId = () => {
                             >
                               <option selected>Select...</option>
                               <option value="">
-                                 White Label
+                                White Label
                               </option>
-                            
-                            
-                          
-                              
+
+
+
+
                             </select>
                           </div>
                         </div>
@@ -103,7 +111,7 @@ const BuyUserId = () => {
                         </div>
                         <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 mx-auto mt-3">
                           <label for="name" className="form-label">
-                           White Label ID Price
+                            White Label ID Price
                           </label>
                           <div className="input-group flex-nowrap">
                             <span className="input-group-text" id="addon-wrapping">
@@ -154,17 +162,17 @@ const BuyUserId = () => {
                             >
                               <option selected>Select Payment Method</option>
                               <option value="">
-                              Payment from Wallet
+                                Payment from Wallet
                               </option>
-                            
-                            
-                          
-                              
+
+
+
+
                             </select>
                           </div>
                           <p className="mt-3"><strong> Wallet Available Amount : </strong> Rs. 500.00</p>
                         </div>
-                     
+
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 mt-4">
                           <div className="text-center">
                             <button className="btn p-2">Buy ID</button>

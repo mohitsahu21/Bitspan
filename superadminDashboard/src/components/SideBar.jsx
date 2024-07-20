@@ -1713,7 +1713,7 @@ const Sider = () => {
             <div className="d-flex">
               <img src={profileLogo} width={50} height={75} className="p-2" />
               <div className="ms-2 p-2 lh-sm">
-                <p className="m-0 fw-bold">Mohit Sahu </p>
+                <p className="m-0 fw-bold">{currentUser.name} </p>
 
                 <NavDropdown
                   id="nav-dropdown-dark-example"
@@ -1733,7 +1733,7 @@ const Sider = () => {
                     Something
                   </NavDropdown.Item> */}
                 </NavDropdown>
-                <p className="m-0 text-muted">Mohit1234</p>
+                <p className="m-0 text-muted">{currentUser.userName}</p>
               </div>
             </div>
           </Nav>
