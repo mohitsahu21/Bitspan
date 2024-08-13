@@ -10,7 +10,7 @@ import WhiteLabelRoutes from "./routes/WhiteLabelRoutes";
 import { useDispatch, useSelector } from "react-redux";
 
 function App() {
-  const {  currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
   const [user,setUser] = useState(currentUser.role);
   
