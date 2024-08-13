@@ -95,8 +95,37 @@ const getApplyOfflineFormByid = (req, res) => {
   });
 };
 
+// const getApplyOfflineForm = (req, res) => {
+//   const { fromDate, toDate } = req.query;
+
+//   let query = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+
+//   if (fromDate && toDate) {
+//     query += ` WHERE created_at BETWEEN '${fromDate}' AND '${toDate}' ORDER BY created_at DESC`;
+//   } else {
+//     query += " ORDER BY created_at DESC";
+//   }
+
+//   db.query(query, (err, result) => {
+//     if (err) {
+//       console.error("Error getting data from MySQL:", err);
+//       res.status(500).json({ error: "Database error" });
+//       return;
+//     }
+//     res.status(200).json(result);
+//   });
+// };
 const getApplyOfflineForm = (req, res) => {
-  const query = `SELECT * FROM apply_offline_form`;
+  const { fromDate, toDate } = req.query;
+
+  let query = `SELECT * FROM apply_offline_form`;
+
+  if (fromDate && toDate) {
+    query += ` WHERE created_at BETWEEN '${fromDate}' AND '${toDate}' ORDER BY created_at DESC`;
+  } else {
+    query += " ORDER BY created_at DESC";
+  }
+
   db.query(query, (err, result) => {
     if (err) {
       console.error("Error getting data from MySQL:", err);

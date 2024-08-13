@@ -6,6 +6,9 @@ import axios from "axios";
 
 const AllPanForm = () => {
   const [formData, setFormData] = useState([]);
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("All");
 
   const fetchData = async () => {
     try {
@@ -21,7 +24,22 @@ const AllPanForm = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fromDate, toDate]);
+
+  const handleSearch = () => {
+    fetchData();
+  };
+
+  console.log(formData);
+
+  const filteredData = formData.filter((item) => {
+    if (selectedStatus === "All") {
+      return true;
+    } else {
+      return item.status?.toLowerCase() === selectedStatus.toLowerCase();
+    }
+  });
+
   return (
     <>
       <Wrapper>
@@ -64,6 +82,8 @@ const AllPanForm = () => {
                               id="fromDate"
                               className="form-control"
                               type="date"
+                              value={fromDate}
+                              onChange={(e) => setFromDate(e.target.value)}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -74,12 +94,15 @@ const AllPanForm = () => {
                               id="toDate"
                               className="form-control "
                               type="date"
+                              value={toDate}
+                              onChange={(e) => setToDate(e.target.value)}
                             />
                           </div>
                           <div className="d-flex align-items-end">
                             <button
                               type="button"
                               className="btn btn-primary button"
+                              onClick={handleSearch}
                             >
                               Search
                             </button>
@@ -87,11 +110,19 @@ const AllPanForm = () => {
                           <div className="col-12 col-md-4 col-lg-3 d-flex align-items-end">
                             <DropdownButton
                               id="dropdown-basic-button"
-                              title="Status"
+                              title={selectedStatus}
+                              onSelect={(e) => setSelectedStatus(e)}
                             >
-                              <Dropdown.Item href="#">Approve</Dropdown.Item>
-                              <Dropdown.Item href="#">Reject</Dropdown.Item>
-                              <Dropdown.Item href="#">Pending</Dropdown.Item>
+                              <Dropdown.Item eventKey="All">All</Dropdown.Item>
+                              <Dropdown.Item eventKey="Approved">
+                                Approved
+                              </Dropdown.Item>
+                              <Dropdown.Item eventKey="Reject">
+                                Reject
+                              </Dropdown.Item>
+                              <Dropdown.Item eventKey="Pending">
+                                Pending
+                              </Dropdown.Item>
                             </DropdownButton>
                           </div>
                         </div>
@@ -116,7 +147,7 @@ const AllPanForm = () => {
                                 </tr>
                               </thead>
                               <tbody>
-                                {formData.map((item, index) => (
+                                {filteredData.map((item, index) => (
                                   <tr key={index}>
                                     <th scope="row">{index + 1}</th>
                                     <td>{item.applicant_name}</td>
@@ -133,12 +164,20 @@ const AllPanForm = () => {
                                       </a>
                                     </td>
                                     <td>
-                                      <a href={item.attached_photo}>
+                                      <a
+                                        href={item.attached_photo}
+                                        target="_blank"
+                                      >
                                         View Photo
                                       </a>
                                     </td>
                                     <td>
-                                      <a href={item.attached_sign}>View Sign</a>
+                                      <a
+                                        href={item.attached_sign}
+                                        target="_blank"
+                                      >
+                                        View Sign
+                                      </a>
                                     </td>
                                     <td>
                                       {item.attached_kyc
@@ -219,9 +258,11 @@ const Wrapper = styled.div`
   th {
     font-weight: 500;
     font-size: 14px;
+    white-space: nowrap;
   }
   td {
     font-size: 14px;
+    white-space: nowrap;
   }
   @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
