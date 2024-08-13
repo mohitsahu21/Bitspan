@@ -9,6 +9,37 @@ import { BiSolidContact } from "react-icons/bi";
 import { FaRegBuilding } from "react-icons/fa";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { BiHomeAlt } from "react-icons/bi";
+import Webcam from "react-webcam";
+
+
+// const videoConstraints = {
+//   width: 1280,
+//   height: 720,
+//   facingMode: "user"
+// };
+
+// const WebcamCapture = () => {
+//   const webcamRef = React.useRef(null);
+//   const capture = React.useCallback(
+//     () => {
+//       const imageSrc = webcamRef.current.getScreenshot();
+//     },
+//     [webcamRef]
+//   );
+//   return (
+//     <>
+//       <Webcam
+//         audio={false}
+//         height={720}
+//         ref={webcamRef}
+//         screenshotFormat="image/jpeg"
+//         width={1280}
+//         videoConstraints={videoConstraints}
+//       />
+//       <button onClick={capture}>Capture photo</button>
+//     </>
+//   );
+// };
 
 const WLProfile = () => {
   return (
@@ -191,12 +222,20 @@ const WLProfile = () => {
                         />
                       </div>
                     </div>
+
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <label>Photo</label>
+                      <div className="input-group">
+                        <input class="form-control" type="file" id="formFile" />
+                      </div>
+                    </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label>Aadhar Front</label>
                       <div className="input-group">
                         <input class="form-control" type="file" id="formFile" />
                       </div>
                     </div>
+                
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label>Aadhar Back</label>
                       <div className="input-group">
@@ -213,6 +252,7 @@ const WLProfile = () => {
                       <div className="text-start m-3">
                         <button className="btn p-2">KYC Verification</button>
                       </div>
+                      {/* <WebcamCapture/> */}
                     </div>
                   </div>
                 </div>

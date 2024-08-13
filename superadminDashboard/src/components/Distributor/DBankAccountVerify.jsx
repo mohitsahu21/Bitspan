@@ -16,9 +16,8 @@ import { BiHomeAlt } from "react-icons/bi";
 import { PiAddressBook } from "react-icons/pi";
 import { LuTextSelect, LuUserCheck } from "react-icons/lu";
 import { SlLocationPin } from "react-icons/sl";
-import { Link } from "react-router-dom";
 
-const WLBankAccountSetup = () => {
+const DBankAccountVerify = () => {
   return (
     <>
       <Wrapper>
@@ -50,7 +49,6 @@ const WLBankAccountSetup = () => {
                           </span>{" "}
                         </p>
                       </div>
-                      
                     </div>
                   </div>
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
@@ -146,6 +144,22 @@ const WLBankAccountSetup = () => {
                         />
                       </div>
                     </div>
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <label for="name" class="form-label">
+                        OTP
+                      </label>
+                      <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping">
+                          <FaAddressCard />
+                        </span>
+                        <input
+                          type="text"
+                          id="name"
+                          class="form-control"
+                          placeholder="Enter OTP"
+                        />
+                      </div>
+                    </div>
 
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="text-start mb-3">
@@ -171,23 +185,23 @@ const WLBankAccountSetup = () => {
                               <th scope="col">Bank Name</th>
                               <th scope="col">Status</th>
                               <th scope="col"></th>
-                             
                             </tr>
                           </thead>
                           <tbody>
-                                                                <tr>
-                                                                    <th scope="row">1</th>
-                                                                    <td>Mohit Sahu</td>
-                                                                    <td>898989898989</td>
-                                                                    <td>sbin0001503</td>
-                                                                    <td>sbi</td>
-                                                                    <td>PENDING</td>
-                                                                    <td><Link to={"/bank-account-setup/1/2"}><button className="btn btn-primary btn-sm">Verify</button></Link></td>
-                                                             
-                                                                </tr>
-                                                               
-
-                                                            </tbody>
+                            <tr>
+                              <th scope="row">1</th>
+                              <td>Mohit Sahu</td>
+                              <td>898989898989</td>
+                              <td>sbin0001503</td>
+                              <td>sbi</td>
+                              <td>PENDING</td>
+                              <td>
+                                <button className="btn btn-primary btn-sm">
+                                  Verify
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
                         </table>
                       </div>
                       <div className="float-end">
@@ -224,7 +238,7 @@ const WLBankAccountSetup = () => {
   );
 };
 
-export default WLBankAccountSetup;
+export default DBankAccountVerify;
 
 const Wrapper = styled.div`
   .main {
@@ -235,14 +249,12 @@ const Wrapper = styled.div`
     color: #fff;
     background: #6d70ff;
   }
-  th{
+  th {
     font-weight: 500;
     font-size: 14px;
-   
   }
-  td{
-   font-size: 14px;
-   
+  td {
+    font-size: 14px;
   }
   @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {

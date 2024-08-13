@@ -16,6 +16,7 @@ import { BiHomeAlt } from "react-icons/bi";
 import { PiAddressBook } from "react-icons/pi";
 import { LuTextSelect, LuUserCheck } from "react-icons/lu";
 import { SlLocationPin } from "react-icons/sl";
+import { Link } from "react-router-dom";
 
 const DBankAccountSetup = () => {
   return (
@@ -180,9 +181,10 @@ const DBankAccountSetup = () => {
                               <td>sbi</td>
                               <td>PENDING</td>
                               <td>
-                                <button className="btn btn-primary btn-sm">
+                                <Link to={"/bank-account-setup/1/2"}><button className="btn btn-primary btn-sm">
                                   Verify
                                 </button>
+                                </Link>
                               </td>
                             </tr>
                           </tbody>

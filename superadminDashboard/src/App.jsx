@@ -16,7 +16,7 @@ function App() {
   
   useEffect(()=>{
     setUser(currentUser.role)
-  },[currentUser])
+  },[currentUser.role])
   return (
     <>
       {location.pathname !== "/" &&

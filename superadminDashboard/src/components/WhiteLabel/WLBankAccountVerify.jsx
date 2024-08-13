@@ -18,6 +18,7 @@ import { LuTextSelect, LuUserCheck } from "react-icons/lu";
 import { SlLocationPin } from "react-icons/sl";
 
 const WLBankAccountVerify = () => {
+
   return (
     <>
       <Wrapper>
