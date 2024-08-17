@@ -3,10 +3,6 @@ import { Route, Routes } from "react-router-dom";
 
 import AadharLinkingStatus from "../components/DashBoard/AadharLinkingStatus";
 import TrainingVideo from "../components/DashBoard/TrainingVideo";
-import WhiteLabelDashboard from "../pages/WhiteLabelDashboard";
-import WLProfile from "../components/WhiteLabel/WLProfile";
-import WLWalletTransactionReport from "../components/WhiteLabel/WLWalletTransactionReport";
-import WLAllOfflineForm from "../components/WhiteLabel/WLAllOfflineForm";
 import WLStepVerification from "../components/WhiteLabel/WLStepVerification";
 import WLUTIPanTransactionReport from "../components/WhiteLabel/WLUTIPanTransactionReport";
 import WLDistributeCoupon from "../components/WhiteLabel/WLDistributeCoupon";
@@ -36,15 +32,21 @@ import ChangeIdSetRate from "../components/WhiteLabel/ChangeIdSetRate";
 import ChangeUTINewCouponPrice from "../components/WhiteLabel/ChangeUTINewCouponPrice";
 import ChangeNSDLPrice from "../components/WhiteLabel/ChangeNSDLPrice";
 import ChangeUTIPanPrice from "../components/WhiteLabel/ChangeUTIPanPrice";
+import SuperAdminDashboard from "../pages/SuperAdminDashboard";
+import SAProfile from "../components/SuperAdmin/SAProfile";
+import SAWalletTransactionReport from "../components/SuperAdmin/SAWalletTransactionReport";
+import SAAllOfflineForm from "../components/SuperAdmin/SAAllOfflineForm";
+import SAStepVerification from "../components/SuperAdmin/SAStepVerification";
+import SAWebsiteSetting from "../components/SuperAdmin/SAWebsiteSetting";
 
 
 
-const WhiteLabelRoutes = () => {
+const SuperAdminRoutes = () => {
   return (
     <React.Fragment>
       <Routes>
-        <Route path="/dashboard" element={<WhiteLabelDashboard />} />
-        <Route path="/update-profile" element={<WLProfile />} />
+        <Route path="/dashboard" element={<SuperAdminDashboard />} />
+        <Route path="/update-profile" element={<SAProfile />} />
         <Route
           path="/aadhar-linking-status"
           element={<AadharLinkingStatus />}
@@ -53,15 +55,15 @@ const WhiteLabelRoutes = () => {
 
         <Route
           path="/wallet-transaction-report"
-          element={<WLWalletTransactionReport />}
+          element={<SAWalletTransactionReport />}
         />
         <Route
           path="/view-all-offline-history"
-          element={<WLAllOfflineForm />}
+          element={<SAAllOfflineForm />}
         />
 
-        <Route path="/2-step-verification" element={<WLStepVerification />} />
-        <Route path="/website-setting" element={<WebsiteSetting />} />
+        <Route path="/2-step-verification" element={<SAStepVerification />} />
+        <Route path="/website-setting" element={<SAWebsiteSetting />} />
 
         <Route path="/create-super-distributor" element={<CreateSuperDistributor />} />
         <Route path="/create-white-label" element={<CreateWhiteLabel />} />
@@ -107,4 +109,4 @@ const WhiteLabelRoutes = () => {
   );
 };
 
-export default WhiteLabelRoutes;
+export default SuperAdminRoutes;

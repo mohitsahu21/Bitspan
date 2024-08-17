@@ -45,6 +45,14 @@ const LoginBitspan = () => {
     email: "vinay@gmail.com",
     role: "SuperDistributor"
   },
+  {
+    id: 5,
+    name: "Rahul Tiwari",
+    userName : "RAHUL0004",
+    password: "rahul",
+    email: "rahul@gmail.com",
+    role: "SuperAdmin"
+  },
 
 ]
 

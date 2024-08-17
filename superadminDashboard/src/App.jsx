@@ -8,6 +8,7 @@ import RetailerRoutes from "./routes/RetailerRoutes";
 import Distributor from "./routes/Distributor";
 import WhiteLabelRoutes from "./routes/WhiteLabelRoutes";
 import { useDispatch, useSelector } from "react-redux";
+import SuperAdminRoutes from "./routes/SuperAdminRoutes";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -29,6 +30,7 @@ function App() {
       {user === "SuperDistributor" && <SuperDistributorRoutes />}
       {user === "Distributor" && <Distributor />}
       {user === "WhiteLabel" && <WhiteLabelRoutes />}
+      {user === "SuperAdmin" && <SuperAdminRoutes />}
     </>
   );
 }
