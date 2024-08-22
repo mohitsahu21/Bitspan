@@ -471,8 +471,8 @@ const RetailerSidebarData = [
         // cName: "sub-nav",
       },
       {
-        title: "Apply Pan Card Offline",
-        path: "/submit-pan-card-offline",
+        title: "Apply Offline",
+        path: "/apply-offline",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
       },
@@ -1993,8 +1993,8 @@ const Sider = () => {
   const [sidebar, setSidebar] = useState(true);
   const [closeButton, setCloseButton] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
-  const {  currentUser } = useSelector((state) => state.user);
-  
+  const { currentUser } = useSelector((state) => state.user);
+
   const user = currentUser.role;
   const navigate = useNavigate();
   const handleDropdownClick = (path) => {
