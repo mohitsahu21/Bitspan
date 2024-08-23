@@ -297,6 +297,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 // import { FaUserAlt } from "react-icons/fa";
 import { IoIosPerson } from "react-icons/io";
 import { FaPowerOff } from "react-icons/fa6";
+import { MdDisplaySettings } from "react-icons/md";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -485,6 +486,31 @@ const RetailerSidebarData = [
     ],
   },
   {
+    title: "e-District",
+    path: "#",
+    icon: <MdDisplaySettings color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+      {
+        title: "Income",
+        path: "http://income.ezeeportal.in/",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Domicile",
+        path: "http://domicile.ezeeportal.in/",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "E-district",
+        path: "https://www.ezeeportal.in/p/edistrict-form.html",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+    ],
+  },
+  {
     title: "Training Video",
     path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
@@ -515,8 +541,28 @@ const RetailerSidebarData = [
     path: "/important-links",
     icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
   },
+  // {
+  //   title: "UTI 2.0",
+  //   // path: "/training-video",
+  //   icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+  //   iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+  //   iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+  //   subNav: [
+  //     {
+  //       title: "Apply PAN Card",
+  //       path: "/uti-login",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //     {
+  //       title: "UTI Transaction History",
+  //       path: "/uti-transaction-report",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //   ],
+  // },
   {
-    title: "UTI 2.0",
+    title: "Pan Card Services",
     // path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
@@ -524,60 +570,20 @@ const RetailerSidebarData = [
 
     subNav: [
       {
-        title: "Apply PAN Card",
+        title: "UTI 2.4 PAN Card",
         path: "/uti-login",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
-        title: "UTI Transaction History",
+        title: "UTI 2.4 Transaction History",
         path: "/uti-transaction-report",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
-    ],
-  },
-  {
-    title: "UTI New",
-    // path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
-
-    subNav: [
       {
-        title: "User ID Activate",
-        path: "/retailer-id-revamp-activate",
+        title: "UTI 2.4 PAN Track",
+        path: "https://www.trackpan.utiitsl.com/PANONLINE/#forward",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
-      {
-        title: "Password Reset",
-        path: "/password-reset",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Buy Coupon",
-        path: "/buy-uti-coupon",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "UTI Coupon History",
-        path: "/uti-coupon-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-    ],
-  },
-  {
-    title: "PAN Track",
-    path: "https://www.trackpan.utiitsl.com/PANONLINE/#forward",
-    icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
-  },
-  {
-    title: "NSDL PAN Application",
-    // path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
-
-    subNav: [
       {
         title: "NSDL New PAN Card",
         path: "/pan-apply-49",
@@ -615,6 +621,86 @@ const RetailerSidebarData = [
       },
     ],
   },
+  {
+    title: "UTI New",
+    // path: "/training-video",
+    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+      {
+        title: "User ID Activate",
+        path: "/retailer-id-revamp-activate",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Password Reset",
+        path: "/password-reset",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Buy Coupon",
+        path: "/buy-uti-coupon",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "UTI Coupon History",
+        path: "/uti-coupon-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+    ],
+  },
+  // {
+  //   title: "PAN Track",
+  //   path: "https://www.trackpan.utiitsl.com/PANONLINE/#forward",
+  //   icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
+  // },
+  // {
+  //   title: "NSDL PAN Application",
+  //   // path: "/training-video",
+  //   icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+  //   iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+  //   iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+  //   subNav: [
+  //     {
+  //       title: "NSDL New PAN Card",
+  //       path: "/pan-apply-49",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //     {
+  //       title: "NSDL Correction PAN",
+  //       path: "/pan-apply-cr",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //     {
+  //       title: "NSDL PAN Track Status",
+  //       path: "https://tin.tin.nsdl.com/pantan/StatusTrack.html",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //     {
+  //       title: "PAN Status",
+  //       path: "/pan-status",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //     {
+  //       title: "PAN Transaction History",
+  //       path: "/pan-transaction-report",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //     {
+  //       title: "PAN Refund",
+  //       path: "/pan-transaction-refund-report",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //     {
+  //       title: "PAN Re Apply",
+  //       path: "/pan-transaction-resume-report",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //   ],
+  // },
   {
     title: "PAN Document",
     // path: "/training-video",
