@@ -169,7 +169,8 @@ const CustomTooltip = styled(Tooltip)`
                           <div></div>
                           <div className="d-flex flex-column cardtext">
                             <p className="mb-0 px-2 my-0 fs-6">
-                              Today Commission
+                            INS PAY Wallet Balance
+
                             </p>
                             <h4 className="px-2 my-0">0</h4>{" "}
                           </div>
@@ -185,7 +186,55 @@ const CustomTooltip = styled(Tooltip)`
                           <div></div>
                           <div className="d-flex flex-column cardtext">
                             <p className="mb-0 px-2 my-0 fs-6">
-                              Month Commission
+                            Ezytm Wallet Balance
+                            </p>
+                            <h4 className="px-2 my-0">0</h4>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      <div className="card card-3">
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                            <MdAddCard />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">
+                            CGONE PAY Wallet Balance
+                            </p>
+                            <h4 className="px-2 my-0">0</h4>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      <div className="card card-3">
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                            <MdAddCard />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">
+                            Total Complaints
+                            </p>
+                            <h4 className="px-2 my-0">0</h4>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      <div className="card card-3">
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                            <MdAddCard />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">
+                            Wallet Withdraw Requests
                             </p>
                             <h4 className="px-2 my-0">0</h4>{" "}
                           </div>

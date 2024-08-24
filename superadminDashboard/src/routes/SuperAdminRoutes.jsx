@@ -31,6 +31,7 @@ import SABankAccountSetup from "../components/SuperAdmin/SABankAccountSetup";
 import SABankAccountVerify from "../components/SuperAdmin/SABankAccountVerify";
 import SAWalletWithdraw from "../components/SuperAdmin/SAWalletWithdraw";
 import SAFundTransferStatus from "../components/SuperAdmin/SAFundTransferStatus";
+import SAWalletWithdrawRequests from "../components/SuperAdmin/SAWalletWithdrawRequests";
 
 
 
@@ -49,6 +50,10 @@ const SuperAdminRoutes = () => {
         <Route
           path="/wallet-transaction-report"
           element={<SAWalletTransactionReport />}
+        />
+        <Route
+          path="wallet-withdraw-requests"
+          element={<SAWalletWithdrawRequests />}
         />
         <Route
           path="/view-all-offline-history"
