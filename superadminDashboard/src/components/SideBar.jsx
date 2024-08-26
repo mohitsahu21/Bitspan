@@ -1197,6 +1197,48 @@ const SuperAdminData = [
     ],
   },
   {
+    title: "Commision",
+    path: "#",
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+      // {
+      //   title: "Add Money to Wallet",
+      //   path: "/add-money",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   cName: "sub-nav",
+      // },
+      // {
+      //   title: "Add Wallet Summary",
+      //   path: "/add-money-transaction-report",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   cName: "sub-nav",
+      // },
+      // {
+      //   title: "Add Wallet Offline",
+      //   path: "/add-wallet-money-offline",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
+      // {
+      //   title: "Wallet Offline Request",
+      //   path: "/wallet-offline-request",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
+      {
+        title: "Commision Full Summary",
+        path: "/commision-full-summary",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      //   {
+      //   title: "Wallet Withdraw Requests",
+      //   path: "/wallet-withdraw-requests",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
+    ],
+  },
+  {
     title: "Offline Services",
     path: "#",
     icon: <MdFilterListOff color="#fe662b" />,

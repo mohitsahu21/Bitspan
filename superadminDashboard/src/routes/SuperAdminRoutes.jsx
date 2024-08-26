@@ -32,6 +32,7 @@ import SABankAccountVerify from "../components/SuperAdmin/SABankAccountVerify";
 import SAWalletWithdraw from "../components/SuperAdmin/SAWalletWithdraw";
 import SAFundTransferStatus from "../components/SuperAdmin/SAFundTransferStatus";
 import SAWalletWithdrawRequests from "../components/SuperAdmin/SAWalletWithdrawRequests";
+import SACommisionSummary from "../components/SuperAdmin/SACommisionSummary.jsx";
 
 
 
@@ -55,6 +56,11 @@ const SuperAdminRoutes = () => {
           path="wallet-withdraw-requests"
           element={<SAWalletWithdrawRequests />}
         />
+        <Route
+          path="commision-full-summary"
+          element={<SACommisionSummary />}
+        />
+
         <Route
           path="/view-all-offline-history"
           element={<SAAllOfflineForm />}
