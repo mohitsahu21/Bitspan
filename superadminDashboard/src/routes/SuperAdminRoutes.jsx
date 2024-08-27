@@ -3,30 +3,6 @@ import { Route, Routes } from "react-router-dom";
 
 import AadharLinkingStatus from "../components/DashBoard/AadharLinkingStatus";
 import TrainingVideo from "../components/DashBoard/TrainingVideo";
-import WLUTIPanTransactionReport from "../components/WhiteLabel/WLUTIPanTransactionReport";
-import WLDistributeCoupon from "../components/WhiteLabel/WLDistributeCoupon";
-import WLUTICouponHistory from "../components/WhiteLabel/WLUTICouponHistory";
-import WLPanTransactionReport from "../components/WhiteLabel/WLPanTransactionReport";
-import WLActiveUsersList from "../components/WhiteLabel/WLActiveUsersList";
-import WLDeactiveUsersList from "../components/WhiteLabel/WLDeactiveUsersList";
-import WLAllUsersJoinedList from "../components/WhiteLabel/WLAllUsersJoinedList";
-import WLChangePrice from "../components/WhiteLabel/WLChangePrice";
-import WLComplaints from "../components/WhiteLabel/WLComplaints";
-import WLAllComplaintsList from "../components/WhiteLabel/WLAllComplaintsList";
-import WLDownloadCertificate from "../components/WhiteLabel/WLDownloadCertificate";
-import WLChangePassword from "../components/WhiteLabel/WLChangePassword";
-import WLBankAccountSetup from "../components/WhiteLabel/WLBankAccountSetup";
-import WLBankAccountVerify from "../components/WhiteLabel/WLBankAccountVerify";
-import WLWalletWithdraw from "../components/WhiteLabel/WLWalletWithdraw";
-import WLFundTransferStatus from "../components/WhiteLabel/WLFundTransferStatus";
-import Certificate from "../components/SuperDistributer/Certificate";
-import WLPendingPaymentUsers from "../components/WhiteLabel/WLPendingPaymentUsers";
-import WhiteLabelJoiningList from "../components/WhiteLabel/WhiteLabelJoiningList";
-import BuyUserIdSummary from "../components/WhiteLabel/BuyUserIdSummary";
-import ChangeIdSetRate from "../components/WhiteLabel/ChangeIdSetRate";
-import ChangeUTINewCouponPrice from "../components/WhiteLabel/ChangeUTINewCouponPrice";
-import ChangeNSDLPrice from "../components/WhiteLabel/ChangeNSDLPrice";
-import ChangeUTIPanPrice from "../components/WhiteLabel/ChangeUTIPanPrice";
 import SuperAdminDashboard from "../pages/SuperAdminDashboard";
 import SAProfile from "../components/SuperAdmin/SAProfile";
 import SAWalletTransactionReport from "../components/SuperAdmin/SAWalletTransactionReport";
@@ -45,6 +21,18 @@ import SAWhiteLabelJoiningList from "../components/SuperAdmin/SAWhiteLabelJoinin
 import SABuyUserIdSummary from "../components/SuperAdmin/SABuyUserIdSummary";
 import SAPanTransactionReport from "../components/SuperAdmin/SAPanTransactionReport";
 import SAChangePrice from "../components/SuperAdmin/SAChangePrice";
+import SAAllComplaintsList from "../components/SuperAdmin/SAAllComplaintsList";
+import SAChangeIdSetRate from "../components/SuperAdmin/SAChangeIdSetRate";
+import SAChangeNSDLPrice from "../components/SuperAdmin/SAChangeNSDLPrice";
+import SAChangeUTIPanPrice from "../components/SuperAdmin/SAChangeUTIPanPrice";
+import SAChangeUTINewCouponPrice from "../components/SuperAdmin/SAChangeUTINewCouponPrice";
+import SAChangePassword from "../components/SuperAdmin/SAChangePassword";
+import SABankAccountSetup from "../components/SuperAdmin/SABankAccountSetup";
+import SABankAccountVerify from "../components/SuperAdmin/SABankAccountVerify";
+import SAWalletWithdraw from "../components/SuperAdmin/SAWalletWithdraw";
+import SAFundTransferStatus from "../components/SuperAdmin/SAFundTransferStatus";
+import SAWalletWithdrawRequests from "../components/SuperAdmin/SAWalletWithdrawRequests";
+import SACommisionSummary from "../components/SuperAdmin/SACommisionSummary.jsx";
 
 
 
@@ -64,6 +52,15 @@ const SuperAdminRoutes = () => {
           path="/wallet-transaction-report"
           element={<SAWalletTransactionReport />}
         />
+        <Route
+          path="wallet-withdraw-requests"
+          element={<SAWalletWithdrawRequests />}
+        />
+        <Route
+          path="commision-full-summary"
+          element={<SACommisionSummary />}
+        />
+
         <Route
           path="/view-all-offline-history"
           element={<SAAllOfflineForm />}
@@ -94,22 +91,22 @@ const SuperAdminRoutes = () => {
       <Route path="/buy-user-id-summary" element={<SABuyUserIdSummary />} />
       <Route path="/pan-transaction-report" element={<SAPanTransactionReport />} />
       <Route path="/change-price" element={<SAChangePrice />} />
-      <Route path="/raise-complaint" element={<WLComplaints />} />
-      <Route path="/complaint-raised-list" element={<WLAllComplaintsList />} />
-      <Route path="/download-certificate" element={<WLDownloadCertificate />} />
-      <Route path="/change-coupon-price" element={<ChangeIdSetRate />} />
-      <Route path="/change-nsdl-price" element={<ChangeNSDLPrice/>} />
-      <Route path="/change-uti-price" element={<ChangeUTIPanPrice/>} />
-      <Route path="/change-uti-new-price" element={<ChangeUTINewCouponPrice />} />
-      <Route path="/change-password" element={<WLChangePassword />} />
-      <Route path="/bank-account-setup" element={<WLBankAccountSetup />} />
-      <Route path="/bank-account-setup/:bank_id/:user_id" element={<WLBankAccountVerify />} />
-      <Route path="/wallet-withdraw" element={<WLWalletWithdraw/>} />
-      <Route path="/fund-transfer-status" element={<WLFundTransferStatus />} />
-      <Route path="/download-certificate-print" element={<Certificate user="WHITE LABEL" name="Aashish Kumar"
+      {/* <Route path="/raise-complaint" element={<WLComplaints />} /> */}
+      <Route path="/complaint-raised-list" element={<SAAllComplaintsList />} />
+      {/* <Route path="/download-certificate" element={<WLDownloadCertificate />} /> */}
+      <Route path="/change-coupon-price" element={<SAChangeIdSetRate />} />
+      <Route path="/change-nsdl-price" element={<SAChangeNSDLPrice/>} />
+      <Route path="/change-uti-price" element={<SAChangeUTIPanPrice/>} />
+      <Route path="/change-uti-new-price" element={<SAChangeUTINewCouponPrice />} />
+      <Route path="/change-password" element={<SAChangePassword />} />
+      <Route path="/bank-account-setup" element={<SABankAccountSetup />} />
+      <Route path="/bank-account-setup/:bank_id/:user_id" element={<SABankAccountVerify />} />
+      <Route path="/wallet-withdraw" element={<SAWalletWithdraw/>} />
+      <Route path="/fund-transfer-status" element={<SAFundTransferStatus />} />
+      {/* <Route path="/download-certificate-print" element={<Certificate user="WHITE LABEL" name="Aashish Kumar"
         address="Jabalpur, BIHAR - 482001"
         date="02-Jul-2024"
-        id="AASHISD29164"/>} />
+        id="AASHISD29164"/>} /> */}
        
       </Routes>
     </React.Fragment>

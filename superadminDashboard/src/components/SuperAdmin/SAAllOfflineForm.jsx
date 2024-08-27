@@ -80,12 +80,22 @@ const SAAllOfflineForm = () => {
                             <table class="table table-striped">
                               <thead className="table-dark">
                                 <tr>
-                                  <th scope="col">Sr.No</th>
+                                <th scope="col">Sr.No</th>
+                                <th scope="col">Order Id</th>
                                   <th scope="col">Applicant Name</th>
-                                  <th scope="col">Applicant Email</th>
+                                  <th scope="col">Applicant Father Name</th>
                                   <th scope="col">Applicant Number</th>
-                                  <th scope="col">Remark</th>
+                                  <th scope="col">Service</th>
+                                  <th scope="col">other</th>
                                   <th scope="col">View Form</th>
+                                  <th scope="col">View Photo</th>
+                                  <th scope="col">View Signature</th>
+                                  <th scope="col">View KYC</th>
+                                  <th scope="col">User Id</th>
+                                  <th scope="col">User Name</th>
+                                  <th scope="col">Status</th>
+                                  <th scope="col">Note</th>
+                                  <th scope="col">Action</th>
                                 </tr>
                               </thead>
                               {/* <tbody>

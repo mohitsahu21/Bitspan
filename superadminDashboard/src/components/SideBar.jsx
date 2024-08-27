@@ -1218,6 +1218,53 @@ const SuperAdminData = [
         path: "/wallet-transaction-report",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+        {
+        title: "Wallet Withdraw Requests",
+        path: "/wallet-withdraw-requests",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+    ],
+  },
+  {
+    title: "Commision",
+    path: "#",
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+      // {
+      //   title: "Add Money to Wallet",
+      //   path: "/add-money",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   cName: "sub-nav",
+      // },
+      // {
+      //   title: "Add Wallet Summary",
+      //   path: "/add-money-transaction-report",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   cName: "sub-nav",
+      // },
+      // {
+      //   title: "Add Wallet Offline",
+      //   path: "/add-wallet-money-offline",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
+      // {
+      //   title: "Wallet Offline Request",
+      //   path: "/wallet-offline-request",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
+      {
+        title: "Commision Full Summary",
+        path: "/commision-full-summary",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      //   {
+      //   title: "Wallet Withdraw Requests",
+      //   path: "/wallet-withdraw-requests",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
     ],
   },
   {
@@ -1248,27 +1295,27 @@ const SuperAdminData = [
       },
     ],
   },
-  {
-    title: "Training Video",
-    path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+  // {
+  //   title: "Training Video",
+  //   path: "/training-video",
+  //   icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
 
-    // iconClosed: <RiIcons.RiArrowDownSFill />,
-    // iconOpened: <RiIcons.RiArrowUpSFill />,
+  //   // iconClosed: <RiIcons.RiArrowDownSFill />,
+  //   // iconOpened: <RiIcons.RiArrowUpSFill />,
 
-    // subNav: [
-    // 	{
-    // 		title: "Event 1",
-    // 		path: "/events/events1",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // 	{
-    // 		title: "Event 2",
-    // 		path: "/events/events2",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // ],
-  },
+  //   // subNav: [
+  //   // 	{
+  //   // 		title: "Event 1",
+  //   // 		path: "/events/events1",
+  //   // 		icon: <IoIcons.IoIosPaper />,
+  //   // 	},
+  //   // 	{
+  //   // 		title: "Event 2",
+  //   // 		path: "/events/events2",
+  //   // 		icon: <IoIcons.IoIosPaper />,
+  //   // 	},
+  //   // ],
+  // },
   {
     title: "Set PIN and 2 Step",
     path: "/2-step-verification",
@@ -1407,11 +1454,11 @@ const SuperAdminData = [
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
-      {
-        title: "Complaint",
-        path: "/raise-complaint",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
+      // {
+      //   title: "Complaint",
+      //   path: "/raise-complaint",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
       {
         title: "All Complaint List",
         path: "/complaint-raised-list",
@@ -1427,11 +1474,11 @@ const SuperAdminData = [
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
-      {
-        title: "Download Certificate",
-        path: "/download-certificate",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
+      // {
+      //   title: "Download Certificate",
+      //   path: "/download-certificate",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
       {
         title: "ID Set Rate",
         path: "/change-coupon-price",
@@ -1457,16 +1504,16 @@ const SuperAdminData = [
         path: "/change-password",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
-      {
-        title: "Bank Account Setup",
-        path: "/bank-account-setup",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Wallet Withdraw",
-        path: "/wallet-withdraw",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
+      // {
+      //   title: "Bank Account Setup",
+      //   path: "/bank-account-setup",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
+      // {
+      //   title: "Wallet Withdraw",
+      //   path: "/wallet-withdraw",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
       {
         title: "Fund Transfer Status",
         path: "/fund-transfer-status",
@@ -2268,7 +2315,7 @@ const Sider = () => {
                   );
                 })}
               {user == "SuperAdmin" &&
-                WhiteLabelData.map((item, index) => {
+                SuperAdminData.map((item, index) => {
                   return (
                     <SubMenu
                       item={item}
