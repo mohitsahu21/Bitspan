@@ -300,6 +300,8 @@ import { FaPowerOff } from "react-icons/fa6";
 import { MdDisplaySettings } from "react-icons/md";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
+import { PiBankFill } from "react-icons/pi";
+import pancard from "../assets/Form_49A (1).pdf";
 
 const Nav = styled.div`
   background-color: #e4e4e1;
@@ -458,6 +460,28 @@ const RetailerSidebarData = [
     ],
   },
   {
+    title: "Purchase Bank ID",
+    path: "#",
+    icon: <PiBankFill color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+      {
+        title: "New Bank ID",
+        path: "/bank-id",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "Bank ID History",
+        path: "#",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+    ],
+  },
+  {
     title: "Offline Services",
     path: "#",
     icon: <MdFilterListOff color="#fe662b" />,
@@ -569,6 +593,11 @@ const RetailerSidebarData = [
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
+      {
+        title: "Pan Card Form 2.4",
+        path: "#",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
       {
         title: "UTI 2.4 PAN Card",
         path: "/uti-login",
