@@ -6,6 +6,7 @@ const {
   getApplyOfflineFormByid,
   getApplyOfflineForm,
   updateApplyOfflineForm,
+  bankidForm,
 } = require("../controllers/retailerController");
 
 const router = express.Router();
@@ -30,6 +31,17 @@ router.post(
     { name: "attached_kyc", maxCount: 10 },
   ]),
   applyOfflineForm
+);
+router.post(
+  "/bankidForm",
+  upload.fields([
+    { name: "attached_photo", maxCount: 1 },
+    { name: "attached_kyc", maxCount: 10 },
+    { name: "bank_passbook", maxCount: 1 },
+    { name: "shop_photo", maxCount: 1 },
+    { name: "electric_bill", maxCount: 1 },
+  ]),
+  bankidForm
 );
 router.get("/getApplyOfflineFormByid/:id", getApplyOfflineFormByid);
 router.get("/getApplyOfflineForm", getApplyOfflineForm);

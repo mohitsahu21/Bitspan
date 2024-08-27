@@ -33,7 +33,7 @@ const OffilnePanCard = () => {
       link: "http://udyog.ezeeportal.in/",
       download: false,
     },
-    { title: "New Bank ID", link: "#", download: false },
+    // { title: "New Bank ID", link: "#", download: false },
   ];
   return (
     <>

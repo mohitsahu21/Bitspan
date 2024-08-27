@@ -42,6 +42,7 @@ import OffilnePanCard from "../components/DashBoard/OffilnePanCard";
 import PanForm from "../components/DashBoard/PanForm";
 import AllPanForm from "../components/DashBoard/AllPanForm";
 import Certificate from "../components/SuperDistributer/Certificate";
+import NewBankID from "../components/DashBoard/NewBankID";
 const RetailerRoutes = () => {
   return (
     <>
@@ -126,7 +127,7 @@ const RetailerRoutes = () => {
         <Route path="/my-commission" element={<MyCommission />} />
         <Route path="/crop-tool" element={<Tool />} />
         <Route path="/download-offline-forms" element={<OffilnePanCard />} />
-        <Route path="apply-offline" element={<PanForm />} />
+        <Route path="/apply-offline" element={<PanForm />} />
         <Route path="/view-all-offline-history" element={<AllPanForm />} />
         <Route
           path="/download-certificate-print"
@@ -140,6 +141,7 @@ const RetailerRoutes = () => {
             />
           }
         />
+        <Route path="/bank-id" element={<NewBankID />} />
       </Routes>
     </>
   );

@@ -160,9 +160,111 @@ const updateApplyOfflineForm = (req, res) => {
   });
 };
 
+const bankidForm = (req, res) => {
+  const {
+    applicant_name,
+    applicant_father,
+    applicant_mother,
+    applicant_number,
+    email,
+    applicant_select_service,
+    aadhar_card,
+    pan_card,
+    business_name,
+  } = req.body;
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+  const domain = "http://localhost:7777";
+  const attached_photo = req.files.attached_photo
+    ? `${domain}/uploads/${req.files.attached_photo[0].filename}`
+    : null;
+
+  const attached_kyc = req.files.attached_kyc
+    ? req.files.attached_kyc
+        .map((file) => `${domain}/uploads/${file.filename}`)
+        .join(",")
+    : null;
+  const bank_passbook = req.files.bank_passbook
+    ? `${domain}/uploads/${req.files.bank_passbook[0].filename}`
+    : null;
+  const shop_photo = req.files.shop_photo
+    ? `${domain}/uploads/${req.files.shop_photo[0].filename}`
+    : null;
+  const electric_bill = req.files.electric_bill
+    ? `${domain}/uploads/${req.files.electric_bill[0].filename}`
+    : null;
+
+  // const query = `
+  //       INSERT INTO apply_offline_form (
+  //           applicant_name,
+  //           applicant_father,
+  //           applicant_number,
+  //           applicant_select_service,
+  //           attached_form,
+  //           attached_photo,
+  //           attached_sign,
+  //           attached_kyc,
+  //           created_at
+  //       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  //   `;
+  const query = `
+        INSERT INTO apply_offline_form (
+            applicant_name,
+    applicant_father,
+    applicant_mother,
+    applicant_number,
+    email,
+    applicant_select_service,
+    aadhar_card,
+    pan_card,
+    business_name,
+    attached_photo,
+    attached_kyc,
+    bank_passbook,
+    shop_photo,
+    electric_bill,
+    created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+  db.query(
+    query,
+    [
+      applicant_name,
+      applicant_father,
+      applicant_mother,
+      applicant_number,
+      email,
+      applicant_select_service,
+      aadhar_card,
+      pan_card,
+      business_name,
+      attached_photo,
+      attached_kyc,
+      bank_passbook,
+      shop_photo,
+      electric_bill,
+      createdAt,
+    ],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting data into MySQL:", err);
+        res.status(500).json({ error: "Database error" });
+        return;
+      }
+
+      res
+        .status(200)
+        .json({ message: "Form submitted successfully", id: result.insertId });
+    }
+  );
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
   getApplyOfflineForm,
   updateApplyOfflineForm,
+  bankidForm,
 };
