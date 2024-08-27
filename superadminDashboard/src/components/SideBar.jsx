@@ -1126,34 +1126,34 @@ const SuperAdminData = [
     // 	},
     // ],
   },
-  {
-    title: "Aadhar Linking Status",
-    path: "/aadhar-linking-status",
-    // icon: <IoIcons.IoIosPaper color="black" />,
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
-    // iconClosed: <RiIcons.RiArrowDownSFill color="black"/>,
-    // iconOpened: <RiIcons.RiArrowUpSFill color="black"/>,
+  // {
+  //   title: "Aadhar Linking Status",
+  //   path: "/aadhar-linking-status",
+  //   // icon: <IoIcons.IoIosPaper color="black" />,
+  //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //   // iconClosed: <RiIcons.RiArrowDownSFill color="black"/>,
+  //   // iconOpened: <RiIcons.RiArrowUpSFill color="black"/>,
 
-    // subNav: [
-    // 	{
-    // 		title: "Service 1",
-    // 		path: "/services/services1",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 		cName: "sub-nav",
-    // 	},
-    // 	{
-    // 		title: "Service 2",
-    // 		path: "/services/services2",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 		cName: "sub-nav",
-    // 	},
-    // 	{
-    // 		title: "Service 3",
-    // 		path: "/services/services3",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // ],
-  },
+  //   // subNav: [
+  //   // 	{
+  //   // 		title: "Service 1",
+  //   // 		path: "/services/services1",
+  //   // 		icon: <IoIcons.IoIosPaper />,
+  //   // 		cName: "sub-nav",
+  //   // 	},
+  //   // 	{
+  //   // 		title: "Service 2",
+  //   // 		path: "/services/services2",
+  //   // 		icon: <IoIcons.IoIosPaper />,
+  //   // 		cName: "sub-nav",
+  //   // 	},
+  //   // 	{
+  //   // 		title: "Service 3",
+  //   // 		path: "/services/services3",
+  //   // 		icon: <IoIcons.IoIosPaper />,
+  //   // 	},
+  //   // ],
+  // },
   {
     title: "Wallet",
     path: "#",
@@ -1316,10 +1316,20 @@ const SuperAdminData = [
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
-        title: "Buy User ID Limit",
-        path: "/buy-admin-id",
+        title: "Create Distributor",
+        path: "/create-distributor",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+      {
+        title: "Create Retailer",
+        path: "/create-retailer",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      // {
+      //   title: "Buy User ID Limit",
+      //   path: "/buy-admin-id",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
     ],
   },
   {

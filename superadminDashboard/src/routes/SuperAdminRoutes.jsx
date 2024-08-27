@@ -33,6 +33,9 @@ import SAWalletWithdraw from "../components/SuperAdmin/SAWalletWithdraw";
 import SAFundTransferStatus from "../components/SuperAdmin/SAFundTransferStatus";
 import SAWalletWithdrawRequests from "../components/SuperAdmin/SAWalletWithdrawRequests";
 import SACommisionSummary from "../components/SuperAdmin/SACommisionSummary.jsx";
+import SACreateSuperDistributor from "../components/SuperAdmin/SACreateSuperDistributor.jsx";
+import SACreateDistributor from "../components/SuperAdmin/SACreateDistributor.jsx";
+import SACreateRetailer from "../components/SuperAdmin/SACreateRetailer.jsx";
 
 
 
@@ -42,11 +45,11 @@ const SuperAdminRoutes = () => {
       <Routes>
         <Route path="/dashboard" element={<SuperAdminDashboard />} />
         <Route path="/update-profile" element={<SAProfile />} />
-        <Route
+        {/* <Route
           path="/aadhar-linking-status"
           element={<AadharLinkingStatus />}
-        />
-        <Route path="/training-video" element={<TrainingVideo />} />
+        /> */}
+        {/* <Route path="/training-video" element={<TrainingVideo />} /> */}
 
         <Route
           path="/wallet-transaction-report"
@@ -69,8 +72,10 @@ const SuperAdminRoutes = () => {
         <Route path="/2-step-verification" element={<SAStepVerification />} />
         <Route path="/website-setting" element={<SAWebsiteSetting />} />
 
-        {/* <Route path="/create-super-distributor" element={<CreateSuperDistributor />} /> */}
+        <Route path="/create-super-distributor" element={<SACreateSuperDistributor />} />
         <Route path="/create-white-label" element={<SACreateWhiteLabel />} />
+        <Route path="/create-distributor" element={<SACreateDistributor />} />
+        <Route path="/create-retailer" element={<SACreateRetailer />} />
         {/* <Route path="/buy-admin-id" element={<BuyUserId />} /> */}
 
         <Route
