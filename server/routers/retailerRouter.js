@@ -7,6 +7,8 @@ const {
   getApplyOfflineForm,
   updateApplyOfflineForm,
   bankidForm,
+  getBalance,
+  panVerification,
 } = require("../controllers/retailerController");
 
 const router = express.Router();
@@ -46,5 +48,7 @@ router.post(
 router.get("/getApplyOfflineFormByid/:id", getApplyOfflineFormByid);
 router.get("/getApplyOfflineForm", getApplyOfflineForm);
 router.put("/updateApplyOfflineForm/:id", updateApplyOfflineForm);
+router.get("/get-balance", getBalance);
+router.get("/pan-verify", panVerification);
 
 module.exports = router;

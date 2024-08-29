@@ -12,13 +12,18 @@ const NewBankID = () => {
   const [formData, setFormData] = useState({
     applicant_name: "",
     applicant_father: "",
+    applicant_mother: "",
     applicant_number: "",
+    email: "",
     applicant_select_service: "",
-    other: "",
-    attached_form: null,
+    aadhar_card: "",
+    pan_card: "",
+    business_name: "",
     attached_photo: null,
-    attached_sign: null,
     attached_kyc: [],
+    bank_passbook: null,
+    shop_photo: null,
+    electric_bill: null,
   });
 
   const handleChange = (e) => {
@@ -35,20 +40,27 @@ const NewBankID = () => {
     }
   };
 
-  const handleSelect = (e) => {
-    const selectItem = e.target.value;
-    setSelectOption(selectItem === "E-Stamp");
-  };
+  // const handleSelect = (e) => {
+  //   const selectItem = e.target.value;
+  //   setSelectOption(selectItem === "E-Stamp");
+  // };
 
   const validateForm = () => {
     const errors = {};
     if (!formData.applicant_name) errors.applicant_name = "Name is required";
     if (!formData.applicant_father)
       errors.applicant_father = "Father's name is required";
+    if (!formData.applicant_mother)
+      errors.applicant_father = "Mother's name is required";
     if (!formData.applicant_number)
       errors.applicant_number = "Number is required";
+    if (!formData.email) errors.email = "Email ID is required";
     if (!formData.applicant_select_service)
       errors.applicant_select_service = "Service selection is required";
+    if (!formData.aadhar_card) errors.aadhar_card = "Aadhar Card is required";
+    if (!formData.pan_card) errors.pan_card = "Pan Card is required";
+    if (!formData.business_name)
+      errors.business_name = "Business / Shop name is required";
     return errors;
   };
 
@@ -63,25 +75,30 @@ const NewBankID = () => {
     const formDataObj = new FormData();
     formDataObj.append("applicant_name", formData.applicant_name);
     formDataObj.append("applicant_father", formData.applicant_father);
+    formDataObj.append("applicant_mother", formData.applicant_mother);
     formDataObj.append("applicant_number", formData.applicant_number);
+    formDataObj.append("email", formData.email);
     formDataObj.append(
       "applicant_select_service",
       formData.applicant_select_service
     );
-    formDataObj.append("other", formData.other);
-    if (formData.attached_form)
-      formDataObj.append("attached_form", formData.attached_form);
+    formDataObj.append("aadhar_card", formData.aadhar_card);
+    formDataObj.append("pan_card", formData.pan_card);
+    formDataObj.append("business_name", formData.business_name);
     if (formData.attached_photo)
       formDataObj.append("attached_photo", formData.attached_photo);
-    if (formData.attached_sign)
-      formDataObj.append("attached_sign", formData.attached_sign);
     formData.attached_kyc.forEach((file) => {
       formDataObj.append("attached_kyc", file);
     });
-
+    if (formData.bank_passbook)
+      formDataObj.append("bank_passbook", formData.bank_passbook);
+    if (formData.bank_passbook)
+      formDataObj.append("shop_photo", formData.shop_photo);
+    if (formData.electric_bill)
+      formDataObj.append("electric_bill", formData.electric_bill);
     try {
       const response = await axios.post(
-        `http://localhost:7777/api/auth/retailer/applyOfflineForm`,
+        `http://localhost:7777/api/auth/retailer/bankidForm`,
         formDataObj,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -170,6 +187,27 @@ const NewBankID = () => {
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <div className="input-group mb-3">
+                        <span className="input-group-text">
+                          <IoMail />
+                        </span>
+                        <div className="form-floating">
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="floatingInputGroup2"
+                            placeholder="Username"
+                            name="applicant_mother"
+                            value={formData.applicant_mother}
+                            onChange={handleChange}
+                          />
+                          <label htmlFor="floatingInputGroup2">
+                            Applicant Mother Name
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="input-group">
                         <span className="input-group-text">
                           <FaMobileAlt />
@@ -187,6 +225,25 @@ const NewBankID = () => {
                           <label htmlFor="floatingInputGroup3">
                             Applicant Number
                           </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <div className="input-group">
+                        <span className="input-group-text">
+                          <FaMobileAlt />
+                        </span>
+                        <div className="form-floating">
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="floatingInputGroup3"
+                            placeholder="Username"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                          />
+                          <label htmlFor="floatingInputGroup3">Email ID</label>
                         </div>
                       </div>
                     </div>
@@ -218,7 +275,7 @@ const NewBankID = () => {
                         </div>
                       </div>
                     </div>
-                    {selectOption && (
+                    {/* {selectOption && (
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <div className="input-group">
                           <span className="input-group-text">
@@ -240,7 +297,28 @@ const NewBankID = () => {
                           </div>
                         </div>
                       </div>
-                    )}
+                    )} */}
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <div className="input-group">
+                        <span className="input-group-text">
+                          <FaMobileAlt />
+                        </span>
+                        <div className="form-floating">
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="floatingInputGroup3"
+                            placeholder="Username"
+                            name="aadhar_card"
+                            value={formData.aadhar_card}
+                            onChange={handleChange}
+                          />
+                          <label htmlFor="floatingInputGroup3">
+                            aadhar_card
+                          </label>
+                        </div>
+                      </div>
+                    </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div>
                         <label htmlFor="formFileLg1" className="form-label">
