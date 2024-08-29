@@ -1,5 +1,5 @@
 const { getDataFromClientApi } = require("../APIS URL/instpayApis");
-const { db } = require("../connect");
+// const { db } = require("../connect");
 const moment = require("moment-timezone");
 
 const applyOfflineForm = (req, res) => {
@@ -249,39 +249,70 @@ const bankidForm = (req, res) => {
   );
 };
 
-const getBalance = async (req, res) => {
-  try {
-    const token = process.env.APITokenInstapay; // or fetch it dynamically
-    const username = process.env.APIUsernameInstapay; // or fetch from request, etc.
+// const getBalance = async (req, res) => {
+//   try {
+//     const token = process.env.APITokenInstapay; // or fetch it dynamically
+//     const username = process.env.APIUsernameInstapay; // or fetch from request, etc.
 
-    const data = await getDataFromClientApi(
-      "/v3/recharge/balance",
-      token,
-      username,
-      { format: "json" }
-    );
-    res.json(data);
-  } catch (error) {
-    res.status(500).send("Error fetching data from client API");
-  }
+//     const data = await getDataFromClientApi(
+//       "/v3/recharge/balance",
+//       token,
+//       username,
+//       { format: "json" }
+//     );
+//     res.json(data);
+//   } catch (error) {
+//     res.status(500).send("Error fetching data from client API");
+//   }
+// };
+
+const getBalance = (req, res) => {
+  const token = process.env.APITokenInstapay; // or fetch it dynamically
+  const username = process.env.APIUsernameInstapay; // or fetch from request, etc.
+
+  getDataFromClientApi("/v3/recharge/balance", token, username, { format: "json" })
+    .then(data => {
+      res.json(data);
+    })
+    .catch(error => {
+      res.status(500).send("Error fetching data from client API");
+    });
 };
 
+
 const panVerification = async (req, res) => {
-  try {
+  
     const token = process.env.APITokenInstapay; // or fetch it dynamically
     const username = process.env.APIUsernameInstapay; // or fetch from request, etc.
 
-    const data = await getDataFromClientApi(
+    getDataFromClientApi(
       "/v3/verification/pan_verification",
       token,
       username,
       { number: "FTIPS5510K", orderid: "123456", format: "json" }
-    );
-    res.json(data);
-  } catch (error) {
+    ).then(data => {
+      res.json(data);
+    }).catch (error => {
     res.status(500).send("Error fetching data from client API");
-  }
+  })
 };
+
+// const panVerification = async (req, res) => {
+//   try {
+//     const token = process.env.APITokenInstapay; // or fetch it dynamically
+//     const username = process.env.APIUsernameInstapay; // or fetch from request, etc.
+
+//     const data = await getDataFromClientApi(
+//       "/v3/verification/pan_verification",
+//       token,
+//       username,
+//       { number: "FTIPS5510K", orderid: "123456", format: "json" }
+//     );
+//     res.json(data);
+//   } catch (error) {
+//     res.status(500).send("Error fetching data from client API");
+//   }
+// };
 
 module.exports = {
   applyOfflineForm,

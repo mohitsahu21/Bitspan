@@ -15,6 +15,7 @@ function App() {
   const location = useLocation();
   const [user,setUser] = useState(currentUser.role);
   
+  // console.log(import.meta.env.VITE_userId)
   useEffect(()=>{
     setUser(currentUser.role)
   },[currentUser.role])
