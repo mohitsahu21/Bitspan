@@ -1,5 +1,5 @@
 const { getDataFromClientApi } = require("../APIS URL/instpayApis");
-// const { db } = require("../connect");
+const { db } = require("../connect");
 const moment = require("moment-timezone");
 
 const applyOfflineForm = (req, res) => {
