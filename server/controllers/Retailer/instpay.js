@@ -21,7 +21,7 @@ const getBalance = (req, res) => {
 
 const panVerification = async (req, res) => {
   const token = process.env.APITokenInstapay; // or fetch it dynamically
-  const username = process.env.APIUsernameInstapay; // or fetch from request, etc.
+  const username = process.env.APIUsernameInstapay;
 
   const { number, orderid } = req.query;
 
@@ -41,23 +41,6 @@ const panVerification = async (req, res) => {
       res.status(500).send("Error fetching data from client API");
     });
 };
-
-// const panVerification = async (req, res) => {
-//   try {
-//     const token = process.env.APITokenInstapay; // or fetch it dynamically
-//     const username = process.env.APIUsernameInstapay; // or fetch from request, etc.
-
-//     const data = await getDataFromClientApi(
-//       "/v3/verification/pan_verification",
-//       token,
-//       username,
-//       { number: "FTIPS5510K", orderid: "123456", format: "json" }
-//     );
-//     res.json(data);
-//   } catch (error) {
-//     res.status(500).send("Error fetching data from client API");
-//   }
-// };
 
 const gstVerification = async (req, res) => {
   const token = process.env.APITokenInstapay; // or fetch it dynamically
@@ -119,3 +102,20 @@ module.exports = {
   adharVerification,
   adharotpVerification,
 };
+
+// const panVerification = async (req, res) => {
+//   try {
+//     const token = process.env.APITokenInstapay; // or fetch it dynamically
+//     const username = process.env.APIUsernameInstapay; // or fetch from request, etc.
+
+//     const data = await getDataFromClientApi(
+//       "/v3/verification/pan_verification",
+//       token,
+//       username,
+//       { number: "FTIPS5510K", orderid: "123456", format: "json" }
+//     );
+//     res.json(data);
+//   } catch (error) {
+//     res.status(500).send("Error fetching data from client API");
+//   }
+// };
