@@ -36,6 +36,8 @@ import SACommisionSummary from "../components/SuperAdmin/SACommisionSummary.jsx"
 import SACreateSuperDistributor from "../components/SuperAdmin/SACreateSuperDistributor.jsx";
 import SACreateDistributor from "../components/SuperAdmin/SACreateDistributor.jsx";
 import SACreateRetailer from "../components/SuperAdmin/SACreateRetailer.jsx";
+import SACreatePackages from "../components/SuperAdmin/SACreatePackages.jsx";
+import SAViewPackages from "../components/SuperAdmin/SAViewPackages.jsx";
 
 
 
@@ -62,6 +64,14 @@ const SuperAdminRoutes = () => {
         <Route
           path="commision-full-summary"
           element={<SACommisionSummary />}
+        />
+        <Route
+          path="create-package"
+          element={<SACreatePackages/>}
+        />
+        <Route
+          path="view-packages"
+          element={<SAViewPackages/>}
         />
 
         <Route

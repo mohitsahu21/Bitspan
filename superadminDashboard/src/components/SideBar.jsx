@@ -1260,6 +1260,16 @@ const SuperAdminData = [
         path: "/commision-full-summary",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+      {
+        title: "Create Package",
+        path: "/create-package",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "View Packages",
+        path: "/view-packages",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
       //   {
       //   title: "Wallet Withdraw Requests",
       //   path: "/wallet-withdraw-requests",
