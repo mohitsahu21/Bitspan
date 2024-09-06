@@ -32,7 +32,8 @@ const rechargeMobile = (req, res) => {
 };
 
 const rechargeCallback = (req, res) => {
-  const { STATUS, OPTXNID, YOURREQID } = req.query;
+  // const { STATUS, OPTXNID, YOURREQID } = req.query;
+  const { txid, status, opid } = req.query;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
@@ -43,7 +44,7 @@ const rechargeCallback = (req, res) => {
   `;
 
   // Execute the SQL query
-  db.query(query, [YOURREQID, STATUS, OPTXNID, createdAt], (err, result) => {
+  db.query(query, [txid, status, opid, createdAt], (err, result) => {
     if (err) {
       console.error("Error inserting data:", err);
       return res.status(500).send("Internal Server Error");

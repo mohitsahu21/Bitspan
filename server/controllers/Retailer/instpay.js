@@ -95,12 +95,151 @@ const adharotpVerification = async (req, res) => {
     });
 };
 
+const bankverification = async (req, res) => {
+  const token = process.env.APITokenInstapay;
+  const username = process.env.APIUsernameInstapay;
+  const { ifsc, number, orderid } = req.query;
+  if (!ifsc || !number || !orderid) {
+    return res
+      .status(400)
+      .json({ error: "IFSC, Number, OrderID are Required" });
+  }
+  getDataFromClientApi("/v3/bank_verification/api", token, username, {
+    ifsc: ifsc,
+    number: number,
+    orderid: orderid,
+  })
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      res.status(500).send("Error fetching data from client API");
+    });
+};
+
+const getDthPlan = async (req, res) => {
+  const token = process.env.APITokenInstapay;
+  const username = process.env.APIUsernameInstapay;
+  // Call the client API with the dynamic values
+  getDataFromClientApi("/v3/dth_connection/get_plan", token, username, {
+    opcode: "TPC",
+  })
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      res.status(500).send("Error fetching data from client API");
+    });
+};
+
+const applyDth = async (req, res) => {
+  const token = process.env.APITokenInstapay;
+  const username = process.env.APIUsernameInstapay;
+
+  const {
+    opcode,
+    number,
+    amount,
+    plan_id,
+    first_name,
+    last_name,
+    full_address,
+    postal_code,
+    orderid,
+  } = req.body;
+
+  // Check if all required parameters are provided
+  if (
+    !opcode ||
+    !number ||
+    !amount ||
+    !plan_id ||
+    !first_name ||
+    !last_name ||
+    !full_address ||
+    !postal_code ||
+    !orderid
+  ) {
+    return res.status(400).json({ error: "All parameters are required" });
+  }
+
+  getDataFromClientApi("/v3/dth_connection/api", token, username, {
+    opcode: opcode,
+    number: number,
+    amount: amount,
+    plan_id: plan_id,
+    first_name: first_name,
+    last_name: last_name,
+    full_address: full_address,
+    postal_code: postal_code,
+    orderid: orderid,
+  })
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      res.status(500).send("Error applying DTH connection");
+    });
+};
+
+const billfetch = (req, res) => {
+  const token = process.env.APITokenInstapay;
+  const username = process.env.APIUsernameInstapay;
+
+  const { number, opcode } = req.body;
+
+  if (!number || !opcode) {
+    return res.status(400).json({ error: "Number and Opcode are required" });
+  }
+
+  getDataFromClientApi("/plan_api/bill_fetch", username, token, {
+    number: number,
+    opcode: opcode,
+  })
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      res.status(500).send("Error fetching bill");
+    });
+};
+
+const rechargeApi = (req, res) => {
+  const token = process.env.APITokenInstapay;
+  const username = process.env.APIUsernameInstapay;
+
+  const { opcode, number, amount, orderid } = req.body;
+
+  if (!number || !opcode || !amount || !orderid) {
+    return res.status(400).json({ error: "All are required" });
+  }
+
+  getDataFromClientApi("/v3/recharge/api", username, token, {
+    opcode: opcode,
+    number: number,
+    amount: amount,
+    orderid: orderid,
+    format: "json",
+  })
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      res.status(500).send("Error in recharge");
+    });
+};
+
 module.exports = {
   getBalance,
   panVerification,
   gstVerification,
   adharVerification,
   adharotpVerification,
+  bankverification,
+  getDthPlan,
+  applyDth,
+  billfetch,
+  rechargeApi,
 };
 
 // const panVerification = async (req, res) => {

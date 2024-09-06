@@ -9,39 +9,23 @@ const apiClient = axios.create({
   baseURL: `${inspayBaseURL}`,
 });
 
-// const getDataFromClientApi = async (endpoint, token, userId, params = {}) => {
-//   try {
-//     const response = await apiClient.get(endpoint, {
-//       params: {
-//         ...params,
-//         token: token, // API token as a query parameter
-//         username: userId, // User ID as a query parameter
-//       },
-//     });
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error fetching data from client API:", error.message);
-//     throw error;
-//   }
-// };
-
 const getDataFromClientApi = (endpoint, token, userId, params = {}) => {
-  
-  return apiClient.get(endpoint, {
+  return apiClient
+    .get(endpoint, {
       params: {
         ...params,
         token: token, // API token as a query parameter
         username: userId, // User ID as a query parameter
       },
-    }).then(response => {
-     return response.data
-    }).catch (error => {
-    console.error("Error fetching data from client API:", error.message);
-    throw error;
-  })
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error("Error fetching data from client API:", error.message);
+      throw error;
+    });
 };
-
-
 
 module.exports = {
   getDataFromClientApi,
@@ -86,4 +70,20 @@ module.exports = {
 
 // module.exports = {
 //   getDataFromClientApi,
+// };
+
+// const getDataFromClientApi = async (endpoint, token, userId, params = {}) => {
+//   try {
+//     const response = await apiClient.get(endpoint, {
+//       params: {
+//         ...params,
+//         token: token, // API token as a query parameter
+//         username: userId, // User ID as a query parameter
+//       },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error fetching data from client API:", error.message);
+//     throw error;
+//   }
 // };
