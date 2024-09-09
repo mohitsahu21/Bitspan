@@ -1226,6 +1226,28 @@ const SuperAdminData = [
     ],
   },
   {
+    title: "All Transaction",
+    path: "#",
+    // path: "/today-all-transaction",
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    subNav: [
+      // {
+     
+      {
+        title: "Today All Transaction",
+        path: "/today-all-transaction",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "All Transaction",
+        path: "/all-transaction",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+    ],
+  },
+  {
     title: "Commision",
     path: "#",
     icon: <IoIcons.IoIosPaper color="#fe662b" />,
@@ -1537,6 +1559,11 @@ const SuperAdminData = [
       {
         title: "Fund Transfer Status",
         path: "/fund-transfer-status",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Choice User Notification",
+        path: "/choice-user-notification",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],

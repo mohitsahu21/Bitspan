@@ -38,6 +38,9 @@ import SACreateDistributor from "../components/SuperAdmin/SACreateDistributor.js
 import SACreateRetailer from "../components/SuperAdmin/SACreateRetailer.jsx";
 import SACreatePackages from "../components/SuperAdmin/SACreatePackages.jsx";
 import SAViewPackages from "../components/SuperAdmin/SAViewPackages.jsx";
+import SATodayAllTransaction from "../components/SuperAdmin/SATodayAllTransaction.jsx";
+import SAAllTransaction from "../components/SuperAdmin/SAAllTransaction.jsx";
+import SAChangeUserNotification from "../components/SuperAdmin/SAChangeUserNotification.jsx";
 
 
 
@@ -118,6 +121,9 @@ const SuperAdminRoutes = () => {
       <Route path="/bank-account-setup/:bank_id/:user_id" element={<SABankAccountVerify />} />
       <Route path="/wallet-withdraw" element={<SAWalletWithdraw/>} />
       <Route path="/fund-transfer-status" element={<SAFundTransferStatus />} />
+      <Route path="/today-all-transaction" element={<SATodayAllTransaction />} />
+      <Route path="/all-transaction" element={<SAAllTransaction />} />
+      <Route path="/choice-user-notification" element={<SAChangeUserNotification />} />
       {/* <Route path="/download-certificate-print" element={<Certificate user="WHITE LABEL" name="Aashish Kumar"
         address="Jabalpur, BIHAR - 482001"
         date="02-Jul-2024"

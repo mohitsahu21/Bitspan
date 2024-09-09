@@ -148,8 +148,9 @@ const SAViewPackages = () => {
                 {/* Package details Model  start*/}
 
                 <Modal
-                    size="lg"
+                    // size="lg"
                     show={showPackgeDetail}
+                    fullscreen={true}
                     onHide={() => setShowPackgeDetail(false)}
                     aria-labelledby="packageDetail-modal-sizes-title-lg"
                 >
@@ -167,7 +168,8 @@ const SAViewPackages = () => {
 
                 {/*Edit Package details Model start*/}
                 <Modal
-                    size="lg"
+                    // size="lg"
+                    fullscreen={true}
                     show={editPackgeDetail}
                     onHide={() => setEditPackgeDetail(false)}
                     aria-labelledby="example-modal-sizes-title-lg"

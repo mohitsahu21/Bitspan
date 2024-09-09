@@ -148,7 +148,7 @@ const SACreatePackages = () => {
 
                                         </div>
 
-                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                        {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
                                                 Enter Electricity Bill Pay  Commission
                                             </label>
@@ -166,64 +166,9 @@ const SACreatePackages = () => {
 
                                                 />
                                             </div>
-                                        </div>
-                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                                            <label for="name" class="form-label">
-                                                Enter DTH Recharge Commission
-                                            </label>
-                                            <div class="input-group flex-nowrap">
-                                                <span class="input-group-text" id="addon-wrapping">
-                                                    {" "}
-                                                    <MdNumbers />
-                                                </span>
-                                                <input
-                                                    type="text"
-                                                    id="name"
-                                                    class="form-control"
-                                                    placeholder="Enter IFSC Code"
-                                                    value={"1000"}
-
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                                            <label for="name" class="form-label">
-                                                Enter DTH New Connection Commission
-                                            </label>
-                                            <div class="input-group flex-nowrap">
-                                                <span class="input-group-text" id="addon-wrapping">
-                                                    {" "}
-                                                    <MdNumbers />
-                                                </span>
-                                                <input
-                                                    type="text"
-                                                    id="name"
-                                                    class="form-control"
-                                                    placeholder="Enter IFSC Code"
-                                                    value={"1000"}
-
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                                            <label for="name" class="form-label">
-                                                Enter Insurance Payment Commission
-                                            </label>
-                                            <div class="input-group flex-nowrap">
-                                                <span class="input-group-text" id="addon-wrapping">
-                                                    {" "}
-                                                    <MdNumbers />
-                                                </span>
-                                                <input
-                                                    type="text"
-                                                    id="name"
-                                                    class="form-control"
-                                                    placeholder="Enter IFSC Code"
-                                                    value={"1000"}
-
-                                                />
-                                            </div>
-                                        </div>
+                                        </div> */}
+                                       
+                                      
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
                                                 Enter Google Play Commission
@@ -915,7 +860,83 @@ const SACreatePackages = () => {
 
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                                Enter DTH Recharge Commission
+                                                Enter Dish TV Recharge Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Tata Sky Recharge Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Videocon Recharge Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Sun Direct Recharge Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Airtel DTH Recharge Commission
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -948,7 +969,7 @@ const SACreatePackages = () => {
                                     </div>
                                     <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
                                         <div className="text-center  my-5">
-                                            <h2>Create Bill Payment Commission</h2>
+                                            <h2>Create Offline DTH Recharge Commission</h2>
                                         </div>
 
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
@@ -972,7 +993,658 @@ const SACreatePackages = () => {
 
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                                Enter Bill Payment Commission
+                                                Enter Dish TV Recharge Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Tata Sky Recharge Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Videocon Recharge Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Sun Direct Recharge Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Airtel DTH Recharge Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+
+
+                                        {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div className="text-center  mb-5 mt-3">
+                                                <button className="btn p-2">Change</button>
+                                            </div>
+                                        </div> */}
+                                    </div>
+                                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                                        <div className="text-center  my-5">
+                                            <h2>Create Online New DTH Connection Commission</h2>
+                                        </div>
+
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+
+                                            <label for="name" className="form-label">Select Commission Type</label>
+                                            <div className="input-group flex-nowrap">
+                                                <span className="input-group-text" id="addon-wrapping"> <LuTextSelect /></span>
+                                                <select
+                                                    className="form-select" aria-label="Default select example"
+                                                >
+                                                    <option selected>Select...</option>
+
+                                                    <option value="Delhi">Percentage (%)</option>
+                                                    <option value="Puducherry">Rupees (&#8377;)</option>
+
+                                                </select>
+                                            </div>
+
+
+                                        </div>
+
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Dish TV Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Tata Sky Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Videocon Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Sun Direct Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Airtel DTH Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+
+
+                                        {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div className="text-center  mb-5 mt-3">
+                                                <button className="btn p-2">Change</button>
+                                            </div>
+                                        </div> */}
+                                    </div>
+                                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                                        <div className="text-center  my-5">
+                                            <h2>Create Offline New DTH Connection Commission</h2>
+                                        </div>
+
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+
+                                            <label for="name" className="form-label">Select Commission Type</label>
+                                            <div className="input-group flex-nowrap">
+                                                <span className="input-group-text" id="addon-wrapping"> <LuTextSelect /></span>
+                                                <select
+                                                    className="form-select" aria-label="Default select example"
+                                                >
+                                                    <option selected>Select...</option>
+
+                                                    <option value="Delhi">Percentage (%)</option>
+                                                    <option value="Puducherry">Rupees (&#8377;)</option>
+
+                                                </select>
+                                            </div>
+
+
+                                        </div>
+
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Dish TV Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Tata Sky Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Videocon Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Sun Direct Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Airtel DTH Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+
+
+                                        {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div className="text-center  mb-5 mt-3">
+                                                <button className="btn p-2">Change</button>
+                                            </div>
+                                        </div> */}
+                                    </div>
+                                  
+                                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                                        <div className="text-center  my-5">
+                                            <h2>Create Online Electricity Bill Pay  Commission</h2>
+                                        </div>
+
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+
+                                            <label for="name" className="form-label">Select Commission Type</label>
+                                            <div className="input-group flex-nowrap">
+                                                <span className="input-group-text" id="addon-wrapping"> <LuTextSelect /></span>
+                                                <select
+                                                    className="form-select" aria-label="Default select example"
+                                                >
+                                                    <option selected>Select...</option>
+
+                                                    <option value="Delhi">Percentage (%)</option>
+                                                    <option value="Puducherry">Rupees (&#8377;)</option>
+
+                                                </select>
+                                            </div>
+
+
+                                        </div>
+
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter M.P. Madhya Kshetra Vidyut Vitaran - URBAN Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                            Enter M.P. Madhya Kshetra Vidyut Vitaran - RURAL Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                            Enter M.P. Poorv Kshetra Vidyut Vitaran Company Ltd (RURAL) Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+
+
+                                        {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div className="text-center  mb-5 mt-3">
+                                                <button className="btn p-2">Change</button>
+                                            </div>
+                                        </div> */}
+                                    </div>
+                                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                                        <div className="text-center  my-5">
+                                            <h2>Create Offline Electricity Bill Pay  Commission</h2>
+                                        </div>
+
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+
+                                            <label for="name" className="form-label">Select Commission Type</label>
+                                            <div className="input-group flex-nowrap">
+                                                <span className="input-group-text" id="addon-wrapping"> <LuTextSelect /></span>
+                                                <select
+                                                    className="form-select" aria-label="Default select example"
+                                                >
+                                                    <option selected>Select...</option>
+
+                                                    <option value="Delhi">Percentage (%)</option>
+                                                    <option value="Puducherry">Rupees (&#8377;)</option>
+
+                                                </select>
+                                            </div>
+
+
+                                        </div>
+
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter M.P. Madhya Kshetra Vidyut Vitaran - URBAN Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                            Enter M.P. Madhya Kshetra Vidyut Vitaran - RURAL Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                            Enter M.P. Poorv Kshetra Vidyut Vitaran Company Ltd (RURAL) Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+
+
+                                        {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div className="text-center  mb-5 mt-3">
+                                                <button className="btn p-2">Change</button>
+                                            </div>
+                                        </div> */}
+                                    </div>
+                                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                                        <div className="text-center  my-5">
+                                            <h2>Create Online Insurance Pay  Commission</h2>
+                                        </div>
+
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+
+                                            <label for="name" className="form-label">Select Commission Type</label>
+                                            <div className="input-group flex-nowrap">
+                                                <span className="input-group-text" id="addon-wrapping"> <LuTextSelect /></span>
+                                                <select
+                                                    className="form-select" aria-label="Default select example"
+                                                >
+                                                    <option selected>Select...</option>
+
+                                                    <option value="Delhi">Percentage (%)</option>
+                                                    <option value="Puducherry">Rupees (&#8377;)</option>
+
+                                                </select>
+                                            </div>
+
+
+                                        </div>
+
+                                      
+                                     
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                            Enter Insurance Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+
+
+                                        {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div className="text-center  mb-5 mt-3">
+                                                <button className="btn p-2">Change</button>
+                                            </div>
+                                        </div> */}
+                                    </div>
+                                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                                        <div className="text-center  my-5">
+                                            <h2>Create Offline Insurance Pay  Commission</h2>
+                                        </div>
+
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+
+                                            <label for="name" className="form-label">Select Commission Type</label>
+                                            <div className="input-group flex-nowrap">
+                                                <span className="input-group-text" id="addon-wrapping"> <LuTextSelect /></span>
+                                                <select
+                                                    className="form-select" aria-label="Default select example"
+                                                >
+                                                    <option selected>Select...</option>
+
+                                                    <option value="Delhi">Percentage (%)</option>
+                                                    <option value="Puducherry">Rupees (&#8377;)</option>
+
+                                                </select>
+                                            </div>
+
+
+                                        </div>
+
+                                      
+                                     
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                            Enter Insurance Commission
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
