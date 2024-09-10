@@ -229,6 +229,164 @@ const rechargeApi = (req, res) => {
     });
 };
 
+const getStatus = (req, res) => {
+  const token = process.env.APITokenInstapay;
+  const username = process.env.APIUsernameInstapay;
+
+  const { orderid } = req.body;
+
+  if (!orderid) {
+    return res.status(400).json({ error: "Order ID are required" });
+  }
+
+  getDataFromClientApi("/v3/recharge/status", token, username, {
+    orderid: orderid,
+    format: "json",
+  })
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      res
+        .status(500)
+        .send("Error fetching data from client API", error.message);
+    });
+};
+
+// NSDL API
+const nsdlPan = (req, res) => {
+  const token = process.env.APITokenInstapay;
+  const username = process.env.APIUsernameInstapay;
+
+  const { number, orderid } = req.body;
+
+  if (!number || !orderid) {
+    return res.status(400).json({ error: "Number & Order ID are required" });
+  }
+
+  getDataFromClientApi("/v4/nsdl/new_pan", token, username, {
+    number: number,
+    mode: "EKYC",
+    orderid: orderid,
+  })
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      res
+        .status(500)
+        .send("Error fetching data from client API", error.message);
+    });
+};
+
+const nsdlPanCorrect = (req, res) => {
+  const token = process.env.APITokenInstapay;
+  const username = process.env.APIUsernameInstapay;
+
+  const { number, orderid } = req.body;
+
+  if (!number || !orderid) {
+    return res.status(400).json({ error: "Number & Order ID are required" });
+  }
+
+  getDataFromClientApi("/v4/nsdl/correction", token, username, {
+    number: number,
+    mode: "EKYC",
+    orderid: orderid,
+  })
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      res
+        .status(500)
+        .send("Error fetching data from client API", error.message);
+    });
+};
+
+const nsdlPanIncom = (req, res) => {
+  const token = process.env.APITokenInstapay;
+  const username = process.env.APIUsernameInstapay;
+
+  const { orderid } = req.body;
+
+  if (!orderid) {
+    return res.status(400).json({ error: "Order ID are required" });
+  }
+
+  getDataFromClientApi("/v4/nsdl/incomplete", token, username, {
+    orderid: orderid,
+  })
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      res
+        .status(500)
+        .send("Error fetching data from client API", error.message);
+    });
+};
+
+// check Balance and then Recharge
+
+const operatorMapping = {
+  Airtel: { code: "A", category: "Prepaid" },
+  "BSNL STV": { code: "BR", category: "Prepaid" },
+  "BSNL TOPUP": { code: "BT", category: "Prepaid" },
+  "Airtel Postpaid": { code: "AP", category: "Postpaid" },
+  "BSNL Postpaid": { code: "BSNLMP", category: "Postpaid" },
+  Jio: { code: "RC", category: "Prepaid" },
+  "Jio Postpaid": { code: "JIOP", category: "Postpaid" },
+  Vi: { code: "V", category: "Prepaid" },
+  "Vi Postpaid": { code: "VP", category: "Postpaid" },
+};
+
+const rechargeWithBalanceCheck = (req, res) => {
+  const token = process.env.APITokenInstapay;
+  const username = process.env.APIUsernameInstapay;
+  const { number, amount, orderid, operatorName } = req.body;
+
+  if (!number || !amount || !orderid || !operatorName) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+
+  // Step 1: Fetch balance
+  getDataFromClientApi("/v3/recharge/balance", token, username, {
+    format: "json",
+  })
+    .then((balanceData) => {
+      if (balanceData.balance < amount) {
+        return res.status(400).json({ error: "Insufficient balance" });
+      }
+
+      // Step 2: Map operator name to code
+      const operatorDetails = operatorMapping[operatorName];
+      if (!operatorDetails) {
+        return res.status(400).json({ error: "Invalid operator name" });
+      }
+
+      // Step 3: Perform recharge
+      return getDataFromClientApi("/v3/recharge/api", token, username, {
+        opcode: operatorDetails.code,
+        number: number,
+        amount: amount,
+        orderid: orderid,
+        format: "json",
+      });
+    })
+    .then((rechargeData) => {
+      res.json(rechargeData); // Step 4: Respond with recharge data
+    })
+    .catch((error) => {
+      res
+        .status(500)
+        .json({
+          error: "Error in balance check or recharge",
+          message: error.message,
+        });
+    });
+};
+
 module.exports = {
   getBalance,
   panVerification,
@@ -240,6 +398,11 @@ module.exports = {
   applyDth,
   billfetch,
   rechargeApi,
+  getStatus,
+  nsdlPan,
+  nsdlPanCorrect,
+  nsdlPanIncom,
+  rechargeWithBalanceCheck,
 };
 
 // const panVerification = async (req, res) => {

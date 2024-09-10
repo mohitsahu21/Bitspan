@@ -1218,7 +1218,7 @@ const SuperAdminData = [
         path: "/wallet-transaction-report",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
-        {
+      {
         title: "Wallet Withdraw Requests",
         path: "/wallet-withdraw-requests",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
@@ -2214,7 +2214,7 @@ const Sider = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const { currentUser } = useSelector((state) => state.user);
 
-  const user = currentUser.role;
+  const user = currentUser?.role;
   const navigate = useNavigate();
   const handleDropdownClick = (path) => {
     setActiveDropdown((prev) => (prev === path ? null : path));
@@ -2274,7 +2274,7 @@ const Sider = () => {
             <div className="d-flex">
               <img src={profileLogo} width={50} height={75} className="p-2" />
               <div className="ms-2 p-2 lh-sm">
-                <p className="m-0 fw-bold">{currentUser.name} </p>
+                <p className="m-0 fw-bold">{currentUser?.name} </p>
 
                 <NavDropdown
                   id="nav-dropdown-dark-example"
@@ -2294,7 +2294,7 @@ const Sider = () => {
                     Something
                   </NavDropdown.Item> */}
                 </NavDropdown>
-                <p className="m-0 text-muted">{currentUser.userName}</p>
+                <p className="m-0 text-muted">{currentUser?.userName}</p>
               </div>
             </div>
           </Nav>
@@ -2326,62 +2326,69 @@ const Sider = () => {
                   ></img>
                 )}
               </div>
-
-              {user == "Retailer" &&
-                RetailerSidebarData.map((item, index) => {
-                  return (
-                    <SubMenu
-                      item={item}
-                      key={index}
-                      activeDropdown={activeDropdown}
-                      handleDropdownClick={handleDropdownClick}
-                    />
-                  );
-                })}
-              {user == "SuperDistributor" &&
-                SuperDisData.map((item, index) => {
-                  return (
-                    <SubMenu
-                      item={item}
-                      key={index}
-                      activeDropdown={activeDropdown}
-                      handleDropdownClick={handleDropdownClick}
-                    />
-                  );
-                })}
-              {user == "Distributor" &&
-                DistributorData.map((item, index) => {
-                  return (
-                    <SubMenu
-                      item={item}
-                      key={index}
-                      activeDropdown={activeDropdown}
-                      handleDropdownClick={handleDropdownClick}
-                    />
-                  );
-                })}
-              {user == "WhiteLabel" &&
-                WhiteLabelData.map((item, index) => {
-                  return (
-                    <SubMenu
-                      item={item}
-                      key={index}
-                      activeDropdown={activeDropdown}
-                      handleDropdownClick={handleDropdownClick}
-                    />
-                  );
-                })}
-              {user == "SuperAdmin" &&
-                SuperAdminData.map((item, index) => {
-                  return (
-                    <SubMenu
-                      item={item}
-                      key={index}
-                      activeDropdown={activeDropdown}
-                      handleDropdownClick={handleDropdownClick}
-                    />
-                  );
-                })}
+              {user ? (
+                <>
+                  {user == "Retailer" &&
+                    RetailerSidebarData.map((item, index) => {
+                      return (
+                        <SubMenu
+                          item={item}
+                          key={index}
+                          activeDropdown={activeDropdown}
+                          handleDropdownClick={handleDropdownClick}
+                        />
+                      );
+                    })}
+                  {user == "SuperDistributor" &&
+                    SuperDisData.map((item, index) => {
+                      return (
+                        <SubMenu
+                          item={item}
+                          key={index}
+                          activeDropdown={activeDropdown}
+                          handleDropdownClick={handleDropdownClick}
+                        />
+                      );
+                    })}
+                  {user == "Distributor" &&
+                    DistributorData.map((item, index) => {
+                      return (
+                        <SubMenu
+                          item={item}
+                          key={index}
+                          activeDropdown={activeDropdown}
+                          handleDropdownClick={handleDropdownClick}
+                        />
+                      );
+                    })}
+                  {user == "WhiteLabel" &&
+                    WhiteLabelData.map((item, index) => {
+                      return (
+                        <SubMenu
+                          item={item}
+                          key={index}
+                          activeDropdown={activeDropdown}
+                          handleDropdownClick={handleDropdownClick}
+                        />
+                      );
+                    })}
+                  {user == "SuperAdmin" &&
+                    SuperAdminData.map((item, index) => {
+                      return (
+                        <SubMenu
+                          item={item}
+                          key={index}
+                          activeDropdown={activeDropdown}
+                          handleDropdownClick={handleDropdownClick}
+                        />
+                      );
+                    })}
+                </>
+              ) : (
+                <>
+                  <p>Loading...</p>
+                </>
+              )}
             </SidebarWrap>
           </SidebarNav>
         </IconContext.Provider>
