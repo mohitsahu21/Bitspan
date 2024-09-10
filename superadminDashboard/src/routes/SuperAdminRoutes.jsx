@@ -41,6 +41,8 @@ import SAViewPackages from "../components/SuperAdmin/SAViewPackages.jsx";
 import SATodayAllTransaction from "../components/SuperAdmin/SATodayAllTransaction.jsx";
 import SAAllTransaction from "../components/SuperAdmin/SAAllTransaction.jsx";
 import SAChangeUserNotification from "../components/SuperAdmin/SAChangeUserNotification.jsx";
+import SAWalletWithdrawSummary from "../components/SuperAdmin/SAWalletWithdrawSummary.jsx";
+import SASetWhiteLabelIdPrice from "../components/SuperAdmin/SASetWhiteLabelIdPrice.jsx";
 
 
 
@@ -59,6 +61,10 @@ const SuperAdminRoutes = () => {
         <Route
           path="/wallet-transaction-report"
           element={<SAWalletTransactionReport />}
+        />
+        <Route
+          path="/wallet-withdraw-summary"
+          element={<SAWalletWithdrawSummary />}
         />
         <Route
           path="wallet-withdraw-requests"
@@ -113,6 +119,7 @@ const SuperAdminRoutes = () => {
       <Route path="/complaint-raised-list" element={<SAAllComplaintsList />} />
       {/* <Route path="/download-certificate" element={<WLDownloadCertificate />} /> */}
       <Route path="/change-coupon-price" element={<SAChangeIdSetRate />} />
+      <Route path="/whitelabel-id-set-rate" element={<SASetWhiteLabelIdPrice />} />
       <Route path="/change-nsdl-price" element={<SAChangeNSDLPrice/>} />
       <Route path="/change-uti-price" element={<SAChangeUTIPanPrice/>} />
       <Route path="/change-uti-new-price" element={<SAChangeUTINewCouponPrice />} />
