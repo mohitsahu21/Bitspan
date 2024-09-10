@@ -10,6 +10,11 @@ const {
   applyDth,
   billfetch,
   rechargeApi,
+  getStatus,
+  nsdlPan,
+  nsdlPanCorrect,
+  nsdlPanIncom,
+  rechargeWithBalanceCheck,
 } = require("../../controllers/Retailer/instpay");
 
 const router = express.Router();
@@ -24,5 +29,10 @@ router.get("/dth-plan", getDthPlan);
 router.post("/dth-recharge", applyDth);
 router.post("/bill-fetch", billfetch);
 router.post("/recharge-instpy", rechargeApi);
+router.post("/recharge-status", getStatus);
+router.post("/nsdl-pan-request", nsdlPan);
+router.post("/nsdl-pan-correction", nsdlPanCorrect);
+router.post("/nsdl-pan-incomplete", nsdlPanIncom);
+router.post("/api-recharge", rechargeWithBalanceCheck);
 
 module.exports = router;

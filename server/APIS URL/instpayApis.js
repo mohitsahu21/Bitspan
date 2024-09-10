@@ -10,6 +10,8 @@ const apiClient = axios.create({
 });
 
 const getDataFromClientApi = (endpoint, token, userId, params = {}) => {
+  // console.log(token, userId);
+
   return apiClient
     .get(endpoint, {
       params: {

@@ -2,12 +2,57 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FaMobileAlt } from "react-icons/fa";
 import { BiHomeAlt } from "react-icons/bi";
+import axios from "axios";
 
 const MobileRecharge = () => {
   const [activeTab, setActiveTab] = useState("tab1");
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
+  };
+
+  const [formData, setFormData] = useState({
+    // opcode: "",
+    operatorName: "",
+    number: "",
+    amount: "",
+    orderid: "4654747",
+  });
+  const [response, setResponse] = useState(null);
+
+  const operatorOptions = [
+    { name: "Airtel", value: "Airtel" },
+    { name: "BSNL STV", value: "BSNL STV" },
+    { name: "BSNL TOPUP", value: "BSNL TOPUP" },
+    { name: "Airtel Postpaid", value: "Airtel Postpaid" },
+    { name: "BSNL Postpaid", value: "BSNL Postpaid" },
+    { name: "Jio", value: "Jio" },
+    { name: "Jio Postpaid", value: "Jio Postpaid" },
+    { name: "Vi", value: "Vi" },
+    { name: "Vi Postpaid", value: "Vi Postpaid" },
+  ];
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await axios.post(
+        // "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/recharge-instpy",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/api-recharge",
+        formData
+      );
+      setResponse(result.data); // Update the response state with the received data
+      console.log(result.data);
+    } catch (error) {
+      console.log("Error in recharge:", error);
+      setResponse(null);
+    }
   };
 
   return (
@@ -20,13 +65,17 @@ const MobileRecharge = () => {
               <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none">
                 {/* <Sider /> */}
               </div>
-              <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12  col-sm-12  col-11
-                             mt-5 formdata">
+              <div
+                className="col-xxl-12 col-xl-12 col-lg-12 col-md-12  col-sm-12  col-11
+                             mt-5 formdata"
+              >
                 <div className="main shadow-none">
                   <div className="row shadow-none mb-5">
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
-                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Prepaid Recharge</h4>
+                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
+                          Prepaid Recharge
+                        </h4>
                         <h6 className="mx-lg-5">
                           {" "}
                           <BiHomeAlt /> &nbsp; / &nbsp; Prepaid Recharge
@@ -66,7 +115,7 @@ const MobileRecharge = () => {
                                 <div className="text-center">
                                   <h3 className="mb-4">Prepaid Recharge</h3>
                                   <div>
-                                    <form action="">
+                                    <form onSubmit={handleSubmit}>
                                       <div class="input-group mb-3">
                                         <span class="input-group-text">
                                           <FaMobileAlt />
@@ -77,25 +126,44 @@ const MobileRecharge = () => {
                                             class="form-control"
                                             id="floatingInputGroup1"
                                             placeholder="Username"
+                                            value={formData.number}
+                                            onChange={handleChange}
+                                            name="number"
+                                            autoComplete="off"
                                           />
                                           <label for="floatingInputGroup1">
                                             Mobile Number
                                           </label>
                                         </div>
                                       </div>
+
                                       <div class="input-group mb-3">
                                         <div class="form-floating">
-                                          <input
-                                            type="text"
-                                            class="form-control"
-                                            id="floatingInputGroup1"
-                                            placeholder="Username"
-                                          />
-                                          <label for="floatingInputGroup1">
+                                          <select
+                                            class="form-select"
+                                            id="floatingSelectOperator"
+                                            value={formData.operatorName}
+                                            onChange={handleChange}
+                                            name="operatorName"
+                                            aria-label="Select Operator"
+                                          >
+                                            <option value="">
+                                              Select Operator
+                                            </option>
+                                            {operatorOptions.map((item) => (
+                                              <>
+                                                <option value={item.value}>
+                                                  {item.name}
+                                                </option>
+                                              </>
+                                            ))}
+                                          </select>
+                                          <label for="floatingSelectOperator">
                                             Select Operator
                                           </label>
                                         </div>
                                       </div>
+
                                       <div class="input-group mb-3">
                                         <div class="form-floating">
                                           <input
@@ -103,27 +171,10 @@ const MobileRecharge = () => {
                                             class="form-control"
                                             id="floatingInputGroup1"
                                             placeholder="Username"
-                                          />
-                                          <label for="floatingInputGroup1">
-                                            Select Circle
-                                          </label>
-                                        </div>
-                                      </div>
-                                      <div className="text-start mt-2 mb-3">
-                                        <button
-                                          className="btn btn-none text-light"
-                                          style={{ backgroundColor: "#6d70ff" }}
-                                        >
-                                          Check Plans
-                                        </button>
-                                      </div>
-                                      <div class="input-group mb-3">
-                                        <div class="form-floating">
-                                          <input
-                                            type="text"
-                                            class="form-control"
-                                            id="floatingInputGroup1"
-                                            placeholder="Username"
+                                            value={formData.amount}
+                                            onChange={handleChange}
+                                            name="amount"
+                                            autoComplete="off"
                                           />
                                           <label for="floatingInputGroup1">
                                             Amount
@@ -134,6 +185,7 @@ const MobileRecharge = () => {
                                         <button
                                           className="btn btn-none text-light"
                                           style={{ backgroundColor: "#6d70ff" }}
+                                          type="submit"
                                         >
                                           Recharge Now
                                         </button>
@@ -254,7 +306,6 @@ const MobileRecharge = () => {
 
 export default MobileRecharge;
 const Wrapper = styled.div`
-  
   .circle-nav {
     width: 100%;
     display: flex;
@@ -326,16 +377,57 @@ const Wrapper = styled.div`
   .p-4 {
     padding: 1.5rem !important;
   }
-  @media (min-width: 1025px) and (max-width : 1500px){
+  @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
-     
       padding-left: 15rem;
     }
   }
   @media (min-width: 1500px) {
     .formdata {
-     
       padding-left: 15rem;
     }
   }
 `;
+
+{
+  /* <div class="input-group mb-3">
+                                        <div class="form-floating">
+                                          <input
+                                            type="text"
+                                            class="form-control"
+                                            id="floatingInputGroup1"
+                                            placeholder="Username"
+                                          />
+                                          <label for="floatingInputGroup1">
+                                            Select Circle
+                                          </label>
+                                        </div>
+                                      </div>
+                                      <div className="text-start mt-2 mb-3">
+                                        <button
+                                          className="btn btn-none text-light"
+                                          style={{ backgroundColor: "#6d70ff" }}
+                                        >
+                                          Check Plans
+                                        </button>
+                                      </div> */
+}
+
+{
+  /* <div class="input-group mb-3">
+                                        <div class="form-floating">
+                                          <input
+                                            type="text"
+                                            class="form-control"
+                                            id="floatingInputGroup1"
+                                            placeholder="Username"
+                                            value={formData.opcode}
+                                            onChange={handleChange}
+                                            name="opcode"
+                                          />
+                                          <label for="floatingInputGroup1">
+                                            Select Operator
+                                          </label>
+                                        </div>
+                                      </div> */
+}

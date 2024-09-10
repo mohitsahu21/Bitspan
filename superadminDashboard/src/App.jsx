@@ -13,12 +13,12 @@ import SuperAdminRoutes from "./routes/SuperAdminRoutes";
 function App() {
   const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
-  const [user,setUser] = useState(currentUser.role);
-  
+  const [user, setUser] = useState(currentUser?.role);
+
   // console.log(import.meta.env.VITE_userId)
-  useEffect(()=>{
-    setUser(currentUser.role)
-  },[currentUser.role])
+  useEffect(() => {
+    setUser(currentUser?.role);
+  }, [currentUser?.role]);
   return (
     <>
       {location.pathname !== "/" &&
