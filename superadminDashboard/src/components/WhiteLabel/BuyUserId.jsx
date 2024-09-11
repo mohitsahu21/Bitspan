@@ -9,7 +9,7 @@ const BuyUserId = () => {
   const [data, setData] = useState({
     userId: "",
     availableWhiteLabelId: "20",
-    availableSuperAdminId: "30",
+    // availableSuperAdminId: "30",
 
 
 
@@ -104,9 +104,9 @@ const BuyUserId = () => {
                                 <option value="whiteLabel" >
                                   White Label
                                 </option>
-                                <option value="superDistributor" >
+                                {/* <option value="superDistributor" >
                                   Super Distributor
-                                </option>
+                                </option> */}
 
 
 
@@ -244,7 +244,7 @@ const BuyUserId = () => {
 
                               </select>
                             </div>
-                            <p className="mt-3"><strong> Wallet Available Amount : </strong> Rs. 500.00</p>
+                            {/* <p className="mt-3"><strong> Wallet Available Amount : </strong> Rs. 500.00</p> */}
                           </div>
 
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 mt-4">

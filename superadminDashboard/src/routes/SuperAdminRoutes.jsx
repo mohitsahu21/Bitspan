@@ -43,6 +43,7 @@ import SAAllTransaction from "../components/SuperAdmin/SAAllTransaction.jsx";
 import SAChangeUserNotification from "../components/SuperAdmin/SAChangeUserNotification.jsx";
 import SAWalletWithdrawSummary from "../components/SuperAdmin/SAWalletWithdrawSummary.jsx";
 import SASetWhiteLabelIdPrice from "../components/SuperAdmin/SASetWhiteLabelIdPrice.jsx";
+import SAActiveDeactiveApi from "../components/SuperAdmin/SAActiveDeactiveApi.jsx";
 
 
 
@@ -128,6 +129,7 @@ const SuperAdminRoutes = () => {
       <Route path="/bank-account-setup/:bank_id/:user_id" element={<SABankAccountVerify />} />
       <Route path="/wallet-withdraw" element={<SAWalletWithdraw/>} />
       <Route path="/fund-transfer-status" element={<SAFundTransferStatus />} />
+      <Route path="/active-deactive-api" element={<SAActiveDeactiveApi />} />
       <Route path="/today-all-transaction" element={<SATodayAllTransaction />} />
       <Route path="/all-transaction" element={<SAAllTransaction />} />
       <Route path="/choice-user-notification" element={<SAChangeUserNotification />} />

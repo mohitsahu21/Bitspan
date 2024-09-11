@@ -9,7 +9,7 @@ import { LuTextSelect, LuUserCheck } from "react-icons/lu";
 import { SlLocationPin } from "react-icons/sl";
 
 
-const SACreateDistributor = () => {
+const WACreateDistributor = () => {
   return (
     <>
       <Wrapper>
@@ -174,7 +174,7 @@ const SACreateDistributor = () => {
                         <input type="text" id="name" class="form-control" placeholder="User Type" value={"Distributor"} disabled />
                       </div>
                     </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
 
                       <label for="name" class="form-label">Select Package</label>
                       <div class="input-group flex-nowrap">
@@ -192,7 +192,7 @@ const SACreateDistributor = () => {
                       </div>
 
 
-                    </div>
+                    </div> */}
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">NSDL Phycial PAN Price (Your Price - 105.00)</label>
                       <div class="input-group flex-nowrap">
@@ -267,7 +267,7 @@ const SACreateDistributor = () => {
   );
 };
 
-export default SACreateDistributor;
+export default WACreateDistributor;
 
 const Wrapper = styled.div`
   .main {

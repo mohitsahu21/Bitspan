@@ -1527,6 +1527,11 @@ const SuperAdminData = [
       //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
       // },
       {
+        title: "Active/Deactive Api",
+        path: "/active-deactive-api",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
         title: "Set Joining Price",
         path: "/change-coupon-price",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
@@ -1740,6 +1745,16 @@ const WhiteLabelData = [
       {
         title: "Create Super Distributor",
         path: "/create-super-distributor",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Create Distributor",
+        path: "/create-distributor",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Create Retailer",
+        path: "/create-retailer",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {

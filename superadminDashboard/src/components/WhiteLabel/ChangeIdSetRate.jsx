@@ -46,7 +46,7 @@ const ChangeIdSetRate = () => {
 
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                                Enter Retailer Joining Price
+                                                Enter Retailer Joining Price (Your Price - 100)
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -65,7 +65,7 @@ const ChangeIdSetRate = () => {
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter Distributor Joining Price
+                                            Enter Distributor Joining Price (Your Price - 200)
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -84,7 +84,7 @@ const ChangeIdSetRate = () => {
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter Super Distributor Joining Price
+                                            Enter Super Distributor Joining Price (Your Price - 1000)
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -103,7 +103,7 @@ const ChangeIdSetRate = () => {
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                            Enter White Label Joining Price
+                                            Enter White Label Joining Price (Your Price - 5500)
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
