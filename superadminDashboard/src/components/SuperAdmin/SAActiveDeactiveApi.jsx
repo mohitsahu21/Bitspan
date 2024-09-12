@@ -4,9 +4,12 @@ import { MdOutlineFormatListNumbered } from "react-icons/md";
 import { FaMobileAlt } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Button from 'react-bootstrap/Button';
 
-const SAWalletTransactionReport = () => {
-    return ( 
+const SAActiveDeactiveApi = () => {
+    return (
         <>
             <Wrapper>
                 <div className="main">
@@ -15,16 +18,20 @@ const SAWalletTransactionReport = () => {
                             <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
                                 {/* <Sider /> */}
                             </div>
-                            <div className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
-                             mt-5 formdata">
+                            <div
+                                className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
+                             mt-5 formdata"
+                            >
                                 <div className="main shadow-none">
                                     <div className="row shadow-none">
                                         <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                             {/* <div className="text-center">
                                                 <h3>Wallet Transaction Report</h3>
                                             </div> */}
-                                              <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Wallet Transaction Report</h4>
+                                            <div className="d-flex justify-content-between align-items-center flex-wrap">
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
+                                                    Active/Deactive-API
+                                                </h4>
                                                 <p className="mx-lg-5">
                                                     {" "}
                                                     <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
@@ -33,17 +40,17 @@ const SAWalletTransactionReport = () => {
                                                         style={{ fontSize: "13px" }}
                                                     >
                                                         {" "}
-                                                        Wallet Transaction Report
+                                                        Active/Deactive-API
                                                     </span>{" "}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
+
                                         <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
                                             <div className="row d-flex flex-column g-4">
-
-                                                <div className="d-flex flex-column flex-md-row gap-3">
+                                                {/* <div className="d-flex flex-column flex-md-row gap-3">
                                                     <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="fromDate" className="form-label">From</label>
                                                         <input id="fromDate" className="form-control" type="date" />
@@ -56,8 +63,10 @@ const SAWalletTransactionReport = () => {
                                                         <button type="button" className="btn btn-primary button">Search</button>
                                                     </div>
 
+                                                </div> */}
+                                                <div className="text-center">
+                                                    {/* <h5>Active/Deactive-API</h5> */}
                                                 </div>
-
 
                                                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                                     <div class="table-responsive">
@@ -65,62 +74,52 @@ const SAWalletTransactionReport = () => {
                                                             <thead className="table-dark">
                                                                 <tr>
                                                                     <th scope="col">#</th>
-                                                                    <th scope="col">Date</th>
-                                                                    <th scope="col">Order Id</th>
-                                                                    <th scope="col">Transaction Id</th>
-                                                                    <th scope="col">User Id</th>
-                                                                      <th scope="col">User Name</th>
-                                                                    <th scope="col">User Role</th>
-                                                                    <th scope="col">Amount</th>
-                                                                    <th scope="col">Opening <br /> Balance</th>
-                                                                    <th scope="col">Closing <br /> Balance</th>
-                                                                    <th scope="col">Transaction  <br /> Type</th>
-                                                                    <th scope="col">Transaction Details</th>
+                                                                    <th scope="col">API NAME</th>
+                                                                    <th scope="col">API FOR</th>
+                                                                    <th scope="col">API URL</th>
                                                                     <th scope="col">Status</th>
+                                                                    <th scope="col">
+                                                                        Action
+                                                                    </th>
+
+
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
                                                                     <th scope="row">1</th>
-                                                                    <td>23/05/2024 14:35:58</td>
-                                                                    <td>Wallet-Ashi465484654</td>
-                                                                    <td>4564564644444167851656541654</td>
-                                                                    <td>Ashi45634</td>
-                                                                    <td>Ashish Kumar</td>
-                                                                    <td>Retailer</td>
-                                                                    <td>100.00</td>
-                                                                    <td>100.00</td>
-                                                                    <td>200.00</td>
-                                                                    <td>PAN Debit</td>
-                                                                    <td>PANGKGKJ65498465</td>
-                                                                    <td>SUCCESS</td>
-                                                                </tr>
-                                                                <tr>
-                                                                <th scope="row">2</th>
-                                                                    <td>23/05/2024 14:35:58</td>
-                                                                    <td>Wallet-Ashi465484654</td>
-                                                                    <td>4564564644444167851656541654</td>
-                                                                    <td>Ashi45634</td>
-                                                                    <td>Ashish Kumar</td>
-                                                                    <td>Retailer</td>
-                                                                    <td>100.00</td>
-                                                                    <td>100.00</td>
-                                                                    <td>200.00</td>
-                                                                    <td>CREDITED</td>
-                                                                    <td>PANGKGKJ65498465</td>
-                                                                    <td>SUCCESS</td>
-                                                                </tr>
+                                                                    <td>Instapay</td>
+                                                                    <td>Mobile Recharge</td>
+                                                                    <td>bitspan.in/api/v1/recharge</td>
+                                                                    <td>Active</td>
+                                                                    <td> <DropdownButton id="dropdown-basic-button" title="Action">
+                                                                        <Dropdown.Item href="#/action-1" >Activate</Dropdown.Item>
+                                                                        <Dropdown.Item href="#/action-2">Deactivate</Dropdown.Item>
 
+                                                                    </DropdownButton></td>
+                                                                </tr>
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                     <div className="float-end">
                                                         <nav aria-label="Page navigation example">
                                                             <ul className="pagination">
-                                                                <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-                                                                <li className="page-item"><a className="page-link" href="#">1</a></li>
+                                                                <li className="page-item">
+                                                                    <a className="page-link" href="#">
+                                                                        Previous
+                                                                    </a>
+                                                                </li>
+                                                                <li className="page-item">
+                                                                    <a className="page-link" href="#">
+                                                                        1
+                                                                    </a>
+                                                                </li>
 
-                                                                <li className="page-item"><a className="page-link" href="#">Next</a></li>
+                                                                <li className="page-item">
+                                                                    <a className="page-link" href="#">
+                                                                        Next
+                                                                    </a>
+                                                                </li>
                                                             </ul>
                                                         </nav>
                                                     </div>
@@ -136,9 +135,9 @@ const SAWalletTransactionReport = () => {
             </Wrapper>
         </>
     );
-}
+};
 
-export default SAWalletTransactionReport;
+export default SAActiveDeactiveApi;
 
 const Wrapper = styled.div`
   .main {
@@ -146,38 +145,32 @@ const Wrapper = styled.div`
     width: 100%;
   }
   .button {
-   
     background: #6d70ff;
     border-color: #6d70ff;
-   
   }
-  .button:hover{
+  .button:hover {
     background: #5356fa;
     border-color: #5356fa;
-    
   }
   .form-container {
     width: 50%;
     margin: auto;
   }
-  th{
+  th {
     font-weight: 500;
     font-size: 14px;
-   
+    white-space: nowrap;
   }
-  td{
-   font-size: 14px;
-   
+  td {
+    font-size: 14px;
   }
-  @media (min-width: 1025px) and (max-width : 1500px){
+  @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
-     
       padding-left: 15rem;
     }
   }
   @media (min-width: 1500px) {
     .formdata {
-     
       padding-left: 13rem;
     }
   }

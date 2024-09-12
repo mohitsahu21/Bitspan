@@ -41,6 +41,9 @@ import SAViewPackages from "../components/SuperAdmin/SAViewPackages.jsx";
 import SATodayAllTransaction from "../components/SuperAdmin/SATodayAllTransaction.jsx";
 import SAAllTransaction from "../components/SuperAdmin/SAAllTransaction.jsx";
 import SAChangeUserNotification from "../components/SuperAdmin/SAChangeUserNotification.jsx";
+import SAWalletWithdrawSummary from "../components/SuperAdmin/SAWalletWithdrawSummary.jsx";
+import SASetWhiteLabelIdPrice from "../components/SuperAdmin/SASetWhiteLabelIdPrice.jsx";
+import SAActiveDeactiveApi from "../components/SuperAdmin/SAActiveDeactiveApi.jsx";
 
 
 
@@ -59,6 +62,10 @@ const SuperAdminRoutes = () => {
         <Route
           path="/wallet-transaction-report"
           element={<SAWalletTransactionReport />}
+        />
+        <Route
+          path="/wallet-withdraw-summary"
+          element={<SAWalletWithdrawSummary />}
         />
         <Route
           path="wallet-withdraw-requests"
@@ -113,6 +120,7 @@ const SuperAdminRoutes = () => {
       <Route path="/complaint-raised-list" element={<SAAllComplaintsList />} />
       {/* <Route path="/download-certificate" element={<WLDownloadCertificate />} /> */}
       <Route path="/change-coupon-price" element={<SAChangeIdSetRate />} />
+      <Route path="/whitelabel-id-set-rate" element={<SASetWhiteLabelIdPrice />} />
       <Route path="/change-nsdl-price" element={<SAChangeNSDLPrice/>} />
       <Route path="/change-uti-price" element={<SAChangeUTIPanPrice/>} />
       <Route path="/change-uti-new-price" element={<SAChangeUTINewCouponPrice />} />
@@ -121,6 +129,7 @@ const SuperAdminRoutes = () => {
       <Route path="/bank-account-setup/:bank_id/:user_id" element={<SABankAccountVerify />} />
       <Route path="/wallet-withdraw" element={<SAWalletWithdraw/>} />
       <Route path="/fund-transfer-status" element={<SAFundTransferStatus />} />
+      <Route path="/active-deactive-api" element={<SAActiveDeactiveApi />} />
       <Route path="/today-all-transaction" element={<SATodayAllTransaction />} />
       <Route path="/all-transaction" element={<SAAllTransaction />} />
       <Route path="/choice-user-notification" element={<SAChangeUserNotification />} />

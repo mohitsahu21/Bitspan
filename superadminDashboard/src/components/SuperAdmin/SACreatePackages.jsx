@@ -126,6 +126,268 @@ const SACreatePackages = () => {
                                     </div>
                                     <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
                                         <div className="text-center  my-5">
+                                            <h2>Create Offline Services Price</h2>
+                                        </div>
+
+                                        {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+
+                                            <label for="name" class="form-label">Select Commission Type</label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping"> <LuTextSelect /></span>
+                                                <select
+                                                    class="form-select" aria-label="Default select example"
+                                                >
+                                                    <option selected>Select...</option>
+
+                                                    <option value="Delhi">Percentage (%)</option>
+                                                    <option value="Puducherry">Rupees (&#8377;)</option>
+
+                                                </select>
+                                            </div>
+
+
+                                        </div> */}
+
+                                        {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Electricity Bill Pay  Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div> */}
+                                       
+                                      
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Google Play Price
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter IRCTC Agent ID Price
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Birth Certificate Price
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Death Certificate Price
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter E-Stamp Price
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter ITR Registration
+                                                Price
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter GST Registration Price
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Sambal Price
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Income Certificate Price
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Domicile Certificate Price
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Bank ID Price
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div className="text-center  mb-5 mt-3">
+                                                <button className="btn p-2">Change</button>
+                                            </div>
+                                        </div> */}
+                                    </div>
+                                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                                        <div className="text-center  my-5">
                                             <h2>Create Offline Services Commission</h2>
                                         </div>
 
@@ -305,7 +567,7 @@ const SACreatePackages = () => {
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                                Enter Udyog Aadhar  Commission
+                                                Enter Sambal Commission
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">

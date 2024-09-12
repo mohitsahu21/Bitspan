@@ -4,9 +4,21 @@ import { MdOutlineFormatListNumbered } from "react-icons/md";
 import { FaMobileAlt } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 
-const SAWalletTransactionReport = () => {
-    return ( 
+
+const SAWalletWithdrawSummary = () => {
+
+    const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+    return (
         <>
             <Wrapper>
                 <div className="main">
@@ -23,8 +35,8 @@ const SAWalletTransactionReport = () => {
                                             {/* <div className="text-center">
                                                 <h3>Wallet Transaction Report</h3>
                                             </div> */}
-                                              <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Wallet Transaction Report</h4>
+                                            <div className="d-flex justify-content-between align-items-center flex-wrap">
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Wallet Withdraw Summary</h4>
                                                 <p className="mx-lg-5">
                                                     {" "}
                                                     <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
@@ -33,7 +45,7 @@ const SAWalletTransactionReport = () => {
                                                         style={{ fontSize: "13px" }}
                                                     >
                                                         {" "}
-                                                        Wallet Transaction Report
+                                                        Wallet Withdraw Summary
                                                     </span>{" "}
                                                 </p>
                                             </div>
@@ -67,49 +79,69 @@ const SAWalletTransactionReport = () => {
                                                                     <th scope="col">#</th>
                                                                     <th scope="col">Date</th>
                                                                     <th scope="col">Order Id</th>
-                                                                    <th scope="col">Transaction Id</th>
-                                                                    <th scope="col">User Id</th>
-                                                                      <th scope="col">User Name</th>
-                                                                    <th scope="col">User Role</th>
                                                                     <th scope="col">Amount</th>
-                                                                    <th scope="col">Opening <br /> Balance</th>
-                                                                    <th scope="col">Closing <br /> Balance</th>
-                                                                    <th scope="col">Transaction  <br /> Type</th>
-                                                                    <th scope="col">Transaction Details</th>
+                                                                    <th scope="col">User Id</th>
+                                                                    <th scope="col">User Name</th>
+                                                                    <th scope="col">User Role</th>
+                                                                    <th scope="col">Withdraw Reason</th>
+                                                                    <th scope="col">A/c Holder Name</th>
+                                                                    <th scope="col">Bank Account Number</th>
+                                                                    <th scope="col">IFSC Code</th>
+                                                                    <th scope="col">Bank Name</th>
+                                                                    <th>UTR/Txn number</th>
+                                                                    
+                                                                    <th scope="col">Process Date</th>
+                                                                    <th>Transactoion Type</th>
                                                                     <th scope="col">Status</th>
+                                                                    
+                                                                    {/* <th scope="col">Action</th> */}
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
                                                                     <th scope="row">1</th>
                                                                     <td>23/05/2024 14:35:58</td>
-                                                                    <td>Wallet-Ashi465484654</td>
-                                                                    <td>4564564644444167851656541654</td>
-                                                                    <td>Ashi45634</td>
-                                                                    <td>Ashish Kumar</td>
-                                                                    <td>Retailer</td>
-                                                                    <td>100.00</td>
-                                                                    <td>100.00</td>
-                                                                    <td>200.00</td>
-                                                                    <td>PAN Debit</td>
-                                                                    <td>PANGKGKJ65498465</td>
+                                                                    <td>465484654</td>
+                                                                    <td>10000</td>
+                                                                    {/* <td>100.00</td> */}
+                                                                    <td>Ashi1234</td>
+                                                                    <td>Ashish</td>
+                                                                    <td>White lable</td>
+                                                                    <td>Money Problem</td>
+                                                                    <td>Mohit Sahu</td>
+                                                                    <td>898989898989</td>
+                                                                    <td>sbin0001503</td>
+                                                                    <td>sbi</td>
+                                                                    <td>456464654646546</td>
+                                                                    <td>24/05/2024 14:35:58</td>
+                                                                    <td>Instant</td>
                                                                     <td>SUCCESS</td>
+                                                                    {/* <td> <DropdownButton id="dropdown-basic-button" title="Action">
+                                                                        <Dropdown.Item href="#/action-1" onClick={handleShow}>Approve</Dropdown.Item>
+                                                                        <Dropdown.Item href="#/action-2">Reject</Dropdown.Item>
+                                                                       
+                                                                    </DropdownButton></td> */}
                                                                 </tr>
                                                                 <tr>
-                                                                <th scope="row">2</th>
-                                                                    <td>23/05/2024 14:35:58</td>
-                                                                    <td>Wallet-Ashi465484654</td>
-                                                                    <td>4564564644444167851656541654</td>
-                                                                    <td>Ashi45634</td>
-                                                                    <td>Ashish Kumar</td>
-                                                                    <td>Retailer</td>
-                                                                    <td>100.00</td>
-                                                                    <td>100.00</td>
-                                                                    <td>200.00</td>
-                                                                    <td>CREDITED</td>
-                                                                    <td>PANGKGKJ65498465</td>
+                                                                <th scope="row">1</th>
+                                                                <td>23/05/2024 14:35:58</td>
+                                                                    <td>465484654</td>
+                                                                    <td>10000</td>
+                                                                    {/* <td>100.00</td> */}
+                                                                    <td>Ashi1234</td>
+                                                                    <td>Ashish</td>
+                                                                    <td>White lable</td>
+                                                                    <td>Money Problem</td>
+                                                                    <td>Mohit Sahu</td>
+                                                                    <td>898989898989</td>
+                                                                    <td>sbin0001503</td>
+                                                                    <td>sbi</td>
+                                                                    <td>456464654646546</td>
+                                                                    <td>24/05/2024 14:35:58</td>
+                                                                    <td>Offline</td>
                                                                     <td>SUCCESS</td>
                                                                 </tr>
+
 
                                                             </tbody>
                                                         </table>
@@ -133,12 +165,44 @@ const SAWalletTransactionReport = () => {
                         </div>
                     </div>
                 </div>
+
+
+              {/* Approve model start */}
+                <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Approve Wallet Withdraw Request</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Enter UTR/Txn number</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter UTR/Txn number"
+                autoFocus
+                required
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          
+          <Button variant="primary" onClick={handleClose}>
+            Submit
+          </Button>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+       {/* Approve model end */}
             </Wrapper>
         </>
     );
 }
 
-export default SAWalletTransactionReport;
+export default SAWalletWithdrawSummary;
 
 const Wrapper = styled.div`
   .main {

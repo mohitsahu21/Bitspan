@@ -17,7 +17,7 @@ import { PiAddressBook } from "react-icons/pi";
 import { LuTextSelect, LuUserCheck } from "react-icons/lu";
 import { SlLocationPin } from "react-icons/sl";
 
-const SACreateRetailer = () => {
+const WACreateRetailer = () => {
   return (
     <>
       <Wrapper>
@@ -298,7 +298,7 @@ const SACreateRetailer = () => {
                         />
                       </div>
                     </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
 
                       <label for="name" class="form-label">Select Package</label>
                       <div class="input-group flex-nowrap">
@@ -316,7 +316,7 @@ const SACreateRetailer = () => {
                       </div>
 
 
-                    </div>
+                    </div> */}
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
                         NSDL Phycial PAN Price (Your Price - 105.00)
@@ -453,7 +453,7 @@ const SACreateRetailer = () => {
   );
 };
 
-export default SACreateRetailer;
+export default WACreateRetailer;
 
 const Wrapper = styled.div`
   .main {

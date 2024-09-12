@@ -36,6 +36,8 @@ import ChangeIdSetRate from "../components/WhiteLabel/ChangeIdSetRate";
 import ChangeUTINewCouponPrice from "../components/WhiteLabel/ChangeUTINewCouponPrice";
 import ChangeNSDLPrice from "../components/WhiteLabel/ChangeNSDLPrice";
 import ChangeUTIPanPrice from "../components/WhiteLabel/ChangeUTIPanPrice";
+import WACreateRetailer from "../components/WhiteLabel/WACreateRetailer";
+import WACreateDistributor from "../components/WhiteLabel/WACreateDistributor";
 
 
 
@@ -65,6 +67,8 @@ const WhiteLabelRoutes = () => {
 
         <Route path="/create-super-distributor" element={<CreateSuperDistributor />} />
         <Route path="/create-white-label" element={<CreateWhiteLabel />} />
+        <Route path="/create-retailer" element={<WACreateRetailer />} />
+        <Route path="/create-distributor" element={<WACreateDistributor />} />
         <Route path="/buy-admin-id" element={<BuyUserId />} />
 
         <Route

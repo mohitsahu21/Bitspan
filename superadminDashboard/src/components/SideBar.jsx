@@ -1223,6 +1223,11 @@ const SuperAdminData = [
         path: "/wallet-withdraw-requests",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+        {
+        title: "Wallet Withdraw Summary",
+        path: "/wallet-withdraw-summary",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
     ],
   },
   {
@@ -1522,8 +1527,18 @@ const SuperAdminData = [
       //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
       // },
       {
-        title: "ID Set Rate",
+        title: "Active/Deactive Api",
+        path: "/active-deactive-api",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Set Joining Price",
         path: "/change-coupon-price",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "White Label ID Set Rate",
+        path: "/whitelabel-id-set-rate",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
@@ -1730,6 +1745,16 @@ const WhiteLabelData = [
       {
         title: "Create Super Distributor",
         path: "/create-super-distributor",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Create Distributor",
+        path: "/create-distributor",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Create Retailer",
+        path: "/create-retailer",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
