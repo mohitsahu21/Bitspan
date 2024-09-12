@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { FaMobileAlt } from "react-icons/fa";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
+import Swal from "sweetalert2";
+import Loading from "../Loading";
 
 const MobileRecharge = () => {
   const [activeTab, setActiveTab] = useState("tab1");
@@ -16,9 +18,10 @@ const MobileRecharge = () => {
     operatorName: "",
     number: "",
     amount: "",
-    orderid: "4654747",
+    // orderid: "4654747",
   });
   const [response, setResponse] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const operatorOptions = [
     { name: "Airtel", value: "Airtel" },
@@ -41,6 +44,7 @@ const MobileRecharge = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const result = await axios.post(
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/recharge-instpy",
@@ -48,10 +52,35 @@ const MobileRecharge = () => {
         formData
       );
       setResponse(result.data); // Update the response state with the received data
-      console.log(result.data);
+      console.log(result.data.rechargeData.status);
+      if (result.data.rechargeData.status === "Failure") {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+          // footer: '<a href="#">Why do I have this issue?</a>',
+        });
+      } else if (result.data.rechargeData.status === "Success") {
+        Swal.fire({
+          title: "Done!",
+          text: "Recharge Successfull",
+          icon: "success",
+        });
+      }
     } catch (error) {
-      console.log("Error in recharge:", error);
+      console.error(
+        "Error in recharge:",
+        error.response ? error.response.data : error.message
+      );
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+        footer: '<a href="#">Why do I have this issue?</a>',
+      });
       setResponse(null);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -59,138 +88,166 @@ const MobileRecharge = () => {
     <>
       <Wrapper>
         {/* <HeadBar /> */}
-        <div className="main">
-          <div className="container-fluid">
-            <div className="row flex-wrap justify-content-center">
-              <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none">
-                {/* <Sider /> */}
-              </div>
-              <div
-                className="col-xxl-12 col-xl-12 col-lg-12 col-md-12  col-sm-12  col-11
+        {loading ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
+            <Loading />
+          </div>
+        ) : (
+          <div className="main">
+            <div className="container-fluid">
+              <div className="row flex-wrap justify-content-center">
+                <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none">
+                  {/* <Sider /> */}
+                </div>
+                <div
+                  className="col-xxl-12 col-xl-12 col-lg-12 col-md-12  col-sm-12  col-11
                              mt-5 formdata"
-              >
-                <div className="main shadow-none">
-                  <div className="row shadow-none mb-5">
-                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                      <div className="d-flex justify-content-between align-items-center flex-wrap">
-                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Prepaid Recharge
-                        </h4>
-                        <h6 className="mx-lg-5">
-                          {" "}
-                          <BiHomeAlt /> &nbsp; / &nbsp; Prepaid Recharge
-                        </h6>
+                >
+                  <div className="main shadow-none">
+                    <div className="row shadow-none mb-5">
+                      <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div className="d-flex justify-content-between align-items-center flex-wrap">
+                          <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
+                            Prepaid Recharge
+                          </h4>
+                          <h6 className="mx-lg-5">
+                            {" "}
+                            <BiHomeAlt /> &nbsp; / &nbsp; Prepaid Recharge
+                          </h6>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="circle-nav">
-                    <button
-                      className={`circle-btn ${
-                        activeTab === "tab1" ? "active" : ""
-                      }`}
-                      onClick={() => handleTabClick("tab1")}
-                    >
-                      Provider 1
-                    </button>
-                    <button
-                      className={`circle-btn ${
-                        activeTab === "tab2" ? "active" : ""
-                      }`}
-                      onClick={() => handleTabClick("tab2")}
-                    >
-                      Provider 2
-                    </button>
-                  </div>
-                  <div className="tab-content">
-                    <div
-                      className={`tab-pane ${
-                        activeTab === "tab1" ? "active" : ""
-                      }`}
-                    >
-                      <div className="container">
-                        <div className="row justify-content-center">
-                          <div className="col-md-8 col-lg-6 col-xl-6">
-                            <div className="card bg-body-tertiary shadow">
-                              <div className="p-4">
-                                <div className="text-center">
-                                  <h3 className="mb-4">Prepaid Recharge</h3>
-                                  <div>
-                                    <form onSubmit={handleSubmit}>
-                                      <div class="input-group mb-3">
-                                        <span class="input-group-text">
-                                          <FaMobileAlt />
-                                        </span>
-                                        <div class="form-floating">
-                                          <input
-                                            type="text"
-                                            class="form-control"
-                                            id="floatingInputGroup1"
-                                            placeholder="Username"
-                                            value={formData.number}
-                                            onChange={handleChange}
-                                            name="number"
-                                            autoComplete="off"
-                                          />
-                                          <label for="floatingInputGroup1">
-                                            Mobile Number
-                                          </label>
-                                        </div>
+                    <div className="circle-nav">
+                      <button
+                        className={`circle-btn ${
+                          activeTab === "tab1" ? "active" : ""
+                        }`}
+                        onClick={() => handleTabClick("tab1")}
+                      >
+                        Provider 1
+                      </button>
+                      <button
+                        className={`circle-btn ${
+                          activeTab === "tab2" ? "active" : ""
+                        }`}
+                        onClick={() => handleTabClick("tab2")}
+                      >
+                        Provider 2
+                      </button>
+                    </div>
+                    <div className="tab-content">
+                      <div
+                        className={`tab-pane ${
+                          activeTab === "tab1" ? "active" : ""
+                        }`}
+                      >
+                        <div className="container">
+                          <div className="row justify-content-center">
+                            <div className="col-md-8 col-lg-6 col-xl-6">
+                              <div className="card bg-body-tertiary shadow">
+                                <div className="p-4">
+                                  <div className="text-center">
+                                    <h3 className="mb-4">Prepaid Recharge</h3>
+                                    <div>
+                                      {/* {loading ? (
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          justifyContent: "center",
+                                          alignItems: "center",
+                                          // height: "40vh",
+                                        }}
+                                      >
+                                        <Loading />
                                       </div>
+                                    ) : ( */}
+                                      <form onSubmit={handleSubmit}>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text">
+                                            <FaMobileAlt />
+                                          </span>
+                                          <div class="form-floating">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              id="floatingInputGroup1"
+                                              placeholder="Username"
+                                              value={formData.number}
+                                              onChange={handleChange}
+                                              name="number"
+                                              autoComplete="off"
+                                            />
+                                            <label for="floatingInputGroup1">
+                                              Mobile Number
+                                            </label>
+                                          </div>
+                                        </div>
 
-                                      <div class="input-group mb-3">
-                                        <div class="form-floating">
-                                          <select
-                                            class="form-select"
-                                            id="floatingSelectOperator"
-                                            value={formData.operatorName}
-                                            onChange={handleChange}
-                                            name="operatorName"
-                                            aria-label="Select Operator"
-                                          >
-                                            <option value="">
+                                        <div class="input-group mb-3">
+                                          <div class="form-floating">
+                                            <select
+                                              class="form-select"
+                                              id="floatingSelectOperator"
+                                              value={formData.operatorName}
+                                              onChange={handleChange}
+                                              name="operatorName"
+                                              aria-label="Select Operator"
+                                            >
+                                              <option value="">
+                                                Select Operator
+                                              </option>
+                                              {operatorOptions.map((item) => (
+                                                <>
+                                                  <option value={item.value}>
+                                                    {item.name}
+                                                  </option>
+                                                </>
+                                              ))}
+                                            </select>
+                                            <label for="floatingSelectOperator">
                                               Select Operator
-                                            </option>
-                                            {operatorOptions.map((item) => (
-                                              <>
-                                                <option value={item.value}>
-                                                  {item.name}
-                                                </option>
-                                              </>
-                                            ))}
-                                          </select>
-                                          <label for="floatingSelectOperator">
-                                            Select Operator
-                                          </label>
+                                            </label>
+                                          </div>
                                         </div>
-                                      </div>
 
-                                      <div class="input-group mb-3">
-                                        <div class="form-floating">
-                                          <input
-                                            type="text"
-                                            class="form-control"
-                                            id="floatingInputGroup1"
-                                            placeholder="Username"
-                                            value={formData.amount}
-                                            onChange={handleChange}
-                                            name="amount"
-                                            autoComplete="off"
-                                          />
-                                          <label for="floatingInputGroup1">
-                                            Amount
-                                          </label>
+                                        <div class="input-group mb-3">
+                                          <div class="form-floating">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              id="floatingInputGroup1"
+                                              placeholder="Username"
+                                              value={formData.amount}
+                                              onChange={handleChange}
+                                              name="amount"
+                                              autoComplete="off"
+                                            />
+                                            <label for="floatingInputGroup1">
+                                              Amount
+                                            </label>
+                                          </div>
                                         </div>
-                                      </div>
-                                      <div className="text-start mt-2 mb-3">
-                                        <button
-                                          className="btn btn-none text-light"
-                                          style={{ backgroundColor: "#6d70ff" }}
-                                          type="submit"
-                                        >
-                                          Recharge Now
-                                        </button>
-                                      </div>
-                                    </form>
+                                        <div className="text-start mt-2 mb-3">
+                                          <button
+                                            className="btn btn-none text-light"
+                                            style={{
+                                              backgroundColor: "#6d70ff",
+                                            }}
+                                            type="submit"
+                                          >
+                                            Recharge Now
+                                          </button>
+                                        </div>
+                                      </form>
+                                      {/*  )} */}
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -198,93 +255,97 @@ const MobileRecharge = () => {
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      className={`tab-pane ${
-                        activeTab === "tab2" ? "active" : ""
-                      }`}
-                    >
-                      <div className="container">
-                        <div className="row justify-content-center">
-                          <div className="col-md-8 col-lg-6 col-xl-6">
-                            <div className="card bg-body-tertiary shadow">
-                              <div className="p-4">
-                                <div className="text-center">
-                                  <h3 className="mb-4">Prepaid Recharge 2</h3>
-                                  <div>
-                                    <form action="">
-                                      <div class="input-group mb-3">
-                                        <span class="input-group-text">
-                                          <FaMobileAlt />
-                                        </span>
-                                        <div class="form-floating">
-                                          <input
-                                            type="text"
-                                            class="form-control"
-                                            id="floatingInputGroup1"
-                                            placeholder="Username"
-                                          />
-                                          <label for="floatingInputGroup1">
-                                            Mobile Number
-                                          </label>
+                      <div
+                        className={`tab-pane ${
+                          activeTab === "tab2" ? "active" : ""
+                        }`}
+                      >
+                        <div className="container">
+                          <div className="row justify-content-center">
+                            <div className="col-md-8 col-lg-6 col-xl-6">
+                              <div className="card bg-body-tertiary shadow">
+                                <div className="p-4">
+                                  <div className="text-center">
+                                    <h3 className="mb-4">Prepaid Recharge 2</h3>
+                                    <div>
+                                      <form action="">
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text">
+                                            <FaMobileAlt />
+                                          </span>
+                                          <div class="form-floating">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              id="floatingInputGroup1"
+                                              placeholder="Username"
+                                            />
+                                            <label for="floatingInputGroup1">
+                                              Mobile Number
+                                            </label>
+                                          </div>
                                         </div>
-                                      </div>
-                                      <div class="input-group mb-3">
-                                        <div class="form-floating">
-                                          <input
-                                            type="text"
-                                            class="form-control"
-                                            id="floatingInputGroup1"
-                                            placeholder="Username"
-                                          />
-                                          <label for="floatingInputGroup1">
-                                            Select Operator
-                                          </label>
+                                        <div class="input-group mb-3">
+                                          <div class="form-floating">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              id="floatingInputGroup1"
+                                              placeholder="Username"
+                                            />
+                                            <label for="floatingInputGroup1">
+                                              Select Operator
+                                            </label>
+                                          </div>
                                         </div>
-                                      </div>
-                                      <div class="input-group mb-3">
-                                        <div class="form-floating">
-                                          <input
-                                            type="text"
-                                            class="form-control"
-                                            id="floatingInputGroup1"
-                                            placeholder="Username"
-                                          />
-                                          <label for="floatingInputGroup1">
-                                            Select Circle
-                                          </label>
+                                        <div class="input-group mb-3">
+                                          <div class="form-floating">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              id="floatingInputGroup1"
+                                              placeholder="Username"
+                                            />
+                                            <label for="floatingInputGroup1">
+                                              Select Circle
+                                            </label>
+                                          </div>
                                         </div>
-                                      </div>
-                                      <div className="text-start mt-2 mb-3">
-                                        <button
-                                          className="btn btn-none text-light"
-                                          style={{ backgroundColor: "#6d70ff" }}
-                                        >
-                                          Check Plans
-                                        </button>
-                                      </div>
-                                      <div class="input-group mb-3">
-                                        <div class="form-floating">
-                                          <input
-                                            type="text"
-                                            class="form-control"
-                                            id="floatingInputGroup1"
-                                            placeholder="Username"
-                                          />
-                                          <label for="floatingInputGroup1">
-                                            Amount
-                                          </label>
+                                        <div className="text-start mt-2 mb-3">
+                                          <button
+                                            className="btn btn-none text-light"
+                                            style={{
+                                              backgroundColor: "#6d70ff",
+                                            }}
+                                          >
+                                            Check Plans
+                                          </button>
                                         </div>
-                                      </div>
-                                      <div className="text-start mt-2 mb-3">
-                                        <button
-                                          className="btn btn-none text-light"
-                                          style={{ backgroundColor: "#6d70ff" }}
-                                        >
-                                          Recharge Now
-                                        </button>
-                                      </div>
-                                    </form>
+                                        <div class="input-group mb-3">
+                                          <div class="form-floating">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              id="floatingInputGroup1"
+                                              placeholder="Username"
+                                            />
+                                            <label for="floatingInputGroup1">
+                                              Amount
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <div className="text-start mt-2 mb-3">
+                                          <button
+                                            className="btn btn-none text-light"
+                                            style={{
+                                              backgroundColor: "#6d70ff",
+                                            }}
+                                          >
+                                            Recharge Now
+                                          </button>
+                                        </div>
+                                      </form>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -298,7 +359,7 @@ const MobileRecharge = () => {
               </div>
             </div>
           </div>
-        </div>
+        )}
       </Wrapper>
     </>
   );

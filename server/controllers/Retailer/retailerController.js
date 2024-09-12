@@ -96,26 +96,6 @@ const getApplyOfflineFormByid = (req, res) => {
   });
 };
 
-// const getApplyOfflineForm = (req, res) => {
-//   const { fromDate, toDate } = req.query;
-
-//   let query = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
-
-//   if (fromDate && toDate) {
-//     query += ` WHERE created_at BETWEEN '${fromDate}' AND '${toDate}' ORDER BY created_at DESC`;
-//   } else {
-//     query += " ORDER BY created_at DESC";
-//   }
-
-//   db.query(query, (err, result) => {
-//     if (err) {
-//       console.error("Error getting data from MySQL:", err);
-//       res.status(500).json({ error: "Database error" });
-//       return;
-//     }
-//     res.status(200).json(result);
-//   });
-// };
 const getApplyOfflineForm = (req, res) => {
   const { fromDate, toDate } = req.query;
 
@@ -249,22 +229,47 @@ const bankidForm = (req, res) => {
   );
 };
 
-// const getBalance = async (req, res) => {
-//   try {
-//     const token = process.env.APITokenInstapay; // or fetch it dynamically
-//     const username = process.env.APIUsernameInstapay; // or fetch from request, etc.
+const offlineRecharge = (req, res) => {
+  const { mobile_no, operator_name, amount, orderid, created_by_userid } =
+    req.body;
 
-//     const data = await getDataFromClientApi(
-//       "/v3/recharge/balance",
-//       token,
-//       username,
-//       { format: "json" }
-//     );
-//     res.json(data);
-//   } catch (error) {
-//     res.status(500).send("Error fetching data from client API");
-//   }
-// };
+  if (
+    !mobile_no ||
+    !operator_name ||
+    !amount ||
+    !orderid ||
+    !created_by_userid
+  ) {
+    return res
+      .status(400)
+      .json({ status: "Failure", error: "Please fill all the fields" });
+  }
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+  const query = `INSERT INTO offline_recharge 
+    (mobile_no, operator_name, amount, orderid, created_by_userid, created_at) 
+    VALUES (?, ?, ?, ?, ?, ?)`;
+
+  db.query(
+    query,
+    [mobile_no, operator_name, amount, orderid, created_by_userid, createdAt],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting data into MySQL:", err);
+        return res
+          .status(500)
+          .json({ status: "Failure", error: "Database error" });
+      }
+
+      res.status(200).json({
+        status: "Success",
+        message: "Data inserted successfully",
+        id: result.insertId,
+      });
+    }
+  );
+};
 
 module.exports = {
   applyOfflineForm,
@@ -293,4 +298,25 @@ module.exports = {
 //     .catch((error) => {
 //       res.status(500).send("Error fetching data from client API");
 //     });
+// };
+
+// const getApplyOfflineForm = (req, res) => {
+//   const { fromDate, toDate } = req.query;
+
+//   let query = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+
+//   if (fromDate && toDate) {
+//     query += ` WHERE created_at BETWEEN '${fromDate}' AND '${toDate}' ORDER BY created_at DESC`;
+//   } else {
+//     query += " ORDER BY created_at DESC";
+//   }
+
+//   db.query(query, (err, result) => {
+//     if (err) {
+//       console.error("Error getting data from MySQL:", err);
+//       res.status(500).json({ error: "Database error" });
+//       return;
+//     }
+//     res.status(200).json(result);
+//   });
 // };
