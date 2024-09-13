@@ -26,16 +26,16 @@ const getDataFromEzytmClientApi = (endpoint) => {
     });
 };
 
-const makeRechargeRequest = (mobileNo, amount, opId, refTxnId) => {
-  const endpoint = "/Recharge2";
+
+
+const makeRechargeRequest = (endpoint,params = {}) => {
+  // const endpoint = "/Recharge2";
+  
   return apiClient
     .get(endpoint, {
       params: {
         ApiToken: apiToken,
-        MobileNo: mobileNo,
-        Amount: amount,
-        OpId: opId,
-        RefTxnId: refTxnId,
+        ...params
       },
     })
     .then((response) => response.data)
@@ -44,6 +44,25 @@ const makeRechargeRequest = (mobileNo, amount, opId, refTxnId) => {
       throw error;
     });
 };
+
+// const makeRechargeRequest = (mobileNo, amount, opId, refTxnId) => {
+//   const endpoint = "/Recharge2";
+//   return apiClient
+//     .get(endpoint, {
+//       params: {
+//         ApiToken: apiToken,
+//         MobileNo: mobileNo,
+//         Amount: amount,
+//         OpId: opId,
+//         RefTxnId: refTxnId,
+//       },
+//     })
+//     .then((response) => response.data)
+//     .catch((error) => {
+//       console.error("Error making recharge request:", error.message);
+//       throw error;
+//     });
+// };
 
 module.exports = {
   getDataFromEzytmClientApi,
