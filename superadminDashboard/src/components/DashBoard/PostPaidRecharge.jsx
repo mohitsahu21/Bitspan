@@ -6,7 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../Loading";
 
-const MobileRecharge = () => {
+const PostPaidRecharge = () => {
   const [activeTab, setActiveTab] = useState("tab1");
 
   const handleTabClick = (tab) => {
@@ -31,15 +31,15 @@ const MobileRecharge = () => {
   const [loading, setLoading] = useState(false);
 
   const operatorOptions = [
-    { name: "Airtel", value: "Airtel" },
-    { name: "BSNL STV", value: "BSNL STV" },
-    { name: "BSNL TOPUP", value: "BSNL TOPUP" },
-    // { name: "Airtel Postpaid", value: "Airtel Postpaid" },
-    // { name: "BSNL Postpaid", value: "BSNL Postpaid" },
-    { name: "Jio", value: "Jio" },
-    // { name: "Jio Postpaid", value: "Jio Postpaid" },
-    { name: "Vi", value: "Vi" },
-    // { name: "Vi Postpaid", value: "Vi Postpaid" },
+    // { name: "Airtel", value: "Airtel" },
+    // { name: "BSNL STV", value: "BSNL STV" },
+    // { name: "BSNL TOPUP", value: "BSNL TOPUP" },
+    { name: "Airtel Postpaid", value: "Airtel Postpaid" },
+    { name: "BSNL Postpaid", value: "BSNL Postpaid" },
+    // { name: "Jio", value: "Jio" },
+    { name: "Jio Postpaid", value: "Jio Postpaid" },
+    // { name: "Vi", value: "Vi" },
+    { name: "Vi Postpaid", value: "Vi Postpaid" },
   ];
 
   const handleChange = (e) => {
@@ -66,7 +66,7 @@ const MobileRecharge = () => {
         formData
       );
       setResponse(result.data); // Update the response state with the received data
-      // console.log(result.data.rechargeData.status);
+      //   console.log(result.data.rechargeData.status);
       console.log(result.data);
       if (result.data.rechargeData.status === "Failure") {
         Swal.fire({
@@ -171,11 +171,11 @@ const MobileRecharge = () => {
                       <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div className="d-flex justify-content-between align-items-center flex-wrap">
                           <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                            Prepaid Recharge
+                            Postpaid Recharge
                           </h4>
                           <h6 className="mx-lg-5">
                             {" "}
-                            <BiHomeAlt /> &nbsp; / &nbsp; Prepaid Recharge
+                            <BiHomeAlt /> &nbsp; / &nbsp; Postpaid Recharge
                           </h6>
                         </div>
                       </div>
@@ -210,7 +210,7 @@ const MobileRecharge = () => {
                               <div className="card bg-body-tertiary shadow">
                                 <div className="p-4">
                                   <div className="text-center">
-                                    <h3 className="mb-4">Prepaid Recharge</h3>
+                                    <h3 className="mb-4">Postpaid Recharge</h3>
                                     <div>
                                       {/* {loading ? (
                                       <div
@@ -322,7 +322,9 @@ const MobileRecharge = () => {
                               <div className="card bg-body-tertiary shadow">
                                 <div className="p-4">
                                   <div className="text-center">
-                                    <h3 className="mb-4">Prepaid Recharge 2</h3>
+                                    <h3 className="mb-4">
+                                      Postpaid Recharge 2
+                                    </h3>
                                     <div>
                                       <form onSubmit={handlesubmitForm}>
                                         <div class="input-group mb-3">
@@ -441,7 +443,7 @@ const MobileRecharge = () => {
   );
 };
 
-export default MobileRecharge;
+export default PostPaidRecharge;
 const Wrapper = styled.div`
   .circle-nav {
     width: 100%;

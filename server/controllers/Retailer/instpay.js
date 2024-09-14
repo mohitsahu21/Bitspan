@@ -472,11 +472,31 @@ const rechargeWithBalanceCheck = (req, res) => {
         }
 
         // Step 7: Respond with the recharge data and orderid
-        res.json({
-          message: "Recharge successful",
-          rechargeData,
-          orderid: rechargeData.orderid,
-        });
+        if (rechargeData.status === "Success") {
+          res.json({
+            message: "Recharge successful",
+            rechargeData,
+            orderid: rechargeData.orderid,
+          });
+        } else if (rechargeData.status === "Pending") {
+          res.json({
+            message: "Recharge pending",
+            rechargeData,
+            orderid: rechargeData.orderid,
+          });
+        } else if (rechargeData.status === "Failure") {
+          res.json({
+            message: "Recharge failed",
+            rechargeData,
+            orderid: rechargeData.orderid,
+          });
+        } else {
+          res.json({
+            message: "Recharge status unknown",
+            rechargeData,
+            orderid: rechargeData.orderid,
+          });
+        }
       });
     })
     .catch((error) => {

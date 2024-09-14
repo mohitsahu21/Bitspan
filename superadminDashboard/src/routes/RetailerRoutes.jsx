@@ -43,6 +43,7 @@ import PanForm from "../components/DashBoard/PanForm";
 import AllPanForm from "../components/DashBoard/AllPanForm";
 import Certificate from "../components/SuperDistributer/Certificate";
 import NewBankID from "../components/DashBoard/NewBankID";
+import PostPaidRecharge from "../components/DashBoard/PostPaidRecharge";
 const RetailerRoutes = () => {
   return (
     <>
@@ -54,6 +55,7 @@ const RetailerRoutes = () => {
         <Route path="/pan-card-apply" element={<MultiStepForm />} />
         <Route path="/update-profile" element={<Profile />} />
         <Route path="/prepaid-recharge" element={<MobileRecharge />} />
+        <Route path="/postpaid-recharge" element={<PostPaidRecharge />} />
         <Route path="/raise-complaint" element={<Complaints />} />
         <Route path="/uti-login" element={<UtiPan />} />
         <Route path="/add-money" element={<AddMoney />} />
