@@ -5,6 +5,7 @@ const path = require("path");
 const retailerRouter = require("./routers/Retailer/retailerRouter");
 const instpayRouter = require("./routers/Retailer/instpayRouter");
 const ezytmRouter = require("./routers/Retailer/ezytmRouter");
+const sizarPayRouter = require("./routers/Retailer/sizarPayRouter");
 const moment = require("moment-timezone");
 const { db } = require("./connect");
 dotenv.config();
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/api/auth/retailer", retailerRouter);
 app.use("/api/auth/instpay", instpayRouter);
 app.use("/api/auth/ezytm", ezytmRouter);
+app.use("/api/auth/sizarpay", sizarPayRouter);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Callback URL endpoint
