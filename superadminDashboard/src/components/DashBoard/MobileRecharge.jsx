@@ -18,12 +18,14 @@ const MobileRecharge = () => {
     operatorName: "",
     number: "",
     amount: "",
+    recharge_Type: "Prepaid",
     // orderid: "4654747",
   });
   const [offlineForm, setOfflineForm] = useState({
     mobile_no: "",
     operator_name: "",
     amount: "",
+    recharge_Type: "Prepaid",
     created_by_userid: "1",
   });
   const [response, setResponse] = useState(null);

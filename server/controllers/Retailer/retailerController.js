@@ -229,50 +229,9 @@ const bankidForm = (req, res) => {
   );
 };
 
-// const offlineRecharge = (req, res) => {
-//   const { mobile_no, operator_name, amount, orderid, created_by_userid } =
-//     req.body;
-
-//   if (
-//     !mobile_no ||
-//     !operator_name ||
-//     !amount ||
-//     !orderid ||
-//     !created_by_userid
-//   ) {
-//     return res
-//       .status(400)
-//       .json({ status: "Failure", error: "Please fill all the fields" });
-//   }
-
-//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-
-//   const query = `INSERT INTO offline_recharge
-//     (mobile_no, operator_name, amount, orderid, created_by_userid, created_at)
-//     VALUES (?, ?, ?, ?, ?, ?)`;
-
-//   db.query(
-//     query,
-//     [mobile_no, operator_name, amount, orderid, created_by_userid, createdAt],
-//     (err, result) => {
-//       if (err) {
-//         console.error("Error inserting data into MySQL:", err);
-//         return res
-//           .status(500)
-//           .json({ status: "Failure", error: "Database error" });
-//       }
-
-//       res.status(200).json({
-//         status: "Success",
-//         message: "Data inserted successfully",
-//         id: result.insertId,
-//       });
-//     }
-//   );
-// };
-
 const offlineRecharge = (req, res) => {
-  const { mobile_no, operator_name, amount, created_by_userid } = req.body;
+  const { mobile_no, operator_name, amount, recharge_Type, created_by_userid } =
+    req.body;
   // console.log(req.body);
 
   if (!mobile_no || !operator_name || !amount) {
@@ -322,8 +281,8 @@ const offlineRecharge = (req, res) => {
         } else {
           // Order ID is unique, proceed with inserting the record
           const insertQuery = `INSERT INTO offline_recharge 
-            (mobile_no, operator_name, amount, orderid, created_by_userid, created_at) 
-            VALUES (?, ?, ?, ?, ?, ?)`;
+            (mobile_no, operator_name, amount, orderid, recharge_Type, created_by_userid, created_at) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
           db.query(
             insertQuery,
@@ -332,6 +291,7 @@ const offlineRecharge = (req, res) => {
               operator_name,
               amount,
               newOrderId,
+              recharge_Type,
               created_by_userid,
               createdAt,
             ],
@@ -360,6 +320,30 @@ const offlineRecharge = (req, res) => {
   });
 };
 
+const getRechargeData = (req, res) => {
+  let query = `SELECT * FROM offline_recharge`;
+
+  db.query(query, (err, result) => {
+    if (err) {
+      return res.status(400).json({ status: "failure", error: err.message });
+    }
+
+    return res.status(200).json({ status: "success", data: result });
+  });
+};
+
+const getApiRechargeData = (req, res) => {
+  let query = `SELECT * FROM recharges`;
+
+  db.query(query, (err, result) => {
+    if (err) {
+      return res.status(400).json({ status: "failure", error: err.message });
+    }
+
+    return res.status(200).json({ status: "success", data: result });
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -367,6 +351,8 @@ module.exports = {
   updateApplyOfflineForm,
   bankidForm,
   offlineRecharge,
+  getRechargeData,
+  getApiRechargeData,
 };
 
 // const getBalance = (req, res) => {
@@ -409,4 +395,46 @@ module.exports = {
 //     }
 //     res.status(200).json(result);
 //   });
+// };
+
+// const offlineRecharge = (req, res) => {
+//   const { mobile_no, operator_name, amount, orderid, created_by_userid } =
+//     req.body;
+
+//   if (
+//     !mobile_no ||
+//     !operator_name ||
+//     !amount ||
+//     !orderid ||
+//     !created_by_userid
+//   ) {
+//     return res
+//       .status(400)
+//       .json({ status: "Failure", error: "Please fill all the fields" });
+//   }
+
+//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+//   const query = `INSERT INTO offline_recharge
+//     (mobile_no, operator_name, amount, orderid, created_by_userid, created_at)
+//     VALUES (?, ?, ?, ?, ?, ?)`;
+
+//   db.query(
+//     query,
+//     [mobile_no, operator_name, amount, orderid, created_by_userid, createdAt],
+//     (err, result) => {
+//       if (err) {
+//         console.error("Error inserting data into MySQL:", err);
+//         return res
+//           .status(500)
+//           .json({ status: "Failure", error: "Database error" });
+//       }
+
+//       res.status(200).json({
+//         status: "Success",
+//         message: "Data inserted successfully",
+//         id: result.insertId,
+//       });
+//     }
+//   );
 // };
