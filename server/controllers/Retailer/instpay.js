@@ -390,11 +390,12 @@ const operatorMapping = {
 const rechargeWithBalanceCheck = (req, res) => {
   const token = process.env.APITokenInstapay;
   const username = process.env.APIUsernameInstapay;
-  const { number, amount, operatorName } = req.body;
+  const { number, amount, operatorName, recharge_Type } = req.body;
+  const providerName = "inspay";
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
-  if (!number || !amount || !operatorName) {
+  if (!number || !amount || !operatorName || !recharge_Type) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
@@ -415,8 +416,15 @@ const rechargeWithBalanceCheck = (req, res) => {
 
       // Step 3: Insert initial row to generate orderid
       const insertQuery =
-        "INSERT INTO recharges (mobile_no, amount, operator_name, created_at) VALUES (?, ?, ?, ?)";
-      const values = [number, amount, operatorName, createdAt];
+        "INSERT INTO recharges (mobile_no, amount, operator_name, providerName, recharge_Type, created_at) VALUES (?, ?, ?, ?, ?, ?)";
+      const values = [
+        number,
+        amount,
+        operatorName,
+        providerName,
+        recharge_Type,
+        createdAt,
+      ];
 
       return new Promise((resolve, reject) => {
         db.query(insertQuery, values, (err, result) => {
@@ -472,11 +480,31 @@ const rechargeWithBalanceCheck = (req, res) => {
         }
 
         // Step 7: Respond with the recharge data and orderid
-        res.json({
-          message: "Recharge successful",
-          rechargeData,
-          orderid: rechargeData.orderid,
-        });
+        if (rechargeData.status === "Success") {
+          res.json({
+            message: "Recharge successful",
+            rechargeData,
+            orderid: rechargeData.orderid,
+          });
+        } else if (rechargeData.status === "Pending") {
+          res.json({
+            message: "Recharge pending",
+            rechargeData,
+            orderid: rechargeData.orderid,
+          });
+        } else if (rechargeData.status === "Failure") {
+          res.json({
+            message: "Recharge failed",
+            rechargeData,
+            orderid: rechargeData.orderid,
+          });
+        } else {
+          res.json({
+            message: "Recharge status unknown",
+            rechargeData,
+            orderid: rechargeData.orderid,
+          });
+        }
       });
     })
     .catch((error) => {

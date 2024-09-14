@@ -7,6 +7,9 @@ const {
   getApplyOfflineForm,
   updateApplyOfflineForm,
   bankidForm,
+  offlineRecharge,
+  getRechargeData,
+  getApiRechargeData,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -46,5 +49,8 @@ router.post(
 router.get("/getApplyOfflineFormByid/:id", getApplyOfflineFormByid);
 router.get("/getApplyOfflineForm", getApplyOfflineForm);
 router.put("/updateApplyOfflineForm/:id", updateApplyOfflineForm);
+router.post("/offline-recharge", offlineRecharge);
+router.get("/getRechargeData", getRechargeData);
+router.get("/getApiRechargeData", getApiRechargeData);
 
 module.exports = router;

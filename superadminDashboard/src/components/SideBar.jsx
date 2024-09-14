@@ -765,7 +765,7 @@ const RetailerSidebarData = [
       },
       {
         title: "Postpaid Recharge",
-        path: "/prepaid-recharge",
+        path: "/postpaid-recharge",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
@@ -1223,7 +1223,7 @@ const SuperAdminData = [
         path: "/wallet-withdraw-requests",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
-        {
+      {
         title: "Wallet Withdraw Summary",
         path: "/wallet-withdraw-summary",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
@@ -1239,7 +1239,7 @@ const SuperAdminData = [
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
     subNav: [
       // {
-     
+
       {
         title: "Today All Transaction",
         path: "/today-all-transaction",

@@ -230,16 +230,11 @@ const bankidForm = (req, res) => {
 };
 
 const offlineRecharge = (req, res) => {
-  const { mobile_no, operator_name, amount, orderid, created_by_userid } =
+  const { mobile_no, operator_name, amount, recharge_Type, created_by_userid } =
     req.body;
+  // console.log(req.body);
 
-  if (
-    !mobile_no ||
-    !operator_name ||
-    !amount ||
-    !orderid ||
-    !created_by_userid
-  ) {
+  if (!mobile_no || !operator_name || !amount) {
     return res
       .status(400)
       .json({ status: "Failure", error: "Please fill all the fields" });
@@ -247,28 +242,106 @@ const offlineRecharge = (req, res) => {
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
-  const query = `INSERT INTO offline_recharge 
-    (mobile_no, operator_name, amount, orderid, created_by_userid, created_at) 
-    VALUES (?, ?, ?, ?, ?, ?)`;
+  // Function to generate new order ID
+  const generateNewOrderId = (maxOrderId) => {
+    let numericPart = parseInt(maxOrderId.replace("OR", "")) + 1;
+    return `OR${String(numericPart).padStart(9, "0")}`; // Ensures it remains OR00001, OR00002, etc.
+  };
 
-  db.query(
-    query,
-    [mobile_no, operator_name, amount, orderid, created_by_userid, createdAt],
-    (err, result) => {
-      if (err) {
-        console.error("Error inserting data into MySQL:", err);
-        return res
-          .status(500)
-          .json({ status: "Failure", error: "Database error" });
-      }
+  // Query to get the maximum order ID
+  const getMaxOrderIdQuery = `SELECT MAX(orderid) as maxOrderId FROM offline_recharge`;
 
-      res.status(200).json({
-        status: "Success",
-        message: "Data inserted successfully",
-        id: result.insertId,
-      });
+  db.query(getMaxOrderIdQuery, (err, result) => {
+    if (err) {
+      console.error("Error fetching maximum order ID:", err);
+      return res
+        .status(500)
+        .json({ status: "Failure", error: "Database error" });
     }
-  );
+
+    let maxOrderId = result[0].maxOrderId || "OR00000"; // Default if no order ID is present
+    let newOrderId = generateNewOrderId(maxOrderId);
+
+    // Function to check if order ID is unique
+    const checkOrderIdUnique = () => {
+      const checkOrderIdQuery = `SELECT orderid FROM offline_recharge WHERE orderid = ?`;
+
+      db.query(checkOrderIdQuery, [newOrderId], (err, result) => {
+        if (err) {
+          console.error("Error checking order ID:", err);
+          return res
+            .status(500)
+            .json({ status: "Failure", error: "Database error" });
+        }
+
+        if (result.length > 0) {
+          // Order ID exists, generate a new one
+          newOrderId = generateNewOrderId(newOrderId);
+          checkOrderIdUnique(); // Recursively check until unique
+        } else {
+          // Order ID is unique, proceed with inserting the record
+          const insertQuery = `INSERT INTO offline_recharge 
+            (mobile_no, operator_name, amount, orderid, recharge_Type, created_by_userid, created_at) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)`;
+
+          db.query(
+            insertQuery,
+            [
+              mobile_no,
+              operator_name,
+              amount,
+              newOrderId,
+              recharge_Type,
+              created_by_userid,
+              createdAt,
+            ],
+            (err, result) => {
+              if (err) {
+                console.error("Error inserting data into MySQL:", err);
+                return res
+                  .status(500)
+                  .json({ status: "Failure", error: "Database error" });
+              }
+
+              res.status(200).json({
+                status: "Success",
+                message: "Data inserted successfully",
+                id: result.insertId,
+                orderid: newOrderId,
+              });
+            }
+          );
+        }
+      });
+    };
+
+    // Start the check for order ID uniqueness
+    checkOrderIdUnique();
+  });
+};
+
+const getRechargeData = (req, res) => {
+  let query = `SELECT * FROM offline_recharge`;
+
+  db.query(query, (err, result) => {
+    if (err) {
+      return res.status(400).json({ status: "failure", error: err.message });
+    }
+
+    return res.status(200).json({ status: "success", data: result });
+  });
+};
+
+const getApiRechargeData = (req, res) => {
+  let query = `SELECT * FROM recharges`;
+
+  db.query(query, (err, result) => {
+    if (err) {
+      return res.status(400).json({ status: "failure", error: err.message });
+    }
+
+    return res.status(200).json({ status: "success", data: result });
+  });
 };
 
 module.exports = {
@@ -277,6 +350,9 @@ module.exports = {
   getApplyOfflineForm,
   updateApplyOfflineForm,
   bankidForm,
+  offlineRecharge,
+  getRechargeData,
+  getApiRechargeData,
 };
 
 // const getBalance = (req, res) => {
@@ -319,4 +395,46 @@ module.exports = {
 //     }
 //     res.status(200).json(result);
 //   });
+// };
+
+// const offlineRecharge = (req, res) => {
+//   const { mobile_no, operator_name, amount, orderid, created_by_userid } =
+//     req.body;
+
+//   if (
+//     !mobile_no ||
+//     !operator_name ||
+//     !amount ||
+//     !orderid ||
+//     !created_by_userid
+//   ) {
+//     return res
+//       .status(400)
+//       .json({ status: "Failure", error: "Please fill all the fields" });
+//   }
+
+//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+//   const query = `INSERT INTO offline_recharge
+//     (mobile_no, operator_name, amount, orderid, created_by_userid, created_at)
+//     VALUES (?, ?, ?, ?, ?, ?)`;
+
+//   db.query(
+//     query,
+//     [mobile_no, operator_name, amount, orderid, created_by_userid, createdAt],
+//     (err, result) => {
+//       if (err) {
+//         console.error("Error inserting data into MySQL:", err);
+//         return res
+//           .status(500)
+//           .json({ status: "Failure", error: "Database error" });
+//       }
+
+//       res.status(200).json({
+//         status: "Success",
+//         message: "Data inserted successfully",
+//         id: result.insertId,
+//       });
+//     }
+//   );
 // };
