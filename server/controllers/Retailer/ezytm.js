@@ -17,6 +17,7 @@ const getBalanceEzytm = (req, res) => {
     });
 };
 
+
 const getRechargeStatus = (req,res)=>{
   const {RefTxnId} = req.body
       const endpoint = "/statuscheck"
@@ -62,7 +63,7 @@ const operatorMapping = {
 };
 
 const rechargeMobile = (req, res) => {
-  const { number, amount, operatorName } = req.body;
+  const { number, amount, operatorName,	recharge_Type } = req.body;
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const providerName = "ezytm"
@@ -87,8 +88,8 @@ const rechargeMobile = (req, res) => {
 
       // Step 3: Insert initial row to generate orderid
       const insertQuery =
-        "INSERT INTO recharges (mobile_no, amount, operator_name, providerName , created_at) VALUES (?, ?, ?, ? , ?)";
-      const values = [number, amount, operatorName,providerName, createdAt];
+        "INSERT INTO recharges (mobile_no, amount, operator_name, providerName,	recharge_Type , created_at) VALUES (?, ?, ?, ? , ? , ?)";
+      const values = [number, amount, operatorName,providerName,	recharge_Type, createdAt];
 
       return new Promise((resolve, reject) => {
         db.query(insertQuery, values, (err, result) => {
@@ -209,7 +210,7 @@ module.exports = {
   getBalanceEzytm,
   rechargeMobile,
   rechargeCallback,
-  getRechargeStatus
+  getRechargeStatus,
 };
 
 //   apiClient.get(endpoint, {
