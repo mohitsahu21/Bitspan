@@ -104,7 +104,7 @@ const PostPaidRecharge = () => {
     setLoading(true);
     try {
       const result = await axios.post(
-        "http://localhost:7777/api/auth/retailer/offline-recharge",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/offline-recharge",
         offlineForm
       );
       setResponseForm(result.data); // Update the response state with the received data

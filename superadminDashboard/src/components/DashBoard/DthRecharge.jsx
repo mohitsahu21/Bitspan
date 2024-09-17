@@ -9,6 +9,28 @@ const DthRecharge = () => {
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
+
+  const [plans, setPlans] = useState([]);
+  const [selectedPlan, setSelectedPlan] = useState({});
+  const [rechargeData, setRechargeData] = useState({
+    opcode: "TPC", // Assuming "TPC" is constant for all operators
+    number: "",
+    amount: "",
+    plan_id: "",
+    first_name: "",
+    last_name: "",
+    full_address: "",
+    postal_code: "",
+    orderid: "",
+  });
+
+  const operatorOptions = [
+    { name: "Dish TV", value: "DTV" },
+    { name: "Tata Sky", value: "TTV" },
+    { name: "Videocon", value: "VTV" },
+    { name: "Sun Direct", value: "STV" },
+    { name: "Airtel DTH", value: "ATV" },
+  ];
   return (
     <>
       <Wrapper>
@@ -19,13 +41,17 @@ const DthRecharge = () => {
               <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none">
                 {/* <Sider /> */}
               </div>
-              <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12  col-sm-12  col-11
-                             mt-5 formdata">
+              <div
+                className="col-xxl-12 col-xl-12 col-lg-12 col-md-12  col-sm-12  col-11
+                             mt-5 formdata"
+              >
                 <div className="main shadow-none">
                   <div className="row shadow-none mb-5">
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
-                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">DTH Recharge</h4>
+                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
+                          DTH Recharge
+                        </h4>
                         <h6 className="mx-lg-5">
                           <BiHomeAlt /> &nbsp; / &nbsp; DTH Recharge
                         </h6>
@@ -226,10 +252,6 @@ const DthRecharge = () => {
 
 export default DthRecharge;
 const Wrapper = styled.div`
- 
-
- 
-
   .circle-nav {
     width: 100%;
     display: flex;
@@ -301,15 +323,13 @@ const Wrapper = styled.div`
   .p-4 {
     padding: 1.5rem !important;
   }
-  @media (min-width: 1025px) and (max-width : 1500px){
+  @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
-     
       padding-left: 15rem;
     }
   }
   @media (min-width: 1500px) {
     .formdata {
-     
       padding-left: 15rem;
     }
   }

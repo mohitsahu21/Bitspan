@@ -15,6 +15,7 @@ const {
   nsdlPanCorrect,
   nsdlPanIncom,
   rechargeWithBalanceCheck,
+  dthRechargeWithBalanceCheck,
 } = require("../../controllers/Retailer/instpay");
 
 const router = express.Router();
@@ -34,5 +35,6 @@ router.post("/nsdl-pan-request", nsdlPan);
 router.post("/nsdl-pan-correction", nsdlPanCorrect);
 router.post("/nsdl-pan-incomplete", nsdlPanIncom);
 router.post("/api-recharge", rechargeWithBalanceCheck);
+router.post("/api-dth-recharge", dthRechargeWithBalanceCheck);
 
 module.exports = router;

@@ -106,36 +106,36 @@ const MobileRecharge = () => {
     setLoading(true);
     try {
       const result = await axios.post(
-        "http://localhost:7777/api/auth/retailer/offline-recharge",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/offline-recharge",
         offlineForm
       );
       setResponseForm(result.data); // Update the response state with the received data
       console.log(result.data);
-      // if (result.data.rechargeData.status === "Failure") {
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "Oops...",
-      //     text: "Something went wrong!",
-      //     // footer: '<a href="#">Why do I have this issue?</a>',
-      //   });
-      // } else if (result.data.rechargeData.status === "Success") {
-      //   Swal.fire({
-      //     title: "Done!",
-      //     text: "Recharge Successfull",
-      //     icon: "success",
-      //   });
-      // }
+      if (result.data.status === "Failure") {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+          // footer: '<a href="#">Why do I have this issue?</a>',
+        });
+      } else if (result.data.status === "Success") {
+        Swal.fire({
+          title: "Done!",
+          text: "Recharge Successfull",
+          icon: "success",
+        });
+      }
     } catch (error) {
       console.error(
         "Error in recharge:",
         error.response ? error.response.data : error.message
       );
-      // Swal.fire({
-      //   icon: "error",
-      //   title: "Oops...",
-      //   text: "Something went wrong!",
-      //   footer: '<a href="#">Why do I have this issue?</a>',
-      // });
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+        footer: '<a href="#">Why do I have this issue?</a>',
+      });
       setResponseForm(null);
     } finally {
       setLoading(false); // Stop loading
