@@ -44,6 +44,22 @@ const makeRechargeRequest = (endpoint,params = {}) => {
       throw error;
     });
 };
+const makeBillPaymentRequest = (endpoint,params = {}) => {
+  // const endpoint = "/Recharge2";
+  
+  return apiClient
+    .get(endpoint, {
+      params: {
+        at: apiToken,
+        ...params
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("Error making recharge request:", error.message);
+      throw error;
+    });
+};
 
 // const makeRechargeRequest = (mobileNo, amount, opId, refTxnId) => {
 //   const endpoint = "/Recharge2";
@@ -68,4 +84,5 @@ const makeRechargeRequest = (endpoint,params = {}) => {
 module.exports = {
   getDataFromEzytmClientApi,
   makeRechargeRequest,
+  makeBillPaymentRequest
 };
