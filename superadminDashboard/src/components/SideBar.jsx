@@ -774,6 +774,11 @@ const RetailerSidebarData = [
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
+        title: "Apply DTH Connection",
+        path: "/dth-connection",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
         title: "Prepaid Recharge History",
         path: "/prepaid-recharge-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,

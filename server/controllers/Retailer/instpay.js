@@ -525,7 +525,7 @@ const operatorMappingDTH = {
 
 const generateUniqueOrderId = () => {
   return new Promise((resolve, reject) => {
-    const query = "SELECT MAX(id) AS maxId FROM dth_recharge";
+    const query = "SELECT MAX(id) AS maxId FROM dth_connection";
 
     db.query(query, (err, result) => {
       if (err) {
@@ -592,7 +592,7 @@ const dthRechargeWithBalanceCheck = (req, res) => {
     })
     .then((generatedOrderId) => {
       const insertQuery = `
-        INSERT INTO dth_recharge (
+        INSERT INTO dth_connection (
           operatorName, number, amount, plan_id, first_name, last_name, 
           full_address, postal_code, orderid, providerName, created_at
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
@@ -640,7 +640,7 @@ const dthRechargeWithBalanceCheck = (req, res) => {
     })
     .then(({ rechargeData, id }) => {
       const updateQuery = `
-        UPDATE dth_recharge SET opcode = ?, txid = ?, status = ?, opid = ?, dr_amount = ?, message = ? WHERE id = ?`;
+        UPDATE dth_connection SET opcode = ?, txid = ?, status = ?, opid = ?, dr_amount = ?, message = ? WHERE id = ?`;
       const updateValues = [
         rechargeData.opcode,
         rechargeData.txid,

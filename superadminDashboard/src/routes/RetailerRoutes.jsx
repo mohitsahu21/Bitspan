@@ -44,6 +44,7 @@ import AllPanForm from "../components/DashBoard/AllPanForm";
 import Certificate from "../components/SuperDistributer/Certificate";
 import NewBankID from "../components/DashBoard/NewBankID";
 import PostPaidRecharge from "../components/DashBoard/PostPaidRecharge";
+import DthConnection from "../components/DashBoard/DthConnection";
 const RetailerRoutes = () => {
   return (
     <>
@@ -91,6 +92,7 @@ const RetailerRoutes = () => {
         <Route path="/add-money" element={<AddMoney />} />
         <Route path="/uti-login" element={<UtiPan />} />
         <Route path="/dth-recharge" element={<DthRecharge />} />
+        <Route path="/dth-connection" element={<DthConnection />} />
         <Route
           path="/aadhar-linking-status"
           element={<AadharLinkingStatus />}
