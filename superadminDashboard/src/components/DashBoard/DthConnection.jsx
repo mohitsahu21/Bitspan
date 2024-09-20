@@ -86,6 +86,47 @@ const DthConnection = () => {
     getData();
   }, []);
 
+  const [offlineForm, setOfflineForm] = useState({
+    operatorName: "",
+    first_name: "",
+    last_name: "",
+    full_address: "",
+    postal_code: "",
+    number: "",
+    amount: "",
+    message: "",
+    user_id: "",
+  });
+
+  const handleOfflineChange = (e) => {
+    const { name, value } = e.target;
+    setOfflineForm({ ...offlineForm, [name]: value });
+  };
+
+  const handleOfflineSubmit = async (e) => {
+    e.preventDefault();
+
+    const operatorName = "Tata Play";
+    const opcode = "TPC";
+
+    const requestData = {
+      ...offlineForm,
+      operatorName,
+      opcode,
+    };
+
+    try {
+      const response = await axios.post(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/offline-dth-connection`,
+        requestData
+      );
+
+      console.log(response.data);
+    } catch (error) {
+      console.log(`Error in Apply Connection ${error}`);
+    }
+  };
+
   return (
     <>
       <Wrapper>
@@ -232,7 +273,7 @@ const DthConnection = () => {
                                               onChange={handleChange}
                                               required
                                               readOnly
-                                              autoComplete="off"
+                                              autoComplete="new-password"
                                             />
                                             <label for="floatingInputGroup1">
                                               Amount
@@ -255,7 +296,7 @@ const DthConnection = () => {
                                               onChange={handleChange}
                                               required
                                               readOnly
-                                              autoComplete="off"
+                                              autoComplete="new-password"
                                             />
                                             <label for="floatingInputGroup1">
                                               Plan ID
@@ -277,7 +318,7 @@ const DthConnection = () => {
                                               value={formData.first_name}
                                               onChange={handleChange}
                                               required
-                                              autoComplete="off"
+                                              autoComplete="new-password"
                                             />
                                             <label for="floatingInputGroup1">
                                               First Name
@@ -299,7 +340,7 @@ const DthConnection = () => {
                                               value={formData.last_name}
                                               onChange={handleChange}
                                               required
-                                              autoComplete="off"
+                                              autoComplete="new-password"
                                             />
                                             <label for="floatingInputGroup1">
                                               Last Name
@@ -321,7 +362,7 @@ const DthConnection = () => {
                                               value={formData.full_address}
                                               onChange={handleChange}
                                               required
-                                              autoComplete="off"
+                                              autoComplete="new-password"
                                             />
                                             <label for="floatingInputGroup1">
                                               Full Address
@@ -343,7 +384,7 @@ const DthConnection = () => {
                                               value={formData.postal_code}
                                               onChange={handleChange}
                                               required
-                                              autoComplete="off"
+                                              autoComplete="new-password"
                                             />
                                             <label for="floatingInputGroup1">
                                               Postal Code
@@ -385,7 +426,91 @@ const DthConnection = () => {
                                   <div className="text-center">
                                     <h3 className="mb-4">DTH Connection 2</h3>
                                     <div>
-                                      <form>
+                                      <form onSubmit={handleOfflineSubmit}>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text">
+                                            <BiGroup />
+                                          </span>
+                                          <div class="form-floating">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              id="floatingInputGroup1"
+                                              name="first_name"
+                                              placeholder="First Name"
+                                              value={offlineForm.first_name}
+                                              onChange={handleOfflineChange}
+                                              required
+                                              autoComplete="new-password"
+                                            />
+                                            <label for="floatingInputGroup1">
+                                              First Name
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text">
+                                            <BiGroup />
+                                          </span>
+                                          <div class="form-floating">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              id="floatingInputGroup1"
+                                              name="last_name"
+                                              placeholder="Last Name"
+                                              value={offlineForm.last_name}
+                                              onChange={handleOfflineChange}
+                                              required
+                                              autoComplete="new-password"
+                                            />
+                                            <label for="floatingInputGroup1">
+                                              Last Name
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text">
+                                            <ImAddressBook />
+                                          </span>
+                                          <div class="form-floating">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              id="floatingInputGroup1"
+                                              name="full_address"
+                                              placeholder="Full Address"
+                                              value={offlineForm.full_address}
+                                              onChange={handleOfflineChange}
+                                              required
+                                              autoComplete="new-password"
+                                            />
+                                            <label for="floatingInputGroup1">
+                                              Full Address
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text">
+                                            <LuSquareCode />
+                                          </span>
+                                          <div class="form-floating">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              id="floatingInputGroup1"
+                                              name="postal_code"
+                                              placeholder="Postal Code"
+                                              value={offlineForm.postal_code}
+                                              onChange={handleOfflineChange}
+                                              required
+                                              autoComplete="new-password"
+                                            />
+                                            <label for="floatingInputGroup1">
+                                              Postal Code
+                                            </label>
+                                          </div>
+                                        </div>
                                         <div class="input-group mb-3">
                                           <span class="input-group-text">
                                             <FaMobileAlt />
@@ -395,51 +520,69 @@ const DthConnection = () => {
                                               type="text"
                                               class="form-control"
                                               id="floatingInputGroup1"
-                                              placeholder="Username"
+                                              name="number"
+                                              placeholder="Phone Number"
+                                              value={offlineForm.number}
+                                              onChange={handleOfflineChange}
+                                              required
+                                              autoComplete="new-password"
                                             />
                                             <label for="floatingInputGroup1">
-                                              Mobile Number
+                                              Phone Number
                                             </label>
                                           </div>
                                         </div>
                                         <div class="input-group mb-3">
-                                          <div class="form-floating">
-                                            <select
-                                              class="form-select"
-                                              id="floatingSelectOperator"
-                                              aria-label="Select Operator"
-                                            >
-                                              <option value="">
-                                                Select Operator
-                                              </option>
-                                            </select>
-                                            <label for="floatingInputGroup1">
-                                              Select Operator
-                                            </label>
-                                          </div>
-                                        </div>
-                                        <div class="input-group mb-3">
+                                          <span class="input-group-text">
+                                            <FaMoneyBillAlt />
+                                          </span>
                                           <div class="form-floating">
                                             <input
                                               type="text"
                                               class="form-control"
                                               id="floatingInputGroup1"
-                                              placeholder="Username"
+                                              name="amount"
+                                              placeholder="Amount"
+                                              value={offlineForm.amount}
+                                              onChange={handleOfflineChange}
+                                              required
+                                              autoComplete="new-password"
                                             />
                                             <label for="floatingInputGroup1">
                                               Amount
                                             </label>
                                           </div>
                                         </div>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text">
+                                            <FaMobileAlt />
+                                          </span>
+                                          <div class="form-floating">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              id="floatingInputGroup1"
+                                              name="message"
+                                              placeholder="Message"
+                                              value={offlineForm.message}
+                                              onChange={handleOfflineChange}
+                                              required
+                                              autoComplete="new-password"
+                                            />
+                                            <label for="floatingInputGroup1">
+                                              DTH Description
+                                            </label>
+                                          </div>
+                                        </div>
                                         <div className="text-start mt-2 mb-3">
                                           <button
                                             className="btn btn-none text-light"
-                                            type="submit"
                                             style={{
                                               backgroundColor: "#6d70ff",
                                             }}
+                                            type="submit"
                                           >
-                                            Recharge Now
+                                            Submit Now
                                           </button>
                                         </div>
                                       </form>

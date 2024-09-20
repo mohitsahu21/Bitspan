@@ -10,6 +10,7 @@ const {
   offlineRecharge,
   getRechargeData,
   getApiRechargeData,
+  offlineDthConnection,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -52,5 +53,6 @@ router.put("/updateApplyOfflineForm/:id", updateApplyOfflineForm);
 router.post("/offline-recharge", offlineRecharge);
 router.get("/getRechargeData", getRechargeData);
 router.get("/getApiRechargeData", getApiRechargeData);
+router.post("/offline-dth-connection", offlineDthConnection);
 
 module.exports = router;

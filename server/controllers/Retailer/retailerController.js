@@ -344,6 +344,247 @@ const getApiRechargeData = (req, res) => {
   });
 };
 
+// const offlineDthConnection = (req, res) => {
+//   const {
+//     operatorName,
+//     first_name,
+//     last_name,
+//     full_address,
+//     postal_code,
+//     number,
+//     amount,
+//     orderid,
+//     message,
+//     user_id,
+//   } = req.body;
+
+//   if (
+//     !first_name ||
+//     !last_name ||
+//     !full_address ||
+//     !postal_code ||
+//     !number ||
+//     !amount ||
+//     !message
+//   ) {
+//     return res
+//       .status(400)
+//       .json({ status: "Failure", error: "Please fill all the fields" });
+//   }
+
+//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+//   // Function to generate new order ID
+//   const generateNewOrderId = (maxOrderId) => {
+//     let numericPart = parseInt(maxOrderId.replace("DOR", "")) + 1;
+//     return `OR${String(numericPart).padStart(9, "0")}`; // Ensures it remains OR00001, OR00002, etc.
+//   };
+
+//   // Query to get the maximum order ID
+//   const getMaxOrderIdQuery = `SELECT MAX(orderid) as maxOrderId FROM offline_dth_connection`;
+
+//   db.query(getMaxOrderIdQuery, (err, result) => {
+//     if (err) {
+//       console.error("Error fetching maximum order ID:", err);
+//       return res
+//         .status(500)
+//         .json({ status: "Failure", error: "Database error" });
+//     }
+
+//     let maxOrderId = result[0].maxOrderId || "DOR00000"; // Default if no order ID is present
+//     let newOrderId = generateNewOrderId(maxOrderId);
+
+//     // Function to check if order ID is unique
+//     const checkOrderIdUnique = () => {
+//       const checkOrderIdQuery = `SELECT orderid FROM  offline_dth_connection WHERE orderid = ?`;
+
+//       db.query(checkOrderIdQuery, [newOrderId], (err, result) => {
+//         if (err) {
+//           console.error("Error checking order ID:", err);
+//           return res
+//             .status(500)
+//             .json({ status: "Failure", error: "Database error" });
+//         }
+
+//         if (result.length > 0) {
+//           // Order ID exists, generate a new one
+//           newOrderId = generateNewOrderId(newOrderId);
+//           checkOrderIdUnique(); // Recursively check until unique
+//         } else {
+//           // Order ID is unique, proceed with inserting the record
+//           const insertQuery = `INSERT INTO offline_dth_connection
+//             (operatorName,
+//     first_name,
+//     last_name,
+//     full_address,
+//     postal_code,
+//     number,
+//     amount,
+//     orderid,
+//     message,
+//     user_id,created_at)
+//             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+//           db.query(
+//             insertQuery,
+//             [
+//               operatorName,
+//               first_name,
+//               last_name,
+//               full_address,
+//               postal_code,
+//               number,
+//               amount,
+//               orderid,
+//               message,
+//               user_id,
+//               createdAt,
+//             ],
+//             (err, result) => {
+//               if (err) {
+//                 console.error("Error inserting data into MySQL:", err);
+//                 return res
+//                   .status(500)
+//                   .json({ status: "Failure", error: "Database error" });
+//               }
+
+//               res.status(200).json({
+//                 status: "Success",
+//                 message: "Data inserted successfully",
+//                 id: result.insertId,
+//                 orderid: newOrderId,
+//               });
+//             }
+//           );
+//         }
+//       });
+//     };
+
+//     // Start the check for order ID uniqueness
+//     checkOrderIdUnique();
+//   });
+// };
+
+const offlineDthConnection = (req, res) => {
+  const {
+    operatorName,
+    first_name,
+    last_name,
+    full_address,
+    postal_code,
+    number,
+    amount,
+    message, // Removed orderid from req.body since it's generated
+    user_id,
+  } = req.body;
+
+  if (
+    !first_name ||
+    !last_name ||
+    !full_address ||
+    !postal_code ||
+    !number ||
+    !amount ||
+    !message
+  ) {
+    return res
+      .status(400)
+      .json({ status: "Failure", error: "Please fill all the fields" });
+  }
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+  // Function to generate new order ID
+  const generateNewOrderId = (maxOrderId) => {
+    let numericPart = parseInt(maxOrderId.replace("DOR", "")) + 1;
+    return `DOR${String(numericPart).padStart(5, "0")}`; // Generates DOR00001, etc.
+  };
+
+  // Query to get the maximum order ID
+  const getMaxOrderIdQuery = `SELECT MAX(orderid) as maxOrderId FROM offline_dth_connection`;
+
+  db.query(getMaxOrderIdQuery, (err, result) => {
+    if (err) {
+      console.error("Error fetching maximum order ID:", err);
+      return res
+        .status(500)
+        .json({ status: "Failure", error: "Database error" });
+    }
+
+    let maxOrderId = result[0].maxOrderId || "DOR00000"; // Default if no order ID is present
+    let newOrderId = generateNewOrderId(maxOrderId);
+
+    // Function to check if order ID is unique
+    const checkOrderIdUnique = () => {
+      const checkOrderIdQuery = `SELECT orderid FROM offline_dth_connection WHERE orderid = ?`;
+
+      db.query(checkOrderIdQuery, [newOrderId], (err, result) => {
+        if (err) {
+          console.error("Error checking order ID:", err);
+          return res
+            .status(500)
+            .json({ status: "Failure", error: "Database error" });
+        }
+
+        if (result.length > 0) {
+          // Order ID exists, generate a new one
+          newOrderId = generateNewOrderId(newOrderId);
+          checkOrderIdUnique(); // Recursively check until unique
+        } else {
+          // Order ID is unique, proceed with inserting the record
+          const insertQuery = `INSERT INTO offline_dth_connection
+            (operatorName,
+    first_name,
+    last_name,
+    full_address,
+    postal_code,
+    number,
+    amount,
+    orderid,
+    message,
+    user_id, created_at) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+          db.query(
+            insertQuery,
+            [
+              operatorName,
+              first_name,
+              last_name,
+              full_address,
+              postal_code,
+              number,
+              amount,
+              newOrderId, // Using the newly generated order ID
+              message,
+              user_id,
+              createdAt,
+            ],
+            (err, result) => {
+              if (err) {
+                console.error("Error inserting data into MySQL:", err);
+                return res
+                  .status(500)
+                  .json({ status: "Failure", error: "Database error" });
+              }
+
+              res.status(200).json({
+                status: "Success",
+                message: "Data inserted successfully",
+                id: result.insertId,
+                orderid: newOrderId, // Return the new order ID to the client
+              });
+            }
+          );
+        }
+      });
+    };
+
+    // Start the check for order ID uniqueness
+    checkOrderIdUnique();
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -353,6 +594,7 @@ module.exports = {
   offlineRecharge,
   getRechargeData,
   getApiRechargeData,
+  offlineDthConnection,
 };
 
 // const getBalance = (req, res) => {
