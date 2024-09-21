@@ -199,6 +199,18 @@ const operatorMappingBillPayment = {
   "BSNL Corporate" : { code: "777", category: "Landline" },
   "BSNL Individual" : { code: "776", category: "Landline" },
   "Tata Teleservices" : { code: "780", category: "Landline" },
+
+
+  "M.P. Madhya Kshetra Vidyut Vitaran - RURAL" : { code: "63", category: "Electricity" },
+  "M.P. Madhya Kshetra Vidyut Vitaran - URBAN" : { code: "64", category: "Electricity" },
+  "M.P. Paschim Kshetra Vidyut Vitaran" : { code: "36", category: "Electricity" },
+  "M.P. Poorv Kshetra Vidyut Vitaran - RURAL" : { code: "65", category: "Electricity" },
+  "M.P. Poorv Kshetra Vidyut Vitaran - URBAN" : { code: "90", category: "Electricity" },
+  "M.P. Poorva Kshetra Vidyut Vitaran Co. Ltd Jabalpur - NGB Billing System" : { code: "65", category: "Electricity" },
+
+
+  "LIC- Life Insurance Corporation Of India" : {code : "107" , category: "Insurance" }
+
 };
 
 const billPayment = (req, res) => {
@@ -335,9 +347,9 @@ const billFetch = (req, res) => {
   // Step 1: Fetch balance
   getDataFromEzytmClientApi("/Balance")
     .then((balanceData) => {
-      if (balanceData.BALANCE < amount) {
-        return res.status(400).json({ error: "Insufficient balance" });
-      }
+      // if (balanceData.BALANCE < amount) {
+      //   return res.status(400).json({ error: "Insufficient balance" });
+      // }
 
       // Step 2: Map operator name to code
       // const operatorDetails = operatorMapping[operatorName];
