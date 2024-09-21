@@ -339,53 +339,12 @@ const operatorMapping = {
   "Jio Postpaid": { code: "JIOP", category: "Postpaid" },
   Vi: { code: "V", category: "Prepaid" },
   "Vi Postpaid": { code: "VP", category: "Postpaid" },
+  "Dish TV": { code: "DTV", category: "DTH" },
+  "Tata Sky": { code: "TTV", category: "DTH" },
+  Videocon: { code: "VTV", category: "DTH" },
+  "Sun Direct": { code: "STV", category: "DTH" },
+  "Airtel DTH": { code: "ATV", category: "DTH" },
 };
-
-// const rechargeWithBalanceCheck = (req, res) => {
-//   const token = process.env.APITokenInstapay;
-//   const username = process.env.APIUsernameInstapay;
-//   const { number, amount, orderid, operatorName } = req.body;
-
-//   if (!number || !amount || !orderid || !operatorName) {
-//     return res.status(400).json({ error: "All fields are required" });
-//   }
-
-//   // Step 1: Fetch balance
-//   getDataFromClientApi("/v3/recharge/balance", token, username, {
-//     format: "json",
-//   })
-//     .then((balanceData) => {
-//       if (balanceData.balance < amount) {
-//         return res.status(400).json({ error: "Insufficient balance" });
-//       }
-
-//       // Step 2: Map operator name to code
-//       const operatorDetails = operatorMapping[operatorName];
-//       if (!operatorDetails) {
-//         return res.status(400).json({ error: "Invalid operator name" });
-//       }
-
-//       // Step 3: Perform recharge
-//       return getDataFromClientApi("/v3/recharge/api", token, username, {
-//         opcode: operatorDetails.code,
-//         number: number,
-//         amount: amount,
-//         orderid: orderid,
-//         format: "json",
-//       });
-//     })
-//     .then((rechargeData) => {
-//       res.json(rechargeData); // Step 4: Respond with recharge data
-//     })
-//     .catch((error) => {
-//       res
-//         .status(500)
-//         .json({
-//           error: "Error in balance check or recharge",
-//           message: error.message,
-//         });
-//     });
-// };
 
 const rechargeWithBalanceCheck = (req, res) => {
   const token = process.env.APITokenInstapay;
@@ -852,3 +811,49 @@ module.exports = {
 //       });
 //     });
 // }; // end
+
+// const rechargeWithBalanceCheck = (req, res) => {
+//   const token = process.env.APITokenInstapay;
+//   const username = process.env.APIUsernameInstapay;
+//   const { number, amount, orderid, operatorName } = req.body;
+
+//   if (!number || !amount || !orderid || !operatorName) {
+//     return res.status(400).json({ error: "All fields are required" });
+//   }
+
+//   // Step 1: Fetch balance
+//   getDataFromClientApi("/v3/recharge/balance", token, username, {
+//     format: "json",
+//   })
+//     .then((balanceData) => {
+//       if (balanceData.balance < amount) {
+//         return res.status(400).json({ error: "Insufficient balance" });
+//       }
+
+//       // Step 2: Map operator name to code
+//       const operatorDetails = operatorMapping[operatorName];
+//       if (!operatorDetails) {
+//         return res.status(400).json({ error: "Invalid operator name" });
+//       }
+
+//       // Step 3: Perform recharge
+//       return getDataFromClientApi("/v3/recharge/api", token, username, {
+//         opcode: operatorDetails.code,
+//         number: number,
+//         amount: amount,
+//         orderid: orderid,
+//         format: "json",
+//       });
+//     })
+//     .then((rechargeData) => {
+//       res.json(rechargeData); // Step 4: Respond with recharge data
+//     })
+//     .catch((error) => {
+//       res
+//         .status(500)
+//         .json({
+//           error: "Error in balance check or recharge",
+//           message: error.message,
+//         });
+//     });
+// };
