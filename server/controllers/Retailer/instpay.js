@@ -344,6 +344,25 @@ const operatorMapping = {
   Videocon: { code: "VTV", category: "DTH" },
   "Sun Direct": { code: "STV", category: "DTH" },
   "Airtel DTH": { code: "ATV", category: "DTH" },
+  "M.P. Paschim Kshetra Vidyut Vitaran Company Ltd": {
+    code: "MPPKVVCL",
+    category: "Electricity",
+  },
+  "M.P. Madhya Kshetra Vidyut Vitaran - URBAN": {
+    code: "MPMKVVCLU",
+    category: "Electricity",
+  },
+  "M.P. Madhya Kshetra Vidyut Vitaran - RURAL": {
+    code: "MPMKVVCLR",
+    category: "Electricity",
+  },
+  "M.P. Poorv Kshetra Vidyut Vitaran Company Ltd (RURAL)": {
+    code: "MPPKVVCLR",
+    category: "Electricity",
+  },
+  "Airtel Broadband": { code: "214", category: "Broadband" },
+  Hathway: { code: "135", category: "Broadband" },
+  "BSNL Broadband": { code: "1057", category: "Broadband" },
 };
 
 const rechargeWithBalanceCheck = (req, res) => {
