@@ -774,6 +774,16 @@ const RetailerSidebarData = [
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
+        title: "Electricity Recharge",
+        path: "/electricity-recharge",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Broadband Recharge",
+        path: "/broadband-recharge",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
         title: "Apply DTH Connection",
         path: "/dth-connection",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
@@ -791,6 +801,16 @@ const RetailerSidebarData = [
       {
         title: "DTH Recharge History",
         path: "/dth-recharge-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Eletricity Recharge History",
+        path: "/eletricity-recharge-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Broadband Recharge History",
+        path: "/broadband-recharge-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {

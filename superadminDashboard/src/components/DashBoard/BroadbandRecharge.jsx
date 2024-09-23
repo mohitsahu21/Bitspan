@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { BiHomeAlt } from "react-icons/bi";
 import { FaMobileAlt } from "react-icons/fa";
+import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../Loading";
 
-const DthRecharge = () => {
+const BroadbandRecharge = () => {
   const [activeTab, setActiveTab] = useState("tab1");
 
   const handleTabClick = (tab) => {
@@ -14,18 +14,16 @@ const DthRecharge = () => {
   };
 
   const [formData, setFormData] = useState({
-    // opcode: "",
     operatorName: "",
     number: "",
     amount: "",
-    recharge_Type: "Prepaid",
-    // orderid: "4654747",
+    recharge_Type: "Broadband",
   });
   const [offlineForm, setOfflineForm] = useState({
     mobile_no: "",
     operator_name: "",
     amount: "",
-    recharge_Type: "Prepaid",
+    recharge_Type: "Broadband",
     created_by_userid: "1",
   });
   const [response, setResponse] = useState(null);
@@ -33,11 +31,9 @@ const DthRecharge = () => {
   const [loading, setLoading] = useState(false);
 
   const operatorOptions = [
-    { name: "Dish TV", value: "DTV" },
-    { name: "Tata Sky", value: "TTV" },
-    { name: "Videocon", value: "VTV" },
-    { name: "Sun Direct", value: "STV" },
-    { name: "Airtel DTH", value: "ATV" },
+    { name: "Airtel Broadband", value: "Airtel Broadband" },
+    { name: "Hathway", value: "Hathway" },
+    { name: "BSNL Broadband", value: "BSNL Broadband" },
   ];
 
   const handleChange = (e) => {
@@ -169,10 +165,11 @@ const DthRecharge = () => {
                       <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div className="d-flex justify-content-between align-items-center flex-wrap">
                           <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                            DTH Recharge
+                            Broadband Recharge
                           </h4>
                           <h6 className="mx-lg-5">
-                            <BiHomeAlt /> &nbsp; / &nbsp; DTH Recharge
+                            {" "}
+                            <BiHomeAlt /> &nbsp; / &nbsp; Broadband Recharge
                           </h6>
                         </div>
                       </div>
@@ -201,14 +198,26 @@ const DthRecharge = () => {
                           activeTab === "tab1" ? "active" : ""
                         }`}
                       >
-                        <div className="container rechargeForm">
+                        <div className="container">
                           <div className="row justify-content-center">
                             <div className="col-md-8 col-lg-6 col-xl-6">
                               <div className="card bg-body-tertiary shadow">
                                 <div className="p-4">
                                   <div className="text-center">
-                                    <h3 className="mb-4">DTH Recharge</h3>
+                                    <h3 className="mb-4">Broadband Recharge</h3>
                                     <div>
+                                      {/* {loading ? (
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          justifyContent: "center",
+                                          alignItems: "center",
+                                          // height: "40vh",
+                                        }}
+                                      >
+                                        <Loading />
+                                      </div>
+                                    ) : ( */}
                                       <form onSubmit={handleSubmit}>
                                         <div class="input-group mb-3">
                                           <span class="input-group-text">
@@ -223,10 +232,10 @@ const DthRecharge = () => {
                                               value={formData.number}
                                               onChange={handleChange}
                                               name="number"
-                                              autoComplete="new-password"
+                                              autoComplete="off"
                                             />
                                             <label for="floatingInputGroup1">
-                                              DTH Number
+                                              Mobile Number
                                             </label>
                                           </div>
                                         </div>
@@ -287,6 +296,7 @@ const DthRecharge = () => {
                                           </button>
                                         </div>
                                       </form>
+                                      {/*  )} */}
                                     </div>
                                   </div>
                                 </div>
@@ -300,13 +310,15 @@ const DthRecharge = () => {
                           activeTab === "tab2" ? "active" : ""
                         }`}
                       >
-                        <div className="container rechargeForm">
+                        <div className="container">
                           <div className="row justify-content-center">
                             <div className="col-md-8 col-lg-6 col-xl-6">
                               <div className="card bg-body-tertiary shadow">
                                 <div className="p-4">
                                   <div className="text-center">
-                                    <h3 className="mb-4">DTH Recharge 2</h3>
+                                    <h3 className="mb-4">
+                                      Broadband Recharge 2
+                                    </h3>
                                     <div>
                                       <form onSubmit={handlesubmitForm}>
                                         <div class="input-group mb-3">
@@ -324,7 +336,7 @@ const DthRecharge = () => {
                                               name="mobile_no"
                                             />
                                             <label for="floatingInputGroup1">
-                                              DTH Number
+                                              Mobile Number
                                             </label>
                                           </div>
                                         </div>
@@ -425,7 +437,7 @@ const DthRecharge = () => {
   );
 };
 
-export default DthRecharge;
+export default BroadbandRecharge;
 const Wrapper = styled.div`
   .circle-nav {
     width: 100%;

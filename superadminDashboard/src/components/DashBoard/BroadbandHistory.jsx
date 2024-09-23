@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { MdFormatListNumberedRtl } from "react-icons/md";
 import { BiHomeAlt } from "react-icons/bi";
 
-const PostpaidRechargeHistory = () => {
+const BroadbandHistory = () => {
   const [allData, setAllData] = useState([]); // Store all data
   const [currentData, setCurrentData] = useState([]); // Data for current page
   const [page, setPage] = useState(1);
@@ -23,7 +23,7 @@ const PostpaidRechargeHistory = () => {
         }
       );
       const data = response.data.data;
-      const newdata = data.filter((item) => item.recharge_Type === "postpaid");
+      const newdata = data.filter((item) => item.recharge_Type === "Broadband");
       setAllData(newdata); // Only setting filtered data
       setTotalPages(Math.ceil(newdata.length / limit));
       setPage(1);
@@ -65,12 +65,12 @@ const PostpaidRechargeHistory = () => {
                       {/* <div className="text-center">
                                                 <h3>Prepaid Recharge History</h3>
                                             </div> */}
-                      <div className="d-flex justify-content-between align-items-center flex-wrap ">
+                      <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Postpaid Recharge History
+                          Broadband History
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; Postpaid Recharge History
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Broadband History
                         </h6>
                       </div>
                     </div>
@@ -185,16 +185,6 @@ const PostpaidRechargeHistory = () => {
                               </nav>
                             </div>
                           )}
-                          {/* <div className="float-end">
-                                                        <nav aria-label="Page navigation example">
-                                                            <ul className="pagination">
-                                                                <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-                                                                <li className="page-item"><a className="page-link" href="#">1</a></li>
-
-                                                                <li className="page-item"><a className="page-link" href="#">Next</a></li>
-                                                            </ul>
-                                                        </nav>
-                                                    </div> */}
                         </div>
                       </div>
                     </div>
@@ -209,7 +199,7 @@ const PostpaidRechargeHistory = () => {
   );
 };
 
-export default PostpaidRechargeHistory;
+export default BroadbandHistory;
 
 const Wrapper = styled.div`
   .main {
