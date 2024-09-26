@@ -82,13 +82,57 @@ const getDataFromEasySmartPANApi = (endpoint, bodyData  = {}) => {
         res.status(500).send("Error fetching data from client API");
       });
   };
+  const easySmartNewPanTransactionStatus = (req, res) => {
+    const { order_id , txn_id} = req.body;
+    const endpoint = "/nsdl/transactionStatus";
+    
+  
+    getDataFromEasySmartPANApi(endpoint,  {
+        api_key : easySmartApiKey,
+        order_id,
+        txn_id
+       })
+      .then((data) => {
+        res.json(data);
+      })
+      .catch((error) => {
+        console.error(
+          "Error details:",
+          error.response ? error.response.data : error.message
+        );
+        res.status(500).send("Error fetching data from client API");
+      });
+  };
+  const easySmartNewPanAckStatus = (req, res) => {
+    const { ack , txn_id} = req.body;
+    const endpoint = "/nsdl/panAckStatus" ;
+    
+  
+    getDataFromEasySmartPANApi(endpoint,  {
+        api_key : easySmartApiKey,
+        ack,
+        txn_id
+       })
+      .then((data) => {
+        res.json(data);
+      })
+      .catch((error) => {
+        console.error(
+          "Error details:",
+          error.response ? error.response.data : error.message
+        );
+        res.status(500).send("Error fetching data from client API");
+      });
+  };
 
 
 
   
   module.exports = {
     easySmartBalance,
-    easySmartNewPanRequest
+    easySmartNewPanRequest,
+    easySmartNewPanTransactionStatus,
+    easySmartNewPanAckStatus
   }
 
 
