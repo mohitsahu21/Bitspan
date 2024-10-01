@@ -4,11 +4,7 @@ const { db } = require("../connect");
 
 const handleCgonePayCallback = (req, res)=>{
 
-    const STATUS = req.query.STATUS?.trim();
-    const TRANSACTIONID = req.query.TRANSACTIONID?.trim();
-    const OPERATORID = req.query.OPERATORID?.trim();
-    const CLIENTID = req.query.CLIENTID?.trim();
-    const MESSAGE = req.query.MESSAGE?.trim();
+    const {STATUS , TRANSACTIONID ,OPERATORID ,CLIENTID,MESSAGE } = req.query
   
     const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   

@@ -1652,8 +1652,28 @@ const SACreatePackages = () => {
 
 
                                         </div>
-
+                                        
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                                Enter Online Electricity Bill Pay Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
                                                 Enter M.P. Madhya Kshetra Vidyut Vitaran - URBAN Commission
                                             </label>
@@ -1709,7 +1729,7 @@ const SACreatePackages = () => {
 
                                                 />
                                             </div>
-                                        </div>
+                                        </div> */}
 
 
 
@@ -1750,7 +1770,7 @@ const SACreatePackages = () => {
 
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
-                                                Enter M.P. Madhya Kshetra Vidyut Vitaran - URBAN Commission
+                                                Enter Offline Electricity Bill Pay Commission
                                             </label>
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">
@@ -1767,7 +1787,7 @@ const SACreatePackages = () => {
                                                 />
                                             </div>
                                         </div>
-                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                        {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                             <label for="name" class="form-label">
                                             Enter M.P. Madhya Kshetra Vidyut Vitaran - RURAL Commission
                                             </label>
@@ -1804,7 +1824,7 @@ const SACreatePackages = () => {
 
                                                 />
                                             </div>
-                                        </div>
+                                        </div> */}
 
 
 

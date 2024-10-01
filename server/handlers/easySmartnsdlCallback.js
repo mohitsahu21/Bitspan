@@ -4,11 +4,7 @@ const { db } = require("../connect");
 
 const handleEasySmartNsdlPANCallback = (req, res)=>{
 
-    const order_id = req.query.order_id?.trim();
-    const ack = req.query.ack?.trim();
-    const status = req.query.status?.trim();
-    const encData = req.query.encData ;
-  
+    const {order_id , ack , status , encData} = req.query
     const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   
     const query = `
