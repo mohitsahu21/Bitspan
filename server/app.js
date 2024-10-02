@@ -32,6 +32,7 @@ app.use("/api/auth/nsdlpan", nsdlPanEasySmart);
 app.use("/api/auth/easyPayUpi", easyPayRouter);
 app.use("/api/auth/superAdmin" , superAdminRouter)
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/panUploads", express.static(path.join(__dirname, "panUploads")));
 
 // Callback URL endpoint
 app.get("/callbackUrl", (req, res) => {
@@ -58,11 +59,39 @@ app.get("/callbackUrl", (req, res) => {
   });
 });
 
+app.get("/callbackUrlCgonePay", (req, res) => {
+  const STATUS = req.query.STATUS?.trim();
+  const TRANSACTIONID = req.query.TRANSACTIONID?.trim();
+  const OPERATORID = req.query.OPERATORID?.trim();
+  const CLIENTID = req.query.CLIENTID?.trim();
+  const MESSAGE = req.query.MESSAGE?.trim();
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+  const query = `
+    INSERT INTO cgonePaycallback (STATUS, TRANSACTIONID, OPERATORID,CLIENTID,MESSAGE, created_at)
+    VALUES (?, ?, ?, ?, ? , ?)
+  `;
+
+  // Execute the SQL query
+  db.query(
+    query,
+    [STATUS, TRANSACTIONID, OPERATORID, CLIENTID, MESSAGE, createdAt],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting data:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+
+      console.log("Data inserted successfully:");
+      res.status(200).send("Callback processed successfully");
+    }
+  );
+});
 
 app.get("/callbackUrlCgonePay", handleCgonePayCallback);
 app.get("/easySmartNsdlPANCallback", handleEasySmartNsdlPANCallback);
 app.get("/easyPay-payment-callback", paymentCallback );
-
 
 const port = process.env.PORT || 7777;
 
