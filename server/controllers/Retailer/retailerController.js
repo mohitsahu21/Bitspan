@@ -1,6 +1,7 @@
 const { getDataFromClientApi } = require("../../APIS URL/instpayApis");
 const { db } = require("../../connect");
 const moment = require("moment-timezone");
+const multer = require("multer");
 
 const applyOfflineForm = (req, res) => {
   const {
@@ -344,127 +345,6 @@ const getApiRechargeData = (req, res) => {
   });
 };
 
-// const offlineDthConnection = (req, res) => {
-//   const {
-//     operatorName,
-//     first_name,
-//     last_name,
-//     full_address,
-//     postal_code,
-//     number,
-//     amount,
-//     orderid,
-//     message,
-//     user_id,
-//   } = req.body;
-
-//   if (
-//     !first_name ||
-//     !last_name ||
-//     !full_address ||
-//     !postal_code ||
-//     !number ||
-//     !amount ||
-//     !message
-//   ) {
-//     return res
-//       .status(400)
-//       .json({ status: "Failure", error: "Please fill all the fields" });
-//   }
-
-//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-
-//   // Function to generate new order ID
-//   const generateNewOrderId = (maxOrderId) => {
-//     let numericPart = parseInt(maxOrderId.replace("DOR", "")) + 1;
-//     return `OR${String(numericPart).padStart(9, "0")}`; // Ensures it remains OR00001, OR00002, etc.
-//   };
-
-//   // Query to get the maximum order ID
-//   const getMaxOrderIdQuery = `SELECT MAX(orderid) as maxOrderId FROM offline_dth_connection`;
-
-//   db.query(getMaxOrderIdQuery, (err, result) => {
-//     if (err) {
-//       console.error("Error fetching maximum order ID:", err);
-//       return res
-//         .status(500)
-//         .json({ status: "Failure", error: "Database error" });
-//     }
-
-//     let maxOrderId = result[0].maxOrderId || "DOR00000"; // Default if no order ID is present
-//     let newOrderId = generateNewOrderId(maxOrderId);
-
-//     // Function to check if order ID is unique
-//     const checkOrderIdUnique = () => {
-//       const checkOrderIdQuery = `SELECT orderid FROM  offline_dth_connection WHERE orderid = ?`;
-
-//       db.query(checkOrderIdQuery, [newOrderId], (err, result) => {
-//         if (err) {
-//           console.error("Error checking order ID:", err);
-//           return res
-//             .status(500)
-//             .json({ status: "Failure", error: "Database error" });
-//         }
-
-//         if (result.length > 0) {
-//           // Order ID exists, generate a new one
-//           newOrderId = generateNewOrderId(newOrderId);
-//           checkOrderIdUnique(); // Recursively check until unique
-//         } else {
-//           // Order ID is unique, proceed with inserting the record
-//           const insertQuery = `INSERT INTO offline_dth_connection
-//             (operatorName,
-//     first_name,
-//     last_name,
-//     full_address,
-//     postal_code,
-//     number,
-//     amount,
-//     orderid,
-//     message,
-//     user_id,created_at)
-//             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-//           db.query(
-//             insertQuery,
-//             [
-//               operatorName,
-//               first_name,
-//               last_name,
-//               full_address,
-//               postal_code,
-//               number,
-//               amount,
-//               orderid,
-//               message,
-//               user_id,
-//               createdAt,
-//             ],
-//             (err, result) => {
-//               if (err) {
-//                 console.error("Error inserting data into MySQL:", err);
-//                 return res
-//                   .status(500)
-//                   .json({ status: "Failure", error: "Database error" });
-//               }
-
-//               res.status(200).json({
-//                 status: "Success",
-//                 message: "Data inserted successfully",
-//                 id: result.insertId,
-//                 orderid: newOrderId,
-//               });
-//             }
-//           );
-//         }
-//       });
-//     };
-
-//     // Start the check for order ID uniqueness
-//     checkOrderIdUnique();
-//   });
-// };
-
 const offlineDthConnection = (req, res) => {
   const {
     operatorName,
@@ -585,6 +465,197 @@ const offlineDthConnection = (req, res) => {
   });
 };
 
+// const panFromData = (req, res) => {
+//   const {
+//     application_type,
+//     select_title,
+//     name,
+//     father_name,
+//     mother_name,
+//     dob,
+//     gender,
+//     office_address,
+//     aadhar_details,
+//     Address_Communication_OfficeResident,
+//     alternative_communication_Address,
+//     mobile_no,
+//     email_id,
+//     pin_code,
+//     state,
+//     Change_Request,
+//     Charge_Amount,
+//     user_id,
+//     status,
+//     note,
+//   } = req.body;
+
+//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+//   const domain = "http://localhost:7777";
+
+//   const documentUpload = req.files.documentUpload
+//     ? req.files.documentUpload
+//         .map((file) => `${domain}/panUploads/${file.filename}`)
+//         .join(",")
+//     : null;
+//   const attachment_form = req.files.attachment_form
+//     ? `${domain}/panUploads/${req.files.attachment_form[0].filename}`
+//     : null;
+//   const attachment_photo = req.files.attachment_photo
+//     ? `${domain}/panUploads/${req.files.attachment_photo[0].filename}`
+//     : null;
+//   const attachment_signature = req.files.attachment_signature
+//     ? `${domain}/panUploads/${req.files.attachment_signature[0].filename}`
+//     : null;
+
+//   // Insert query
+//   const sql = `INSERT INTO pan_offline (
+//         application_type, select_title, name, father_name, mother_name, dob, gender, office_address, aadhar_details,
+//         Address_Communication_OfficeResident, alternative_communication_Address, mobile_no, email_id, pin_code, state,
+//         Change_Request, document_upload, attachment_form, attachment_signature, attachment_photo, Charge_Amount, user_id,
+//         status, note, created_at
+//     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+//   const values = [
+//     application_type,
+//     select_title,
+//     name,
+//     father_name,
+//     mother_name,
+//     dob,
+//     gender,
+//     office_address,
+//     aadhar_details,
+//     Address_Communication_OfficeResident,
+//     alternative_communication_Address,
+//     mobile_no,
+//     email_id,
+//     pin_code,
+//     state,
+//     Change_Request,
+//     documentUpload,
+//     attachment_form,
+//     attachment_signature,
+//     attachment_photo,
+//     Charge_Amount,
+//     user_id,
+//     status,
+//     note,
+//     createdAt,
+//   ];
+
+//   db.query(sql, values, (err, result) => {
+//     if (err) {
+//       console.error("Database error:", err);
+//       return res.status(500).json({ error: err.message });
+//     }
+//     res.status(201).json({
+//       message: "Form data submitted successfully",
+//       formId: result.insertId,
+//     });
+//   });
+// };
+
+const panFromData = (req, res) => {
+  const {
+    application_type,
+    select_title,
+    name,
+    father_name,
+    mother_name,
+    dob,
+    gender,
+    office_address,
+    aadhar_details,
+    Address_Communication_OfficeResident,
+    alternative_communication_Address,
+    mobile_no,
+    email_id,
+    pin_code,
+    state,
+    Change_Request,
+    Charge_Amount,
+    user_id,
+    status,
+    note,
+  } = req.body;
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const domain = "http://localhost:7777";
+
+  console.log("Request body:", req.body);
+  console.log("Uploaded files:", req.files);
+
+  // Handle files carefully
+  const documentUpload =
+    req.files && req.files.documentUpload
+      ? req.files.documentUpload
+          .map((file) => `${domain}/panUploads/${file.filename}`)
+          .join(",")
+      : null;
+
+  const attachment_form =
+    req.files && req.files.attachment_form
+      ? `${domain}/panUploads/${req.files.attachment_form[0].filename}`
+      : null;
+
+  const attachment_photo =
+    req.files && req.files.attachment_photo
+      ? `${domain}/panUploads/${req.files.attachment_photo[0].filename}`
+      : null;
+
+  const attachment_signature =
+    req.files && req.files.attachment_signature
+      ? `${domain}/panUploads/${req.files.attachment_signature[0].filename}`
+      : null;
+
+  const sql = `INSERT INTO pan_offline (
+    application_type, select_title, name, father_name, mother_name, dob, gender, office_address, aadhar_details,
+    Address_Communication_OfficeResident, alternative_communication_Address, mobile_no, email_id, pin_code, state,
+    Change_Request, documentUpload, attachment_form, attachment_signature, attachment_photo, Charge_Amount, user_id,
+    status, note, created_at
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+  const values = [
+    application_type,
+    select_title,
+    name,
+    father_name,
+    mother_name,
+    dob,
+    gender,
+    office_address,
+    aadhar_details,
+    Address_Communication_OfficeResident,
+    alternative_communication_Address,
+    mobile_no,
+    email_id,
+    pin_code,
+    state,
+    Change_Request,
+    documentUpload,
+    attachment_form,
+    attachment_signature,
+    attachment_photo,
+    Charge_Amount,
+    user_id,
+    status,
+    note,
+    createdAt,
+  ];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: err.message });
+    }
+    res.status(201).json({
+      message: "Form data submitted successfully",
+      formId: result.insertId,
+    });
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -595,88 +666,5 @@ module.exports = {
   getRechargeData,
   getApiRechargeData,
   offlineDthConnection,
+  panFromData,
 };
-
-// const getBalance = (req, res) => {
-//   const token = process.env.APITokenInstapay;
-//   const username = process.env.APIUsernameInstapay;
-
-//   // Optional additional parameters, e.g., from the request
-//   const additionalParams = { format: "json" };
-
-//   getDataFromClientApi(
-//     "/v3/recharge/balance",
-//     token,
-//     username,
-//     additionalParams
-//   )
-//     .then((data) => {
-//       res.json(data); // Send the data back to the client as JSON
-//     })
-//     .catch((error) => {
-//       res.status(500).send("Error fetching data from client API");
-//     });
-// };
-
-// const getApplyOfflineForm = (req, res) => {
-//   const { fromDate, toDate } = req.query;
-
-//   let query = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
-
-//   if (fromDate && toDate) {
-//     query += ` WHERE created_at BETWEEN '${fromDate}' AND '${toDate}' ORDER BY created_at DESC`;
-//   } else {
-//     query += " ORDER BY created_at DESC";
-//   }
-
-//   db.query(query, (err, result) => {
-//     if (err) {
-//       console.error("Error getting data from MySQL:", err);
-//       res.status(500).json({ error: "Database error" });
-//       return;
-//     }
-//     res.status(200).json(result);
-//   });
-// };
-
-// const offlineRecharge = (req, res) => {
-//   const { mobile_no, operator_name, amount, orderid, created_by_userid } =
-//     req.body;
-
-//   if (
-//     !mobile_no ||
-//     !operator_name ||
-//     !amount ||
-//     !orderid ||
-//     !created_by_userid
-//   ) {
-//     return res
-//       .status(400)
-//       .json({ status: "Failure", error: "Please fill all the fields" });
-//   }
-
-//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-
-//   const query = `INSERT INTO offline_recharge
-//     (mobile_no, operator_name, amount, orderid, created_by_userid, created_at)
-//     VALUES (?, ?, ?, ?, ?, ?)`;
-
-//   db.query(
-//     query,
-//     [mobile_no, operator_name, amount, orderid, created_by_userid, createdAt],
-//     (err, result) => {
-//       if (err) {
-//         console.error("Error inserting data into MySQL:", err);
-//         return res
-//           .status(500)
-//           .json({ status: "Failure", error: "Database error" });
-//       }
-
-//       res.status(200).json({
-//         status: "Success",
-//         message: "Data inserted successfully",
-//         id: result.insertId,
-//       });
-//     }
-//   );
-// };

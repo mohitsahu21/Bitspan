@@ -594,8 +594,8 @@ const RetailerSidebarData = [
 
     subNav: [
       {
-        title: "Pan Card Form 2.4",
-        path: "#",
+        title: "Pan Card Form 4.0",
+        path: "/pan-card-4.0",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {

@@ -21,6 +21,7 @@ app.use("/api/auth/ezytm", ezytmRouter);
 app.use("/api/auth/sizarpay", sizarPayRouter);
 app.use("/api/auth/cgonepay", cgonePayRouter);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/panUploads", express.static(path.join(__dirname, "panUploads")));
 
 // Callback URL endpoint
 app.get("/callbackUrl", (req, res) => {
@@ -47,7 +48,6 @@ app.get("/callbackUrl", (req, res) => {
   });
 });
 
-
 app.get("/callbackUrlCgonePay", (req, res) => {
   const STATUS = req.query.STATUS?.trim();
   const TRANSACTIONID = req.query.TRANSACTIONID?.trim();
@@ -63,15 +63,19 @@ app.get("/callbackUrlCgonePay", (req, res) => {
   `;
 
   // Execute the SQL query
-  db.query(query, [STATUS, TRANSACTIONID, OPERATORID, CLIENTID, MESSAGE,createdAt], (err, result) => {
-    if (err) {
-      console.error("Error inserting data:", err);
-      return res.status(500).send("Internal Server Error");
-    }
+  db.query(
+    query,
+    [STATUS, TRANSACTIONID, OPERATORID, CLIENTID, MESSAGE, createdAt],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting data:", err);
+        return res.status(500).send("Internal Server Error");
+      }
 
-    console.log("Data inserted successfully:");
-    res.status(200).send("Callback processed successfully");
-  });
+      console.log("Data inserted successfully:");
+      res.status(200).send("Callback processed successfully");
+    }
+  );
 });
 
 const port = process.env.PORT || 7777;

@@ -5,11 +5,11 @@ import { MdFormatListNumberedRtl } from "react-icons/md";
 import { BiHomeAlt } from "react-icons/bi";
 
 const ElectricityHistory = () => {
-  const [allData, setAllData] = useState([]); // Store all data
-  const [currentData, setCurrentData] = useState([]); // Data for current page
+  const [allData, setAllData] = useState([]);
+  const [currentData, setCurrentData] = useState([]);
   const [page, setPage] = useState(1);
-  const [limit] = useState(10); // Items per page
-  const [totalPages, setTotalPages] = useState(1); // Total pages based on data length
+  const [limit] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
   const [search, setSearch] = useState("");
 
   const fetchRechargeData = async () => {
