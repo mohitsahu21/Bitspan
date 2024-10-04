@@ -127,7 +127,7 @@ const getDataFromEasySmartPANApi = (endpoint, bodyData  = {}) => {
 
 
 
-  
+
   module.exports = {
     easySmartBalance,
     easySmartNewPanRequest,
