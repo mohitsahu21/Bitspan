@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { MdOutlineFormatListNumbered } from "react-icons/md";
 import { FaMobileAlt } from "react-icons/fa";
@@ -6,8 +6,52 @@ import { RiMarkPenLine } from "react-icons/ri";
 import { FaRupeeSign } from "react-icons/fa";
 import nsdlpan from "../../assets/images/nsdl-vector.png";
 import { BiHomeAlt } from "react-icons/bi";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const NsdlNewPanCard = () => {
+  const [formData, setFormData] = useState({
+    applicationMode: "",
+    selectType: "",
+    name: "",
+    dob: "",
+    gender: "",
+    mobile: "",
+    email: "",
+    physicalPanm: "",
+    walletDeductAmt: "10",
+    userId: "userID",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const apiResponse = await axios.post(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/nsdl-new-request`,
+        formData
+      );
+      setFormData(apiResponse.data);
+      console.log(apiResponse.data);
+      if (apiResponse.data.message === "Successful") {
+        // window.location = apiResponse.data.nsdlData.url;
+        window.open(apiResponse.data.nsdlData.url, "_blank");
+      } else if (apiResponse.data.message === "Failure") {
+        Swal.fire({
+          icon: "error",
+          title: "An error occurred during the process. Please try again.",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <Wrapper>
@@ -60,7 +104,7 @@ const NsdlNewPanCard = () => {
                       </div>
                     </div>
                     <div className="col-xxl-7 col-xl-6 col-lg-9 col-md-10 col-sm-10 shadow bg-body-tertiary rounded  px-4 py-3 mb-3 mt-5">
-                      <form>
+                      <form onSubmit={handleSubmit}>
                         <div className="row d-flex flex-column g-4">
                           {/* <form> */}
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -69,12 +113,22 @@ const NsdlNewPanCard = () => {
                                 class="form-select"
                                 id="floatingSelect"
                                 aria-label="Floating label select example"
+                                name="applicationMode"
+                                value={formData.applicationMode}
+                                onChange={handleChange}
+                                required
                               >
-                                <option selected>
+                                <option value="" disabled>
                                   Select Application Mode
                                 </option>
-                                <option value="1">Instant PAN Card</option>
-                                <option value="2">Scan Based PAN Card</option>
+                                {/* <option value="1">Instant PAN Card</option>
+                                <option value="2">Scan Based PAN Card</option> */}
+                                <option value="Instant PAN Card">
+                                  Instant PAN Card
+                                </option>
+                                <option value="Scan Based PAN Card">
+                                  Scan Based PAN Card
+                                </option>
                               </select>
                               <label for="floatingSelect">
                                 Select Application Mode
@@ -87,9 +141,14 @@ const NsdlNewPanCard = () => {
                                 class="form-select"
                                 id="floatingSelect"
                                 aria-label="Floating label select example"
+                                name="selectType"
+                                value={formData.selectType}
+                                onChange={handleChange}
                               >
-                                <option selected>Select Category Type</option>
-                                <option value="1">Individual</option>
+                                <option value="" disabled>
+                                  Select Category Type
+                                </option>
+                                <option value="Individual">Individual</option>
                               </select>
                               <label for="floatingSelect">
                                 Select Category Type
@@ -107,7 +166,11 @@ const NsdlNewPanCard = () => {
                                   type="text"
                                   class="form-control"
                                   id="floatingInputGroup2"
-                                  placeholder="Mobile Number"
+                                  name="name"
+                                  value={formData.name}
+                                  onChange={handleChange}
+                                  placeholder="Enter Name"
+                                  required
                                 />
                                 <label for="floatingInputGroup2">
                                   Enter Name
@@ -126,7 +189,11 @@ const NsdlNewPanCard = () => {
                                   type="date"
                                   class="form-control"
                                   id="floatingInputGroup2"
-                                  placeholder="Mobile Number"
+                                  placeholder="Date of Birth"
+                                  name="dob"
+                                  value={formData.dob}
+                                  onChange={handleChange}
+                                  required
                                 />
                                 <label for="floatingInputGroup2">
                                   Date of Birth
@@ -141,10 +208,16 @@ const NsdlNewPanCard = () => {
                                 class="form-select"
                                 id="floatingSelect"
                                 aria-label="Floating label select example"
+                                name="gender"
+                                value={formData.gender}
+                                onChange={handleChange}
+                                required
                               >
-                                <option selected>Select Gender</option>
-                                <option value="1">Male</option>
-                                <option value="2">Female</option>
+                                <option value="" disabled>
+                                  Select Gender
+                                </option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
                               </select>
                               <label for="floatingSelect">Gender</label>
                             </div>
@@ -160,7 +233,11 @@ const NsdlNewPanCard = () => {
                                   type="text"
                                   class="form-control"
                                   id="floatingInputGroup2"
+                                  name="mobile"
+                                  value={formData.mobile}
+                                  onChange={handleChange}
                                   placeholder="Mobile Number"
+                                  required
                                 />
                                 <label for="floatingInputGroup2">
                                   Mobile Number
@@ -179,7 +256,11 @@ const NsdlNewPanCard = () => {
                                   type="text"
                                   class="form-control"
                                   id="floatingInputGroup2"
-                                  placeholder="Mobile Number"
+                                  name="email"
+                                  value={formData.email}
+                                  onChange={handleChange}
+                                  placeholder="Email"
+                                  required
                                 />
                                 <label for="floatingInputGroup2">
                                   Email Id
@@ -194,10 +275,14 @@ const NsdlNewPanCard = () => {
                                 class="form-select"
                                 id="floatingSelect"
                                 aria-label="Floating label select example"
+                                name="physicalPanm"
+                                value={formData.physicalPanm}
+                                onChange={handleChange}
+                                required
                               >
                                 <option selected>Select</option>
-                                <option value="1">Yes</option>
-                                <option value="2">No</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
                               </select>
                               <label for="floatingSelect">
                                 Is Physical PAN Required?
@@ -216,7 +301,9 @@ const NsdlNewPanCard = () => {
 
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div className="text-start mb-3">
-                              <button className="btn p-2">Pay Now</button>
+                              <button type="submit" className="btn p-2">
+                                Pay Now
+                              </button>
                             </div>
                           </div>
                           {/* </form> */}

@@ -183,7 +183,9 @@ const PanCardFour = () => {
                           value={formData.application_type}
                           onChange={handleChange}
                         >
-                          <option value="">Select an option</option>
+                          <option value="" disabled>
+                            Select an option
+                          </option>
                           <option value="Minor">Minor</option>
                           <option value="Major">Major</option>
                           <option value="Correction">Correction</option>
