@@ -7,6 +7,7 @@ import { BiHomeAlt } from "react-icons/bi";
 import { LuTextSelect } from "react-icons/lu";
 import { MdNumbers } from "react-icons/md";
 import Select from "react-select";
+import axios from "axios"
 import messageSound from "../../assets/sound/sound.mp3";
 
 const SACreatePackages = () => {
@@ -80,6 +81,12 @@ const SACreatePackages = () => {
     On_Videocon_New_DTH_Connection_Commission: "",
     On_Sun_Direct_New_DTH_Connection_Commission: "",
     On_Airtel_New_DTH_Connection_Commission: "",
+    Offline_New_DTH_Connection_Commission_Type: "",
+    Off_Dish_TV_New_DTH_Connection_Commission: "",
+    Off_Tata_Sky_New_DTH_Connection_Commission: "",
+    Off_Videocon_New_DTH_Connection_Commission: "",
+    Off_Sun_Direct_New_DTH_Connection_Commission: "",
+    Off_Airtel_New_DTH_Connection_Commission: "",
     Online_Electricity_Bill_Pay_Commission_Type: "",
     Online_Electricity_Bill_Pay_Commission: "",
     Offline_Electricity_Bill_Pay_Commission_Type: "",
@@ -113,25 +120,112 @@ const SACreatePackages = () => {
 
   console.log(formData);
 
-  const handlesubmit = async () => {
+  const handlesubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "/http://localhost:7777/api/auth/superAdmin/addPackage",
+        "http://localhost:7777/api/auth/superAdmin/addPackage",
         formData
       );
       console.log(response);
-      alert("Data added successfully!");
+      if(response.data.success){
+        alert("Data added successfully!");
+        setFormData({
+          package_name: "",
+          package_for: [], // Reset the select field
+          Google_Play_Price: "",
+          IRCTC_Agent_ID_Price: "",
+          Birth_Certificate_Price: "",
+          Death_Certificate_Price: "",
+          E_Stamp_Price: "",
+          ITR_Registration_Price: "",
+          GST_Registration_Price: "",
+          Sambal_Price: "",
+          Income_Certificate_Price: "",
+          Domicile_Certificate_Price: "",
+          Bank_ID_Price: "",
+          Offline_Services_Commission_Type: "",
+          Google_Play_Commission: "",
+          IRCTC_Agent_ID_Commission: "",
+          Birth_Certificate_Commission: "",
+          Death_Certificate_Commission: "",
+          E_Stamp_Commission: "",
+          ITR_Registration_Commission: "",
+          GST_Registration_Commission: "",
+          Sambal_Commission: "",
+          Income_Certificate_Commission: "",
+          Domicile_Certificate_Commission: "",
+          Bank_ID_Commission: "",
+          Off_Prepaid_Recharge_Comm_Type: "",
+          Off_Airtel_Prepaid_Recharge_Comm: "",
+          Off_Jio_Prepaid_Recharge_Comm: "",
+          Off_Vi_Prepaid_Recharge_Comm: "",
+          Off_Bsnl_Prepaid_Recharge_Comm: "",
+          Off_Postpaid_Recharge_Comm_Type: "",
+          Off_Airtel_Postpaid_Recharge_Comm: "",
+          Off_Jio_Postpaid_Recharge_Comm: "",
+          Off_Vi_Postpaid_Recharge_Comm: "",
+          Off_Bsnl_Postpaid_Recharge_Comm: "",
+          On_Prepaid_Recharge_Comm_Type: "",
+          On_Airtel_Prepaid_Recharge_Comm: "",
+          On_Jio_Prepaid_Recharge_Comm: "",
+          On_Vi_Prepaid_Recharge_Comm: "",
+          On_Bsnl_Prepaid_Recharge_Comm: "",
+          On_Postpaid_Recharge_Comm_Type: "",
+          On_Airtel_Postpaid_Recharge_Comm: "",
+          On_Jio_Postpaid_Recharge_Comm: "",
+          On_Vi_Postpaid_Recharge_Comm: "",
+          On_Bsnl_Postpaid_Recharge_Comm: "",
+          Online_DTH_Recharge_Commission_Type: "",
+          On_Dish_TV_Recharge_Commission: "",
+          On_Tata_Sky_Recharge_Commission: "",
+          On_Videocon_Recharge_Commission: "",
+          On_Sun_Direct_Recharge_Commission: "",
+          On_Airtel_Dth_Recharge_Commission: "",
+          Offline_DTH_Recharge_Commission_Type: "",
+          Off_Dish_TV_Recharge_Commission: "",
+          Off_Tata_Sky_Recharge_Commission: "",
+          Off_Videocon_Recharge_Commission: "",
+          Off_Sun_Direct_Recharge_Commission: "",
+          Off_Airtel_Dth_Recharge_Commission: "",
+          Online_New_DTH_Connection_Commission_Type: "",
+          On_Dish_TV_New_DTH_Connection_Commission: "",
+          On_Tata_Sky_New_DTH_Connection_Commission: "",
+          On_Videocon_New_DTH_Connection_Commission: "",
+          On_Sun_Direct_New_DTH_Connection_Commission: "",
+          On_Airtel_New_DTH_Connection_Commission: "",
+          Offline_New_DTH_Connection_Commission_Type: "",
+          Off_Dish_TV_New_DTH_Connection_Commission: "",
+          Off_Tata_Sky_New_DTH_Connection_Commission: "",
+          Off_Videocon_New_DTH_Connection_Commission: "",
+          Off_Sun_Direct_New_DTH_Connection_Commission: "",
+          Off_Airtel_New_DTH_Connection_Commission: "",
+          Online_Electricity_Bill_Pay_Commission_Type: "",
+          Online_Electricity_Bill_Pay_Commission: "",
+          Offline_Electricity_Bill_Pay_Commission_Type: "",
+          Offline_Electricity_Bill_Pay_Commission: "",
+          Online_Insurance_Pay_Commission_Type: "",
+          Online_Insurance_Pay_Commission: "",
+          Offline_Insurance_Pay_Commission_Type: "",
+          Offline_Insurance_Pay_Commission: "",
+          PAN_Card_Commission_Type: "",
+          UTI_PAN_Card_Commission: "",
+          NSDL_PAN_Card_Commission: "",
+        });
+      }
+      else{
+        alert("Failed to add data!");
+      }     
     } catch (error) {
       console.error("There was an error submitting the form!", error);
     }
   };
 
   const options = [
-    { value: "WhiteLabel", label: "White Label" },
-    { value: "SuperDistributor", label: "Super Distributor" },
-    { value: "Distributor", label: "Distributor" },
-    { value: "Retailer", label: "Retailer" },
+    { value: "package_WhiteLabel", label: "White Label" },
+  { value: "package_SuperDistributor", label: "Super Distributor" },
+  { value: "package_Distributor", label: "Distributor" },
+  { value: "package_Retailer", label: "Retailer" },
   ];
   // const [selectedOption, setSelectedOption] = useState(null);
 
@@ -186,7 +280,7 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="text"
-                            id="name"
+                            
                             name="package_name"
                             class="form-control"
                             placeholder="Enter Package Name"
@@ -218,7 +312,9 @@ const SACreatePackages = () => {
                         <Select
                           // defaultValue={selectedOption}
                           // onChange={setSelectedOption}
-                          defaultValue={formData.package_for}
+
+                          // defaultValue={formData.package_for}
+                          value={options.filter(option => formData.package_for.includes(option.value))}  // Set value to match selected options
                           onChange={handleSelectChange} // Use custom handler
                           options={options}
                           isMulti={true}
@@ -267,7 +363,7 @@ const SACreatePackages = () => {
                                                 </span>
                                                 <input
                                                     type="text"
-                                                    id="name"
+                                                    
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
@@ -287,7 +383,7 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            id="name"
+                            
                             class="form-control"
                             placeholder="Enter price"
                             name="Google_Play_Price"
@@ -308,7 +404,7 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            id="name"
+                            
                             class="form-control"
                             placeholder="Enter price"
                             name="IRCTC_Agent_ID_Price"
@@ -329,7 +425,7 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            id="name"
+                            
                             class="form-control"
                             placeholder="Enter price"
                             name="Birth_Certificate_Price"
@@ -350,7 +446,7 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            id="name"
+                            
                             class="form-control"
                             placeholder="Enter price"
                             name="Death_Certificate_Price"
@@ -370,11 +466,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            id="E_Stamp_Price"
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter price"
+                            name="E_Stamp_Price"
+                            value={formData.E_Stamp_Price}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -388,11 +487,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter price"
+                            name="ITR_Registration_Price"
+                            value={formData.ITR_Registration_Price}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -406,11 +508,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter price"
+                            name="GST_Registration_Price"
+                            value={formData.GST_Registration_Price}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -424,11 +529,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter price"
+                            name="Sambal_Price"
+                            value={formData.Sambal_Price}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -442,11 +550,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter price"
+                            name="Income_Certificate_Price"
+                            value={formData.Income_Certificate_Price}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -460,11 +571,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter price"
+                            name="Domicile_Certificate_Price"
+                            value={formData.Domicile_Certificate_Price}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -478,11 +592,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter price"
+                            name="Bank_ID_Price"
+                            value={formData.Bank_ID_Price}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -508,13 +625,17 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
+                          name="Offline_Services_Commission_Type" value={formData.Offline_Services_Commission_Type} onChange={handleChange}
                             class="form-select"
                             aria-label="Default select example"
+                            required
                           >
-                            <option selected>Select...</option>
+                            <option 
+                            value=""
+                            selected>Select...</option>
 
-                            <option value="Delhi">Percentage (%)</option>
-                            <option value="Puducherry">Rupees (&#8377;)</option>
+                            <option value="Percentage">Percentage (%)</option>
+                            <option value="Rupees">Rupees (&#8377;)</option>
                           </select>
                         </div>
                       </div>
@@ -530,7 +651,7 @@ const SACreatePackages = () => {
                                                 </span>
                                                 <input
                                                     type="text"
-                                                    id="name"
+                                                    
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
@@ -549,11 +670,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Google_Play_Commission"
+                            value={formData.Google_Play_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -567,11 +691,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="IRCTC_Agent_ID_Commission"
+                            value={formData.IRCTC_Agent_ID_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -585,11 +712,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Birth_Certificate_Commission"
+                            value={formData.Birth_Certificate_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -603,11 +733,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Death_Certificate_Commission"
+                            value={formData.Death_Certificate_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -621,11 +754,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="E_Stamp_Commission"
+                            value={formData.E_Stamp_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -639,11 +775,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="ITR_Registration_Commission"
+                            value={formData.ITR_Registration_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -657,11 +796,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="GST_Registration_Commission"
+                            value={formData.GST_Registration_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -675,11 +817,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Sambal_Commission"
+                            value={formData.Sambal_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -693,11 +838,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Income_Certificate_Commission"
+                            value={formData.Income_Certificate_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -711,11 +859,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Domicile_Certificate_Commission"
+                            value={formData.Domicile_Certificate_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -729,11 +880,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Bank_ID_Commission"
+                            value={formData.Bank_ID_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -762,13 +916,16 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
+                             name="Off_Prepaid_Recharge_Comm_Type" value={formData.Off_Prepaid_Recharge_Comm_Type} onChange={handleChange}
+                             required
                             className="form-select"
                             aria-label="Default select example"
-                          >
-                            <option selected>Select...</option>
 
-                            <option value="Delhi">Percentage (%)</option>
-                            <option value="Puducherry">Rupees (&#8377;)</option>
+                          >
+                            <option value="" selected>Select...</option>
+
+                            <option value="Percentage">Percentage (%)</option>
+                            <option value="Rupees">Rupees (&#8377;)</option>
                           </select>
                         </div>
                       </div>
@@ -783,11 +940,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Off_Airtel_Prepaid_Recharge_Comm"
+                            value={formData.Off_Airtel_Prepaid_Recharge_Comm}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -801,11 +961,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Off_Jio_Prepaid_Recharge_Comm"
+                            value={formData.Off_Jio_Prepaid_Recharge_Comm}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -819,11 +982,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Off_Vi_Prepaid_Recharge_Comm"
+                            value={formData.Off_Vi_Prepaid_Recharge_Comm}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -837,11 +1003,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Off_Bsnl_Prepaid_Recharge_Comm"
+                            value={formData.Off_Bsnl_Prepaid_Recharge_Comm}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -870,13 +1039,15 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
+                          name="Off_Postpaid_Recharge_Comm_Type" value={formData.Off_Postpaid_Recharge_Comm_Type} onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
+                            required
                           >
-                            <option selected>Select...</option>
+                            <option value=""  selected>Select...</option>
 
-                            <option value="Delhi">Percentage (%)</option>
-                            <option value="Puducherry">Rupees (&#8377;)</option>
+                            <option value="Percentage">Percentage (%)</option>
+                            <option value="Rupees">Rupees (&#8377;)</option>
                           </select>
                         </div>
                       </div>
@@ -891,11 +1062,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Off_Airtel_Postpaid_Recharge_Comm"
+                            value={formData.Off_Airtel_Postpaid_Recharge_Comm}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -909,11 +1083,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Off_Jio_Postpaid_Recharge_Comm"
+                            value={formData.Off_Jio_Postpaid_Recharge_Comm}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -927,11 +1104,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Off_Vi_Postpaid_Recharge_Comm"
+                            value={formData.Off_Vi_Postpaid_Recharge_Comm}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -945,11 +1125,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Off_Bsnl_Postpaid_Recharge_Comm"
+                            value={formData.Off_Bsnl_Postpaid_Recharge_Comm}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -978,13 +1161,15 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
+                             name="On_Prepaid_Recharge_Comm_Type" value={formData.On_Prepaid_Recharge_Comm_Type} onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
+                            required
                           >
-                            <option selected>Select...</option>
+                            <option value="" selected>Select...</option>
 
-                            <option value="Delhi">Percentage (%)</option>
-                            <option value="Puducherry">Rupees (&#8377;)</option>
+                            <option value="Percentage">Percentage (%)</option>
+                            <option value="Rupees">Rupees (&#8377;)</option>
                           </select>
                         </div>
                       </div>
@@ -999,11 +1184,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="On_Airtel_Prepaid_Recharge_Comm"
+                            value={formData.On_Airtel_Prepaid_Recharge_Comm}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1017,11 +1205,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="On_Jio_Prepaid_Recharge_Comm"
+                            value={formData.On_Jio_Prepaid_Recharge_Comm}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1035,11 +1226,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="On_Vi_Prepaid_Recharge_Comm"
+                            value={formData.On_Vi_Prepaid_Recharge_Comm}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1053,11 +1247,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="On_Bsnl_Prepaid_Recharge_Comm"
+                            value={formData.On_Bsnl_Prepaid_Recharge_Comm}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1086,13 +1283,15 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
+                            name="On_Postpaid_Recharge_Comm_Type" value={formData.On_Postpaid_Recharge_Comm_Type} onChange={handleChange} 
                             className="form-select"
                             aria-label="Default select example"
+                            required
                           >
-                            <option selected>Select...</option>
+                            <option value="" selected>Select...</option>
 
-                            <option value="Delhi">Percentage (%)</option>
-                            <option value="Puducherry">Rupees (&#8377;)</option>
+                            <option value="Percentage">Percentage (%)</option>
+                            <option value="Rupees">Rupees (&#8377;)</option>
                           </select>
                         </div>
                       </div>
@@ -1107,11 +1306,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="On_Airtel_Postpaid_Recharge_Comm"
+                            value={formData.On_Airtel_Postpaid_Recharge_Comm}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1125,11 +1327,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="On_Jio_Postpaid_Recharge_Comm"
+                            value={formData.On_Jio_Postpaid_Recharge_Comm}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1143,11 +1348,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="On_Vi_Postpaid_Recharge_Comm"
+                            value={formData.On_Vi_Postpaid_Recharge_Comm}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1161,11 +1369,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="On_Bsnl_Postpaid_Recharge_Comm"
+                            value={formData.On_Bsnl_Postpaid_Recharge_Comm}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1194,13 +1405,15 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
+                            name="Online_DTH_Recharge_Commission_Type" value={formData.Online_DTH_Recharge_Commission_Type} onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
+                            required
                           >
-                            <option selected>Select...</option>
+                            <option value="" selected>Select...</option>
 
-                            <option value="Delhi">Percentage (%)</option>
-                            <option value="Puducherry">Rupees (&#8377;)</option>
+                            <option value="Percentage">Percentage (%)</option>
+                            <option value="Rupees">Rupees (&#8377;)</option>
                           </select>
                         </div>
                       </div>
@@ -1215,11 +1428,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="On_Dish_TV_Recharge_Commission"
+                            value={formData.On_Dish_TV_Recharge_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1233,11 +1449,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="On_Tata_Sky_Recharge_Commission"
+                            value={formData.On_Tata_Sky_Recharge_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1251,11 +1470,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="On_Videocon_Recharge_Commission"
+                            value={formData.On_Videocon_Recharge_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1269,11 +1491,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="On_Sun_Direct_Recharge_Commission"
+                            value={formData.On_Sun_Direct_Recharge_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1287,11 +1512,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="On_Airtel_Dth_Recharge_Commission"
+                            value={formData.On_Airtel_Dth_Recharge_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1320,13 +1548,15 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
+                            name="Offline_DTH_Recharge_Commission_Type" value={formData.Offline_DTH_Recharge_Commission_Type} onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
+                            required
                           >
-                            <option selected>Select...</option>
+                            <option value="" selected>Select...</option>
 
-                            <option value="Delhi">Percentage (%)</option>
-                            <option value="Puducherry">Rupees (&#8377;)</option>
+                            <option value="Percentage">Percentage (%)</option>
+                            <option value="Rupees">Rupees (&#8377;)</option>
                           </select>
                         </div>
                       </div>
@@ -1341,11 +1571,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Off_Dish_TV_Recharge_Commission"
+                            value={formData.Off_Dish_TV_Recharge_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1359,11 +1592,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Off_Tata_Sky_Recharge_Commission"
+                            value={formData.Off_Tata_Sky_Recharge_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1377,11 +1613,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Off_Videocon_Recharge_Commission"
+                            value={formData.Off_Videocon_Recharge_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1395,11 +1634,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Off_Sun_Direct_Recharge_Commission"
+                            value={formData.Off_Sun_Direct_Recharge_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1413,11 +1655,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Off_Airtel_Dth_Recharge_Commission"
+                            value={formData.Off_Airtel_Dth_Recharge_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1446,13 +1691,15 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
+                            name="Online_New_DTH_Connection_Commission_Type" value={formData.Online_New_DTH_Connection_Commission_Type} onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
+                            required
                           >
-                            <option selected>Select...</option>
+                            <option value="" selected>Select...</option>
 
-                            <option value="Delhi">Percentage (%)</option>
-                            <option value="Puducherry">Rupees (&#8377;)</option>
+                            <option value="Percentage">Percentage (%)</option>
+                            <option value="Rupees">Rupees (&#8377;)</option>
                           </select>
                         </div>
                       </div>
@@ -1467,11 +1714,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="On_Dish_TV_New_DTH_Connection_Commission"
+                            value={formData.On_Dish_TV_New_DTH_Connection_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1485,11 +1735,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="On_Tata_Sky_New_DTH_Connection_Commission"
+                            value={formData.On_Tata_Sky_New_DTH_Connection_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1503,11 +1756,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="On_Videocon_New_DTH_Connection_Commission"
+                            value={formData.On_Videocon_New_DTH_Connection_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1521,11 +1777,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="On_Sun_Direct_New_DTH_Connection_Commission"
+                            value={formData.On_Sun_Direct_New_DTH_Connection_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1539,11 +1798,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="On_Airtel_New_DTH_Connection_Commission"
+                            value={formData.On_Airtel_New_DTH_Connection_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1572,13 +1834,15 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
+                           name="Offline_New_DTH_Connection_Commission_Type" value={formData.Offline_New_DTH_Connection_Commission_Type} onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
+                            required
                           >
-                            <option selected>Select...</option>
+                            <option value="" selected>Select...</option>
 
-                            <option value="Delhi">Percentage (%)</option>
-                            <option value="Puducherry">Rupees (&#8377;)</option>
+                            <option value="Percentage">Percentage (%)</option>
+                            <option value="Rupees">Rupees (&#8377;)</option>
                           </select>
                         </div>
                       </div>
@@ -1593,11 +1857,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Off_Dish_TV_New_DTH_Connection_Commission"
+                            value={formData.Off_Dish_TV_New_DTH_Connection_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1611,11 +1878,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Off_Tata_Sky_New_DTH_Connection_Commission"
+                            value={formData.Off_Tata_Sky_New_DTH_Connection_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1629,11 +1899,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Off_Videocon_New_DTH_Connection_Commission"
+                            value={formData.Off_Videocon_New_DTH_Connection_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1647,11 +1920,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Off_Sun_Direct_New_DTH_Connection_Commission"
+                            value={formData.Off_Sun_Direct_New_DTH_Connection_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1665,11 +1941,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Off_Airtel_New_DTH_Connection_Commission"
+                            value={formData.Off_Airtel_New_DTH_Connection_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1699,13 +1978,15 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
+                            name="Online_Electricity_Bill_Pay_Commission_Type" value={formData.Online_Electricity_Bill_Pay_Commission_Type} onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
+                            required
                           >
-                            <option selected>Select...</option>
+                            <option value="" selected>Select...</option>
 
-                            <option value="Delhi">Percentage (%)</option>
-                            <option value="Puducherry">Rupees (&#8377;)</option>
+                            <option value="Percentage">Percentage (%)</option>
+                            <option value="Rupees">Rupees (&#8377;)</option>
                           </select>
                         </div>
                       </div>
@@ -1720,11 +2001,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Online_Electricity_Bill_Pay_Commission"
+                            value={formData.Online_Electricity_Bill_Pay_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1740,7 +2024,7 @@ const SACreatePackages = () => {
                                                 </span>
                                                 <input
                                                     type="text"
-                                                    id="name"
+                                                    
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
@@ -1759,7 +2043,7 @@ const SACreatePackages = () => {
                                                 </span>
                                                 <input
                                                     type="text"
-                                                    id="name"
+                                                    
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
@@ -1778,7 +2062,7 @@ const SACreatePackages = () => {
                                                 </span>
                                                 <input
                                                     type="text"
-                                                    id="name"
+                                                    
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
@@ -1811,13 +2095,15 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
+                            name="Offline_Electricity_Bill_Pay_Commission_Type" value={formData.Offline_Electricity_Bill_Pay_Commission_Type} onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
+                            required
                           >
-                            <option selected>Select...</option>
+                            <option value="" selected>Select...</option>
 
-                            <option value="Delhi">Percentage (%)</option>
-                            <option value="Puducherry">Rupees (&#8377;)</option>
+                            <option value="Percentage">Percentage (%)</option>
+                            <option value="Rupees">Rupees (&#8377;)</option>
                           </select>
                         </div>
                       </div>
@@ -1832,11 +2118,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Offline_Electricity_Bill_Pay_Commission"
+                            value={formData.Offline_Electricity_Bill_Pay_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1851,7 +2140,7 @@ const SACreatePackages = () => {
                                                 </span>
                                                 <input
                                                     type="text"
-                                                    id="name"
+                                                    
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
@@ -1870,7 +2159,7 @@ const SACreatePackages = () => {
                                                 </span>
                                                 <input
                                                     type="text"
-                                                    id="name"
+                                                    
                                                     class="form-control"
                                                     placeholder="Enter IFSC Code"
                                                     value={"1000"}
@@ -1898,18 +2187,20 @@ const SACreatePackages = () => {
                           <span
                             className="input-group-text"
                             id="addon-wrapping"
+                            required
                           >
                             {" "}
                             <LuTextSelect />
                           </span>
                           <select
+                          name="Online_Insurance_Pay_Commission_Type" value={formData.Online_Insurance_Pay_Commission_Type} onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
                           >
-                            <option selected>Select...</option>
+                            <option value="" selected>Select...</option>
 
-                            <option value="Delhi">Percentage (%)</option>
-                            <option value="Puducherry">Rupees (&#8377;)</option>
+                            <option value="Percentage">Percentage (%)</option>
+                            <option value="Rupees">Rupees (&#8377;)</option>
                           </select>
                         </div>
                       </div>
@@ -1924,11 +2215,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Online_Insurance_Pay_Commission"
+                            value={formData.Online_Insurance_Pay_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -1957,13 +2251,15 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
+                            name="Offline_Insurance_Pay_Commission_Type" value={formData.Offline_Insurance_Pay_Commission_Type} onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
+                            required
                           >
-                            <option selected>Select...</option>
+                            <option value="" selected>Select...</option>
 
-                            <option value="Delhi">Percentage (%)</option>
-                            <option value="Puducherry">Rupees (&#8377;)</option>
+                            <option value="Percentage">Percentage (%)</option>
+                            <option value="Rupees">Rupees (&#8377;)</option>
                           </select>
                         </div>
                       </div>
@@ -1978,11 +2274,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="Offline_Insurance_Pay_Commission"
+                            value={formData.Offline_Insurance_Pay_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -2011,13 +2310,15 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
+                          name="PAN_Card_Commission_Type" value={formData.PAN_Card_Commission_Type} onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
+                            required
                           >
-                            <option selected>Select...</option>
+                            <option value="" selected>Select...</option>
 
-                            <option value="Delhi">Percentage (%)</option>
-                            <option value="Puducherry">Rupees (&#8377;)</option>
+                            <option value="Percentage">Percentage (%)</option>
+                            <option value="Rupees">Rupees (&#8377;)</option>
                           </select>
                         </div>
                       </div>
@@ -2032,11 +2333,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="UTI_PAN_Card_Commission"
+                            value={formData.UTI_PAN_Card_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -2050,11 +2354,14 @@ const SACreatePackages = () => {
                             <MdNumbers />
                           </span>
                           <input
-                            type="text"
-                            id="name"
+                            type="number"
+                            
                             class="form-control"
-                            placeholder="Enter IFSC Code"
-                            value={"1000"}
+                            placeholder="Enter Commission"
+                            name="NSDL_PAN_Card_Commission"
+                            value={formData.NSDL_PAN_Card_Commission}
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
