@@ -50,6 +50,7 @@ import BroadbandRecharge from "../components/DashBoard/BroadbandRecharge";
 import ElectricityHistory from "../components/DashBoard/ElectricityHistory";
 import BroadbandHistory from "../components/DashBoard/BroadbandHistory";
 import PanCardFour from "../components/DashBoard/PanCardFour";
+import NsdlIncomplete from "../components/DashBoard/NsdlIncomplete";
 const RetailerRoutes = () => {
   return (
     <>
@@ -162,6 +163,7 @@ const RetailerRoutes = () => {
         />
         <Route path="/bank-id" element={<NewBankID />} />
         <Route path="/pan-card-4.0" element={<PanCardFour />} />
+        <Route path="/incomplete-request" element={<NsdlIncomplete />} />
       </Routes>
     </>
   );

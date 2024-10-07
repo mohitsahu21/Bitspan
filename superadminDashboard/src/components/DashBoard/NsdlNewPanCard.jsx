@@ -18,7 +18,7 @@ const NsdlNewPanCard = () => {
     gender: "",
     mobile: "",
     email: "",
-    physicalPanm: "",
+    physicalPan: "",
     walletDeductAmt: "10",
     userId: "userID",
   });
@@ -275,8 +275,8 @@ const NsdlNewPanCard = () => {
                                 class="form-select"
                                 id="floatingSelect"
                                 aria-label="Floating label select example"
-                                name="physicalPanm"
-                                value={formData.physicalPanm}
+                                name="physicalPan"
+                                value={formData.physicalPan}
                                 onChange={handleChange}
                                 required
                               >
