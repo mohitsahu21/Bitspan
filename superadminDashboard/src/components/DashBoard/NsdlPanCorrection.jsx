@@ -42,7 +42,10 @@ const NsdlPanCorrection = () => {
       );
       setFormData(apiResponse.data);
       console.log(apiResponse.data);
-      if (apiResponse.data.message === "Successful") {
+      if (
+        apiResponse.data.message === "Successful" &&
+        apiResponse.data.nsdlData.status === "Success"
+      ) {
         // window.location = apiResponse.data.nsdlData.url;
         window.open(apiResponse.data.nsdlData.url, "_blank");
       } else if (apiResponse.data.message === "Failure") {

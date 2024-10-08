@@ -656,6 +656,32 @@ const panFromData = (req, res) => {
   });
 };
 
+const nsdlTransactionNewRequest = (req, res) => {
+  const query = `SELECT * FROM nsdlpan`;
+
+  db.query(query, (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    } else {
+      return res.status(200).json({ status: "Success", data: result });
+    }
+  });
+};
+
+const nsdlTransactionCorrection = (req, res) => {
+  const query = `SELECT * FROM nsdlpancorrection`;
+
+  db.query(query, (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    } else {
+      return res.status(200).json({ status: "Success", data: result });
+    }
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -667,4 +693,6 @@ module.exports = {
   getApiRechargeData,
   offlineDthConnection,
   panFromData,
+  nsdlTransactionNewRequest,
+  nsdlTransactionCorrection,
 };

@@ -624,6 +624,11 @@ const RetailerSidebarData = [
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
+        title: "NSDL Incomplete PAN Request",
+        path: "/incomplete-request",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
         title: "NSDL PAN Track Status",
         path: "https://tin.tin.nsdl.com/pantan/StatusTrack.html",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,

@@ -13,6 +13,8 @@ const {
   getApiRechargeData,
   offlineDthConnection,
   panFromData,
+  nsdlTransactionNewRequest,
+  nsdlTransactionCorrection,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -77,6 +79,9 @@ router.post(
   ]),
   panFromData
 );
+
+router.get("/nsdl-trans-new-requst", nsdlTransactionNewRequest);
+router.get("/nsdl-trans-correction", nsdlTransactionCorrection);
 
 // const panDataStorage = multer.diskStorage({
 //   destination: (req, file, cb) => {
