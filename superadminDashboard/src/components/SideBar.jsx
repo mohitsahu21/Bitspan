@@ -636,6 +636,11 @@ const RetailerSidebarData = [
       {
         title: "PAN Status",
         path: "/pan-status",
+        icon: <IoIcons.IoIosPaper color="#fe672b75" />,
+      },
+      {
+        title: "PAN 4.0 History",
+        path: "/pan-4.0-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {

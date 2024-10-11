@@ -15,6 +15,9 @@ const {
   panFromData,
   nsdlTransactionNewRequest,
   nsdlTransactionCorrection,
+  panFourZeroGetAPI,
+  complainInsertApi,
+  complainGetData,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -82,40 +85,23 @@ router.post(
 
 router.get("/nsdl-trans-new-requst", nsdlTransactionNewRequest);
 router.get("/nsdl-trans-correction", nsdlTransactionCorrection);
+router.get("/pan-4.0", panFourZeroGetAPI);
 
-// const panDataStorage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "panUploads/");
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, `${Date.now()}-${file.originalname}`);
-//   },
-// });
+const complainDataStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "complainUpload/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+const complainDataUpload = multer({ storage: complainDataStorage });
+router.post(
+  "/complain-query",
+  complainDataUpload.fields([{ name: "complainFile", maxCount: 1 }]),
+  complainInsertApi
+);
 
-// const panDataUpload = multer({
-//   storage: panDataStorage,
-// }).fields([
-//   { name: "documentUpload", maxCount: 10 },
-//   { name: "attachment_form", maxCount: 1 },
-//   { name: "attachment_photo", maxCount: 1 },
-//   { name: "attachment_signature", maxCount: 1 },
-// ]);
-
-// router.post("/pan-4.0", (req, res) => {
-//   panDataUpload(req, res, (err) => {
-//     if (err) {
-//       return res
-//         .status(500)
-//         .json({ message: "Multer error", error: err.message });
-//     }
-
-//     // Debugging to check files being uploaded
-//     console.log("Uploaded files:", req.files);
-//     console.log("Request body:", req.body);
-
-//     // Call controller to handle data
-//     panFromData(req, res);
-//   });
-// });
+router.get("/complain-data", complainGetData);
 
 module.exports = router;

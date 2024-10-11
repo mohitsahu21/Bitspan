@@ -97,7 +97,7 @@ const PanCardFour = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:7777/api/auth/retailer/pan-4.0",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/pan-4.0",
         form,
         {
           headers: {

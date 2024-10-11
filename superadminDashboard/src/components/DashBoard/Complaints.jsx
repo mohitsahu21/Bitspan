@@ -1,11 +1,75 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { MdOutlineFormatListNumbered } from "react-icons/md";
 import { FaMobileAlt } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const Complaints = () => {
+  const [formData, setFormData] = useState({
+    complainType: "",
+    transactionNo: "",
+    mobileNo: "",
+    remark: "",
+    userID: "1002",
+  });
+  const [complainFile, setComplainFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [response, setResponse] = useState(null);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleFileChange = (e) => {
+    setComplainFile(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const data = new FormData();
+    data.append("complainType", formData.complainType);
+    data.append("transactionNo", formData.transactionNo);
+    data.append("mobileNo", formData.mobileNo);
+    data.append("remark", formData.remark);
+    data.append("userID", formData.userID);
+    if (complainFile) {
+      data.append("complainFile", complainFile);
+    }
+
+    try {
+      const res = await axios.post(
+        `http://localhost:7777/api/auth/retailer/complain-query`,
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      setResponse(res.data);
+      setLoading(false);
+      console.log(res.data);
+      Swal.fire({
+        icon: "success",
+        title: "Complaint Registered Successfully!",
+        text: "Your complaint has been recorded. We will get back to you shortly.",
+      });
+    } catch (err) {
+      console.error("Error submitting the form", err);
+      setResponse({ status: "Failure", message: err.message });
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <Wrapper>
@@ -25,106 +89,144 @@ const Complaints = () => {
                       </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="px-lg-3">Raise Complaint</h4>
-                        <h6 className="mx-lg-5"> <BiHomeAlt /> &nbsp;/ &nbsp; Raise Complaint </h6>
+                        <h6 className="mx-lg-5">
+                          {" "}
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Raise Complaint{" "}
+                        </h6>
                       </div>
                     </div>
                   </div>
-                  <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
-                    <div className="text-center">
-                      <h4>Enter All Correct Details For Raising Ticket</h4>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div class="form-floating">
-                        <select
-                          class="form-select"
-                          id="floatingSelect"
-                          aria-label="Floating label select example"
-                        >
-                          <option selected>Select complaint type</option>
-                          <option value="1">Coupon Issue</option>
-                          <option value="2">UTI PAN Debit</option>
-                          <option value="3">UTI PAN Refund</option>
-                          <option value="3">Nsdl Refund</option>
-                          <option value="3">Recharge Refund</option>
-                          <option value="3">Account Support</option>
-                          <option value="3">Report a Bug</option>
-                          <option value="3">Feature Support</option>
-                          <option value="3">API Support</option>
-                          <option value="3">Others</option>
-                        </select>
-                        <label for="floatingSelect">Complaint Type</label>
+                  <form onSubmit={handleSubmit} encType="multipart/form-data">
+                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
+                      <div className="text-center">
+                        <h4>Enter All Correct Details For Raising Ticket</h4>
                       </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div class="input-group mb-3">
-                        <span class="input-group-text">
-                          <MdOutlineFormatListNumbered />
-                        </span>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <div class="form-floating">
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="floatingInputGroup1"
-                            placeholder="Username"
-                          />
-                          <label for="floatingInputGroup1">
-                            Transaction Number
+                          <select
+                            class="form-select"
+                            id="floatingSelect"
+                            aria-label="Floating label select example"
+                            name="complainType"
+                            value={formData.complainType}
+                            onChange={handleChange}
+                            required
+                          >
+                            <option value="" disabled>
+                              Select complaint type
+                            </option>
+                            <option value="Coupon Issue">Coupon Issue</option>
+                            <option value="UTI PAN Debit">UTI PAN Debit</option>
+                            <option value="UTI PAN Refund">
+                              UTI PAN Refund
+                            </option>
+                            <option value="Nsdl Refund">Nsdl Refund</option>
+                            <option value="Recharge Refund">
+                              Recharge Refund
+                            </option>
+                            <option value="Account Support">
+                              Account Support
+                            </option>
+                            <option value="Report a Bug">Report a Bug</option>
+                            <option value="Feature Support">
+                              Feature Support
+                            </option>
+                            <option value="API Support">API Support</option>
+                            <option value="Others">Others</option>
+                          </select>
+                          <label for="floatingSelect">Complaint Type</label>
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <div class="input-group mb-3">
+                          <span class="input-group-text">
+                            <MdOutlineFormatListNumbered />
+                          </span>
+                          <div class="form-floating">
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="floatingInputGroup1"
+                              placeholder="Username"
+                              name="transactionNo"
+                              value={formData.transactionNo}
+                              onChange={handleChange}
+                              required
+                            />
+                            <label for="floatingInputGroup1">
+                              Transaction Number
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <div class="input-group">
+                          <span class="input-group-text">
+                            <FaMobileAlt />
+                          </span>
+                          <div class="form-floating">
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="floatingInputGroup1"
+                              placeholder="Username"
+                              name="mobileNo"
+                              value={formData.mobileNo}
+                              onChange={handleChange}
+                              required
+                            />
+                            <label for="floatingInputGroup1">
+                              Mobile Number
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <div class="input-group">
+                          <span class="input-group-text">
+                            <RiMarkPenLine />
+                          </span>
+                          <div class="form-floating">
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="floatingInputGroup1"
+                              placeholder="Username"
+                              name="remark"
+                              value={formData.remark}
+                              onChange={handleChange}
+                              required
+                            />
+                            <label for="floatingInputGroup1">Remarks</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <div>
+                          <label for="formFileLg" class="form-label">
+                            Attechment
                           </label>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div class="input-group">
-                        <span class="input-group-text">
-                          <FaMobileAlt />
-                        </span>
-                        <div class="form-floating">
                           <input
-                            type="text"
-                            class="form-control"
-                            id="floatingInputGroup1"
-                            placeholder="Username"
+                            class="form-control form-control-lg"
+                            id="formFileLg"
+                            type="file"
+                            name="complainFile"
+                            onChange={handleFileChange}
+                            required
                           />
-                          <label for="floatingInputGroup1">Mobile Number</label>
+                        </div>
+                      </div>
+
+                      <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <div className="text-start mb-3">
+                          <button className="btn p-2" disabled={loading}>
+                            {loading ? "Submitting..." : "Submit"}
+                          </button>
                         </div>
                       </div>
                     </div>
-
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div class="input-group">
-                        <span class="input-group-text">
-                          <RiMarkPenLine />
-                        </span>
-                        <div class="form-floating">
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="floatingInputGroup1"
-                            placeholder="Username"
-                          />
-                          <label for="floatingInputGroup1">Remarks</label>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div>
-                        <label for="formFileLg" class="form-label">
-                          Attechment
-                        </label>
-                        <input
-                          class="form-control form-control-lg"
-                          id="formFileLg"
-                          type="file"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      <div className="text-start mb-3">
-                        <button className="btn p-2">Submit</button>
-                      </div>
-                    </div>
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>
@@ -146,15 +248,13 @@ const Wrapper = styled.div`
     color: #fff;
     background: #6d70ff;
   }
-  @media (min-width: 1025px) and (max-width : 1500px){
+  @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
-     
       padding-left: 15rem;
     }
   }
   @media (min-width: 1500px) {
     .formdata {
-     
       padding-left: 13rem;
     }
   }

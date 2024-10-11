@@ -465,97 +465,6 @@ const offlineDthConnection = (req, res) => {
   });
 };
 
-// const panFromData = (req, res) => {
-//   const {
-//     application_type,
-//     select_title,
-//     name,
-//     father_name,
-//     mother_name,
-//     dob,
-//     gender,
-//     office_address,
-//     aadhar_details,
-//     Address_Communication_OfficeResident,
-//     alternative_communication_Address,
-//     mobile_no,
-//     email_id,
-//     pin_code,
-//     state,
-//     Change_Request,
-//     Charge_Amount,
-//     user_id,
-//     status,
-//     note,
-//   } = req.body;
-
-//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-
-//   const domain = "http://localhost:7777";
-
-//   const documentUpload = req.files.documentUpload
-//     ? req.files.documentUpload
-//         .map((file) => `${domain}/panUploads/${file.filename}`)
-//         .join(",")
-//     : null;
-//   const attachment_form = req.files.attachment_form
-//     ? `${domain}/panUploads/${req.files.attachment_form[0].filename}`
-//     : null;
-//   const attachment_photo = req.files.attachment_photo
-//     ? `${domain}/panUploads/${req.files.attachment_photo[0].filename}`
-//     : null;
-//   const attachment_signature = req.files.attachment_signature
-//     ? `${domain}/panUploads/${req.files.attachment_signature[0].filename}`
-//     : null;
-
-//   // Insert query
-//   const sql = `INSERT INTO pan_offline (
-//         application_type, select_title, name, father_name, mother_name, dob, gender, office_address, aadhar_details,
-//         Address_Communication_OfficeResident, alternative_communication_Address, mobile_no, email_id, pin_code, state,
-//         Change_Request, document_upload, attachment_form, attachment_signature, attachment_photo, Charge_Amount, user_id,
-//         status, note, created_at
-//     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-//   const values = [
-//     application_type,
-//     select_title,
-//     name,
-//     father_name,
-//     mother_name,
-//     dob,
-//     gender,
-//     office_address,
-//     aadhar_details,
-//     Address_Communication_OfficeResident,
-//     alternative_communication_Address,
-//     mobile_no,
-//     email_id,
-//     pin_code,
-//     state,
-//     Change_Request,
-//     documentUpload,
-//     attachment_form,
-//     attachment_signature,
-//     attachment_photo,
-//     Charge_Amount,
-//     user_id,
-//     status,
-//     note,
-//     createdAt,
-//   ];
-
-//   db.query(sql, values, (err, result) => {
-//     if (err) {
-//       console.error("Database error:", err);
-//       return res.status(500).json({ error: err.message });
-//     }
-//     res.status(201).json({
-//       message: "Form data submitted successfully",
-//       formId: result.insertId,
-//     });
-//   });
-// };
-
 const panFromData = (req, res) => {
   const {
     application_type,
@@ -657,7 +566,7 @@ const panFromData = (req, res) => {
 };
 
 const nsdlTransactionNewRequest = (req, res) => {
-  const query = `SELECT * FROM nsdlpan`;
+  const query = `SELECT * FROM nsdlpan ORDER BY id DESC`;
 
   db.query(query, (err, result) => {
     if (err) {
@@ -670,7 +579,70 @@ const nsdlTransactionNewRequest = (req, res) => {
 };
 
 const nsdlTransactionCorrection = (req, res) => {
-  const query = `SELECT * FROM nsdlpancorrection`;
+  const query = `SELECT * FROM nsdlpancorrection ORDER BY id DESC`;
+
+  db.query(query, (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    } else {
+      return res.status(200).json({ status: "Success", data: result });
+    }
+  });
+};
+
+const panFourZeroGetAPI = (req, res) => {
+  const query = `SELECT * FROM pan_offline ORDER BY id DESC`;
+
+  db.query(query, (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    } else {
+      return res.status(200).json({ status: "Success", data: result });
+    }
+  });
+};
+
+const complainInsertApi = (req, res) => {
+  const { complainType, transactionNo, mobileNo, remark, userID } = req.body;
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const domain = "http://localhost:7777";
+
+  const complainFile =
+    req.files && req.files.complainFile
+      ? `${domain}/complainUpload/${req.files.complainFile[0].filename}`
+      : null;
+
+  const insertquery = `INSERT INTO complaindata (complainType, transactionNo, mobileNo, remark, complainFile, userID, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+
+  const values = [
+    complainType,
+    transactionNo,
+    mobileNo,
+    remark,
+    complainFile,
+    userID,
+    createdAt,
+  ];
+
+  db.query(insertquery, values, (err, result) => {
+    if (err) {
+      console.log(`Error Inserting record: ${err.message}`);
+      return res.status(500).json({ status: "Failure", error: err.message });
+    } else {
+      res.status(201).json({
+        status: "Success",
+        message: "Submitted Successfully",
+        resultID: result.insertId,
+      });
+    }
+  });
+};
+
+const complainGetData = (req, res) => {
+  const query = `SELECT * FROM complaindata ORDER BY id DESC`;
 
   db.query(query, (err, result) => {
     if (err) {
@@ -695,4 +667,98 @@ module.exports = {
   panFromData,
   nsdlTransactionNewRequest,
   nsdlTransactionCorrection,
+  panFourZeroGetAPI,
+  complainInsertApi,
+  complainGetData,
 };
+
+// const panFromData = (req, res) => {
+//   const {
+//     application_type,
+//     select_title,
+//     name,
+//     father_name,
+//     mother_name,
+//     dob,
+//     gender,
+//     office_address,
+//     aadhar_details,
+//     Address_Communication_OfficeResident,
+//     alternative_communication_Address,
+//     mobile_no,
+//     email_id,
+//     pin_code,
+//     state,
+//     Change_Request,
+//     Charge_Amount,
+//     user_id,
+//     status,
+//     note,
+//   } = req.body;
+
+//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+//   const domain = "http://localhost:7777";
+
+//   const documentUpload = req.files.documentUpload
+//     ? req.files.documentUpload
+//         .map((file) => `${domain}/panUploads/${file.filename}`)
+//         .join(",")
+//     : null;
+//   const attachment_form = req.files.attachment_form
+//     ? `${domain}/panUploads/${req.files.attachment_form[0].filename}`
+//     : null;
+//   const attachment_photo = req.files.attachment_photo
+//     ? `${domain}/panUploads/${req.files.attachment_photo[0].filename}`
+//     : null;
+//   const attachment_signature = req.files.attachment_signature
+//     ? `${domain}/panUploads/${req.files.attachment_signature[0].filename}`
+//     : null;
+
+//   // Insert query
+//   const sql = `INSERT INTO pan_offline (
+//         application_type, select_title, name, father_name, mother_name, dob, gender, office_address, aadhar_details,
+//         Address_Communication_OfficeResident, alternative_communication_Address, mobile_no, email_id, pin_code, state,
+//         Change_Request, document_upload, attachment_form, attachment_signature, attachment_photo, Charge_Amount, user_id,
+//         status, note, created_at
+//     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+//   const values = [
+//     application_type,
+//     select_title,
+//     name,
+//     father_name,
+//     mother_name,
+//     dob,
+//     gender,
+//     office_address,
+//     aadhar_details,
+//     Address_Communication_OfficeResident,
+//     alternative_communication_Address,
+//     mobile_no,
+//     email_id,
+//     pin_code,
+//     state,
+//     Change_Request,
+//     documentUpload,
+//     attachment_form,
+//     attachment_signature,
+//     attachment_photo,
+//     Charge_Amount,
+//     user_id,
+//     status,
+//     note,
+//     createdAt,
+//   ];
+
+//   db.query(sql, values, (err, result) => {
+//     if (err) {
+//       console.error("Database error:", err);
+//       return res.status(500).json({ error: err.message });
+//     }
+//     res.status(201).json({
+//       message: "Form data submitted successfully",
+//       formId: result.insertId,
+//     });
+//   });
+// };
