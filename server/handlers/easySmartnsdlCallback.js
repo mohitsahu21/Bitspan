@@ -20,7 +20,11 @@ const handleEasySmartNsdlPANCallback = (req, res)=>{
       }
   
       console.log("Data inserted successfully:");
-      res.status(200).send("Callback processed successfully");
+      // res.status(200).send("Callback processed successfully");
+
+       // Redirect the user to a specific URL after success
+    const redirectUrl = `https://bitspan.vimubds5.a2hosted.com/dashboard`;
+    res.redirect(redirectUrl);
     });
 }
 

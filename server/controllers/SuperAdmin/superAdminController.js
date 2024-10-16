@@ -87,6 +87,7 @@ const addPackage = (req, res) => {
       Offline_Insurance_Pay_Commission,
       PAN_Card_Commission_Type,
       UTI_PAN_Card_Commission,
+      UTI_PAN_Coupon_Commission,
       NSDL_PAN_Card_Commission,
     } = req.body;
 
@@ -121,8 +122,8 @@ const addPackage = (req, res) => {
         Online_Electricity_Bill_Pay_Commission_Type, Online_Electricity_Bill_Pay_Commission,
         Offline_Electricity_Bill_Pay_Commission_Type, Offline_Electricity_Bill_Pay_Commission,
         Online_Insurance_Pay_Commission_Type, Online_Insurance_Pay_Commission, Offline_Insurance_Pay_Commission_Type,
-        Offline_Insurance_Pay_Commission, PAN_Card_Commission_Type, UTI_PAN_Card_Commission, NSDL_PAN_Card_Commission , created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?, ?, ? ,?, ? , ? , ?)`;
+        Offline_Insurance_Pay_Commission, PAN_Card_Commission_Type, UTI_PAN_Card_Commission, UTI_PAN_Coupon_Commission, NSDL_PAN_Card_Commission , created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?, ?, ? ,?, ? , ? , ? , ?)`;
 
     const values = [
       package_name,
@@ -204,6 +205,7 @@ const addPackage = (req, res) => {
       Offline_Insurance_Pay_Commission,
       PAN_Card_Commission_Type,
       UTI_PAN_Card_Commission,
+      UTI_PAN_Coupon_Commission,
       NSDL_PAN_Card_Commission,
       createdAt,
     ];
@@ -220,6 +222,32 @@ const addPackage = (req, res) => {
       .send({ success: false, error: "Error inserting data", details: error.message });
   }
 };
+
+
+const getPackages = (req,res) =>{
+       try {
+        const sql = "SELECT * FROM packagestable"
+
+        db.query(sql , (err,result) =>{
+          if(err){
+            console.error("Error fetching packages from MySql:", err);
+        res.status(500).json({ success: false, error: "Error fetching packages" });
+          }
+          else{
+            res.status(200).json({ success : true, data : result ,message : "packages fetch successfully"})
+          }
+        })
+        
+       } catch (error) {
+        console.error("Error fetching Branches from MySql:", error);
+        res.status(500).json({
+          success: false,
+          message: "Error in fetched Branches",
+          error: error.message,
+        });
+        
+       }
+}
 
 module.exports = {
   addPackage,

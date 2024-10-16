@@ -9,6 +9,7 @@ const sizarPayRouter = require("./routers/Retailer/sizarPayRouter");
 const cgonePayRouter = require("./routers/Retailer/cgonePayRouter");
 const deeperwebRouter = require("./routers/Retailer/deeperwebRouter");
 const nsdlPanEasySmart = require("./routers/Retailer/nsdlPanEasysmartRouter");
+const zlink = require("./routers/Retailer/zlinkPanRouter")
 const easyPayRouter = require("./routers/SuperAdmin/easyPayUpiPaymentRouter");
 const superAdminRouter = require("./routers/SuperAdmin/superAdminRouter");
 const moment = require("moment-timezone");
@@ -33,6 +34,7 @@ app.use("/api/auth/sizarpay", sizarPayRouter);
 app.use("/api/auth/cgonepay", cgonePayRouter);
 app.use("/api/auth/deeperweb", deeperwebRouter);
 app.use("/api/auth/nsdlpan", nsdlPanEasySmart);
+app.use("/api/auth/zlink", zlink);
 app.use("/api/auth/easyPayUpi", easyPayRouter);
 app.use("/api/auth/superAdmin", superAdminRouter);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
