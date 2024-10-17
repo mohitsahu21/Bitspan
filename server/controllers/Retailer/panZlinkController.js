@@ -6,31 +6,42 @@ const { param } = require("../../routers/Retailer/deeperwebRouter");
 dotenv.config();
 
 
-const easySmartBaseURL = process.env.easySmartBaseURL;
-const Token = process.env.easySmartToken;
-const easySmartApiKey = process.env.easySmartApiKey;
+const zlinkBaseURL = process.env.zlinkBaseurl;
+const Token = process.env.zlinkToken;
+const zlinkApiKey = process.env.zlink_api_key;
 const apiClient = axios.create({
-  baseURL: easySmartBaseURL,
+  baseURL: zlinkBaseURL,
 });
 
 
-const getDataFromEasySmartPANApi = (endpoint, bodyData  = {}) => {
-    return apiClient
-      .post(endpoint, bodyData )
-      .then((response) => {
-        return response.data;
-      })
-      .catch((error) => {
-        console.error("Error fetching data from client API:", error.message);
-        throw error;
-      });
-  };
+// const getDataFromZlinkPANApi = (endpoint, bodyData  = {}) => {
+//     return apiClient
+//       .post(endpoint, bodyData )
+//       .then((response) => {
+//         return response.data;
+//       })
+//       .catch((error) => {
+//         console.error("Error fetching data from client API:", error.message);
+//         throw error;
+//       });
+//   };
+
+const getDataFromZlinkPANApi = async (endpoint, bodyData  = {}) => {
+  try {
+  const response = await apiClient
+    .post(endpoint, bodyData);
+  return response.data;
+} catch (error) {
+  console.error("Error fetching data from client API:", error.message);
+  throw error;
+}
+};
   
-  const easySmartBalance = (req, res) => {
+  const zlinkBalance = (req, res) => {
     
-    const endpoint = "/user/balanceCheck";
+    const endpoint = "/user/balance-check";
   
-    getDataFromEasySmartPANApi(endpoint,  {
+    getDataFromZlinkPANApi(endpoint,  {
         token : Token
     })
       .then((data) => {
@@ -45,65 +56,26 @@ const getDataFromEasySmartPANApi = (endpoint, bodyData  = {}) => {
       });
   };
 
-
-  const easySmartBalanceForPan = async () => {
-    const endpoint = "/user/balanceCheck";
+  const zlinkBalanceForPan = async () => {
+    const endpoint = "/user/balance-check";
     try {
-      const data = await getDataFromEasySmartPANApi(endpoint, { token: Token });
+      const data = await getDataFromZlinkPANApi(endpoint, { token: Token });
       return data;
     } catch (error) {
       console.error("Error details:", error.response ? error.response.data : error.message);
       throw new Error("Error fetching balance from client API");
     }
   };
-  // const easySmartNewPanRequest = (req, res) => {
-  //   const { env_mode, app_type,app_mode,phyPanIsReq, redirect_url,order_id,first_name,middle_name,last_name,gender,dob,mobile_no,email_id,pan_no} = req.body;
-  //   const endpoint = "/nsdl/request";
-  
-  //   getDataFromEasySmartPANApi(endpoint,  {
-  //       api_key : easySmartApiKey,
-  //       env_mode,
-  //       app_type,
-  //       app_mode,
-  //       phyPanIsReq,
-  //       redirect_url,
-  //       order_id,
-  //       applicant_data : {
-  //           first_name,
-  //           middle_name,
-  //           last_name,
-  //           gender,
-  //           dob,
-  //           mobile_no,
-  //           email_id,
-  //           pan_no
-  //       }
 
 
-
-
-  //   })
-  //     .then((data) => {
-  //       res.json(data);
-  //     })
-  //     .catch((error) => {
-  //       console.error(
-  //         "Error details:",
-  //         error.response ? error.response.data : error.message
-  //       );
-  //       res.status(500).send("Error fetching data from client API");
-  //     });
-  // };
-
-
-  const easySmartNewPanRequest = async (req, res) => {
+  const zlinkNewPanRequest = async (req, res) => {
     try {
-      const {app_mode, selectType,phyPanIsReq, redirect_url,first_name,middle_name,last_name,gender,dob,mobile_no,email_id,pan_no,walletDeductAmt,userId } = req.body;
+      const {app_mode, selectType,phyPanIsReq, redirect_url,first_name,middle_name,last_name,gender,dob,mobile_no,email_id,pan_no,walletDeductAmt,userId,branchCode } = req.body;
 
      // Try to get balance, handle errors if they occur
      let balanceData;
      try {
-       balanceData = await easySmartBalanceForPan(); // Wait for the balance data
+       balanceData = await zlinkBalanceForPan(); // Wait for the balance data
       
      } catch (error) {
        console.error("Error fetching balance:", error.message);
@@ -132,10 +104,10 @@ const getDataFromEasySmartPANApi = (endpoint, bodyData  = {}) => {
 
       let applicationMode ;
       if(app_mode == 'Instant PAN Card - EKYC'){
-        applicationMode = "K"
+        applicationMode = "E"
       }
       else if(app_mode == 'Scan Based PAN Card'){
-        applicationMode = "E"
+        applicationMode = "K"
       }
 
       let physicalPanReq ;
@@ -161,7 +133,7 @@ const getDataFromEasySmartPANApi = (endpoint, bodyData  = {}) => {
       email_id,
       phyPanIsReq,
       walletDeductAmt,
-      "easySmart",
+      "Zlink",
       userId,
       createdAt,
     ];
@@ -177,23 +149,24 @@ const getDataFromEasySmartPANApi = (endpoint, bodyData  = {}) => {
     const autoGeneratedOrderId = result.insertId;
     const formattedOrderId = String(autoGeneratedOrderId).padStart(6, "0");
 
-    const nsdlData = await getDataFromEasySmartPANApi(endpoint,  {
-        api_key : easySmartApiKey,
-        env_mode : "LIVE",
-        app_type : "NEW",
-        app_mode : applicationMode ,
-        phyPanIsReq: physicalPanReq,
-        redirect_url,
-        order_id: formattedOrderId,
-        applicant_data : {
-            first_name,
-            middle_name,
-            last_name,
-            gender,
-            dob,
-            mobile_no,
-            email_id,
-            pan_no
+    const nsdlData = await getDataFromZlinkPANApi(endpoint,  {
+      api_key : zlinkApiKey,
+      env_mode : "LIVE",
+      app_type : "NEW",
+      app_mode : applicationMode ,
+      phyPanIsReq: physicalPanReq,
+      branchCode,
+      redirect_url,
+      order_id: formattedOrderId,
+      applicant_data : {
+          first_name,
+          middle_name,
+          last_name,
+          gender,
+          dob,
+          mobile_no,
+          email_id,
+          pan_no
         }
  })
 
@@ -217,7 +190,7 @@ await new Promise((resolve, reject) => {
 
 
  if( nsdlData.status == "Success"){
- return res.json({
+ return  res.json({
     message: "Success",
     nsdlData,
     orderid: formattedOrderId, // Include the generated orderid in the response
@@ -243,14 +216,14 @@ await new Promise((resolve, reject) => {
       
   };
 
-  const easySmartCorrectionPanRequest = async (req, res) => {
+  const zlinkCorrectionPanRequest = async (req, res) => {
     try {
-      const {app_mode, selectType,phyPanIsReq, redirect_url,first_name,middle_name,last_name,gender,dob,mobile_no,email_id,pan_no,walletDeductAmt,userId } = req.body;
+      const {app_mode, selectType,phyPanIsReq, redirect_url,first_name,middle_name,last_name,gender,dob,mobile_no,email_id,pan_no,walletDeductAmt,userId, branchCode } = req.body;
 
      // Try to get balance, handle errors if they occur
      let balanceData;
      try {
-       balanceData = await easySmartBalanceForPan(); // Wait for the balance data
+       balanceData = await zlinkBalanceForPan(); // Wait for the balance data
       
      } catch (error) {
        console.error("Error fetching balance:", error.message);
@@ -280,10 +253,10 @@ await new Promise((resolve, reject) => {
 
       let applicationMode ;
       if(app_mode == 'Instant PAN Card - EKYC'){
-        applicationMode = "K"
+        applicationMode = "E"
       }
       else if(app_mode == 'Scan Based PAN Card'){
-        applicationMode = "E"
+        applicationMode = "K"
       }
 
       let physicalPanReq ;
@@ -310,7 +283,7 @@ await new Promise((resolve, reject) => {
       pan_no,
       phyPanIsReq,
       walletDeductAmt,
-      "easySmart",
+      "zlink",
       userId,
       createdAt,
     ];
@@ -326,12 +299,13 @@ await new Promise((resolve, reject) => {
     const autoGeneratedOrderId = result.insertId;
     const formattedOrderId = String(autoGeneratedOrderId).padStart(6, "0");
 
-    const nsdlData = await getDataFromEasySmartPANApi(endpoint,  {
-      api_key : easySmartApiKey,
+    const nsdlData = await getDataFromZlinkPANApi(endpoint,  {
+      api_key : zlinkApiKey,
       env_mode : "LIVE",
       app_type : "CR",
       app_mode : applicationMode ,
       phyPanIsReq: physicalPanReq,
+      branchCode,
       redirect_url,
       order_id: formattedOrderId,
       applicant_data : {
@@ -392,58 +366,33 @@ return res.json({
       
   };
 
-  const easySmartNewPanTransactionStatus = (req, res) => {
-    const { order_id , txn_id} = req.body;
-    const endpoint = "/nsdl/transactionStatus";
-    
-  
-    getDataFromEasySmartPANApi(endpoint,  {
-        api_key : easySmartApiKey,
-        order_id,
-        txn_id
-       })
-      .then((data) => {
-        res.json(data);
-      })
-      .catch((error) => {
-        console.error(
-          "Error details:",
-          error.response ? error.response.data : error.message
-        );
-        res.status(500).send("Error fetching data from client API");
-      });
-  };
-  const easySmartNewPanAckStatus = (req, res) => {
-    const { ack , txn_id} = req.body;
-    const endpoint = "/nsdl/panAckStatus" ;
-    
-  
-    getDataFromEasySmartPANApi(endpoint,  {
-        api_key : easySmartApiKey,
-        ack,
-        txn_id
-       })
-      .then((data) => {
-        res.json(data);
-      })
-      .catch((error) => {
-        console.error(
-          "Error details:",
-          error.response ? error.response.data : error.message
-        );
-        res.status(500).send("Error fetching data from client API");
-      });
-  };
 
-
+  const zlinkIncompletePan = async (req,res) => {
+    const endpoint = "/nsdl/inc-request";
+    const {order_id} = req.body;
+    try {
+      const data = await getDataFromZlinkPANApi(endpoint, { 
+        api_key : zlinkApiKey,
+        order_id ,
+        request_from : "WEB"
+       });
+       
+      return res.status(200).json({
+        status : "Success",
+        message: "Success",
+        data,
+      })
+    } catch (error) {
+      console.error("Error details:", error.response ? error.response.data : error.message);
+      return res.status(500).json({ status : "failed", error: "Error from api" });
+    }
+  };
 
 
   module.exports = {
-    easySmartBalance,
-    easySmartNewPanRequest,
-    easySmartNewPanTransactionStatus,
-    easySmartNewPanAckStatus,
-    easySmartCorrectionPanRequest
+    zlinkBalance,
+    zlinkNewPanRequest,
+    zlinkCorrectionPanRequest,
+    zlinkIncompletePan
+
   }
-
-

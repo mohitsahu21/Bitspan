@@ -51,6 +51,14 @@ import ElectricityHistory from "../components/DashBoard/ElectricityHistory";
 import BroadbandHistory from "../components/DashBoard/BroadbandHistory";
 import PanCardFour from "../components/DashBoard/PanCardFour";
 import NsdlIncomplete from "../components/DashBoard/NsdlIncomplete";
+import NsdlNewPanCardEasySmart from "../components/DashBoard/NsdlNewPanCardEasySmart";
+import RedirectPanForm from "../components/DashBoard/RedirectPanForm";
+import NsdlPanCorrectionEasySmart from "../components/DashBoard/NsdlPanCorrectionEasySmart";
+import RedirectionCorrectionPanForm from "../components/DashBoard/RedirectionCorrectionPanForm";
+import NsdlNewPanCardZlink from "../components/DashBoard/NsdlNewPanCardZlink";
+import NsdlPanCorrectionZlink from "../components/DashBoard/NsdlPanCorrectionZlink";
+import NsdlIncompletePanZlink from "../components/DashBoard/NsdlIncompletePanZlink";
+import IncompletePanFormZlink from "../components/DashBoard/IncompletePanFormZlink";
 import PanFourHistory from "../components/DashBoard/PanFourHistory";
 import DemoRegistration from "../components/DashBoard/DemoRegistration";
 const RetailerRoutes = () => {
@@ -86,6 +94,28 @@ const RetailerRoutes = () => {
         <Route path="/pan-apply-49" element={<NsdlNewPanCard />} />
         <Route path="/pan-apply-cr" element={<NsdlPanCorrection />} />
         <Route path="/pan-status" element={<PanStatus />} />
+
+       {/* easy smart route */}
+       <Route path="/nsdl-new-pan-card" element={<NsdlNewPanCardEasySmart />} />
+       <Route path="/nsdl-new-pan-card-redirect" element={<RedirectPanForm />} />
+       <Route path="/easySmartNsdlPANCallback" element={<Dashboard />} />
+
+       <Route path="/nsdl-correction-pan-card" element={<NsdlPanCorrectionEasySmart />} />
+       <Route path="/nsdl-correction-pan-card-redirect" element={<RedirectionCorrectionPanForm />} />
+      
+       {/* easy smart route */}
+
+       {/* Zlink Pan route */}
+       <Route path="/nsdl-new-pan-card-2" element={<NsdlNewPanCardZlink />} />
+       {/* <Route path="/nsdl-new-pan-card-redirect" element={<RedirectPanForm />} /> */}
+        {/* <Route path="/easySmartNsdlPANCallback" element={<Dashboard />} /> */}
+
+        <Route path="/nsdl-correction-pan-card-2" element={<NsdlPanCorrectionZlink />} />
+       {/* <Route path="/nsdl-correction-pan-card-redirect" element={<RedirectionCorrectionPanForm />} />  */}
+      
+       {/* Zlink Pan route */}
+
+
         <Route
           path="/pan-transaction-report"
           element={<PanTransactionReport />}
@@ -166,6 +196,10 @@ const RetailerRoutes = () => {
         <Route path="/bank-id" element={<NewBankID />} />
         <Route path="/pan-card-4.0" element={<PanCardFour />} />
         <Route path="/incomplete-request" element={<NsdlIncomplete />} />
+
+        <Route path="/incomplete-request-zlink" element={<NsdlIncompletePanZlink />} />
+        <Route path="/redirect-incomplete-pan-zlink" element={<IncompletePanFormZlink />} />
+
         <Route path="/pan-4.0-history" element={<PanFourHistory />} />
         <Route path="/registration-page" element={<DemoRegistration />} />
       </Routes>

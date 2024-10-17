@@ -44,6 +44,7 @@ import SAChangeUserNotification from "../components/SuperAdmin/SAChangeUserNotif
 import SAWalletWithdrawSummary from "../components/SuperAdmin/SAWalletWithdrawSummary.jsx";
 import SASetWhiteLabelIdPrice from "../components/SuperAdmin/SASetWhiteLabelIdPrice.jsx";
 import SAActiveDeactiveApi from "../components/SuperAdmin/SAActiveDeactiveApi.jsx";
+import PanForm from "../components/SuperAdmin/PanForm.jsx";
 
 
 
@@ -133,6 +134,8 @@ const SuperAdminRoutes = () => {
       <Route path="/today-all-transaction" element={<SATodayAllTransaction />} />
       <Route path="/all-transaction" element={<SAAllTransaction />} />
       <Route path="/choice-user-notification" element={<SAChangeUserNotification />} />
+      <Route path="/Panform" element={<PanForm />} />
+
       {/* <Route path="/download-certificate-print" element={<Certificate user="WHITE LABEL" name="Aashish Kumar"
         address="Jabalpur, BIHAR - 482001"
         date="02-Jul-2024"
