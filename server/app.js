@@ -11,6 +11,7 @@ const deeperwebRouter = require("./routers/Retailer/deeperwebRouter");
 const nsdlPanEasySmart = require("./routers/Retailer/nsdlPanEasysmartRouter");
 const easyPayRouter = require("./routers/SuperAdmin/easyPayUpiPaymentRouter");
 const superAdminRouter = require("./routers/SuperAdmin/superAdminRouter");
+const loginRouter = require("./routers/LoginApi/loginUserRoute");
 const moment = require("moment-timezone");
 const { db } = require("./connect");
 const {
@@ -27,6 +28,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/auth/retailer", retailerRouter);
+app.use("/api/auth/log-reg", loginRouter);
 app.use("/api/auth/instpay", instpayRouter);
 app.use("/api/auth/ezytm", ezytmRouter);
 app.use("/api/auth/sizarpay", sizarPayRouter);
@@ -41,6 +43,7 @@ app.use(
   "/complainUpload",
   express.static(path.join(__dirname, "complainUpload"))
 );
+app.use("/profile-data", express.static(path.join(__dirname, "profile-data")));
 
 // Callback URL endpoint
 app.get("/callbackUrl", (req, res) => {

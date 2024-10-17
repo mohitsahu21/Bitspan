@@ -4,12 +4,15 @@ import { MdFormatListNumberedRtl } from "react-icons/md";
 import { BiHomeAlt } from "react-icons/bi";
 import ReactPaginate from "react-paginate";
 import axios from "axios";
+import moment from "moment";
 
 const AllComplaintsList = () => {
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [keyword, setKeyword] = useState("");
-  const complaintsPerPage = 5;
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
 
   const fetchData = async () => {
@@ -31,19 +34,45 @@ const AllComplaintsList = () => {
     fetchData();
   }, []);
 
-  //   const filteredItems = apiData.filter(
-  //     (row) =>
-  //       (row?.name &&
-  //         row.name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-  //       (row?.orderid && row.orderid.includes(keyword.trim()))
-  //   );
+  const handleSearch = () => {
+    const from = fromDate ? moment(fromDate, "YYYY-MM-DD") : null;
+    const to = toDate ? moment(toDate, "YYYY-MM-DD") : null;
+
+    return apiData.filter((item) => {
+      const itemDate = moment(item.createdAt, "YYYY-MM-DD HH:mm:ss");
+      // Apply date filter based on from and to dates
+      const isAfterFromDate = from ? itemDate.isSameOrAfter(from) : true;
+      const isBeforeToDate = to ? itemDate.isSameOrBefore(to) : true;
+      return isAfterFromDate && isBeforeToDate;
+    });
+  };
+  // const handleSearch = () => {
+  //   const filteredDate = apiData.filter((item) => {
+  //     const itemDate = new Date(item.createdAt);
+  //     const from = new Date(fromDate);
+  //     const to = new Date(toDate);
+
+  //     if (fromDate && toDate) {
+  //       return itemDate >= from && itemDate <= to;
+  //     }
+  //     return true;
+  //   });
+  //   return filteredDate;
+  // };
+
+  const clearDateFilters = () => {
+    setFromDate(""); // Clear fromDate
+    setToDate(""); // Clear toDate
+    setCurrentPage(0); // Reset pagination to the first page
+  };
 
   const totalPages = Math.ceil(apiData.length / complaintsPerPage);
 
   const filterPagination = () => {
+    const filteredItems = handleSearch();
     const startIndex = currentPage * complaintsPerPage;
     const endIndex = startIndex + complaintsPerPage;
-    return apiData?.slice(startIndex, endIndex);
+    return filteredItems?.slice(startIndex, endIndex);
   };
 
   const handlePageChange = ({ selected }) => {
@@ -93,6 +122,8 @@ const AllComplaintsList = () => {
                               id="fromDate"
                               className="form-control"
                               type="date"
+                              value={fromDate}
+                              onChange={(e) => setFromDate(e.target.value)}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -101,16 +132,28 @@ const AllComplaintsList = () => {
                             </label>
                             <input
                               id="toDate"
-                              className="form-control "
+                              className="form-control"
                               type="date"
+                              value={toDate}
+                              onChange={(e) => setToDate(e.target.value)}
                             />
                           </div>
                           <div className="d-flex align-items-end">
                             <button
                               type="button"
                               className="btn btn-primary button"
+                              onClick={handleSearch}
                             >
                               Search
+                            </button>
+                          </div>
+                          <div className="d-flex align-items-end">
+                            <button
+                              type="button"
+                              className="btn btn-primary button"
+                              onClick={clearDateFilters}
+                            >
+                              Clear
                             </button>
                           </div>
                         </div>

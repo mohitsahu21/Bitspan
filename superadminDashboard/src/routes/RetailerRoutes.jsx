@@ -52,6 +52,7 @@ import BroadbandHistory from "../components/DashBoard/BroadbandHistory";
 import PanCardFour from "../components/DashBoard/PanCardFour";
 import NsdlIncomplete from "../components/DashBoard/NsdlIncomplete";
 import PanFourHistory from "../components/DashBoard/PanFourHistory";
+import DemoRegistration from "../components/DashBoard/DemoRegistration";
 const RetailerRoutes = () => {
   return (
     <>
@@ -166,6 +167,7 @@ const RetailerRoutes = () => {
         <Route path="/pan-card-4.0" element={<PanCardFour />} />
         <Route path="/incomplete-request" element={<NsdlIncomplete />} />
         <Route path="/pan-4.0-history" element={<PanFourHistory />} />
+        <Route path="/registration-page" element={<DemoRegistration />} />
       </Routes>
     </>
   );
