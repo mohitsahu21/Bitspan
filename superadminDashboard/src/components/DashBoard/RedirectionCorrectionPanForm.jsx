@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const RedirectionCorrectionPanForm = () => {
 
     const location = useLocation();
-
+    const navigate = useNavigate();
     // Access the data passed from the previous component
     const { enc_data } = location.state || {};
     console.log(enc_data)
@@ -25,6 +25,7 @@ useEffect(() => {
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = url;
+        form.target = "_blank";
 
         // The formData you want to submit
         const formData = {
@@ -59,6 +60,8 @@ useEffect(() => {
 
       // Trigger the form submission
       submitRequest();
+      // navigate(-1);
+      window.history.back(); // Navigates back to the previous page
     }
   }, [cleanedEncData]); // The useEffect will run when cleanedEncData changes or is set
 

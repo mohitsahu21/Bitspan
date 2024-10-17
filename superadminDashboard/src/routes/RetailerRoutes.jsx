@@ -60,6 +60,7 @@ import NsdlPanCorrectionZlink from "../components/DashBoard/NsdlPanCorrectionZli
 import NsdlIncompletePanZlink from "../components/DashBoard/NsdlIncompletePanZlink";
 import IncompletePanFormZlink from "../components/DashBoard/IncompletePanFormZlink";
 import PanFourHistory from "../components/DashBoard/PanFourHistory";
+import UtiPanNew from "../components/DashBoard/UtiPanNew";
 const RetailerRoutes = () => {
   return (
     <>
@@ -130,6 +131,7 @@ const RetailerRoutes = () => {
         <Route path="/raise-complaint" element={<Complaints />} />
         <Route path="/add-money" element={<AddMoney />} />
         <Route path="/uti-login" element={<UtiPan />} />
+        <Route path="/uti-login-new" element={<UtiPanNew />} />
         <Route path="/dth-recharge" element={<DthRecharge />} />
         <Route path="/dth-connection" element={<DthConnection />} />
         <Route

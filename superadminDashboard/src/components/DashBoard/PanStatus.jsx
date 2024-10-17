@@ -1,11 +1,111 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { MdFormatListNumberedRtl } from "react-icons/md";
 import { BiHomeAlt } from "react-icons/bi";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 
 
 const PanStatus = () => {
+
+  const [formData, setFormData] = useState({
+    order_id: "",
+  });
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const { data } = await axios.post(
+        // `https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/nsdl-pan-incomplete`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/zlinkPantxnStatus`,
+
+        formData
+      );
+      // setFormData(data);
+      console.log(data);
+      setLoading(false);
+      if (data.status === "Success" && data.data) {
+        const { order_id, ack, message, status } = data.data.data;
+        if (status == "Success") {
+          Swal.fire({
+
+            icon: "success",
+            title: "Details",
+            // text : `Order Id : ${data.data.data.order_id}
+            //         Acknowledgement No. : ${data.data.data.ack}
+            //         Message : ${data.data.data.message} `,
+           html: `
+        <pre style="text-align: left; font-family:"Poppins", sans-serif;">
+ <h5> <strong>Order ID:</strong> ${order_id}</h5>
+ <h5> <strong>Acknowledgement No.:</strong> ${ack}</h5>
+  <h5><strong>Message:</strong> ${message}</h5>
+        </pre>
+        <button onclick="copyAck()" class="btn btn-primary mt-2">Copy Ack. No.</button>
+      `,
+            didOpen: () => {
+              // Function to copy the Acknowledgement No. when the button is clicked
+              window.copyAck = function () {
+                navigator.clipboard.writeText(ack).then(() => {
+                  Swal.fire({
+                    icon: "info",
+                    title: "Copied!",
+                    text: "Acknowledgement No. has been copied to clipboard.",
+                    timer: 1500,
+                    showConfirmButton: false
+                  });
+                });
+              };
+            }
+          })
+        }
+
+        else {
+          Swal.fire({
+
+            icon: "success",
+            title: "Details",
+            // text : `Order Id : ${data.data.data.order_id}
+            //         Acknowledgement No. : ${data.data.data.ack}
+            //         Message : ${data.data.data.message} `,
+            html: `
+      <pre style="text-align: left; font-family: "Poppins", sans-serif;">
+<h5><strong>Order ID:</strong> ${order_id}</h5>
+<h5><strong>Acknowledgement No.:</strong> ${ack}</h5>
+<h5><strong>Message:</strong> ${message}</h5>
+      </pre>
+     
+    `
+
+          });
+        }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Something went wrong"
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      Swal.fire({
+        icon: "error",
+        title: "Something went wrong"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <Wrapper>
@@ -34,32 +134,36 @@ const PanStatus = () => {
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow bg-body-tertiary rounded  py-5 m-4">
 
 
-
-                      <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 mx-auto">
-                        <div class="input-group">
-                          <span class="input-group-text">
-                            <MdFormatListNumberedRtl />
-                          </span>
-                          <div class="form-floating">
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="floatingInputGroup2"
-                              placeholder="Mobile Number"
-                            />
-                            <label for="floatingInputGroup2">
-                              Acknowledgement No.
-                            </label>
+                      <form onSubmit={handleSubmit}>
+                        <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 mx-auto">
+                          <div class="input-group">
+                            <span class="input-group-text">
+                              <MdFormatListNumberedRtl />
+                            </span>
+                            <div class="form-floating">
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="floatingInputGroup2"
+                                placeholder="Mobile Number"
+                                value={formData.order_id}
+                                name="order_id"
+                                onChange={handleChange}
+                                required
+                              />
+                              <label for="floatingInputGroup2">
+                                ORDER ID
+                              </label>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 mt-4">
-                        <div className="text-center">
-                          <button className="btn p-2">Submit</button>
+                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 mt-4">
+                          <div className="text-center">
+                            <button type="submit" className="btn p-2" disabled={loading}> {loading ? "Loading..." : "Submit"}</button>
+                          </div>
                         </div>
-                      </div>
-
+                      </form>
                     </div>
 
                   </div>

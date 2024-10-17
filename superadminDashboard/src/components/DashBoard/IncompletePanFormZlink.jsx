@@ -32,7 +32,9 @@ if (reqMatch && reqMatch[1]) {
   useEffect(() => {
     // Automatically submit the form when the component is mounted
     document.getElementById('panForm').submit();
-    navigate('/incomplete-request-zlink');
+    // navigate('/incomplete-request-zlink');
+     // navigate(-1);
+     window.history.back(); // Navigates back to the previous page
   }, []);
 
   return (

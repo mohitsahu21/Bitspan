@@ -28,8 +28,8 @@ const NsdlIncompletePanZlink = () => {
     setLoading(true);
     try {
       const { data } = await axios.post(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/nsdl-pan-incomplete`,
-        `http://localhost:7777/api/auth/zlink/zlinkIncompletePan`,
+        // `https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/zlinkIncompletePan`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/zlinkIncompletePan`,
         formData
       );
     //   setFormData(data);
