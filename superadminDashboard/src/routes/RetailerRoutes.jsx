@@ -61,6 +61,7 @@ import NsdlIncompletePanZlink from "../components/DashBoard/NsdlIncompletePanZli
 import IncompletePanFormZlink from "../components/DashBoard/IncompletePanFormZlink";
 import PanFourHistory from "../components/DashBoard/PanFourHistory";
 import UtiPanNew from "../components/DashBoard/UtiPanNew";
+import DemoRegistration from "../components/DashBoard/DemoRegistration";
 const RetailerRoutes = () => {
   return (
     <>
@@ -202,6 +203,7 @@ const RetailerRoutes = () => {
         <Route path="/redirect-incomplete-pan-zlink" element={<IncompletePanFormZlink />} />
 
         <Route path="/pan-4.0-history" element={<PanFourHistory />} />
+        <Route path="/registration-page" element={<DemoRegistration />} />
       </Routes>
     </>
   );

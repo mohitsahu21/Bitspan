@@ -22,7 +22,8 @@ function App() {
   return (
     <>
       {location.pathname !== "/" &&
-        location.pathname !== "/download-certificate-print" && <Sider />}
+        location.pathname !== "/download-certificate-print" &&
+        location.pathname !== "/registration-page" && <Sider />}
 
       <Routes>
         <Route path="/" element={<LoginBitspan />} />

@@ -654,6 +654,91 @@ const complainGetData = (req, res) => {
   });
 };
 
+const profileInfo = (req, res) => {
+  const {
+    UserId,
+    UserType,
+    UserName,
+    ContactNo,
+    Email,
+    PanCardNumber,
+    AadharNumber,
+    BusinessName,
+    City,
+    State,
+    PinCode,
+  } = req.body;
+
+  if (
+    !UserId ||
+    !UserType ||
+    !UserName ||
+    !ContactNo ||
+    !Email ||
+    !PanCardNumber ||
+    !AadharNumber ||
+    !BusinessName ||
+    !City ||
+    !State ||
+    !PinCode
+  ) {
+    return res
+      .status(400)
+      .json({ status: "Failure", error: "Please fill all details" });
+  }
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const domain = "http://localhost:7777";
+
+  const aadharFront =
+    req.files && req.files.aadharFront
+      ? `${domain}/profile-data/${req.files.aadharFront[0].filename}`
+      : null;
+
+  const aadharBack =
+    req.files && req.files.aadharBack
+      ? `${domain}/profile-data/${req.files.aadharBack[0].filename}`
+      : null;
+
+  const panCardFront =
+    req.files && req.files.panCardFront
+      ? `${domain}/profile-data/${req.files.panCardFront[0].filename}`
+      : null;
+
+  const insertQuery = `INSERT INTO userprofile (UserId, UserType, UserName, ContactNo, Email, PanCardNumber, AadharNumber, BusinessName, City, State, PinCode, AadharFront, AadharBack, PanCardFront, CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+  const insertValue = [
+    UserId,
+    UserType,
+    UserName,
+    ContactNo,
+    Email,
+    PanCardNumber,
+    AadharNumber,
+    BusinessName,
+    City,
+    State,
+    PinCode,
+    aadharFront,
+    aadharBack,
+    panCardFront,
+    createdAt,
+  ];
+
+  db.query(insertQuery, insertValue, (err, result) => {
+    if (err) {
+      console.log(`Error Inserting record: ${err.message}`);
+      return res.status(500).json({ status: "Failure", error: err.message });
+    } else {
+      res.status(201).json({
+        status: "Success",
+        message: "Submitted Successfully",
+        resultID: result.insertId,
+      });
+    }
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -670,6 +755,7 @@ module.exports = {
   panFourZeroGetAPI,
   complainInsertApi,
   complainGetData,
+  profileInfo,
 };
 
 // const panFromData = (req, res) => {

@@ -18,6 +18,7 @@ const {
   panFourZeroGetAPI,
   complainInsertApi,
   complainGetData,
+  profileInfo,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -103,5 +104,24 @@ router.post(
 );
 
 router.get("/complain-data", complainGetData);
+
+const profileDataStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "profile-data/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+const profileDataUpload = multer({ storage: profileDataStorage });
+router.post(
+  "/user-profile",
+  profileDataUpload.fields([
+    { name: "aadharFront", maxCount: 1 },
+    { name: "aadharBack", maxCount: 1 },
+    { name: "panCardFront", maxCount: 1 },
+  ]),
+  profileInfo
+);
 
 module.exports = router;
