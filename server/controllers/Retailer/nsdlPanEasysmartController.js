@@ -436,6 +436,60 @@ return res.json({
   };
 
 
+  // uti api start
+
+  const easySmartUtiAgentOnbording = async (req,res)=>{
+    const {name,agent_id,mobile,email_id,address,state,city,pincode,pan_no,aadhaar_no} = req.body
+    const endpoint = "/agent/onbording"
+    if(!name || !agent_id || !mobile || !email_id || !address || !state || !city || !pincode || !pan_no || !aadhaar_no)
+    {
+     return res.status(400).json({status : "failed", error: "Please fill all fields"})
+    }
+    try {
+      const data = await getDataFromEasySmartPANApi(endpoint, {
+       token : Token,
+       name,
+       agent_id,
+       mobile,
+       email_id ,
+       address ,
+       state,
+       city,
+       pincode,
+       pan_no,
+       aadhaar_no
+      })
+    
+     return res.status(200).json({status : "Success",
+       message: "Success", data})
+    } catch (error) {
+     console.error("Error details:", error.response ? error.response.data : error.message);
+     return res.status(500).json({ status : "failed", error: "Error from api" });
+    }
+}
+  const easySmartUtiLogin = async (req,res)=>{
+    const {agent_id} = req.body
+    const endpoint = "/uti/login"
+    if( !agent_id)
+    {
+     return res.status(400).json({status : "failed", error: "Please fill all fields"})
+    }
+    try {
+      const data = await getDataFromEasySmartPANApi(endpoint, {
+       token : Token,
+       agent_id,
+       req_type: "LIVE"
+     
+      })
+    
+     return res.status(200).json({status : "Success",
+       message: "Success", data})
+    } catch (error) {
+     console.error("Error details:", error.response ? error.response.data : error.message);
+     return res.status(500).json({ status : "failed", error: "Error from api" });
+    }
+}
+
 
 
   module.exports = {
@@ -443,7 +497,9 @@ return res.json({
     easySmartNewPanRequest,
     easySmartNewPanTransactionStatus,
     easySmartNewPanAckStatus,
-    easySmartCorrectionPanRequest
+    easySmartCorrectionPanRequest,
+    easySmartUtiAgentOnbording,
+    easySmartUtiLogin
   }
 
 

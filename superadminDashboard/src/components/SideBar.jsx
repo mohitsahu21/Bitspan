@@ -604,6 +604,11 @@ const RetailerSidebarData = [
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
+        title: "UTI PAN Card Login",
+        path: "/uti-login-new",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
         title: "UTI 2.4 Transaction History",
         path: "/uti-transaction-report",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,

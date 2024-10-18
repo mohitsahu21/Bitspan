@@ -28,7 +28,7 @@ useEffect(() => {
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = url;
-
+        form.target = "_blank";
         // The formData you want to submit
         const formData = {
           reqEntityData: {
@@ -61,6 +61,8 @@ useEffect(() => {
 
       // Trigger the form submission
       submitRequest();
+       // navigate(-1);
+       window.history.back(); // Navigates back to the previous page
     }
   }, [cleanedEncData]); // The useEffect will run when cleanedEncData changes or is set
 

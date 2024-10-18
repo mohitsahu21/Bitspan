@@ -376,7 +376,6 @@ return res.json({
         order_id ,
         request_from : "WEB"
        });
-       
       return res.status(200).json({
         status : "Success",
         message: "Success",
@@ -387,12 +386,107 @@ return res.json({
       return res.status(500).json({ status : "failed", error: "Error from api" });
     }
   };
+  
+  const zlinkPantxnStatus = async (req,res)=>{
+         const {order_id} = req.body
+         const endpoint = "/nsdl/txn-status"
+         try {
+           const data = await getDataFromZlinkPANApi(endpoint, {
+            api_key : zlinkApiKey,
+            order_id 
+           })
+          
+          return res.status(200).json({status : "Success",
+            message: "Success", data})
+         } catch (error) {
+          console.error("Error details:", error.response ? error.response.data : error.message);
+          return res.status(500).json({ status : "failed", error: "Error from api" });
+         }
+  }
+
+  const zlinkPanStatus = async (req,res)=>{
+         const {ack_no} = req.body
+         const endpoint = "/nsdl/pan-status"
+         try {
+           const data = await getDataFromZlinkPANApi(endpoint, {
+            api_key : zlinkApiKey,
+            ack_no 
+           })
+         
+          return res.status(200).json({status : "Success",
+            message: "Success", data})
+         } catch (error) {
+          console.error("Error details:", error.response ? error.response.data : error.message);
+          return res.status(500).json({ status : "failed", error: "Error from api" });
+         }
+  }
+
+
+
+// uti api start
+
+  const zlinkUtiAgentOnbording = async (req,res)=>{
+         const {name,agent_id,mobile,email_id,address,state,city,pincode,pan_no,aadhaar_no} = req.body
+         const endpoint = "/uti/agent-onboarding"
+         if(!name || !agent_id || !mobile || !email_id || !address || !state || !city || !pincode || !pan_no || !aadhaar_no)
+         {
+          return res.status(400).json({status : "failed", error: "Please fill all fields"})
+         }
+         try {
+           const data = await getDataFromZlinkPANApi(endpoint, {
+            token : Token,
+            name,
+            agent_id,
+            mobile,
+            email_id ,
+            address ,
+            state,
+            city,
+            pincode,
+            pan_no,
+            aadhaar_no
+           })
+         
+          return res.status(200).json({status : "Success",
+            message: "Success", data})
+         } catch (error) {
+          console.error("Error details:", error.response ? error.response.data : error.message);
+          return res.status(500).json({ status : "failed", error: "Error from api" });
+         }
+  }
+
+  const ZlinkUtiLogin = async (req,res)=>{
+    const {agent_id} = req.body
+    const endpoint = "/uti/login"
+    if( !agent_id)
+    {
+     return res.status(400).json({status : "failed", error: "Please fill all fields"})
+    }
+    try {
+      const data = await getDataFromZlinkPANApi(endpoint, {
+       token : Token,
+       agent_id,
+       req_type: "LIVE"
+     
+      })
+    
+     return res.status(200).json({status : "Success",
+       message: "Success", data})
+    } catch (error) {
+     console.error("Error details:", error.response ? error.response.data : error.message);
+     return res.status(500).json({ status : "failed", error: "Error from api" });
+    }
+}
 
 
   module.exports = {
     zlinkBalance,
     zlinkNewPanRequest,
     zlinkCorrectionPanRequest,
-    zlinkIncompletePan
+    zlinkIncompletePan,
+    zlinkPantxnStatus,
+    zlinkPanStatus,
+    zlinkUtiAgentOnbording,
+    ZlinkUtiLogin
 
   }

@@ -46,8 +46,8 @@ const NsdlPanCorrectionZlink = () => {
     setLoading(true);
     try {
       const apiResponse = await axios.post(
-        `http://localhost:7777/api/auth/zlink/zlinkCorrectionPanRequest`,
-        // `http://localhost:7777/api/auth/nsdlpan/easySmartNSDLNewPanRequest`,
+        // `http://localhost:7777/api/auth/zlink/zlinkCorrectionPanRequest`,
+         `https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/zlinkCorrectionPanRequest`,
         formData
       );
       // setFormData(apiResponse.data);
