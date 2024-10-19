@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
@@ -247,13 +247,15 @@ const LoginBitspan = () => {
   const dispatch = useDispatch();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [otp, setOtp] = useState("");
+  // const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState(new Array(6).fill(""));
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const inputsRef = useRef([]);
 
   const handleLogin = async () => {
-    setLoading(true); // Set loading to true before the API call
+    setLoading(true);
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/loginWithOTP`,
@@ -304,8 +306,49 @@ const LoginBitspan = () => {
     }
   };
 
+  const handleChange = (element, index) => {
+    const value = element.value.replace(/[^0-9]/g, ""); // Only digits
+    const newOtp = [...otp];
+
+    if (value) {
+      newOtp[index] = value;
+      setOtp(newOtp);
+
+      // Move to the next input if the current one is filled
+      if (index < 5) {
+        inputsRef.current[index + 1].focus();
+      }
+    } else {
+      newOtp[index] = ""; // Clear the current digit if value is empty
+      setOtp(newOtp);
+    }
+  };
+
+  const handleKeyDown = (event, index) => {
+    if (event.key === "Backspace") {
+      const newOtp = [...otp];
+
+      // Clear the current input value
+      if (otp[index]) {
+        newOtp[index] = "";
+        setOtp(newOtp);
+      } else if (index > 0) {
+        // Move to the previous input and clear it
+        inputsRef.current[index - 1].focus();
+      }
+    }
+
+    // Allow users to navigate with the arrow keys
+    if (event.key === "ArrowLeft" && index > 0) {
+      inputsRef.current[index - 1].focus();
+    } else if (event.key === "ArrowRight" && index < 5) {
+      inputsRef.current[index + 1].focus();
+    }
+  };
+
   const handleOtpVerification = async () => {
-    if (!otp) {
+    const otpValue = otp.join("");
+    if (!otpValue || otpValue.length < 6) {
       Swal.fire({
         icon: "warning",
         title: "Missing OTP",
@@ -314,14 +357,11 @@ const LoginBitspan = () => {
       return;
     }
 
-    setLoading(true); // Set loading to true before the API call
+    setLoading(true);
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verifyOTP`,
-        {
-          UserId: userName,
-          otp,
-        }
+        { UserId: userName, otp: otpValue }
       );
 
       if (response.data.status === "Success") {
@@ -349,9 +389,58 @@ const LoginBitspan = () => {
         text: "Invalid OTP or something went wrong!",
       });
     } finally {
-      setLoading(false); // Set loading to false after the API call
+      setLoading(false);
     }
   };
+
+  // const handleOtpVerification = async () => {
+  //   if (!otp) {
+  //     Swal.fire({
+  //       icon: "warning",
+  //       title: "Missing OTP",
+  //       text: "Please enter the OTP sent to your number",
+  //     });
+  //     return;
+  //   }
+
+  //   setLoading(true); // Set loading to true before the API call
+  //   try {
+  //     const response = await axios.post(
+  //       `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verifyOTP`,
+  //       {
+  //         UserId: userName,
+  //         otp,
+  //       }
+  //     );
+
+  //     if (response.data.status === "Success") {
+  //       dispatch(setUser(response.data.user));
+  //       Swal.fire({
+  //         position: "center",
+  //         icon: "success",
+  //         title: "Login Successful",
+  //         showConfirmButton: false,
+  //         timer: 1500,
+  //       });
+  //       navigate("/dashboard");
+  //     } else {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Oops...",
+  //         text: response.data.message,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("OTP Verification error:", error);
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "OTP Verification Failed",
+  //       text: "Invalid OTP or something went wrong!",
+  //     });
+  //   } finally {
+  //     setLoading(false); // Set loading to false after the API call
+  //   }
+  // };
 
   return (
     <Wrapper>
@@ -400,7 +489,7 @@ const LoginBitspan = () => {
 
                       <div className="row mb-4">
                         <div className="col">
-                          <a href="#!">Forgot password?</a>
+                          <Link to="/password-reset">Forgot password?</Link>
                         </div>
                       </div>
 
@@ -417,7 +506,7 @@ const LoginBitspan = () => {
                     </>
                   ) : (
                     <>
-                      <div className="form-outline mb-4">
+                      {/* <div className="form-outline mb-4">
                         <label className="form-label" htmlFor="otpInput">
                           Enter OTP
                         </label>
@@ -428,6 +517,37 @@ const LoginBitspan = () => {
                           value={otp}
                           onChange={(e) => setOtp(e.target.value)}
                         />
+                      </div>
+
+                      <div className="d-grid gap-2">
+                        <button
+                          type="button"
+                          className="btn btn-primary btn-block mb-4"
+                          onClick={handleOtpVerification}
+                          disabled={loading}
+                        >
+                          {loading ? "Verifying..." : "Verify OTP"}
+                        </button>
+                      </div> */}
+
+                      <div className="form-outline mb-4">
+                        <label className="form-label" htmlFor="otpInput">
+                          Enter OTP
+                        </label>
+                        <div className="otp-inputs">
+                          {otp.map((digit, index) => (
+                            <input
+                              key={index}
+                              type="text"
+                              maxLength="1"
+                              value={digit}
+                              ref={(el) => (inputsRef.current[index] = el)}
+                              onChange={(e) => handleChange(e.target, index)}
+                              onKeyDown={(e) => handleKeyDown(e, index)}
+                              className="otp-input"
+                            />
+                          ))}
+                        </div>
                       </div>
 
                       <div className="d-grid gap-2">
@@ -487,22 +607,16 @@ const Wrapper = styled.div`
   .otp-inputs {
     display: flex;
     justify-content: space-between;
+    gap: 8px;
   }
 
-  .otp-box {
-    width: 3rem;
-    height: 3rem;
-    font-size: 1.5rem;
+  .otp-input {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
     text-align: center;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    margin-right: 5px;
-  }
-
-  .otp-box:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    border: 1px solid #ccc;
+    border-radius: 5px;
   }
 `;
 

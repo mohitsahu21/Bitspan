@@ -425,9 +425,435 @@ const verifyOtpAndLogin = async (req, res) => {
   }
 };
 
+const forgototpStore = new Map();
+
+const passwordOtpEmail = async (email, otp) => {
+  try {
+    const mailOptions = {
+      from: `"Your Password OTP" <${process.env.EMAILSENDER}>`,
+      to: email,
+      subject: "Password Reset OTP",
+      text: `Your password reset OTP code is: ${otp}`,
+      html: `<b>Your password reset OTP code is: ${otp}</b>`,
+    };
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent: %s", info.messageId);
+  } catch (error) {
+    console.error("Error sending email:", error);
+    throw error;
+  }
+};
+
+// *****This API is working Fine But for Email*****
+// const forgotPassword = async (req, res) => {
+//   const { Email } = req.body;
+
+//   if (!Email) {
+//     return res
+//       .status(400)
+//       .json({ status: "Failure", message: "Email is required" });
+//   }
+
+//   try {
+//     const getUserQuery = `SELECT * FROM userprofile WHERE Email = ?`;
+
+//     db.query(getUserQuery, [Email], async (err, result) => {
+//       if (err || result.length === 0) {
+//         return res
+//           .status(400)
+//           .json({ status: "Failure", message: "User not found" });
+//       }
+//       const user = result[0];
+//       const otp = crypto.randomInt(100000, 999999).toString();
+
+//       // Fix: Await the bcrypt.hash function
+//       const otpHash = await bcrypt.hash(otp, 10);
+
+//       forgototpStore.set(user.UserId, {
+//         otpHash,
+//         expiresAt: Date.now() + 5 * 60 * 1000,
+//       });
+
+//       // Send the OTP via email
+//       passwordOtpEmail(user.Email, otp);
+
+//       return res
+//         .status(200)
+//         .json({ status: "Success", message: "OTP sent to your email" });
+//     });
+//   } catch (error) {
+//     console.error("Error processing forgot password request:", error);
+//     return res
+//       .status(500)
+//       .json({ status: "Failure", message: "Internal server error" });
+//   }
+// };
+// *****This API is working Fine But for Email*****
+
+const forgotPassword = async (req, res) => {
+  const { UserId } = req.body;
+
+  if (!UserId) {
+    return res
+      .status(400)
+      .json({ status: "Failure", message: "UserId is required" });
+  }
+
+  try {
+    const getUserQuery = `SELECT * FROM userprofile WHERE UserId = ?`;
+
+    db.query(getUserQuery, [UserId], async (err, result) => {
+      if (err || result.length === 0) {
+        return res
+          .status(400)
+          .json({ status: "Failure", message: "User not found" });
+      }
+      const user = result[0];
+      const otp = crypto.randomInt(100000, 999999).toString();
+
+      // Hash the OTP
+      const otpHash = await bcrypt.hash(otp, 10);
+
+      forgototpStore.set(user.UserId, {
+        otpHash,
+        expiresAt: Date.now() + 5 * 60 * 1000, // OTP expires in 5 minutes
+      });
+
+      // Send the OTP via email to the fetched email
+      passwordOtpEmail(user.Email, otp);
+
+      return res
+        .status(200)
+        .json({ status: "Success", message: `OTP sent to ${user.Email}` });
+    });
+  } catch (error) {
+    console.error("Error processing forgot password request:", error);
+    return res
+      .status(500)
+      .json({ status: "Failure", message: "Internal server error" });
+  }
+};
+
+const verifyOtpAndResetPassword = async (req, res) => {
+  const { UserId, otp, newPassword } = req.body;
+
+  if (!UserId || !otp || !newPassword) {
+    return res.status(400).json({
+      status: "Failure",
+      message: "UserId, OTP, and new password are required",
+    });
+  }
+
+  try {
+    const getUserQuery = `SELECT * FROM userprofile WHERE UserId = ?`;
+    db.query(getUserQuery, [UserId], async (err, results) => {
+      if (err || results.length === 0) {
+        return res
+          .status(404)
+          .json({ status: "Failure", message: "User not found" });
+      }
+
+      const user = results[0];
+      const otpData = forgototpStore.get(user.UserId);
+
+      if (!otpData || Date.now() > otpData.expiresAt) {
+        return res
+          .status(400)
+          .json({ status: "Failure", message: "OTP expired or invalid" });
+      }
+
+      console.log("OTP Provided:", otp);
+      console.log("Stored OTP Hash:", otpData.otpHash);
+
+      // Ensure OTP comparison
+      const isOtpValid = await bcrypt.compare(otp.toString(), otpData.otpHash);
+      console.log("OTP Valid:", isOtpValid);
+      if (!isOtpValid) {
+        return res
+          .status(400)
+          .json({ status: "Failure", message: "Invalid OTP" });
+      }
+
+      // Hash new password
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+      // Update the password in the database
+      const updatePasswordQuery = `UPDATE userprofile SET password = ? WHERE UserId = ?`;
+      db.query(updatePasswordQuery, [hashedPassword, UserId], (updateErr) => {
+        if (updateErr) {
+          console.error("Error updating password:", updateErr);
+          return res
+            .status(500)
+            .json({ status: "Failure", message: "Failed to reset password" });
+        }
+
+        // Clear the OTP from the store after successful reset
+        forgototpStore.delete(user.UserId);
+
+        return res
+          .status(200)
+          .json({ status: "Success", message: "Password reset successful" });
+      });
+    });
+  } catch (error) {
+    console.error("Error processing password reset:", error);
+    return res
+      .status(500)
+      .json({ status: "Failure", message: "Internal server error" });
+  }
+};
+
+const changePasswordRequest = async (req, res) => {
+  const { UserId, oldPassword, newPassword } = req.body;
+
+  if (!UserId || !oldPassword || !newPassword) {
+    return res.status(400).json({
+      status: "Failure",
+      message: "UserId, old password, and new password are required",
+    });
+  }
+
+  try {
+    // Fetch the user based on UserId
+    const getUserQuery = `SELECT * FROM userprofile WHERE UserId = ?`;
+    db.query(getUserQuery, [UserId], async (err, results) => {
+      if (err || results.length === 0) {
+        return res
+          .status(404)
+          .json({ status: "Failure", message: "User not found" });
+      }
+
+      const user = results[0];
+      const isOldPasswordValid = await bcrypt.compare(
+        oldPassword,
+        user.password
+      );
+      if (!isOldPasswordValid) {
+        return res.status(400).json({
+          status: "Failure",
+          message: "Old password is incorrect",
+        });
+      }
+
+      // Generate OTP
+      const otp = crypto.randomInt(100000, 999999).toString();
+      const otpHash = await bcrypt.hash(otp, 10); // Hash the OTP
+
+      // Store OTP hash and expiration time in the store
+      forgototpStore.set(user.UserId, {
+        otpHash,
+        newPassword,
+        expiresAt: Date.now() + 5 * 60 * 1000,
+      });
+
+      // Send OTP to the user's email
+      await passwordOtpEmail(user.Email, otp);
+
+      return res.status(200).json({
+        status: "Success",
+        message: "OTP sent to your email. Please verify it.",
+      });
+    });
+  } catch (error) {
+    console.error("Error processing change password request:", error);
+    return res
+      .status(500)
+      .json({ status: "Failure", message: "Internal server error" });
+  }
+};
+
+const verifyOtpAndChangePassword = async (req, res) => {
+  const { UserId, otp } = req.body;
+
+  if (!UserId || !otp) {
+    return res.status(400).json({
+      status: "Failure",
+      message: "UserId and OTP are required",
+    });
+  }
+
+  try {
+    const otpData = forgototpStore.get(UserId);
+
+    if (!otpData || Date.now() > otpData.expiresAt) {
+      return res.status(400).json({
+        status: "Failure",
+        message: "OTP expired or invalid",
+      });
+    }
+
+    // Compare the provided OTP with the hashed OTP
+    const isOtpValid = await bcrypt.compare(otp.toString(), otpData.otpHash);
+    if (!isOtpValid) {
+      return res.status(400).json({
+        status: "Failure",
+        message: "Invalid OTP",
+      });
+    }
+
+    console.log("Stored OTP Hash:", otpData.otpHash);
+    console.log("Provided OTP:", otp.toString());
+    console.log("New password to be changed:", otpData.newPassword);
+
+    // Hash the new password and update it in the database
+    const hashedPassword = await bcrypt.hash(otpData.newPassword, 10);
+    const updatePasswordQuery = `UPDATE userprofile SET password = ? WHERE UserId = ?`;
+
+    db.query(updatePasswordQuery, [hashedPassword, UserId], (updateErr) => {
+      if (updateErr) {
+        console.error("Error updating password:", updateErr);
+        return res
+          .status(500)
+          .json({ status: "Failure", message: "Failed to change password" });
+      }
+
+      // Clear OTP data from the store after password reset
+      forgototpStore.delete(UserId);
+
+      return res.status(200).json({
+        status: "Success",
+        message: "Password changed successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Error processing OTP verification:", error);
+    return res
+      .status(500)
+      .json({ status: "Failure", message: "Internal server error" });
+  }
+};
+
 module.exports = {
   userRegiser,
   loginUser,
   loginUserWithOTP,
   verifyOtpAndLogin,
+  forgotPassword,
+  verifyOtpAndResetPassword,
+  changePasswordRequest,
+  verifyOtpAndChangePassword,
 };
+
+// const verifyOtpAndResetPassword = async (req, res) => {
+//   const { UserId, otp, newPassword } = req.body;
+
+//   if (!UserId || !otp || !newPassword) {
+//     return res
+//       .status(400)
+//       .json({
+//         status: "Failure",
+//         message: "UserId, OTP, and new password are required",
+//       });
+//   }
+
+//   try {
+//     const getUserQuery = `SELECT * FROM userprofile WHERE UserId = ?`;
+//     db.query(getUserQuery, [UserId], async (err, results) => {
+//       if (err || results.length === 0) {
+//         return res
+//           .status(404)
+//           .json({ status: "Failure", message: "User not found" });
+//       }
+
+//       const user = results[0];
+//       const otpData = otpStore.get(user.UserId);
+
+//       // Check if OTP is valid and not expired
+//       if (!otpData || Date.now() > otpData.expiresAt) {
+//         return res
+//           .status(400)
+//           .json({ status: "Failure", message: "OTP expired or invalid" });
+//       }
+
+//       // Verify the OTP
+//       const isOtpValid = await bcrypt.compare(otp, otpData.otpHash);
+//       if (!isOtpValid) {
+//         return res
+//           .status(400)
+//           .json({ status: "Failure", message: "Invalid OTP" });
+//       }
+
+//       // OTP is valid, reset the password
+//       const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+//       // Update the password in the database
+//       const updatePasswordQuery = `UPDATE userprofile SET password = ? WHERE UserId = ?`;
+//       db.query(updatePasswordQuery, [hashedPassword, UserId], (updateErr) => {
+//         if (updateErr) {
+//           return res
+//             .status(500)
+//             .json({ status: "Failure", message: "Failed to reset password" });
+//         }
+
+//         // Clear the OTP from store after successful reset
+//         otpStore.delete(user.UserId);
+
+//         return res
+//           .status(200)
+//           .json({ status: "Success", message: "Password reset successful" });
+//       });
+//     });
+//   } catch (error) {
+//     console.error("Error processing password reset:", error);
+//     return res
+//       .status(500)
+//       .json({ status: "Failure", message: "Internal server error" });
+//   }
+// };
+
+// --------------------------------------
+
+// const generateAndStoreOtp = async (UserId, otp) => {
+//   try {
+//     // Hash the OTP and ensure it is awaited
+//     const otpHash = await bcrypt.hash(otp.toString(), 10); // Await the hash generation
+//     forgototpStore.set(UserId, {
+//       otpHash,
+//       expiresAt: Date.now() + 10 * 60 * 1000, // Set an expiration time for the OTP (e.g., 10 minutes)
+//     });
+//   } catch (error) {
+//     console.error("Error generating OTP hash:", error);
+//   }
+// };
+// --------------------------------------
+
+// // const forgotPassword = async (req, res) => {
+//   const { Email } = req.body;
+
+//   if (!Email) {
+//     return res
+//       .status(400)
+//       .json({ status: "Failure", message: "Email is required" });
+//   }
+
+//   try {
+//     const getUserQuery = `SELECT * FROM userprofile WHERE Email = ?`;
+
+//     db.query(getUserQuery, [Email], (err, result) => {
+//       if (err || result.length === 0) {
+//         return res
+//           .status(400)
+//           .json({ status: "Failure", message: "user not found" });
+//       }
+//       const user = result[0];
+//       const otp = crypto.randomInt(100000, 999999).toString();
+//       const otpHash = bcrypt.hash(otp, 10);
+
+//       forgototpStore.set(user.UserId, {
+//         otpHash,
+//         expiresAt: Date.now() + 5 * 60 * 1000,
+//       });
+
+//       passwordOtpEmail(user.Email, otp);
+
+//       return res
+//         .status(200)
+//         .json({ status: "Success", message: "OTP sent to your email" });
+//     });
+//   } catch (error) {
+//     console.error("Error processing forgot password request:", error);
+//     return res
+//       .status(500)
+//       .json({ status: "Failure", message: "Internal server error" });
+//   }
+// };

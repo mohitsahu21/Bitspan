@@ -4,6 +4,10 @@ const {
   loginUser,
   loginUserWithOTP,
   verifyOtpAndLogin,
+  forgotPassword,
+  verifyOtpAndResetPassword,
+  changePasswordRequest,
+  verifyOtpAndChangePassword,
 } = require("../../controllers/LoginApi/loginUser");
 const authenticateToken = require("../../middleware/authenticateToken");
 
@@ -15,6 +19,12 @@ router.post("/login", loginUser);
 router.post("/loginWithOTP", loginUserWithOTP);
 
 router.post("/verifyOTP", verifyOtpAndLogin);
+
+router.post("/forgot-password", forgotPassword);
+router.post("/verifyOTP-forgot", verifyOtpAndResetPassword);
+
+router.post("/change-password-request", changePasswordRequest);
+router.post("/verify-otp-change-password", verifyOtpAndChangePassword);
 
 router.get("/home-page", authenticateToken, (req, res) => {
   res.json({

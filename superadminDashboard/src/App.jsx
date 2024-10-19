@@ -9,6 +9,7 @@ import Distributor from "./routes/Distributor";
 import WhiteLabelRoutes from "./routes/WhiteLabelRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import SuperAdminRoutes from "./routes/SuperAdminRoutes";
+import ForgotPassword from "./components/ForgotPassword";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -22,11 +23,13 @@ function App() {
   return (
     <>
       {location.pathname !== "/" &&
+        location.pathname !== "/password-reset" &&
         location.pathname !== "/download-certificate-print" &&
         location.pathname !== "/registration-page" && <Sider />}
 
       <Routes>
         <Route path="/" element={<LoginBitspan />} />
+        <Route path="/password-reset" element={<ForgotPassword />} />
       </Routes>
       {user === "Retailer" && <RetailerRoutes />}
       {user === "SuperDistributor" && <SuperDistributorRoutes />}

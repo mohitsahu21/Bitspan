@@ -2329,7 +2329,8 @@ const Sider = () => {
             <div className="d-flex">
               <img src={profileLogo} width={50} height={75} className="p-2" />
               <div className="ms-2 p-2 lh-sm">
-                <p className="m-0 fw-bold">{currentUser?.name} </p>
+                <p className="m-0 fw-bold">{currentUser?.username} </p>
+                <p className="m-0 fw-bold">{currentUser?.userId} </p>
 
                 <NavDropdown
                   id="nav-dropdown-dark-example"
