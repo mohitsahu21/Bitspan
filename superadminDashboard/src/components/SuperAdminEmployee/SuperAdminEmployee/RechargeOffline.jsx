@@ -8,41 +8,34 @@ import { Link } from "react-router-dom";
 import Lottie from "react-lottie";
 import animationData from "../../../images/loading-effect.json";
 import { BiHomeAlt } from "react-icons/bi";
+import EditOfflineRecharge from "../../editmodals/EditOfflineRecharge";
 
 const RechargeOffline = () => {
-  const [searchInput, setSearchInput] = useState("");
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const { refreshTable, currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
   const [showEditPopup, setShowEditPopup] = useState(false);
-  const [showCancelPopup, setShowCancelPopup] = useState(false);
-  const [selectedAppointment, setSelectedAppointment] = useState("");
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString()?.split("T")[0]
-  ); // Initialize with today's date
-  const todayDate = new Date();
-  todayDate.setHours(0, 0, 0, 0);
-
+  const [selectedRecharge, setSelectedRecharge] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const branch = currentUser.branch_name;
-  const [appointmentsData, setAppointmentData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [loadingEffect, setLoadingEffect] = useState(false);
-
-  const [selectedDateAppData, setSelectedDateAppData] = useState([]);
   const [panData, setPanData] = useState([]);
+  const [loadingEffect, setLoadingEffect] = useState(false);
 
   const getPanData = async () => {
     try {
+      setLoadingEffect(true);
       const { data } = await axios.get(
         "http://localhost:7171/api/auth/superAdminEmployee/getAllOfflineRecharge"
       );
       setPanData(data);
+      setLoadingEffect(false);
     } catch (error) {
       console.log(error);
+      setLoadingEffect(false);
     }
   };
 
@@ -93,7 +86,6 @@ const RechargeOffline = () => {
   }
 
   const renderPageNumbers = pageNumbers?.map((number, index) => {
-    // Display the first two page numbers
     if (index < 2) {
       return (
         <Button
@@ -104,9 +96,7 @@ const RechargeOffline = () => {
           {number}
         </Button>
       );
-    }
-    // Display an ellipsis for the first middle section
-    else if (index === 2 && currentPage > 3) {
+    } else if (index === 2 && currentPage > 3) {
       return (
         <Button key={number} disabled>
           ...
@@ -134,9 +124,7 @@ const RechargeOffline = () => {
           ...
         </Button>
       );
-    }
-    // Display the last two page numbers
-    else if (index >= pageNumbers.length - 2) {
+    } else if (index >= pageNumbers.length - 2) {
       return (
         <Button
           key={number}
@@ -160,6 +148,12 @@ const RechargeOffline = () => {
   };
 
   console.log(currentRows);
+
+  const handleEditRechargeOffline = (pan) => {
+    setSelectedRecharge(pan);
+    setShowEditPopup(true);
+  };
+
   return (
     <>
       <Wrapper>
@@ -255,6 +249,9 @@ const RechargeOffline = () => {
                                   <th>Amount</th>
                                   <th>OrderId</th>
                                   <th>Recharge Type</th>
+                                  <th>Status</th>
+                                  <th>Note</th>
+                                  <th>Action</th>
                                 </tr>
                               </thead>
                               {currentRows.length === 0 ? (
@@ -280,21 +277,23 @@ const RechargeOffline = () => {
                                         <td>{patient.amount}</td>
                                         <td>{patient.orderid}</td>
                                         <td>{patient.recharge_Type}</td>
-                                        {/* <td>
-                                          <Link
-                                            to={`/pan-card-offline-details/${patient.id}`}
+                                        <td>{patient.status}</td>
+                                        <td>{patient.note}</td>
+                                        <td>
+                                          <button
+                                            className="btn btn-warning"
+                                            style={{
+                                              backgroundColor: "#12CBC4",
+                                            }}
+                                            onClick={() =>
+                                              handleEditRechargeOffline(
+                                                patient.id
+                                              )
+                                            }
                                           >
-                                            {" "}
-                                            <button
-                                              className="btn btn-warning"
-                                              style={{
-                                                backgroundColor: "#12CBC4",
-                                              }}
-                                            >
-                                              View Details
-                                            </button>
-                                          </Link>
-                                        </td> */}
+                                            View Details
+                                          </button>
+                                        </td>
                                       </tr>
                                     );
                                   })}
@@ -362,6 +361,13 @@ const RechargeOffline = () => {
             </div>
           </div>
         </div>
+        {showEditPopup && (
+          <EditOfflineRecharge
+            onClose={() => setShowEditPopup(false)}
+            rechargeInfo={selectedRecharge}
+            getRechargeDetails={getPanData}
+          />
+        )}
       </Wrapper>
     </>
   );

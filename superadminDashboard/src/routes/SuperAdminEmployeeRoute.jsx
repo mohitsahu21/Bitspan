@@ -18,6 +18,7 @@ import DTHRechargeOffline from "../components/SuperAdminEmployee/SuperAdminEmplo
 import RechargeOffline from "../components/SuperAdminEmployee/SuperAdminEmployee/RechargeOffline";
 import OtherOfflineServices from "../components/SuperAdminEmployee/SuperAdminEmployee/OtherOfflineServices";
 import GooglePlayOffline from "../components/SuperAdminEmployee/SuperAdminEmployee/GooglePlayOffline";
+import GooglePlayDetailsPage from "../components/SuperAdminEmployee/SuperAdminEmployee/GooglePlayDetailsPage";
 
 const SuperAdminEmployeeRoute = () => {
   return (
@@ -46,6 +47,10 @@ const SuperAdminEmployeeRoute = () => {
         />
         <Route path="/recharge-offline" element={<RechargeOffline />} />
         <Route path="/google-play-offline" element={<GooglePlayOffline />} />
+        <Route
+          path="/google-play-offline-details/:id"
+          element={<GooglePlayDetailsPage />}
+        />
       </Routes>
     </>
   );

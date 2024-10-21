@@ -4,7 +4,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-const EditPanCardDetails = ({ onClose, pancardInfo, getPanDetails }) => {
+const EditOtherOffService = ({ onClose, pancardInfo, getPanDetails }) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     status: "",
@@ -26,7 +26,7 @@ const EditPanCardDetails = ({ onClose, pancardInfo, getPanDetails }) => {
     e.preventDefault();
     try {
       const res = await axios.put(
-        `http://localhost:7171/api/auth/superAdminEmployee/updatePanStatus/${pancardInfo.id}`,
+        `http://localhost:7171/api/auth/superAdminEmployee/updateOfflineServiceStatus/${pancardInfo}`,
         formData
       );
       alert("details updated successfully");
@@ -43,7 +43,7 @@ const EditPanCardDetails = ({ onClose, pancardInfo, getPanDetails }) => {
         <>
           <Modal show={true} onHide={onClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Edit Pan Card Status</Modal.Title>
+              <Modal.Title>Edit Other Offline Services Status</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <div className="w-100">
@@ -106,5 +106,5 @@ const EditPanCardDetails = ({ onClose, pancardInfo, getPanDetails }) => {
   );
 };
 
-export default EditPanCardDetails;
+export default EditOtherOffService;
 const Wrapper = styled.div``;

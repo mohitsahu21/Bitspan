@@ -278,16 +278,30 @@ const GooglePlayOffline = () => {
                                     return (
                                       <tr key={index}>
                                         <td>{patient.id}</td>
-                                        <td>{patient.operator_name}</td>
+                                        <td>{patient.applicant_name}</td>
                                         <td className="text-capitalize">
-                                          {patient.mobile_no}
+                                          {patient.applicant_father}
                                         </td>
-                                        <td>{patient.amount}</td>
-                                        <td>{patient.orderid}</td>
-                                        <td>{patient.recharge_Type}</td>
-                                        {/* <td>
+                                        <td>{patient.applicant_mother}</td>
+                                        <td>{patient.applicant_number}</td>
+                                        <td>{patient.email}</td>
+                                        <td>{patient.aadhar_card}</td>
+                                        <td>{patient.pan_card}</td>
+                                        <td>
+                                          {patient.applicant_select_service}
+                                        </td>
+                                        <td>
+                                          <a
+                                            href={patient.attached_form}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                          >
+                                            View Document
+                                          </a>
+                                        </td>
+                                        <td>
                                           <Link
-                                            to={`/pan-card-offline-details/${patient.id}`}
+                                            to={`/google-play-offline-details/${patient.id}`}
                                           >
                                             {" "}
                                             <button
@@ -299,7 +313,7 @@ const GooglePlayOffline = () => {
                                               View Details
                                             </button>
                                           </Link>
-                                        </td> */}
+                                        </td>
                                       </tr>
                                     );
                                   })}

@@ -5,8 +5,9 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import EditPanCardDetails from "./EditPanCardDetails";
 import { IoArrowBackCircleSharp } from "react-icons/io5";
+import EditOtherOffService from "../../editmodals/EditOtherOffService";
 
-const PanCardOfflineDetails = () => {
+const GooglePlayDetailsPage = () => {
   const params = useParams();
   const [panDetails, setPanDetails] = React.useState({});
   const [showEditPopup, setShowEditPopup] = useState(false);
@@ -16,7 +17,7 @@ const PanCardOfflineDetails = () => {
   const getPanDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7171/api/auth/superAdminEmployee/getAllPanOfflineById/${params.id}`
+        `http://localhost:7171/api/auth/superAdminEmployee/getAllOfflineServicesById/${params.id}`
       );
       setPanDetails(data);
     } catch (error) {
@@ -50,8 +51,8 @@ const PanCardOfflineDetails = () => {
                 <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 ">
                   <div className="d-flex justify-content-between align-items-center flex-wrap">
                     <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                      <IoArrowBackCircleSharp onClick={goBack} /> Pan Card
-                      Offline Details
+                      <IoArrowBackCircleSharp onClick={goBack} />
+                      Offline Services Details
                     </h4>
                     <p className="mx-lg-5">
                       {" "}
@@ -61,7 +62,7 @@ const PanCardOfflineDetails = () => {
                         style={{ fontSize: "13px" }}
                       >
                         {" "}
-                        Pan Card Offline details
+                        Offline Services Details
                       </span>{" "}
                     </p>
                   </div>
@@ -82,96 +83,63 @@ const PanCardOfflineDetails = () => {
                         <div className="row g-3">
                           <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                             <div className="shadow p-4 rounded">
-                              <h5>Application Type</h5>
-                              <p>{panDetails[0]?.application_type}</p>
-                            </div>
-                          </div>
-                          <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-                            <div className="shadow p-4 rounded">
-                              <h5>Name</h5>
-                              <p>
-                                {panDetails[0]?.select_title}{" "}
-                                {panDetails[0]?.name}
-                              </p>
+                              <h5>Applicant Name</h5>
+                              <p>{panDetails[0]?.applicant_name}</p>
                             </div>
                           </div>
                           <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                             <div className="shadow p-4 rounded">
                               <h5>Father Name</h5>
-                              <p>{panDetails[0]?.father_name}</p>
+                              <p>{panDetails[0]?.applicant_father}</p>
                             </div>
                           </div>
                           <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                             <div className="shadow p-4 rounded">
                               <h5>Mother Name</h5>
-                              <p>{panDetails[0]?.mother_name}</p>
+                              <p>{panDetails[0]?.applicant_mother}</p>
                             </div>
                           </div>
                           <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                             <div className="shadow p-4 rounded">
-                              <h5>Date of Birth</h5>
-                              <p>{panDetails[0]?.dob}</p>
-                            </div>
-                          </div>
-                          <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-                            <div className="shadow p-4 rounded">
-                              <h5>Gender</h5>
-                              <p>{panDetails[0]?.gender}</p>
-                            </div>
-                          </div>
-                          <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-                            <div className="shadow p-4 rounded">
-                              <h5>Address</h5>
-                              <p>{panDetails[0]?.office_address}</p>
+                              <h5>Mobile Number</h5>
+                              <p>{panDetails[0]?.applicant_number}</p>
                             </div>
                           </div>
                           <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                             <div className="shadow p-4 rounded">
                               <h5>Aadhar Number</h5>
-                              <p>{panDetails[0]?.aadhar_details}</p>
+                              <p>{panDetails[0]?.aadhar_card}</p>
                             </div>
                           </div>
                           <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                             <div className="shadow p-4 rounded">
-                              <h5>Alternate Address</h5>
+                              <h5>Pan Number</h5>
+                              <p>{panDetails[0]?.pan_card}</p>
+                            </div>
+                          </div>
+                          <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                            <div className="shadow p-4 rounded">
+                              <h5>Service Details</h5>
                               <p>
-                                {
-                                  panDetails[0]
-                                    ?.alternative_communication_Address
-                                }
+                                {panDetails[0]?.applicant_select_service ===
+                                null
+                                  ? panDetails[0]?.other
+                                  : panDetails[0]?.applicant_select_service}
                               </p>
                             </div>
                           </div>
                           <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                             <div className="shadow p-4 rounded">
-                              <h5>Mobile</h5>
-                              <p>{panDetails[0]?.mobile_no}</p>
+                              <h5>Business Name</h5>
+                              <p>{panDetails[0]?.business_name}</p>
                             </div>
                           </div>
                           <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                             <div className="shadow p-4 rounded">
-                              <h5>Email</h5>
-                              <p>{panDetails[0]?.email_id}</p>
-                            </div>
-                          </div>
-                          <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-                            <div className="shadow p-4 rounded">
-                              <h5>Pin Code</h5>
-                              <p>{panDetails[0]?.pin_code}</p>
-                            </div>
-                          </div>
-                          <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-                            <div className="shadow p-4 rounded">
-                              <h5>State</h5>
-                              <p>{panDetails[0]?.state}</p>
-                            </div>
-                          </div>
-                          <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-                            <div className="shadow p-4 rounded">
-                              <h5>KYC Document</h5>
+                              <h5>Attached Form</h5>
                               <p>
                                 <a
-                                  href={panDetails[0]?.documentUpload}
+                                  href={panDetails[0]?.attached_form}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                 >
@@ -182,11 +150,11 @@ const PanCardOfflineDetails = () => {
                           </div>
                           <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                             <div className="shadow p-4 rounded">
-                              <h5>Attachment Form</h5>
+                              <h5>Attached Photo</h5>
                               <p>
                                 {" "}
                                 <a
-                                  href={panDetails[0]?.attachment_form}
+                                  href={panDetails[0]?.attached_photo}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                 >
@@ -197,11 +165,11 @@ const PanCardOfflineDetails = () => {
                           </div>
                           <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                             <div className="shadow p-4 rounded">
-                              <h5>Attachment Signature</h5>
+                              <h5>Attached Sign</h5>
                               <p>
                                 {" "}
                                 <a
-                                  href={panDetails[0]?.attachment_signature}
+                                  href={panDetails[0]?.attached_sign}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                 >
@@ -212,11 +180,11 @@ const PanCardOfflineDetails = () => {
                           </div>
                           <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                             <div className="shadow p-4 rounded">
-                              <h5>Attachment Photo</h5>
+                              <h5>Attached KYC</h5>
                               <p>
                                 {" "}
                                 <a
-                                  href={panDetails[0]?.attachment_photo}
+                                  href={panDetails[0]?.attached_kyc}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                 >
@@ -227,8 +195,46 @@ const PanCardOfflineDetails = () => {
                           </div>
                           <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                             <div className="shadow p-4 rounded">
-                              <h5>Charges</h5>
-                              <p>{panDetails[0]?.Charge_Amount}</p>
+                              <h5>Bank Passbook</h5>
+                              <p>
+                                {" "}
+                                <a
+                                  href={panDetails[0]?.bank_passbook}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  View Document
+                                </a>
+                              </p>
+                            </div>
+                          </div>
+                          <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                            <div className="shadow p-4 rounded">
+                              <h5>Shop Photo</h5>
+                              <p>
+                                <a
+                                  href={panDetails[0]?.shop_photo}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  View Document
+                                </a>
+                              </p>
+                            </div>
+                          </div>
+                          <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                            <div className="shadow p-4 rounded">
+                              <h5>Electric Bill</h5>
+                              <p>
+                                {" "}
+                                <a
+                                  href={panDetails[0]?.electric_bill}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  View Document
+                                </a>
+                              </p>
                             </div>
                           </div>
                           <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
@@ -247,14 +253,16 @@ const PanCardOfflineDetails = () => {
                         <div className="mt-3">
                           <button
                             className="btn btn-warning"
-                            onClick={() => handleEditAppointment(panDetails[0])}
+                            onClick={() =>
+                              handleEditAppointment(panDetails[0]?.id)
+                            }
                           >
                             Update Details
                           </button>
                         </div>
                       </div>
                       {showEditPopup && (
-                        <EditPanCardDetails
+                        <EditOtherOffService
                           onClose={() => setShowEditPopup(false)}
                           pancardInfo={selectedPanCard}
                           getPanDetails={getPanDetails}
@@ -272,7 +280,7 @@ const PanCardOfflineDetails = () => {
   );
 };
 
-export default PanCardOfflineDetails;
+export default GooglePlayDetailsPage;
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;

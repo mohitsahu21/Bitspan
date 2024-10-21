@@ -4,13 +4,13 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-const EditPanCardDetails = ({ onClose, pancardInfo, getPanDetails }) => {
+const EditDthConOfflineStats = ({ onClose, getDTHDetails, DTHInfo }) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     status: "",
     note: "",
   });
-  console.log(pancardInfo);
+  console.log(DTHInfo);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,11 +26,11 @@ const EditPanCardDetails = ({ onClose, pancardInfo, getPanDetails }) => {
     e.preventDefault();
     try {
       const res = await axios.put(
-        `http://localhost:7171/api/auth/superAdminEmployee/updatePanStatus/${pancardInfo.id}`,
+        `http://localhost:7171/api/auth/superAdminEmployee/updateDTHConnectStatus/${DTHInfo}`,
         formData
       );
       alert("details updated successfully");
-      getPanDetails();
+      getDTHDetails();
       onClose();
     } catch (error) {
       console.log(error);
@@ -43,7 +43,7 @@ const EditPanCardDetails = ({ onClose, pancardInfo, getPanDetails }) => {
         <>
           <Modal show={true} onHide={onClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Edit Pan Card Status</Modal.Title>
+              <Modal.Title>Edit DTH Connection Offline Status</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <div className="w-100">
@@ -106,5 +106,5 @@ const EditPanCardDetails = ({ onClose, pancardInfo, getPanDetails }) => {
   );
 };
 
-export default EditPanCardDetails;
+export default EditDthConOfflineStats;
 const Wrapper = styled.div``;

@@ -4,13 +4,13 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-const EditPanCardDetails = ({ onClose, pancardInfo, getPanDetails }) => {
+const EditOfflineRecharge = ({ onClose, getRechargeDetails, rechargeInfo }) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     status: "",
     note: "",
   });
-  console.log(pancardInfo);
+  console.log(rechargeInfo);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,11 +26,11 @@ const EditPanCardDetails = ({ onClose, pancardInfo, getPanDetails }) => {
     e.preventDefault();
     try {
       const res = await axios.put(
-        `http://localhost:7171/api/auth/superAdminEmployee/updatePanStatus/${pancardInfo.id}`,
+        `http://localhost:7171/api/auth/superAdminEmployee/updateRechargeStatus/${rechargeInfo}`,
         formData
       );
       alert("details updated successfully");
-      getPanDetails();
+      getRechargeDetails();
       onClose();
     } catch (error) {
       console.log(error);
@@ -43,7 +43,7 @@ const EditPanCardDetails = ({ onClose, pancardInfo, getPanDetails }) => {
         <>
           <Modal show={true} onHide={onClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Edit Pan Card Status</Modal.Title>
+              <Modal.Title>Edit Recharge Offline Status</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <div className="w-100">
@@ -53,7 +53,7 @@ const EditPanCardDetails = ({ onClose, pancardInfo, getPanDetails }) => {
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                       <div className="mb-3">
                         <label className="col-form-label">
-                          Application Status:
+                          Recharge Status:
                         </label>
                         <select
                           className="form-control text-capitalize"
@@ -106,5 +106,5 @@ const EditPanCardDetails = ({ onClose, pancardInfo, getPanDetails }) => {
   );
 };
 
-export default EditPanCardDetails;
+export default EditOfflineRecharge;
 const Wrapper = styled.div``;

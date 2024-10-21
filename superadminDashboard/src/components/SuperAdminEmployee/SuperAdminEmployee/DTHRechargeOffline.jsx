@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import Lottie from "react-lottie";
 import animationData from "../../../images/loading-effect.json";
 import { BiHomeAlt } from "react-icons/bi";
+import EditDthConOfflineStats from "../../editmodals/EditDthConOfflineStats";
 
 const DTHRechargeOffline = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -17,22 +18,16 @@ const DTHRechargeOffline = () => {
   const { refreshTable, currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
   const [showEditPopup, setShowEditPopup] = useState(false);
-  const [showCancelPopup, setShowCancelPopup] = useState(false);
-  const [selectedAppointment, setSelectedAppointment] = useState("");
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString()?.split("T")[0]
-  ); // Initialize with today's date
+
   const todayDate = new Date();
   todayDate.setHours(0, 0, 0, 0);
 
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const branch = currentUser.branch_name;
-  const [appointmentsData, setAppointmentData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingEffect, setLoadingEffect] = useState(false);
-
-  const [selectedDateAppData, setSelectedDateAppData] = useState([]);
+  const [selectedDTHConnection, setSelectedDTHConnection] = useState([]);
   const [panData, setPanData] = useState([]);
 
   const getPanData = async () => {
@@ -161,6 +156,11 @@ const DTHRechargeOffline = () => {
 
   console.log(currentRows);
 
+  const handleEditDTHConnection = (pan) => {
+    setSelectedDTHConnection(pan);
+    setShowEditPopup(true);
+  };
+
   return (
     <>
       <Wrapper>
@@ -259,7 +259,9 @@ const DTHRechargeOffline = () => {
                                   <th>Amount</th>
                                   <th>OrderId</th>
                                   <th>Message</th>
-                                  {/* <th>Action</th> */}
+                                  <th>Status</th>
+                                  <th>Note</th>
+                                  <th>Action</th>
                                 </tr>
                               </thead>
                               {currentRows.length === 0 ? (
@@ -292,21 +294,23 @@ const DTHRechargeOffline = () => {
                                         <td>{patient.amount}</td>
                                         <td>{patient.orderid}</td>
                                         <td>{patient.message}</td>
-                                        {/* <td>
-                                          <Link
-                                            to={`/pan-card-offline-details/${patient.id}`}
+                                        <td>{patient.status}</td>
+                                        <td>{patient.note} </td>
+                                        <td>
+                                          <button
+                                            className="btn btn-warning"
+                                            style={{
+                                              backgroundColor: "#12CBC4",
+                                            }}
+                                            onClick={() =>
+                                              handleEditDTHConnection(
+                                                patient.id
+                                              )
+                                            }
                                           >
-                                            {" "}
-                                            <button
-                                              className="btn btn-warning"
-                                              style={{
-                                                backgroundColor: "#12CBC4",
-                                              }}
-                                            >
-                                              View Details
-                                            </button>
-                                          </Link>
-                                        </td> */}
+                                            View Details
+                                          </button>
+                                        </td>
                                       </tr>
                                     );
                                   })}
@@ -333,8 +337,9 @@ const DTHRechargeOffline = () => {
                                     {" "}
                                     Showing Page {currentPage} of {totalPages}{" "}
                                     from {filteredData?.length} entries
-                                    (filtered from {selectedDateAppData?.length}{" "}
-                                    total entries){" "}
+                                    (filtered from{" "}
+                                    {selectedDTHConnection?.length} total
+                                    entries){" "}
                                   </>
                                 ) : (
                                   <>
@@ -374,6 +379,13 @@ const DTHRechargeOffline = () => {
             </div>
           </div>
         </div>
+        {showEditPopup && (
+          <EditDthConOfflineStats
+            onClose={() => setShowEditPopup(false)}
+            DTHInfo={selectedDTHConnection}
+            getDTHDetails={getPanData}
+          />
+        )}
       </Wrapper>
     </>
   );
