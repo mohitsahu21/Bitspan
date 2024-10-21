@@ -5,10 +5,7 @@ import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-
-
 const PanStatus = () => {
-
   const [formData, setFormData] = useState({
     order_id: "",
   });
@@ -17,17 +14,17 @@ const PanStatus = () => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const { data } = await axios.post(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/nsdl-pan-incomplete`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/zlinkPantxnStatus`,
+        // `http://localhost:7171/api/auth/instpay/nsdl-pan-incomplete`,
+        `http://localhost:7171/api/auth/zlink/zlinkPantxnStatus`,
 
         formData
       );
@@ -38,13 +35,12 @@ const PanStatus = () => {
         const { order_id, ack, message, status } = data.data.data;
         if (status == "Success") {
           Swal.fire({
-
             icon: "success",
             title: "Details",
             // text : `Order Id : ${data.data.data.order_id}
             //         Acknowledgement No. : ${data.data.data.ack}
             //         Message : ${data.data.data.message} `,
-           html: `
+            html: `
         <pre style="text-align: left; font-family:"Poppins", sans-serif;">
  <h5> <strong>Order ID:</strong> ${order_id}</h5>
  <h5> <strong>Acknowledgement No.:</strong> ${ack}</h5>
@@ -61,17 +57,14 @@ const PanStatus = () => {
                     title: "Copied!",
                     text: "Acknowledgement No. has been copied to clipboard.",
                     timer: 1500,
-                    showConfirmButton: false
+                    showConfirmButton: false,
                   });
                 });
               };
-            }
-          })
-        }
-
-        else {
+            },
+          });
+        } else {
           Swal.fire({
-
             icon: "success",
             title: "Details",
             // text : `Order Id : ${data.data.data.order_id}
@@ -84,14 +77,13 @@ const PanStatus = () => {
 <h5><strong>Message:</strong> ${message}</h5>
       </pre>
      
-    `
-
+    `,
           });
         }
       } else {
         Swal.fire({
           icon: "error",
-          title: "Something went wrong"
+          title: "Something went wrong",
         });
       }
     } catch (error) {
@@ -99,7 +91,7 @@ const PanStatus = () => {
       setLoading(false);
       Swal.fire({
         icon: "error",
-        title: "Something went wrong"
+        title: "Something went wrong",
       });
     } finally {
       setLoading(false);
@@ -115,8 +107,10 @@ const PanStatus = () => {
               <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
                 {/* <Sider /> */}
               </div>
-              <div className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
-                             mt-5 formdata">
+              <div
+                className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
+                             mt-5 formdata"
+              >
                 <div className="main shadow-none ">
                   <div className="row shadow-none ">
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -124,16 +118,18 @@ const PanStatus = () => {
                                                 <h3>NSDL PAN Track Status</h3>
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
-                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">NSDL PAN Track Status</h4>
-                        <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; NSDL PAN Track Status</h6>
+                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
+                          NSDL PAN Track Status
+                        </h4>
+                        <h6 className="mx-lg-5">
+                          <BiHomeAlt /> &nbsp;/ &nbsp; NSDL PAN Track Status
+                        </h6>
                       </div>
                     </div>
                   </div>
 
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow bg-body-tertiary rounded  py-5 m-4">
-
-
                       <form onSubmit={handleSubmit}>
                         <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 mx-auto">
                           <div class="input-group">
@@ -151,21 +147,25 @@ const PanStatus = () => {
                                 onChange={handleChange}
                                 required
                               />
-                              <label for="floatingInputGroup2">
-                                ORDER ID
-                              </label>
+                              <label for="floatingInputGroup2">ORDER ID</label>
                             </div>
                           </div>
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 mt-4">
                           <div className="text-center">
-                            <button type="submit" className="btn p-2" disabled={loading}> {loading ? "Loading..." : "Submit"}</button>
+                            <button
+                              type="submit"
+                              className="btn p-2"
+                              disabled={loading}
+                            >
+                              {" "}
+                              {loading ? "Loading..." : "Submit"}
+                            </button>
                           </div>
                         </div>
                       </form>
                     </div>
-
                   </div>
                 </div>
               </div>
@@ -175,9 +175,9 @@ const PanStatus = () => {
       </Wrapper>
     </>
   );
-}
+};
 
-export default PanStatus
+export default PanStatus;
 
 const Wrapper = styled.div`
   .main {
@@ -192,23 +192,20 @@ const Wrapper = styled.div`
     width: 50%;
     margin: auto;
   }
-  .guidline{
-  
+  .guidline {
   }
-  .list{
+  .list {
     list-style: none;
     padding-left: 0;
     font-size: 14px;
   }
-  @media (min-width: 1025px) and (max-width : 1500px){
+  @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
-     
       padding-left: 15rem;
     }
   }
   @media (min-width: 1500px) {
     .formdata {
-     
       padding-left: 13rem;
     }
   }

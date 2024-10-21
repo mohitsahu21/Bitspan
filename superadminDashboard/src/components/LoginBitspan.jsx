@@ -18,19 +18,26 @@ const LoginBitspan = () => {
   const handleLogin = async () => {
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/loginWithOTP`,
+        `http://localhost:7171/api/auth/log-reg/loginWithOTP`,
         {
           UserId: userName,
           password,
         }
       );
 
+      console.log(response.data);
+
       if (response.data.status === "Success") {
-        const { role } = response.data.user;
+        const role = response.data.user;
 
         setUserRole(role);
+        console.log(role);
 
-        if (role === "Retailer" || role === "SuperAdmin") {
+        if (
+          role === "Retailer" ||
+          role === "SuperAdmin" ||
+          role === "SuperAdmin_Employee"
+        ) {
           Swal.fire({
             position: "center",
             icon: "success",
@@ -48,7 +55,7 @@ const LoginBitspan = () => {
             showConfirmButton: false,
             timer: 1500,
           });
-          navigate("/dashboard");
+          // navigate("/dashboard");
         }
 
         // Swal.fire({
@@ -79,7 +86,7 @@ const LoginBitspan = () => {
   const handleOtpVerification = async () => {
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verifyOTP`,
+        `http://localhost:7171/api/auth/log-reg/verifyOTP`,
         {
           UserId: userName,
           otp,

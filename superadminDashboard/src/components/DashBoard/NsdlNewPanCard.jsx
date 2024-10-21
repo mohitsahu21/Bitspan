@@ -34,7 +34,7 @@ const NsdlNewPanCard = () => {
     e.preventDefault();
     try {
       const apiResponse = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/nsdl-new-request`,
+        `http://localhost:7171/api/auth/instpay/nsdl-new-request`,
         formData
       );
       setFormData(apiResponse.data);

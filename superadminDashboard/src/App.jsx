@@ -9,11 +9,13 @@ import Distributor from "./routes/Distributor";
 import WhiteLabelRoutes from "./routes/WhiteLabelRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import SuperAdminRoutes from "./routes/SuperAdminRoutes";
+import SuperAdminEmployeeRoute from "./routes/SuperAdminEmployeeRoute";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
   const [user, setUser] = useState(currentUser?.role);
+  console.log(user);
 
   // console.log(import.meta.env.VITE_userId)
   useEffect(() => {
@@ -33,6 +35,7 @@ function App() {
       {user === "Distributor" && <Distributor />}
       {user === "WhiteLabel" && <WhiteLabelRoutes />}
       {user === "SuperAdmin" && <SuperAdminRoutes />}
+      {user === "SuperAdmin_Employee" && <SuperAdminEmployeeRoute />}
     </>
   );
 }

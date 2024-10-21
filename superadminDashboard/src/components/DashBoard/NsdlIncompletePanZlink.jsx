@@ -5,7 +5,7 @@ import { BiHomeAlt } from "react-icons/bi";
 import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const NsdlIncompletePanZlink = () => {
   const [showModal, setShowModal] = useState(false);
@@ -16,7 +16,7 @@ const NsdlIncompletePanZlink = () => {
 
   const [loading, setLoading] = useState(false);
   const [redirectURL, setRedirectURL] = useState("");
-  
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -28,35 +28,32 @@ const NsdlIncompletePanZlink = () => {
     setLoading(true);
     try {
       const { data } = await axios.post(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/zlinkIncompletePan`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/zlinkIncompletePan`,
+        // `http://localhost:7171/api/auth/zlink/zlinkIncompletePan`,
+        `http://localhost:7171/api/auth/zlink/zlinkIncompletePan`,
         formData
       );
-    //   setFormData(data);
+      //   setFormData(data);
       console.log(data);
       if (data.data.status == "Failed") {
         Swal.fire({
           icon: "error",
           title: `${data.data.message}`,
         });
-      }
-     else if (data.status === "Success") {
+      } else if (data.status === "Success") {
         // setRedirectURL(data.url);
         setShowModal(true);
-        console.log(data)
-     
+        console.log(data);
 
-        navigate('/redirect-incomplete-pan-zlink', { state: { data: data.data } });
-       
-       
-
+        navigate("/redirect-incomplete-pan-zlink", {
+          state: { data: data.data },
+        });
       }
-    //    else if (data.data.status == "Failed") {
-    //     Swal.fire({
-    //       icon: "error",
-    //       title: `${data.data.message}`,
-    //     });
-    //   }
+      //    else if (data.data.status == "Failed") {
+      //     Swal.fire({
+      //       icon: "error",
+      //       title: `${data.data.message}`,
+      //     });
+      //   }
     } catch (error) {
       console.log(error);
     } finally {
@@ -182,8 +179,6 @@ const NsdlIncompletePanZlink = () => {
                       </Modal.Footer>
                     </Modal> */}
                     {/* Modal Code End */}
-
-                     
                   </div>
                 </div>
               </div>

@@ -37,7 +37,7 @@ const NsdlPanCorrection = () => {
     setLoading(true);
     try {
       const apiResponse = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/nsdl-pan-correction-request`,
+        `http://localhost:7171/api/auth/instpay/nsdl-pan-correction-request`,
         formData
       );
       setFormData(apiResponse.data);

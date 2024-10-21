@@ -61,7 +61,7 @@ const DthConnection = () => {
 
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/api-dth-recharge`,
+        `http://localhost:7171/api/auth/instpay/api-dth-recharge`,
         requestData
       );
 
@@ -75,7 +75,7 @@ const DthConnection = () => {
     const getData = async () => {
       try {
         const { data } = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/dth-plan`
+          `http://localhost:7171/api/auth/instpay/dth-plan`
         );
         setPlan(data);
         console.log(data);
@@ -117,7 +117,7 @@ const DthConnection = () => {
 
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/offline-dth-connection`,
+        `http://localhost:7171/api/auth/retailer/offline-dth-connection`,
         requestData
       );
 

@@ -8,19 +8,18 @@ import nsdlpan from "../../assets/images/nsdl-vector.png";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 
 const NsdlNewPanCardZlink = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     app_mode: "",
-    redirect_url : "https://bitspan.vimubds5.a2hosted.com/easySmartNsdlPANCallback",
+    redirect_url: "http://localhost:7171/easySmartNsdlPANCallback",
     selectType: "",
     first_name: "",
-    middle_name : "",
-    last_name : "",
+    middle_name: "",
+    last_name: "",
     dob: "",
     gender: "",
     mobile_no: "",
@@ -28,7 +27,7 @@ const NsdlNewPanCardZlink = () => {
     phyPanIsReq: "",
     walletDeductAmt: "10",
     userId: "1234",
-    branchCode : "Mohit001"
+    branchCode: "Mohit001",
   });
 
   const handleChange = (e) => {
@@ -43,24 +42,22 @@ const NsdlNewPanCardZlink = () => {
     setLoading(true);
     try {
       const apiResponse = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/zlinkNSDLNewPanRequest`,
+        `http://localhost:7171/api/auth/zlink/zlinkNSDLNewPanRequest`,
         // `http://localhost:7777/api/auth/zlink/zlinkNSDLNewPanRequest`,
         // `http://localhost:7777/api/auth/nsdlpan/easySmartNSDLNewPanRequest`,
         formData
       );
       // setFormData(apiResponse.data);
       console.log(apiResponse.data);
-      if (apiResponse.data.nsdlData.status
-        == "Success") {
-       // Navigate to the success page and pass the response data
-      navigate('/nsdl-new-pan-card-redirect', { state: { enc_data: apiResponse.data.nsdlData.enc_data } });
-     
-     
-      // const encData = apiResponse.data.nsdlData.enc_data;
-  // Open a new tab using an anchor tag and the route
-  // window.open(`/nsdl-new-pan-card-redirect?enc_data=${encData}`, '_blank');
-        
+      if (apiResponse.data.nsdlData.status == "Success") {
+        // Navigate to the success page and pass the response data
+        navigate("/nsdl-new-pan-card-redirect", {
+          state: { enc_data: apiResponse.data.nsdlData.enc_data },
+        });
 
+        // const encData = apiResponse.data.nsdlData.enc_data;
+        // Open a new tab using an anchor tag and the route
+        // window.open(`/nsdl-new-pan-card-redirect?enc_data=${encData}`, '_blank');
       } else if (apiResponse.data.nsdlData.status == "Failed") {
         Swal.fire({
           icon: "error",
@@ -196,7 +193,6 @@ const NsdlNewPanCardZlink = () => {
                                   onChange={handleChange}
                                   placeholder="Enter Name"
                                   required
-                                  
                                 />
                                 <label for="floatingInputGroup2">
                                   Enter First Name
@@ -218,7 +214,6 @@ const NsdlNewPanCardZlink = () => {
                                   value={formData.middle_name}
                                   onChange={handleChange}
                                   placeholder="Enter Middle Name"
-                                  
                                 />
                                 <label for="floatingInputGroup2">
                                   Enter Middle Name
@@ -241,7 +236,6 @@ const NsdlNewPanCardZlink = () => {
                                   onChange={handleChange}
                                   placeholder="Enter Last Name"
                                   required
-                                  
                                 />
                                 <label for="floatingInputGroup2">
                                   Enter Last Name
@@ -372,8 +366,12 @@ const NsdlNewPanCardZlink = () => {
 
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div className="text-start mb-3">
-                              <button type="submit" className="btn p-2" disabled={loading}>
-                              {loading ? "Loading..." : "Submit"}
+                              <button
+                                type="submit"
+                                className="btn p-2"
+                                disabled={loading}
+                              >
+                                {loading ? "Loading..." : "Submit"}
                               </button>
                             </div>
                           </div>

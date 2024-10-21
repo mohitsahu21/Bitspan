@@ -15,7 +15,7 @@ const PostpaidRechargeHistory = () => {
   const fetchRechargeData = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApiRechargeData`,
+        `http://localhost:7171/api/auth/retailer/getApiRechargeData`,
         {
           params: {
             mobile_no: search,

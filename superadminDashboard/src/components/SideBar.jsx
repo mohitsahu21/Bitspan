@@ -1,307 +1,22 @@
-// import React from "react";
-// import { Link, useLocation, useNavigate } from "react-router-dom";
-// import styled from "styled-components";
-// import { IoHome } from "react-icons/io5";
-// import { ImSwitch } from "react-icons/im";
-// import { BsFileEarmarkPerson } from "react-icons/bs";
-
-// const Sider = () => {
-//   const location = useLocation();
-//   //   const dispatch = useDispatch();
-//   const navigate = useNavigate();
-
-//   const getSidebarClass = (path) => {
-//     return location.pathname === path ? "active-nav" : "";
-//   };
-
-//   //   const handleLogout = () => {
-//   //     const isConfirmed = window.confirm("Are you sure you want to Logout?");
-//   //     if (!isConfirmed) {
-//   //       return;
-//   //     }
-//   //     navigate("/");
-//   //     dispatch(clearUser());
-//   //   };
-
-//   return (
-//     <Wrapper>
-//       <div className="px-0" id="sidebar">
-//         <div className="d-flex flex-column align-items-start px-0 pt-2">
-//           <ul
-//             className="nav nav-pills flex-column mb-0 align-items-start px-3"
-//             id="menu"
-//           >
-//             <li>
-//               <Link to="#" className={`link-div ${getSidebarClass("#")}`}>
-//                 {/* <div>
-//                   <IoHome className="icon" />
-//                 </div> */}
-//                 <div>
-//                   <h3 className=" d-none d-sm-inline icon-text" id="navleft1">
-//                     Dashboard
-//                   </h3>
-//                 </div>
-//               </Link>
-//             </li>
-//             <hr />
-//             <li>
-//               <Link to="#" className={`link-div ${getSidebarClass("#")}`}>
-//                 {/* <div>
-//                   <BsFileEarmarkPerson className="text-white" />
-//                 </div> */}
-//                 <div>
-//                   <h3 className="d-none d-sm-inline icon-text" id="navleft1">
-//                     Wallet
-//                   </h3>
-//                 </div>
-//               </Link>
-//             </li>
-//             <hr />
-//             <li>
-//               <Link to="#" className={`link-div ${getSidebarClass("#")}`}>
-//                 {/* <div>
-//                   <BsFileEarmarkPerson className="text-white" />
-//                 </div> */}
-//                 <div>
-//                   <h3 className="d-none d-sm-inline icon-text" id="navleft1">
-//                     Traning Video
-//                   </h3>
-//                 </div>
-//               </Link>
-//             </li>
-//             <hr />
-//             <li>
-//               <Link to="#" className={`link-div ${getSidebarClass("#")}`}>
-//                 {/* <div>
-//                   <BsFileEarmarkPerson className="text-white" />
-//                 </div> */}
-//                 <div>
-//                   <h3 className="d-none d-sm-inline icon-text" id="navleft1">
-//                     ImportantLinks
-//                   </h3>
-//                 </div>
-//               </Link>
-//             </li>
-//             <hr />
-//             <li>
-//               <Link to="#" className={`link-div ${getSidebarClass("#")}`}>
-//                 {/* <div>
-//                   <BsFileEarmarkPerson className="text-white" />
-//                 </div> */}
-//                 <div>
-//                   <h3 className="d-none d-sm-inline icon-text" id="navleft1">
-//                     UTI 2.0
-//                   </h3>
-//                 </div>
-//               </Link>
-//             </li>
-//             <hr />
-//             <li>
-//               <Link to="#" className={`link-div ${getSidebarClass("#")}`}>
-//                 {/* <div>
-//                   <BsFileEarmarkPerson className="text-white" />
-//                 </div> */}
-//                 <div>
-//                   <h3 className="d-none d-sm-inline icon-text" id="navleft1">
-//                     Pan Track
-//                   </h3>
-//                 </div>
-//               </Link>
-//             </li>
-//             <hr />
-//             <li>
-//               <Link to="#" className={`link-div ${getSidebarClass("#")}`}>
-//                 {/* <div>
-//                   <BsFileEarmarkPerson className="text-white" />
-//                 </div> */}
-//                 <div>
-//                   <h3 className="d-none d-sm-inline icon-text" id="navleft1">
-//                     NSDL Pan Application
-//                   </h3>
-//                 </div>
-//               </Link>
-//             </li>
-//             <hr />
-//             <li>
-//               <Link to="#" className={`link-div ${getSidebarClass("#")}`}>
-//                 {/* <div>
-//                   <BsFileEarmarkPerson className="text-white" />
-//                 </div> */}
-//                 <div>
-//                   <h3 className="d-none d-sm-inline icon-text" id="navleft1">
-//                     Pan Document
-//                   </h3>
-//                 </div>
-//               </Link>
-//             </li>
-//             <hr />
-//             <li>
-//               <Link to="#" className={`link-div ${getSidebarClass("#")}`}>
-//                 {/* <div>
-//                   <BsFileEarmarkPerson className="text-white" />
-//                 </div> */}
-//                 <div>
-//                   <h3 className="d-none d-sm-inline icon-text" id="navleft1">
-//                     Recharge
-//                   </h3>
-//                 </div>
-//               </Link>
-//             </li>
-//             <hr />
-//             <li>
-//               <Link to="#" className={`link-div ${getSidebarClass("#")}`}>
-//                 {/* <div>
-//                   <BsFileEarmarkPerson className="text-white" />
-//                 </div> */}
-//                 <div>
-//                   <h3 className="d-none d-sm-inline icon-text" id="navleft1">
-//                     Complaint
-//                   </h3>
-//                 </div>
-//               </Link>
-//             </li>
-//             <hr />
-//             <li>
-//               <Link to="#" className={`link-div ${getSidebarClass("#")}`}>
-//                 {/* <div>
-//                   <BsFileEarmarkPerson className="text-white" />
-//                 </div> */}
-//                 <div>
-//                   <h3 className="d-none d-sm-inline icon-text" id="navleft1">
-//                     Other Setting
-//                   </h3>
-//                 </div>
-//               </Link>
-//             </li>
-//             <hr />
-//             <li>
-//               <div className="link-div">
-//                 <h3 className="text-light icon-text" id="navleft1">
-//                   Logout
-//                 </h3>
-//               </div>
-//             </li>
-//             <hr />
-//           </ul>
-//         </div>
-//       </div>
-//     </Wrapper>
-//   );
-// };
-
-// export default Sider;
-// const Wrapper = styled.div`
-//   #navleft1 {
-//     font-size: 20px;
-//     /* margin-left: 0rem; */
-//     color: white;
-//     /* padding-left: 0.5rem; */
-//     white-space: nowrap;
-//     margin: 0 0 0;
-//     @media (min-width: 768px) and (max-width: 1024px) {
-//       font-size: 20px;
-//     }
-//   }
-//   /* #navleft2 {
-//     font-size: 12px;
-//     margin-left: 0rem;
-//     color: white;
-//   }
-//   #navleft {
-//     font-size: 12px;
-//     margin-left: -0.2rem;
-//     color: white;
-//   } */
-//   #menu {
-//     width: 100%;
-//   }
-//   #sidebar {
-//     width: 100%;
-//     height: 82rem;
-//     background-color: #3eecac;
-//     background-image: linear-gradient(10deg, #3eecac 0%, #ee74e1 200%);
-
-//     @media screen and (max-width: 768px) {
-//       width: 64%;
-//       height: 212rem;
-//     }
-//     @media screen and (min-width: 768px) and (max-width: 1024px) {
-//       width: 64%;
-//       height: 110rem;
-//     }
-//   }
-//   .bi {
-//     color: white;
-//   }
-
-//   li:hover {
-//     color: #8ae6ff;
-//   }
-
-//   .link-div {
-//     display: flex;
-//     justify-content: center;
-//     flex-direction: column;
-//     align-items: center;
-//     transition: transform 0.3s ease, border 0.3s ease, border-radius 0.3s ease;
-//     padding: 0.5rem;
-//     border: 2px solid transparent;
-//     border-radius: 10px;
-//   }
-
-//   .link-div:hover {
-//     border: 2px solid rgba(255, 255, 255, 0.2);
-//     transform: scale(1.05);
-//   }
-
-//   a {
-//     text-decoration: none;
-//   }
-
-//   .active-nav {
-//     padding: 1rem;
-//   }
-//   .icon {
-//     color: white;
-//     font-size: 2rem;
-//     @media screen and (min-width: 768px) and (max-width: 1024px) {
-//       font-size: 1rem;
-//     }
-//   }
-
-//   /* .icon-text {
-//     @media screen and (max-width: 1024px) {
-//       font-size: 20px;
-//     }
-//   } */
-// `;
-
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
-// import { SidebarData } from "./SidebarData";
 import SubMenu from "./SubMenu";
 import { IconContext } from "react-icons/lib";
 import * as IoIcons from "react-icons/io";
 import * as RiIcons from "react-icons/ri";
 import Logo from "./../assets/images/logo.png";
 import profileLogo from "./../assets/images/Placeholder_Person.jpg";
-import { FaUserAlt } from "react-icons/fa";
-import Dropdown from "react-bootstrap/Dropdown";
-import Container from "react-bootstrap/Container";
 import { MdFilterListOff } from "react-icons/md";
-import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-// import { FaUserAlt } from "react-icons/fa";
 import { IoIosPerson } from "react-icons/io";
 import { FaPowerOff } from "react-icons/fa6";
 import { MdDisplaySettings } from "react-icons/md";
 import Swal from "sweetalert2";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { PiBankFill } from "react-icons/pi";
-import pancard from "../assets/Form_49A (1).pdf";
 
 const Nav = styled.div`
   background-color: #e4e4e1;
@@ -318,15 +33,13 @@ const Nav = styled.div`
   background-blend-mode: normal, multiply;
   height: 80px;
   display: flex;
-  justify-content: space-between; /* Add this line */
+  justify-content: space-between;
   align-items: center;
-  /* box-shadow: 1px 1px 6px black; */
   box-shadow: 0 0 20px rgba(89, 102, 122, 0.1);
-  padding: 0 2rem; /* Optional: Add padding to space out content from edges */
+  padding: 0 2rem;
 `;
 
 const NavIcon = styled(Link)`
-  /* margin-left: 2rem; */
   font-size: 2rem;
   height: 80px;
   display: flex;
@@ -344,7 +57,7 @@ const SidebarNav = styled.nav`
   position: fixed;
   top: 0;
   left: ${({ sidebar }) => (sidebar ? "0" : "-100%")};
-  /* transition: 350ms; */
+
   transition: 1s;
   z-index: 10;
 `;
@@ -353,23 +66,23 @@ const SidebarWrap = styled.div`
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  scrollbar-width: thin; /* Firefox */
+  scrollbar-width: thin;
 
   &::-webkit-scrollbar {
-    width: 8px; /* Adjust the width of the scrollbar */
+    width: 8px;
   }
 
   &::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Background of the scrollbar track */
+    background: #f1f1f1;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #d6d5d5; /* Color of the scrollbar thumb */
-    border-radius: 10px; /* Rounded corners for the scrollbar thumb */
+    background: #d6d5d5;
+    border-radius: 10px;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: #989797; /* Color of the scrollbar thumb on hover */
+    background: #989797;
   }
 `;
 
@@ -378,49 +91,12 @@ const RetailerSidebarData = [
     title: "Dashboard",
     path: "/dashboard",
     icon: <AiIcons.AiFillHome color="#fe662b" />,
-    // iconClosed: <RiIcons.RiArrowDownSFill />,
-    // iconOpened: <RiIcons.RiArrowUpSFill />,
-
-    // subNav: [
-    // 	{
-    // 		title: "Our Aim",
-    // 		path: "/about-us/aim",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // 	{
-    // 		title: "Our Vision",
-    // 		path: "/about-us/vision",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // ],
   },
   {
     title: "Aadhar Linking Status",
     path: "/aadhar-linking-status",
-    // icon: <IoIcons.IoIosPaper color="black" />,
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
-    // iconClosed: <RiIcons.RiArrowDownSFill color="black"/>,
-    // iconOpened: <RiIcons.RiArrowUpSFill color="black"/>,
 
-    // subNav: [
-    // 	{
-    // 		title: "Service 1",
-    // 		path: "/services/services1",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 		cName: "sub-nav",
-    // 	},
-    // 	{
-    // 		title: "Service 2",
-    // 		path: "/services/services2",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 		cName: "sub-nav",
-    // 	},
-    // 	{
-    // 		title: "Service 3",
-    // 		path: "/services/services3",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // ],
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
   },
   {
     title: "Wallet",
@@ -471,13 +147,11 @@ const RetailerSidebarData = [
         title: "New Bank ID",
         path: "/bank-id",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
-        // cName: "sub-nav",
       },
       {
         title: "Bank ID History",
         path: "#",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
-        // cName: "sub-nav",
       },
     ],
   },
@@ -493,19 +167,16 @@ const RetailerSidebarData = [
         title: "Download Forms",
         path: "/download-offline-forms",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
-        // cName: "sub-nav",
       },
       {
         title: "Apply Offline",
         path: "/apply-offline",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
-        // cName: "sub-nav",
       },
       {
         title: "View All History",
         path: "/view-all-offline-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
-        // cName: "sub-nav",
       },
     ],
   },
@@ -538,22 +209,6 @@ const RetailerSidebarData = [
     title: "Training Video",
     path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-
-    // iconClosed: <RiIcons.RiArrowDownSFill />,
-    // iconOpened: <RiIcons.RiArrowUpSFill />,
-
-    // subNav: [
-    // 	{
-    // 		title: "Event 1",
-    // 		path: "/events/events1",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // 	{
-    // 		title: "Event 2",
-    // 		path: "/events/events2",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // ],
   },
   {
     title: "Set PIN and 2 Step",
@@ -565,29 +220,9 @@ const RetailerSidebarData = [
     path: "/important-links",
     icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
   },
-  // {
-  //   title: "UTI 2.0",
-  //   // path: "/training-video",
-  //   icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-  //   iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-  //   iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
-  //   subNav: [
-  //     {
-  //       title: "Apply PAN Card",
-  //       path: "/uti-login",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "UTI Transaction History",
-  //       path: "/uti-transaction-report",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //   ],
-  // },
   {
     title: "Pan Card Services",
-    // path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -667,7 +302,6 @@ const RetailerSidebarData = [
   },
   {
     title: "UTI New",
-    // path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -695,59 +329,9 @@ const RetailerSidebarData = [
       },
     ],
   },
-  // {
-  //   title: "PAN Track",
-  //   path: "https://www.trackpan.utiitsl.com/PANONLINE/#forward",
-  //   icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
-  // },
-  // {
-  //   title: "NSDL PAN Application",
-  //   // path: "/training-video",
-  //   icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-  //   iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-  //   iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
-  //   subNav: [
-  //     {
-  //       title: "NSDL New PAN Card",
-  //       path: "/pan-apply-49",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "NSDL Correction PAN",
-  //       path: "/pan-apply-cr",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "NSDL PAN Track Status",
-  //       path: "https://tin.tin.nsdl.com/pantan/StatusTrack.html",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "PAN Status",
-  //       path: "/pan-status",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "PAN Transaction History",
-  //       path: "/pan-transaction-report",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "PAN Refund",
-  //       path: "/pan-transaction-refund-report",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "PAN Re Apply",
-  //       path: "/pan-transaction-resume-report",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //   ],
-  // },
   {
     title: "PAN Document",
-    // path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -767,7 +351,7 @@ const RetailerSidebarData = [
   },
   {
     title: "Recharge",
-    // path: "/training-video",
+
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -842,7 +426,7 @@ const RetailerSidebarData = [
   },
   {
     title: "Complaint",
-    // path: "/training-video",
+
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -862,7 +446,7 @@ const RetailerSidebarData = [
   },
   {
     title: "Other Settings",
-    // path: "/training-video",
+
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -880,11 +464,6 @@ const RetailerSidebarData = [
       },
     ],
   },
-  // {
-  //   title: "Logout",
-  //   path: "/",
-  //   icon: <IoIcons.IoMdHelpCircle color="black" />,
-  // },
 ];
 
 const SuperDisData = [
@@ -892,49 +471,11 @@ const SuperDisData = [
     title: "Dashboard",
     path: "/dashboard",
     icon: <AiIcons.AiFillHome color="#fe662b" />,
-    // iconClosed: <RiIcons.RiArrowDownSFill />,
-    // iconOpened: <RiIcons.RiArrowUpSFill />,
-
-    // subNav: [
-    // 	{
-    // 		title: "Our Aim",
-    // 		path: "/about-us/aim",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // 	{
-    // 		title: "Our Vision",
-    // 		path: "/about-us/vision",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // ],
   },
   {
     title: "Aadhar Linking Status",
     path: "/aadhar-linking-status",
-    // icon: <IoIcons.IoIosPaper color="black" />,
     icon: <IoIcons.IoIosPaper color="#fe662b" />,
-    // iconClosed: <RiIcons.RiArrowDownSFill color="black"/>,
-    // iconOpened: <RiIcons.RiArrowUpSFill color="black"/>,
-
-    // subNav: [
-    // 	{
-    // 		title: "Service 1",
-    // 		path: "/services/services1",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 		cName: "sub-nav",
-    // 	},
-    // 	{
-    // 		title: "Service 2",
-    // 		path: "/services/services2",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 		cName: "sub-nav",
-    // 	},
-    // 	{
-    // 		title: "Service 3",
-    // 		path: "/services/services3",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // ],
   },
   {
     title: "Wallet",
@@ -944,28 +485,6 @@ const SuperDisData = [
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
-      // {
-      //   title: "Add Money to Wallet",
-      //   path: "/add-money",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   cName: "sub-nav",
-      // },
-      // {
-      //   title: "Add Wallet Summary",
-      //   path: "/add-money-transaction-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   cName: "sub-nav",
-      // },
-      // {
-      //   title: "Add Wallet Offline",
-      //   path: "/add-wallet-money-offline",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Wallet Offline Request",
-      //   path: "/wallet-offline-request",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
       {
         title: "Wallet Full Summary",
         path: "/wallet-transaction-report",
@@ -981,23 +500,10 @@ const SuperDisData = [
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
-      // {
-      //   title: "Download Forms",
-      //   path: "/download-offline-forms",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   // cName: "sub-nav",
-      // },
-      // {
-      //   title: "Apply Pan Card Offline",
-      //   path: "/submit-pan-card-offline",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   // cName: "sub-nav",
-      // },
       {
         title: "View All History",
         path: "/view-all-offline-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
-        // cName: "sub-nav",
       },
     ],
   },
@@ -1005,22 +511,6 @@ const SuperDisData = [
     title: "Training Video",
     path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-
-    // iconClosed: <RiIcons.RiArrowDownSFill />,
-    // iconOpened: <RiIcons.RiArrowUpSFill />,
-
-    // subNav: [
-    // 	{
-    // 		title: "Event 1",
-    // 		path: "/events/events1",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // 	{
-    // 		title: "Event 2",
-    // 		path: "/events/events2",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // ],
   },
   {
     title: "Set PIN and 2 Step",
@@ -1029,7 +519,6 @@ const SuperDisData = [
   },
   {
     title: "Create A Parter",
-    // path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -1044,7 +533,6 @@ const SuperDisData = [
   },
   {
     title: "UTI 2.0",
-    // path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -1064,7 +552,6 @@ const SuperDisData = [
   },
   {
     title: "UTI New",
-    // path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -1094,7 +581,6 @@ const SuperDisData = [
   },
   {
     title: "User List",
-    // path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -1119,7 +605,6 @@ const SuperDisData = [
   },
   {
     title: "Complaint",
-    // path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -1139,7 +624,6 @@ const SuperDisData = [
   },
   {
     title: "Other Settings",
-    // path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -1179,50 +663,8 @@ const SuperAdminData = [
     title: "Dashboard",
     path: "/dashboard",
     icon: <AiIcons.AiFillHome color="#fe662b" />,
-    // iconClosed: <RiIcons.RiArrowDownSFill />,
-    // iconOpened: <RiIcons.RiArrowUpSFill />,
-
-    // subNav: [
-    // 	{
-    // 		title: "Our Aim",
-    // 		path: "/about-us/aim",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // 	{
-    // 		title: "Our Vision",
-    // 		path: "/about-us/vision",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // ],
   },
-  // {
-  //   title: "Aadhar Linking Status",
-  //   path: "/aadhar-linking-status",
-  //   // icon: <IoIcons.IoIosPaper color="black" />,
-  //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //   // iconClosed: <RiIcons.RiArrowDownSFill color="black"/>,
-  //   // iconOpened: <RiIcons.RiArrowUpSFill color="black"/>,
 
-  //   // subNav: [
-  //   // 	{
-  //   // 		title: "Service 1",
-  //   // 		path: "/services/services1",
-  //   // 		icon: <IoIcons.IoIosPaper />,
-  //   // 		cName: "sub-nav",
-  //   // 	},
-  //   // 	{
-  //   // 		title: "Service 2",
-  //   // 		path: "/services/services2",
-  //   // 		icon: <IoIcons.IoIosPaper />,
-  //   // 		cName: "sub-nav",
-  //   // 	},
-  //   // 	{
-  //   // 		title: "Service 3",
-  //   // 		path: "/services/services3",
-  //   // 		icon: <IoIcons.IoIosPaper />,
-  //   // 	},
-  //   // ],
-  // },
   {
     title: "Wallet",
     path: "#",
@@ -1231,28 +673,6 @@ const SuperAdminData = [
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
-      // {
-      //   title: "Add Money to Wallet",
-      //   path: "/add-money",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   cName: "sub-nav",
-      // },
-      // {
-      //   title: "Add Wallet Summary",
-      //   path: "/add-money-transaction-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   cName: "sub-nav",
-      // },
-      // {
-      //   title: "Add Wallet Offline",
-      //   path: "/add-wallet-money-offline",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Wallet Offline Request",
-      //   path: "/wallet-offline-request",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
       {
         title: "Wallet Full Summary",
         path: "/wallet-transaction-report",
@@ -1273,7 +693,7 @@ const SuperAdminData = [
   {
     title: "All Transaction",
     path: "#",
-    // path: "/today-all-transaction",
+
     icon: <IoIcons.IoIosPaper color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -1300,28 +720,6 @@ const SuperAdminData = [
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
-      // {
-      //   title: "Add Money to Wallet",
-      //   path: "/add-money",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   cName: "sub-nav",
-      // },
-      // {
-      //   title: "Add Wallet Summary",
-      //   path: "/add-money-transaction-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   cName: "sub-nav",
-      // },
-      // {
-      //   title: "Add Wallet Offline",
-      //   path: "/add-wallet-money-offline",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Wallet Offline Request",
-      //   path: "/wallet-offline-request",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
       {
         title: "Commision Full Summary",
         path: "/commision-full-summary",
@@ -1404,7 +802,7 @@ const SuperAdminData = [
     icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
   },
   {
-    title: "Create A Parter",
+    title: "Create A Partner",
     // path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
@@ -1429,6 +827,11 @@ const SuperAdminData = [
       {
         title: "Create Retailer",
         path: "/create-retailer",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Create Super Admin Employee",
+        path: "/create-superadmin-employee",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       // {
@@ -2117,7 +1520,7 @@ const DistributorData = [
     icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
   },
   {
-    title: "Create A Parter",
+    title: "Create A Partner",
     // path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
@@ -2257,6 +1660,97 @@ const DistributorData = [
       {
         title: "Fund Transfer Status",
         path: "/fund-transfer-status",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+    ],
+  },
+];
+
+const SuperAdminEmployeeData = [
+  {
+    title: "Dashboard",
+    path: "/dashboard",
+    icon: <AiIcons.AiFillHome color="#fe662b" />,
+  },
+  {
+    title: "Offline Services",
+    path: "#",
+    icon: <FaIcons.FaCog color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+      {
+        title: "Pan Card Offline",
+        path: "/pan-card-offline",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        cName: "sub-nav",
+      },
+      {
+        title: "DTH New Connection Offline",
+        path: "/DTH-new-connection-offline",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Recharge Offline",
+        path: "/recharge-offline",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Google Play",
+        path: "/google-play-offline",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        cName: "sub-nav",
+      },
+      {
+        title: "IRCTC Agent ID",
+        path: "/irctc-agent-id",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        cName: "sub-nav",
+      },
+      {
+        title: "Birth Certificate",
+        path: "/birth-certificate",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Death Certificate",
+        path: "/death-certificate",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "E-stamp",
+        path: "/e-stamp",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "ITR Registration",
+        path: "/ITR-registration",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "GST Registration",
+        path: "/GST-registration",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Sambal Card",
+        path: "/sambal-card",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Income Certificate",
+        path: "/income-certificate",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Domicile Certificate",
+        path: "/domicile-certificate",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Bank ID",
+        path: "/bank-id",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],
@@ -2429,6 +1923,17 @@ const Sider = () => {
                     })}
                   {user == "SuperAdmin" &&
                     SuperAdminData.map((item, index) => {
+                      return (
+                        <SubMenu
+                          item={item}
+                          key={index}
+                          activeDropdown={activeDropdown}
+                          handleDropdownClick={handleDropdownClick}
+                        />
+                      );
+                    })}
+                  {user === "SuperAdmin_Employee" &&
+                    SuperAdminEmployeeData.map((item, index) => {
                       return (
                         <SubMenu
                           item={item}

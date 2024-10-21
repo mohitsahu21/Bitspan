@@ -14,8 +14,8 @@ const PanTransactionReport = () => {
   const complaintsPerPage = 2;
   const [currentPage, setCurrentPage] = useState(0);
 
-  const api1Url = `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/nsdl-trans-new-requst`;
-  const api2Url = `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/nsdl-trans-correction`;
+  const api1Url = `http://localhost:7171/api/auth/retailer/nsdl-trans-new-requst`;
+  const api2Url = `http://localhost:7171/api/auth/retailer/nsdl-trans-correction`;
 
   const fetchData = async (url) => {
     setLoading(true);

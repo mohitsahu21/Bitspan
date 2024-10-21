@@ -55,8 +55,8 @@ const BroadbandRecharge = () => {
     setLoading(true);
     try {
       const result = await axios.post(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/recharge-instpy",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/api-recharge",
+        // "http://localhost:7171/api/auth/instpay/recharge-instpy",
+        "http://localhost:7171/api/auth/instpay/api-recharge",
         formData
       );
       setResponse(result.data); // Update the response state with the received data
@@ -98,7 +98,7 @@ const BroadbandRecharge = () => {
     setLoading(true);
     try {
       const result = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/offline-recharge",
+        "http://localhost:7171/api/auth/retailer/offline-recharge",
         offlineForm
       );
       setResponseForm(result.data); // Update the response state with the received data

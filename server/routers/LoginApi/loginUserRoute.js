@@ -4,6 +4,7 @@ const {
   loginUser,
   loginUserWithOTP,
   verifyOtpAndLogin,
+  superAdminEmployeeRegiser,
 } = require("../../controllers/LoginApi/loginUser");
 const authenticateToken = require("../../middleware/authenticateToken");
 
@@ -11,7 +12,7 @@ const router = express.Router();
 
 router.post("/user-register", userRegiser);
 router.post("/login", loginUser);
-
+router.post("/superAdminEmployeeRegiser", superAdminEmployeeRegiser);
 router.post("/loginWithOTP", loginUserWithOTP);
 
 router.post("/verifyOTP", verifyOtpAndLogin);

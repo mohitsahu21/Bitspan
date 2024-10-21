@@ -15,13 +15,12 @@ const SidebarLink = styled(Link)`
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
-  
 
   &:hover {
     background: #f7f6ff;
     border-left: 4px solid #a697fa;
     cursor: pointer;
-    color: #a697fa;
+    color: #000000;
   }
 `;
 
@@ -43,10 +42,11 @@ const DropdownLink = styled(Link)`
   &:hover {
     background: #ddd8fd;
     cursor: pointer;
+    color: #000000;
   }
 `;
 
-const SubMenu = ({ item ,activeDropdown, handleDropdownClick }) => {
+const SubMenu = ({ item, activeDropdown, handleDropdownClick }) => {
   const [subnav, setSubnav] = useState(false);
   const isOpen = activeDropdown === item.title;
 
@@ -54,7 +54,10 @@ const SubMenu = ({ item ,activeDropdown, handleDropdownClick }) => {
 
   return (
     <>
-      <SidebarLink to={item.path} onClick={item.subNav  && (() => handleDropdownClick(item.title))}>
+      <SidebarLink
+        to={item.path}
+        onClick={item.subNav && (() => handleDropdownClick(item.title))}
+      >
         <div>
           <span className="icon">{item.icon}</span>
           <SidebarLabel>{item.title}</SidebarLabel>

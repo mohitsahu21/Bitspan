@@ -7,7 +7,7 @@ import { BiHomeAlt } from "react-icons/bi";
 import { LuTextSelect } from "react-icons/lu";
 import { MdNumbers } from "react-icons/md";
 import Select from "react-select";
-import axios from "axios"
+import axios from "axios";
 import messageSound from "../../assets/sound/sound.mp3";
 
 const SACreatePackages = () => {
@@ -97,7 +97,7 @@ const SACreatePackages = () => {
     Offline_Insurance_Pay_Commission: "",
     PAN_Card_Commission_Type: "",
     UTI_PAN_Card_Commission: "",
-    UTI_PAN_Coupon_Commission : "",
+    UTI_PAN_Coupon_Commission: "",
     NSDL_PAN_Card_Commission: "",
   });
 
@@ -125,11 +125,11 @@ const SACreatePackages = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addPackage",
+        "http://localhost:7171/api/auth/superAdmin/addPackage",
         formData
       );
       console.log(response);
-      if(response.data.success){
+      if (response.data.success) {
         alert("Data added successfully!");
         setFormData({
           package_name: "",
@@ -211,13 +211,12 @@ const SACreatePackages = () => {
           Offline_Insurance_Pay_Commission: "",
           PAN_Card_Commission_Type: "",
           UTI_PAN_Card_Commission: "",
-          UTI_PAN_Coupon_Commission : "",
+          UTI_PAN_Coupon_Commission: "",
           NSDL_PAN_Card_Commission: "",
         });
-      }
-      else{
+      } else {
         alert("Failed to add data!");
-      }     
+      }
     } catch (error) {
       console.error("There was an error submitting the form!", error);
     }
@@ -225,9 +224,9 @@ const SACreatePackages = () => {
 
   const options = [
     { value: "package_WhiteLabel", label: "White Label" },
-  { value: "package_SuperDistributor", label: "Super Distributor" },
-  { value: "package_Distributor", label: "Distributor" },
-  { value: "package_Retailer", label: "Retailer" },
+    { value: "package_SuperDistributor", label: "Super Distributor" },
+    { value: "package_Distributor", label: "Distributor" },
+    { value: "package_Retailer", label: "Retailer" },
   ];
   // const [selectedOption, setSelectedOption] = useState(null);
 
@@ -282,7 +281,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="text"
-                            
                             name="package_name"
                             class="form-control"
                             placeholder="Enter Package Name"
@@ -316,7 +314,9 @@ const SACreatePackages = () => {
                           // onChange={setSelectedOption}
 
                           // defaultValue={formData.package_for}
-                          value={options.filter(option => formData.package_for.includes(option.value))}  // Set value to match selected options
+                          value={options.filter((option) =>
+                            formData.package_for.includes(option.value)
+                          )} // Set value to match selected options
                           onChange={handleSelectChange} // Use custom handler
                           options={options}
                           isMulti={true}
@@ -385,7 +385,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter price"
                             name="Google_Play_Price"
@@ -406,7 +405,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter price"
                             name="IRCTC_Agent_ID_Price"
@@ -427,7 +425,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter price"
                             name="Birth_Certificate_Price"
@@ -448,7 +445,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter price"
                             name="Death_Certificate_Price"
@@ -490,7 +486,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter price"
                             name="ITR_Registration_Price"
@@ -511,7 +506,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter price"
                             name="GST_Registration_Price"
@@ -532,7 +526,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter price"
                             name="Sambal_Price"
@@ -553,7 +546,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter price"
                             name="Income_Certificate_Price"
@@ -574,7 +566,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter price"
                             name="Domicile_Certificate_Price"
@@ -595,7 +586,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter price"
                             name="Bank_ID_Price"
@@ -627,14 +617,16 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
-                          name="Offline_Services_Commission_Type" value={formData.Offline_Services_Commission_Type} onChange={handleChange}
+                            name="Offline_Services_Commission_Type"
+                            value={formData.Offline_Services_Commission_Type}
+                            onChange={handleChange}
                             class="form-select"
                             aria-label="Default select example"
                             required
                           >
-                            <option 
-                            value=""
-                            selected>Select...</option>
+                            <option value="" selected>
+                              Select...
+                            </option>
 
                             <option value="Percentage">Percentage (%)</option>
                             <option value="Rupees">Rupees (&#8377;)</option>
@@ -673,7 +665,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Google_Play_Commission"
@@ -694,7 +685,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="IRCTC_Agent_ID_Commission"
@@ -715,7 +705,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Birth_Certificate_Commission"
@@ -736,7 +725,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Death_Certificate_Commission"
@@ -757,7 +745,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="E_Stamp_Commission"
@@ -778,7 +765,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="ITR_Registration_Commission"
@@ -799,7 +785,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="GST_Registration_Commission"
@@ -820,7 +805,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Sambal_Commission"
@@ -841,7 +825,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Income_Certificate_Commission"
@@ -862,7 +845,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Domicile_Certificate_Commission"
@@ -883,7 +865,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Bank_ID_Commission"
@@ -918,13 +899,16 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
-                             name="Off_Prepaid_Recharge_Comm_Type" value={formData.Off_Prepaid_Recharge_Comm_Type} onChange={handleChange}
-                             required
+                            name="Off_Prepaid_Recharge_Comm_Type"
+                            value={formData.Off_Prepaid_Recharge_Comm_Type}
+                            onChange={handleChange}
+                            required
                             className="form-select"
                             aria-label="Default select example"
-
                           >
-                            <option value="" selected>Select...</option>
+                            <option value="" selected>
+                              Select...
+                            </option>
 
                             <option value="Percentage">Percentage (%)</option>
                             <option value="Rupees">Rupees (&#8377;)</option>
@@ -943,7 +927,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Off_Airtel_Prepaid_Recharge_Comm"
@@ -964,7 +947,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Off_Jio_Prepaid_Recharge_Comm"
@@ -985,7 +967,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Off_Vi_Prepaid_Recharge_Comm"
@@ -1006,7 +987,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Off_Bsnl_Prepaid_Recharge_Comm"
@@ -1041,12 +1021,16 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
-                          name="Off_Postpaid_Recharge_Comm_Type" value={formData.Off_Postpaid_Recharge_Comm_Type} onChange={handleChange}
+                            name="Off_Postpaid_Recharge_Comm_Type"
+                            value={formData.Off_Postpaid_Recharge_Comm_Type}
+                            onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
                             required
                           >
-                            <option value=""  selected>Select...</option>
+                            <option value="" selected>
+                              Select...
+                            </option>
 
                             <option value="Percentage">Percentage (%)</option>
                             <option value="Rupees">Rupees (&#8377;)</option>
@@ -1065,7 +1049,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Off_Airtel_Postpaid_Recharge_Comm"
@@ -1086,7 +1069,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Off_Jio_Postpaid_Recharge_Comm"
@@ -1107,7 +1089,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Off_Vi_Postpaid_Recharge_Comm"
@@ -1128,7 +1109,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Off_Bsnl_Postpaid_Recharge_Comm"
@@ -1163,12 +1143,16 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
-                             name="On_Prepaid_Recharge_Comm_Type" value={formData.On_Prepaid_Recharge_Comm_Type} onChange={handleChange}
+                            name="On_Prepaid_Recharge_Comm_Type"
+                            value={formData.On_Prepaid_Recharge_Comm_Type}
+                            onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
                             required
                           >
-                            <option value="" selected>Select...</option>
+                            <option value="" selected>
+                              Select...
+                            </option>
 
                             <option value="Percentage">Percentage (%)</option>
                             <option value="Rupees">Rupees (&#8377;)</option>
@@ -1187,7 +1171,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="On_Airtel_Prepaid_Recharge_Comm"
@@ -1208,7 +1191,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="On_Jio_Prepaid_Recharge_Comm"
@@ -1229,7 +1211,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="On_Vi_Prepaid_Recharge_Comm"
@@ -1250,7 +1231,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="On_Bsnl_Prepaid_Recharge_Comm"
@@ -1285,12 +1265,16 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
-                            name="On_Postpaid_Recharge_Comm_Type" value={formData.On_Postpaid_Recharge_Comm_Type} onChange={handleChange} 
+                            name="On_Postpaid_Recharge_Comm_Type"
+                            value={formData.On_Postpaid_Recharge_Comm_Type}
+                            onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
                             required
                           >
-                            <option value="" selected>Select...</option>
+                            <option value="" selected>
+                              Select...
+                            </option>
 
                             <option value="Percentage">Percentage (%)</option>
                             <option value="Rupees">Rupees (&#8377;)</option>
@@ -1309,7 +1293,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="On_Airtel_Postpaid_Recharge_Comm"
@@ -1330,7 +1313,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="On_Jio_Postpaid_Recharge_Comm"
@@ -1351,7 +1333,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="On_Vi_Postpaid_Recharge_Comm"
@@ -1372,7 +1353,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="On_Bsnl_Postpaid_Recharge_Comm"
@@ -1407,12 +1387,16 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
-                            name="Online_DTH_Recharge_Commission_Type" value={formData.Online_DTH_Recharge_Commission_Type} onChange={handleChange}
+                            name="Online_DTH_Recharge_Commission_Type"
+                            value={formData.Online_DTH_Recharge_Commission_Type}
+                            onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
                             required
                           >
-                            <option value="" selected>Select...</option>
+                            <option value="" selected>
+                              Select...
+                            </option>
 
                             <option value="Percentage">Percentage (%)</option>
                             <option value="Rupees">Rupees (&#8377;)</option>
@@ -1431,7 +1415,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="On_Dish_TV_Recharge_Commission"
@@ -1452,7 +1435,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="On_Tata_Sky_Recharge_Commission"
@@ -1473,7 +1455,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="On_Videocon_Recharge_Commission"
@@ -1494,7 +1475,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="On_Sun_Direct_Recharge_Commission"
@@ -1515,7 +1495,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="On_Airtel_Dth_Recharge_Commission"
@@ -1550,12 +1529,18 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
-                            name="Offline_DTH_Recharge_Commission_Type" value={formData.Offline_DTH_Recharge_Commission_Type} onChange={handleChange}
+                            name="Offline_DTH_Recharge_Commission_Type"
+                            value={
+                              formData.Offline_DTH_Recharge_Commission_Type
+                            }
+                            onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
                             required
                           >
-                            <option value="" selected>Select...</option>
+                            <option value="" selected>
+                              Select...
+                            </option>
 
                             <option value="Percentage">Percentage (%)</option>
                             <option value="Rupees">Rupees (&#8377;)</option>
@@ -1574,7 +1559,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Off_Dish_TV_Recharge_Commission"
@@ -1595,7 +1579,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Off_Tata_Sky_Recharge_Commission"
@@ -1616,7 +1599,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Off_Videocon_Recharge_Commission"
@@ -1637,7 +1619,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Off_Sun_Direct_Recharge_Commission"
@@ -1658,7 +1639,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Off_Airtel_Dth_Recharge_Commission"
@@ -1693,12 +1673,18 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
-                            name="Online_New_DTH_Connection_Commission_Type" value={formData.Online_New_DTH_Connection_Commission_Type} onChange={handleChange}
+                            name="Online_New_DTH_Connection_Commission_Type"
+                            value={
+                              formData.Online_New_DTH_Connection_Commission_Type
+                            }
+                            onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
                             required
                           >
-                            <option value="" selected>Select...</option>
+                            <option value="" selected>
+                              Select...
+                            </option>
 
                             <option value="Percentage">Percentage (%)</option>
                             <option value="Rupees">Rupees (&#8377;)</option>
@@ -1717,11 +1703,12 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="On_Dish_TV_New_DTH_Connection_Commission"
-                            value={formData.On_Dish_TV_New_DTH_Connection_Commission}
+                            value={
+                              formData.On_Dish_TV_New_DTH_Connection_Commission
+                            }
                             onChange={handleChange}
                             required
                           />
@@ -1738,11 +1725,12 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="On_Tata_Sky_New_DTH_Connection_Commission"
-                            value={formData.On_Tata_Sky_New_DTH_Connection_Commission}
+                            value={
+                              formData.On_Tata_Sky_New_DTH_Connection_Commission
+                            }
                             onChange={handleChange}
                             required
                           />
@@ -1759,11 +1747,12 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="On_Videocon_New_DTH_Connection_Commission"
-                            value={formData.On_Videocon_New_DTH_Connection_Commission}
+                            value={
+                              formData.On_Videocon_New_DTH_Connection_Commission
+                            }
                             onChange={handleChange}
                             required
                           />
@@ -1780,11 +1769,12 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="On_Sun_Direct_New_DTH_Connection_Commission"
-                            value={formData.On_Sun_Direct_New_DTH_Connection_Commission}
+                            value={
+                              formData.On_Sun_Direct_New_DTH_Connection_Commission
+                            }
                             onChange={handleChange}
                             required
                           />
@@ -1801,11 +1791,12 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="On_Airtel_New_DTH_Connection_Commission"
-                            value={formData.On_Airtel_New_DTH_Connection_Commission}
+                            value={
+                              formData.On_Airtel_New_DTH_Connection_Commission
+                            }
                             onChange={handleChange}
                             required
                           />
@@ -1836,12 +1827,18 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
-                           name="Offline_New_DTH_Connection_Commission_Type" value={formData.Offline_New_DTH_Connection_Commission_Type} onChange={handleChange}
+                            name="Offline_New_DTH_Connection_Commission_Type"
+                            value={
+                              formData.Offline_New_DTH_Connection_Commission_Type
+                            }
+                            onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
                             required
                           >
-                            <option value="" selected>Select...</option>
+                            <option value="" selected>
+                              Select...
+                            </option>
 
                             <option value="Percentage">Percentage (%)</option>
                             <option value="Rupees">Rupees (&#8377;)</option>
@@ -1860,11 +1857,12 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Off_Dish_TV_New_DTH_Connection_Commission"
-                            value={formData.Off_Dish_TV_New_DTH_Connection_Commission}
+                            value={
+                              formData.Off_Dish_TV_New_DTH_Connection_Commission
+                            }
                             onChange={handleChange}
                             required
                           />
@@ -1881,11 +1879,12 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Off_Tata_Sky_New_DTH_Connection_Commission"
-                            value={formData.Off_Tata_Sky_New_DTH_Connection_Commission}
+                            value={
+                              formData.Off_Tata_Sky_New_DTH_Connection_Commission
+                            }
                             onChange={handleChange}
                             required
                           />
@@ -1902,11 +1901,12 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Off_Videocon_New_DTH_Connection_Commission"
-                            value={formData.Off_Videocon_New_DTH_Connection_Commission}
+                            value={
+                              formData.Off_Videocon_New_DTH_Connection_Commission
+                            }
                             onChange={handleChange}
                             required
                           />
@@ -1923,11 +1923,12 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Off_Sun_Direct_New_DTH_Connection_Commission"
-                            value={formData.Off_Sun_Direct_New_DTH_Connection_Commission}
+                            value={
+                              formData.Off_Sun_Direct_New_DTH_Connection_Commission
+                            }
                             onChange={handleChange}
                             required
                           />
@@ -1944,11 +1945,12 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Off_Airtel_New_DTH_Connection_Commission"
-                            value={formData.Off_Airtel_New_DTH_Connection_Commission}
+                            value={
+                              formData.Off_Airtel_New_DTH_Connection_Commission
+                            }
                             onChange={handleChange}
                             required
                           />
@@ -1980,12 +1982,18 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
-                            name="Online_Electricity_Bill_Pay_Commission_Type" value={formData.Online_Electricity_Bill_Pay_Commission_Type} onChange={handleChange}
+                            name="Online_Electricity_Bill_Pay_Commission_Type"
+                            value={
+                              formData.Online_Electricity_Bill_Pay_Commission_Type
+                            }
+                            onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
                             required
                           >
-                            <option value="" selected>Select...</option>
+                            <option value="" selected>
+                              Select...
+                            </option>
 
                             <option value="Percentage">Percentage (%)</option>
                             <option value="Rupees">Rupees (&#8377;)</option>
@@ -2004,11 +2012,12 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Online_Electricity_Bill_Pay_Commission"
-                            value={formData.Online_Electricity_Bill_Pay_Commission}
+                            value={
+                              formData.Online_Electricity_Bill_Pay_Commission
+                            }
                             onChange={handleChange}
                             required
                           />
@@ -2097,12 +2106,18 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
-                            name="Offline_Electricity_Bill_Pay_Commission_Type" value={formData.Offline_Electricity_Bill_Pay_Commission_Type} onChange={handleChange}
+                            name="Offline_Electricity_Bill_Pay_Commission_Type"
+                            value={
+                              formData.Offline_Electricity_Bill_Pay_Commission_Type
+                            }
+                            onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
                             required
                           >
-                            <option value="" selected>Select...</option>
+                            <option value="" selected>
+                              Select...
+                            </option>
 
                             <option value="Percentage">Percentage (%)</option>
                             <option value="Rupees">Rupees (&#8377;)</option>
@@ -2121,11 +2136,12 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Offline_Electricity_Bill_Pay_Commission"
-                            value={formData.Offline_Electricity_Bill_Pay_Commission}
+                            value={
+                              formData.Offline_Electricity_Bill_Pay_Commission
+                            }
                             onChange={handleChange}
                             required
                           />
@@ -2195,11 +2211,17 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
-                          name="Online_Insurance_Pay_Commission_Type" value={formData.Online_Insurance_Pay_Commission_Type} onChange={handleChange}
+                            name="Online_Insurance_Pay_Commission_Type"
+                            value={
+                              formData.Online_Insurance_Pay_Commission_Type
+                            }
+                            onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
                           >
-                            <option value="" selected>Select...</option>
+                            <option value="" selected>
+                              Select...
+                            </option>
 
                             <option value="Percentage">Percentage (%)</option>
                             <option value="Rupees">Rupees (&#8377;)</option>
@@ -2218,7 +2240,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Online_Insurance_Pay_Commission"
@@ -2253,12 +2274,18 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
-                            name="Offline_Insurance_Pay_Commission_Type" value={formData.Offline_Insurance_Pay_Commission_Type} onChange={handleChange}
+                            name="Offline_Insurance_Pay_Commission_Type"
+                            value={
+                              formData.Offline_Insurance_Pay_Commission_Type
+                            }
+                            onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
                             required
                           >
-                            <option value="" selected>Select...</option>
+                            <option value="" selected>
+                              Select...
+                            </option>
 
                             <option value="Percentage">Percentage (%)</option>
                             <option value="Rupees">Rupees (&#8377;)</option>
@@ -2277,7 +2304,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="Offline_Insurance_Pay_Commission"
@@ -2312,12 +2338,16 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
-                          name="PAN_Card_Commission_Type" value={formData.PAN_Card_Commission_Type} onChange={handleChange}
+                            name="PAN_Card_Commission_Type"
+                            value={formData.PAN_Card_Commission_Type}
+                            onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
                             required
                           >
-                            <option value="" selected>Select...</option>
+                            <option value="" selected>
+                              Select...
+                            </option>
 
                             <option value="Percentage">Percentage (%)</option>
                             <option value="Rupees">Rupees (&#8377;)</option>
@@ -2336,7 +2366,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="UTI_PAN_Card_Commission"
@@ -2357,7 +2386,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="UTI_PAN_Coupon_Commission"
@@ -2378,7 +2406,6 @@ const SACreatePackages = () => {
                           </span>
                           <input
                             type="number"
-                            
                             class="form-control"
                             placeholder="Enter Commission"
                             name="NSDL_PAN_Card_Commission"
