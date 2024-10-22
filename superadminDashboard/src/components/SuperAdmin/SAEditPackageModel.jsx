@@ -2362,5 +2362,8 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
 export default SAEditPackageModel;
 
 const Wrapper = styled.div`
- 
+   button {
+    color: #fff;
+    background: #6d70ff;
+  }
 `;

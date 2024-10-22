@@ -1431,6 +1431,11 @@ const SuperAdminData = [
         path: "/create-retailer",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+      {
+        title: "Create Superadmin Employee",
+        path: "/create-superadmin-employee",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
       // {
       //   title: "Buy User ID Limit",
       //   path: "/buy-admin-id",
@@ -1504,6 +1509,11 @@ const SuperAdminData = [
       {
         title: "Deactive Users",
         path: "/deactive-users",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Pending KYC Users",
+        path: "/pending-kyc-user",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {

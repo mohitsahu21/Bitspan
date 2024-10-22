@@ -317,7 +317,7 @@ const SACreateRetailer = () => {
 
 
                     </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
                         NSDL Phycial PAN Price (Your Price - 105.00)
                       </label>
@@ -435,7 +435,7 @@ const SACreateRetailer = () => {
                           placeholder="Enter UTI Digital New Coupon Price"
                         />
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="text-start mb-3">
