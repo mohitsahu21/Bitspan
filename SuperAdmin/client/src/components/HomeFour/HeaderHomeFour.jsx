@@ -16,7 +16,8 @@ function HeaderHomeFour({ action }) {
                             <div className="col-lg-2 col-md-4 col-sm-5 col-6 order-1 order-sm-1">
                                 <div className="appie-logo-box">
                                     <a href="/">
-                                        <img src={logo} alt="" />
+                                        {/* <img src={logo} alt="" /> */}
+                                        <h3 className='text-white'>Bitspan.in</h3>
                                     </a>
                                 </div>
                             </div>

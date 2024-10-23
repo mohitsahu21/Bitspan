@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import heroThumb from '../../assets/images/hero-thumb-6.png';
+// import heroThumb from '../../assets/images/hero-thumb-6.png';
+// import heroThumb from '../../assets/images/pan2.png';
+import heroThumb from '../../assets/images/pan1.webp';
 import PopupVideo from '../PopupVideo.jsx';
+import styled from 'styled-components';
 
 function HeroHomeFour() {
     const [showVideo, setVideoValue] = useState(false);
@@ -9,7 +12,9 @@ function HeroHomeFour() {
         setVideoValue(!showVideo);
     };
     return (
-        <>
+        
+        <> 
+        <Wrapper>
             {showVideo && (
                 <PopupVideo
                     videoSrc="//www.youtube.com/embed/EE7NqzhMDms?autoplay=1"
@@ -21,23 +26,26 @@ function HeroHomeFour() {
                     <div className="row  justify-content-center">
                         <div className="col-lg-10">
                             <div className="appie-hero-content text-center">
+                            <h2 className='welcome-heading'>
+                            Welcome to Bitspan.in
+                                </h2>
                                 <h1 className="appie-title">
-                                    Mobile Interaction Designs of January 2022{' '}
+                                India's Leading PAN Card Portal{' '}
                                 </h1>
                                 <p>
-                                    Jolly good excuse my french boot super my good sir cup of <br />
-                                    char richard about chinwag.
+                                Fully Automatic
                                 </p>
+                               
                                 <div className="hero-btns">
                                     <a className="main-btn" href="#">
-                                        Get a Quote
+                                       JOIN NOW
                                     </a>
                                     <a
                                         onClick={(e) => handleShowVideo(e)}
                                         className="appie-video-popup"
                                         href="https://www.youtube.com/watch?v=EE7NqzhMDms"
                                     >
-                                        <i className="fas fa-play"></i> Watch the trailer
+                                        <i className="fas fa-play"></i> Training Video
                                     </a>
                                 </div>
                                 <div
@@ -52,8 +60,18 @@ function HeroHomeFour() {
                     </div>
                 </div>
             </section>
+            </Wrapper>
         </>
     );
 }
 
 export default HeroHomeFour;
+
+const Wrapper = styled.section`
+ .welcome-heading{
+    
+   color: #fff;
+   opacity: 0.5;
+
+ }
+`;

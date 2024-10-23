@@ -25,10 +25,10 @@ const router = createBrowserRouter([
     path:'/',
     Component:Layout,
     children:[
-      {
-        index:true,
-        element: <HomeOne />
-      },
+      // {
+      //   index:true,
+      //   element: <HomeOne />
+      // },
       {
         path: "/home-two",
         element: <HomeTwo />
@@ -41,30 +41,30 @@ const router = createBrowserRouter([
         path: "/home-four",
         element: <HomeFour />
       },
-      {
-        path: "/home-five",
-        element: <HomeFive />
-      },
-      {
-        path: "/home-six",
-        element: <HomeSix />
-      },
-      {
-        path: "/home-seven",
-        element: <HomeSeven />
-      },
-      {
-        path: "/home-eight",
-        element: <HomeEight />
-      },
-      {
-        path: "/home-dark",
-        element: <HomeDark />
-      },
-      {
-        path: "/home-rtl",
-        element: <HomeRtl />
-      },
+      // {
+      //   path: "/home-five",
+      //   element: <HomeFive />
+      // },
+      // {
+      //   path: "/home-six",
+      //   element: <HomeSix />
+      // },
+      // {
+      //   path: "/home-seven",
+      //   element: <HomeSeven />
+      // },
+      // {
+      //   path: "/home-eight",
+      //   element: <HomeEight />
+      // },
+      // {
+      //   path: "/home-dark",
+      //   element: <HomeDark />
+      // },
+      // {
+      //   path: "/home-rtl",
+      //   element: <HomeRtl />
+      // },
       {
         path: "/news",
         element: <News />

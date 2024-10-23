@@ -2,7 +2,8 @@ import React from 'react';
 import shape13 from '../../assets/images/shape/shape-13.png';
 import shape14 from '../../assets/images/shape/shape-14.png';
 import shape15 from '../../assets/images/shape/shape-15.png';
-import trafficThumb from '../../assets/images/traffic-thumb-2.png';
+// import trafficThumb from '../../assets/images/traffic-thumb-2.png';
+import trafficThumb from '../../assets/images/how-it-work-thumb.png';
 
 function FeaturesHomeFour() {
     return (
@@ -16,10 +17,10 @@ function FeaturesHomeFour() {
                         <div className="col-lg-12">
                             <div className="appie-section-title text-center">
                                 <h3 className="appie-title">
-                                    Wherever you need <br /> us the most
+                                How it Works
                                 </h3>
                                 <p>
-                                    The full monty spiffing good time no biggie cack grub fantastic.
+                                Lets Join ! Become Our Family Member
                                 </p>
                             </div>
                         </div>
@@ -28,16 +29,19 @@ function FeaturesHomeFour() {
                         <div className="col-lg-6">
                             <div className="appie-features-boxes ">
                                 <div className="appie-features-box-item appie-features-box-5-item">
-                                    <h4 className="title">Well Integrated</h4>
-                                    <p>The bee's knees chancer car boot absolutely.</p>
+                                    <h5 className='mb-2 text-secondary'>Step 01</h5>
+                                    <h4 className="title">Create An Account</h4>
+                                    <p>Create Own Team With Your Super Distributer, Distributer And Retailer Accounts.</p>
                                 </div>
                                 <div className="appie-features-box-item item-2 appie-features-box-5-item">
-                                    <h4 className="title">Clean and modern Design</h4>
-                                    <p>The bee's knees chancer car boot absolutely.</p>
+                                <h5  className='mb-2 text-secondary'>Step 02</h5>
+                                    <h4 className="title">Buy & Distribute Coupon</h4>
+                                    <p>Buy Coupon And Distribute Coupons To Your Team With Realtime Coupon Updation.</p>
                                 </div>
                                 <div className="appie-features-box-item item-3 appie-features-box-5-item">
-                                    <h4 className="title">Light and dark mode</h4>
-                                    <p>The bee's knees chancer car boot absolutely.</p>
+                                <h5  className='mb-2 text-secondary'>Step 03</h5>
+                                    <h4 className="title">Check History</h4>
+                                    <p>Get The Realtime Coupon Buying Data, Distributed Data And Joining Data.</p>
                                 </div>
                             </div>
                         </div>
