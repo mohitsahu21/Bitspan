@@ -9,9 +9,12 @@ import { MdNumbers } from "react-icons/md";
 import Select from "react-select";
 import axios from "axios"
 import messageSound from "../../assets/sound/sound.mp3";
+import Swal from "sweetalert2";
 
 const SACreatePackages = () => {
   const sound = new Audio(messageSound);
+
+  const [loading, setLoading] = useState(false);
 
   const playSound = () => {
     sound.play();
@@ -124,13 +127,18 @@ const SACreatePackages = () => {
   const handlesubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await axios.post(
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addPackage",
         formData
       );
       console.log(response);
+      setLoading(false);
       if(response.data.success){
-        alert("Data added successfully!");
+        Swal.fire({
+          icon: "success",
+          title: "Package Created Successfully",
+        });
         setFormData({
           package_name: "",
           package_for: [], // Reset the select field
@@ -216,10 +224,18 @@ const SACreatePackages = () => {
         });
       }
       else{
-        alert("Failed to add data!");
+        Swal.fire({
+          icon: "error",
+          title: "An error occurred during the process. Please try again.",
+        });
       }     
     } catch (error) {
       console.error("There was an error submitting the form!", error);
+      setLoading(false);
+      Swal.fire({
+        icon: "error",
+        title: "An error occurred during the process. Please try again.",
+      });
     }
   };
 
@@ -2397,8 +2413,8 @@ const SACreatePackages = () => {
                     </div>
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="text-center  m-5">
-                        <button type="submit" className="btn p-2">
-                          Submit
+                        <button type="submit" className="btn p-2" disabled={loading}>
+                          {loading ? "Loading..." : "Submit"}
                         </button>
                       </div>
                     </div>
