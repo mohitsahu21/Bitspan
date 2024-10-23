@@ -1,9 +1,9 @@
 import React from "react";
-import SinglePrice from "../../../components/SinglePrice/SinglePrice";
-import SingleDo from "../../../components/SingleDo/SingleDo";
-import SingleDoForList from "../../../components/SingleDo/SingleDoForList";
+import SinglePrice from "../../components/SinglePrice/SinglePrice";
+import SingleDoForList from "../../components/SingleDo/SingleDoForList";
+import SingleDo from "../../components/SingleDo/SingleDo";
 
-const WhatWeDo = () => {
+const NewWhatWeDo = () => {
   return (
     <>
       <section className="price__area pt-115 pb-75">
@@ -12,7 +12,8 @@ const WhatWeDo = () => {
             <div className="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1">
               <div className="section__title section__title-3 mb-85 text-center">
                 {/* <span>Our Team</span> */}
-                <h2>WHAT WE DO ?</h2>
+                <h2 style={{ color: "#372dad" }}>WHAT WE DO ?</h2>
+                <hr />
                 <p>
                   BITS PAN IS LEADING B2B PTAL WE HAVE 10K+ SATISFIED CUSTOMERS
                   TODAY AT WWW.BITSPAN.IN CREATED BY THE INDUSTRY LEADERS, BITS
@@ -84,4 +85,4 @@ const WhatWeDo = () => {
   );
 };
 
-export default WhatWeDo;
+export default NewWhatWeDo;

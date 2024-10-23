@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const SingleService = ({ icon, title, description }) => {
+const NewSingleService = ({ icon, title, description }) => {
   return (
     <>
       <div className="col-xl-4 col-lg-4 col-md-6 col-sm-6">
@@ -14,8 +14,9 @@ const SingleService = ({ icon, title, description }) => {
           </div>
           <div className="services__content">
             <h3>
-              <Link to="/servicesDetails">{title}</Link>
+              <Link to="#">{title}</Link>
             </h3>
+            <hr />
             <p>{description}</p>
           </div>
         </div>
@@ -24,4 +25,4 @@ const SingleService = ({ icon, title, description }) => {
   );
 };
 
-export default SingleService;
+export default NewSingleService;
