@@ -83,9 +83,9 @@ function Navigation({ lang = false }) {
                             Home <i className="fal fa-angle-down" />
                         </a>
                         <ul className="sub-menu">
-                            <li>
+                            {/* <li>
                                 <Link to="/">Home 1</Link>
-                            </li>
+                            </li> */}
                             <li>
                                 <Link to="/home-two">Home 2</Link>
                             </li>
@@ -95,7 +95,7 @@ function Navigation({ lang = false }) {
                             <li>
                                 <Link to="/home-four">Home 4</Link>
                             </li>
-                            <li>
+                            {/* <li>
                                 <Link to="/home-five">Home 5</Link>
                             </li>
                             <li>
@@ -109,10 +109,10 @@ function Navigation({ lang = false }) {
                             </li>
                             <li>
                                 <Link to="/home-dark">Home Dark</Link>
-                            </li>
-                            <li>
+                            </li> */}
+                            {/* <li>
                                 <Link to="/home-rtl">Home Rtl</Link>
-                            </li>
+                            </li> */}
                         </ul>
                     </li>
                     <li>
