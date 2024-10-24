@@ -505,6 +505,21 @@ const SuperDisData = [
         path: "/view-all-offline-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+      {
+        title: "Pan Card History",
+        path: "/pan-card-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Recharge History",
+        path: "/recharge-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "DTH Connection History",
+        path: "/DTH-connection-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
     ],
   },
   {

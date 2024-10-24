@@ -10,6 +10,7 @@ import WhiteLabelRoutes from "./routes/WhiteLabelRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import SuperAdminRoutes from "./routes/SuperAdminRoutes";
 import SuperAdminEmployeeRoute from "./routes/SuperAdminEmployeeRoute";
+import ForgotPassword from "./components/ForgotPassword";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -29,6 +30,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<LoginBitspan />} />
+        <Route path="/password-reset" element={<ForgotPassword />} />
       </Routes>
       {user === "Retailer" && <RetailerRoutes />}
       {user === "SuperDistributor" && <SuperDistributorRoutes />}

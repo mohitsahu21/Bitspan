@@ -5,6 +5,10 @@ const {
   loginUserWithOTP,
   verifyOtpAndLogin,
   superAdminEmployeeRegiser,
+  forgotPassword,
+  verifyOtpAndResetPassword,
+  changePasswordRequest,
+  verifyOtpAndChangePassword,
 } = require("../../controllers/LoginApi/loginUser");
 const authenticateToken = require("../../middleware/authenticateToken");
 
@@ -24,5 +28,10 @@ router.get("/home-page", authenticateToken, (req, res) => {
     user: req.user,
   });
 });
+
+router.post("/forgot-password", forgotPassword);
+router.post("/verifyOTP-forgot", verifyOtpAndResetPassword);
+router.post("/change-password-request", changePasswordRequest);
+router.post("/verify-otp-change-password", verifyOtpAndChangePassword);
 
 module.exports = router;

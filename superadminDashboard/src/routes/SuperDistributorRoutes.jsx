@@ -25,6 +25,9 @@ import SdFundTransferStatus from "../components/SuperDistributer/SdFundTransferS
 import Certificate from "../components/SuperDistributer/Certificate";
 import SdBankAccountVerify from "../components/SuperDistributer/SdBankAccountVerify";
 import SdWalletWithdraw from "../components/SuperDistributer/SdWalletWithdraw";
+import PanOfflineForm from "../components/SuperDistributer/PanOfflineForm";
+import RechargeOfflineForm from "../components/SuperDistributer/RechargeOfflineForm";
+import DTHOfflineForm from "../components/SuperDistributer/DTHOfflineForm";
 
 const SuperDistributorRoutes = () => {
   return (
@@ -47,6 +50,10 @@ const SuperDistributorRoutes = () => {
           element={<SdAllOfflineForm />}
         />
 
+        <Route path="/pan-card-history" element={<PanOfflineForm />} />
+        <Route path="/recharge-history" element={<RechargeOfflineForm />} />
+        <Route path="/DTH-connection-history" element={<DTHOfflineForm />} />
+
         <Route path="/2-step-verification" element={<SdStepVerification />} />
 
         <Route path="/create-distributor" element={<CreateDistributor />} />
@@ -60,24 +67,46 @@ const SuperDistributorRoutes = () => {
 
         <Route path="/uti-coupon-history" element={<SdUTICouponHistory />} />
 
-      <Route path="/pan-transaction-report" element={<SdPanTransactionReport />} />
-      <Route path="/active-users" element={<SdActiveUsersList />} />
-      <Route path="/deactive-users" element={<SdDeactiveUsersList />} />
-      <Route path="/users-joining-list" element={<SdAllUsersJoinedList />} />
-      <Route path="/change-price" element={<SdChangePrice />} />
-      <Route path="/raise-complaint" element={<SdComplaints />} />
-      <Route path="/complaint-raised-list" element={<SdAllComplaintsList />} />
-      <Route path="/download-certificate" element={<SdDownloadCertificate />} />
-      <Route path="/change-password" element={<SdChangePassword />} />
-      <Route path="/bank-account-setup" element={<SdBankAccountSetup />} />
-      <Route path="/bank-account-setup/:bank_id/:user_id" element={<SdBankAccountVerify />} />
-      <Route path="/wallet-withdraw" element={<SdWalletWithdraw/>} />
-      <Route path="/fund-transfer-status" element={<SdFundTransferStatus />} />
-      <Route path="/download-certificate-print" element={<Certificate user="SUPER DISTRIBUTOR" name="Aashish Kumar"
-        address="Jabalpur, BIHAR - 482001"
-        date="02-Jul-2024"
-        id="AASHISD29164"/>} />
-       
+        <Route
+          path="/pan-transaction-report"
+          element={<SdPanTransactionReport />}
+        />
+        <Route path="/active-users" element={<SdActiveUsersList />} />
+        <Route path="/deactive-users" element={<SdDeactiveUsersList />} />
+        <Route path="/users-joining-list" element={<SdAllUsersJoinedList />} />
+        <Route path="/change-price" element={<SdChangePrice />} />
+        <Route path="/raise-complaint" element={<SdComplaints />} />
+        <Route
+          path="/complaint-raised-list"
+          element={<SdAllComplaintsList />}
+        />
+        <Route
+          path="/download-certificate"
+          element={<SdDownloadCertificate />}
+        />
+        <Route path="/change-password" element={<SdChangePassword />} />
+        <Route path="/bank-account-setup" element={<SdBankAccountSetup />} />
+        <Route
+          path="/bank-account-setup/:bank_id/:user_id"
+          element={<SdBankAccountVerify />}
+        />
+        <Route path="/wallet-withdraw" element={<SdWalletWithdraw />} />
+        <Route
+          path="/fund-transfer-status"
+          element={<SdFundTransferStatus />}
+        />
+        <Route
+          path="/download-certificate-print"
+          element={
+            <Certificate
+              user="SUPER DISTRIBUTOR"
+              name="Aashish Kumar"
+              address="Jabalpur, BIHAR - 482001"
+              date="02-Jul-2024"
+              id="AASHISD29164"
+            />
+          }
+        />
       </Routes>
     </React.Fragment>
   );

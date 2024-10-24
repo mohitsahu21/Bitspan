@@ -4,7 +4,7 @@ import { BiHomeAlt } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
-const SdAllOfflineForm = () => {
+const PanOfflineForm = () => {
   const user = useSelector((state) => state.user.currentUser);
   const [offData, setOffData] = useState([]);
   console.log(user);
@@ -12,7 +12,7 @@ const SdAllOfflineForm = () => {
   const getOfflineData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7171/api/auth/superDistributor/getAllOtherOfflineFormDetails/${user.userId}`
+        `http://localhost:7171/api/auth/superDistributor/getPanCardOfflineFormDetails/${user.userId}`
       );
       setOffData(data);
     } catch (error) {
@@ -41,10 +41,11 @@ const SdAllOfflineForm = () => {
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          View All Offline History
+                          View PAN Card Offline History
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; View All Offline History{" "}
+                          <BiHomeAlt /> &nbsp;/ &nbsp; View PAN Card Offline
+                          History{" "}
                         </h6>
                       </div>
                     </div>
@@ -90,41 +91,53 @@ const SdAllOfflineForm = () => {
                               <thead className="table-dark">
                                 <tr>
                                   <th scope="col">ID</th>
+                                  <th scope="col">Application Type</th>
                                   <th scope="col">Applicant Name</th>
-                                  <th scope="col">Applicant Email</th>
-                                  <th scope="col">Applicant Father</th>
-                                  <th scope="col">Applicant Mother</th>
-                                  <th scope="col">Applicant Number</th>
-                                  <th scope="col">Aadhar Card</th>
-                                  <th scope="col">Pan Card</th>
-                                  <th scope="col">Applicant Select Service</th>
-                                  <th scope="col">other Details</th>
-                                  <th scope="col">business_name</th>
-                                  <th scope="col">Attached Form</th>
-                                  <th scope="col">Attached Photo</th>
-                                  <th scope="col">Attached Sign</th>
-                                  <th scope="col">Attached KYC</th>
-                                  <th scope="col">Bank Passbook</th>
-                                  <th scope="col">Shop Photo</th>
-                                  <th scope="col">Electric Bill</th>
-                                  <th scope="col">Status</th>
+                                  <th scope="col">Father Name</th>
+                                  <th scope="col">Mother Name</th>
+                                  <th scope="col">DOB</th>
+                                  <th scope="col">Gender</th>
+                                  <th scope="col">Office Address</th>
+                                  <th scope="col">Aadhar Details</th>
+                                  <th scope="col">Alternate Address</th>
+                                  <th scope="col">Mobile Number</th>
+                                  <th scope="col">Email</th>
+                                  <th scope="col">Pin Code</th>
+                                  <th scope="col">State</th>
+                                  <th scope="col">Applicant Document</th>
+                                  <th scope="col">Attachment Form</th>
+                                  <th scope="col">Attachment Signature</th>
+                                  <th scope="col">Attachment Photo</th>
+                                  <th scope="col">Charge Amount</th>
+                                  <th scope="col">State</th>
                                   <th scope="col">Note</th>
-                                  <th scope="col">Date</th>
                                 </tr>
                               </thead>
                               <tbody>
                                 {offData.map((data, index) => (
                                   <>
                                     <tr>
-                                      <th>{data.id}</th>
-                                      <th>{data.applicant_name}</th>
-                                      <th>{data.email}</th>
-                                      <th>{data.applicant_father}</th>
-                                      <th>{data.applicant_mother}</th>
-                                      <th>{data.applicant_number}</th>
+                                      <td>{data.id}</td>
+                                      <td>{data.application_type}</td>
+                                      <td>
+                                        {data.select_title} {data.name}
+                                      </td>
+                                      <td>{data.father_name}</td>
+                                      <td>{data.mother_name}</td>
+                                      <td>{data.dob}</td>
+                                      <td>{data.gender}</td>
+                                      <td>{data.office_address}</td>
+                                      <td>{data.aadhar_details}</td>
+                                      <td>
+                                        {data.alternative_communication_Address}
+                                      </td>
+                                      <td>{data.mobile_no}</td>
+                                      <td>{data.email_id}</td>
+                                      <td>{data.pin_code}</td>
+                                      <td>{data.state}</td>
                                       <th>
                                         <a
-                                          href={data.aadhar_card}
+                                          href={data.documentUpload}
                                           target="_blank"
                                           rel="noopener noreferrer"
                                           className="text-decoration-none"
@@ -133,23 +146,8 @@ const SdAllOfflineForm = () => {
                                         </a>
                                       </th>
                                       <th>
-                                        {" "}
                                         <a
-                                          href={data.pan_card}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="text-decoration-none"
-                                        >
-                                          View Document
-                                        </a>
-                                      </th>
-                                      <th>{data.applicant_select_service}</th>
-                                      <th>{data.other}</th>
-                                      <th>{data.business_name}</th>
-                                      <th>
-                                        {" "}
-                                        <a
-                                          href={data.attached_form}
+                                          href={data.attachment_form}
                                           target="_blank"
                                           rel="noopener noreferrer"
                                           className="text-decoration-none"
@@ -158,9 +156,8 @@ const SdAllOfflineForm = () => {
                                         </a>
                                       </th>
                                       <th>
-                                        {" "}
                                         <a
-                                          href={data.attached_photo}
+                                          href={data.attachment_signature}
                                           target="_blank"
                                           rel="noopener noreferrer"
                                           className="text-decoration-none"
@@ -169,9 +166,8 @@ const SdAllOfflineForm = () => {
                                         </a>
                                       </th>
                                       <th>
-                                        {" "}
                                         <a
-                                          href={data.attached_sign}
+                                          href={data.attachment_photo}
                                           target="_blank"
                                           rel="noopener noreferrer"
                                           className="text-decoration-none"
@@ -179,53 +175,9 @@ const SdAllOfflineForm = () => {
                                           View Document
                                         </a>
                                       </th>
-                                      <th>
-                                        {" "}
-                                        <a
-                                          href={data.attached_kyc}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="text-decoration-none"
-                                        >
-                                          View Document
-                                        </a>
-                                      </th>
-                                      <th>
-                                        {" "}
-                                        <a
-                                          href={data.bank_passbook}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="text-decoration-none"
-                                        >
-                                          View Document
-                                        </a>
-                                      </th>
-                                      <th>
-                                        {" "}
-                                        <a
-                                          href={data.shop_photo}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="text-decoration-none"
-                                        >
-                                          View Document
-                                        </a>
-                                      </th>
-                                      <th>
-                                        {" "}
-                                        <a
-                                          href={data.electric_bill}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="text-decoration-none"
-                                        >
-                                          View Document
-                                        </a>
-                                      </th>
-                                      <th>{data.status}</th>
+                                      <th>{data.Charge_Amount}</th>
+                                      <th>{data.state}</th>
                                       <th>{data.note}</th>
-                                      <th>{data.created_at}</th>
                                     </tr>
                                   </>
                                 ))}
@@ -268,7 +220,7 @@ const SdAllOfflineForm = () => {
   );
 };
 
-export default SdAllOfflineForm;
+export default PanOfflineForm;
 
 const Wrapper = styled.div`
   .main {
@@ -286,7 +238,6 @@ const Wrapper = styled.div`
   th {
     font-weight: 500;
     font-size: 14px;
-    white-space: nowrap;
   }
   td {
     font-size: 14px;

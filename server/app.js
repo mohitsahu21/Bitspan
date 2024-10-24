@@ -13,6 +13,7 @@ const zlink = require("./routers/Retailer/zlinkPanRouter");
 const easyPayRouter = require("./routers/SuperAdmin/easyPayUpiPaymentRouter");
 const superAdminRouter = require("./routers/SuperAdmin/superAdminRouter");
 const superEmployeeRoute = require("./routers/superadminemployee/superEmployeeRoute");
+const superDistributor = require("./routers/superDistributor/superDistributorRoute");
 const loginRouter = require("./routers/LoginApi/loginUserRoute");
 const moment = require("moment-timezone");
 const { db } = require("./connect");
@@ -41,6 +42,7 @@ app.use("/api/auth/zlink", zlink);
 app.use("/api/auth/easyPayUpi", easyPayRouter);
 app.use("/api/auth/superAdmin", superAdminRouter);
 app.use("/api/auth/superAdminEmployee", superEmployeeRoute);
+app.use("/api/auth/superDistributor", superDistributor);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/panUploads", express.static(path.join(__dirname, "panUploads")));
 app.use(

@@ -303,56 +303,29 @@ const loginUserWithOTP = async (req, res) => {
           .json({ status: "Failure", message: "Invalid password" });
       }
 
-      // Check if user role requires OTP (only "superadmin" or "retailer" need OTP)
-      if (
-        user.role === "SuperAdmin" ||
-        user.role === "retailer" ||
-        user.role === "SuperAdmin_Employee"
-      ) {
-        const otp = crypto.randomInt(100000, 999999).toString();
+      const otp = crypto.randomInt(100000, 999999).toString();
 
-        const otpHash = await bcrypt.hash(otp, 10);
+      const otpHash = await bcrypt.hash(otp, 10);
 
-        otpStore.set(user.UserId, {
-          otpHash,
-          expiresAt: Date.now() + 5 * 60 * 1000, // OTP expires in 5 minutes
-        });
+      otpStore.set(user.UserId, {
+        otpHash,
+        expiresAt: Date.now() + 5 * 60 * 1000, // OTP expires in 5 minutes
+      });
 
-        try {
-          await sendOtpEmail(user.Email, otp);
-        } catch (emailError) {
-          console.error("Error sending email:", emailError);
-          return res
-            .status(500)
-            .json({ status: "Failure", message: "Failed to send OTP email" });
-        }
-
-        return res.status(200).json({
-          status: "Success",
-          message: "OTP sent to your registered email",
-          user: user.role,
-        });
-      } else {
-        // For roles like "whitelabel", "superdistributer", and "distributer", log in directly
-        const payload = {
-          userId: user.UserId,
-          role: user.role,
-          email: user.Email,
-        };
-
-        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "6h" });
-
-        return res.json({
-          status: "Success",
-          message: "Login successful",
-          token,
-          user: {
-            userId: user.UserId,
-            role: user.role,
-            email: user.Email,
-          },
-        });
+      try {
+        await sendOtpEmail(user.Email, otp);
+      } catch (emailError) {
+        console.error("Error sending email:", emailError);
+        return res
+          .status(500)
+          .json({ status: "Failure", message: "Failed to send OTP email" });
       }
+
+      return res.status(200).json({
+        status: "Success",
+        message: "OTP sent to your registered email",
+        user: user.role,
+      });
     });
   } catch (error) {
     console.error("Error processing login request:", error);
@@ -572,10 +545,263 @@ const superAdminEmployeeRegiser = async (req, res) => {
   }
 };
 
+const forgototpStore = new Map();
+
+const passwordOtpEmail = async (email, otp) => {
+  try {
+    const mailOptions = {
+      from: `"Your Password OTP" ${process.env.EMAILSENDER}`,
+      to: email,
+      subject: "Password Reset OTP",
+      text: `Your password reset OTP code is: ${otp}`,
+      html: `<b>Your password reset OTP code is: ${otp}</b>`,
+    };
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent: %s", info.messageId);
+  } catch (error) {
+    console.error("Error sending email:", error);
+    throw error;
+  }
+};
+
+const forgotPassword = async (req, res) => {
+  const { UserId } = req.body;
+
+  if (!UserId) {
+    return res
+      .status(400)
+      .json({ status: "Failure", message: "UserId is required" });
+  }
+
+  try {
+    const getUserQuery = `SELECT * FROM userprofile WHERE UserId = ?`;
+
+    db.query(getUserQuery, [UserId], async (err, result) => {
+      if (err || result.length === 0) {
+        return res
+          .status(400)
+          .json({ status: "Failure", message: "User not found" });
+      }
+      const user = result[0];
+      const otp = crypto.randomInt(100000, 999999).toString();
+      const otpHash = await bcrypt.hash(otp, 10);
+
+      forgototpStore.set(user.UserId, {
+        otpHash,
+        expiresAt: Date.now() + 5 * 60 * 1000,
+      });
+
+      passwordOtpEmail(user.Email, otp);
+
+      return res
+        .status(200)
+        .json({ status: "Success", message: `OTP sent to ${user.Email}` });
+    });
+  } catch (error) {
+    console.error("Error processing forgot password request:", error);
+    return res
+      .status(500)
+      .json({ status: "Failure", message: "Internal server error" });
+  }
+};
+
+const verifyOtpAndResetPassword = async (req, res) => {
+  const { UserId, otp, newPassword } = req.body;
+
+  if (!UserId || !otp || !newPassword) {
+    return res.status(400).json({
+      status: "Failure",
+      message: "UserId, OTP, and new password are required",
+    });
+  }
+
+  try {
+    const getUserQuery = `SELECT * FROM userprofile WHERE UserId = ?`;
+    db.query(getUserQuery, [UserId], async (err, results) => {
+      if (err || results.length === 0) {
+        return res
+          .status(404)
+          .json({ status: "Failure", message: "User not found" });
+      }
+
+      const user = results[0];
+      const otpData = forgototpStore.get(user.UserId);
+
+      if (!otpData || Date.now() > otpData.expiresAt) {
+        return res
+          .status(400)
+          .json({ status: "Failure", message: "OTP expired or invalid" });
+      }
+
+      console.log("OTP Provided:", otp);
+      console.log("Stored OTP Hash:", otpData.otpHash);
+
+      // Ensure OTP comparison
+      const isOtpValid = await bcrypt.compare(otp.toString(), otpData.otpHash);
+      console.log("OTP Valid:", isOtpValid);
+      if (!isOtpValid) {
+        return res
+          .status(400)
+          .json({ status: "Failure", message: "Invalid OTP" });
+      }
+
+      // Hash new password
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+      // Update the password in the database
+      const updatePasswordQuery = `UPDATE userprofile SET password = ? WHERE UserId = ?`;
+      db.query(updatePasswordQuery, [hashedPassword, UserId], (updateErr) => {
+        if (updateErr) {
+          console.error("Error updating password:", updateErr);
+          return res
+            .status(500)
+            .json({ status: "Failure", message: "Failed to reset password" });
+        }
+
+        // Clear the OTP from the store after successful reset
+        forgototpStore.delete(user.UserId);
+
+        return res
+          .status(200)
+          .json({ status: "Success", message: "Password reset successful" });
+      });
+    });
+  } catch (error) {
+    console.error("Error processing password reset:", error);
+    return res
+      .status(500)
+      .json({ status: "Failure", message: "Internal server error" });
+  }
+};
+
+const changePasswordRequest = async (req, res) => {
+  const { UserId, oldPassword, newPassword } = req.body;
+
+  if (!UserId || !oldPassword || !newPassword) {
+    return res.status(400).json({
+      status: "Failure",
+      message: "UserId, old password, and new password are required",
+    });
+  }
+
+  try {
+    // Fetch the user based on UserId
+    const getUserQuery = `SELECT * FROM userprofile WHERE UserId = ?`;
+    db.query(getUserQuery, [UserId], async (err, results) => {
+      if (err || results.length === 0) {
+        return res
+          .status(404)
+          .json({ status: "Failure", message: "User not found" });
+      }
+
+      const user = results[0];
+      const isOldPasswordValid = await bcrypt.compare(
+        oldPassword,
+        user.password
+      );
+      if (!isOldPasswordValid) {
+        return res.status(400).json({
+          status: "Failure",
+          message: "Old password is incorrect",
+        });
+      }
+
+      // Generate OTP
+      const otp = crypto.randomInt(100000, 999999).toString();
+      const otpHash = await bcrypt.hash(otp, 10); // Hash the OTP
+
+      // Store OTP hash and expiration time in the store
+      forgototpStore.set(user.UserId, {
+        otpHash,
+        newPassword,
+        expiresAt: Date.now() + 5 * 60 * 1000,
+      });
+
+      // Send OTP to the user's email
+      await passwordOtpEmail(user.Email, otp);
+
+      return res.status(200).json({
+        status: "Success",
+        message: "OTP sent to your email. Please verify it.",
+      });
+    });
+  } catch (error) {
+    console.error("Error processing change password request:", error);
+    return res
+      .status(500)
+      .json({ status: "Failure", message: "Internal server error" });
+  }
+};
+
+const verifyOtpAndChangePassword = async (req, res) => {
+  const { UserId, otp } = req.body;
+
+  if (!UserId || !otp) {
+    return res.status(400).json({
+      status: "Failure",
+      message: "UserId and OTP are required",
+    });
+  }
+
+  try {
+    const otpData = forgototpStore.get(UserId);
+
+    if (!otpData || Date.now() > otpData.expiresAt) {
+      return res.status(400).json({
+        status: "Failure",
+        message: "OTP expired or invalid",
+      });
+    }
+
+    // Compare the provided OTP with the hashed OTP
+    const isOtpValid = await bcrypt.compare(otp.toString(), otpData.otpHash);
+    if (!isOtpValid) {
+      return res.status(400).json({
+        status: "Failure",
+        message: "Invalid OTP",
+      });
+    }
+
+    console.log("Stored OTP Hash:", otpData.otpHash);
+    console.log("Provided OTP:", otp.toString());
+    console.log("New password to be changed:", otpData.newPassword);
+
+    // Hash the new password and update it in the database
+    const hashedPassword = await bcrypt.hash(otpData.newPassword, 10);
+    const updatePasswordQuery = `UPDATE userprofile SET password = ? WHERE UserId = ?`;
+
+    db.query(updatePasswordQuery, [hashedPassword, UserId], (updateErr) => {
+      if (updateErr) {
+        console.error("Error updating password:", updateErr);
+        return res
+          .status(500)
+          .json({ status: "Failure", message: "Failed to change password" });
+      }
+
+      // Clear OTP data from the store after password reset
+      forgototpStore.delete(UserId);
+
+      return res.status(200).json({
+        status: "Success",
+        message: "Password changed successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Error processing OTP verification:", error);
+    return res
+      .status(500)
+      .json({ status: "Failure", message: "Internal server error" });
+  }
+};
+
 module.exports = {
   userRegiser,
   loginUser,
   loginUserWithOTP,
   verifyOtpAndLogin,
   superAdminEmployeeRegiser,
+  forgotPassword,
+  verifyOtpAndResetPassword,
+  changePasswordRequest,
+  verifyOtpAndChangePassword,
 };

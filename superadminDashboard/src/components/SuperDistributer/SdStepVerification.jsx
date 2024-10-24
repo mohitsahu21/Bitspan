@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { BiHomeAlt } from "react-icons/bi";
 import { FaLock } from "react-icons/fa6";
 import { FaQuestion } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const SdStepVerification = () => {
+  const user = useSelector((state) => state.user.currentUser);
+  const [pin, setPin] = useState("");
+  console.log(user);
+
+  const updatePin = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.put(
+        `http://localhost:7171/api/auth/superDistributor/updateTwoStepPin/${user.userId}`,
+        { pin: pin }
+      );
+      alert("pin updated successfully");
+      setPin("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(pin);
+
   return (
     <>
       <Wrapper>
@@ -20,7 +42,9 @@ const SdStepVerification = () => {
                   <div className="row">
                     <div className="col-12">
                       <div className="d-flex justify-content-between align-items-center raisecomp flex-wrap">
-                        <h4 className="mx-lg-5 ">Step PIN And 2 Step Verification</h4>
+                        <h4 className="mx-lg-5 ">
+                          Step PIN And 2 Step Verification
+                        </h4>
                         <h6 className="mx-lg-5">
                           {" "}
                           <BiHomeAlt /> &nbsp; / &nbsp; Step PIN And 2 Step
@@ -38,39 +62,42 @@ const SdStepVerification = () => {
                     <form>
                       <hr />
                       <br />
-                      <div class="input-group mb-3">
-                        <span class="input-group-text">
+                      <div className="input-group mb-3">
+                        <span className="input-group-text">
                           <FaLock />
                         </span>
-                        <div class="form-floating">
+                        <div className="form-floating">
                           <input
                             type="text"
-                            class="form-control"
+                            className="form-control"
                             id="floatingInputGroup1"
                             placeholder="Set 4 Digit PIN"
+                            name="pin"
+                            value={pin}
+                            onChange={(e) => setPin(e.target.value)}
                           />
-                          <label for="floatingInputGroup1">
+                          <label htmlFor="floatingInputGroup1">
                             Set 4 Digit PIN
                           </label>
                         </div>
                       </div>
 
-                      <div class="input-group mb-3">
-                        <span class="input-group-text">
+                      {/* <div className="input-group mb-3">
+                        <span className="input-group-text">
                           <FaQuestion />
                         </span>
-                        <div class="form-floating">
+                        <div className="form-floating">
                           <input
                             type="text"
-                            class="form-control"
+                            className="form-control"
                             id="floatingInputGroup1"
                             placeholder="2 Step Verification"
                           />
-                          <label for="floatingInputGroup1">
+                          <label htmlFor="floatingInputGroup1">
                             2 Step Verification
                           </label>
                         </div>
-                      </div>
+                      </div> */}
 
                       <br />
                       <hr />
@@ -79,6 +106,7 @@ const SdStepVerification = () => {
                         <button
                           className="btn btn-none text-light"
                           style={{ backgroundColor: "#6d70ff" }}
+                          onClick={updatePin}
                         >
                           Update
                         </button>

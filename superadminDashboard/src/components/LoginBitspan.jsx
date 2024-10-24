@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
@@ -32,40 +32,15 @@ const LoginBitspan = () => {
 
         setUserRole(role);
         console.log(role);
-
-        if (
-          role === "Retailer" ||
-          role === "SuperAdmin" ||
-          role === "SuperAdmin_Employee"
-        ) {
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "OTP sent to your registered number",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          setIsOtpSent(true);
-        } else {
-          dispatch(setUser(response.data.user));
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Login Successful",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          // navigate("/dashboard");
-        }
-
-        // Swal.fire({
-        //   position: "center",
-        //   icon: "success",
-        //   title: response.data.message,
-        //   showConfirmButton: false,
-        //   timer: 1500,
-        // });
-        // setIsOtpSent(true);
+        setIsOtpSent(true);
+        dispatch(setUser(response.data.user));
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Login Successful",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       } else {
         Swal.fire({
           icon: "error",
@@ -133,42 +108,42 @@ const LoginBitspan = () => {
                     <h4 className="text-muted mt-2 text-center fs-5">
                       Welcome Back !
                     </h4>
-                    <p class="mb-5 text-center">
+                    <p className="mb-5 text-center">
                       Sign in to continue to Bitspan.
                     </p>
                   </div>
                   <form>
                     {!isOtpSent ? (
                       <>
-                        <div data-mdb-input-init class="form-outline mb-4">
-                          <label class="form-label" for="form2Example1">
+                        <div data-mdb-input-init className="form-outline mb-4">
+                          <label className="form-label" htmlFor="form2Example1">
                             User Name
                           </label>
                           <input
                             type="email"
                             id="form2Example1"
-                            class="form-control"
+                            className="form-control"
                             value={userName}
                             onChange={(e) => setUserName(e.target.value)}
                           />
                         </div>
 
-                        <div data-mdb-input-init class="form-outline mb-4">
-                          <label class="form-label" for="form2Example2">
+                        <div data-mdb-input-init className="form-outline mb-4">
+                          <label className="form-label" htmlFor="form2Example2">
                             Password
                           </label>
                           <input
                             type="password"
                             id="form2Example2"
-                            class="form-control"
+                            className="form-control"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                           />
                         </div>
 
-                        <div class="row mb-4">
-                          <div class="col">
-                            <a href="#!">Forgot password?</a>
+                        <div className="row mb-4">
+                          <div className="col">
+                            <Link to="/password-reset">Forgot password?</Link>
                           </div>
                         </div>
 
@@ -176,7 +151,7 @@ const LoginBitspan = () => {
                           <button
                             data-mdb-ripple-init
                             type="button"
-                            class="btn btn-primary btn-block mb-4"
+                            className="btn btn-primary btn-block mb-4"
                             onClick={handleLogin}
                           >
                             Sign in
@@ -345,55 +320,55 @@ const Wrapper = styled.div`
 //                     <h4 className="text-muted mt-2 text-center fs-5">
 //                       Welcome Back !
 //                     </h4>
-//                     <p class="mb-5 text-center">
+//                     <p className="mb-5 text-center">
 //                       Sign in to continue to Bitspan.
 //                     </p>
 //                   </div>
 //                   <form>
-//                     <div data-mdb-input-init class="form-outline mb-4">
-//                       <label class="form-label" for="form2Example1">
+//                     <div data-mdb-input-init className="form-outline mb-4">
+//                       <label className="form-label" htmlFor="form2Example1">
 //                         User Name
 //                       </label>
 //                       <input
 //                         type="email"
 //                         id="form2Example1"
-//                         class="form-control"
+//                         className="form-control"
 //                         value={userName}
 //                         onChange={(e)=> setUserName(e.target.value)}
 //                       />
 //                     </div>
 
-//                     <div data-mdb-input-init class="form-outline mb-4">
-//                       <label class="form-label" for="form2Example2">
+//                     <div data-mdb-input-init className="form-outline mb-4">
+//                       <label className="form-label" htmlFor="form2Example2">
 //                         Password
 //                       </label>
 //                       <input
 //                         type="password"
 //                         id="form2Example2"
-//                         class="form-control"
+//                         className="form-control"
 //                         value={password}
 //                         onChange={(e)=> setPassword(e.target.value)}
 //                       />
 //                     </div>
 
-//                     <div class="row mb-4">
-//                       <div class="col d-flex justify-content-center">
-//                         <div class="form-check">
+//                     <div className="row mb-4">
+//                       <div className="col d-flex justify-content-center">
+//                         <div className="form-check">
 //                           <input
-//                             class="form-check-input"
+//                             className="form-check-input"
 //                             type="checkbox"
 //                             value=""
 //                             id="form2Example34"
 //                             checked
 //                           />
-//                           <label class="form-check-label" for="form2Example34">
+//                           <label className="form-check-label" htmlFor="form2Example34">
 //                             {" "}
 //                             Remember me{" "}
 //                           </label>
 //                         </div>
 //                       </div>
 
-//                       <div class="col">
+//                       <div className="col">
 //                         <a href="#!">Forgot password?</a>
 //                       </div>
 //                     </div>
@@ -402,7 +377,7 @@ const Wrapper = styled.div`
 //                       <button
 //                         data-mdb-ripple-init
 //                         type="button"
-//                         class="btn btn-primary btn-block mb-4"
+//                         className="btn btn-primary btn-block mb-4"
 //                         onClick={handelLogin}
 //                       >
 //                         Sign in
@@ -410,7 +385,7 @@ const Wrapper = styled.div`
 
 //                     </div>
 
-//                     {/* <div class="text-center">
+//                     {/* <div className="text-center">
 //                       <p>
 //                         Not a member? <a href="#!">Register</a>
 //                       </p>
@@ -418,33 +393,33 @@ const Wrapper = styled.div`
 //                       <button
 //                         data-mdb-ripple-init
 //                         type="button"
-//                         class="btn btn-secondary btn-floating mx-1"
+//                         className="btn btn-secondary btn-floating mx-1"
 //                       >
-//                         <i class="fab fa-facebook-f"></i>
+//                         <i className="fab fa-facebook-f"></i>
 //                       </button>
 
 //                       <button
 //                         data-mdb-ripple-init
 //                         type="button"
-//                         class="btn btn-secondary btn-floating mx-1"
+//                         className="btn btn-secondary btn-floating mx-1"
 //                       >
-//                         <i class="fab fa-google"></i>
+//                         <i className="fab fa-google"></i>
 //                       </button>
 
 //                       <button
 //                         data-mdb-ripple-init
 //                         type="button"
-//                         class="btn btn-secondary btn-floating mx-1"
+//                         className="btn btn-secondary btn-floating mx-1"
 //                       >
-//                         <i class="fab fa-twitter"></i>
+//                         <i className="fab fa-twitter"></i>
 //                       </button>
 
 //                       <button
 //                         data-mdb-ripple-init
 //                         type="button"
-//                         class="btn btn-secondary btn-floating mx-1"
+//                         className="btn btn-secondary btn-floating mx-1"
 //                       >
-//                         <i class="fab fa-github"></i>
+//                         <i className="fab fa-github"></i>
 //                       </button>
 //                     </div> */}
 //                   </form>

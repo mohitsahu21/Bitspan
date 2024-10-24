@@ -1,46 +1,59 @@
-import React from "react";
 import styled from "styled-components";
-import HeadBar from "../components/HeadBar";
-import Sider from "../components/SideBar";
-import { TbRecharging } from "react-icons/tb";
-import { FaMobileAlt } from "react-icons/fa";
-import { MdOutlineWidthFull } from "react-icons/md";
-import { RiCoupon2Line } from "react-icons/ri";
-import { FaRegMessage } from "react-icons/fa6";
-import { MdManageSearch } from "react-icons/md";
-import { IoIosLogIn } from "react-icons/io";
-import { MdCrop } from "react-icons/md";
 import { MdAddCard } from "react-icons/md";
-import { AiOutlineForm } from "react-icons/ai";
-import { MdAddShoppingCart } from "react-icons/md";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BiHomeAlt } from "react-icons/bi";
 import { LuUserPlus } from "react-icons/lu";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { BsInfoSquare } from "react-icons/bs";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const SuperDistributerDashboard = () => {
   const navigate = useNavigate();
-  // Define the custom tooltip styled component
+  const [superDistUser, setSuperDistUser] = useState([]);
+
+  const getSuperDisUserDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        "http://localhost:7171/api/auth/superDistributor/getSuperDistributorUserList"
+      );
+      setSuperDistUser(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getSuperDisUserDetails();
+  }, []);
+
+  console.log(superDistUser);
+
+  const userTypeCount = superDistUser.reduce((acc, user) => {
+    acc[user.userType] = (acc[user.userType] || 0) + 1;
+    return acc;
+  }, {});
+
+  console.log(userTypeCount);
+
   const CustomTooltip = styled(Tooltip)`
     .tooltip-inner {
-      background-color: #fdded1; /* Change the background color */
-      color: #fb510d; /* Change the text color */
+      background-color: #fdded1;
+      color: #fb510d;
       width: 150px;
-      /* border: 1px solid black; */
     }
     .tooltip-arrow::before {
-      border-top-color: white; /* Change the arrow color */
+      border-top-color: white;
     }
   `;
 
   const User = ({ id, children, title }) => (
     <OverlayTrigger
       overlay={
-        <CustomTooltip id={id}>
-          {" "}
-          {`Total Distributor - ${5}`} <br /> {`Total Retailer - ${5}`}
+        <CustomTooltip id="user-tooltip">
+          {`Total Distributor - ${userTypeCount.Distributor || 0}`} <br />
+          {`Total Retailer - ${userTypeCount.Retailer || 0}`}
         </CustomTooltip>
       }
     >
@@ -59,9 +72,6 @@ const SuperDistributerDashboard = () => {
               </div>
               <div className="row shadow-none  formdata mt-4">
                 <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 ">
-                  {/* <div className="text-center">
-                        <h3>Change Password</h3>
-                      </div> */}
                   <div className="d-flex justify-content-between align-items-center flex-wrap">
                     <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Dashboard</h4>
                     <h6 className="mx-lg-5">
@@ -89,26 +99,6 @@ const SuperDistributerDashboard = () => {
                     </div>
                   </div>
                   <div className="row  d-flex formdata justify-content-center">
-                    {/* <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div
-                        className="card card-3"
-                        onClick={() => navigate("/crop-tool")}
-                      >
-                        <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <MdCrop />
-                          </div>
-                          <div></div>
-                          <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">
-                              Photo & Signature
-                            </p>
-                            <h4 className="px-2 my-0">Cropping Tool</h4>{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div> */}
-
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-4">
                         <div className="d-flex">
@@ -133,28 +123,15 @@ const SuperDistributerDashboard = () => {
                             <div></div>
                             <div className="d-flex flex-column cardtext">
                               <p className="mb-0 px-2 my-0 fs-6">Total Users</p>
-                              <h4 className="px-2 my-0">0</h4>{" "}
+                              <h4 className="px-2 my-0">
+                                {superDistUser.length}
+                              </h4>{" "}
                             </div>
                           </div>
                         </div>
                       </div>
                     </User>
-                    {/* <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-1">
-                        <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <MdAddShoppingCart />
-                          </div>
-                          <div></div>
-                          <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">
-                              Today's Coupon Bought
-                            </p>
-                            <h4 className="px-2 my-0">12</h4>{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div> */}
+
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-2">
                         <div className="d-flex">
