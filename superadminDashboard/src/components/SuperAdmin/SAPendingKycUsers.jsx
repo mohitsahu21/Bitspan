@@ -10,6 +10,7 @@ import { Dropdown, Modal } from "react-bootstrap";
 import axios from "axios";
 import { LuTextSelect } from "react-icons/lu";
 import Swal from "sweetalert2";
+import ReactPaginate from "react-paginate";
 
 
 
@@ -21,8 +22,13 @@ const SAApproveUser = ({ user, setShowApproveModel, setIsRefresh }) => {
   const [formData, setFormData] = useState({
     UserName: user.UserName,
     UserId: user.UserId,
+    UserRole : user.role,
     PackageId: "",
     Status: "Active",
+    white_lable : "",
+    superDistributor : "",
+    distributor : "",
+    website_url : user.created_By_Website
   });
 
   const handleChange = (e) => {
@@ -40,7 +46,28 @@ const SAApproveUser = ({ user, setShowApproveModel, setIsRefresh }) => {
       const { data } = await axios.get(
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPackage"
       );
-      setPackages(data.data);
+      const packageFind = ()=>{
+        if(user.role == "Retailer"){
+          return "package_Retailer"
+        }
+       else if(user.role == "WhiteLabel"){
+          return "package_WhiteLabel"
+        }
+      else  if(user.role == "SuperDistributor"){
+          return "package_SuperDistributor"
+        }
+       else if(user.role == "Distributor"){
+          return "package_Distributor"
+        }
+       
+      }
+      const packagefor = packageFind();
+      const filterPackage = data?.data?.filter((item)=>{
+        return item?.package_for?.includes(packagefor) 
+      })
+      console.log(filterPackage)
+      setPackages(filterPackage);
+      // setPackages(data.data);
       setPackagesLoading(false);
     } catch (error) {
       console.error("Error fetching package data:", error);
@@ -105,9 +132,9 @@ const SAApproveUser = ({ user, setShowApproveModel, setIsRefresh }) => {
                 </span>
                 <input
                   type="text"
-                  name="package_name"
+                  // name="package_name"
                   class="form-control"
-                  placeholder="Enter Package Name"
+                  // placeholder="Enter Package Name"
                   value={user.UserName}
                   onChange={handleChange}
                   disabled
@@ -126,10 +153,31 @@ const SAApproveUser = ({ user, setShowApproveModel, setIsRefresh }) => {
                 </span>
                 <input
                   type="text"
-                  name="package_name"
+                  // name="package_name"
                   class="form-control"
-                  placeholder="Enter Package Name"
+                  // placeholder="Enter Package Name"
                   value={user.UserId}
+                  onChange={handleChange}
+                  disabled
+                  required
+                />
+              </div>
+            </div>
+            <div className="mt-3">
+              <label for="name" class="form-label">
+                User Role
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <FaRupeeSign />
+                </span>
+                <input
+                  type="text"
+                  // name="package_name"
+                  class="form-control"
+                  // placeholder="Enter Package Name"
+                  value={user.role}
                   onChange={handleChange}
                   disabled
                   required
@@ -165,6 +213,72 @@ const SAApproveUser = ({ user, setShowApproveModel, setIsRefresh }) => {
                 </select>
               </div>
             </div>
+          {user.role != "WhiteLabel" && <div className="mt-3">
+              <label for="name" class="form-label">
+                Enter WhiteLabel User Id
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <FaRupeeSign />
+                </span>
+                <input
+                  type="text"
+                  name="white_lable"
+                  class="form-control"
+                  placeholder="Enter WhiteLabel User Id"
+                  value={user.white_lable}
+                  onChange={handleChange}
+                  
+                  
+                />
+              </div>
+            </div>} 
+            {(user.role != "SuperDistributor" &&  user.role != "WhiteLabel" ) &&
+             <div className="mt-3">
+             <label for="name" class="form-label">
+               Enter Super Distributor User Id
+             </label>
+             <div class="input-group flex-nowrap">
+               <span class="input-group-text" id="addon-wrapping">
+                 {" "}
+                 <FaRupeeSign />
+               </span>
+               <input
+                 type="text"
+                 name="superDistributor"
+                 class="form-control"
+                 placeholder="Enter Super Distributor User Id"
+                 value={user.superDistributor}
+                 onChange={handleChange}
+                 
+                
+               />
+             </div>
+           </div>}
+           {(user.role != "SuperDistributor" &&  user.role != "WhiteLabel" && user.role != "Distributor") && 
+            <div className="mt-3">
+            <label for="name" class="form-label">
+              Enter Distributor User Id
+            </label>
+            <div class="input-group flex-nowrap">
+              <span class="input-group-text" id="addon-wrapping">
+                {" "}
+                <FaRupeeSign />
+              </span>
+              <input
+                type="text"
+                name="distributor"
+                class="form-control"
+                placeholder="Enter Distributor User Id"
+                value={user.distributor}
+                onChange={handleChange}
+                
+               
+              />
+            </div>
+          </div>}
+           
 
             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
               <div className="text-center  m-5">
@@ -541,7 +655,7 @@ const SAPendingKycUsers = () => {
                                             View
                                           </a>
                                         </td>
-                                        <td>Pending</td>
+                                        <td>{user.Status}</td>
                                         {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
                                         <td>{user?.Note}</td>
                                         <td>
@@ -589,6 +703,19 @@ const SAPendingKycUsers = () => {
                               </table>
                             )}
                           </div>
+                          <PaginationContainer>
+                            <ReactPaginate
+                              previousLabel={"previous"}
+                              nextLabel={"next"}
+                              breakLabel={"..."}
+                              pageCount={totalPages}
+                              marginPagesDisplayed={2}
+                              pageRangeDisplayed={5}
+                              onPageChange={handlePageChange}
+                              containerClassName={"pagination"}
+                              activeClassName={"active"}
+                            />
+                          </PaginationContainer>
                         </div>
                       </div>
                     </div>
@@ -691,86 +818,51 @@ const Wrapper = styled.div`
   }
 `;
 
-<tbody>
-  <tr>
-    <th scope="row">1</th>
-    <td>23/05/2024 14:35:58</td>
 
-    <td>MOHIT29605</td>
+const PaginationContainer = styled.div`
+  .pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    list-style: none;
+    border-radius: 5px; 
+  }
 
-    <td>Mohit Sahu</td>
-    <td>mohitsahu1993@gmail.com</td>
-    <td>9806324244</td>
-    <td>JABALPUR MADHYA PRADESH - 482002</td>
-    <td>FTIPS334546L</td>
-    {/* <td>107.00</td>
-                                    <td>107.00</td> */}
+  .pagination li {
+    margin: 0 5px;
+  }
 
-    <td>Retailer</td>
-    <td>Online Registration</td>
-    <td>Bitspan.in</td>
-    <td>15</td>
-    <td>One percentage</td>
+  .pagination li a {
+    display: block;
+    padding: 8px 16px;
+    border: 1px solid #e6ecf1;
+    color: #007bff;
+    cursor: pointer;
+    /* background-color: #004aad0a; */
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 1px #000;
+  }
 
-    <td>Done</td>
+  .pagination li.active a {
+    background-color: #004aad;
+    color: white;
+    border: 1px solid #004aad;
+    border-radius: 5px;
+  }
 
-    {/* <td>
-    {item.attached_kyc
-        .split(",")
-        .map((kycurl, kycindx) => (
-          <div key={kycindx}>
-            <a
-              href={kycurl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View KYC {kycindx + 1}
-            </a>
-          </div>
-        ))}
-  </td> */}
-    <td>
-      <a
-        href={`https://i.ebayimg.com/images/g/2pkAAOSwSONcUwzE/s-l400.jpg`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        View KYC
-      </a>
-    </td>
-    <td>Pending</td>
-    {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
-    <td>
-      <Dropdown>
-        <Dropdown.Toggle
-          variant="success"
-          // id={`dropdown-${pkg.id}`}
-        >
-          Action Button
-        </Dropdown.Toggle>
-        <Dropdown.Menu>
-          <Dropdown.Item
-            onClick={() => {
-              setSelectedUser();
-              setShowApproveModel(true);
-            }}
-          >
-            <span className="">
-              {" "}
-              <CiViewList />
-            </span>{" "}
-            Approve User
-          </Dropdown.Item>
-          <Dropdown.Item
-            onClick={() => {
-              setSelectedUser();
-              setShowRejectModel(true);
-            }}
-          >
-            <CiViewList /> Reject User
-          </Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-    </td>
-  </tr>
-</tbody>;
+  .pagination li.disabled a {
+    color: white;
+    cursor: not-allowed;
+    border-radius: 5px;
+    background-color: #3a4e69;
+    border: 1px solid #3a4e69;
+  }
+
+  .pagination li a:hover:not(.active) {
+    background-color: #004aad;
+    color: white;
+    border-radius: 5px;
+    border: 1px solid #004aad;
+  }
+`;
