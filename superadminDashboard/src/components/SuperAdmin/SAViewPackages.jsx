@@ -38,40 +38,104 @@ const SAViewPackages = () => {
     }
   };
   console.log(selectedPackage?.id)
-  const deletePackages = async (id) => {
-    setLoading(true);
-    try {
-      const { data } = await axios.delete(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deletePackage", {
-            data: { package_id: id }
-          }
-      );
-      if(data.success ){
-        Swal.fire({
-            icon: "success",
-            title: data.message,
-          });
-          fetchPackages();
 
-      }
-      else if(!data.success){
-        Swal.fire({
-            icon: "error",
-            title: data.message,
+  
+  const deletePackages = async (id) => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger"
+      },
+      buttonsStyling: false
+    });
+  
+    swalWithBootstrapButtons.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel!",
+      reverseButtons: true
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        try {
+          const { data } = await axios.delete(
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deletePackage", 
+            {
+              data: { package_id: id }
+            }
+          );
+          if (data.success) {
+            swalWithBootstrapButtons.fire({
+              title: "Deleted!",
+              text: data.message,
+              icon: "success"
+            });
+            fetchPackages();
+          } else {
+            swalWithBootstrapButtons.fire({
+              title: "Error!",
+              text: data.message || "An error occurred during the process. Please try again.",
+              icon: "error"
+            });
+          }
+        } catch (error) {
+          console.error("Error deleting package:", error);
+          swalWithBootstrapButtons.fire({
+            title: "Error!",
+            text: "An error occurred during the process. Please try again.",
+            icon: "error"
           });
+        } finally {
+          setLoading(false);
+        }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        swalWithBootstrapButtons.fire({
+          title: "Cancelled",
+          text: "Your package is safe :)",
+          icon: "error"
+        });
       }
-      
-      setLoading(false);
-      console.log(data)
-    } catch (error) {
-      console.error("Error fetching package data:", error);
-      setLoading(false);
-      Swal.fire({
-        icon: "error",
-        title: "An error occurred during the process. Please try again.",
-      });
-    }
+    });
   };
+  
+
+  // const deletePackages = async (id) => {
+  //   setLoading(true);
+  //   try {
+  //     const { data } = await axios.delete(
+  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deletePackage", {
+  //           data: { package_id: id }
+  //         }
+  //     );
+  //     if(data.success ){
+  //       Swal.fire({
+  //           icon: "success",
+  //           title: data.message,
+  //         });
+  //         fetchPackages();
+
+  //     }
+  //     else if(!data.success){
+  //       Swal.fire({
+  //           icon: "error",
+  //           title: data.message,
+  //         });
+  //     }
+      
+  //     setLoading(false);
+  //     console.log(data)
+  //   } catch (error) {
+  //     console.error("Error fetching package data:", error);
+  //     setLoading(false);
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "An error occurred during the process. Please try again.",
+  //     });
+  //   }
+  // };
   useEffect(() => {
   
     fetchPackages();

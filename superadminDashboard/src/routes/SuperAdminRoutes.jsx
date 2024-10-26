@@ -45,6 +45,8 @@ import SAWalletWithdrawSummary from "../components/SuperAdmin/SAWalletWithdrawSu
 import SASetWhiteLabelIdPrice from "../components/SuperAdmin/SASetWhiteLabelIdPrice.jsx";
 import SAActiveDeactiveApi from "../components/SuperAdmin/SAActiveDeactiveApi.jsx";
 import PanForm from "../components/SuperAdmin/PanForm.jsx";
+import SARegisterEmployee from "../components/SuperAdmin/SARegisterEmployee.jsx";
+import SAPendingKycUsers from "../components/SuperAdmin/SAPendingKycUsers.jsx";
 
 
 
@@ -97,6 +99,7 @@ const SuperAdminRoutes = () => {
         <Route path="/create-white-label" element={<SACreateWhiteLabel />} />
         <Route path="/create-distributor" element={<SACreateDistributor />} />
         <Route path="/create-retailer" element={<SACreateRetailer />} />
+        <Route path="/create-superadmin-employee" element={<SARegisterEmployee />}/>
         {/* <Route path="/buy-admin-id" element={<BuyUserId />} /> */}
 
         <Route
@@ -111,6 +114,7 @@ const SuperAdminRoutes = () => {
       
       <Route path="/active-users" element={<SAActiveUsersList />} />
       <Route path="/deactive-users" element={<SADeactiveUsersList/>} />
+      <Route path="/pending-kyc-user" element={<SAPendingKycUsers/>} />
       <Route path="/users-joining-list" element={<SAAllUsersJoinedList />} />
       <Route path="/pending-payment-users" element={<SAPendingPaymentUsers />} />
       <Route path="/white-label-joining-list" element={<SAWhiteLabelJoiningList />} />

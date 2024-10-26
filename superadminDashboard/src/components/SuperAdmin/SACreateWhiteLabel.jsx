@@ -175,7 +175,7 @@ const SACreateWhiteLabel = () => {
 
 
                           </div>
-                          <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                             <label for="name" class="form-label">NSDL Phycial PAN Price (Your Price - 105.00)</label>
                             <div class="input-group flex-nowrap">
                               <span class="input-group-text" id="addon-wrapping"> <FaRupeeSign /></span>
@@ -223,7 +223,7 @@ const SACreateWhiteLabel = () => {
                               <span class="input-group-text" id="addon-wrapping"> <FaRupeeSign /></span>
                               <input type="text" id="name" class="form-control" placeholder="Enter UTI Digital New Coupon Price" />
                             </div>
-                          </div>
+                          </div> */}
 
 
 

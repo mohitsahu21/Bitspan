@@ -249,6 +249,82 @@ const getPackages = (req,res) =>{
        }
 }
 
+const getPendingUsers = (req, res) => {
+  try {
+    const sql = "SELECT * FROM userprofile WHERE Status = 'Pending'";
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error fetching pending users from MySQL:", err);
+      return  res.status(500).json({ success: false, error: "Error fetching users" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+         return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No pending users found",
+          });
+        } else {
+          // Remove the password field from each user object
+          const sanitizedResult = result.map(({ password, ...rest }) => rest);
+
+        return  res.status(200).json({
+            success: true,
+            data: sanitizedResult,
+            message: "Users fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching users from MySQL:", error);
+   return res.status(500).json({
+      success: false,
+      message: "Error in fetching users",
+      error: error.message,
+    });
+  }
+};
+const getActiveUsers = (req, res) => {
+  try {
+    const sql = "SELECT * FROM userprofile WHERE Status = 'Active'";
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error fetching Active users from MySQL:", err);
+      return  res.status(500).json({ success: false, error: "Error fetching users" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+         return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No Active users found",
+          });
+        } else {
+          // Remove the password field from each user object
+          const sanitizedResult = result.map(({ password, ...rest }) => rest);
+
+        return  res.status(200).json({
+            success: true,
+            data: sanitizedResult,
+            message: "Users fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching users from MySQL:", error);
+   return res.status(500).json({
+      success: false,
+      message: "Error in fetching users",
+      error: error.message,
+    });
+  }
+};
+
+
 const editPackage = (req, res) => {
   try {
     const {
@@ -517,9 +593,103 @@ const deletePackage = (req, res) => {
   }
 };
 
+const approveUser = (req, res) => {
+  try {
+    const { PackageId , UserId ,UserRole, Status ,white_lable,superDistributor,distributor,website_url} = req.body;
+
+    if (!PackageId) {
+      
+      return res.status(400).json({success: false, error: "Package ID is required" });
+      // return res.status(500).json({success: false, error: "Failed to approve the user" });
+    }
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE userprofile SET package_Id = ? , Status = ? WHERE UserId = ?`;
+
+    const values = [
+      
+      PackageId,
+      Status,
+      UserId
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating package:", error);
+        return res.status(500).json({success: false, error: "Failed to approve the user" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({success: false, message: "user not found" });
+      }
+
+       // SQL query to insert details into another table (e.g., 'userdetails')
+       const insertSql = `INSERT INTO user_relations (UserId,userType,	superAdmin, white_lable, superDistributor, distributor, website_url) 
+       VALUES (?, ?, ?, ?, ?, ?, ?)`;
+       const superAdminId = "AASH00001"
+
+      const insertValues = [UserId,UserRole,superAdminId, white_lable, superDistributor, distributor, website_url];
+
+      db.query(insertSql, insertValues, (insertError, insertResults) => {
+        if (insertError) {
+          console.error("Error inserting user details:", insertError);
+          return res.status(500).json({ success: false, error: "Failed to save user details" });
+        }
+
+        return res.status(200).json({ success: true, message: "User approved and details saved successfully" });
+      });
+    });
+
+      // return res.status(200).json({success: true, message: "Approve user successfully" });
+    
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const rejectUser = (req, res) => {
+  try {
+    const { UserId , Note } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE userprofile SET Note = ? WHERE UserId = ?`;
+
+    const values = [
+      
+      Note,
+      UserId
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating package:", error);
+        return res.status(500).json({success: false, error: "Failed to reject the user" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({success: false, message: "user not found" });
+      }
+
+      return res.status(200).json({success: true, message: "Reject user successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({success: false, error: "An unexpected error occurred" });
+  }
+};
+
 module.exports = {
   addPackage,
   getPackages,
   editPackage,
-  deletePackage
+  deletePackage,
+  getPendingUsers,
+  getActiveUsers,
+  approveUser,
+  rejectUser
 };
