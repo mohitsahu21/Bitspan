@@ -2,6 +2,10 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
+// Testing upload file start
+const expressFileUpload = require("express-fileupload");
+const fs = require("fs");
+// Testing upload file end
 const retailerRouter = require("./routers/Retailer/retailerRouter");
 const instpayRouter = require("./routers/Retailer/instpayRouter");
 const ezytmRouter = require("./routers/Retailer/ezytmRouter");
@@ -46,6 +50,52 @@ app.use(
   express.static(path.join(__dirname, "complainUpload"))
 );
 app.use("/profile-data", express.static(path.join(__dirname, "profile-data")));
+app.use(express.urlencoded({ extended: true }));
+app.use((err, req, res, next) => {
+  console.error("Error Message:", err.message); // Log the error message
+  console.error("Error Stack:", err.stack); // Log the stack trace
+  res.status(500).json({ error: "Something broke!", details: err.message });
+});
+
+// Testing upload file start
+// Middleware to handle file uploads and request limits
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+
+// File Upload Configuration
+app.use(
+  expressFileUpload({
+    limits: { fileSize: 2 * 1024 * 1024 }, // 2 MB file size limit
+    abortOnLimit: true, // Abort request if file exceeds limit
+    createParentPath: true, // Create directories if they don't exist
+    useTempFiles: true, // Save file temporarily before processing
+    tempFileDir: "./uploads/temp/", // Temporary file directory
+  })
+);
+
+// API to handle file uploads
+app.post("/api/upload", (req, res) => {
+  if (!req.files || !req.files.upload) {
+    return res.status(400).json({ message: "No files were uploaded." });
+  }
+
+  const uploadedFile = req.files.upload;
+  const originalFileName = uploadedFile.name;
+  const uploadPath = `./uploads/${originalFileName}`;
+
+  // Move the file from the temp directory to the target directory
+  uploadedFile.mv(uploadPath, (err) => {
+    if (err) {
+      console.error("File Upload Error:", err);
+      return res
+        .status(500)
+        .json({ success: false, message: "File upload failed." });
+    }
+
+    return res.status(200).json({ success: true, name: originalFileName });
+  });
+});
+// Testing upload file end
 
 // Callback URL endpoint
 app.get("/callbackUrl", (req, res) => {

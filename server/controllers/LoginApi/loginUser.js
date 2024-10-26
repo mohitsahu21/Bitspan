@@ -330,6 +330,16 @@ const loginUserWithOTP = async (req, res) => {
           userId: user.UserId,
           role: user.role,
           email: user.Email,
+          username: user.UserName,
+          Status: user.Status,
+          ContactNo: user.ContactNo,
+          PanCardNumber: user.PanCardNumber,
+          AadharNumber: user.AadharNumber,
+          BusinessName: user.BusinessName,
+          City: user.City,
+          State: user.State,
+          PinCode: user.PinCode,
+          package_Id: user.package_Id,
         };
 
         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "6h" });
@@ -342,6 +352,16 @@ const loginUserWithOTP = async (req, res) => {
             userId: user.UserId,
             role: user.role,
             email: user.Email,
+            username: user.UserName,
+            Status: user.Status,
+            ContactNo: user.ContactNo,
+            PanCardNumber: user.PanCardNumber,
+            AadharNumber: user.AadharNumber,
+            BusinessName: user.BusinessName,
+            City: user.City,
+            State: user.State,
+            PinCode: user.PinCode,
+            package_Id: user.package_Id,
           },
         });
       }
@@ -401,6 +421,15 @@ const verifyOtpAndLogin = async (req, res) => {
         username: user.UserName,
         role: user.role,
         email: user.Email,
+        Status: user.Status,
+        ContactNo: user.ContactNo,
+        PanCardNumber: user.PanCardNumber,
+        AadharNumber: user.AadharNumber,
+        BusinessName: user.BusinessName,
+        City: user.City,
+        State: user.State,
+        PinCode: user.PinCode,
+        package_Id: user.package_Id,
       };
       const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "6h" });
 
@@ -414,6 +443,15 @@ const verifyOtpAndLogin = async (req, res) => {
           role: user.role,
           email: user.Email,
           username: user.UserName,
+          Status: user.Status,
+          ContactNo: user.ContactNo,
+          PanCardNumber: user.PanCardNumber,
+          AadharNumber: user.AadharNumber,
+          BusinessName: user.BusinessName,
+          City: user.City,
+          State: user.State,
+          PinCode: user.PinCode,
+          package_Id: user.package_Id,
         },
       });
     });

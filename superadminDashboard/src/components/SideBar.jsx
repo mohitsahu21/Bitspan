@@ -302,6 +302,7 @@ import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { PiBankFill } from "react-icons/pi";
 import pancard from "../assets/Form_49A (1).pdf";
+import { clearUser } from "../redux/user/userSlice";
 
 const Nav = styled.div`
   background-color: #e4e4e1;
@@ -530,6 +531,11 @@ const RetailerSidebarData = [
       {
         title: "E-district",
         path: "https://www.ezeeportal.in/p/edistrict-form.html",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "E-District Form",
+        path: "/E-District-Form",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],
@@ -2268,7 +2274,7 @@ const Sider = () => {
   const [closeButton, setCloseButton] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const { currentUser } = useSelector((state) => state.user);
-
+  const dispatch = useDispatch();
   const user = currentUser?.role;
   const navigate = useNavigate();
   const handleDropdownClick = (path) => {
@@ -2306,6 +2312,7 @@ const Sider = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         navigate("/");
+        dispatch(clearUser());
         Swal.fire({
           title: "Logged Out!",
           text: "You have successfully logged out.",
@@ -2338,7 +2345,7 @@ const Sider = () => {
                   menuVariant="dark"
                   className="text-muted"
                 >
-                  <NavDropdown.Item href="/update-profile">
+                  <NavDropdown.Item as={Link} to="/update-profile">
                     <IoIosPerson size={20} color="#fe662b" />
                     &nbsp;Profile
                   </NavDropdown.Item>
