@@ -11,6 +11,7 @@ import axios from "axios";
 import { LuTextSelect } from "react-icons/lu";
 import Swal from "sweetalert2";
 import ReactPaginate from "react-paginate";
+import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
 
 
 
@@ -18,18 +19,120 @@ import ReactPaginate from "react-paginate";
 
 const SAApproveUser = ({ user, setShowApproveModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
+  const [userRelation,setUserRelation] = useState([]);
 
   const [formData, setFormData] = useState({
-    UserName: user.UserName,
-    UserId: user.UserId,
-    UserRole : user.role,
+    UserName: user?.UserName,
+    UserId: user?.UserId,
+    UserRole : user?.role,
+    PackageId: "",
+    Status: "Active",
+    white_lable : userRelation?.white_lable,
+    superDistributor : userRelation?.superDistributor,
+    distributor : user.created_By_User_Role == "WhiteLabel" || user.created_By_User_Role == "SuperAdmin" ? "" : user.created_By_User_Id,
+    website_url : user?.created_By_Website
+  });
+
+  const [retailerCreateformData, setRetailerCreateFormData] = useState({
+    UserName: user?.UserName,
+    UserId: user?.UserId,
+    UserRole : user?.role,
+    PackageId: "",
+    Status: "Active",
+    white_lable :  user.created_By_User_Role == "SuperAdmin" ? "" : user.created_By_User_Role == "WhiteLabel"  ?
+    user.created_By_User_Id : userRelation?.white_lable,
+    superDistributor : user.created_By_User_Role == "WhiteLabel" || user.created_By_User_Role == "SuperAdmin" ? "" : userRelation?.superDistributor,
+    distributor : user.created_By_User_Role == "WhiteLabel" || user.created_By_User_Role == "SuperAdmin" ? "" : user.created_By_User_Id,
+    website_url : user?.created_By_Website
+  });
+  const [distributorCreateformData, setdistributorCreateFormData] = useState({
+    UserName: user?.UserName,
+    UserId: user?.UserId,
+    UserRole : user?.role,
+    PackageId: "",
+    Status: "Active",
+    white_lable :  user.created_By_User_Role == "SuperAdmin" ? "" : user.created_By_User_Role == "WhiteLabel"  ?
+    user.created_By_User_Id : userRelation?.white_lable,
+    superDistributor : user.created_By_User_Role == "WhiteLabel" || user.created_By_User_Role == "SuperAdmin" ? "" : user.created_By_User_Id,
+    distributor : "",
+    website_url : user?.created_By_Website
+  });
+  const [superdistributorCreateformData, setSuperdistributorCreateFormData] = useState({
+    UserName: user?.UserName,
+    UserId: user?.UserId,
+    UserRole : user?.role,
+    PackageId: "",
+    Status: "Active",
+    white_lable : user.created_By_User_Role == "SuperAdmin" ? "" : user.created_By_User_Id,
+    superDistributor : "",
+    distributor : "",
+    website_url : user?.created_By_Website
+  });
+  const [whiteLableCreateformData, setWhiteLableCreateFormData] = useState({
+    UserName: user?.UserName,
+    UserId: user?.UserId,
+    UserRole : user?.role,
     PackageId: "",
     Status: "Active",
     white_lable : "",
     superDistributor : "",
     distributor : "",
-    website_url : user.created_By_Website
+    website_url : ""
   });
+
+  useEffect(() => {
+    // Update form data when userRelation is loaded
+    if (userRelation) {
+      setFormData({
+        ...formData,
+        white_lable: userRelation?.white_lable,
+        superDistributor: userRelation?.superDistributor,
+      });
+  
+      setRetailerCreateFormData({
+        ...retailerCreateformData,
+        white_lable: user.created_By_User_Role === "SuperAdmin" ? "" : user.created_By_User_Role === "WhiteLabel" 
+          ? user.created_By_User_Id : userRelation?.white_lable,
+        superDistributor: user.created_By_User_Role === "WhiteLabel" || user.created_By_User_Role === "SuperAdmin"
+          ? "" : userRelation?.superDistributor,
+      });
+  
+      setdistributorCreateFormData({
+        ...distributorCreateformData,
+        white_lable: user.created_By_User_Role === "SuperAdmin" ? "" : user.created_By_User_Role === "WhiteLabel"
+          ? user.created_By_User_Id : userRelation?.white_lable,
+        superDistributor: user.created_By_User_Role === "WhiteLabel" || user.created_By_User_Role === "SuperAdmin"
+          ? "" : user.created_By_User_Id,
+      });
+  
+      setSuperdistributorCreateFormData({
+        ...superdistributorCreateformData,
+        white_lable: user.created_By_User_Role === "SuperAdmin" ? "" : user.created_By_User_Id,
+      });
+  
+      setWhiteLableCreateFormData({
+        ...whiteLableCreateformData,
+        white_lable: "", // Or update based on userRelation if needed
+      });
+    }
+  }, [userRelation]);
+
+
+  let formDataToSend;
+
+  // Determine which form data to send based on the user role
+  if (user.role === "Retailer") {
+    formDataToSend = retailerCreateformData;
+  } else if (user.role === "Distributor") {
+    formDataToSend = distributorCreateformData;
+  } else if (user.role === "SuperDistributor") {
+    formDataToSend = superdistributorCreateformData;
+  } else if (user.role === "WhiteLabel") {
+    formDataToSend = whiteLableCreateformData;
+  }
+
+  console.log(formDataToSend)
+
 
   const handleChange = (e) => {
     setFormData({
@@ -37,8 +140,53 @@ const SAApproveUser = ({ user, setShowApproveModel, setIsRefresh }) => {
       [e.target.name]: e.target.value,
     });
   };
+
+  // Package selection handler
+const handlePackageSelect = (e) => {
+  const selectedPackageId = e.target.value;
+
+  // Update the respective form data based on the user's role
+  if (user.role === "Retailer") {
+    setRetailerCreateFormData((prev) => ({
+      ...prev,
+      PackageId: selectedPackageId,
+    }));
+  } else if (user.role === "Distributor") {
+    setdistributorCreateFormData((prev) => ({
+      ...prev,
+      PackageId: selectedPackageId,
+    }));
+  } else if (user.role === "SuperDistributor") {
+    setSuperdistributorCreateFormData((prev) => ({
+      ...prev,
+      PackageId: selectedPackageId,
+    }));
+  } else if (user.role === "WhiteLabel") {
+    setWhiteLableCreateFormData((prev) => ({
+      ...prev,
+      PackageId: selectedPackageId,
+    }));
+  }
+};
   const [packages, setPackages] = useState([]);
   const [packagesLoading, setPackagesLoading] = useState(false);
+
+  const fetchUserRelation = async () => {
+    
+    try {
+      const { data } = await axios.get(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${user.created_By_User_Id}`
+      );
+    
+      console.log(data)
+      setUserRelation(data.data);
+      // setPackages(data.data);
+      
+    } catch (error) {
+      console.error("Error fetching package data:", error);
+      
+    }
+  };
 
   const fetchPackages = async () => {
     setPackagesLoading(true);
@@ -77,6 +225,7 @@ const SAApproveUser = ({ user, setShowApproveModel, setIsRefresh }) => {
 
   useEffect(() => {
     fetchPackages();
+    fetchUserRelation();
   }, []);
 
   console.log(packages);
@@ -85,10 +234,11 @@ const SAApproveUser = ({ user, setShowApproveModel, setIsRefresh }) => {
     e.preventDefault();
     try {
       setLoading(true);
+     
       const response = await axios.put(
         // "http://localhost:7777/api/auth/superAdmin/approveUser",
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
-        formData
+        formDataToSend
       );
       console.log(response);
       setLoading(false);
@@ -186,6 +336,48 @@ const SAApproveUser = ({ user, setShowApproveModel, setIsRefresh }) => {
             </div>
             <div className="mt-3">
               <label for="name" class="form-label">
+                Created By User Id
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <FaRupeeSign />
+                </span>
+                <input
+                  type="text"
+                  // name="package_name"
+                  class="form-control"
+                  // placeholder="Enter Package Name"
+                  value={user.created_By_User_Id}
+                  onChange={handleChange}
+                  disabled
+                  required
+                />
+              </div>
+            </div>
+            <div className="mt-3">
+              <label for="name" class="form-label">
+                Created By User Role
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <FaRupeeSign />
+                </span>
+                <input
+                  type="text"
+                  // name="package_name"
+                  class="form-control"
+                  // placeholder="Enter Package Name"
+                  value={user.created_By_User_Role}
+                  onChange={handleChange}
+                  disabled
+                  required
+                />
+              </div>
+            </div>
+            <div className="mt-3">
+              <label for="name" class="form-label">
                 Select Package
               </label>
               <div class="input-group flex-nowrap">
@@ -195,8 +387,8 @@ const SAApproveUser = ({ user, setShowApproveModel, setIsRefresh }) => {
                 </span>
                 <select
                   name="PackageId"
-                  value={formData.PackageId}
-                  onChange={handleChange}
+                  value={formDataToSend.PackageId}
+                  onChange={handlePackageSelect}
                   class="form-select"
                   aria-label="Default select example"
                   required
@@ -215,7 +407,7 @@ const SAApproveUser = ({ user, setShowApproveModel, setIsRefresh }) => {
             </div>
           {user.role != "WhiteLabel" && <div className="mt-3">
               <label for="name" class="form-label">
-                Enter WhiteLabel User Id
+              Allotted  WhiteLabel User Id
               </label>
               <div class="input-group flex-nowrap">
                 <span class="input-group-text" id="addon-wrapping">
@@ -226,9 +418,10 @@ const SAApproveUser = ({ user, setShowApproveModel, setIsRefresh }) => {
                   type="text"
                   name="white_lable"
                   class="form-control"
-                  placeholder="Enter WhiteLabel User Id"
-                  value={user.white_lable}
+                  placeholder={formDataToSend.white_lable ? formDataToSend.white_lable : "NA"}
+                  value={formDataToSend.white_lable}
                   onChange={handleChange}
+                  disabled
                   
                   
                 />
@@ -237,7 +430,7 @@ const SAApproveUser = ({ user, setShowApproveModel, setIsRefresh }) => {
             {(user.role != "SuperDistributor" &&  user.role != "WhiteLabel" ) &&
              <div className="mt-3">
              <label for="name" class="form-label">
-               Enter Super Distributor User Id
+               Allotted Super Distributor User Id
              </label>
              <div class="input-group flex-nowrap">
                <span class="input-group-text" id="addon-wrapping">
@@ -248,9 +441,10 @@ const SAApproveUser = ({ user, setShowApproveModel, setIsRefresh }) => {
                  type="text"
                  name="superDistributor"
                  class="form-control"
-                 placeholder="Enter Super Distributor User Id"
-                 value={user.superDistributor}
+                 placeholder={formDataToSend.superDistributor ? formDataToSend.superDistributor : "NA"}
+                 value={formDataToSend.superDistributor}
                  onChange={handleChange}
+                 disabled
                  
                 
                />
@@ -259,7 +453,7 @@ const SAApproveUser = ({ user, setShowApproveModel, setIsRefresh }) => {
            {(user.role != "SuperDistributor" &&  user.role != "WhiteLabel" && user.role != "Distributor") && 
             <div className="mt-3">
             <label for="name" class="form-label">
-              Enter Distributor User Id
+             Allotted  Distributor User Id
             </label>
             <div class="input-group flex-nowrap">
               <span class="input-group-text" id="addon-wrapping">
@@ -270,9 +464,10 @@ const SAApproveUser = ({ user, setShowApproveModel, setIsRefresh }) => {
                 type="text"
                 name="distributor"
                 class="form-control"
-                placeholder="Enter Distributor User Id"
-                value={user.distributor}
+                placeholder={formDataToSend.distributor ? formDataToSend.distributor : "NA"}
+                value={formDataToSend.distributor}
                 onChange={handleChange}
+                disabled
                 
                
               />
@@ -609,8 +804,8 @@ const SAPendingKycUsers = () => {
 
                                         <td>{user.State}</td>
                                         <td>{user.PinCode}</td>
-                                        <td>{user?.CreatedBy}</td>
-                                        <td>{user?.WebsiteName}</td>
+                                        <td>{user?.created_By_User_Id + " " + user.created_By_User_Role}</td>
+                                        <td>{user?.created_By_Website}</td>
                                         <td>{user?.PaymentStatus}</td>
 
                                         {/* <td>
@@ -660,11 +855,13 @@ const SAPendingKycUsers = () => {
                                         <td>{user?.Note}</td>
                                         <td>
                                           <Dropdown>
-                                            <Dropdown.Toggle
+                                          <Dropdown.Toggle
                                               variant="success"
-                                              // id={`dropdown-${pkg.id}`}
+                                              // id={`dropdown-${user.id}`}
+                                              as="span" style={{ border: 'none', background: 'none', cursor: 'pointer' }}
+                                              className="custom-dropdown-toggle"
                                             >
-                                              Action Button
+                                             <PiDotsThreeOutlineVerticalBold />
                                             </Dropdown.Toggle>
                                             <Dropdown.Menu>
                                               <Dropdown.Item

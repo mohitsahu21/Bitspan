@@ -324,6 +324,44 @@ const getActiveUsers = (req, res) => {
   }
 };
 
+const getdeactiveUsers = (req, res) => {
+  try {
+    const sql = "SELECT * FROM userprofile WHERE Status = 'Deactive'";
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error fetching Deactive users from MySQL:", err);
+      return  res.status(500).json({ success: false, error: "Error fetching users" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+         return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No Deactive users found",
+          });
+        } else {
+          // Remove the password field from each user object
+          const sanitizedResult = result.map(({ password, ...rest }) => rest);
+
+        return  res.status(200).json({
+            success: true,
+            data: sanitizedResult,
+            message: "Users fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching users from MySQL:", error);
+   return res.status(500).json({
+      success: false,
+      message: "Error in fetching users",
+      error: error.message,
+    });
+  }
+};
+
 
 const editPackage = (req, res) => {
   try {
@@ -683,6 +721,104 @@ const rejectUser = (req, res) => {
   }
 };
 
+const deactivateUser = (req, res) => {
+  try {
+    const { userId } = req.body;
+
+      if (!userId) {
+        return res.status(200).json({success : false, message: "User Id is required" });
+      }
+
+      // If the package is not allocated to any user, proceed to delete
+      const Sql = `UPDATE userprofile SET Status = "Deactive" WHERE UserId = ?`;
+      db.query(Sql, [userId], (Error, Results) => {
+        if (Error) {
+          console.error("Error deactive the user:", Error);
+          return res.status(500).json({ error: "Failed to deactive the user" });
+        }
+
+        if (Results.affectedRows === 0) {
+          return res.status(404).json({ message: "User not found" });
+        }
+
+        return res.status(200).json({success : true, message: "deactive the user successfully" });
+      });
+    
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({ error: "An unexpected error occurred" });
+  }
+};
+const activateUser = (req, res) => {
+  try {
+    const { userId } = req.body;
+
+      if (!userId) {
+        return res.status(200).json({success : false, message: "User Id is required" });
+      }
+
+      // If the package is not allocated to any user, proceed to delete
+      const Sql = `UPDATE userprofile SET Status = "Active" WHERE UserId = ?`;
+      db.query(Sql, [userId], (Error, Results) => {
+        if (Error) {
+          console.error("Error active the user:", Error);
+          return res.status(500).json({ error: "Failed to active the user" });
+        }
+
+        if (Results.affectedRows === 0) {
+          return res.status(404).json({ message: "User not found" });
+        }
+
+        return res.status(200).json({success : true, message: "active the user successfully" });
+      });
+    
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({ error: "An unexpected error occurred" });
+  }
+};
+
+
+const getUserRelations = (req, res) => {
+  const {userId} = req.params;
+
+  try {
+    const sql = "SELECT * FROM user_relations WHERE UserId = ?";
+
+    db.query(sql,[userId], (err, result) => {
+      if (err) {
+        console.error("Error fetching  users relation from MySQL:", err);
+      return  res.status(500).json({ success: false, error: "Error fetching users" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+         return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No users found",
+          });
+        } else {
+          // Remove the password field from each user object
+          // const sanitizedResult = result.map(({ password, ...rest }) => rest);
+
+        return  res.status(200).json({
+            success: true,
+            data: result,
+            message: "Users fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching users from MySQL:", error);
+   return res.status(500).json({
+      success: false,
+      message: "Error in fetching users",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   addPackage,
   getPackages,
@@ -690,6 +826,10 @@ module.exports = {
   deletePackage,
   getPendingUsers,
   getActiveUsers,
+  getdeactiveUsers,
   approveUser,
-  rejectUser
+  rejectUser,
+  deactivateUser,
+  activateUser,
+  getUserRelations
 };
