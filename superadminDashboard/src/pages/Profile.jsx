@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FaUser } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa6";
@@ -9,8 +9,15 @@ import { BiSolidContact } from "react-icons/bi";
 import { FaRegBuilding } from "react-icons/fa";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { BiHomeAlt } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 const Profile = () => {
+  const dispatch = useDispatch();
+  const { currentUser, token } = useSelector((state) => state.user);
+
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <>
       <Wrapper>
@@ -30,181 +37,238 @@ const Profile = () => {
                       </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 ">Update Profile</h4>
-                        <h6 className=""><BiHomeAlt /> &nbsp;/ &nbsp; Update Profile</h6>
+                        <h6 className="">
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Update Profile
+                        </h6>
                       </div>
                     </div>
                   </div>
-                  <div className="row g-4 shadow bg-body-tertiary rounded px-3 proForm">
-                    <div className="text-center">
-                      <h4>Profile Information</h4>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label>User Id</label>
-                      <div className="input-group">
-                        <span className="input-group-text">
-                          <FaUser />
-                        </span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="User ID"
-                        />
+                  <form>
+                    <div className="row g-4 shadow bg-body-tertiary rounded px-3 proForm">
+                      <div className="text-center">
+                        <h4>Profile Information</h4>
                       </div>
+                      <>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label>User Id</label>
+                          <div className="input-group">
+                            <span className="input-group-text">
+                              <FaUser />
+                            </span>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="User ID"
+                              value={currentUser?.userId || ""}
+                              readOnly
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label>User Type</label>
+                          <div className="input-group">
+                            <span className="input-group-text">
+                              <FaUsers />
+                            </span>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="User Type"
+                              value={currentUser?.role || ""}
+                              readOnly
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label>User Name</label>
+                          <div className="input-group">
+                            <span className="input-group-text">
+                              <FaUser />
+                            </span>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="User Name"
+                              value={currentUser?.username || ""}
+                              readOnly
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label>Contact No</label>
+                          <div className="input-group">
+                            <span className="input-group-text">
+                              <FaMobileButton />
+                            </span>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Enter Contact No"
+                              value={currentUser?.ContactNo || ""}
+                              readOnly
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label>E-mail</label>
+                          <div className="input-group">
+                            <span className="input-group-text">
+                              <MdEmail />
+                            </span>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Enter E-mail"
+                              value={currentUser?.email || ""}
+                              readOnly
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label>Pan Card Number</label>
+                          <div className="input-group">
+                            <span className="input-group-text">
+                              <FaIdCard />
+                            </span>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Pan Card Number"
+                              value={currentUser?.PanCardNumber || ""}
+                              readOnly
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label>Aadhar Number</label>
+                          <div className="input-group">
+                            <span className="input-group-text">
+                              <FaIdCard />
+                            </span>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Aadhar Number"
+                              value={currentUser?.AadharNumber || ""}
+                              readOnly
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label>Company / Shop Name</label>
+                          <div className="input-group">
+                            <span className="input-group-text">
+                              <FaIdCard />
+                            </span>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Company / Shop Name"
+                              value={currentUser?.BusinessName || ""}
+                              readOnly
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label>City</label>
+                          <div className="input-group">
+                            <span className="input-group-text">
+                              <BiSolidContact />
+                            </span>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Enter City"
+                              value={currentUser?.City || ""}
+                              readOnly
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label>State</label>
+                          <div className="input-group">
+                            <span className="input-group-text">
+                              <FaRegBuilding />
+                            </span>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="State"
+                              value={currentUser?.State || ""}
+                              readOnly
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label>Pin Code</label>
+                          <div className="input-group">
+                            <span className="input-group-text">
+                              <FaMapMarkerAlt />
+                            </span>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Pin Code"
+                              value={currentUser?.PinCode || ""}
+                              readOnly
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label>Aadhar Front</label>
+                          <div className="input-group">
+                            <input
+                              class="form-control"
+                              type="file"
+                              id="formFile"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label>Aadhar Back</label>
+                          <div className="input-group">
+                            <input
+                              class="form-control"
+                              type="file"
+                              id="formFile"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label>Pan Card</label>
+                          <div className="input-group">
+                            <input
+                              class="form-control"
+                              type="file"
+                              id="formFile"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                          <div className="text-start m-3">
+                            <button
+                              className="btn p-2"
+                              type="submit"
+                              disabled={isLoading}
+                            >
+                              {isLoading
+                                ? "KYC Verification..."
+                                : "KYC Verification"}
+                            </button>
+                          </div>
+                        </div>
+                      </>
                     </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label>User Type</label>
-                      <div className="input-group">
-                        <span className="input-group-text">
-                          <FaUsers />
-                        </span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="User Type"
-                        />
+                  </form>
+                  {currentUser?.status === "Pending" &&
+                    currentUser?.Note?.trim() && (
+                      <div className="col-12">
+                        <label>Note</label>
+                        <div className="alert alert-warning">
+                          {currentUser.Note}
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label>User Name</label>
-                      <div className="input-group">
-                        <span className="input-group-text">
-                          <FaUser />
-                        </span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="User Name"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label>Enter Contact No</label>
-                      <div className="input-group">
-                        <span className="input-group-text">
-                          <FaMobileButton />
-                        </span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Enter Contact No"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label>Enter E-mail</label>
-                      <div className="input-group">
-                        <span className="input-group-text">
-                          <MdEmail />
-                        </span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Enter E-mail"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label>Enter Pan Card Number</label>
-                      <div className="input-group">
-                        <span className="input-group-text">
-                          <FaIdCard />
-                        </span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Pan Card Number"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label>Aadhar Number</label>
-                      <div className="input-group">
-                        <span className="input-group-text">
-                          <FaIdCard />
-                        </span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Aadhar Number"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label>Company / Shop Name</label>
-                      <div className="input-group">
-                        <span className="input-group-text">
-                          <FaIdCard />
-                        </span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Company / Shop Name"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label>Enter City</label>
-                      <div className="input-group">
-                        <span className="input-group-text">
-                          <BiSolidContact />
-                        </span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Enter City"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label>State</label>
-                      <div className="input-group">
-                        <span className="input-group-text">
-                          <FaRegBuilding />
-                        </span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="State"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label>Enter Pin Code</label>
-                      <div className="input-group">
-                        <span className="input-group-text">
-                          <FaMapMarkerAlt />
-                        </span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Pin Code"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label>Aadhar Front</label>
-                      <div className="input-group">
-                        <input class="form-control" type="file" id="formFile" />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label>Aadhar Back</label>
-                      <div className="input-group">
-                        <input class="form-control" type="file" id="formFile" />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label>Pan Card</label>
-                      <div className="input-group">
-                        <input class="form-control" type="file" id="formFile" />
-                      </div>
-                    </div>
-                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      <div className="text-start m-3">
-                        <button className="btn p-2">KYC Verification</button>
-                      </div>
-                    </div>
-                  </div>
+                    )}
                 </div>
               </div>
             </div>
@@ -225,7 +289,6 @@ const Wrapper = styled.div`
     color: #fff;
     background: #6d70ff;
   }
-
 
   .proForm {
     margin: 24px;
