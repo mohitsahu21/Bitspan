@@ -68,8 +68,8 @@ import EdistrictForm from "../components/DashBoard/EdistrictForm";
 const RetailerRoutes = () => {
   const { currentUser, token } = useSelector((state) => state.user);
   const userStatus = currentUser?.Status;
-  console.log(userStatus);
-  console.log(token);
+  // console.log(userStatus);
+  // console.log(token);
 
   return (
     <>
