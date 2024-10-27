@@ -99,9 +99,9 @@ const SACreatePackages = () => {
     Offline_Insurance_Pay_Commission_Type: "",
     Offline_Insurance_Pay_Commission: "",
     PAN_Card_Commission_Type: "",
-    UTI_PAN_Card_Commission: "",
+    E_PAN_Card_Commission: "",
     UTI_PAN_Coupon_Commission : "",
-    NSDL_PAN_Card_Commission: "",
+    P_PAN_Card_Commission: "",
   });
 
   const handleChange = (e) => {
@@ -218,9 +218,9 @@ const SACreatePackages = () => {
           Offline_Insurance_Pay_Commission_Type: "",
           Offline_Insurance_Pay_Commission: "",
           PAN_Card_Commission_Type: "",
-          UTI_PAN_Card_Commission: "",
+          E_PAN_Card_Commission: "",
           UTI_PAN_Coupon_Commission : "",
-          NSDL_PAN_Card_Commission: "",
+          P_PAN_Card_Commission: "",
         });
       }
       else{
@@ -2343,7 +2343,7 @@ const SACreatePackages = () => {
 
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Enter UTI PAN Card Commission
+                          Enter E PAN Card Commission
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -2355,8 +2355,30 @@ const SACreatePackages = () => {
                             
                             class="form-control"
                             placeholder="Enter Commission"
-                            name="UTI_PAN_Card_Commission"
-                            value={formData.UTI_PAN_Card_Commission}
+                            name="E_PAN_Card_Commission"
+                            value={formData.E_PAN_Card_Commission}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter P PAN Card Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="P_PAN_Card_Commission"
+                            value={formData.P_PAN_Card_Commission}
                             onChange={handleChange}
                             required
                           />
@@ -2378,27 +2400,6 @@ const SACreatePackages = () => {
                             placeholder="Enter Commission"
                             name="UTI_PAN_Coupon_Commission"
                             value={formData.UTI_PAN_Coupon_Commission}
-                            onChange={handleChange}
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                        <label for="name" class="form-label">
-                          Enter NSDL PAN Card Commission
-                        </label>
-                        <div class="input-group flex-nowrap">
-                          <span class="input-group-text" id="addon-wrapping">
-                            {" "}
-                            <MdNumbers />
-                          </span>
-                          <input
-                            type="number"
-                            
-                            class="form-control"
-                            placeholder="Enter Commission"
-                            name="NSDL_PAN_Card_Commission"
-                            value={formData.NSDL_PAN_Card_Commission}
                             onChange={handleChange}
                             required
                           />

@@ -108,9 +108,9 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
         Offline_Insurance_Pay_Commission_Type: packages.Offline_Insurance_Pay_Commission_Type,
         Offline_Insurance_Pay_Commission: packages.Offline_Insurance_Pay_Commission,
         PAN_Card_Commission_Type: packages.PAN_Card_Commission_Type,
-        UTI_PAN_Card_Commission: packages.UTI_PAN_Card_Commission,
+        E_PAN_Card_Commission: packages.E_PAN_Card_Commission,
         UTI_PAN_Coupon_Commission : packages.UTI_PAN_Coupon_Commission,
-        NSDL_PAN_Card_Commission: packages.NSDL_PAN_Card_Commission,
+        P_PAN_Card_Commission: packages.P_PAN_Card_Commission,
       });
     
 
@@ -2273,7 +2273,7 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
 
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Enter UTI PAN Card Commission
+                          Enter E PAN Card Commission
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -2285,8 +2285,8 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                             
                             class="form-control"
                             placeholder="Enter Commission"
-                            name="UTI_PAN_Card_Commission"
-                            value={formData.UTI_PAN_Card_Commission}
+                            name="E_PAN_Card_Commission"
+                            value={formData.E_PAN_Card_Commission}
                             onChange={handleChange}
                             required
                           />
@@ -2315,7 +2315,7 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                       </div>
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Enter NSDL PAN Card Commission
+                          Enter P PAN Card Commission
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -2327,8 +2327,8 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                             
                             class="form-control"
                             placeholder="Enter Commission"
-                            name="NSDL_PAN_Card_Commission"
-                            value={formData.NSDL_PAN_Card_Commission}
+                            name="P_PAN_Card_Commission"
+                            value={formData.P_PAN_Card_Commission}
                             onChange={handleChange}
                             required
                           />
