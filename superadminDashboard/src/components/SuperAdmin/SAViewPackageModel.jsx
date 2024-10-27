@@ -1495,7 +1495,7 @@ const SAViewPackageModel = ({ packages }) => {
 
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
                     <div className="text-center  my-5">
-                      <h2>Create Online Electricity Bill Pay Commission</h2>
+                      <h2>Online Electricity Bill Pay Commission</h2>
                     </div>
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
@@ -1527,7 +1527,7 @@ const SAViewPackageModel = ({ packages }) => {
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        Enter Online Electricity Bill Pay Commission
+                        Online Electricity Bill Pay Commission
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -1547,12 +1547,12 @@ const SAViewPackageModel = ({ packages }) => {
                   </div>
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
                     <div className="text-center  my-5">
-                      <h2>Create Offline Electricity Bill Pay Commission</h2>
+                      <h2>Offline Electricity Bill Pay Commission</h2>
                     </div>
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" className="form-label">
-                        Select Commission Type
+                        Commission Type
                       </label>
                       <div className="input-group flex-nowrap">
                         <span className="input-group-text" id="addon-wrapping">
@@ -1578,7 +1578,7 @@ const SAViewPackageModel = ({ packages }) => {
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        Enter Offline Electricity Bill Pay Commission
+                        Offline Electricity Bill Pay Commission
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -1704,12 +1704,12 @@ const SAViewPackageModel = ({ packages }) => {
                   </div>
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
                     <div className="text-center  my-5">
-                      <h2>Create PAN Card Commission</h2>
+                      <h2>PAN Card Commission</h2>
                     </div>
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" className="form-label">
-                        Select Commission Type
+                        Commission Type
                       </label>
                       <div className="input-group flex-nowrap">
                         <span className="input-group-text" id="addon-wrapping">
@@ -1736,7 +1736,7 @@ const SAViewPackageModel = ({ packages }) => {
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        Enter UTI PAN Card Commission
+                      E PAN Card Commission
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -1747,15 +1747,15 @@ const SAViewPackageModel = ({ packages }) => {
                           type="number"
                           class="form-control"
                           placeholder="Enter Commission"
-                          name="UTI_PAN_Card_Commission"
-                          value={packages.UTI_PAN_Card_Commission}
+                          name="E_PAN_Card_Commission"
+                          value={packages.E_PAN_Card_Commission}
                           required
                         />
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        Enter UTI PAN Coupon Commission
+                        UTI PAN Coupon Commission
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -1774,7 +1774,7 @@ const SAViewPackageModel = ({ packages }) => {
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        Enter NSDL PAN Card Commission
+                         P PAN Card Commission
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -1785,8 +1785,8 @@ const SAViewPackageModel = ({ packages }) => {
                           type="number"
                           class="form-control"
                           placeholder="Enter Commission"
-                          name="NSDL_PAN_Card_Commission"
-                          value={packages.NSDL_PAN_Card_Commission}
+                          name="P_PAN_Card_Commission"
+                          value={packages.P_PAN_Card_Commission}
                           required
                         />
                       </div>

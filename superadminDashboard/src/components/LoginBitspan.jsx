@@ -277,7 +277,8 @@ const LoginBitspan = () => {
           });
         } else if (response.data.message === "Login successful") {
           const user = response.data.user;
-          dispatch(setUser(user));
+          const token = response.data.token;
+          dispatch(setUser({ user, token }));
           Swal.fire({
             position: "center",
             icon: "success",
@@ -365,7 +366,10 @@ const LoginBitspan = () => {
       );
 
       if (response.data.status === "Success") {
-        dispatch(setUser(response.data.user));
+        // dispatch(setUser(response.data.user));
+        const user = response.data.user;
+        const token = response.data.token;
+        dispatch(setUser({ user, token }));
         Swal.fire({
           position: "center",
           icon: "success",

@@ -5,6 +5,7 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const ChangePassword = () => {
   const [userId, setUserId] = useState("");
@@ -70,6 +71,13 @@ const ChangePassword = () => {
       console.log(response.data);
       if (response.data.status === "Success") {
         // Password successfully changed, reset form or navigate to another page
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Password Change Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
     } catch (error) {
       console.log(error);

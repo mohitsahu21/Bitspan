@@ -19,6 +19,8 @@ const {
   complainInsertApi,
   complainGetData,
   profileInfo,
+  profileUserKyc,
+  eDistrictFormData,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -74,7 +76,7 @@ const panDataStorage = multer.diskStorage({
 
 const panDataUpload = multer({ storage: panDataStorage });
 router.post(
-  "/pan-4.0",
+  "/pan-4.0-form",
   panDataUpload.fields([
     { name: "documentUpload", maxCount: 10 },
     { name: "attachment_form", maxCount: 10 },
@@ -107,21 +109,39 @@ router.get("/complain-data", complainGetData);
 
 const profileDataStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "profile-data/");
+    cb(null, "profile-data/"); // Folder where files will be saved
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
+    cb(null, `${Date.now()}-${file.originalname}`); // Save file with timestamp
   },
 });
+
 const profileDataUpload = multer({ storage: profileDataStorage });
-router.post(
+
+router.put(
   "/user-profile",
-  profileDataUpload.fields([
+  upload.fields([
     { name: "aadharFront", maxCount: 1 },
     { name: "aadharBack", maxCount: 1 },
     { name: "panCardFront", maxCount: 1 },
   ]),
   profileInfo
+);
+
+router.post(
+  "/kyc-profile",
+  profileDataUpload.fields([
+    { name: "aadharFront", maxCount: 1 },
+    { name: "aadharBack", maxCount: 1 },
+    { name: "panCardFront", maxCount: 1 },
+  ]),
+  profileUserKyc
+);
+
+router.post(
+  "/e-district-Form",
+  upload.array("documentUpload", 10),
+  eDistrictFormData
 );
 
 module.exports = router;

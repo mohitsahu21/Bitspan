@@ -2,6 +2,8 @@ const { getDataFromClientApi } = require("../../APIS URL/instpayApis");
 const { db } = require("../../connect");
 const moment = require("moment-timezone");
 const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 
 const applyOfflineForm = (req, res) => {
   const {
@@ -654,88 +656,257 @@ const complainGetData = (req, res) => {
   });
 };
 
-const profileInfo = (req, res) => {
-  const {
-    UserId,
-    UserType,
-    UserName,
-    ContactNo,
-    Email,
-    PanCardNumber,
-    AadharNumber,
-    BusinessName,
-    City,
-    State,
-    PinCode,
-  } = req.body;
+// const profileInfo = (req, res) => {
+//   const domain = "http://localhost:7777";
 
-  if (
-    !UserId ||
-    !UserType ||
-    !UserName ||
-    !ContactNo ||
-    !Email ||
-    !PanCardNumber ||
-    !AadharNumber ||
-    !BusinessName ||
-    !City ||
-    !State ||
-    !PinCode
-  ) {
+//   // Extract the uploaded file paths
+//   const aadharFront =
+//     req.files && req.files.aadharFront
+//       ? `${domain}/profile-data/${req.files.aadharFront[0].filename}`
+//       : null;
+
+//   const aadharBack =
+//     req.files && req.files.aadharBack
+//       ? `${domain}/profile-data/${req.files.aadharBack[0].filename}`
+//       : null;
+
+//   const panCardFront =
+//     req.files && req.files.panCardFront
+//       ? `${domain}/profile-data/${req.files.panCardFront[0].filename}`
+//       : null;
+
+//   // Ensure that at least one file is being uploaded
+//   if (!aadharFront && !aadharBack && !panCardFront) {
+//     return res
+//       .status(400)
+//       .json({ status: "Failure", error: "No files were uploaded" });
+//   }
+
+//   // Build the update query to update only the files that were uploaded
+//   let updateFields = [];
+//   let updateValues = [];
+
+//   if (aadharFront) {
+//     updateFields.push("AadharFront = ?");
+//     updateValues.push(aadharFront);
+//   }
+//   if (aadharBack) {
+//     updateFields.push("AadharBack = ?");
+//     updateValues.push(aadharBack);
+//   }
+//   if (panCardFront) {
+//     updateFields.push("PanCardFront = ?");
+//     updateValues.push(panCardFront);
+//   }
+
+//   // Ensure that updateFields is not empty
+//   if (updateFields.length > 0) {
+//     // Assuming the user profile is identified by a unique UserId or some identifier (which comes from Redux/frontend)
+//     const UserId = req.body.UserId || req.query.UserId; // Get UserId from query or body
+
+//     if (!UserId) {
+//       return res
+//         .status(400)
+//         .json({ status: "Failure", error: "UserId is required" });
+//     }
+
+//     const updateQuery = `UPDATE userprofile SET ${updateFields.join(
+//       ", "
+//     )} WHERE UserId = ?`;
+
+//     updateValues.push(UserId); // Add UserId to the updateValues
+
+//     // Execute the update query
+//     db.query(updateQuery, updateValues, (err, result) => {
+//       if (err) {
+//         console.log(`Error updating record: ${err.message}`);
+//         return res.status(500).json({ status: "Failure", error: err.message });
+//       } else {
+//         return res.status(200).json({
+//           status: "Success",
+//           message: "Files updated successfully",
+//           updatedFields: updateFields.map((field) => field.split(" ")[0]), // Send back which fields were updated
+//         });
+//       }
+//     });
+//   } else {
+//     return res
+//       .status(400)
+//       .json({ status: "Failure", error: "No files to update" });
+//   }
+// };
+
+const profileInfo = (req, res) => {
+  const { userId } = req.body; // Get user ID from request body
+
+  if (!userId) {
     return res
       .status(400)
-      .json({ status: "Failure", error: "Please fill all details" });
+      .json({ success: false, message: "User ID is required" });
   }
+
+  // Construct URLs for the uploaded images
+  const baseUrl = `http://localhost:7777/uploads/`;
+
+  const aadharFrontUrl = req.files?.aadharFront?.[0]
+    ? `${baseUrl}${req.files.aadharFront[0].filename}`
+    : null;
+  const aadharBackUrl = req.files?.aadharBack?.[0]
+    ? `${baseUrl}${req.files.aadharBack[0].filename}`
+    : null;
+  const panCardFrontUrl = req.files?.panCardFront?.[0]
+    ? `${baseUrl}${req.files.panCardFront[0].filename}`
+    : null;
+
+  // Check if all files are null (no file uploaded)
+  if (!aadharFrontUrl && !aadharBackUrl && !panCardFrontUrl) {
+    return res.status(400).json({
+      success: false,
+      message: "At least one file must be uploaded",
+    });
+  }
+
+  // Update the database with the image URLs
+  const query = `
+    UPDATE userprofile 
+    SET AadharFront = COALESCE(?, AadharFront), 
+        AadharBack = COALESCE(?, AadharBack), 
+        PanCardFront = COALESCE(?, PanCardFront) 
+    WHERE UserId = ?`;
+
+  db.query(
+    query,
+    [aadharFrontUrl, aadharBackUrl, panCardFrontUrl, userId],
+    (err, result) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res
+          .status(500)
+          .json({ success: false, message: "Database error" });
+      }
+
+      res.json({
+        success: true,
+        message: "Images uploaded and URLs saved successfully",
+      });
+    }
+  );
+};
+
+const profileUserKyc = (req, res) => {
+  console.log("Request Body:", req.body); // Log the body
+  console.log("Request Files:", req.files);
+  const { userId } = req.body;
+
+  if (
+    !userId ||
+    !req.files ||
+    !req.files.aadharFront ||
+    !req.files.aadharBack ||
+    !req.files.panCardFront
+  ) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  const domain = "http://localhost:7777";
+  const aadharFront = req.files.aadharFront
+    ? `${domain}/profile-data/${req.files.aadharFront[0].filename}`
+    : null;
+  const aadharBack = req.files.aadharBack
+    ? `${domain}/profile-data/${req.files.aadharBack[0].filename}`
+    : null;
+  const panCardFront = req.files.panCardFront
+    ? `${domain}/profile-data/${req.files.panCardFront[0].filename}`
+    : null;
+
+  const query = `
+        INSERT INTO profilekyc (
+            userId,
+            aadharFront,
+            aadharBack,
+            panCardFront
+        ) VALUES (?, ?, ?, ?)
+    `;
+
+  db.query(
+    query,
+    [userId, aadharFront, aadharBack, panCardFront],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting data into MySQL:", err);
+        res.status(500).json({ error: "Database error" });
+        return;
+      }
+
+      res
+        .status(200)
+        .json({ message: "KYC Send Successfully", id: result.insertId });
+    }
+  );
+};
+
+const eDistrictFormData = (req, res) => {
+  const {
+    application_type,
+    samagar,
+    gender,
+    name,
+    father_husband_name,
+    dob,
+    address,
+    mobile_no,
+    cast,
+    aadhar_no,
+    samagar_member_id,
+    state,
+    annual_income,
+    previous_application,
+    charge_amount,
+  } = req.body;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const domain = "http://localhost:7777";
 
-  const aadharFront =
-    req.files && req.files.aadharFront
-      ? `${domain}/profile-data/${req.files.aadharFront[0].filename}`
-      : null;
+  // Handling multiple file uploads
+  const documentUpload = req.files
+    ? req.files.map((file) => `${domain}/uploads/${file.filename}`).join(",")
+    : null;
 
-  const aadharBack =
-    req.files && req.files.aadharBack
-      ? `${domain}/profile-data/${req.files.aadharBack[0].filename}`
-      : null;
+  const sql = `INSERT INTO \`e-district-application\` (
+      application_type, samagar, gender, name, father_husband_name, dob, address,
+      mobile_no, cast, aadhar_no, samagar_member_id, state, annual_income,
+      previous_application, documentUpload, charge_amount, created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-  const panCardFront =
-    req.files && req.files.panCardFront
-      ? `${domain}/profile-data/${req.files.panCardFront[0].filename}`
-      : null;
-
-  const insertQuery = `INSERT INTO userprofile (UserId, UserType, UserName, ContactNo, Email, PanCardNumber, AadharNumber, BusinessName, City, State, PinCode, AadharFront, AadharBack, PanCardFront, CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-  const insertValue = [
-    UserId,
-    UserType,
-    UserName,
-    ContactNo,
-    Email,
-    PanCardNumber,
-    AadharNumber,
-    BusinessName,
-    City,
-    State,
-    PinCode,
-    aadharFront,
-    aadharBack,
-    panCardFront,
+  const values = [
+    application_type,
+    samagar,
+    gender,
+    name,
+    father_husband_name,
+    dob,
+    address,
+    mobile_no,
+    cast,
+    aadhar_no,
+    samagar_member_id,
+    state,
+    annual_income,
+    previous_application,
+    documentUpload,
+    charge_amount,
     createdAt,
   ];
 
-  db.query(insertQuery, insertValue, (err, result) => {
+  db.query(sql, values, (err, result) => {
     if (err) {
-      console.log(`Error Inserting record: ${err.message}`);
-      return res.status(500).json({ status: "Failure", error: err.message });
-    } else {
-      res.status(201).json({
-        status: "Success",
-        message: "Submitted Successfully",
-        resultID: result.insertId,
-      });
+      console.error("Database error:", err);
+      return res.status(500).json({ error: err.message });
     }
+    res.status(201).json({
+      message: "Form data submitted successfully",
+      formId: result.insertId,
+    });
   });
 };
 
@@ -756,95 +927,6 @@ module.exports = {
   complainInsertApi,
   complainGetData,
   profileInfo,
+  profileUserKyc,
+  eDistrictFormData,
 };
-
-// const panFromData = (req, res) => {
-//   const {
-//     application_type,
-//     select_title,
-//     name,
-//     father_name,
-//     mother_name,
-//     dob,
-//     gender,
-//     office_address,
-//     aadhar_details,
-//     Address_Communication_OfficeResident,
-//     alternative_communication_Address,
-//     mobile_no,
-//     email_id,
-//     pin_code,
-//     state,
-//     Change_Request,
-//     Charge_Amount,
-//     user_id,
-//     status,
-//     note,
-//   } = req.body;
-
-//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-
-//   const domain = "http://localhost:7777";
-
-//   const documentUpload = req.files.documentUpload
-//     ? req.files.documentUpload
-//         .map((file) => `${domain}/panUploads/${file.filename}`)
-//         .join(",")
-//     : null;
-//   const attachment_form = req.files.attachment_form
-//     ? `${domain}/panUploads/${req.files.attachment_form[0].filename}`
-//     : null;
-//   const attachment_photo = req.files.attachment_photo
-//     ? `${domain}/panUploads/${req.files.attachment_photo[0].filename}`
-//     : null;
-//   const attachment_signature = req.files.attachment_signature
-//     ? `${domain}/panUploads/${req.files.attachment_signature[0].filename}`
-//     : null;
-
-//   // Insert query
-//   const sql = `INSERT INTO pan_offline (
-//         application_type, select_title, name, father_name, mother_name, dob, gender, office_address, aadhar_details,
-//         Address_Communication_OfficeResident, alternative_communication_Address, mobile_no, email_id, pin_code, state,
-//         Change_Request, document_upload, attachment_form, attachment_signature, attachment_photo, Charge_Amount, user_id,
-//         status, note, created_at
-//     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-//   const values = [
-//     application_type,
-//     select_title,
-//     name,
-//     father_name,
-//     mother_name,
-//     dob,
-//     gender,
-//     office_address,
-//     aadhar_details,
-//     Address_Communication_OfficeResident,
-//     alternative_communication_Address,
-//     mobile_no,
-//     email_id,
-//     pin_code,
-//     state,
-//     Change_Request,
-//     documentUpload,
-//     attachment_form,
-//     attachment_signature,
-//     attachment_photo,
-//     Charge_Amount,
-//     user_id,
-//     status,
-//     note,
-//     createdAt,
-//   ];
-
-//   db.query(sql, values, (err, result) => {
-//     if (err) {
-//       console.error("Database error:", err);
-//       return res.status(500).json({ error: err.message });
-//     }
-//     res.status(201).json({
-//       message: "Form data submitted successfully",
-//       formId: result.insertId,
-//     });
-//   });
-// };
