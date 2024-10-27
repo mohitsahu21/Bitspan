@@ -288,7 +288,8 @@ const getPendingUsers = (req, res) => {
 };
 const getActiveUsers = (req, res) => {
   try {
-    const sql = "SELECT * FROM userprofile WHERE Status = 'Active'";
+    const sql = 
+    "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE u.Status = 'Active'";
 
     db.query(sql, (err, result) => {
       if (err) {
@@ -326,7 +327,44 @@ const getActiveUsers = (req, res) => {
 
 const getdeactiveUsers = (req, res) => {
   try {
-    const sql = "SELECT * FROM userprofile WHERE Status = 'Deactive'";
+    const sql =  "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE u.Status = 'Deactive'";
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error fetching Deactive users from MySQL:", err);
+      return  res.status(500).json({ success: false, error: "Error fetching users" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+         return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No Deactive users found",
+          });
+        } else {
+          // Remove the password field from each user object
+          const sanitizedResult = result.map(({ password, ...rest }) => rest);
+
+        return  res.status(200).json({
+            success: true,
+            data: sanitizedResult,
+            message: "Users fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching users from MySQL:", error);
+   return res.status(500).json({
+      success: false,
+      message: "Error in fetching users",
+      error: error.message,
+    });
+  }
+};
+const getAllUsers = (req, res) => {
+  try {
+    const sql =  "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id";
 
     db.query(sql, (err, result) => {
       if (err) {
@@ -824,6 +862,7 @@ module.exports = {
   getPackages,
   editPackage,
   deletePackage,
+  getAllUsers,
   getPendingUsers,
   getActiveUsers,
   getdeactiveUsers,

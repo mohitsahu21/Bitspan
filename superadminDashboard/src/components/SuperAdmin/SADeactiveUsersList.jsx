@@ -42,7 +42,8 @@ const SADeactiveUsersList = () => {
         (row) =>
           (row?.UserName &&
             row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-          (row?.UserId && row.UserId.includes(keyword.trim()))
+          (row?.UserId && row.UserId.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.package_name &&
+            row.package_name.toLowerCase().includes(keyword.trim().toLowerCase()))
       );
     
       const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
@@ -204,6 +205,8 @@ const SADeactiveUsersList = () => {
                                     <th scope="col">Role</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Mobile</th>
+                                    <th scope="col">Package Id</th>
+                                    <th scope="col">Package Name</th>
                                     {/* <th scope="col">Address</th> */}
                                     <th scope="col">PAN No</th>
                                     <th scope="col">AAdhaar No</th>
@@ -243,6 +246,8 @@ const SADeactiveUsersList = () => {
                                         <td>{user.role}</td>
                                         <td>{user.Email}</td>
                                         <td>{user.ContactNo}</td>
+                                        <td>{user.package_Id}</td>
+                                        <td>{user.package_name}</td>
                                         <td>{user.PanCardNumber}</td>
                                         <td>{user.AadharNumber}</td>
                                         <td>{user.BusinessName}</td>
@@ -250,7 +255,7 @@ const SADeactiveUsersList = () => {
 
                                         <td>{user.State}</td>
                                         <td>{user.PinCode}</td>
-                                        <td>{user?.CreatedBy}</td>
+                                        <td>{user?.created_By_User_Id + " " + user?.created_By_User_Role}</td>
                                         <td>{user?.WebsiteName}</td>
                                         <td>{user?.PaymentStatus}</td>
 
@@ -331,7 +336,7 @@ const SADeactiveUsersList = () => {
                                     ))
                                   ) : (
                                     <tr>
-                                      <td colSpan="13">No data available</td>{" "}
+                                      <td colSpan="20">No data available</td>{" "}
                                       {/* Updated colSpan to match table columns */}
                                     </tr>
                                   )}

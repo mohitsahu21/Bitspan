@@ -6,7 +6,7 @@ import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { CiViewList } from "react-icons/ci";
-import { Dropdown, Modal } from "react-bootstrap";
+import { Dropdown, Modal, Spinner } from "react-bootstrap";
 import axios from "axios";
 import { LuTextSelect } from "react-icons/lu";
 import Swal from "sweetalert2";
@@ -669,7 +669,7 @@ const SAPendingKycUsers = () => {
     (row) =>
       (row?.UserName &&
         row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.UserId && row.UserId.includes(keyword.trim()))
+      (row?.UserId && row.UserId.toLowerCase().includes(keyword.trim().toLowerCase()))
   );
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
@@ -726,26 +726,35 @@ const SAPendingKycUsers = () => {
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
                       <div className="row d-flex flex-column g-4">
-                        {/* <div className="d-flex flex-column flex-md-row gap-3">
-                                                    <div className="col-12 col-md-4 col-lg-3">
+                        <div className="d-flex flex-column flex-md-row gap-3">
+                                                    {/* <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="fromDate" className="form-label">From</label>
                                                         <input id="fromDate" className="form-control" type="date" />
-                                                    </div>
-                                                    <div className="col-12 col-md-4 col-lg-3">
-                                                        <label for="toDate" className="form-label">To</label>
-                                                        <input id="toDate" className="form-control " type="date" />
-                                                    </div>
-                                                    <div className="d-flex align-items-end">
-                                                        <button type="button" className="btn btn-primary button">Search</button>
-                                                    </div>
+                                                    </div> */}
+                                                    <div className="col-12 col-md-6 col-lg-6">
+                                                        {/* <label for="toDate" className="form-label">To</label> */}
 
-                                                </div> */}
+                                                        <input id="toDate" className="form-control " type="search"
+                                                         placeholder="Search User"
+                                                         value={keyword}
+                              onChange={(e) => setKeyword(e.target.value)} />
+                                                    </div>
+                                                    {/* <div className="d-flex align-items-end">
+                                                        <button type="button" className="btn btn-primary button">Search</button>
+                                                    </div> */}
+
+                                                </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
                             {loading ? (
-                              <p>Loading...</p>
+                              <div className="d-flex justify-content-center">
+                              <Spinner animation="border" role="status">
+                              <span className="visually-hidden ">Loading...</span>
+                            </Spinner>
+                            </div>
                             ) : (
+                              <>
                               <table class="table table-striped">
                                 <thead className="table-dark">
                                   <tr>
@@ -804,7 +813,7 @@ const SAPendingKycUsers = () => {
 
                                         <td>{user.State}</td>
                                         <td>{user.PinCode}</td>
-                                        <td>{user?.created_By_User_Id + " " + user.created_By_User_Role}</td>
+                                        <td>{user?.created_By_User_Id + " " + user?.created_By_User_Role}</td>
                                         <td>{user?.created_By_Website}</td>
                                         <td>{user?.PaymentStatus}</td>
 
@@ -898,9 +907,7 @@ const SAPendingKycUsers = () => {
                                   )}
                                 </tbody>
                               </table>
-                            )}
-                          </div>
-                          <PaginationContainer>
+                              <PaginationContainer>
                             <ReactPaginate
                               previousLabel={"previous"}
                               nextLabel={"next"}
@@ -913,6 +920,10 @@ const SAPendingKycUsers = () => {
                               activeClassName={"active"}
                             />
                           </PaginationContainer>
+                              </>
+                            )}
+                          </div>
+                          
                         </div>
                       </div>
                     </div>
@@ -1013,6 +1024,9 @@ const Wrapper = styled.div`
   a {
     text-decoration: none;
   }
+  .custom-dropdown-toggle::after {
+  display: none !important;
+}
 `;
 
 
