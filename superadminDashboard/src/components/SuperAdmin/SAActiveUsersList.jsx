@@ -6,6 +6,10 @@ import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
+import { Dropdown, Spinner } from "react-bootstrap";
+import { CiViewList } from "react-icons/ci";
+import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
+import Swal from "sweetalert2";
 
 const SAActiveUsersList = () => {
 
@@ -54,6 +58,68 @@ const SAActiveUsersList = () => {
       };
     
       const showApiData = filterPagination();
+
+      const deactivateUser = async (id) => {
+        const swalWithBootstrapButtons = Swal.mixin({
+          customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+          },
+          buttonsStyling: false
+        });
+      
+        swalWithBootstrapButtons.fire({
+          title: "Are you sure?",
+          // text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, deactive it!",
+          cancelButtonText: "No, cancel!",
+          reverseButtons: true
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            setLoading(true);
+            try {
+              const { data } = await axios.put(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser", 
+                {
+                   userId: id 
+                }
+              );
+              if (data.success) {
+                swalWithBootstrapButtons.fire({
+                  title: "Deactivated!",
+                  text: data.message,
+                  icon: "success"
+                });
+               fetchActiveUsers();
+              } else {
+                swalWithBootstrapButtons.fire({
+                  title: "Error!",
+                  text: data.message || "An error occurred during the process. Please try again.",
+                  icon: "error"
+                });
+              }
+            } catch (error) {
+              console.error("Error deactivate user:", error);
+              swalWithBootstrapButtons.fire({
+                title: "Error!",
+                text: "An error occurred during the process. Please try again.",
+                icon: "error"
+              });
+            } finally {
+              setLoading(false);
+            }
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            swalWithBootstrapButtons.fire({
+              title: "Cancelled",
+              text: "Your user is safe :)",
+              icon: "error"
+            });
+          }
+        });
+      };
+    
     return ( 
         <>
             <Wrapper>
@@ -91,29 +157,40 @@ const SAActiveUsersList = () => {
                                         <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
                                             <div className="row d-flex flex-column g-4">
 
-                                                {/* <div className="d-flex flex-column flex-md-row gap-3">
-                                                    <div className="col-12 col-md-4 col-lg-3">
-                                                        <label for="fromDate" className="form-label">From</label>
-                                                        <input id="fromDate" className="form-control" type="date" />
+                                            <div className="d-flex flex-column flex-md-row gap-3">
+                                                    <div className="col-12 col-md-6 col-lg-6">
+                                                        {/* <label for="fromDate" className="form-label">From</label> */}
+                                                        <input id="fromDate" 
+                                                        className="form-control"
+                                                         type="search"
+                                                         placeholder="Search User"
+                                                         value={keyword}
+                              onChange={(e) => setKeyword(e.target.value)}
+                                                         />
                                                     </div>
-                                                    <div className="col-12 col-md-4 col-lg-3">
+                                                    {/* <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="toDate" className="form-label">To</label>
                                                         <input id="toDate" className="form-control " type="date" />
-                                                    </div>
-                                                    <div className="d-flex align-items-end">
+                                                    </div> */}
+                                                    {/* <div className="d-flex align-items-end">
                                                         <button type="button" className="btn btn-primary button">Search</button>
-                                                    </div>
+                                                    </div> */}
 
-                                                </div> */}
+                                                </div>
 
 
                                                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                                     <div class="table-responsive">
                                                         {loading  ? ( 
-                                                            <p>Loading...</p>
+                                                          <div className="d-flex justify-content-center">
+                                                               <Spinner animation="border" role="status">
+                                                               <span className="visually-hidden ">Loading...</span>
+                                                             </Spinner>
+                                                             </div>
                                                         )
                                                     :
                                                     (
+                                                      <>
                                                         <table class="table table-striped">
                                                         <thead className="table-dark">
                                                         <tr>
@@ -223,36 +300,35 @@ const SAActiveUsersList = () => {
                                         {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
                                         {/* <td>{user?.Note}</td> */}
                                         <td>
-                                          {/* <Dropdown>
+                                          <Dropdown>
                                             <Dropdown.Toggle
                                               variant="success"
-                                              // id={`dropdown-${pkg.id}`}
+                                              // id={`dropdown-${user.id}`}
+                                              as="span" style={{ border: 'none', background: 'none', cursor: 'pointer' }}
+                                              className="custom-dropdown-toggle"
                                             >
-                                              Action Button
+                                             <PiDotsThreeOutlineVerticalBold />
                                             </Dropdown.Toggle>
                                             <Dropdown.Menu>
-                                              <Dropdown.Item
+                                              { user.Status === "Active" && 
+                                                <Dropdown.Item
                                                 onClick={() => {
-                                                  setSelectedUser(user);
-                                                  setShowApproveModel(true);
+                                                  // setSelectedUser(user);
+                                                  // setShowApproveModel(true);
+                                                  deactivateUser(user.UserId)
                                                 }}
                                               >
                                                 <span className="">
                                                   {" "}
                                                   <CiViewList />
                                                 </span>{" "}
-                                                Approve User
+                                                Deactivate User
                                               </Dropdown.Item>
-                                              <Dropdown.Item
-                                                onClick={() => {
-                                                  setSelectedUser(user);
-                                                  setShowRejectModel(true);
-                                                }}
-                                              >
-                                                <CiViewList /> Reject User
-                                              </Dropdown.Item>
+                                              }
+                                            
+                                         
                                             </Dropdown.Menu>
-                                          </Dropdown> */}
+                                          </Dropdown>
                                         </td>
                                         
                                       </tr>
@@ -268,22 +344,25 @@ const SAActiveUsersList = () => {
 
                                                         </tbody>
                                                     </table>
+                                                    <PaginationContainer>
+                                                        <ReactPaginate
+                                                          previousLabel={"previous"}
+                                                          nextLabel={"next"}
+                                                          breakLabel={"..."}
+                                                          pageCount={totalPages}
+                                                          marginPagesDisplayed={2}
+                                                          pageRangeDisplayed={5}
+                                                          onPageChange={handlePageChange}
+                                                          containerClassName={"pagination"}
+                                                          activeClassName={"active"}
+                                                        />
+                                                      </PaginationContainer>
+                                                    </>
+                                                    
                                                     )}
                                                      
                                                     </div>
-                                                    <PaginationContainer>
-                            <ReactPaginate
-                              previousLabel={"previous"}
-                              nextLabel={"next"}
-                              breakLabel={"..."}
-                              pageCount={totalPages}
-                              marginPagesDisplayed={2}
-                              pageRangeDisplayed={5}
-                              onPageChange={handlePageChange}
-                              containerClassName={"pagination"}
-                              activeClassName={"active"}
-                            />
-                          </PaginationContainer>
+                                                
                                                 </div>
                                             </div>
                                         </div>
@@ -342,6 +421,9 @@ const Wrapper = styled.div`
       padding-left: 13rem;
     }
   }
+  .custom-dropdown-toggle::after {
+  display: none !important;
+}
 `;
 
 const PaginationContainer = styled.div`

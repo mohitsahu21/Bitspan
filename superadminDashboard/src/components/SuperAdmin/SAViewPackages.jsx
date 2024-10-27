@@ -151,7 +151,10 @@ const SAViewPackages = () => {
         row.package_name
           .toLowerCase()
           .includes(keyword.trim().toLowerCase())) ||
-      (row?.id && row.id.toString().includes(keyword.trim()))
+      (row?.id && row.id.toString().includes(keyword.trim())) || (row?.package_for &&
+        row.package_for
+          .toLowerCase()
+          .includes(keyword.trim().toLowerCase()))
   );
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
@@ -209,7 +212,7 @@ const SAViewPackages = () => {
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
                       <div className="row d-flex flex-column g-4">
                         <div className="d-flex flex-column flex-md-row gap-3">
-                          <div className="col-12 col-md-4 col-lg-3">
+                          <div className="col-12 col-md-6 col-lg-6">
                             {/* <label for="fromDate" className="form-label"></label> */}
                             <input
                               id="fromDate"
@@ -224,14 +227,14 @@ const SAViewPackages = () => {
                                                         <label for="toDate" className="form-label">To</label>
                                                         <input id="toDate" className="form-control " type="date" />
                                                     </div> */}
-                          <div className="d-flex align-items-end">
+                          {/* <div className="d-flex align-items-end">
                             <button
                               type="button"
                               className="btn btn-primary button"
                             >
                               Search
                             </button>
-                          </div>
+                          </div> */}
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
