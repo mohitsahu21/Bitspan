@@ -533,7 +533,7 @@ const SuperDisData = [
     icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
   },
   {
-    title: "Create A Parter",
+    title: "Create A Partner",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,

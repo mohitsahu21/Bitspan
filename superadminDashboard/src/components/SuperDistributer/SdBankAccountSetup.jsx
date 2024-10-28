@@ -1,21 +1,7 @@
-import React from "react";
 import styled from "styled-components";
-import {
-  MdCurrencyRupee,
-  MdEmail,
-  MdOutlineFormatListNumbered,
-} from "react-icons/md";
-import {
-  FaAddressCard,
-  FaMobileAlt,
-  FaRupeeSign,
-  FaUser,
-} from "react-icons/fa";
-import { RiMarkPenLine } from "react-icons/ri";
+import { MdEmail } from "react-icons/md";
+import { FaAddressCard, FaUser } from "react-icons/fa";
 import { BiHomeAlt } from "react-icons/bi";
-import { PiAddressBook } from "react-icons/pi";
-import { LuTextSelect, LuUserCheck } from "react-icons/lu";
-import { SlLocationPin } from "react-icons/sl";
 import { Link } from "react-router-dom";
 
 const SdBankAccountSetup = () => {
@@ -33,9 +19,6 @@ const SdBankAccountSetup = () => {
                 <div className="main shadow-none ">
                   <div className="row shadow-none ">
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      {/* <div className="text-start">
-                        <h3>Raise Complaint</h3>
-                      </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="px-lg-3">Bank Details</h4>
                         <p className="mx-lg-5">
@@ -56,91 +39,70 @@ const SdBankAccountSetup = () => {
                     <div className="text-center">
                       <h5>Add New Bank Account</h5>
                     </div>
-                    {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div className="form-floating">
-                        <select
-                          className="form-select"
-                          id="floatingSelect"
-                          aria-label="Floating label select example"
-                        >
-                          <option selected>Select complaint type</option>
-                          <option value="1">Coupon Issue</option>
-                          <option value="2">UTI PAN Debit</option>
-                          <option value="3">UTI PAN Refund</option>
-                          <option value="3">Nsdl Refund</option>
-                          <option value="3">Recharge Refund</option>
-                          <option value="3">Account Support</option>
-                          <option value="3">Report a Bug</option>
-                          <option value="3">Feature Support</option>
-                          <option value="3">API Support</option>
-                          <option value="3">Others</option>
-                        </select>
-                        <label for="floatingSelect">Complaint Type</label>
-                      </div>
-                    </div> */}
+
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
+                      <label htmlFor="name" className="form-label">
                         Bank Holder Name
                       </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
+                      <div className="input-group flex-nowrap">
+                        <span className="input-group-text" id="addon-wrapping">
                           {" "}
                           <FaUser />
                         </span>
                         <input
                           type="text"
                           id="name"
-                          class="form-control"
+                          className="form-control"
                           placeholder="Enter Name"
                         />
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
+                      <label htmlFor="name" className="form-label">
                         Bank Account Number/ UPI ID
                       </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
+                      <div className="input-group flex-nowrap">
+                        <span className="input-group-text" id="addon-wrapping">
                           {" "}
                           <FaAddressCard />
                         </span>
                         <input
                           type="text"
                           id="name"
-                          class="form-control"
+                          className="form-control"
                           placeholder="Enter Bank Account Number/ UPI ID"
                         />
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
+                      <label htmlFor="name" className="form-label">
                         IFSC Code
                       </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
+                      <div className="input-group flex-nowrap">
+                        <span className="input-group-text" id="addon-wrapping">
                           {" "}
                           <MdEmail />
                         </span>
                         <input
                           type="text"
                           id="name"
-                          class="form-control"
+                          className="form-control"
                           placeholder="Enter IFSC Code"
                         />
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
+                      <label htmlFor="name" className="form-label">
                         Bank Name
                       </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
+                      <div className="input-group flex-nowrap">
+                        <span className="input-group-text" id="addon-wrapping">
                           <FaAddressCard />
                         </span>
                         <input
                           type="text"
                           id="name"
-                          class="form-control"
+                          className="form-control"
                           placeholder="Enter Bank Name"
                         />
                       </div>
@@ -158,8 +120,8 @@ const SdBankAccountSetup = () => {
                     </div>
 
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      <div class="table-responsive">
-                        <table class="table table-striped">
+                      <div className="table-responsive">
+                        <table className="table table-striped">
                           <thead className="table-dark">
                             <tr>
                               <th scope="col">#</th>
@@ -170,23 +132,25 @@ const SdBankAccountSetup = () => {
                               <th scope="col">Bank Name</th>
                               <th scope="col">Status</th>
                               <th scope="col"></th>
-                             
                             </tr>
                           </thead>
                           <tbody>
-                                                                <tr>
-                                                                    <th scope="row">1</th>
-                                                                    <td>Mohit Sahu</td>
-                                                                    <td>898989898989</td>
-                                                                    <td>sbin0001503</td>
-                                                                    <td>sbi</td>
-                                                                    <td>PENDING</td>
-                                                                    <td><Link to={"/bank-account-setup/1/2"}><button className="btn btn-primary btn-sm">Verify</button></Link></td>
-                                                             
-                                                                </tr>
-                                                               
-
-                                                            </tbody>
+                            <tr>
+                              <th scope="row">1</th>
+                              <td>Mohit Sahu</td>
+                              <td>898989898989</td>
+                              <td>sbin0001503</td>
+                              <td>sbi</td>
+                              <td>PENDING</td>
+                              <td>
+                                <Link to={"/bank-account-setup/1/2"}>
+                                  <button className="btn btn-primary btn-sm">
+                                    Verify
+                                  </button>
+                                </Link>
+                              </td>
+                            </tr>
+                          </tbody>
                         </table>
                       </div>
                       <div className="float-end">
@@ -234,14 +198,12 @@ const Wrapper = styled.div`
     color: #fff;
     background: #6d70ff;
   }
-  th{
+  th {
     font-weight: 500;
     font-size: 14px;
-   
   }
-  td{
-   font-size: 14px;
-   
+  td {
+    font-size: 14px;
   }
   @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {

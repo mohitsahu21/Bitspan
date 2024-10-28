@@ -45,8 +45,9 @@ app.use("/api/auth/superAdminEmployee", superEmployeeRoute);
 app.use("/api/auth/superDistributor", superDistributor);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/panUploads", express.static(path.join(__dirname, "panUploads")));
+app.use("/kycupload", express.static(path.join(__dirname, "kycupload")));
 app.use(
-  "/complainUpload",
+  "/complainUpload/attachment",
   express.static(path.join(__dirname, "complainUpload"))
 );
 app.use("/profile-data", express.static(path.join(__dirname, "profile-data")));

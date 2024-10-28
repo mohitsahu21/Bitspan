@@ -15,7 +15,7 @@ const rolePrefixes = {
   superadmin: "SA",
   whitelabel: "WL",
   superdistributer: "SD",
-  distributer: "DT",
+  Distributor: "DT",
   retailer: "RT",
   SuperAdmin_Employee: "SAE",
 };
@@ -46,6 +46,9 @@ const userRegiser = async (req, res) => {
     City,
     State,
     PinCode,
+    created_By_User_Id,
+    created_By_User_Role,
+    created_By_Website,
   } = req.body;
 
   if (
@@ -114,7 +117,7 @@ const userRegiser = async (req, res) => {
         const password = generatePassword();
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const insertUserQuery = `INSERT INTO userprofile (UserId, password, UserName, role, ContactNo, Email, PanCardNumber, AadharNumber, BusinessName, City, State, PinCode, CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        const insertUserQuery = `INSERT INTO userprofile (UserId, password, UserName, role, ContactNo, Email, PanCardNumber, AadharNumber, BusinessName, City, State, PinCode, created_By_User_Id, created_By_User_Role, created_By_Website, CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)`;
 
         const insertValues = [
           userId,
@@ -129,6 +132,9 @@ const userRegiser = async (req, res) => {
           City,
           State,
           PinCode,
+          created_By_User_Id,
+          created_By_User_Role,
+          created_By_Website,
           createdAt,
         ];
 
@@ -395,6 +401,18 @@ const verifyOtpAndLogin = async (req, res) => {
           role: user.role,
           email: user.Email,
           username: user.UserName,
+          Status: user.Status,
+          ContactNo: user.ContactNo,
+          PanCardNumber: user.PanCardNumber,
+          AadharNumber: user.AadharNumber,
+          BusinessName: user.BusinessName,
+          City: user.City,
+          State: user.State,
+          PinCode: user.PinCode,
+          package_Id: user.package_Id,
+          created_By_Website: user.created_By_Website,
+          created_By_User_Id: user.created_By_User_Id,
+          created_By_User_Role: user.created_By_User_Role,
         },
       });
     });
