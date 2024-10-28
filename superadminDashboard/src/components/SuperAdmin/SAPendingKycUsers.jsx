@@ -6,7 +6,7 @@ import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { CiViewList } from "react-icons/ci";
-import { Dropdown, Modal } from "react-bootstrap";
+import { Dropdown, Modal, Spinner } from "react-bootstrap";
 import axios from "axios";
 import { LuTextSelect } from "react-icons/lu";
 import Swal from "sweetalert2";
@@ -641,6 +641,7 @@ const SAPendingKycUsers = () => {
   const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
   const [isRefresh, setIsRefresh] = useState(false);
+  const [userType, setUserType] = useState(""); // For user type filter
 
   const fetchPendingUsers = async () => {
     setLoading(true);
@@ -665,11 +666,25 @@ const SAPendingKycUsers = () => {
 
   console.log(users);
 
+  // const filteredItems = users.filter(
+  //   (row) =>
+  //     (row?.UserName &&
+  //       row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+  //     (row?.UserId && row.UserId.toLowerCase().includes(keyword.trim().toLowerCase()))
+  // );
+
   const filteredItems = users.filter(
-    (row) =>
-      (row?.UserName &&
+    (row) =>{ 
+      const matchesKeyword =  (row?.UserName &&
         row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.UserId && row.UserId.includes(keyword.trim()))
+      (row?.UserId && row.UserId.toLowerCase().includes(keyword.trim().toLowerCase()))  ||  (row?.ContactNo &&
+          row.ContactNo.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+        (row?.Email &&
+          row.Email.toLowerCase().includes(keyword.trim().toLowerCase()))
+
+          const matchesUserType = !userType || userType === "---Select User Type---" || row.role === userType;
+          return matchesKeyword && matchesUserType;
+        }
   );
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
@@ -731,9 +746,13 @@ const SAPendingKycUsers = () => {
                                                         <label for="fromDate" className="form-label">From</label>
                                                         <input id="fromDate" className="form-control" type="date" />
                                                     </div>
-                                                    <div className="col-12 col-md-4 col-lg-3">
+                                                    <div className="col-12 col-md-6 col-lg-6">
                                                         <label for="toDate" className="form-label">To</label>
-                                                        <input id="toDate" className="form-control " type="date" />
+
+                                                        <input id="toDate" className="form-control " type="search"
+                                                         placeholder="Search User"
+                                                         value={keyword}
+                              onChange={(e) => setKeyword(e.target.value)} />
                                                     </div>
                                                     <div className="d-flex align-items-end">
                                                         <button type="button" className="btn btn-primary button">Search</button>
@@ -741,11 +760,52 @@ const SAPendingKycUsers = () => {
 
                                                 </div> */}
 
+                                                <div className="d-flex flex-column flex-xl-row gap-3">
+                                                    <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                                                        {/* <label for="fromDate" className="form-label">From</label> */}
+                                                        <input id="fromDate" 
+                                                        className="form-control"
+                                                         type="search"
+                                                         placeholder="Enter User Name/User Id/Mobile/Email Id"
+                                                         value={keyword}
+                              onChange={(e) => setKeyword(e.target.value)}
+                                                         />
+                                                    </div>
+                                                    <div className="col-12 col-md-12 col-lg-12 col-xl-3">
+                                                        
+                                                  
+                            {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              value={userType}
+                              onChange={(e) => setUserType(e.target.value)}
+                              
+                            >
+                              <option selected>---Select User Type---</option>
+                              <option value="Retailer">Retailer</option>
+                              <option value="Distributor">Distributor</option>
+                              <option value="SuperDistributor">Super Distributor</option>
+                              <option value="WhiteLabel">White Label</option>
+                            </select>
+                         
+                                                    </div>
+                                                    {/* <div className="d-flex align-items-end">
+                                                        <button type="button" className="btn btn-primary button">Search</button>
+                                                    </div> */}
+
+                                                </div>
+
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
                             {loading ? (
-                              <p>Loading...</p>
+                              <div className="d-flex justify-content-center">
+                              <Spinner animation="border" role="status">
+                              <span className="visually-hidden ">Loading...</span>
+                            </Spinner>
+                            </div>
                             ) : (
+                              <>
                               <table class="table table-striped">
                                 <thead className="table-dark">
                                   <tr>
@@ -773,11 +833,12 @@ const SAPendingKycUsers = () => {
                                     <th scope="col">Created By</th>
                                     <th scope="col">Website Name</th>
 
-                                    <th scope="col">Payment Status</th>
+                                    
                                     <th scope="col">Aadhar Front</th>
                                     <th scope="col">Aadhar Back</th>
                                     <th scope="col">Pan Card Front</th>
                                     {/* <th scope="col">View KYC</th> */}
+                                    <th scope="col">Payment Status</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Note</th>
                                     <th scope="col">Action</th>
@@ -804,9 +865,9 @@ const SAPendingKycUsers = () => {
 
                                         <td>{user.State}</td>
                                         <td>{user.PinCode}</td>
-                                        <td>{user?.created_By_User_Id + " " + user.created_By_User_Role}</td>
+                                        <td>{user?.created_By_User_Id + " " + user?.created_By_User_Role}</td>
                                         <td>{user?.created_By_Website}</td>
-                                        <td>{user?.PaymentStatus}</td>
+                                      
 
                                         {/* <td>
                                         {item.attached_kyc
@@ -850,6 +911,7 @@ const SAPendingKycUsers = () => {
                                             View
                                           </a>
                                         </td>
+                                        <td>{user?.payment_status}</td>
                                         <td>{user.Status}</td>
                                         {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
                                         <td>{user?.Note}</td>
@@ -898,9 +960,7 @@ const SAPendingKycUsers = () => {
                                   )}
                                 </tbody>
                               </table>
-                            )}
-                          </div>
-                          <PaginationContainer>
+                              <PaginationContainer>
                             <ReactPaginate
                               previousLabel={"previous"}
                               nextLabel={"next"}
@@ -913,6 +973,10 @@ const SAPendingKycUsers = () => {
                               activeClassName={"active"}
                             />
                           </PaginationContainer>
+                              </>
+                            )}
+                          </div>
+                          
                         </div>
                       </div>
                     </div>
@@ -1013,6 +1077,9 @@ const Wrapper = styled.div`
   a {
     text-decoration: none;
   }
+  .custom-dropdown-toggle::after {
+  display: none !important;
+}
 `;
 
 

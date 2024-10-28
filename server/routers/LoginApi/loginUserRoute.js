@@ -8,6 +8,8 @@ const {
   verifyOtpAndResetPassword,
   changePasswordRequest,
   verifyOtpAndChangePassword,
+  userPinGenerate,
+  createPin,
 } = require("../../controllers/LoginApi/loginUser");
 const authenticateToken = require("../../middleware/authenticateToken");
 
@@ -33,5 +35,8 @@ router.get("/home-page", authenticateToken, (req, res) => {
     user: req.user,
   });
 });
+
+router.post("/user-pin", userPinGenerate); //this api work pin create and update
+router.post("/create-pin", createPin);
 
 module.exports = router;

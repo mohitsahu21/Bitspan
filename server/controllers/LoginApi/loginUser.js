@@ -761,6 +761,123 @@ const verifyOtpAndChangePassword = async (req, res) => {
   }
 };
 
+// API For Pin Generate, Update, Validate
+
+const userPinGenerate = (req, res) => {
+  const { user_id, pin } = req.body;
+
+  // Validate input
+  if (!user_id || !pin) {
+    return res
+      .status(400)
+      .json({ status: "Failure", message: "All fields are required" });
+  }
+
+  try {
+    // Check if a PIN already exists for the user
+    const checkUserQuery = "SELECT * FROM user_pins WHERE user_id = ?";
+
+    db.query(checkUserQuery, [user_id], (err, rows) => {
+      if (err) {
+        console.error("Error checking user PIN:", err);
+        return res
+          .status(500)
+          .json({ status: "Failure", message: "Internal server error" });
+      }
+
+      // Check if the user has an existing PIN
+      if (rows.length > 0) {
+        // Update existing PIN
+        db.query(
+          "UPDATE user_pins SET pin = ?, updated_at = NOW() WHERE user_id = ?",
+          [pin, user_id],
+          (updateErr) => {
+            if (updateErr) {
+              console.error("Error updating PIN:", updateErr);
+              return res
+                .status(500)
+                .json({ status: "Failure", message: "Internal server error" });
+            }
+            return res.json({
+              status: "Success",
+              message: "PIN updated successfully.",
+            });
+          }
+        );
+      } else {
+        // Insert new PIN
+        db.query(
+          "INSERT INTO user_pins (user_id, pin) VALUES (?, ?)",
+          [user_id, pin],
+          (insertErr) => {
+            if (insertErr) {
+              console.error("Error creating PIN:", insertErr);
+              return res
+                .status(500)
+                .json({ status: "Failure", message: "Internal server error" });
+            }
+            return res.json({
+              status: "Success",
+              message: "PIN created successfully.",
+            });
+          }
+        );
+      }
+    });
+  } catch (error) {
+    console.error("Error generating PIN:", error);
+    return res
+      .status(500)
+      .json({ status: "Failure", message: "Internal server error" });
+  }
+};
+
+const createPin = (req, res) => {
+  const { user_id, pin } = req.body;
+
+  // Validate input
+  if (!user_id || !pin) {
+    return res
+      .status(400)
+      .json({ status: "Failure", message: "All fields are required" });
+  }
+
+  // Check if the user already has a PIN
+  const checkUserQuery = "SELECT * FROM user_pins WHERE user_id = ?";
+
+  db.query(checkUserQuery, [user_id], (err, rows) => {
+    if (err) {
+      console.error("Error checking user PIN:", err);
+      return res
+        .status(500)
+        .json({ status: "Failure", message: "Internal server error" });
+    }
+
+    // If user exists, return a message indicating the PIN already exists
+    if (rows.length > 0) {
+      return res.status(409).json({
+        status: "Failure",
+        message: "PIN already created for this user.",
+      });
+    } else {
+      // If user does not exist, proceed to create the PIN
+      const insertQuery = "INSERT INTO user_pins (user_id, pin) VALUES (?, ?)";
+      db.query(insertQuery, [user_id, pin], (insertErr) => {
+        if (insertErr) {
+          console.error("Error creating PIN:", insertErr);
+          return res
+            .status(500)
+            .json({ status: "Failure", message: "Internal server error" });
+        }
+        return res.json({
+          status: "Success",
+          message: "PIN created successfully.",
+        });
+      });
+    }
+  });
+};
+
 module.exports = {
   userRegiser,
   loginUser,
@@ -770,6 +887,8 @@ module.exports = {
   verifyOtpAndResetPassword,
   changePasswordRequest,
   verifyOtpAndChangePassword,
+  userPinGenerate,
+  createPin,
 };
 
 // const verifyOtpAndResetPassword = async (req, res) => {

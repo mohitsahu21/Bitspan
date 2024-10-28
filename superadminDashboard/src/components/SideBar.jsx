@@ -1410,6 +1410,11 @@ const SuperAdminData = [
     icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
   },
   {
+    title: "PAN Transaction History",
+    path: "/pan-transaction-report",
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  },
+  {
     title: "Create A Parter",
     // path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
@@ -1532,19 +1537,14 @@ const SuperAdminData = [
         path: "/users-joining-list",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
-      {
-        title: "White Label Joined List",
-        path: "/white-label-joining-list",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
+      // {
+      //   title: "White Label Joined List",
+      //   path: "/white-label-joining-list",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
       {
         title: "Buy User ID Summary",
         path: "/buy-user-id-summary",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "PAN Transaction History",
-        path: "/pan-transaction-report",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],
