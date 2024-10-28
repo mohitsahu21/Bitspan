@@ -251,7 +251,8 @@ const getPackages = (req,res) =>{
 
 const getPendingUsers = (req, res) => {
   try {
-    const sql = "SELECT * FROM userprofile WHERE Status = 'Pending'";
+    // const sql = "SELECT * FROM userprofile WHERE Status = 'Pending'";
+    const sql = "SELECT * FROM userprofile WHERE Status = 'Pending' AND payment_status = 'Complete'";
 
     db.query(sql, (err, result) => {
       if (err) {
@@ -264,6 +265,44 @@ const getPendingUsers = (req, res) => {
             success: true,
             data: [],
             message: "No pending users found",
+          });
+        } else {
+          // Remove the password field from each user object
+          const sanitizedResult = result.map(({ password, ...rest }) => rest);
+
+        return  res.status(200).json({
+            success: true,
+            data: sanitizedResult,
+            message: "Users fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching users from MySQL:", error);
+   return res.status(500).json({
+      success: false,
+      message: "Error in fetching users",
+      error: error.message,
+    });
+  }
+};
+
+const getPendingPaymentUsers = (req, res) => {
+  try {
+    const sql = "SELECT * FROM userprofile WHERE payment_status = 'Pending'";
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error fetching pending Payment users from MySQL:", err);
+      return  res.status(500).json({ success: false, error: "Error fetching users" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+         return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No pending Payment users found",
           });
         } else {
           // Remove the password field from each user object
@@ -857,6 +896,36 @@ const getUserRelations = (req, res) => {
   }
 };
 
+
+const markPaymentComplete = (req, res) => {
+  try {
+    const { userId } = req.body;
+
+      if (!userId) {
+        return res.status(200).json({success : false, message: "User Id is required" });
+      }
+
+      // If the package is not allocated to any user, proceed to delete
+      const Sql = `UPDATE userprofile SET payment_status = "Complete" WHERE UserId = ?`;
+      db.query(Sql, [userId], (Error, Results) => {
+        if (Error) {
+          console.error("Error in Mark Payment Complete:", Error);
+          return res.status(500).json({ error: "Failed to Mark Payment Complete" });
+        }
+
+        if (Results.affectedRows === 0) {
+          return res.status(404).json({ message: "User not found" });
+        }
+
+        return res.status(200).json({success : true, message: "Mark Payment Complete successfully" });
+      });
+    
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({ error: "An unexpected error occurred" });
+  }
+};
+
 module.exports = {
   addPackage,
   getPackages,
@@ -864,11 +933,13 @@ module.exports = {
   deletePackage,
   getAllUsers,
   getPendingUsers,
+  getPendingPaymentUsers,
   getActiveUsers,
   getdeactiveUsers,
   approveUser,
   rejectUser,
   deactivateUser,
   activateUser,
-  getUserRelations
+  getUserRelations,
+  markPaymentComplete
 };
