@@ -884,6 +884,11 @@ const RetailerSidebarData = [
         path: "/change-password",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+      {
+        title: "Create Pin",
+        path: "/generate-pin",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
     ],
   },
   // {
