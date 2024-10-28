@@ -18,7 +18,7 @@ const SAActiveUsersList = () => {
     const [keyword, setKeyword] = useState("");
     const complaintsPerPage = 10;
     const [currentPage, setCurrentPage] = useState(0);
-
+    const [userType, setUserType] = useState(""); // For user type filter
 
     const fetchActiveUsers = async () => {
         setLoading(true);
@@ -39,10 +39,18 @@ const SAActiveUsersList = () => {
       }, []);
 
       const filteredItems = users.filter(
-        (row) =>
-          (row?.UserName &&
+        (row) =>{ 
+          const matchesKeyword =  (row?.UserName &&
             row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-          (row?.UserId && row.UserId.includes(keyword.trim()))
+          (row?.UserId && row.UserId.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.package_name &&
+            row.package_name.toLowerCase().includes(keyword.trim().toLowerCase())) ||  (row?.ContactNo &&
+              row.ContactNo.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+            (row?.Email &&
+              row.Email.toLowerCase().includes(keyword.trim().toLowerCase()))
+
+              const matchesUserType = !userType || userType === "---Select User Type---" || row.role === userType;
+              return matchesKeyword && matchesUserType;
+            }
       );
     
       const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
@@ -119,6 +127,8 @@ const SAActiveUsersList = () => {
           }
         });
       };
+
+      console.log(users)
     
     return ( 
         <>
@@ -157,26 +167,42 @@ const SAActiveUsersList = () => {
                                         <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
                                             <div className="row d-flex flex-column g-4">
 
-                                            <div className="d-flex flex-column flex-md-row gap-3">
-                                                    <div className="col-12 col-md-6 col-lg-6">
+                                            <div className="d-flex flex-column flex-xl-row gap-3">
+                                                    <div className="col-12 col-md-12 col-lg-12 col-xl-8">
                                                         {/* <label for="fromDate" className="form-label">From</label> */}
                                                         <input id="fromDate" 
                                                         className="form-control"
                                                          type="search"
-                                                         placeholder="Search User"
+                                                         placeholder="Enter User Name/User Id/Mobile/Email Id/Package Name"
                                                          value={keyword}
                               onChange={(e) => setKeyword(e.target.value)}
                                                          />
                                                     </div>
-                                                    {/* <div className="col-12 col-md-4 col-lg-3">
-                                                        <label for="toDate" className="form-label">To</label>
-                                                        <input id="toDate" className="form-control " type="date" />
-                                                    </div> */}
+                                                    <div className="col-12 col-md-12 col-lg-12 col-xl-3">
+                                                        
+                                                  
+                            {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              value={userType}
+                              onChange={(e) => setUserType(e.target.value)}
+                              
+                            >
+                              <option selected>---Select User Type---</option>
+                              <option value="Retailer">Retailer</option>
+                              <option value="Distributor">Distributor</option>
+                              <option value="SuperDistributor">Super Distributor</option>
+                              <option value="WhiteLabel">White Label</option>
+                            </select>
+                         
+                                                    </div>
                                                     {/* <div className="d-flex align-items-end">
                                                         <button type="button" className="btn btn-primary button">Search</button>
                                                     </div> */}
 
                                                 </div>
+                                               
 
 
                                                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -204,6 +230,8 @@ const SAActiveUsersList = () => {
                                     <th scope="col">Role</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Mobile</th>
+                                    <th scope="col">Package Id</th>
+                                    <th scope="col">Package Name</th>
                                     {/* <th scope="col">Address</th> */}
                                     <th scope="col">PAN No</th>
                                     <th scope="col">AAdhaar No</th>
@@ -243,6 +271,8 @@ const SAActiveUsersList = () => {
                                         <td>{user.role}</td>
                                         <td>{user.Email}</td>
                                         <td>{user.ContactNo}</td>
+                                        <td>{user.package_Id}</td>
+                                        <td>{user.package_name}</td>
                                         <td>{user.PanCardNumber}</td>
                                         <td>{user.AadharNumber}</td>
                                         <td>{user.BusinessName}</td>
@@ -250,7 +280,7 @@ const SAActiveUsersList = () => {
 
                                         <td>{user.State}</td>
                                         <td>{user.PinCode}</td>
-                                        <td>{user?.CreatedBy}</td>
+                                        <td>{user?.created_By_User_Id + " " + user?.created_By_User_Role}</td>
                                         <td>{user?.WebsiteName}</td>
                                         <td>{user?.PaymentStatus}</td>
 
