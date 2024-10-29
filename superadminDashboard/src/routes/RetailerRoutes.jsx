@@ -64,6 +64,7 @@ import UtiPanNew from "../components/DashBoard/UtiPanNew";
 import DemoRegistration from "../components/DashBoard/DemoRegistration";
 import { useSelector } from "react-redux";
 import EdistrictForm from "../components/DashBoard/EdistrictForm";
+import CreatePin from "../components/DashBoard/CreatePin";
 
 const RetailerRoutes = () => {
   const { currentUser, token } = useSelector((state) => state.user);
@@ -731,6 +732,17 @@ const RetailerRoutes = () => {
               <Navigate to="/update-profile" />
             ) : (
               <EdistrictForm />
+            )
+          }
+        />
+
+        <Route
+          path="/generate-pin"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <CreatePin />
             )
           }
         />

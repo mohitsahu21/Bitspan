@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
+const { error } = require("console");
 
 dotenv.config();
 
@@ -878,6 +879,159 @@ const createPin = (req, res) => {
   });
 };
 
+const sendOtpEmailPin = (email, otp) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAILSENDER,
+      pass: process.env.EMAILPASSWORD,
+    },
+  });
+
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: "Your OTP for Changing PIN",
+    text: `Your OTP for changing your PIN is: ${otp}`,
+  };
+
+  return transporter.sendMail(mailOptions);
+};
+
+const otpStorage = new Map();
+
+const requestOtpForPinChange = (req, res) => {
+  const { user_id, new_pin, email } = req.body;
+
+  if (!user_id || !new_pin || !email) {
+    return res.status(400).json({
+      status: "Failure",
+      message: "User ID, new PIN, and email are required",
+    });
+  }
+
+  // Generate a 6-digit OTP
+  const otp = crypto.randomInt(100000, 999999).toString();
+  otpStorage.set(user_id, {
+    otp,
+    new_pin,
+    email,
+    expiresAt: Date.now() + 300000,
+  }); // Expires in 5 minutes
+
+  sendOtpEmailPin(email, otp)
+    .then(() => {
+      return res.json({
+        status: "Success",
+        message: "OTP sent to your email.",
+      });
+    })
+    .catch((error) => {
+      console.error("Error sending OTP:", error);
+      return res
+        .status(500)
+        .json({ status: "Failure", message: "Failed to send OTP." });
+    });
+};
+
+const verifyOtp = (req, res) => {
+  const { user_id, otp } = req.body;
+
+  if (!user_id || !otp) {
+    return res
+      .status(400)
+      .json({ status: "Failure", message: "User ID and OTP are required" });
+  }
+
+  const storedOtpData = otpStorage.get(user_id);
+
+  if (!storedOtpData) {
+    return res
+      .status(400)
+      .json({ status: "Failure", message: "OTP not generated or expired" });
+  }
+
+  if (storedOtpData.otp !== otp || Date.now() > storedOtpData.expiresAt) {
+    return res
+      .status(400)
+      .json({ status: "Failure", message: "Invalid or expired OTP" });
+  }
+
+  // OTP is valid, proceed to change the PIN
+  otpStorage.delete(user_id); // Clear OTP after verification
+  const { new_pin } = storedOtpData;
+
+  const query =
+    "UPDATE user_pins SET pin = ?, updated_at = NOW() WHERE user_id = ?";
+
+  db.query(query, [new_pin, user_id], (err) => {
+    if (err) {
+      console.error("Error changing PIN:", err);
+      return res
+        .status(500)
+        .json({ status: "Failure", message: "Internal server error" });
+    }
+    return res.json({
+      status: "Success",
+      message: "PIN changed successfully.",
+    });
+  });
+};
+
+const getUserId = (req, res) => {
+  const { user_id } = req.query;
+  // console.log(user_id);
+
+  if (!user_id) {
+    return res
+      .status(400)
+      .json({ status: "Failure", message: "User ID is required" });
+  }
+  const query = "SELECT * FROM user_pins WHERE user_id = ?";
+  db.query(query, [user_id], (err, results) => {
+    if (err) {
+      return res
+        .status(500)
+        .json({ status: "Failure", message: "Database Error", error: err });
+    }
+
+    if (results.length > 0) {
+      return res.status(200).json({ exits: true, message: "User Found" });
+    } else {
+      return res.status(404).json({ exits: false, message: "User Not Found" });
+    }
+  });
+};
+
+const verifyPin = (req, res) => {
+  const { user_id, pin } = req.body;
+
+  // Query the database for the user by user_id
+  const query = "SELECT pin FROM user_pins WHERE user_id = ?";
+
+  db.query(query, [user_id], (error, results) => {
+    if (error) {
+      console.error("Error fetching user:", error);
+      return res.status(500).json({ success: false, message: "Server error" });
+    }
+
+    if (results.length === 0) {
+      // No user found with this user_id
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    // Check if the provided pin matches the stored pin
+    const storedPin = results[0].pin;
+    if (storedPin === pin) {
+      return res.status(200).json({ success: true, message: "PIN verified" });
+    } else {
+      return res.status(400).json({ success: false, message: "Invalid PIN" });
+    }
+  });
+};
+
 module.exports = {
   userRegiser,
   loginUser,
@@ -889,6 +1043,10 @@ module.exports = {
   verifyOtpAndChangePassword,
   userPinGenerate,
   createPin,
+  requestOtpForPinChange,
+  verifyOtp,
+  getUserId,
+  verifyPin,
 };
 
 // const verifyOtpAndResetPassword = async (req, res) => {
