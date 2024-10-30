@@ -16,7 +16,7 @@ const rolePrefixes = {
   whitelabel: "WL",
   superdistributer: "SD",
   Distributor: "DT",
-  retailer: "RT",
+  Retailer: "RT",
   SuperAdmin_Employee: "SAE",
 };
 

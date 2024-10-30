@@ -1,8 +1,30 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { BiHomeAlt } from "react-icons/bi";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 const DAllOfflineForm = () => {
+  const user = useSelector((state) => state.user.currentUser);
+  const [offData, setOffData] = useState([]);
+  console.log(user);
+
+  const getOfflineData = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:7171/api/auth/distributor/getAllOtherOfflineFormDetails/${user.userId}`
+      );
+      setOffData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getOfflineData();
+  }, []);
+
+  console.log(offData);
   return (
     <>
       <Wrapper>
@@ -12,16 +34,10 @@ const DAllOfflineForm = () => {
               <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
                 {/* <Sider /> */}
               </div>
-              <div
-                className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
-                             mt-5 formdata "
-              >
+              <div className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11 mt-5 formdata ">
                 <div className="main shadow-none ">
                   <div className="row shadow-none ">
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      {/* <div className="text-center">
-                                                <h3>Complaint Raised List</h3>
-                                            </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
                           View All Offline History
@@ -38,7 +54,7 @@ const DAllOfflineForm = () => {
                       <div className="row d-flex flex-column g-4">
                         <div className="d-flex flex-column flex-md-row gap-3">
                           <div className="col-12 col-md-4 col-lg-3">
-                            <label for="fromDate" className="form-label">
+                            <label htmlFor="fromDate" className="form-label">
                               From
                             </label>
                             <input
@@ -48,7 +64,7 @@ const DAllOfflineForm = () => {
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
-                            <label for="toDate" className="form-label">
+                            <label htmlFor="toDate" className="form-label">
                               To
                             </label>
                             <input
@@ -68,38 +84,151 @@ const DAllOfflineForm = () => {
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                          <div class="table-responsive">
-                            <table class="table table-striped">
+                          <div className="table-responsive">
+                            <table className="table table-striped">
                               <thead className="table-dark">
                                 <tr>
-                                  <th scope="col">Sr.No</th>
+                                  <th scope="col">ID</th>
                                   <th scope="col">Applicant Name</th>
                                   <th scope="col">Applicant Email</th>
+                                  <th scope="col">Applicant Father</th>
+                                  <th scope="col">Applicant Mother</th>
                                   <th scope="col">Applicant Number</th>
-                                  <th scope="col">Remark</th>
-                                  <th scope="col">View Form</th>
+                                  <th scope="col">Aadhar Card</th>
+                                  <th scope="col">Pan Card</th>
+                                  <th scope="col">Applicant Select Service</th>
+                                  <th scope="col">other Details</th>
+                                  <th scope="col">business_name</th>
+                                  <th scope="col">Attached Form</th>
+                                  <th scope="col">Attached Photo</th>
+                                  <th scope="col">Attached Sign</th>
+                                  <th scope="col">Attached KYC</th>
+                                  <th scope="col">Bank Passbook</th>
+                                  <th scope="col">Shop Photo</th>
+                                  <th scope="col">Electric Bill</th>
+                                  <th scope="col">Status</th>
+                                  <th scope="col">Note</th>
+                                  <th scope="col">Date</th>
                                 </tr>
                               </thead>
-                              {/* <tbody>
-                                                                <tr>
-                                                                    <th scope="row">Refund</th>
-                                                                    <td>23/05/2024 14:35:58</td>
-                                                                    <td>PAN465484654</td>
-                                                                    <td>NSDL464444416785165</td>
-                                                                    <td>EKYC 49A</td>
-                                                                    <td>Individual</td> 
-                                                                    <td>107.00</td>
-                                                                    <td>Mohit Sahu</td>
-                                                                    <td>30/05/2000</td>
-                                                                    <td>M</td>
-                                                                    <td>9856325698</td>
-                                                                    <td>mohitsahu@gmail.com</td>
-                                                                    <td>SUCCESS</td>
-                                                                    <td>Transaction Successfull</td>
-                                                                </tr>
-                                                               
-
-                                                            </tbody> */}
+                              <tbody>
+                                {offData.map((data, index) => (
+                                  <>
+                                    <tr>
+                                      <th>{data.id}</th>
+                                      <th>{data.applicant_name}</th>
+                                      <th>{data.email}</th>
+                                      <th>{data.applicant_father}</th>
+                                      <th>{data.applicant_mother}</th>
+                                      <th>{data.applicant_number}</th>
+                                      <th>
+                                        <a
+                                          href={data.aadhar_card}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-decoration-none"
+                                        >
+                                          View Document
+                                        </a>
+                                      </th>
+                                      <th>
+                                        {" "}
+                                        <a
+                                          href={data.pan_card}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-decoration-none"
+                                        >
+                                          View Document
+                                        </a>
+                                      </th>
+                                      <th>{data.applicant_select_service}</th>
+                                      <th>{data.other}</th>
+                                      <th>{data.business_name}</th>
+                                      <th>
+                                        {" "}
+                                        <a
+                                          href={data.attached_form}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-decoration-none"
+                                        >
+                                          View Document
+                                        </a>
+                                      </th>
+                                      <th>
+                                        {" "}
+                                        <a
+                                          href={data.attached_photo}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-decoration-none"
+                                        >
+                                          View Document
+                                        </a>
+                                      </th>
+                                      <th>
+                                        {" "}
+                                        <a
+                                          href={data.attached_sign}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-decoration-none"
+                                        >
+                                          View Document
+                                        </a>
+                                      </th>
+                                      <th>
+                                        {" "}
+                                        <a
+                                          href={data.attached_kyc}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-decoration-none"
+                                        >
+                                          View Document
+                                        </a>
+                                      </th>
+                                      <th>
+                                        {" "}
+                                        <a
+                                          href={data.bank_passbook}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-decoration-none"
+                                        >
+                                          View Document
+                                        </a>
+                                      </th>
+                                      <th>
+                                        {" "}
+                                        <a
+                                          href={data.shop_photo}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-decoration-none"
+                                        >
+                                          View Document
+                                        </a>
+                                      </th>
+                                      <th>
+                                        {" "}
+                                        <a
+                                          href={data.electric_bill}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-decoration-none"
+                                        >
+                                          View Document
+                                        </a>
+                                      </th>
+                                      <th>{data.status}</th>
+                                      <th>{data.note}</th>
+                                      <th>{data.created_at}</th>
+                                    </tr>
+                                  </>
+                                ))}
+                              </tbody>
                             </table>
                           </div>
                           <div className="float-end">

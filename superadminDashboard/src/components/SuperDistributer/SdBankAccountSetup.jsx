@@ -3,8 +3,69 @@ import { MdEmail } from "react-icons/md";
 import { FaAddressCard, FaUser } from "react-icons/fa";
 import { BiHomeAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const SdBankAccountSetup = () => {
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
+  const [bankData, setBankData] = useState([]);
+  const [formData, setFormData] = useState({
+    bankholder_name: "",
+    bankaccount_number: "",
+    IFSC_code: "",
+    bank_name: "",
+    status: "Pending",
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  console.log(formData);
+
+  const getBankDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:7171/api/auth/superDistributor/getBankDetails/${user.userId}`
+      );
+      setBankData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getBankDetails();
+  }, []);
+
+  console.log(bankData);
+
+  const addBankDetails = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post(
+        `http://localhost:7171/api/auth/superDistributor/addBankDetails/${user.userId}`,
+        formData
+      );
+      alert("Bank details added successfully");
+      setFormData({
+        bankholder_name: "",
+        bankaccount_number: "",
+        IFSC_code: "",
+        bank_name: "",
+      });
+      getBankDetails();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Wrapper>
@@ -35,85 +96,113 @@ const SdBankAccountSetup = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
-                    <div className="text-center">
-                      <h5>Add New Bank Account</h5>
-                    </div>
+                  <form onSubmit={addBankDetails}>
+                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
+                      <div className="text-center">
+                        <h5>Add New Bank Account</h5>
+                      </div>
 
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label htmlFor="name" className="form-label">
-                        Bank Holder Name
-                      </label>
-                      <div className="input-group flex-nowrap">
-                        <span className="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <FaUser />
-                        </span>
-                        <input
-                          type="text"
-                          id="name"
-                          className="form-control"
-                          placeholder="Enter Name"
-                        />
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label htmlFor="name" className="form-label">
+                          Bank Holder Name
+                        </label>
+                        <div className="input-group flex-nowrap">
+                          <span
+                            className="input-group-text"
+                            id="addon-wrapping"
+                          >
+                            {" "}
+                            <FaUser />
+                          </span>
+                          <input
+                            type="text"
+                            name="bankholder_name"
+                            value={formData.bankholder_name}
+                            onChange={handleChange}
+                            required
+                            className="form-control"
+                            placeholder="Enter Name"
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label htmlFor="name" className="form-label">
-                        Bank Account Number/ UPI ID
-                      </label>
-                      <div className="input-group flex-nowrap">
-                        <span className="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <FaAddressCard />
-                        </span>
-                        <input
-                          type="text"
-                          id="name"
-                          className="form-control"
-                          placeholder="Enter Bank Account Number/ UPI ID"
-                        />
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label htmlFor="name" className="form-label">
+                          Bank Account Number/ UPI ID
+                        </label>
+                        <div className="input-group flex-nowrap">
+                          <span
+                            className="input-group-text"
+                            id="addon-wrapping"
+                          >
+                            {" "}
+                            <FaAddressCard />
+                          </span>
+                          <input
+                            type="text"
+                            name="bankaccount_number"
+                            value={formData.bankaccount_number}
+                            onChange={handleChange}
+                            required
+                            className="form-control"
+                            placeholder="Enter Bank Account Number/ UPI ID"
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label htmlFor="name" className="form-label">
-                        IFSC Code
-                      </label>
-                      <div className="input-group flex-nowrap">
-                        <span className="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdEmail />
-                        </span>
-                        <input
-                          type="text"
-                          id="name"
-                          className="form-control"
-                          placeholder="Enter IFSC Code"
-                        />
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label htmlFor="name" className="form-label">
+                          IFSC Code
+                        </label>
+                        <div className="input-group flex-nowrap">
+                          <span
+                            className="input-group-text"
+                            id="addon-wrapping"
+                          >
+                            {" "}
+                            <MdEmail />
+                          </span>
+                          <input
+                            type="text"
+                            name="IFSC_code"
+                            value={formData.IFSC_code}
+                            onChange={handleChange}
+                            required
+                            className="form-control"
+                            placeholder="Enter IFSC Code"
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label htmlFor="name" className="form-label">
-                        Bank Name
-                      </label>
-                      <div className="input-group flex-nowrap">
-                        <span className="input-group-text" id="addon-wrapping">
-                          <FaAddressCard />
-                        </span>
-                        <input
-                          type="text"
-                          id="name"
-                          className="form-control"
-                          placeholder="Enter Bank Name"
-                        />
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label htmlFor="name" className="form-label">
+                          Bank Name
+                        </label>
+                        <div className="input-group flex-nowrap">
+                          <span
+                            className="input-group-text"
+                            id="addon-wrapping"
+                          >
+                            <FaAddressCard />
+                          </span>
+                          <input
+                            type="text"
+                            name="bank_name"
+                            value={formData.bank_name}
+                            onChange={handleChange}
+                            required
+                            className="form-control"
+                            placeholder="Enter Bank Name"
+                          />
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      <div className="text-start mb-3">
-                        <button className="btn p-2">Submit</button>
+                      <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <div className="text-start mb-3">
+                          <button className="btn p-2" type="submit">
+                            Submit
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </form>
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
                     <div className="text-center">
                       <h5>All Your Listed Bank Account</h5>
@@ -124,32 +213,36 @@ const SdBankAccountSetup = () => {
                         <table className="table table-striped">
                           <thead className="table-dark">
                             <tr>
-                              <th scope="col">#</th>
+                              <th scope="col">Sr. No.</th>
                               <th scope="col">A/c Holder Name</th>
                               <th scope="col">Bank Account Number</th>
 
                               <th scope="col">IFSC Code</th>
                               <th scope="col">Bank Name</th>
                               <th scope="col">Status</th>
-                              <th scope="col"></th>
+                              {/* <th scope="col"></th> */}
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <th scope="row">1</th>
-                              <td>Mohit Sahu</td>
-                              <td>898989898989</td>
-                              <td>sbin0001503</td>
-                              <td>sbi</td>
-                              <td>PENDING</td>
-                              <td>
+                            {bankData?.map((item, index) => (
+                              <>
+                                <tr>
+                                  <th scope="row">{index + 1}</th>
+                                  <td>{item.bankholder_name}</td>
+                                  <td>{item.bankaccount_number}</td>
+                                  <td>{item.IFSC_code}</td>
+                                  <td>{item.bank_name}</td>
+                                  <td>{item.status}</td>
+                                  {/* <td>
                                 <Link to={"/bank-account-setup/1/2"}>
                                   <button className="btn btn-primary btn-sm">
                                     Verify
                                   </button>
                                 </Link>
-                              </td>
-                            </tr>
+                              </td> */}
+                                </tr>
+                              </>
+                            ))}
                           </tbody>
                         </table>
                       </div>

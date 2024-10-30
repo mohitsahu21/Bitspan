@@ -1,31 +1,30 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { MdFormatListNumberedRtl } from "react-icons/md";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { BiHomeAlt } from "react-icons/bi";
 import { useSelector } from "react-redux";
-import axios from "axios";
+import styled from "styled-components";
 
-const DAllComplaintsList = () => {
+const RechargeHistoryDist = () => {
   const user = useSelector((state) => state.user.currentUser);
+  const [offData, setOffData] = useState([]);
   console.log(user);
-  const [complaintList, setComplaintList] = useState([]);
 
-  const getComplaintList = async () => {
+  const getOfflineData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7171/api/auth/superDistributor/getAllComplaintsById/${user.userId}`
+        `http://localhost:7171/api/auth/superDistributor/getRechargeOfflineFormDetails/${user.userId}`
       );
-      setComplaintList(data);
+      setOffData(data);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getComplaintList();
+    getOfflineData();
   }, []);
 
-  console.log(complaintList);
+  console.log(offData);
 
   return (
     <>
@@ -36,22 +35,17 @@ const DAllComplaintsList = () => {
               <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
                 {/* <Sider /> */}
               </div>
-              <div
-                className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
-                             mt-5 formdata "
-              >
+              <div className="col-xxl-12 col-xl-11 col-lg-12 col-md-10 col-sm-10 col-11 mt-5 formdata ">
                 <div className="main shadow-none ">
                   <div className="row shadow-none ">
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      {/* <div className="text-center">
-                                                <h3>Complaint Raised List</h3>
-                                            </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Complaint Raised List
+                          View Offline Recharge History
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; Complaint Raised List{" "}
+                          <BiHomeAlt /> &nbsp;/ &nbsp; View Offline Recharge
+                          History{" "}
                         </h6>
                       </div>
                     </div>
@@ -96,34 +90,28 @@ const DAllComplaintsList = () => {
                             <table className="table table-striped">
                               <thead className="table-dark">
                                 <tr>
-                                  <th scope="col">Complaint ID</th>
-                                  <th scope="col">Ticket Raised Date</th>
-                                  <th scope="col">Complaint Type</th>
-                                  <th scope="col">Remark</th>
-                                  <th scope="col">Transaction No.</th>
-                                  <th scope="col">Complain File</th>
+                                  <th scope="col">ID</th>
+                                  <th scope="col">Mobile Number</th>
+                                  <th scope="col">Operator Name</th>
+                                  <th scope="col">Amount</th>
+                                  <th scope="col">Order ID</th>
+                                  <th scope="col">Recharge Type</th>
                                   <th scope="col">Status</th>
+                                  <th scope="col">Note</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                {complaintList?.map((data, index) => (
+                                {offData.map((data, index) => (
                                   <>
                                     <tr>
-                                      <th scope="row">{data.id}</th>
-                                      <td>{data.createdAt}</td>
-                                      <td>{data.complainType}</td>
-                                      <td>{data.remark}</td>
-                                      <td>{data.transactionNo}</td>
-                                      <td>
-                                        <a
-                                          href={data.complainFile}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                        >
-                                          View Document
-                                        </a>
-                                      </td>
+                                      <td>{data.id}</td>
+                                      <td>{data.mobile_no}</td>
+                                      <td>{data.operator_name}</td>
+                                      <td>{data.amount}</td>
+                                      <td>{data.orderid}</td>
+                                      <td>{data.recharge_Type}</td>
                                       <td>{data.status}</td>
+                                      <td>{data.note}</td>
                                     </tr>
                                   </>
                                 ))}
@@ -166,7 +154,7 @@ const DAllComplaintsList = () => {
   );
 };
 
-export default DAllComplaintsList;
+export default RechargeHistoryDist;
 
 const Wrapper = styled.div`
   .main {

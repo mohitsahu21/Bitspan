@@ -402,15 +402,15 @@ const addBankDetails = (req, res) => {
     } = req.body;
     const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
     const selectQuery =
-      "SELECT * FROM bankdetails WHERE bankaccount_number = ?";
+      "SELECT * FROM bank_details WHERE bankaccount_number = ?";
     db.query(selectQuery, bankaccount_number, (err, result) => {
       if (err) {
-        res.status(400).json({ success: false, message: err.message });
+        return res.status(400).json({ success: false, message: err.message });
       }
 
       if (result && result.length === 0) {
         const insertQuery =
-          "INSERT INTO bankdetails (UserId, bankholder_name, bankaccount_number, IFSC_code, bank_name, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+          "INSERT INTO bank_details (UserId, bankholder_name, bankaccount_number, IFSC_code, bank_name, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         const insertParams = [
           userId,
@@ -431,13 +431,28 @@ const addBankDetails = (req, res) => {
           }
         });
       } else {
-        return res
-          .status(400)
-          .json({
-            success: false,
-            message: "Bank account number already exists",
-          });
+        return res.status(400).json({
+          success: false,
+          message: "Bank account number already exists",
+        });
       }
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal server error" });
+  }
+};
+
+const getBankDetails = (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const selectQuery = "SELECT * FROM bank_details WHERE UserId = ?";
+    db.query(selectQuery, userId, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
     });
   } catch (error) {
     res.status(500).json({ success: false, message: "Internal server error" });
@@ -457,4 +472,6 @@ module.exports = {
   changePasswordSuperDist,
   getUserDetails,
   updateProfileKyc,
+  addBankDetails,
+  getBankDetails,
 };

@@ -1,11 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { MdOutlineFormatListNumbered } from "react-icons/md";
-import { FaMobileAlt } from "react-icons/fa";
-import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const DActiveUsersList = () => {
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
+  const [userData, setUserData] = useState([]);
+
+  const getAllSuperDistUser = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:7171/api/auth/superDistributor/getAllUserSuperDist/${user.userId}`
+      );
+      setUserData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllSuperDistUser();
+  }, []);
+
+  console.log(userData);
+
+  const filterData = userData.filter((item) => item.Status === "Active");
+  console.log(filterData);
+
   return (
     <>
       <Wrapper>
@@ -22,15 +46,12 @@ const DActiveUsersList = () => {
                 <div className="main shadow-none">
                   <div className="row shadow-none">
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                      {/* <div className="text-center">
-                                                <h3>Wallet Transaction Report</h3>
-                                            </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Active Users
+                          All Active Users
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; Active Users
+                          <BiHomeAlt /> &nbsp;/ &nbsp; All Active Users
                         </h6>
                       </div>
                     </div>
@@ -38,69 +59,80 @@ const DActiveUsersList = () => {
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
                       <div className="row d-flex flex-column g-4">
-                        {/* <div className="d-flex flex-column flex-md-row gap-3">
-                                                    <div className="col-12 col-md-4 col-lg-3">
-                                                        <label for="fromDate" className="form-label">From</label>
-                                                        <input id="fromDate" className="form-control" type="date" />
-                                                    </div>
-                                                    <div className="col-12 col-md-4 col-lg-3">
-                                                        <label for="toDate" className="form-label">To</label>
-                                                        <input id="toDate" className="form-control " type="date" />
-                                                    </div>
-                                                    <div className="d-flex align-items-end">
-                                                        <button type="button" className="btn btn-primary button">Search</button>
-                                                    </div>
-
-                                                </div> */}
-
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                          <div class="table-responsive">
-                            <table class="table table-striped">
+                          <div className="table-responsive">
+                            <table className="table table-striped">
                               <thead className="table-dark">
                                 <tr>
                                   <th scope="col">#</th>
-                                  <th scope="col">Date</th>
-                                  <th scope="col">User Id</th>
-                                  <th scope="col">
-                                    User <br /> Name
-                                  </th>
-                                  <th scope="col">Location</th>
-                                  <th scope="col">Pin</th>
-                                  <th scope="col">State</th>
-                                  <th scope="col">Pan No</th>
-                                  <th scope="col">
-                                    P-Coupon <br /> Price
-                                  </th>
-                                  <th scope="col">
-                                    E-Coupon <br /> Price
-                                  </th>
+                                  <th scope="col">User ID</th>
+                                  <th scope="col">User Name</th>
                                   <th scope="col">Role</th>
-                                  <th scope="col">Created By</th>
-                                  <th scope="col">Website Name</th>
-                                  <th scope="col">
-                                    Payment <br /> Status
-                                  </th>
+                                  <th scope="col">Contact</th>
+                                  <th scope="col">Email</th>
+                                  <th scope="col">PAN Number</th>
+                                  <th scope="col">Aadhar Number</th>
+                                  <th scope="col">Business Name</th>
+                                  <th scope="col">City</th>
+                                  <th scope="col">State</th>
+                                  <th scope="col">Pin Code</th>
+                                  <th scope="col">Adadhar Front</th>
+                                  <th scope="col">Aadhar Back</th>
+                                  <th scope="col">PAN Card</th>
+                                  <th scope="col">Website</th>
                                   <th scope="col">Status</th>
+                                  <th scope="col">Note</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr>
-                                  <th scope="row">1</th>
-                                  <td>23/05/2024 14:35:58</td>
-                                  <td>MOHIT29605</td>
-                                  <td>Mohit Sahu </td>
-                                  <td>JABALPUR</td>
-                                  <td>482002</td>
-                                  <td>MADHYA PRADESH</td>
-                                  <td>FTIPS3345K</td>
-                                  <td>0.00</td>
-                                  <td>0.00</td>
-                                  <td>RETAILER</td>
-                                  <td>ID : AASHISD29164 - Aashish Kumar</td>
-                                  <td>www.bitspan.in</td>
-                                  <td>COMPLETE</td>
-                                  <td>ACTIVE</td>
-                                </tr>
+                                {filterData?.map((data, index) => (
+                                  <>
+                                    <tr>
+                                      <td>{index + 1}</td>
+                                      <td>{data.UserId}</td>
+                                      <td>{data.UserName}</td>
+                                      <td>{data.role}</td>
+                                      <td>{data.ContactNo}</td>
+                                      <td>{data.Email}</td>
+                                      <td>{data.PanCardNumber}</td>
+                                      <td>{data.AadharNumber}</td>
+                                      <td>{data.BusinessName}</td>
+                                      <td>{data.City}</td>
+                                      <td>{data.State}</td>
+                                      <td>{data.PinCode}</td>
+                                      <td>
+                                        <a
+                                          href={data.AadharFront}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                        >
+                                          View Document
+                                        </a>
+                                      </td>
+                                      <td>
+                                        <a
+                                          href={data.AadharBack}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                        >
+                                          View Document
+                                        </a>
+                                      </td>
+                                      <td>
+                                        <a
+                                          href={data.PanCardFront}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                        >
+                                          View Document
+                                        </a>
+                                      </td>
+                                      <td>{data.created_By_Website}</td>
+                                      <td>{data.Status}</td>
+                                      <td>{data.Note}</td>
+                                    </tr>
+                                  </>
+                                ))}
                               </tbody>
                             </table>
                           </div>
@@ -176,5 +208,8 @@ const Wrapper = styled.div`
     .formdata {
       padding-left: 13rem;
     }
+  }
+  a {
+    text-decoration: none;
   }
 `;

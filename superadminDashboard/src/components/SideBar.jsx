@@ -1488,21 +1488,27 @@ const DistributorData = [
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
-      // {
-      //   title: "Download Forms",
-      //   path: "/download-offline-forms",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   // cName: "sub-nav",
-      // },
-      // {
-      //   title: "Apply Pan Card Offline",
-      //   path: "/submit-pan-card-offline",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   // cName: "sub-nav",
-      // },
       {
         title: "View All History",
         path: "/view-all-offline-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "Pan Card History",
+        path: "/pan-card-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "Recharge History",
+        path: "/recharge-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "DTH Connection History",
+        path: "/DTH-connection-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
       },
@@ -1543,7 +1549,7 @@ const DistributorData = [
 
     subNav: [
       {
-        title: "Create Distributor",
+        title: "Create Retailer",
         path: "/create-retailer",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },

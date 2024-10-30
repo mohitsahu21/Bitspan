@@ -1852,7 +1852,7 @@ const DistributorData = [
 
     subNav: [
       {
-        title: "Create Distributor",
+        title: "Create Retailer",
         path: "/create-retailer",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },

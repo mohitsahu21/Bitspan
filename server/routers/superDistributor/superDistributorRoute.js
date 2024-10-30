@@ -12,6 +12,8 @@ const {
   changePasswordSuperDist,
   getUserDetails,
   updateProfileKyc,
+  addBankDetails,
+  getBankDetails,
 } = require("../../controllers/superDistributor/superDistributor");
 const path = require("path");
 const multer = require("multer");
@@ -78,5 +80,7 @@ const kycUpload = multer({
 ]);
 
 router.put("/kycupload/:userId", kycUpload, updateProfileKyc);
+router.post("/addBankDetails/:userId", addBankDetails);
+router.get("/getBankDetails/:userId", getBankDetails);
 
 module.exports = router;

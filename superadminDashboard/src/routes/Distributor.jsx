@@ -24,6 +24,9 @@ import DFundTransferStatus from "../components/Distributor/DFundTransferStatus";
 import Certificate from "../components/Distributor/Certificate";
 import DDownloadCertificate from "../components/Distributor/DDownloadCertificate";
 import DBankAccountVerify from "../components/Distributor/DBankAccountVerify";
+import PanCardOffFormDist from "../components/Distributor/PanCardOffFormDist";
+import RechargeHistoryDist from "../components/Distributor/RechargeHistoryDist";
+import DTHConnectionHistory from "../components/Distributor/DTHConnectionHistory";
 
 const Distributor = () => {
   return (
@@ -62,8 +65,17 @@ const Distributor = () => {
         <Route path="/complaint-raised-list" element={<DAllComplaintsList />} />
         <Route path="/change-password" element={<DChangePassword />} />
         <Route path="/bank-account-setup" element={<DBankAccountSetup />} />
-        <Route path="/bank-account-setup/:bank_id/:user_id" element={<DBankAccountVerify />} />
+        <Route
+          path="/bank-account-setup/:bank_id/:user_id"
+          element={<DBankAccountVerify />}
+        />
         <Route path="/fund-transfer-status" element={<DFundTransferStatus />} />
+        <Route path="/pan-card-history" element={<PanCardOffFormDist />} />
+        <Route path="/recharge-history" element={<RechargeHistoryDist />} />
+        <Route
+          path="/DTH-connection-history"
+          element={<DTHConnectionHistory />}
+        />
         <Route
           path="/download-certificate"
           element={<DDownloadCertificate />}
