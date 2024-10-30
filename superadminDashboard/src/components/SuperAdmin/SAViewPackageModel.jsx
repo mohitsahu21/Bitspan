@@ -106,6 +106,50 @@ const SAViewPackageModel = ({ packages }) => {
                                             </div>
                                         </div> */}
 
+<div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Offline E PAN Card Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="offline_E_PAN_Card_Price"
+                            value={packages.offline_E_PAN_Card_Price}
+                            
+                            required
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Offline P PAN Card Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="offline_P_PAN_Card_Price"
+                            value={packages.offline_P_PAN_Card_Price}
+                         
+                            required
+                          />
+                        </div>
+                      </div>
+
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
                         Google Play Price
@@ -250,42 +294,137 @@ const SAViewPackageModel = ({ packages }) => {
                         />
                       </div>
                     </div>
+                   
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Income Certificate Price
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="text"
-                          id="name"
-                          class="form-control"
-                          placeholder="IFSC Code"
-                          value={packages.Income_Certificate_Price}
-                        />
+                        <label for="name" className="form-label">
+                        offline KYC e-District Service
+                        </label>
+                        <div className="input-group flex-nowrap">
+                          <span
+                            className="input-group-text"
+                            id="addon-wrapping"
+                          >
+                            {" "}
+                            <LuTextSelect />
+                          </span>
+                          <select
+                            name="offline_kyc_eDistrict" value={packages.offline_kyc_eDistrict} 
+                            className="form-select"
+                            aria-label="Default select example"
+                            disabled
+                          >
+                            <option value="" selected>Select...</option>
+
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                          </select>
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Domicile Certificate Price
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="text"
-                          id="name"
-                          class="form-control"
-                          placeholder="IFSC Code"
-                          value={packages.Domicile_Certificate_Price}
-                        />
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          eKYC Income Certificate Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="eKYC_Income_Certificate_Price"
+                            value={packages.eKYC_Income_Certificate_Price}
+                          
+                            required
+                          />
+                        </div>
                       </div>
-                    </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        eKYC Domicile Certificate Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="eKYC_Domicile_Certificate_Price"
+                            value={packages.eKYC_Domicile_Certificate_Price}
+                          
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        offline KYC Income Certificate Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="offlineKYC_Income_Certificate_Price"
+                            value={packages.offlineKYC_Income_Certificate_Price}
+                          
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          offline KYC Domicile Certificate Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="offlineKYC_Domicile_Certificate_Price"
+                            value={packages.offlineKYC_Domicile_Certificate_Price}
+                          
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Verify e-district Certificate Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="verify_edistrict_Certificate_Price"
+                            value={packages.verify_edistrict_Certificate_Price}
+                          
+                            required
+                          />
+                        </div>
+                      </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
                         Bank ID Price
@@ -358,6 +497,49 @@ const SAViewPackageModel = ({ packages }) => {
                                                 />
                                             </div>
                                         </div> */}
+
+<div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Offline E PAN Card Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="offline_E_PAN_Card_Commission"
+                            value={packages.offline_E_PAN_Card_Commission}
+                           
+                          
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Offline P PAN Card Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="offline_P_PAN_Card_Commission"
+                            value={packages.offline_P_PAN_Card_Commission}
+                            
+                          />
+                        </div>
+                      </div>
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
@@ -503,42 +685,109 @@ const SAViewPackageModel = ({ packages }) => {
                         />
                       </div>
                     </div>
+                    
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Income Certificate Commission
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="text"
-                          id="name"
-                          class="form-control"
-                          placeholder="IFSC Code"
-                          value={packages.Income_Certificate_Commission}
-                        />
+                        <label for="name" class="form-label">
+                        eKYC Income Certificate Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="eKYC_Income_Certificate_Commission"
+                            value={packages.eKYC_Income_Certificate_Commission}
+                            
+                           
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Domicile Certificate Commission
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="text"
-                          id="name"
-                          class="form-control"
-                          placeholder="IFSC Code"
-                          value={packages.Domicile_Certificate_Commission}
-                        />
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        eKYC Domicile Certificate Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="eKYC_Domicile_Certificate_Commission"
+                            value={packages.eKYC_Domicile_Certificate_Commission}
+                            
+                         
+                          />
+                        </div>
                       </div>
-                    </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Offline KYC Income Certificate Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="offlineKYC_Income_Certificate_Commission"
+                            value={packages.offlineKYC_Income_Certificate_Commission}
+                           
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Offline KYC Domicile Certificate Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="offlineKYC_Domicile_Certificate_Commission"
+                            value={packages.offlineKYC_Domicile_Certificate_Commission}
+                            
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                      Verify e-district Certificate Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="verify_edistrict_Certificate_Commission"
+                            value={packages.verify_edistrict_Certificate_Commission}
+                           
+                          />
+                        </div>
+                      </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
                         Bank ID Commission
@@ -1702,6 +1951,82 @@ const SAViewPackageModel = ({ packages }) => {
                                             </div>
                                         </div> */}
                   </div>
+
+                  <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                      <div className="text-center  my-5">
+                        <h2>PAN Card Price</h2>
+                      </div>
+
+                      
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          E PAN Card Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="E_PAN_Card_Price"
+                            value={packages.E_PAN_Card_Price}
+                          
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        P PAN Card Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="P_PAN_Card_Price"
+                            value={packages.P_PAN_Card_Price}
+                           
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          UTI PAN Coupon Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="UTI_PAN_Coupon_Price"
+                            value={packages.UTI_PAN_Coupon_Price}
+                           
+                          />
+                        </div>
+                      </div>
+
+                      {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div className="text-center  mb-5 mt-3">
+                                                <button className="btn p-2">Change</button>
+                                            </div>
+                                        </div> */}
+                    </div>
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
                     <div className="text-center  my-5">
                       <h2>PAN Card Commission</h2>

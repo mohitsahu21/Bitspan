@@ -39,8 +39,6 @@ const SACreatePackages = () => {
     offlineKYC_Income_Certificate_Price : "",
     offlineKYC_Domicile_Certificate_Price : "",
     verify_edistrict_Certificate_Price : "",
-    Income_Certificate_Price: "",
-    Domicile_Certificate_Price: "",
     Bank_ID_Price: "",
     Offline_Services_Commission_Type: "",
     offline_E_PAN_Card_Commission : "",
@@ -174,8 +172,6 @@ const SACreatePackages = () => {
     offlineKYC_Income_Certificate_Price : "",
     offlineKYC_Domicile_Certificate_Price : "",
     verify_edistrict_Certificate_Price : "",
-    Income_Certificate_Price: "",
-    Domicile_Certificate_Price: "",
     Bank_ID_Price: "",
     Offline_Services_Commission_Type: "",
     offline_E_PAN_Card_Commission : "",
@@ -866,7 +862,7 @@ const SACreatePackages = () => {
                       
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Enter Offline P PAN Card Price
+                          Enter Offline P PAN Card Commission
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
