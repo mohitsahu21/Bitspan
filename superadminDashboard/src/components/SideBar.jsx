@@ -1553,6 +1553,11 @@ const DistributorData = [
         path: "/create-retailer",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+      {
+        title: "Buy UserID",
+        path: "/buy-distributor-UserId",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
     ],
   },
   {

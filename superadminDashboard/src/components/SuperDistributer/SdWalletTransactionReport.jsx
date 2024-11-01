@@ -1,123 +1,230 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { MdOutlineFormatListNumbered } from "react-icons/md";
 import { FaMobileAlt } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const SdWalletTransactionReport = () => {
-    return ( 
-        <>
-            <Wrapper>
-                <div className="main">
-                    <div className="container-fluid">
-                        <div className="row flex-wrap justify-content-center ">
-                            <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
-                                {/* <Sider /> */}
-                            </div>
-                            <div className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
-                             mt-5 formdata">
-                                <div className="main shadow-none">
-                                    <div className="row shadow-none">
-                                        <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            {/* <div className="text-center">
-                                                <h3>Wallet Transaction Report</h3>
-                                            </div> */}
-                                              <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Wallet Transaction Report</h4>
-                                                <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;/ &nbsp; Wallet Transaction Report</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
-                                        <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
-                                            <div className="row d-flex flex-column g-4">
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
+  const [walletData, setWalletData] = useState([]);
+  const [fromDate, setFromDate] = useState();
+  const [toDate, setToDate] = useState();
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
 
-                                                <div className="d-flex flex-column flex-md-row gap-3">
-                                                    <div className="col-12 col-md-4 col-lg-3">
-                                                        <label for="fromDate" className="form-label">From</label>
-                                                        <input id="fromDate" className="form-control" type="date" />
-                                                    </div>
-                                                    <div className="col-12 col-md-4 col-lg-3">
-                                                        <label for="toDate" className="form-label">To</label>
-                                                        <input id="toDate" className="form-control " type="date" />
-                                                    </div>
-                                                    <div className="d-flex align-items-end">
-                                                        <button type="button" className="btn btn-primary button">Search</button>
-                                                    </div>
+  const getWalletDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:7171/api/auth/distributor/getWalletBalance/${user.userId}`
+      );
+      setWalletData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-                                                </div>
+  useEffect(() => {
+    getWalletDetails();
+  }, []);
 
+  console.log(
+    `fromDate:${fromDate}, toDate: ${toDate}, transaction_date : ${
+      walletData[0]?.transaction_date?.split(" ")[0]
+    }`
+  );
 
-                                                <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                                    <div class="table-responsive">
-                                                        <table class="table table-striped">
-                                                            <thead className="table-dark">
-                                                                <tr>
-                                                                    <th scope="col">#</th>
-                                                                    <th scope="col">Date</th>
-                                                                    <th scope="col">Order Id</th>
-                                                                    <th scope="col">Transaction Id</th>
-                                                                    <th scope="col">Amount</th>
-                                                                    <th scope="col">Opening <br /> Balance</th>
-                                                                    <th scope="col">Closing <br /> Balance</th>
-                                                                    <th scope="col">Transaction  <br /> Type</th>
-                                                                    <th scope="col">Transaction Details</th>
-                                                                    <th scope="col">Status</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th scope="row">1</th>
-                                                                    <td>23/05/2024 14:35:58</td>
-                                                                    <td>Wallet-Ashi465484654</td>
-                                                                    <td>4564564644444167851656541654</td>
-                                                                    <td>100.00</td>
-                                                                    <td>100.00</td>
-                                                                    <td>200.00</td>
-                                                                    <td>PAN Debit</td>
-                                                                    <td>PANGKGKJ65498465</td>
-                                                                    <td>SUCCESS</td>
-                                                                </tr>
-                                                                <tr>
-                                                                <th scope="row">2</th>
-                                                                    <td>23/05/2024 14:35:58</td>
-                                                                    <td>Wallet-Ashi465484654</td>
-                                                                    <td>4564564644444167851656541654</td>
-                                                                    <td>100.00</td>
-                                                                    <td>100.00</td>
-                                                                    <td>200.00</td>
-                                                                    <td>CREDITED</td>
-                                                                    <td>PANGKGKJ65498465</td>
-                                                                    <td>SUCCESS</td>
-                                                                </tr>
+  const filterByDate =
+    fromDate && toDate
+      ? walletData?.filter((data) => {
+          const transactionDate = new Date(
+            data.transaction_date?.split(" ")[0]
+          );
+          const startDate = new Date(fromDate);
+          const endDate = new Date(toDate);
 
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <div className="float-end">
-                                                        <nav aria-label="Page navigation example">
-                                                            <ul className="pagination">
-                                                                <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-                                                                <li className="page-item"><a className="page-link" href="#">1</a></li>
+          return transactionDate >= startDate && transactionDate <= endDate;
+        })
+      : walletData;
 
-                                                                <li className="page-item"><a className="page-link" href="#">Next</a></li>
-                                                            </ul>
-                                                        </nav>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+  console.log(filterByDate);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedData = filterByDate?.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
+  console.log(paginatedData);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleItemsPerPageChange = (event) => {
+    setItemsPerPage(Number(event.target.value));
+    setCurrentPage(1);
+  };
+
+  return (
+    <>
+      <Wrapper>
+        <div className="main">
+          <div className="container-fluid">
+            <div className="row flex-wrap justify-content-center ">
+              <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
+                {/* <Sider /> */}
+              </div>
+              <div
+                className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
+                             mt-5 formdata"
+              >
+                <div className="main shadow-none">
+                  <div className="row shadow-none">
+                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                      <div className="d-flex justify-content-between align-items-center flex-wrap">
+                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
+                          Wallet Transaction Report
+                        </h4>
+                        <h6 className="mx-lg-5">
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Wallet Transaction Report
+                        </h6>
+                      </div>
                     </div>
+                  </div>
+                  <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
+                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
+                      <div className="row d-flex flex-column g-4">
+                        <div className="row">
+                          <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-6 col-sm-12 col-12 d-flex flex-column flex-md-row gap-3">
+                            <div className="col-12 col-md-4 col-lg-3">
+                              <label className="form-label">From</label>
+                              <input
+                                className="form-control"
+                                onChange={(e) => setFromDate(e.target.value)}
+                                value={fromDate}
+                                type="date"
+                              />
+                            </div>
+                            <div className="col-12 col-md-4 col-lg-3">
+                              <label className="form-label">To</label>
+                              <input
+                                className="form-control"
+                                onChange={(e) => setToDate(e.target.value)}
+                                value={toDate}
+                                type="date"
+                              />
+                            </div>
+                            <div className="d-flex align-items-end">
+                              <button
+                                type="button"
+                                className="btn btn-primary button"
+                              >
+                                Search
+                              </button>
+                            </div>
+                          </div>
+                          <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                            <label className="mt-5">
+                              Items per page:
+                              <select
+                                value={itemsPerPage}
+                                onChange={handleItemsPerPageChange}
+                                className="mx-2"
+                              >
+                                <option value={1}>1</option>
+                                <option value={10}>10</option>
+                                <option value={20}>20</option>
+                              </select>
+                            </label>
+                          </div>
+                        </div>
+
+                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                          <div className="table-responsive">
+                            <table className="table table-striped">
+                              <thead className="table-dark">
+                                <tr>
+                                  <th scope="col">#</th>
+                                  <th scope="col">Date</th>
+                                  <th scope="col">Order Id</th>
+                                  <th scope="col">Transaction Id</th>
+                                  <th scope="col">Amount</th>
+                                  <th scope="col">
+                                    Opening <br /> Balance
+                                  </th>
+                                  <th scope="col">
+                                    Closing <br /> Balance
+                                  </th>
+                                  <th scope="col">
+                                    Transaction <br /> Type
+                                  </th>
+                                  <th scope="col">Transaction Details</th>
+                                  <th scope="col">Status</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {paginatedData?.map((data, index) => (
+                                  <>
+                                    <tr>
+                                      <th scope="row">{index + 1}</th>
+                                      <td>{data.transaction_date}</td>
+                                      <td>{data.Order_Id}</td>
+                                      <td>{data.Transaction_Id}</td>
+                                      <td>{data.transaction_amount}</td>
+                                      <td>{data.Opening_Balance}</td>
+                                      <td>{data.Closing_Balance}</td>
+                                      <td>{data.Transaction_Type}</td>
+                                      <td>{data.Transaction_details}</td>
+                                      <td>{data.status}</td>
+                                    </tr>
+                                  </>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                          <div className="float-end mt-2">
+                            <div>
+                              <button
+                                onClick={() =>
+                                  handlePageChange(currentPage - 1)
+                                }
+                                disabled={currentPage === 1}
+                                className="btn btn-warning"
+                              >
+                                Previous
+                              </button>
+                              <span> Page {currentPage} </span>
+                              <button
+                                onClick={() =>
+                                  handlePageChange(currentPage + 1)
+                                }
+                                disabled={
+                                  startIndex + itemsPerPage >=
+                                  filterByDate.length
+                                }
+                                className="btn btn-warning"
+                              >
+                                Next
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-            </Wrapper>
-        </>
-    );
-}
+              </div>
+            </div>
+          </div>
+        </div>
+      </Wrapper>
+    </>
+  );
+};
 
 export default SdWalletTransactionReport;
 
@@ -127,38 +234,31 @@ const Wrapper = styled.div`
     width: 100%;
   }
   .button {
-   
     background: #6d70ff;
     border-color: #6d70ff;
-   
   }
-  .button:hover{
+  .button:hover {
     background: #5356fa;
     border-color: #5356fa;
-    
   }
   .form-container {
     width: 50%;
     margin: auto;
   }
-  th{
+  th {
     font-weight: 500;
     font-size: 14px;
-   
   }
-  td{
-   font-size: 14px;
-   
+  td {
+    font-size: 14px;
   }
-  @media (min-width: 1025px) and (max-width : 1500px){
+  @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
-     
       padding-left: 15rem;
     }
   }
   @media (min-width: 1500px) {
     .formdata {
-     
       padding-left: 13rem;
     }
   }

@@ -6,6 +6,10 @@ import styled from "styled-components";
 
 const DTHConnectionHistory = () => {
   const user = useSelector((state) => state.user.currentUser);
+  const [fromDate, setFromDate] = useState();
+  const [toDate, setToDate] = useState();
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
   const [offData, setOffData] = useState([]);
   console.log(user);
 
@@ -25,6 +29,36 @@ const DTHConnectionHistory = () => {
   }, []);
 
   console.log(offData);
+
+  const filterByDate =
+    fromDate && toDate
+      ? offData?.filter((data) => {
+          const transactionDate = new Date(data.created_at?.split(" ")[0]);
+          const startDate = new Date(fromDate);
+          const endDate = new Date(toDate);
+
+          return transactionDate >= startDate && transactionDate <= endDate;
+        })
+      : offData;
+
+  console.log(filterByDate);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedData = filterByDate?.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
+  console.log(paginatedData);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleItemsPerPageChange = (event) => {
+    setItemsPerPage(Number(event.target.value));
+    setCurrentPage(1);
+  };
 
   return (
     <>
@@ -54,34 +88,48 @@ const DTHConnectionHistory = () => {
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
                       <div className="row d-flex flex-column g-4">
-                        <div className="d-flex flex-column flex-md-row gap-3">
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label htmlFor="fromDate" className="form-label">
-                              From
-                            </label>
-                            <input
-                              id="fromDate"
-                              className="form-control"
-                              type="date"
-                            />
+                        <div className="row">
+                          <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-6 col-sm-12 col-12 d-flex flex-column flex-md-row gap-3">
+                            <div className="col-12 col-md-4 col-lg-3">
+                              <label className="form-label">From</label>
+                              <input
+                                className="form-control"
+                                onChange={(e) => setFromDate(e.target.value)}
+                                value={fromDate}
+                                type="date"
+                              />
+                            </div>
+                            <div className="col-12 col-md-4 col-lg-3">
+                              <label className="form-label">To</label>
+                              <input
+                                className="form-control"
+                                onChange={(e) => setToDate(e.target.value)}
+                                value={toDate}
+                                type="date"
+                              />
+                            </div>
+                            <div className="d-flex align-items-end">
+                              <button
+                                type="button"
+                                className="btn btn-primary button"
+                              >
+                                Search
+                              </button>
+                            </div>
                           </div>
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label htmlFor="toDate" className="form-label">
-                              To
+                          <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                            <label className="mt-5">
+                              Items per page:
+                              <select
+                                value={itemsPerPage}
+                                onChange={handleItemsPerPageChange}
+                                className="mx-2"
+                              >
+                                <option value={1}>1</option>
+                                <option value={10}>10</option>
+                                <option value={20}>20</option>
+                              </select>
                             </label>
-                            <input
-                              id="toDate"
-                              className="form-control "
-                              type="date"
-                            />
-                          </div>
-                          <div className="d-flex align-items-end">
-                            <button
-                              type="button"
-                              className="btn btn-primary button"
-                            >
-                              Search
-                            </button>
                           </div>
                         </div>
 
@@ -104,7 +152,7 @@ const DTHConnectionHistory = () => {
                                 </tr>
                               </thead>
                               <tbody>
-                                {offData.map((data, index) => (
+                                {paginatedData.map((data, index) => (
                                   <>
                                     <tr>
                                       <td>{index + 1}</td>
@@ -126,27 +174,31 @@ const DTHConnectionHistory = () => {
                               </tbody>
                             </table>
                           </div>
-                          <div className="float-end">
-                            <nav aria-label="Page navigation example">
-                              <ul className="pagination">
-                                <li className="page-item">
-                                  <a className="page-link" href="#">
-                                    Previous
-                                  </a>
-                                </li>
-                                <li className="page-item">
-                                  <a className="page-link" href="#">
-                                    1
-                                  </a>
-                                </li>
-
-                                <li className="page-item">
-                                  <a className="page-link" href="#">
-                                    Next
-                                  </a>
-                                </li>
-                              </ul>
-                            </nav>
+                          <div className="float-end mt-2">
+                            <div>
+                              <button
+                                onClick={() =>
+                                  handlePageChange(currentPage - 1)
+                                }
+                                disabled={currentPage === 1}
+                                className="btn btn-warning"
+                              >
+                                Previous
+                              </button>
+                              <span> Page {currentPage} </span>
+                              <button
+                                onClick={() =>
+                                  handlePageChange(currentPage + 1)
+                                }
+                                disabled={
+                                  startIndex + itemsPerPage >=
+                                  filterByDate.length
+                                }
+                                className="btn btn-warning"
+                              >
+                                Next
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>

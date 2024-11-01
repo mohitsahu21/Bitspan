@@ -7,6 +7,8 @@ import axios from "axios";
 
 const DAllUsersJoinedList = () => {
   const user = useSelector((state) => state.user.currentUser);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
   console.log(user);
   const [userData, setUserData] = useState([]);
 
@@ -26,6 +28,20 @@ const DAllUsersJoinedList = () => {
   }, []);
 
   console.log(userData);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedData = userData?.slice(startIndex, startIndex + itemsPerPage);
+
+  console.log(paginatedData);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleItemsPerPageChange = (event) => {
+    setItemsPerPage(Number(event.target.value));
+    setCurrentPage(1);
+  };
 
   return (
     <>
@@ -49,6 +65,22 @@ const DAllUsersJoinedList = () => {
                           <BiHomeAlt /> &nbsp;/ &nbsp; All Users
                         </h6>
                       </div>
+                    </div>
+                  </div>
+                  <div className="d-flex justify-content-end mx-4">
+                    <div className="">
+                      <label className="mt-5">
+                        Items per page:
+                        <select
+                          value={itemsPerPage}
+                          onChange={handleItemsPerPageChange}
+                          className="mx-2"
+                        >
+                          <option value={1}>1</option>
+                          <option value={10}>10</option>
+                          <option value={20}>20</option>
+                        </select>
+                      </label>
                     </div>
                   </div>
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
@@ -80,7 +112,7 @@ const DAllUsersJoinedList = () => {
                                 </tr>
                               </thead>
                               <tbody>
-                                {userData?.map((data, index) => (
+                                {paginatedData?.map((data, index) => (
                                   <>
                                     <tr>
                                       <td>{index + 1}</td>
@@ -131,27 +163,30 @@ const DAllUsersJoinedList = () => {
                               </tbody>
                             </table>
                           </div>
-                          <div className="float-end">
-                            <nav aria-label="Page navigation example">
-                              <ul className="pagination">
-                                <li className="page-item">
-                                  <a className="page-link" href="#">
-                                    Previous
-                                  </a>
-                                </li>
-                                <li className="page-item">
-                                  <a className="page-link" href="#">
-                                    1
-                                  </a>
-                                </li>
-
-                                <li className="page-item">
-                                  <a className="page-link" href="#">
-                                    Next
-                                  </a>
-                                </li>
-                              </ul>
-                            </nav>
+                          <div className="float-end mt-2">
+                            <div>
+                              <button
+                                onClick={() =>
+                                  handlePageChange(currentPage - 1)
+                                }
+                                disabled={currentPage === 1}
+                                className="btn btn-warning"
+                              >
+                                Previous
+                              </button>
+                              <span> Page {currentPage} </span>
+                              <button
+                                onClick={() =>
+                                  handlePageChange(currentPage + 1)
+                                }
+                                disabled={
+                                  startIndex + itemsPerPage >= userData.length
+                                }
+                                className="btn btn-warning"
+                              >
+                                Next
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>

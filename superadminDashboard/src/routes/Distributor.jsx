@@ -27,6 +27,7 @@ import DBankAccountVerify from "../components/Distributor/DBankAccountVerify";
 import PanCardOffFormDist from "../components/Distributor/PanCardOffFormDist";
 import RechargeHistoryDist from "../components/Distributor/RechargeHistoryDist";
 import DTHConnectionHistory from "../components/Distributor/DTHConnectionHistory";
+import BuyDistUserId from "../components/Distributor/BuyUserId";
 
 const Distributor = () => {
   return (
@@ -80,6 +81,9 @@ const Distributor = () => {
           path="/download-certificate"
           element={<DDownloadCertificate />}
         />
+
+        <Route path="/buy-distributor-UserId" element={<BuyDistUserId />} />
+
         <Route
           path="/download-certificate-print"
           element={

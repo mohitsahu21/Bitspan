@@ -10,6 +10,8 @@ import axios from "axios";
 const SdBankAccountSetup = () => {
   const user = useSelector((state) => state.user.currentUser);
   console.log(user);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
   const [bankData, setBankData] = useState([]);
   const [formData, setFormData] = useState({
     bankholder_name: "",
@@ -64,6 +66,20 @@ const SdBankAccountSetup = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedData = bankData?.slice(startIndex, startIndex + itemsPerPage);
+
+  console.log(paginatedData);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleItemsPerPageChange = (event) => {
+    setItemsPerPage(Number(event.target.value));
+    setCurrentPage(1);
   };
 
   return (
@@ -207,7 +223,22 @@ const SdBankAccountSetup = () => {
                     <div className="text-center">
                       <h5>All Your Listed Bank Account</h5>
                     </div>
-
+                    <div className="d-flex justify-content-end mx-4">
+                      <div className="">
+                        <label className="mt-5">
+                          Items per page:
+                          <select
+                            value={itemsPerPage}
+                            onChange={handleItemsPerPageChange}
+                            className="mx-2"
+                          >
+                            <option value={1}>1</option>
+                            <option value={10}>10</option>
+                            <option value={20}>20</option>
+                          </select>
+                        </label>
+                      </div>
+                    </div>
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="table-responsive">
                         <table className="table table-striped">
@@ -224,7 +255,7 @@ const SdBankAccountSetup = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {bankData?.map((item, index) => (
+                            {paginatedData?.map((item, index) => (
                               <>
                                 <tr>
                                   <th scope="row">{index + 1}</th>
@@ -246,27 +277,26 @@ const SdBankAccountSetup = () => {
                           </tbody>
                         </table>
                       </div>
-                      <div className="float-end">
-                        <nav aria-label="Page navigation example">
-                          <ul className="pagination">
-                            <li className="page-item">
-                              <a className="page-link" href="#">
-                                Previous
-                              </a>
-                            </li>
-                            <li className="page-item">
-                              <a className="page-link" href="#">
-                                1
-                              </a>
-                            </li>
-
-                            <li className="page-item">
-                              <a className="page-link" href="#">
-                                Next
-                              </a>
-                            </li>
-                          </ul>
-                        </nav>
+                      <div className="float-end mt-2 mb-4">
+                        <div>
+                          <button
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className="btn btn-warning"
+                          >
+                            Previous
+                          </button>
+                          <span> Page {currentPage} </span>
+                          <button
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={
+                              startIndex + itemsPerPage >= bankData.length
+                            }
+                            className="btn btn-warning"
+                          >
+                            Next
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
