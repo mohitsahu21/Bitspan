@@ -843,6 +843,8 @@ const createPin = (req, res) => {
       .json({ status: "Failure", message: "All fields are required" });
   }
 
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
   // Check if the user already has a PIN
   const checkUserQuery = "SELECT * FROM user_pins WHERE user_id = ?";
 
@@ -862,8 +864,9 @@ const createPin = (req, res) => {
       });
     } else {
       // If user does not exist, proceed to create the PIN
-      const insertQuery = "INSERT INTO user_pins (user_id, pin) VALUES (?, ?)";
-      db.query(insertQuery, [user_id, pin], (insertErr) => {
+      const insertQuery =
+        "INSERT INTO user_pins (user_id, pin, created_at) VALUES (?, ?, ?)";
+      db.query(insertQuery, [user_id, pin, createdAt], (insertErr) => {
         if (insertErr) {
           console.error("Error creating PIN:", insertErr);
           return res
@@ -943,6 +946,8 @@ const verifyOtp = (req, res) => {
       .json({ status: "Failure", message: "User ID and OTP are required" });
   }
 
+  const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
   const storedOtpData = otpStorage.get(user_id);
 
   if (!storedOtpData) {
@@ -962,9 +967,9 @@ const verifyOtp = (req, res) => {
   const { new_pin } = storedOtpData;
 
   const query =
-    "UPDATE user_pins SET pin = ?, updated_at = NOW() WHERE user_id = ?";
+    "UPDATE user_pins SET pin = ?, updated_at = ? WHERE user_id = ?";
 
-  db.query(query, [new_pin, user_id], (err) => {
+  db.query(query, [new_pin, updatedAt, user_id], (err) => {
     if (err) {
       console.error("Error changing PIN:", err);
       return res

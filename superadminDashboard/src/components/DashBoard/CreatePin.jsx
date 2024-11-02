@@ -14,18 +14,20 @@ const CreatePin = () => {
   console.log(isUserAvailable);
 
   const [createPinData, setCreatePinData] = useState({
-    user_id: "",
+    user_id: currentUser.userId || "",
     pin: "",
   });
 
   const [changePinData, setChangePinData] = useState({
-    user_id: "",
+    user_id: currentUser.userId || "",
     new_pin: "",
-    email: "",
+    email: currentUser.email || "",
     otp: "",
   });
 
   const [otpSent, setOtpSent] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const checkUserAvailable = async () => {
@@ -59,6 +61,7 @@ const CreatePin = () => {
 
   const handleCreatePinSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await axios.post(
         `http://localhost:7777/api/auth/log-reg/create-pin`,
@@ -69,11 +72,14 @@ const CreatePin = () => {
       setIsUserAvailable(true);
     } catch (error) {
       console.log(error.response.data.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const requestOtp = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await axios.post(
         `http://localhost:7777/api/auth/log-reg/request-otp`,
@@ -83,11 +89,14 @@ const CreatePin = () => {
       alert(response.data.message);
     } catch (error) {
       alert(error.response.data.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleChangePinSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await axios.post(
         `http://localhost:7777/api/auth/log-reg/verify-otp`,
@@ -96,6 +105,9 @@ const CreatePin = () => {
       alert(response.data.message);
     } catch (error) {
       alert(error.response.data.message);
+      console.log(error.response.data.message);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -189,8 +201,11 @@ const CreatePin = () => {
                                     <button
                                       type="submit"
                                       className="btn btn-primary w-100"
+                                      disabled={isLoading}
                                     >
-                                      Change PIN
+                                      {isLoading
+                                        ? "Change PIN..."
+                                        : "Change PIN"}
                                     </button>
                                   </>
                                 ) : (
@@ -200,7 +215,11 @@ const CreatePin = () => {
                                       className="form-label"
                                     >
                                       New PIN
-                                    </label>
+                                    </label>{" "}
+                                    &nbsp;&nbsp;
+                                    <small style={{ color: "red" }}>
+                                      Only Enter 4 Digit Number
+                                    </small>
                                     <input
                                       type="password"
                                       className="form-control"
@@ -210,6 +229,8 @@ const CreatePin = () => {
                                       onChange={(e) =>
                                         handleInputChange(e, "change")
                                       }
+                                      maxLength={4}
+                                      minLength={4}
                                       required
                                     />
                                   </div>
@@ -218,8 +239,11 @@ const CreatePin = () => {
                                   <button
                                     type="submit"
                                     className="btn btn-warning w-100"
+                                    disabled={isLoading}
                                   >
-                                    Request OTP
+                                    {isLoading
+                                      ? "Request OTP..."
+                                      : "Request OTP"}
                                   </button>
                                 )}
                               </form>
@@ -254,7 +278,11 @@ const CreatePin = () => {
                                 <div className="mb-3">
                                   <label htmlFor="pin" className="form-label">
                                     PIN
-                                  </label>
+                                  </label>{" "}
+                                  &nbsp;&nbsp;
+                                  <small style={{ color: "red" }}>
+                                    Only Enter 4 Digit Number
+                                  </small>
                                   <input
                                     type="password"
                                     className="form-control"
@@ -264,14 +292,17 @@ const CreatePin = () => {
                                     onChange={(e) =>
                                       handleInputChange(e, "create")
                                     }
+                                    maxLength={4}
+                                    minLength={4}
                                     required
                                   />
                                 </div>
                                 <button
                                   type="submit"
                                   className="btn btn-primary w-100"
+                                  disabled={isLoading}
                                 >
-                                  Create PIN
+                                  {isLoading ? "Create PIN..." : "Create PIN"}
                                 </button>
                               </form>
                             </div>

@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { FaMobileAlt } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { IoMail, IoPerson } from "react-icons/io5";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
+import { Modal, Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 
 const NewBankID = () => {
+  const dispatch = useDispatch();
+  const { currentUser, token } = useSelector((state) => state.user);
   const optionsDrop = [
     { id: 1, name: "New Bank ID" },
     // { id: 1, name: "Pan Card Form" },
@@ -43,6 +47,10 @@ const NewBankID = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [showPinModal, setShowPinModal] = useState(false);
+  // const [pin, setPin] = useState("");
+  const [pin, setPin] = useState(["", "", "", ""]);
+  const pinRefs = useRef([]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -55,6 +63,27 @@ const NewBankID = () => {
       setFiles({ ...files, [name]: [...selectedFiles] });
     } else {
       setFiles({ ...files, [name]: selectedFiles[0] });
+    }
+  };
+
+  const handlePinChange = (index, value) => {
+    if (/^\d?$/.test(value)) {
+      const newPin = [...pin];
+      newPin[index] = value;
+      setPin(newPin);
+
+      // Move to next input if current is filled, move to previous if deleted
+      if (value !== "" && index < pin.length - 1) {
+        pinRefs.current[index + 1].focus();
+      } else if (value === "" && index > 0) {
+        pinRefs.current[index - 1].focus();
+      }
+    }
+  };
+
+  const handleBackspace = (index) => {
+    if (pin[index] === "" && index > 0) {
+      pinRefs.current[index - 1].focus();
     }
   };
 
@@ -79,7 +108,8 @@ const NewBankID = () => {
 
     try {
       const response = await axios.post(
-        "http://bitspan.jyvflirl.a2hosted.com/api/auth/bankidForm",
+        // "http://bitspan.jyvflirl.a2hosted.com/api/auth/bankidForm",
+        "http://localhost:7777/api/auth/retailer/bankidForm",
         submitForm,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -89,7 +119,77 @@ const NewBankID = () => {
       alert("Error submitting form");
     } finally {
       setIsLoading(false);
+
+      setFormData({
+        applicant_name: "",
+        applicant_father: "",
+        applicant_mother: "",
+        applicant_number: "",
+        email: "",
+        applicant_select_service: "",
+        aadhar_card: "",
+        pan_card: "",
+        business_name: "",
+      });
+      setFiles({
+        attached_photo: null,
+        attached_kyc: [],
+        bank_passbook: null,
+        shop_photo: null,
+        electric_bill: null,
+      });
+      setPin(["", "", "", ""]);
+
+      attachedPhotoRef.current.value = "";
+      bankPassbookRef.current.value = "";
+      shopPhotoRef.current.value = "";
+      electricBillRef.current.value = "";
     }
+  };
+
+  const verifyPin = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        { user_id: currentUser.userId || "", pin: pin.join("") }
+      );
+
+      if (response.data.success) {
+        return true;
+      } else {
+        alert(response.data.message);
+        return false;
+      }
+    } catch (error) {
+      console.error("Error verifying PIN:", error);
+      alert("Error verifying PIN");
+      return false;
+    }
+  };
+
+  // const handleModalSubmit = async (e) => {
+  //   const isPinValid = await verifyPin();
+  //   if (isPinValid) {
+  //     setShowPinModal(false);
+  //     handleSubmit(e);
+  //   } else {
+  //     setPin("");
+  //   }
+  // };
+
+  const handleModalSubmit = async (e) => {
+    const isPinValid = await verifyPin();
+    if (isPinValid) {
+      setShowPinModal(false);
+      handleSubmit(e);
+    } else {
+      setPin(["", "", "", ""]); // Clear the PIN fields on incorrect entry
+    }
+  };
+
+  const openPinModal = (e) => {
+    e.preventDefault();
+    setShowPinModal(true);
   };
 
   return (
@@ -110,7 +210,8 @@ const NewBankID = () => {
                   </div>
                 </div>
 
-                <form onSubmit={handleSubmit} encType="multipart/form-data">
+                {/* <form onSubmit={handleSubmit} encType="multipart/form-data"> */}
+                <form onSubmit={openPinModal} encType="multipart/form-data">
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="input-group mb-3">
@@ -391,6 +492,129 @@ const NewBankID = () => {
                     </div>
                   </div>
                 </form>
+                {/* <Modal
+                  show={showPinModal}
+                  onHide={() => setShowPinModal(false)}
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title>Enter PIN</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <input
+                      type="password"
+                      className="form-control"
+                      placeholder="Enter PIN"
+                      value={pin}
+                      onChange={(e) => setPin(e.target.value)}
+                    />
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button
+                      variant="secondary"
+                      onClick={() => setShowPinModal(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button variant="primary" onClick={handleModalSubmit}>
+                      Submit
+                    </Button>
+                  </Modal.Footer>
+                </Modal>*/}
+                <Modal
+                  show={showPinModal}
+                  onHide={() => setShowPinModal(false)}
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <div className="pin-inputs d-flex justify-content-center">
+                      {pin.map((digit, index) => (
+                        <input
+                          key={index}
+                          ref={(el) => (pinRefs.current[index] = el)}
+                          type="text"
+                          value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
+                          maxLength="1"
+                          onChange={(e) =>
+                            handlePinChange(index, e.target.value)
+                          }
+                          onKeyDown={(e) =>
+                            e.key === "Backspace" && handleBackspace(index)
+                          }
+                          className="pin-digit form-control mx-1"
+                          style={{
+                            width: "50px",
+                            textAlign: "center",
+                            fontSize: "1.5rem",
+                            borderRadius: "8px",
+                            border: "1px solid #ced4da",
+                            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button
+                      variant="secondary"
+                      onClick={() => setShowPinModal(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button variant="primary" onClick={handleModalSubmit}>
+                      Verify PIN
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+
+                {/* <Modal
+                  show={showPinModal}
+                  onHide={() => setShowPinModal(false)}
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <div className="pin-inputs d-flex justify-content-center">
+                      {pin.map((digit, index) => (
+                        <input
+                          key={index}
+                          ref={(el) => (pinRefs.current[index] = el)}
+                          type="text"
+                          value={digit}
+                          maxLength="1"
+                          onChange={(e) =>
+                            handlePinChange(index, e.target.value)
+                          }
+                          onKeyDown={(e) =>
+                            e.key === "Backspace" && handleBackspace(index)
+                          }
+                          className="pin-digit form-control mx-1"
+                          style={{
+                            width: "50px",
+                            textAlign: "center",
+                            fontSize: "1.5rem",
+                            borderRadius: "8px",
+                            border: "1px solid #ced4da",
+                            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button
+                      variant="secondary"
+                      onClick={() => setShowPinModal(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button variant="primary" onClick={handleModalSubmit}>
+                      Verify PIN
+                    </Button>
+                  </Modal.Footer>
+                </Modal> */}
               </div>
             </div>
           </div>
