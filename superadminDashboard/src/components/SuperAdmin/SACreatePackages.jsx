@@ -23,6 +23,8 @@ const SACreatePackages = () => {
   const [formData, setFormData] = useState({
     package_name: "",
     package_for: [], // This will store the selected options
+    offline_E_PAN_Card_Price : "",
+      offline_P_PAN_Card_Price : "",
     Google_Play_Price: "",
     IRCTC_Agent_ID_Price: "",
     Birth_Certificate_Price: "",
@@ -31,10 +33,16 @@ const SACreatePackages = () => {
     ITR_Registration_Price: "",
     GST_Registration_Price: "",
     Sambal_Price: "",
-    Income_Certificate_Price: "",
-    Domicile_Certificate_Price: "",
+    offline_kyc_eDistrict : "",
+    eKYC_Income_Certificate_Price : "",
+    eKYC_Domicile_Certificate_Price : "",
+    offlineKYC_Income_Certificate_Price : "",
+    offlineKYC_Domicile_Certificate_Price : "",
+    verify_edistrict_Certificate_Price : "",
     Bank_ID_Price: "",
     Offline_Services_Commission_Type: "",
+    offline_E_PAN_Card_Commission : "",
+      offline_P_PAN_Card_Commission : "",
     Google_Play_Commission: "",
     IRCTC_Agent_ID_Commission: "",
     Birth_Certificate_Commission: "",
@@ -43,8 +51,11 @@ const SACreatePackages = () => {
     ITR_Registration_Commission: "",
     GST_Registration_Commission: "",
     Sambal_Commission: "",
-    Income_Certificate_Commission: "",
-    Domicile_Certificate_Commission: "",
+    eKYC_Income_Certificate_Commission : "",
+      eKYC_Domicile_Certificate_Commission : "",
+      offlineKYC_Income_Certificate_Commission : "",
+      offlineKYC_Domicile_Certificate_Commission : "",
+      verify_edistrict_Certificate_Commission : "",
     Bank_ID_Commission: "",
     Off_Prepaid_Recharge_Comm_Type: "",
     Off_Airtel_Prepaid_Recharge_Comm: "",
@@ -98,6 +109,9 @@ const SACreatePackages = () => {
     Online_Insurance_Pay_Commission: "",
     Offline_Insurance_Pay_Commission_Type: "",
     Offline_Insurance_Pay_Commission: "",
+    E_PAN_Card_Price : "",
+      P_PAN_Card_Price : "",
+      UTI_PAN_Coupon_Price : "",
     PAN_Card_Commission_Type: "",
     E_PAN_Card_Commission: "",
     UTI_PAN_Coupon_Commission : "",
@@ -141,86 +155,100 @@ const SACreatePackages = () => {
         });
         setFormData({
           package_name: "",
-          package_for: [], // Reset the select field
-          Google_Play_Price: "",
-          IRCTC_Agent_ID_Price: "",
-          Birth_Certificate_Price: "",
-          Death_Certificate_Price: "",
-          E_Stamp_Price: "",
-          ITR_Registration_Price: "",
-          GST_Registration_Price: "",
-          Sambal_Price: "",
-          Income_Certificate_Price: "",
-          Domicile_Certificate_Price: "",
-          Bank_ID_Price: "",
-          Offline_Services_Commission_Type: "",
-          Google_Play_Commission: "",
-          IRCTC_Agent_ID_Commission: "",
-          Birth_Certificate_Commission: "",
-          Death_Certificate_Commission: "",
-          E_Stamp_Commission: "",
-          ITR_Registration_Commission: "",
-          GST_Registration_Commission: "",
-          Sambal_Commission: "",
-          Income_Certificate_Commission: "",
-          Domicile_Certificate_Commission: "",
-          Bank_ID_Commission: "",
-          Off_Prepaid_Recharge_Comm_Type: "",
-          Off_Airtel_Prepaid_Recharge_Comm: "",
-          Off_Jio_Prepaid_Recharge_Comm: "",
-          Off_Vi_Prepaid_Recharge_Comm: "",
-          Off_Bsnl_Prepaid_Recharge_Comm: "",
-          Off_Postpaid_Recharge_Comm_Type: "",
-          Off_Airtel_Postpaid_Recharge_Comm: "",
-          Off_Jio_Postpaid_Recharge_Comm: "",
-          Off_Vi_Postpaid_Recharge_Comm: "",
-          Off_Bsnl_Postpaid_Recharge_Comm: "",
-          On_Prepaid_Recharge_Comm_Type: "",
-          On_Airtel_Prepaid_Recharge_Comm: "",
-          On_Jio_Prepaid_Recharge_Comm: "",
-          On_Vi_Prepaid_Recharge_Comm: "",
-          On_Bsnl_Prepaid_Recharge_Comm: "",
-          On_Postpaid_Recharge_Comm_Type: "",
-          On_Airtel_Postpaid_Recharge_Comm: "",
-          On_Jio_Postpaid_Recharge_Comm: "",
-          On_Vi_Postpaid_Recharge_Comm: "",
-          On_Bsnl_Postpaid_Recharge_Comm: "",
-          Online_DTH_Recharge_Commission_Type: "",
-          On_Dish_TV_Recharge_Commission: "",
-          On_Tata_Sky_Recharge_Commission: "",
-          On_Videocon_Recharge_Commission: "",
-          On_Sun_Direct_Recharge_Commission: "",
-          On_Airtel_Dth_Recharge_Commission: "",
-          Offline_DTH_Recharge_Commission_Type: "",
-          Off_Dish_TV_Recharge_Commission: "",
-          Off_Tata_Sky_Recharge_Commission: "",
-          Off_Videocon_Recharge_Commission: "",
-          Off_Sun_Direct_Recharge_Commission: "",
-          Off_Airtel_Dth_Recharge_Commission: "",
-          Online_New_DTH_Connection_Commission_Type: "",
-          On_Dish_TV_New_DTH_Connection_Commission: "",
-          On_Tata_Sky_New_DTH_Connection_Commission: "",
-          On_Videocon_New_DTH_Connection_Commission: "",
-          On_Sun_Direct_New_DTH_Connection_Commission: "",
-          On_Airtel_New_DTH_Connection_Commission: "",
-          Offline_New_DTH_Connection_Commission_Type: "",
-          Off_Dish_TV_New_DTH_Connection_Commission: "",
-          Off_Tata_Sky_New_DTH_Connection_Commission: "",
-          Off_Videocon_New_DTH_Connection_Commission: "",
-          Off_Sun_Direct_New_DTH_Connection_Commission: "",
-          Off_Airtel_New_DTH_Connection_Commission: "",
-          Online_Electricity_Bill_Pay_Commission_Type: "",
-          Online_Electricity_Bill_Pay_Commission: "",
-          Offline_Electricity_Bill_Pay_Commission_Type: "",
-          Offline_Electricity_Bill_Pay_Commission: "",
-          Online_Insurance_Pay_Commission_Type: "",
-          Online_Insurance_Pay_Commission: "",
-          Offline_Insurance_Pay_Commission_Type: "",
-          Offline_Insurance_Pay_Commission: "",
-          PAN_Card_Commission_Type: "",
-          E_PAN_Card_Commission: "",
-          UTI_PAN_Coupon_Commission : "",
-          P_PAN_Card_Commission: "",
+    package_for: [], // This will store the selected options
+    offline_E_PAN_Card_Price : "",
+      offline_P_PAN_Card_Price : "",
+    Google_Play_Price: "",
+    IRCTC_Agent_ID_Price: "",
+    Birth_Certificate_Price: "",
+    Death_Certificate_Price: "",
+    E_Stamp_Price: "",
+    ITR_Registration_Price: "",
+    GST_Registration_Price: "",
+    Sambal_Price: "",
+    offline_kyc_eDistrict : "",
+    eKYC_Income_Certificate_Price : "",
+    eKYC_Domicile_Certificate_Price : "",
+    offlineKYC_Income_Certificate_Price : "",
+    offlineKYC_Domicile_Certificate_Price : "",
+    verify_edistrict_Certificate_Price : "",
+    Bank_ID_Price: "",
+    Offline_Services_Commission_Type: "",
+    offline_E_PAN_Card_Commission : "",
+      offline_P_PAN_Card_Commission : "",
+    Google_Play_Commission: "",
+    IRCTC_Agent_ID_Commission: "",
+    Birth_Certificate_Commission: "",
+    Death_Certificate_Commission: "",
+    E_Stamp_Commission: "",
+    ITR_Registration_Commission: "",
+    GST_Registration_Commission: "",
+    Sambal_Commission: "",
+    eKYC_Income_Certificate_Commission : "",
+      eKYC_Domicile_Certificate_Commission : "",
+      offlineKYC_Income_Certificate_Commission : "",
+      offlineKYC_Domicile_Certificate_Commission : "",
+      verify_edistrict_Certificate_Commission : "",
+    Bank_ID_Commission: "",
+    Off_Prepaid_Recharge_Comm_Type: "",
+    Off_Airtel_Prepaid_Recharge_Comm: "",
+    Off_Jio_Prepaid_Recharge_Comm: "",
+    Off_Vi_Prepaid_Recharge_Comm: "",
+    Off_Bsnl_Prepaid_Recharge_Comm: "",
+    Off_Postpaid_Recharge_Comm_Type: "",
+    Off_Airtel_Postpaid_Recharge_Comm: "",
+    Off_Jio_Postpaid_Recharge_Comm: "",
+    Off_Vi_Postpaid_Recharge_Comm: "",
+    Off_Bsnl_Postpaid_Recharge_Comm: "",
+    On_Prepaid_Recharge_Comm_Type: "",
+    On_Airtel_Prepaid_Recharge_Comm: "",
+    On_Jio_Prepaid_Recharge_Comm: "",
+    On_Vi_Prepaid_Recharge_Comm: "",
+    On_Bsnl_Prepaid_Recharge_Comm: "",
+    On_Postpaid_Recharge_Comm_Type: "",
+    On_Airtel_Postpaid_Recharge_Comm: "",
+    On_Jio_Postpaid_Recharge_Comm: "",
+    On_Vi_Postpaid_Recharge_Comm: "",
+    On_Bsnl_Postpaid_Recharge_Comm: "",
+    Online_DTH_Recharge_Commission_Type: "",
+    On_Dish_TV_Recharge_Commission: "",
+    On_Tata_Sky_Recharge_Commission: "",
+    On_Videocon_Recharge_Commission: "",
+    On_Sun_Direct_Recharge_Commission: "",
+    On_Airtel_Dth_Recharge_Commission: "",
+    Offline_DTH_Recharge_Commission_Type: "",
+    Off_Dish_TV_Recharge_Commission: "",
+    Off_Tata_Sky_Recharge_Commission: "",
+    Off_Videocon_Recharge_Commission: "",
+    Off_Sun_Direct_Recharge_Commission: "",
+    Off_Airtel_Dth_Recharge_Commission: "",
+    Online_New_DTH_Connection_Commission_Type: "",
+    On_Dish_TV_New_DTH_Connection_Commission: "",
+    On_Tata_Sky_New_DTH_Connection_Commission: "",
+    On_Videocon_New_DTH_Connection_Commission: "",
+    On_Sun_Direct_New_DTH_Connection_Commission: "",
+    On_Airtel_New_DTH_Connection_Commission: "",
+    Offline_New_DTH_Connection_Commission_Type: "",
+    Off_Dish_TV_New_DTH_Connection_Commission: "",
+    Off_Tata_Sky_New_DTH_Connection_Commission: "",
+    Off_Videocon_New_DTH_Connection_Commission: "",
+    Off_Sun_Direct_New_DTH_Connection_Commission: "",
+    Off_Airtel_New_DTH_Connection_Commission: "",
+    Online_Electricity_Bill_Pay_Commission_Type: "",
+    Online_Electricity_Bill_Pay_Commission: "",
+    Offline_Electricity_Bill_Pay_Commission_Type: "",
+    Offline_Electricity_Bill_Pay_Commission: "",
+    Online_Insurance_Pay_Commission_Type: "",
+    Online_Insurance_Pay_Commission: "",
+    Offline_Insurance_Pay_Commission_Type: "",
+    Offline_Insurance_Pay_Commission: "",
+    E_PAN_Card_Price : "",
+      P_PAN_Card_Price : "",
+      UTI_PAN_Coupon_Price : "",
+    PAN_Card_Commission_Type: "",
+    E_PAN_Card_Commission: "",
+    UTI_PAN_Coupon_Commission : "",
+    P_PAN_Card_Commission: "",
         });
       }
       else{
@@ -389,6 +417,50 @@ const SACreatePackages = () => {
                                                 />
                                             </div>
                                         </div> */}
+                                          <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Offline E PAN Card Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="offline_E_PAN_Card_Price"
+                            value={formData.offline_E_PAN_Card_Price}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Offline P PAN Card Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="offline_P_PAN_Card_Price"
+                            value={formData.offline_P_PAN_Card_Price}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                 
 
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
@@ -559,8 +631,33 @@ const SACreatePackages = () => {
                         </div>
                       </div>
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" className="form-label">
+                          Select offline KYC e-District Service
+                        </label>
+                        <div className="input-group flex-nowrap">
+                          <span
+                            className="input-group-text"
+                            id="addon-wrapping"
+                          >
+                            {" "}
+                            <LuTextSelect />
+                          </span>
+                          <select
+                            name="offline_kyc_eDistrict" value={formData.offline_kyc_eDistrict} onChange={handleChange} 
+                            className="form-select"
+                            aria-label="Default select example"
+                            required
+                          >
+                            <option value="" selected>Select...</option>
+
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Enter Income Certificate Price
+                          Enter eKYC Income Certificate Price
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -572,8 +669,8 @@ const SACreatePackages = () => {
                             
                             class="form-control"
                             placeholder="Enter price"
-                            name="Income_Certificate_Price"
-                            value={formData.Income_Certificate_Price}
+                            name="eKYC_Income_Certificate_Price"
+                            value={formData.eKYC_Income_Certificate_Price}
                             onChange={handleChange}
                             required
                           />
@@ -581,7 +678,7 @@ const SACreatePackages = () => {
                       </div>
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Enter Domicile Certificate Price
+                          Enter eKYC Domicile Certificate Price
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -593,8 +690,71 @@ const SACreatePackages = () => {
                             
                             class="form-control"
                             placeholder="Enter price"
-                            name="Domicile_Certificate_Price"
-                            value={formData.Domicile_Certificate_Price}
+                            name="eKYC_Domicile_Certificate_Price"
+                            value={formData.eKYC_Domicile_Certificate_Price}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter  offline KYC Income Certificate Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="offlineKYC_Income_Certificate_Price"
+                            value={formData.offlineKYC_Income_Certificate_Price}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter offline KYC Domicile Certificate Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="offlineKYC_Domicile_Certificate_Price"
+                            value={formData.offlineKYC_Domicile_Certificate_Price}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Verify e-district Certificate Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="verify_edistrict_Certificate_Price"
+                            value={formData.verify_edistrict_Certificate_Price}
                             onChange={handleChange}
                             required
                           />
@@ -677,6 +837,50 @@ const SACreatePackages = () => {
                                                 />
                                             </div>
                                         </div> */}
+
+<div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Offline E PAN Card Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="offline_E_PAN_Card_Commission"
+                            value={formData.offline_E_PAN_Card_Commission}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Offline P PAN Card Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="offline_P_PAN_Card_Commission"
+                            value={formData.offline_P_PAN_Card_Commission}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
 
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
@@ -848,7 +1052,7 @@ const SACreatePackages = () => {
                       </div>
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Enter Income Certificate Commission
+                        Enter eKYC Income Certificate Commission
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -860,8 +1064,8 @@ const SACreatePackages = () => {
                             
                             class="form-control"
                             placeholder="Enter Commission"
-                            name="Income_Certificate_Commission"
-                            value={formData.Income_Certificate_Commission}
+                            name="eKYC_Income_Certificate_Commission"
+                            value={formData.eKYC_Income_Certificate_Commission}
                             onChange={handleChange}
                             required
                           />
@@ -869,7 +1073,7 @@ const SACreatePackages = () => {
                       </div>
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Enter Domicile Certificate Commission
+                        Enter eKYC Domicile Certificate Commission
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -881,8 +1085,71 @@ const SACreatePackages = () => {
                             
                             class="form-control"
                             placeholder="Enter Commission"
-                            name="Domicile_Certificate_Commission"
-                            value={formData.Domicile_Certificate_Commission}
+                            name="eKYC_Domicile_Certificate_Commission"
+                            value={formData.eKYC_Domicile_Certificate_Commission}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter offline KYC Income Certificate Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="offlineKYC_Income_Certificate_Commission"
+                            value={formData.offlineKYC_Income_Certificate_Commission}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter offline KYC Domicile Certificate Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="offlineKYC_Domicile_Certificate_Commission"
+                            value={formData.offlineKYC_Domicile_Certificate_Commission}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter Verify e-district Certificate Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="verify_edistrict_Certificate_Commission"
+                            value={formData.verify_edistrict_Certificate_Commission}
                             onChange={handleChange}
                             required
                           />
@@ -2298,6 +2565,84 @@ const SACreatePackages = () => {
                             placeholder="Enter Commission"
                             name="Offline_Insurance_Pay_Commission"
                             value={formData.Offline_Insurance_Pay_Commission}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div className="text-center  mb-5 mt-3">
+                                                <button className="btn p-2">Change</button>
+                                            </div>
+                                        </div> */}
+                    </div>
+                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                      <div className="text-center  my-5">
+                        <h2>Create PAN Card Price</h2>
+                      </div>
+
+                      
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter E PAN Card Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="E_PAN_Card_Price"
+                            value={formData.E_PAN_Card_Price}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter P PAN Card Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="P_PAN_Card_Price"
+                            value={formData.P_PAN_Card_Price}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter UTI PAN Coupon Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="UTI_PAN_Coupon_Price"
+                            value={formData.UTI_PAN_Coupon_Price}
                             onChange={handleChange}
                             required
                           />

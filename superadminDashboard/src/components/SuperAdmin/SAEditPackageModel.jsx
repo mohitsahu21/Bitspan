@@ -32,6 +32,8 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
         packageId: packages.id,
         package_name: packages.package_name,
         package_for: packages.package_for, // This will store the selected options
+        offline_E_PAN_Card_Price : packages.offline_E_PAN_Card_Price,
+        offline_P_PAN_Card_Price : packages.offline_P_PAN_Card_Price,
         Google_Play_Price: packages.Google_Play_Price,
         IRCTC_Agent_ID_Price: packages.IRCTC_Agent_ID_Price,
         Birth_Certificate_Price: packages.Birth_Certificate_Price,
@@ -40,10 +42,16 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
         ITR_Registration_Price: packages.ITR_Registration_Price,
         GST_Registration_Price: packages.GST_Registration_Price,
         Sambal_Price: packages.Sambal_Price,
-        Income_Certificate_Price: packages.Income_Certificate_Price,
-        Domicile_Certificate_Price: packages.Domicile_Certificate_Price,
+        offline_kyc_eDistrict : packages.offline_kyc_eDistrict,
+    eKYC_Income_Certificate_Price : packages.eKYC_Income_Certificate_Price,
+    eKYC_Domicile_Certificate_Price : packages.eKYC_Domicile_Certificate_Price,
+    offlineKYC_Income_Certificate_Price : packages.offlineKYC_Income_Certificate_Price,
+    offlineKYC_Domicile_Certificate_Price : packages.offlineKYC_Domicile_Certificate_Price,
+    verify_edistrict_Certificate_Price : packages.verify_edistrict_Certificate_Price,
         Bank_ID_Price: packages.Bank_ID_Price,
         Offline_Services_Commission_Type: packages.Offline_Services_Commission_Type,
+        offline_E_PAN_Card_Commission : packages.offline_E_PAN_Card_Commission,
+        offline_P_PAN_Card_Commission : packages.offline_P_PAN_Card_Commission,
         Google_Play_Commission: packages.Google_Play_Commission,
         IRCTC_Agent_ID_Commission: packages.IRCTC_Agent_ID_Commission,
         Birth_Certificate_Commission: packages.Birth_Certificate_Commission,
@@ -52,8 +60,11 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
         ITR_Registration_Commission: packages.ITR_Registration_Commission,
         GST_Registration_Commission: packages.GST_Registration_Commission,
         Sambal_Commission: packages.Sambal_Commission,
-        Income_Certificate_Commission: packages.Income_Certificate_Commission,
-        Domicile_Certificate_Commission: packages.Domicile_Certificate_Commission,
+        eKYC_Income_Certificate_Commission : packages.eKYC_Income_Certificate_Commission,
+      eKYC_Domicile_Certificate_Commission : packages.eKYC_Domicile_Certificate_Commission,
+      offlineKYC_Income_Certificate_Commission : packages.offlineKYC_Income_Certificate_Commission,
+      offlineKYC_Domicile_Certificate_Commission : packages.offlineKYC_Domicile_Certificate_Commission,
+      verify_edistrict_Certificate_Commission : packages.verify_edistrict_Certificate_Commission,
         Bank_ID_Commission: packages.Bank_ID_Commission,
         Off_Prepaid_Recharge_Comm_Type: packages.Off_Prepaid_Recharge_Comm_Type,
         Off_Airtel_Prepaid_Recharge_Comm: packages.Off_Airtel_Prepaid_Recharge_Comm,
@@ -107,6 +118,9 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
         Online_Insurance_Pay_Commission: packages.Online_Insurance_Pay_Commission,
         Offline_Insurance_Pay_Commission_Type: packages.Offline_Insurance_Pay_Commission_Type,
         Offline_Insurance_Pay_Commission: packages.Offline_Insurance_Pay_Commission,
+        E_PAN_Card_Price : packages.E_PAN_Card_Price,
+        P_PAN_Card_Price : packages.P_PAN_Card_Price,
+        UTI_PAN_Coupon_Price : packages.UTI_PAN_Coupon_Price,
         PAN_Card_Commission_Type: packages.PAN_Card_Commission_Type,
         E_PAN_Card_Commission: packages.E_PAN_Card_Commission,
         UTI_PAN_Coupon_Commission : packages.UTI_PAN_Coupon_Commission,
@@ -322,6 +336,50 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
 
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
+                          Enter Offline E PAN Card Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="offline_E_PAN_Card_Price"
+                            value={formData.offline_E_PAN_Card_Price}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Offline P PAN Card Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="offline_P_PAN_Card_Price"
+                            value={formData.offline_P_PAN_Card_Price}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
                           Enter Google Play Price
                         </label>
                         <div class="input-group flex-nowrap">
@@ -488,9 +546,35 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                           />
                         </div>
                       </div>
+                    
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" className="form-label">
+                          Select offline KYC e-District Service
+                        </label>
+                        <div className="input-group flex-nowrap">
+                          <span
+                            className="input-group-text"
+                            id="addon-wrapping"
+                          >
+                            {" "}
+                            <LuTextSelect />
+                          </span>
+                          <select
+                            name="offline_kyc_eDistrict" value={formData.offline_kyc_eDistrict} onChange={handleChange} 
+                            className="form-select"
+                            aria-label="Default select example"
+                            required
+                          >
+                            <option value="" selected>Select...</option>
+
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                          </select>
+                        </div>
+                      </div>
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Enter Income Certificate Price
+                          Enter eKYC Income Certificate Price
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -502,8 +586,8 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                             
                             class="form-control"
                             placeholder="Enter price"
-                            name="Income_Certificate_Price"
-                            value={formData.Income_Certificate_Price}
+                            name="eKYC_Income_Certificate_Price"
+                            value={formData.eKYC_Income_Certificate_Price}
                             onChange={handleChange}
                             required
                           />
@@ -511,7 +595,7 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                       </div>
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Enter Domicile Certificate Price
+                          Enter eKYC Domicile Certificate Price
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -523,8 +607,71 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                             
                             class="form-control"
                             placeholder="Enter price"
-                            name="Domicile_Certificate_Price"
-                            value={formData.Domicile_Certificate_Price}
+                            name="eKYC_Domicile_Certificate_Price"
+                            value={formData.eKYC_Domicile_Certificate_Price}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter  offline KYC Income Certificate Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="offlineKYC_Income_Certificate_Price"
+                            value={formData.offlineKYC_Income_Certificate_Price}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter offline KYC Domicile Certificate Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="offlineKYC_Domicile_Certificate_Price"
+                            value={formData.offlineKYC_Domicile_Certificate_Price}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Verify e-district Certificate Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="verify_edistrict_Certificate_Price"
+                            value={formData.verify_edistrict_Certificate_Price}
                             onChange={handleChange}
                             required
                           />
@@ -607,6 +754,50 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                                                 />
                                             </div>
                                         </div> */}
+
+<div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Offline E PAN Card Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="offline_E_PAN_Card_Commission"
+                            value={formData.offline_E_PAN_Card_Commission}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Offline P PAN Card Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="offline_P_PAN_Card_Commission"
+                            value={formData.offline_P_PAN_Card_Commission}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
 
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
@@ -776,9 +967,10 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                           />
                         </div>
                       </div>
+
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Enter Income Certificate Commission
+                        Enter eKYC Income Certificate Commission
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -790,8 +982,8 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                             
                             class="form-control"
                             placeholder="Enter Commission"
-                            name="Income_Certificate_Commission"
-                            value={formData.Income_Certificate_Commission}
+                            name="eKYC_Income_Certificate_Commission"
+                            value={formData.eKYC_Income_Certificate_Commission}
                             onChange={handleChange}
                             required
                           />
@@ -799,7 +991,7 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                       </div>
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Enter Domicile Certificate Commission
+                        Enter eKYC Domicile Certificate Commission
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -811,13 +1003,78 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                             
                             class="form-control"
                             placeholder="Enter Commission"
-                            name="Domicile_Certificate_Commission"
-                            value={formData.Domicile_Certificate_Commission}
+                            name="eKYC_Domicile_Certificate_Commission"
+                            value={formData.eKYC_Domicile_Certificate_Commission}
                             onChange={handleChange}
                             required
                           />
                         </div>
                       </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter offline KYC Income Certificate Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="offlineKYC_Income_Certificate_Commission"
+                            value={formData.offlineKYC_Income_Certificate_Commission}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter offline KYC Domicile Certificate Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="offlineKYC_Domicile_Certificate_Commission"
+                            value={formData.offlineKYC_Domicile_Certificate_Commission}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter Verify e-district Certificate Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="verify_edistrict_Certificate_Commission"
+                            value={formData.verify_edistrict_Certificate_Commission}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                     
+                    
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
                           Enter Bank ID Commission
@@ -2228,6 +2485,85 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                             placeholder="Enter Commission"
                             name="Offline_Insurance_Pay_Commission"
                             value={formData.Offline_Insurance_Pay_Commission}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div className="text-center  mb-5 mt-3">
+                                                <button className="btn p-2">Change</button>
+                                            </div>
+                                        </div> */}
+                    </div>
+
+                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                      <div className="text-center  my-5">
+                        <h2>Edit PAN Card Price</h2>
+                      </div>
+
+                      
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter E PAN Card Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="E_PAN_Card_Price"
+                            value={formData.E_PAN_Card_Price}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter P PAN Card Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="P_PAN_Card_Price"
+                            value={formData.P_PAN_Card_Price}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter UTI PAN Coupon Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="UTI_PAN_Coupon_Price"
+                            value={formData.UTI_PAN_Coupon_Price}
                             onChange={handleChange}
                             required
                           />

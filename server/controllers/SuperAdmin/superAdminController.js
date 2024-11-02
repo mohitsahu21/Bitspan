@@ -10,6 +10,8 @@ const addPackage = (req, res) => {
 
       package_name,
       package_for,
+      offline_E_PAN_Card_Price,
+      offline_P_PAN_Card_Price,
       Google_Play_Price,
       IRCTC_Agent_ID_Price,
       Birth_Certificate_Price,
@@ -18,10 +20,16 @@ const addPackage = (req, res) => {
       ITR_Registration_Price,
       GST_Registration_Price,
       Sambal_Price,
-      Income_Certificate_Price,
-      Domicile_Certificate_Price,
+      offline_kyc_eDistrict,
+      eKYC_Income_Certificate_Price,
+      eKYC_Domicile_Certificate_Price,
+      offlineKYC_Income_Certificate_Price,
+      offlineKYC_Domicile_Certificate_Price,
+      verify_edistrict_Certificate_Price,
       Bank_ID_Price,
       Offline_Services_Commission_Type,
+      offline_E_PAN_Card_Commission,
+      offline_P_PAN_Card_Commission,
       Google_Play_Commission,
       IRCTC_Agent_ID_Commission,
       Birth_Certificate_Commission,
@@ -30,8 +38,11 @@ const addPackage = (req, res) => {
       ITR_Registration_Commission,
       GST_Registration_Commission,
       Sambal_Commission,
-      Income_Certificate_Commission,
-      Domicile_Certificate_Commission,
+      eKYC_Income_Certificate_Commission,
+      eKYC_Domicile_Certificate_Commission,
+      offlineKYC_Income_Certificate_Commission,
+      offlineKYC_Domicile_Certificate_Commission,
+      verify_edistrict_Certificate_Commission,
       Bank_ID_Commission,
       Off_Prepaid_Recharge_Comm_Type,
       Off_Airtel_Prepaid_Recharge_Comm,
@@ -85,6 +96,9 @@ const addPackage = (req, res) => {
       Online_Insurance_Pay_Commission,
       Offline_Insurance_Pay_Commission_Type,
       Offline_Insurance_Pay_Commission,
+      E_PAN_Card_Price,
+      P_PAN_Card_Price,
+      UTI_PAN_Coupon_Price,
       PAN_Card_Commission_Type,
       E_PAN_Card_Commission,
       UTI_PAN_Coupon_Commission,
@@ -95,12 +109,12 @@ const addPackage = (req, res) => {
     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
     const sql = `INSERT INTO packagestable (
-        package_name, package_for, Google_Play_Price, IRCTC_Agent_ID_Price, Birth_Certificate_Price, Death_Certificate_Price,
-        E_Stamp_Price, ITR_Registration_Price, GST_Registration_Price, Sambal_Price, Income_Certificate_Price,
-        Domicile_Certificate_Price, Bank_ID_Price, Offline_Services_Commission_Type, Google_Play_Commission,
+        package_name, package_for, offline_E_PAN_Card_Price , offline_P_PAN_Card_Price, Google_Play_Price, IRCTC_Agent_ID_Price, Birth_Certificate_Price, Death_Certificate_Price,
+        E_Stamp_Price, ITR_Registration_Price, GST_Registration_Price, Sambal_Price, offline_kyc_eDistrict,
+        eKYC_Income_Certificate_Price, eKYC_Domicile_Certificate_Price,offlineKYC_Income_Certificate_Price,offlineKYC_Domicile_Certificate_Price,verify_edistrict_Certificate_Price, Bank_ID_Price, Offline_Services_Commission_Type, offline_E_PAN_Card_Commission , offline_P_PAN_Card_Commission ,Google_Play_Commission,
         IRCTC_Agent_ID_Commission, Birth_Certificate_Commission, Death_Certificate_Commission, E_Stamp_Commission,
-        ITR_Registration_Commission, GST_Registration_Commission, Sambal_Commission, Income_Certificate_Commission,
-        Domicile_Certificate_Commission, Bank_ID_Commission, Off_Prepaid_Recharge_Comm_Type, Off_Airtel_Prepaid_Recharge_Comm,
+        ITR_Registration_Commission, GST_Registration_Commission, Sambal_Commission, eKYC_Income_Certificate_Commission,
+        eKYC_Domicile_Certificate_Commission, offlineKYC_Income_Certificate_Commission,offlineKYC_Domicile_Certificate_Commission,verify_edistrict_Certificate_Commission, Bank_ID_Commission, Off_Prepaid_Recharge_Comm_Type, Off_Airtel_Prepaid_Recharge_Comm,
         Off_Jio_Prepaid_Recharge_Comm, Off_Vi_Prepaid_Recharge_Comm, Off_Bsnl_Prepaid_Recharge_Comm,
         Off_Postpaid_Recharge_Comm_Type, Off_Airtel_Postpaid_Recharge_Comm, Off_Jio_Postpaid_Recharge_Comm,
         Off_Vi_Postpaid_Recharge_Comm, Off_Bsnl_Postpaid_Recharge_Comm, On_Prepaid_Recharge_Comm_Type, On_Airtel_Prepaid_Recharge_Comm,
@@ -122,12 +136,14 @@ const addPackage = (req, res) => {
         Online_Electricity_Bill_Pay_Commission_Type, Online_Electricity_Bill_Pay_Commission,
         Offline_Electricity_Bill_Pay_Commission_Type, Offline_Electricity_Bill_Pay_Commission,
         Online_Insurance_Pay_Commission_Type, Online_Insurance_Pay_Commission, Offline_Insurance_Pay_Commission_Type,
-        Offline_Insurance_Pay_Commission, PAN_Card_Commission_Type, E_PAN_Card_Commission, UTI_PAN_Coupon_Commission, P_PAN_Card_Commission , created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?, ?, ? ,?, ? , ? , ? , ?)`;
+        Offline_Insurance_Pay_Commission,E_PAN_Card_Price,P_PAN_Card_Price,UTI_PAN_Coupon_Price, PAN_Card_Commission_Type, E_PAN_Card_Commission, UTI_PAN_Coupon_Commission, P_PAN_Card_Commission , created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?, ?, ? ,?, ? , ? , ? , ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     const values = [
       package_name,
       package_for,
+      offline_E_PAN_Card_Price,
+      offline_P_PAN_Card_Price,
       Google_Play_Price,
       IRCTC_Agent_ID_Price,
       Birth_Certificate_Price,
@@ -136,10 +152,16 @@ const addPackage = (req, res) => {
       ITR_Registration_Price,
       GST_Registration_Price,
       Sambal_Price,
-      Income_Certificate_Price,
-      Domicile_Certificate_Price,
+      offline_kyc_eDistrict,
+      eKYC_Income_Certificate_Price,
+      eKYC_Domicile_Certificate_Price,
+      offlineKYC_Income_Certificate_Price,
+      offlineKYC_Domicile_Certificate_Price,
+      verify_edistrict_Certificate_Price,
       Bank_ID_Price,
       Offline_Services_Commission_Type,
+      offline_E_PAN_Card_Commission,
+      offline_P_PAN_Card_Commission,
       Google_Play_Commission,
       IRCTC_Agent_ID_Commission,
       Birth_Certificate_Commission,
@@ -148,8 +170,11 @@ const addPackage = (req, res) => {
       ITR_Registration_Commission,
       GST_Registration_Commission,
       Sambal_Commission,
-      Income_Certificate_Commission,
-      Domicile_Certificate_Commission,
+      eKYC_Income_Certificate_Commission,
+      eKYC_Domicile_Certificate_Commission,
+      offlineKYC_Income_Certificate_Commission,
+      offlineKYC_Domicile_Certificate_Commission,
+      verify_edistrict_Certificate_Commission,
       Bank_ID_Commission,
       Off_Prepaid_Recharge_Comm_Type,
       Off_Airtel_Prepaid_Recharge_Comm,
@@ -203,6 +228,9 @@ const addPackage = (req, res) => {
       Online_Insurance_Pay_Commission,
       Offline_Insurance_Pay_Commission_Type,
       Offline_Insurance_Pay_Commission,
+      E_PAN_Card_Price,
+      P_PAN_Card_Price,
+      UTI_PAN_Coupon_Price,
       PAN_Card_Commission_Type,
       E_PAN_Card_Commission,
       UTI_PAN_Coupon_Commission,
@@ -446,6 +474,8 @@ const editPackage = (req, res) => {
       packageId, // Extract the package ID from the request body.
       package_name,
       package_for,
+      offline_E_PAN_Card_Price,
+      offline_P_PAN_Card_Price,
       Google_Play_Price,
       IRCTC_Agent_ID_Price,
       Birth_Certificate_Price,
@@ -454,10 +484,16 @@ const editPackage = (req, res) => {
       ITR_Registration_Price,
       GST_Registration_Price,
       Sambal_Price,
-      Income_Certificate_Price,
-      Domicile_Certificate_Price,
+      offline_kyc_eDistrict,
+      eKYC_Income_Certificate_Price,
+      eKYC_Domicile_Certificate_Price,
+      offlineKYC_Income_Certificate_Price,
+      offlineKYC_Domicile_Certificate_Price,
+      verify_edistrict_Certificate_Price,
       Bank_ID_Price,
       Offline_Services_Commission_Type,
+      offline_E_PAN_Card_Commission,
+      offline_P_PAN_Card_Commission,
       Google_Play_Commission,
       IRCTC_Agent_ID_Commission,
       Birth_Certificate_Commission,
@@ -466,8 +502,11 @@ const editPackage = (req, res) => {
       ITR_Registration_Commission,
       GST_Registration_Commission,
       Sambal_Commission,
-      Income_Certificate_Commission,
-      Domicile_Certificate_Commission,
+      eKYC_Income_Certificate_Commission,
+      eKYC_Domicile_Certificate_Commission,
+      offlineKYC_Income_Certificate_Commission,
+      offlineKYC_Domicile_Certificate_Commission,
+      verify_edistrict_Certificate_Commission ,
       Bank_ID_Commission,
       Off_Prepaid_Recharge_Comm_Type,
       Off_Airtel_Prepaid_Recharge_Comm,
@@ -521,6 +560,9 @@ const editPackage = (req, res) => {
       Online_Insurance_Pay_Commission,
       Offline_Insurance_Pay_Commission_Type,
       Offline_Insurance_Pay_Commission,
+      E_PAN_Card_Price,
+      P_PAN_Card_Price,
+      UTI_PAN_Coupon_Price,
       PAN_Card_Commission_Type,
       E_PAN_Card_Commission,
       UTI_PAN_Coupon_Commission,
@@ -531,13 +573,20 @@ const editPackage = (req, res) => {
 
     // SQL query to update the package details
     const sql = `UPDATE packagestable SET
-        package_name = ?, package_for = ?, Google_Play_Price = ?, IRCTC_Agent_ID_Price = ?, 
+        package_name = ?, package_for = ?, 
+        offline_E_PAN_Card_Price = ?, offline_P_PAN_Card_Price = ?,
+        Google_Play_Price = ?, IRCTC_Agent_ID_Price = ?, 
         Birth_Certificate_Price = ?, Death_Certificate_Price = ?, E_Stamp_Price = ?, ITR_Registration_Price = ?, 
-        GST_Registration_Price = ?, Sambal_Price = ?, Income_Certificate_Price = ?, Domicile_Certificate_Price = ?, 
-        Bank_ID_Price = ?, Offline_Services_Commission_Type = ?, Google_Play_Commission = ?, 
+        GST_Registration_Price = ?, Sambal_Price = ?, offline_kyc_eDistrict = ?,
+        eKYC_Income_Certificate_Price = ?, eKYC_Domicile_Certificate_Price = ?,offlineKYC_Income_Certificate_Price = ?,offlineKYC_Domicile_Certificate_Price = ?,verify_edistrict_Certificate_Price = ?, 
+        Bank_ID_Price = ?, Offline_Services_Commission_Type = ?, 
+        offline_E_PAN_Card_Commission = ?, offline_P_PAN_Card_Commission = ?,
+        Google_Play_Commission = ?, 
         IRCTC_Agent_ID_Commission = ?, Birth_Certificate_Commission = ?, Death_Certificate_Commission = ?, 
         E_Stamp_Commission = ?, ITR_Registration_Commission = ?, GST_Registration_Commission = ?, Sambal_Commission = ?, 
-        Income_Certificate_Commission = ?, Domicile_Certificate_Commission = ?, Bank_ID_Commission = ?, 
+        eKYC_Income_Certificate_Commission = ?,
+        eKYC_Domicile_Certificate_Commission = ?, offlineKYC_Income_Certificate_Commission = ?,offlineKYC_Domicile_Certificate_Commission = ?,verify_edistrict_Certificate_Commission = ?, 
+        Bank_ID_Commission = ?, 
         Off_Prepaid_Recharge_Comm_Type = ?, Off_Airtel_Prepaid_Recharge_Comm = ?, Off_Jio_Prepaid_Recharge_Comm = ?, 
         Off_Vi_Prepaid_Recharge_Comm = ?, Off_Bsnl_Prepaid_Recharge_Comm = ?, Off_Postpaid_Recharge_Comm_Type = ?, 
         Off_Airtel_Postpaid_Recharge_Comm = ?, Off_Jio_Postpaid_Recharge_Comm = ?, Off_Vi_Postpaid_Recharge_Comm = ?, 
@@ -559,6 +608,9 @@ const editPackage = (req, res) => {
         Offline_Electricity_Bill_Pay_Commission_Type = ?, Offline_Electricity_Bill_Pay_Commission = ?, 
         Online_Insurance_Pay_Commission_Type = ?, Online_Insurance_Pay_Commission = ?, 
         Offline_Insurance_Pay_Commission_Type = ?, Offline_Insurance_Pay_Commission = ?, 
+        E_PAN_Card_Price = ?,
+        P_PAN_Card_Price = ?,
+        UTI_PAN_Coupon_Price = ?, 
         PAN_Card_Commission_Type = ?, E_PAN_Card_Commission = ?, UTI_PAN_Coupon_Commission = ?, 
         P_PAN_Card_Commission = ?, updated_at = ? 
       WHERE id = ?`;
@@ -566,6 +618,8 @@ const editPackage = (req, res) => {
     const values = [
       package_name,
       package_for,
+      offline_E_PAN_Card_Price,
+      offline_P_PAN_Card_Price,
       Google_Play_Price,
       IRCTC_Agent_ID_Price,
       Birth_Certificate_Price,
@@ -574,10 +628,16 @@ const editPackage = (req, res) => {
       ITR_Registration_Price,
       GST_Registration_Price,
       Sambal_Price,
-      Income_Certificate_Price,
-      Domicile_Certificate_Price,
+      offline_kyc_eDistrict,
+      eKYC_Income_Certificate_Price,
+      eKYC_Domicile_Certificate_Price,
+      offlineKYC_Income_Certificate_Price,
+      offlineKYC_Domicile_Certificate_Price,
+      verify_edistrict_Certificate_Price,
       Bank_ID_Price,
       Offline_Services_Commission_Type,
+      offline_E_PAN_Card_Commission,
+      offline_P_PAN_Card_Commission,
       Google_Play_Commission,
       IRCTC_Agent_ID_Commission,
       Birth_Certificate_Commission,
@@ -586,8 +646,11 @@ const editPackage = (req, res) => {
       ITR_Registration_Commission,
       GST_Registration_Commission,
       Sambal_Commission,
-      Income_Certificate_Commission,
-      Domicile_Certificate_Commission,
+      eKYC_Income_Certificate_Commission,
+      eKYC_Domicile_Certificate_Commission,
+      offlineKYC_Income_Certificate_Commission,
+      offlineKYC_Domicile_Certificate_Commission,
+      verify_edistrict_Certificate_Commission ,
       Bank_ID_Commission,
       Off_Prepaid_Recharge_Comm_Type,
       Off_Airtel_Prepaid_Recharge_Comm,
@@ -641,6 +704,9 @@ const editPackage = (req, res) => {
       Online_Insurance_Pay_Commission,
       Offline_Insurance_Pay_Commission_Type,
       Offline_Insurance_Pay_Commission,
+      E_PAN_Card_Price,
+      P_PAN_Card_Price,
+      UTI_PAN_Coupon_Price,
       PAN_Card_Commission_Type,
       E_PAN_Card_Commission,
       UTI_PAN_Coupon_Commission,
@@ -926,6 +992,116 @@ const markPaymentComplete = (req, res) => {
   }
 };
 
+const getUserIdPriceList = (req, res) => {
+  try {
+    const sql =  "SELECT * FROM userId_price_list";
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error fetching  usersID Price from MySQL:", err);
+      return  res.status(500).json({ success: false, error: "Error fetching usersID Price" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+         return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No usersID Price found",
+          });
+        } else {
+
+        return  res.status(200).json({
+            success: true,
+            data: result[0],
+            message: "usersID Price fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching usersID Price from MySQL:", error);
+   return res.status(500).json({
+      success: false,
+      message: "Error in fetching usersID Price",
+      error: error.message,
+    });
+  }
+};
+
+
+const addUserIdPrice = (req, res) => {
+  try {
+    const {
+
+
+      whiteLabel_id_price,
+      whiteLabel_min_id_limit,
+      whiteLabel_max_id_limit,
+      superDistributor_id_price,
+      superDistributor_min_id_limit,
+      superDistributor_max_id_limit,
+      distributor_id_price,
+      distributor_min_id_limit,
+      distributor_max_id_limit,
+      retailer_id_price,
+      retailer_min_id_limit,
+      retailer_max_id_limit,
+    } = req.body;
+
+    const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    const sql = `INSERT INTO userId_price_list (whiteLabel_id_price, whiteLabel_min_id_limit, whiteLabel_max_id_limit,
+      superDistributor_id_price, superDistributor_min_id_limit, superDistributor_max_id_limit,
+      distributor_id_price, distributor_min_id_limit, distributor_max_id_limit,
+      retailer_id_price, retailer_min_id_limit, retailer_max_id_limit)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON DUPLICATE KEY UPDATE
+      whiteLabel_id_price = VALUES(whiteLabel_id_price),
+      whiteLabel_min_id_limit = VALUES(whiteLabel_min_id_limit),
+      whiteLabel_max_id_limit = VALUES(whiteLabel_max_id_limit),
+      superDistributor_id_price = VALUES(superDistributor_id_price),
+      superDistributor_min_id_limit = VALUES(superDistributor_min_id_limit),
+      superDistributor_max_id_limit = VALUES(superDistributor_max_id_limit),
+      distributor_id_price = VALUES(distributor_id_price),
+      distributor_min_id_limit = VALUES(distributor_min_id_limit),
+      distributor_max_id_limit = VALUES(distributor_max_id_limit),
+      retailer_id_price = VALUES(retailer_id_price),
+      retailer_min_id_limit = VALUES(retailer_min_id_limit),
+      retailer_max_id_limit = VALUES(retailer_max_id_limit);`;
+
+    const values = [
+      whiteLabel_id_price,
+      whiteLabel_min_id_limit,
+      whiteLabel_max_id_limit,
+      superDistributor_id_price,
+      superDistributor_min_id_limit,
+      superDistributor_max_id_limit,
+      distributor_id_price,
+      distributor_min_id_limit,
+      distributor_max_id_limit,
+      retailer_id_price,
+      retailer_min_id_limit,
+      retailer_max_id_limit,
+    ];
+
+    db.query(sql, values, (err, result) => {
+      if (err) throw err; // Will be caught by the catch block
+      res
+        .status(200)
+        .send({ success: true, message: "Data inserted successfully", data: result });
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .send({ success: false, error: "Error inserting data", details: error.message });
+  }
+};
+
+
+
+
+
 module.exports = {
   addPackage,
   getPackages,
@@ -941,5 +1117,7 @@ module.exports = {
   deactivateUser,
   activateUser,
   getUserRelations,
-  markPaymentComplete
+  markPaymentComplete,
+  getUserIdPriceList,
+  addUserIdPrice
 };
