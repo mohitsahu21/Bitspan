@@ -125,7 +125,7 @@ const SuperAdminRoutes = () => {
       <Route path="/complaint-raised-list" element={<SAAllComplaintsList />} />
       {/* <Route path="/download-certificate" element={<WLDownloadCertificate />} /> */}
       <Route path="/change-coupon-price" element={<SAChangeIdSetRate />} />
-      <Route path="/whitelabel-id-set-rate" element={<SASetWhiteLabelIdPrice />} />
+      <Route path="/user-id-set-rate" element={<SASetWhiteLabelIdPrice />} />
       <Route path="/change-nsdl-price" element={<SAChangeNSDLPrice/>} />
       <Route path="/change-uti-price" element={<SAChangeUTIPanPrice/>} />
       <Route path="/change-uti-new-price" element={<SAChangeUTINewCouponPrice />} />

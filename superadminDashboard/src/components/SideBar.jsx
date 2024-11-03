@@ -1404,11 +1404,11 @@ const SuperAdminData = [
   //   // 	},
   //   // ],
   // },
-  {
-    title: "Set PIN and 2 Step",
-    path: "/2-step-verification",
-    icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
-  },
+  // {
+  //   title: "Set PIN and 2 Step",
+  //   path: "/2-step-verification",
+  //   icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
+  // },
   {
     title: "Web Settings",
     path: "/website-setting",
@@ -1598,25 +1598,25 @@ const SuperAdminData = [
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
-        title: "White Label ID Set Rate",
-        path: "/whitelabel-id-set-rate",
+        title: "User ID Set Rate",
+        path: "/user-id-set-rate",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
-      {
-        title: "Change NSDL Price",
-        path: "/change-nsdl-price",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Change UTI 2.0 Price",
-        path: "/change-uti-price",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Change UTI New Price",
-        path: "/change-uti-new-price",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
+      // {
+      //   title: "Change NSDL Price",
+      //   path: "/change-nsdl-price",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
+      // {
+      //   title: "Change UTI 2.0 Price",
+      //   path: "/change-uti-price",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
+      // {
+      //   title: "Change UTI New Price",
+      //   path: "/change-uti-new-price",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
       {
         title: "Change Password",
         path: "/change-password",

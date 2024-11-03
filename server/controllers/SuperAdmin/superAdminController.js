@@ -1055,20 +1055,7 @@ const addUserIdPrice = (req, res) => {
       superDistributor_id_price, superDistributor_min_id_limit, superDistributor_max_id_limit,
       distributor_id_price, distributor_min_id_limit, distributor_max_id_limit,
       retailer_id_price, retailer_min_id_limit, retailer_max_id_limit)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ON DUPLICATE KEY UPDATE
-      whiteLabel_id_price = VALUES(whiteLabel_id_price),
-      whiteLabel_min_id_limit = VALUES(whiteLabel_min_id_limit),
-      whiteLabel_max_id_limit = VALUES(whiteLabel_max_id_limit),
-      superDistributor_id_price = VALUES(superDistributor_id_price),
-      superDistributor_min_id_limit = VALUES(superDistributor_min_id_limit),
-      superDistributor_max_id_limit = VALUES(superDistributor_max_id_limit),
-      distributor_id_price = VALUES(distributor_id_price),
-      distributor_min_id_limit = VALUES(distributor_min_id_limit),
-      distributor_max_id_limit = VALUES(distributor_max_id_limit),
-      retailer_id_price = VALUES(retailer_id_price),
-      retailer_min_id_limit = VALUES(retailer_min_id_limit),
-      retailer_max_id_limit = VALUES(retailer_max_id_limit);`;
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     const values = [
       whiteLabel_id_price,
@@ -1099,6 +1086,66 @@ const addUserIdPrice = (req, res) => {
 };
 
 
+const updateUserIdPrice = (req, res) => {
+  try {
+    const {
+      id, // ID of the record to be updated
+      whiteLabel_id_price,
+      whiteLabel_min_id_limit,
+      whiteLabel_max_id_limit,
+      superDistributor_id_price,
+      superDistributor_min_id_limit,
+      superDistributor_max_id_limit,
+      distributor_id_price,
+      distributor_min_id_limit,
+      distributor_max_id_limit,
+      retailer_id_price,
+      retailer_min_id_limit,
+      retailer_max_id_limit,
+    } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    const sql = `UPDATE userId_price_list 
+      SET 
+        whiteLabel_id_price = ?, whiteLabel_min_id_limit = ?, whiteLabel_max_id_limit = ?,
+        superDistributor_id_price = ?, superDistributor_min_id_limit = ?, superDistributor_max_id_limit = ?,
+        distributor_id_price = ?, distributor_min_id_limit = ?, distributor_max_id_limit = ?,
+        retailer_id_price = ?, retailer_min_id_limit = ?, retailer_max_id_limit = ? WHERE id = ?`;
+
+    const values = [
+      whiteLabel_id_price,
+      whiteLabel_min_id_limit,
+      whiteLabel_max_id_limit,
+      superDistributor_id_price,
+      superDistributor_min_id_limit,
+      superDistributor_max_id_limit,
+      distributor_id_price,
+      distributor_min_id_limit,
+      distributor_max_id_limit,
+      retailer_id_price,
+      retailer_min_id_limit,
+      retailer_max_id_limit,
+      id
+    ];
+
+    db.query(sql, values, (err, result) => {
+      if (err) throw err;
+      res.status(200).send({
+        success: true,
+        message: "Data updated successfully",
+        data: result
+      });
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      error: "Error updating data",
+      details: error.message
+    });
+  }
+};
+
 
 
 
@@ -1119,5 +1166,6 @@ module.exports = {
   getUserRelations,
   markPaymentComplete,
   getUserIdPriceList,
-  addUserIdPrice
+  addUserIdPrice,
+  updateUserIdPrice
 };
