@@ -254,6 +254,7 @@ const handlePackageSelect = (e) => {
           icon: "error",
           title: "An error occurred during the process. Please try again.",
         });
+        setShowApproveModel(false);
       }
     } catch (error) {
       console.error("There was an error submitting the form!", error);

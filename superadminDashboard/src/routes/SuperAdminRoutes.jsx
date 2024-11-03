@@ -47,6 +47,7 @@ import SAActiveDeactiveApi from "../components/SuperAdmin/SAActiveDeactiveApi.js
 import PanForm from "../components/SuperAdmin/PanForm.jsx";
 import SARegisterEmployee from "../components/SuperAdmin/SARegisterEmployee.jsx";
 import SAPendingKycUsers from "../components/SuperAdmin/SAPendingKycUsers.jsx";
+import SAEmployeeList from "../components/SuperAdmin/SAEmployeeList.jsx";
 
 
 
@@ -118,6 +119,7 @@ const SuperAdminRoutes = () => {
       <Route path="/users-joining-list" element={<SAAllUsersJoinedList />} />
       <Route path="/pending-payment-users" element={<SAPendingPaymentUsers />} />
       <Route path="/white-label-joining-list" element={<SAWhiteLabelJoiningList />} />
+      <Route path="/super-admin-employee-list" element={<SAEmployeeList />} />
       <Route path="/buy-user-id-summary" element={<SABuyUserIdSummary />} />
       <Route path="/pan-transaction-report" element={<SAPanTransactionReport />} />
       <Route path="/change-price" element={<SAChangePrice />} />

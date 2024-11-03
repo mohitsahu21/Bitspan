@@ -17,6 +17,7 @@ const rolePrefixes = {
   superdistributer: "SD",
   distributer: "DT",
   retailer: "RT",
+  SuperAdmin_Employee: "SAE"
 };
 
 const cleanName = (name) => {
@@ -33,6 +34,146 @@ const generatePassword = () => {
   return password;
 };
 
+// const userRegiser = async (req, res) => {
+//   const {
+//     UserName,
+//     role,
+//     ContactNo,
+//     Email,
+//     PanCardNumber,
+//     AadharNumber,
+//     BusinessName,
+//     City,
+//     State,
+//     PinCode,
+//   } = req.body;
+
+//   if (
+//     !UserName ||
+//     !role ||
+//     !ContactNo ||
+//     !Email ||
+//     !PanCardNumber ||
+//     !AadharNumber ||
+//     !BusinessName ||
+//     !City ||
+//     !State ||
+//     !PinCode
+//   ) {
+//     return res
+//       .status(400)
+//       .json({ status: "Failure", error: "All fields are required" });
+//   }
+
+//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+//   const cleanedName = cleanName(UserName);
+//   let namePart = cleanedName.slice(0, 4).toUpperCase();
+
+//   if (cleanedName.length < 4) {
+//     namePart = (cleanedName + cleanedName.slice(0, 4))
+//       .slice(0, 4)
+//       .toUpperCase();
+//   }
+
+//   const rolePrefix = rolePrefixes[role];
+
+//   try {
+//     // Start a transaction to ensure atomicity
+//     db.beginTransaction(async (transactionErr) => {
+//       if (transactionErr) {
+//         console.error("Error starting transaction:", transactionErr);
+//         return res
+//           .status(500)
+//           .json({ status: "Failure", message: "Internal server error" });
+//       }
+
+//       const getLastUserIdQuery = `SELECT UserId FROM userprofile WHERE UserId LIKE '${rolePrefix}-%' ORDER BY UserId DESC LIMIT 1`;
+
+//       db.query(getLastUserIdQuery, async (err, results) => {
+//         if (err) {
+//           console.error("Error fetching latest UserId:", err);
+//           return res
+//             .status(500)
+//             .json({ status: "Failure", message: "Internal server error" });
+//         }
+
+//         let sequenceNumber = 1;
+//         if (results.length > 0) {
+//           const lastUserId = results[0].UserId;
+//           const numericPart = lastUserId.match(/\d+$/);
+//           if (numericPart) {
+//             sequenceNumber = parseInt(numericPart[0], 10) + 1;
+//           }
+//         }
+
+//         const paddingLength = 4;
+//         const userId = `${rolePrefix}-${namePart}${sequenceNumber
+//           .toString()
+//           .padStart(paddingLength, "0")}`;
+
+//         const password = generatePassword();
+//         const hashedPassword = await bcrypt.hash(password, 10);
+
+//         const insertUserQuery = `INSERT INTO userprofile (UserId, password, UserName, role, ContactNo, Email, PanCardNumber, AadharNumber, BusinessName, City, State, PinCode, CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+//         const insertValues = [
+//           userId,
+//           hashedPassword,
+//           UserName,
+//           role,
+//           ContactNo,
+//           Email,
+//           PanCardNumber,
+//           AadharNumber,
+//           BusinessName,
+//           City,
+//           State,
+//           PinCode,
+//           createdAt,
+//         ];
+
+//         db.query(insertUserQuery, insertValues, (insertErr, result) => {
+//           if (insertErr) {
+//             return db.rollback(() => {
+//               console.error("Error inserting user:", insertErr);
+//               return res
+//                 .status(500)
+//                 .json({ status: "Failure", message: "Internal server error" });
+//             });
+//           }
+
+//           // Commit the transaction
+//           db.commit((commitErr) => {
+//             if (commitErr) {
+//               return db.rollback(() => {
+//                 console.error("Error committing transaction:", commitErr);
+//                 return res.status(500).json({
+//                   status: "Failure",
+//                   message: "Internal server error",
+//                 });
+//               });
+//             }
+
+//             // Respond with success
+//             res.json({
+//               message: "User registered successfully",
+//               status: "Success",
+//               userId,
+//               password,
+//             });
+//           });
+//         });
+//       });
+//     });
+//   } catch (err) {
+//     console.error("Error processing request:", err);
+//     res
+//       .status(500)
+//       .json({ status: "Failure", message: "Internal server error" });
+//   }
+// };
+
+
 const userRegiser = async (req, res) => {
   const {
     UserName,
@@ -45,6 +186,11 @@ const userRegiser = async (req, res) => {
     City,
     State,
     PinCode,
+    Status,
+    payment_status,
+    created_By_User_Id,
+    created_By_User_Role,
+    created_By_Website
   } = req.body;
 
   if (
@@ -57,11 +203,16 @@ const userRegiser = async (req, res) => {
     !BusinessName ||
     !City ||
     !State ||
-    !PinCode
+    !PinCode ||
+    !Status ||
+    !payment_status ||
+    !created_By_User_Id ||
+    !created_By_User_Role ||
+    !created_By_Website
   ) {
     return res
       .status(400)
-      .json({ status: "Failure", error: "All fields are required" });
+      .json({ status: "Failure", error: "All fields are required" , message : "All fields are required"});
   }
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
@@ -113,7 +264,8 @@ const userRegiser = async (req, res) => {
         const password = generatePassword();
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const insertUserQuery = `INSERT INTO userprofile (UserId, password, UserName, role, ContactNo, Email, PanCardNumber, AadharNumber, BusinessName, City, State, PinCode, CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        const insertUserQuery = `INSERT INTO userprofile (UserId, password, UserName, role, ContactNo, Email, PanCardNumber, AadharNumber, BusinessName, City, State, PinCode,Status,payment_status,created_By_User_Id,
+created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?)`;
 
         const insertValues = [
           userId,
@@ -128,6 +280,11 @@ const userRegiser = async (req, res) => {
           City,
           State,
           PinCode,
+          Status,
+          payment_status,
+          created_By_User_Id,
+          created_By_User_Role,
+          created_By_Website,
           createdAt,
         ];
 
@@ -159,6 +316,147 @@ const userRegiser = async (req, res) => {
               status: "Success",
               userId,
               password,
+            });
+          });
+        });
+      });
+    });
+  } catch (err) {
+    console.error("Error processing request:", err);
+    res
+      .status(500)
+      .json({ status: "Failure", message: "Internal server error" });
+  }
+};
+
+const superAdminEmployeeRegiser = async (req, res) => {
+  const {
+    name,
+    contact,
+    email,
+    panNumber,
+    aadhar,
+    city,
+    state,
+    pincode,
+    userType,
+    password,
+    status
+  } = req.body;
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const cleanedName = cleanName(name);
+  let namePart = cleanedName.slice(0, 4).toUpperCase();
+
+  if (cleanedName.length < 4) {
+    namePart = (cleanedName + cleanedName.slice(0, 4))
+      .slice(0, 4)
+      .toUpperCase();
+  }
+
+  const rolePrefix = rolePrefixes[userType];
+
+  try {
+    // Check if email or contact already exists
+    const checkUserQuery = `SELECT * FROM userprofile WHERE Email = ? OR ContactNo = ?`;
+    db.query(checkUserQuery, [email, contact], (err, results) => {
+      if (err) {
+        console.error("Error checking user existence:", err);
+        return res
+          .status(500)
+          .json({ status: "Failure", message: "Internal server error" });
+      }
+
+      if (results.length > 0) {
+        return res.status(400).json({
+          status: "Failure",
+          message: "Email or Contact number already exists",
+        });
+      }
+
+      // If no existing user found, continue with registration
+      db.beginTransaction(async (transactionErr) => {
+        if (transactionErr) {
+          console.error("Error starting transaction:", transactionErr);
+          return res
+            .status(500)
+            .json({ status: "Failure", message: "Internal server error" });
+        }
+
+        const getLastUserIdQuery = `SELECT UserId FROM userprofile WHERE UserId LIKE '${rolePrefix}-%' ORDER BY UserId DESC LIMIT 1`;
+
+        db.query(getLastUserIdQuery, async (err, results) => {
+          if (err) {
+            console.error("Error fetching latest UserId:", err);
+            return res
+              .status(500)
+              .json({ status: "Failure", message: "Internal server error" });
+          }
+
+          let sequenceNumber = 1;
+          if (results.length > 0) {
+            const lastUserId = results[0].UserId;
+            const numericPart = lastUserId.match(/\d+$/);
+            if (numericPart) {
+              sequenceNumber = parseInt(numericPart[0], 10) + 1;
+            }
+          }
+
+          const paddingLength = 4;
+          const userId = `${rolePrefix}-${namePart}${sequenceNumber
+            .toString()
+            .padStart(paddingLength, "0")}`;
+
+          const hashedPassword = await bcrypt.hash(password, 10);
+
+          const insertUserQuery = `INSERT INTO userprofile (UserId, password, UserName, role, ContactNo, Email, PanCardNumber, AadharNumber, City, State, PinCode, Status, CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)`;
+
+          const insertValues = [
+            userId,
+            hashedPassword,
+            name,
+            userType,
+            contact,
+            email,
+            panNumber,
+            aadhar,
+            city,
+            state,
+            pincode,
+            status,
+            createdAt,
+          ];
+
+          db.query(insertUserQuery, insertValues, (insertErr, result) => {
+            if (insertErr) {
+              return db.rollback(() => {
+                console.error("Error inserting user:", insertErr);
+                return res.status(500).json({
+                  status: "Failure",
+                  message: "Internal server error",
+                });
+              });
+            }
+
+            // Commit the transaction
+            db.commit((commitErr) => {
+              if (commitErr) {
+                return db.rollback(() => {
+                  console.error("Error committing transaction:", commitErr);
+                  return res.status(500).json({
+                    status: "Failure",
+                    message: "Internal server error",
+                  });
+                });
+              }
+
+              // Respond with success
+              res.json({
+                message: "User registered successfully",
+                status: "Success",
+                userId,
+                password,
+              });
             });
           });
         });
@@ -1052,6 +1350,7 @@ module.exports = {
   verifyOtp,
   getUserId,
   verifyPin,
+  superAdminEmployeeRegiser
 };
 
 // const verifyOtpAndResetPassword = async (req, res) => {

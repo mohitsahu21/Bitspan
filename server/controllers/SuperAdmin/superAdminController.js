@@ -280,7 +280,7 @@ const getPackages = (req,res) =>{
 const getPendingUsers = (req, res) => {
   try {
     // const sql = "SELECT * FROM userprofile WHERE Status = 'Pending'";
-    const sql = "SELECT * FROM userprofile WHERE Status = 'Pending' AND payment_status = 'Complete'";
+    const sql = "SELECT * FROM userprofile WHERE Status = 'Pending' AND payment_status = 'Complete' AND role != 'SuperAdmin_Employee'";
 
     db.query(sql, (err, result) => {
       if (err) {
@@ -318,7 +318,7 @@ const getPendingUsers = (req, res) => {
 
 const getPendingPaymentUsers = (req, res) => {
   try {
-    const sql = "SELECT * FROM userprofile WHERE payment_status = 'Pending'";
+    const sql = "SELECT * FROM userprofile WHERE payment_status = 'Pending' AND role != 'SuperAdmin_Employee'";
 
     db.query(sql, (err, result) => {
       if (err) {
@@ -356,7 +356,7 @@ const getPendingPaymentUsers = (req, res) => {
 const getActiveUsers = (req, res) => {
   try {
     const sql = 
-    "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE u.Status = 'Active'";
+    "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE u.Status = 'Active' AND role != 'SuperAdmin_Employee'";
 
     db.query(sql, (err, result) => {
       if (err) {
@@ -394,7 +394,7 @@ const getActiveUsers = (req, res) => {
 
 const getdeactiveUsers = (req, res) => {
   try {
-    const sql =  "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE u.Status = 'Deactive'";
+    const sql =  "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE u.Status = 'Deactive' AND role != 'SuperAdmin_Employee'";
 
     db.query(sql, (err, result) => {
       if (err) {
@@ -431,7 +431,7 @@ const getdeactiveUsers = (req, res) => {
 };
 const getAllUsers = (req, res) => {
   try {
-    const sql =  "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id";
+    const sql =  "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE role != 'SuperAdmin_Employee'";
 
     db.query(sql, (err, result) => {
       if (err) {
@@ -1147,6 +1147,44 @@ const updateUserIdPrice = (req, res) => {
 };
 
 
+const getSuperAdminEmployee = (req, res) => {
+  try {
+    const sql = "SELECT * FROM userprofile WHERE role = 'SuperAdmin_Employee'";
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error fetchingSuperAdmin_Employee from MySQL:", err);
+      return  res.status(500).json({ success: false, error: "Error fetching SuperAdmin_Employee" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+         return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No SuperAdmin_Employee found",
+          });
+        } else {
+          // Remove the password field from each user object
+          const sanitizedResult = result.map(({ password, ...rest }) => rest);
+
+        return  res.status(200).json({
+            success: true,
+            data: sanitizedResult,
+            message: "SuperAdmin_Employee fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching SuperAdmin_Employee from MySQL:", error);
+   return res.status(500).json({
+      success: false,
+      message: "Error in fetching SuperAdmin_Employee",
+      error: error.message,
+    });
+  }
+};
+
 
 
 module.exports = {
@@ -1167,5 +1205,6 @@ module.exports = {
   markPaymentComplete,
   getUserIdPriceList,
   addUserIdPrice,
-  updateUserIdPrice
+  updateUserIdPrice,
+  getSuperAdminEmployee
 };

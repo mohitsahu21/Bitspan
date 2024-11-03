@@ -1542,6 +1542,11 @@ const SuperAdminData = [
         path: "/users-joining-list",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+      {
+        title: "Super Admin Employee List",
+        path: "/super-admin-employee-list",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
       // {
       //   title: "White Label Joined List",
       //   path: "/white-label-joining-list",

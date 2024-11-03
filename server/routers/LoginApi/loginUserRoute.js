@@ -14,6 +14,7 @@ const {
   verifyOtp,
   getUserId,
   verifyPin,
+  superAdminEmployeeRegiser,
 } = require("../../controllers/LoginApi/loginUser");
 const authenticateToken = require("../../middleware/authenticateToken");
 
@@ -46,5 +47,6 @@ router.post("/request-otp", requestOtpForPinChange);
 router.post("/verify-otp", verifyOtp);
 router.get("/check-user", getUserId);
 router.post("/verify-pin", verifyPin);
+router.post("/superAdminEmployeeRegiser", superAdminEmployeeRegiser);
 
 module.exports = router;
