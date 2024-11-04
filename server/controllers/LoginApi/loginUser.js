@@ -12,12 +12,12 @@ dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const rolePrefixes = {
-  superadmin: "SA",
-  whitelabel: "WL",
-  superdistributer: "SD",
-  distributer: "DT",
-  retailer: "RT",
-  SuperAdmin_Employee: "SAE"
+  SuperAdmin: "SA",
+  WhiteLabel: "WL",
+  SuperDistributor: "SD",
+  Distributor: "DT",
+  Retailer: "RT",
+  SuperAdmin_Employee: "SAE",
 };
 
 const cleanName = (name) => {
@@ -173,7 +173,6 @@ const generatePassword = () => {
 //   }
 // };
 
-
 const userRegiser = async (req, res) => {
   const {
     UserName,
@@ -190,7 +189,7 @@ const userRegiser = async (req, res) => {
     payment_status,
     created_By_User_Id,
     created_By_User_Role,
-    created_By_Website
+    created_By_Website,
   } = req.body;
 
   if (
@@ -210,9 +209,11 @@ const userRegiser = async (req, res) => {
     !created_By_User_Role ||
     !created_By_Website
   ) {
-    return res
-      .status(400)
-      .json({ status: "Failure", error: "All fields are required" , message : "All fields are required"});
+    return res.status(400).json({
+      status: "Failure",
+      error: "All fields are required",
+      message: "All fields are required",
+    });
   }
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
@@ -228,7 +229,6 @@ const userRegiser = async (req, res) => {
   const rolePrefix = rolePrefixes[role];
 
   try {
-    // Start a transaction to ensure atomicity
     db.beginTransaction(async (transactionErr) => {
       if (transactionErr) {
         console.error("Error starting transaction:", transactionErr);
@@ -310,12 +310,47 @@ created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?,
               });
             }
 
-            // Respond with success
-            res.json({
-              message: "User registered successfully",
-              status: "Success",
-              userId,
-              password,
+            const transporter = nodemailer.createTransport({
+              service: "gmail",
+              auth: {
+                user: process.env.EMAILSENDER,
+                pass: process.env.EMAILPASSWORD,
+              },
+            });
+
+            const mailOptions = {
+              from: process.env.EMAILSENDER,
+              to: Email,
+              subject: "Your Account Details",
+              html: `
+    <p>Hello ${UserName},</p>
+    <p>Your account has been successfully created.</p>
+    <p>User ID: <span style="color: #333333; font-weight: bold;">${userId}</span></p>
+    <p>Password: <span style="color: #333333; font-weight: bold;">${password}</span></p>
+    <p>Please keep this information secure.</p>
+    <p>Please log in using this ID and password, and complete the KYC process to activate your account.</p>
+    <br>
+    <p>Regards,<br>Bitspan.com</p>
+  `,
+              // text: `Hello ${UserName},\n\nYour account has been successfully created.\n\nUser ID: ${userId}\nPassword: ${password}\n\nPlease keep this information secure.\n\nPlease login using this ID and password, and complete the KYC process to activate your account.\n\nRegards,\nBitspan.com`,
+            };
+
+            transporter.sendMail(mailOptions, (emailErr, info) => {
+              if (emailErr) {
+                console.error("Error sending email:", emailErr);
+                return res.status(500).json({
+                  status: "Failure",
+                  message: "Internal server error",
+                });
+              }
+
+              // Respond with success
+              res.json({
+                message: "User registered successfully, email sent",
+                status: "Success",
+                userId,
+                password,
+              });
             });
           });
         });
@@ -329,6 +364,161 @@ created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?,
   }
 };
 
+// const userRegiser = async (req, res) => {
+//   const {
+//     UserName,
+//     role,
+//     ContactNo,
+//     Email,
+//     PanCardNumber,
+//     AadharNumber,
+//     BusinessName,
+//     City,
+//     State,
+//     PinCode,
+//     Status,
+//     payment_status,
+//     created_By_User_Id,
+//     created_By_User_Role,
+//     created_By_Website
+//   } = req.body;
+
+//   if (
+//     !UserName ||
+//     !role ||
+//     !ContactNo ||
+//     !Email ||
+//     !PanCardNumber ||
+//     !AadharNumber ||
+//     !BusinessName ||
+//     !City ||
+//     !State ||
+//     !PinCode ||
+//     !Status ||
+//     !payment_status ||
+//     !created_By_User_Id ||
+//     !created_By_User_Role ||
+//     !created_By_Website
+//   ) {
+//     return res
+//       .status(400)
+//       .json({ status: "Failure", error: "All fields are required" , message : "All fields are required"});
+//   }
+
+//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+//   const cleanedName = cleanName(UserName);
+//   let namePart = cleanedName.slice(0, 4).toUpperCase();
+
+//   if (cleanedName.length < 4) {
+//     namePart = (cleanedName + cleanedName.slice(0, 4))
+//       .slice(0, 4)
+//       .toUpperCase();
+//   }
+
+//   const rolePrefix = rolePrefixes[role];
+
+//   try {
+//     // Start a transaction to ensure atomicity
+//     db.beginTransaction(async (transactionErr) => {
+//       if (transactionErr) {
+//         console.error("Error starting transaction:", transactionErr);
+//         return res
+//           .status(500)
+//           .json({ status: "Failure", message: "Internal server error" });
+//       }
+
+//       const getLastUserIdQuery = `SELECT UserId FROM userprofile WHERE UserId LIKE '${rolePrefix}-%' ORDER BY UserId DESC LIMIT 1`;
+
+//       db.query(getLastUserIdQuery, async (err, results) => {
+//         if (err) {
+//           console.error("Error fetching latest UserId:", err);
+//           return res
+//             .status(500)
+//             .json({ status: "Failure", message: "Internal server error" });
+//         }
+
+//         let sequenceNumber = 1;
+//         if (results.length > 0) {
+//           const lastUserId = results[0].UserId;
+//           const numericPart = lastUserId.match(/\d+$/);
+//           if (numericPart) {
+//             sequenceNumber = parseInt(numericPart[0], 10) + 1;
+//           }
+//         }
+
+//         const paddingLength = 4;
+//         const userId = `${rolePrefix}-${namePart}${sequenceNumber
+//           .toString()
+//           .padStart(paddingLength, "0")}`;
+
+//         const password = generatePassword();
+//         const hashedPassword = await bcrypt.hash(password, 10);
+
+//         const insertUserQuery = `INSERT INTO userprofile (UserId, password, UserName, role, ContactNo, Email, PanCardNumber, AadharNumber, BusinessName, City, State, PinCode,Status,payment_status,created_By_User_Id,
+// created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?)`;
+
+//         const insertValues = [
+//           userId,
+//           hashedPassword,
+//           UserName,
+//           role,
+//           ContactNo,
+//           Email,
+//           PanCardNumber,
+//           AadharNumber,
+//           BusinessName,
+//           City,
+//           State,
+//           PinCode,
+//           Status,
+//           payment_status,
+//           created_By_User_Id,
+//           created_By_User_Role,
+//           created_By_Website,
+//           createdAt,
+//         ];
+
+//         db.query(insertUserQuery, insertValues, (insertErr, result) => {
+//           if (insertErr) {
+//             return db.rollback(() => {
+//               console.error("Error inserting user:", insertErr);
+//               return res
+//                 .status(500)
+//                 .json({ status: "Failure", message: "Internal server error" });
+//             });
+//           }
+
+//           // Commit the transaction
+//           db.commit((commitErr) => {
+//             if (commitErr) {
+//               return db.rollback(() => {
+//                 console.error("Error committing transaction:", commitErr);
+//                 return res.status(500).json({
+//                   status: "Failure",
+//                   message: "Internal server error",
+//                 });
+//               });
+//             }
+
+//             // Respond with success
+//             res.json({
+//               message: "User registered successfully",
+//               status: "Success",
+//               userId,
+//               password,
+//             });
+//           });
+//         });
+//       });
+//     });
+//   } catch (err) {
+//     console.error("Error processing request:", err);
+//     res
+//       .status(500)
+//       .json({ status: "Failure", message: "Internal server error" });
+//   }
+// };
+
 const superAdminEmployeeRegiser = async (req, res) => {
   const {
     name,
@@ -341,7 +531,7 @@ const superAdminEmployeeRegiser = async (req, res) => {
     pincode,
     userType,
     password,
-    status
+    status,
   } = req.body;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
@@ -450,12 +640,36 @@ const superAdminEmployeeRegiser = async (req, res) => {
                 });
               }
 
-              // Respond with success
-              res.json({
-                message: "User registered successfully",
-                status: "Success",
-                userId,
-                password,
+              // Send Email on Success
+              const mailOptions = {
+                from: process.env.EMAIL_USER,
+                to: email,
+                subject: "User Registration Successful",
+                html: `
+                  <h3>Welcome to Our Platform!</h3>
+                  <p>Your registration was successful. Here are your login details:</p>
+                  <p><strong>User ID:</strong> <span style="color: #333;">${userId}</span></p>
+                  <p><strong>Password:</strong> <span style="color: #333;">${password}</span></p>
+                  <p>Please keep this information secure. Use these credentials to log in.</p>
+                `,
+              };
+
+              transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                  console.error("Error sending email:", error);
+                  return res.status(500).json({
+                    status: "Failure",
+                    message: "User registered, but failed to send email",
+                  });
+                }
+
+                // Respond with success
+                res.json({
+                  message: "User registered successfully and email sent",
+                  status: "Success",
+                  userId,
+                  password,
+                });
               });
             });
           });
@@ -469,6 +683,147 @@ const superAdminEmployeeRegiser = async (req, res) => {
       .json({ status: "Failure", message: "Internal server error" });
   }
 };
+
+// const superAdminEmployeeRegiser = async (req, res) => {
+//   const {
+//     name,
+//     contact,
+//     email,
+//     panNumber,
+//     aadhar,
+//     city,
+//     state,
+//     pincode,
+//     userType,
+//     password,
+//     status,
+//   } = req.body;
+
+//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+//   const cleanedName = cleanName(name);
+//   let namePart = cleanedName.slice(0, 4).toUpperCase();
+
+//   if (cleanedName.length < 4) {
+//     namePart = (cleanedName + cleanedName.slice(0, 4))
+//       .slice(0, 4)
+//       .toUpperCase();
+//   }
+
+//   const rolePrefix = rolePrefixes[userType];
+
+//   try {
+//     // Check if email or contact already exists
+//     const checkUserQuery = `SELECT * FROM userprofile WHERE Email = ? OR ContactNo = ?`;
+//     db.query(checkUserQuery, [email, contact], (err, results) => {
+//       if (err) {
+//         console.error("Error checking user existence:", err);
+//         return res
+//           .status(500)
+//           .json({ status: "Failure", message: "Internal server error" });
+//       }
+
+//       if (results.length > 0) {
+//         return res.status(400).json({
+//           status: "Failure",
+//           message: "Email or Contact number already exists",
+//         });
+//       }
+
+//       // If no existing user found, continue with registration
+//       db.beginTransaction(async (transactionErr) => {
+//         if (transactionErr) {
+//           console.error("Error starting transaction:", transactionErr);
+//           return res
+//             .status(500)
+//             .json({ status: "Failure", message: "Internal server error" });
+//         }
+
+//         const getLastUserIdQuery = `SELECT UserId FROM userprofile WHERE UserId LIKE '${rolePrefix}-%' ORDER BY UserId DESC LIMIT 1`;
+
+//         db.query(getLastUserIdQuery, async (err, results) => {
+//           if (err) {
+//             console.error("Error fetching latest UserId:", err);
+//             return res
+//               .status(500)
+//               .json({ status: "Failure", message: "Internal server error" });
+//           }
+
+//           let sequenceNumber = 1;
+//           if (results.length > 0) {
+//             const lastUserId = results[0].UserId;
+//             const numericPart = lastUserId.match(/\d+$/);
+//             if (numericPart) {
+//               sequenceNumber = parseInt(numericPart[0], 10) + 1;
+//             }
+//           }
+
+//           const paddingLength = 4;
+//           const userId = `${rolePrefix}-${namePart}${sequenceNumber
+//             .toString()
+//             .padStart(paddingLength, "0")}`;
+
+//           const hashedPassword = await bcrypt.hash(password, 10);
+
+//           const insertUserQuery = `INSERT INTO userprofile (UserId, password, UserName, role, ContactNo, Email, PanCardNumber, AadharNumber, City, State, PinCode, Status, CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)`;
+
+//           const insertValues = [
+//             userId,
+//             hashedPassword,
+//             name,
+//             userType,
+//             contact,
+//             email,
+//             panNumber,
+//             aadhar,
+//             city,
+//             state,
+//             pincode,
+//             status,
+//             createdAt,
+//           ];
+
+//           db.query(insertUserQuery, insertValues, (insertErr, result) => {
+//             if (insertErr) {
+//               return db.rollback(() => {
+//                 console.error("Error inserting user:", insertErr);
+//                 return res.status(500).json({
+//                   status: "Failure",
+//                   message: "Internal server error",
+//                 });
+//               });
+//             }
+
+//             // Commit the transaction
+//             db.commit((commitErr) => {
+//               if (commitErr) {
+//                 return db.rollback(() => {
+//                   console.error("Error committing transaction:", commitErr);
+//                   return res.status(500).json({
+//                     status: "Failure",
+//                     message: "Internal server error",
+//                   });
+//                 });
+//               }
+
+//               // Respond with success
+//               res.json({
+//                 message: "User registered successfully",
+//                 status: "Success",
+//                 userId,
+//                 password,
+//               });
+//             });
+//           });
+//         });
+//       });
+//     });
+//   } catch (err) {
+//     console.error("Error processing request:", err);
+//     res
+//       .status(500)
+//       .json({ status: "Failure", message: "Internal server error" });
+//   }
+// };
 
 const loginUser = async (req, res) => {
   const { UserId, password } = req.body;
@@ -1350,7 +1705,7 @@ module.exports = {
   verifyOtp,
   getUserId,
   verifyPin,
-  superAdminEmployeeRegiser
+  superAdminEmployeeRegiser,
 };
 
 // const verifyOtpAndResetPassword = async (req, res) => {
