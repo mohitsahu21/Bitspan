@@ -1,5 +1,5 @@
 const express = require("express");
-const { addPackage, getPackages, editPackage, deletePackage, getPendingUsers, approveUser, rejectUser, getActiveUsers, deactivateUser, activateUser, getdeactiveUsers, getUserRelations, getAllUsers, getPendingPaymentUsers, markPaymentComplete, getUserIdPriceList, addUserIdPrice, updateUserIdPrice, getSuperAdminEmployee } = require("../../controllers/SuperAdmin/superAdminController");
+const { addPackage, getPackages, editPackage, deletePackage, getPendingUsers, approveUser, rejectUser, getActiveUsers, deactivateUser, activateUser, getdeactiveUsers, getUserRelations, getAllUsers, getPendingPaymentUsers, markPaymentComplete, getUserIdPriceList, addUserIdPrice, updateUserIdPrice, getSuperAdminEmployee, complainGetData, resolveComplaint } = require("../../controllers/SuperAdmin/superAdminController");
 const router = express.Router();
 
 
@@ -22,4 +22,6 @@ router.get("/getUserIdPriceList",  getUserIdPriceList);
 router.post("/addUserIdPrice" , addUserIdPrice );
 router.put("/updateUserIdPrice" , updateUserIdPrice );
 router.get("/getSuperAdminEmployee" , getSuperAdminEmployee);
+router.get("/complainGetData" , complainGetData);
+router.put("/resolveComplaint" , resolveComplaint );
 module.exports = router;
