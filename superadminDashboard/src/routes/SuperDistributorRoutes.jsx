@@ -28,6 +28,7 @@ import SdWalletWithdraw from "../components/SuperDistributer/SdWalletWithdraw";
 import PanOfflineForm from "../components/SuperDistributer/PanOfflineForm";
 import RechargeOfflineForm from "../components/SuperDistributer/RechargeOfflineForm";
 import DTHOfflineForm from "../components/SuperDistributer/DTHOfflineForm";
+import BuySuperDistributorUserId from "../components/SuperDistributer/BuySuperDistributorUserId";
 
 const SuperDistributorRoutes = () => {
   return (
@@ -91,6 +92,10 @@ const SuperDistributorRoutes = () => {
           element={<SdBankAccountVerify />}
         />
         <Route path="/wallet-withdraw" element={<SdWalletWithdraw />} />
+        <Route
+          path="/buy-super-distributor-UserId"
+          element={<BuySuperDistributorUserId />}
+        />
         <Route
           path="/fund-transfer-status"
           element={<SdFundTransferStatus />}

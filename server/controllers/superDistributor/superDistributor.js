@@ -459,6 +459,191 @@ const getBankDetails = (req, res) => {
   }
 };
 
+const makePaymentByWallet = async (req, res) => {
+  try {
+    const {
+      userId,
+      Opening_Balance,
+      Closing_Balance,
+      Transaction_Type,
+      transaction_amount,
+      Transaction_details,
+      status,
+    } = req.body;
+
+    const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // Helper function to format IDs
+    const formatId = (prefix, number) =>
+      `${prefix}-${String(number).padStart(7, "0")}`;
+
+    // Retrieve the last Order_Id and Transaction_Id from the database
+    const lastIdsQuery = `
+      SELECT MAX(CAST(SUBSTRING(Order_Id, 16) AS UNSIGNED)) AS lastOrderId,
+             MAX(CAST(SUBSTRING(Transaction_Id, 22) AS UNSIGNED)) AS lastTransactionId
+      FROM user_wallet
+    `;
+
+    db.query(lastIdsQuery, async (err, result) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
+
+      // Calculate the next Order_Id and Transaction_Id
+      const lastOrderId = result[0].lastOrderId || 0;
+      const lastTransactionId = result[0].lastTransactionId || 0;
+
+      const newOrderId = formatId("walletorderId", lastOrderId + 1);
+      const newTransactionId = formatId(
+        "wallettransactionId",
+        lastTransactionId + 1
+      );
+
+      // Insert the new transaction record
+      const insertQuery = `
+        INSERT INTO user_wallet (
+          userId, transaction_date, Order_Id, Transaction_Id,
+          Opening_Balance, Closing_Balance, Transaction_Type,
+          transaction_amount, Transaction_details, status
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
+      const insertParams = [
+        userId,
+        createdAt,
+        newOrderId,
+        newTransactionId,
+        Opening_Balance,
+        Closing_Balance,
+        Transaction_Type,
+        transaction_amount,
+        Transaction_details,
+        status,
+      ];
+
+      db.query(insertQuery, insertParams, (err, result) => {
+        if (err) {
+          return res.status(400).json({ success: false, message: err.message });
+        }
+        res.status(200).json({
+          success: true,
+          message: "Data added successfully",
+          Order_Id: newOrderId,
+          Transaction_Id: newTransactionId,
+        });
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const getTotalUserIdCount = (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const selectQuery = "SELECT * FROM bought_userid_count WHERE userId = ?";
+    db.query(selectQuery, userId, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const purchaseUserIds = (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const { total_super_dist_id, total_dist_id, total_retailer_id } = req.body;
+    const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+    const selectQuery = "SELECT * FROM bought_userid_count WHERE userId = ?";
+    db.query(selectQuery, userId, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      if (result && result.length === 0) {
+        const insertQuery =
+          "INSERT INTO bought_userid_count (userId,	total_super_dist_id,	total_dist_id,	total_retailer_id,	created_at) VALUES (?,?,?,?,?)";
+        const insertParams = [
+          userId,
+          total_super_dist_id,
+          total_dist_id,
+          total_retailer_id,
+          createdAt,
+        ];
+
+        db.query(insertQuery, insertParams, (err, result) => {
+          if (err) {
+            res.status(400).json({ success: false, message: err.message });
+          }
+          res
+            .status(200)
+            .json({ success: true, message: "Data inserted successfully" });
+        });
+      } else {
+        const updateFields = [];
+        const updateValues = [];
+
+        if (total_super_dist_id) {
+          updateFields.push("total_super_dist_id = ?");
+          updateValues.push(total_super_dist_id);
+        }
+
+        if (total_dist_id) {
+          updateFields.push("total_dist_id = ?");
+          updateValues.push(total_dist_id);
+        }
+
+        if (total_retailer_id) {
+          updateFields.push("total_retailer_id = ?");
+          updateValues.push(total_retailer_id);
+        }
+
+        if (updateFields.length === 0) {
+          return res.status(400).json({
+            success: false,
+            message: "No fields provided to update",
+          });
+        }
+
+        const updateQuery = `UPDATE bought_userid_count SET ${updateFields.join(
+          ", "
+        )} WHERE userId = ?`;
+
+        db.query(updateQuery, [...updateValues, userId], (err, result) => {
+          if (err) {
+            return res
+              .status(400)
+              .json({ success: false, message: err.message });
+          }
+
+          return res.status(200).json({
+            success: true,
+            message: "Details updated successfully",
+          });
+        });
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const getUserPriceList = (req, res) => {
+  try {
+    const selectQuery = "SELECT * FROM userid_price_list";
+    db.query(selectQuery, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   getSuperDistributorUserList,
   getAllOtherOfflineFormDetails,
@@ -474,4 +659,8 @@ module.exports = {
   updateProfileKyc,
   addBankDetails,
   getBankDetails,
+  makePaymentByWallet,
+  getTotalUserIdCount,
+  purchaseUserIds,
+  getUserPriceList,
 };

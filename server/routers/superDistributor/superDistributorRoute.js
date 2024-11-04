@@ -14,6 +14,10 @@ const {
   updateProfileKyc,
   addBankDetails,
   getBankDetails,
+  makePaymentByWallet,
+  getTotalUserIdCount,
+  purchaseUserIds,
+  getUserPriceList,
 } = require("../../controllers/superDistributor/superDistributor");
 const path = require("path");
 const multer = require("multer");
@@ -82,5 +86,9 @@ const kycUpload = multer({
 router.put("/kycupload/:userId", kycUpload, updateProfileKyc);
 router.post("/addBankDetails/:userId", addBankDetails);
 router.get("/getBankDetails/:userId", getBankDetails);
+router.post("/makePaymentByWallet", makePaymentByWallet);
+router.get("/getTotalUserIdCount/:userId", getTotalUserIdCount);
+router.post("/purchaseUserIds/:userId", purchaseUserIds);
+router.get("/getUserPriceList", getUserPriceList);
 
 module.exports = router;

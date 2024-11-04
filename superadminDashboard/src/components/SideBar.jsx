@@ -544,6 +544,11 @@ const SuperDisData = [
         path: "/create-distributor",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+      {
+        title: "Buy UserID",
+        path: "/buy-super-distributor-UserId",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
     ],
   },
   {

@@ -21,7 +21,7 @@ const loadScript = (src) => {
   });
 };
 
-const BuyDistUserId = () => {
+const BuySuperDistributorUserId = () => {
   const user = useSelector((state) => state.user.currentUser);
   console.log(user);
   const [walletData, setWalletData] = useState([]);
@@ -331,15 +331,15 @@ const BuyDistUserId = () => {
                                 onChange={handleChange}
                               >
                                 <option selected>Select...</option>
-                                <option value="Retailer">Retailer</option>
+                                <option value="Distributor">Distributor</option>
                               </select>
                             </div>
                           </div>
-                          {formData.selectUserIdType === "Retailer" && (
+                          {formData.selectUserIdType === "Distributor" && (
                             <>
                               <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 mx-auto">
                                 <label className="form-label">
-                                  Available Retailer ID
+                                  Available Distributor ID
                                 </label>
                                 <div className="input-group flex-nowrap">
                                   <span
@@ -352,7 +352,7 @@ const BuyDistUserId = () => {
                                     type="number"
                                     className="form-control"
                                     placeholder="Enter Name"
-                                    value={userIdCount[0]?.total_retailer_id}
+                                    value={userIdCount[0]?.total_dist_id}
                                     disabled
                                   />
                                 </div>
@@ -360,7 +360,7 @@ const BuyDistUserId = () => {
 
                               <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 mx-auto">
                                 <label className="form-label">
-                                  Retailer ID Price
+                                  Distributor ID Price
                                 </label>
                                 <div className="input-group flex-nowrap">
                                   <span
@@ -373,7 +373,7 @@ const BuyDistUserId = () => {
                                     type="number"
                                     className="form-control"
                                     placeholder="Enter Name"
-                                    value={userPrice[0]?.retailer_id_price}
+                                    value={userPrice[0]?.distributor_id_price}
                                     disabled
                                   />
                                 </div>
@@ -464,7 +464,7 @@ const BuyDistUserId = () => {
   );
 };
 
-export default BuyDistUserId;
+export default BuySuperDistributorUserId;
 
 const Wrapper = styled.div`
   .main {

@@ -81,6 +81,7 @@ const makePurchaseUserId = (req, res) => {
       paymentMethod,
       totalAmount,
       paymentId,
+      paymentStatus,
     } = req.body;
     const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
@@ -105,7 +106,7 @@ const makePurchaseUserId = (req, res) => {
 
       // Step 2: Insert the new record with the calculated orderId
       const insertQuery =
-        "INSERT INTO userid_bought_summary (userId, number_of_userId, userId_type, bought_date, total_amount, payment_method, orderId, transactionId, payment_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        "INSERT INTO userid_bought_summary (userId, number_of_userId, userId_type, bought_date, total_amount, payment_method, orderId, transactionId, payment_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
       const insertParams = [
         userId,
         noOfId,
