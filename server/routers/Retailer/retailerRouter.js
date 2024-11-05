@@ -21,6 +21,8 @@ const {
   profileInfo,
   profileUserKyc,
   eDistrictFormData,
+  getSelectedServices,
+  getAllBranchId,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -143,5 +145,8 @@ router.post(
   upload.array("documentUpload", 10),
   eDistrictFormData
 );
+
+router.get("/getSelectedServices/:user_id", getSelectedServices);
+router.get("/getAllBranchId", getAllBranchId);
 
 module.exports = router;

@@ -152,6 +152,7 @@ const bankidForm = (req, res) => {
     applicant_number,
     email,
     applicant_select_service,
+    select_bank_service,
     aadhar_card,
     pan_card,
     business_name,
@@ -187,6 +188,7 @@ const bankidForm = (req, res) => {
     applicant_number,
     email,
     applicant_select_service,
+    select_bank_service,
     aadhar_card,
     pan_card,
     business_name,
@@ -196,7 +198,7 @@ const bankidForm = (req, res) => {
     shop_photo,
     electric_bill,
     created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
   db.query(
@@ -208,6 +210,7 @@ const bankidForm = (req, res) => {
       applicant_number,
       email,
       applicant_select_service,
+      select_bank_service,
       aadhar_card,
       pan_card,
       business_name,
@@ -910,6 +913,36 @@ const eDistrictFormData = (req, res) => {
   });
 };
 
+const getSelectedServices = (req, res) => {
+  const applicationId = req.params.user_id;
+
+  const query = `SELECT select_bank_service FROM apply_offline_form WHERE user_id = ?`;
+  db.query(query, [applicationId], (err, results) => {
+    if (err) {
+      console.error("Error fetching selected services:", err);
+      res.status(500).json({ error: "Database error" });
+    } else {
+      const selectedServices = results.map((row) => row.select_bank_service);
+      res.status(200).json({ selectedServices });
+    }
+  });
+};
+
+const getAllBranchId = (req, res) => {
+  const selectQuery = `SELECT * FROM apply_offline_form WHERE applicant_select_service = ?`;
+
+  db.query(selectQuery, ["New Bank ID"], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res
+        .status(500)
+        .json({ error: "An error occurred while fetching data." });
+    }
+
+    return res.status(200).json(result);
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -929,4 +962,6 @@ module.exports = {
   profileInfo,
   profileUserKyc,
   eDistrictFormData,
+  getSelectedServices,
+  getAllBranchId,
 };
