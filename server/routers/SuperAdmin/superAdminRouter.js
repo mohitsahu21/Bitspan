@@ -1,5 +1,5 @@
 const express = require("express");
-const { addPackage, getPackages, editPackage, deletePackage, getPendingUsers, approveUser, rejectUser, getActiveUsers, deactivateUser, activateUser, getdeactiveUsers, getUserRelations, getAllUsers, getPendingPaymentUsers, markPaymentComplete, getUserIdPriceList, addUserIdPrice, updateUserIdPrice, getSuperAdminEmployee, complainGetData, resolveComplaint } = require("../../controllers/SuperAdmin/superAdminController");
+const { addPackage, getPackages, editPackage, deletePackage, getPendingUsers, approveUser, rejectUser, getActiveUsers, deactivateUser, activateUser, getdeactiveUsers, getUserRelations, getAllUsers, getPendingPaymentUsers, markPaymentComplete, getUserIdPriceList, addUserIdPrice, updateUserIdPrice, getSuperAdminEmployee, complainGetData, resolveComplaint, getApplyOfflineForm, ApproveOfflineForm, rejectOfflineForm } = require("../../controllers/SuperAdmin/superAdminController");
 const router = express.Router();
 
 
@@ -24,4 +24,7 @@ router.put("/updateUserIdPrice" , updateUserIdPrice );
 router.get("/getSuperAdminEmployee" , getSuperAdminEmployee);
 router.get("/complainGetData" , complainGetData);
 router.put("/resolveComplaint" , resolveComplaint );
+router.get("/getApplyOfflineForm" , getApplyOfflineForm);
+router.put("/ApproveOfflineForm" , ApproveOfflineForm);
+router.put("/rejectOfflineForm" , rejectOfflineForm);
 module.exports = router;
