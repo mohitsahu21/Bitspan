@@ -1186,6 +1186,82 @@ const getSuperAdminEmployee = (req, res) => {
 };
 
 
+const complainGetData = (req, res) => {
+  try {
+    const sql = `SELECT c.*, u.UserName , u.role , u.	ContactNo , u.Email FROM complaindata c LEFT JOIN userprofile u  ON c.userID = u.UserId ORDER BY id DESC`;
+
+    // const sql = 
+    // "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE u.Status = 'Active' AND role != 'SuperAdmin_Employee'";
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error complaindata from MySQL:", err);
+      return  res.status(500).json({ success: false, error: "Error fetching complaindata" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+         return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No complaindata found",
+          });
+        } else {
+
+        return  res.status(200).json({
+            success: true,
+            data: result,
+            message: "complaindata fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching complaindata from MySQL:", error);
+   return res.status(500).json({
+      success: false,
+      message: "Error in fetching complaindata",
+      error: error.message,
+    });
+  }
+};
+
+
+const resolveComplaint = (req, res) => {
+  try {
+    const { complaintId , response, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE complaindata SET response = ? , status = ? WHERE id = ?`;
+
+    const values = [
+      
+      response,
+      status,
+      complaintId
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating Complaint:", error);
+        return res.status(500).json({success: false, error: "Failed to updating Complaint" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({success: false, message: "Complaint not found" });
+      }
+
+      return res.status(200).json({success: true, message: "updating Complaint successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({success: false, error: "An unexpected error occurred" });
+  }
+};
+
+
+
 
 module.exports = {
   addPackage,
@@ -1206,5 +1282,7 @@ module.exports = {
   getUserIdPriceList,
   addUserIdPrice,
   updateUserIdPrice,
-  getSuperAdminEmployee
+  getSuperAdminEmployee,
+  complainGetData,
+  resolveComplaint
 };
