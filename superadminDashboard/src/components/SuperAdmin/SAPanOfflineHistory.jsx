@@ -37,7 +37,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
       try {
         setLoading(true);
         const response = await axios.put(
-          "http://localhost:7777/api/auth/superAdmin/ApproveOfflineForm",
+          "http://localhost:7777/api/auth/superAdmin/ApprovePANOfflineForm",
           // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
           formData
         );
@@ -154,7 +154,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "http://localhost:7777/api/auth/superAdmin/rejectOfflineForm",
+        "http://localhost:7777/api/auth/superAdmin/rejectPANOfflineForm",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
         formData
       );
@@ -249,7 +249,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 
 
 
-const SAAllOfflineForm = () => {
+const SAPanOfflineHistory = () => {
 
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState([]);
@@ -267,7 +267,7 @@ const SAAllOfflineForm = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "http://localhost:7777/api/auth/superAdmin/getApplyOfflineForm"
+            "http://localhost:7777/api/auth/superAdmin/getPANOfflineForm"
           );
           setUsers(data.data);
           setLoading(false);
@@ -287,10 +287,10 @@ const SAAllOfflineForm = () => {
 
       const filteredItems = users.filter(
         (row) =>{ 
-          const matchesKeyword =  (row?.applicant_name &&
-            row.applicant_name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-          (row?.applicant_number && row.applicant_number.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.email &&
-              row.email.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+          const matchesKeyword =  (row?.name &&
+            row.name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+          (row?.mobile_no && row.mobile_no.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.email_id &&
+              row.email_id.toLowerCase().includes(keyword.trim().toLowerCase())) ||
             (row?.order_id &&
               row.order_id.toLowerCase().includes(keyword.trim().toLowerCase()))
 
@@ -396,7 +396,7 @@ const SAAllOfflineForm = () => {
                                                 <h3>Complaint Raised List</h3>
                                             </div> */}
                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">View All Offline History</h4>
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">PAN Offline History</h4>
                                                 <p className="mx-lg-5">
                                                     {" "}
                                                     <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
@@ -405,7 +405,7 @@ const SAAllOfflineForm = () => {
                                                         style={{ fontSize: "13px" }}
                                                     >
                                                         {" "}
-                                                        View All Offline History
+                                                        PAN Offline History
                                                     </span>{" "}
                                                 </p>
                                             </div>
@@ -416,15 +416,6 @@ const SAAllOfflineForm = () => {
                                         <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
                                             <div className="row d-flex flex-column g-4">
 
-<<<<<<< HEAD
-                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                          <div class="table-responsive">
-                            <table class="table table-striped">
-                              <thead className="table-dark">
-                                <tr>
-                                  <th scope="col">Sr.No</th>
-                                  <th scope="col">Order Id</th>
-=======
                                                 <div className="d-flex flex-column flex-xl-row gap-3">
                                                     {/* <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="fromDate" className="form-label">From</label>
@@ -489,12 +480,21 @@ const SAAllOfflineForm = () => {
                                                              <th scope="col">Sr.No</th>
                                                              <th scope="col">Created Date</th>
                                 <th scope="col">Order Id</th>
->>>>>>> a7a67a50a4b09bd4fb5051c104346bc994204c21
+                                <th scope="col">Title</th>
                                   <th scope="col">Applicant Name</th>
-                                  <th scope="col">Applicant Father Name</th>
-                                  <th scope="col">Applicant Number</th>
-                                  <th scope="col">Service</th>
-                                  <th scope="col">E-Stamp Type</th>
+                                  <th scope="col">Father Name</th>
+                                  <th scope="col">Mother Name</th>
+                                  <th scope="col">DOB</th>
+                                  <th scope="col">Gender</th>
+                                  <th scope="col">Mobile Number</th>
+                                  <th scope="col">Email</th>
+                                  <th scope="col">Aadhar Details</th>
+                                  <th scope="col">Office Address</th>
+                                  <th scope="col">Communication Address</th>
+                                  <th scope="col">Alternative Address</th>
+                                  <th scope="col">Pin Code</th>
+                                  <th scope="col">State</th>
+                                  <th scope="col">Change_Request</th>
                                   <th scope="col">View Form</th>
                                   <th scope="col">View Photo</th>
                                   <th scope="col">View Signature</th>
@@ -515,14 +515,24 @@ const SAAllOfflineForm = () => {
                                           <th scope="row">{index + 1}</th>
                                           <td>{item.created_at}</td>
                                           <td>{item.order_id}</td>
-                                          <td>{item.applicant_name}</td>
-                                          <td>{item.applicant_father}</td>
-                                          <td>{item.applicant_number}</td>
-                                          <td>{item.applicant_select_service}</td>
-                                          <td>{item.other}</td>
+                                          <td>{item.select_title}</td>
+                                          <td>{item.name}</td>
+                                          <td>{item.father_name}</td>
+                                          <td>{item.mother_name}</td>
+                                          <td>{item.dob}</td>
+                                          <td>{item.gender}</td>
+                                          <td>{item.mobile_no}</td>
+                                          <td>{item.email_id}</td>
+                                          <td>{item.aadhar_details}</td>
+                                          <td>{item.office_address}</td>
+                                          <td>{item.Address_Communication_OfficeResident}</td>
+                                          <td>{item.alternative_communication_Address}</td>
+                                          <td>{item.pin_code}</td>
+                                          <td>{item.state}</td>
+                                          <td>{item.Change_Request}</td>
                                           <td>
                                             <a
-                                              href={item.attached_form}
+                                              href={item.attachment_form}
                                               target="_blank"
                                             >
                                               View Form
@@ -530,7 +540,7 @@ const SAAllOfflineForm = () => {
                                           </td>
                                           <td>
                                             <a
-                                              href={item.attached_photo}
+                                              href={item.attachment_photo}
                                               target="_blank"
                                             >
                                               View Photo
@@ -538,14 +548,14 @@ const SAAllOfflineForm = () => {
                                           </td>
                                           <td>
                                             <a
-                                              href={item.attached_sign}
+                                              href={item.attachment_signature}
                                               target="_blank"
                                             >
                                               View Sign
                                             </a>
                                           </td>
                                           <td>
-                                            {item.attached_kyc
+                                            {item.documentUpload
                                               ?.split(",")
                                               ?.map((kycurl, kycindx) => (
                                                 <div key={kycindx}>
@@ -802,7 +812,7 @@ const SAAllOfflineForm = () => {
     );
 }
 
-export default SAAllOfflineForm
+export default SAPanOfflineHistory
 
 const Wrapper = styled.div`
   .main {

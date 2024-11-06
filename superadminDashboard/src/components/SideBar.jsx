@@ -1376,8 +1376,20 @@ const SuperAdminData = [
       //   // cName: "sub-nav",
       // },
       {
-        title: "View All History",
+        title: "View Offline Forms",
         path: "/view-all-offline-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "View PAN Offline Forms",
+        path: "/Pan-offline-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "View Bank Id Forms",
+        path: "/Bank-Id-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
       },

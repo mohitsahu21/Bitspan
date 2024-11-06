@@ -48,6 +48,8 @@ import PanForm from "../components/SuperAdmin/PanForm.jsx";
 import SARegisterEmployee from "../components/SuperAdmin/SARegisterEmployee.jsx";
 import SAPendingKycUsers from "../components/SuperAdmin/SAPendingKycUsers.jsx";
 import SAEmployeeList from "../components/SuperAdmin/SAEmployeeList.jsx";
+import SAPanOfflineHistory from "../components/SuperAdmin/SAPanOfflineHistory.jsx";
+import SABankIdForms from "../components/SuperAdmin/SABankIdForms.jsx";
 
 
 
@@ -91,6 +93,14 @@ const SuperAdminRoutes = () => {
         <Route
           path="/view-all-offline-history"
           element={<SAAllOfflineForm />}
+        />
+        <Route
+          path="/Pan-offline-history"
+          element={<SAPanOfflineHistory />}
+        />
+        <Route
+          path="/Bank-Id-history"
+          element={<SABankIdForms />}
         />
 
         <Route path="/2-step-verification" element={<SAStepVerification />} />

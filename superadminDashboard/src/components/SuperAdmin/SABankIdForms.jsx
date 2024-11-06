@@ -37,7 +37,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
       try {
         setLoading(true);
         const response = await axios.put(
-          "http://localhost:7777/api/auth/superAdmin/ApproveOfflineForm",
+          "http://localhost:7777/api/auth/superAdmin/ApproveBankIdForm",
           // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
           formData
         );
@@ -154,7 +154,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "http://localhost:7777/api/auth/superAdmin/rejectOfflineForm",
+        "http://localhost:7777/api/auth/superAdmin/rejectBankIdForm",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
         formData
       );
@@ -249,7 +249,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 
 
 
-const SAAllOfflineForm = () => {
+const SABankIdForms = () => {
 
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState([]);
@@ -267,7 +267,7 @@ const SAAllOfflineForm = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "http://localhost:7777/api/auth/superAdmin/getApplyOfflineForm"
+            "http://localhost:7777/api/auth/superAdmin/getBankIdForm"
           );
           setUsers(data.data);
           setLoading(false);
@@ -396,7 +396,7 @@ const SAAllOfflineForm = () => {
                                                 <h3>Complaint Raised List</h3>
                                             </div> */}
                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">View All Offline History</h4>
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Bank-Id-history</h4>
                                                 <p className="mx-lg-5">
                                                     {" "}
                                                     <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
@@ -405,7 +405,7 @@ const SAAllOfflineForm = () => {
                                                         style={{ fontSize: "13px" }}
                                                     >
                                                         {" "}
-                                                        View All Offline History
+                                                        Bank-Id-history
                                                     </span>{" "}
                                                 </p>
                                             </div>
@@ -416,15 +416,6 @@ const SAAllOfflineForm = () => {
                                         <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
                                             <div className="row d-flex flex-column g-4">
 
-<<<<<<< HEAD
-                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                          <div class="table-responsive">
-                            <table class="table table-striped">
-                              <thead className="table-dark">
-                                <tr>
-                                  <th scope="col">Sr.No</th>
-                                  <th scope="col">Order Id</th>
-=======
                                                 <div className="d-flex flex-column flex-xl-row gap-3">
                                                     {/* <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="fromDate" className="form-label">From</label>
@@ -489,16 +480,23 @@ const SAAllOfflineForm = () => {
                                                              <th scope="col">Sr.No</th>
                                                              <th scope="col">Created Date</th>
                                 <th scope="col">Order Id</th>
->>>>>>> a7a67a50a4b09bd4fb5051c104346bc994204c21
                                   <th scope="col">Applicant Name</th>
                                   <th scope="col">Applicant Father Name</th>
-                                  <th scope="col">Applicant Number</th>
+                                  <th scope="col">Applicant Mother Name</th>
+                                  <th scope="col">Mobile Number</th>
+                                  <th scope="col">Email</th>
                                   <th scope="col">Service</th>
-                                  <th scope="col">E-Stamp Type</th>
-                                  <th scope="col">View Form</th>
+                                  <th scope="col">Select Bank Service</th>
+                                  <th scope="col">Aadhaar Card</th>
+                                  <th scope="col">PAN Card</th>
+                                  <th scope="col">Business Name</th>
+                                  {/* <th scope="col">View Form</th> */}
                                   <th scope="col">View Photo</th>
                                   <th scope="col">View Signature</th>
                                   <th scope="col">View KYC</th>
+                                  <th scope="col">View Passbook</th>
+                                  <th scope="col">View Shop Photo</th>
+                                  <th scope="col">View Electricity Bill</th>
                                   <th scope="col">User Id</th>
                                   <th scope="col">User Name</th>
                                   <th scope="col">User Mobile</th>
@@ -517,17 +515,22 @@ const SAAllOfflineForm = () => {
                                           <td>{item.order_id}</td>
                                           <td>{item.applicant_name}</td>
                                           <td>{item.applicant_father}</td>
+                                          <td>{item.applicant_mother}</td>
                                           <td>{item.applicant_number}</td>
+                                          <td>{item.email}</td>
                                           <td>{item.applicant_select_service}</td>
-                                          <td>{item.other}</td>
-                                          <td>
+                                          <td>{item.select_bank_service}</td>
+                                          <td>{item.aadhar_card}</td>
+                                          <td>{item.pan_card}</td>
+                                          <td>{item.business_name}</td>
+                                          {/* <td>
                                             <a
                                               href={item.attached_form}
                                               target="_blank"
                                             >
                                               View Form
                                             </a>
-                                          </td>
+                                          </td> */}
                                           <td>
                                             <a
                                               href={item.attached_photo}
@@ -558,6 +561,30 @@ const SAAllOfflineForm = () => {
                                                   </a>
                                                 </div>
                                               ))}
+                                          </td>
+                                          <td>
+                                            <a
+                                              href={item.bank_passbook}
+                                              target="_blank"
+                                            >
+                                              View Passbook
+                                            </a>
+                                          </td>
+                                          <td>
+                                            <a
+                                              href={item.shop_photo}
+                                              target="_blank"
+                                            >
+                                              View Shop Photo
+                                            </a>
+                                          </td>
+                                          <td>
+                                            <a
+                                              href={item.electric_bill}
+                                              target="_blank"
+                                            >
+                                              View Electricity Bill
+                                            </a>
                                           </td>
                                           <td>{item.user_id}</td>
                                           <td>{item.UserName}</td>
@@ -802,7 +829,7 @@ const SAAllOfflineForm = () => {
     );
 }
 
-export default SAAllOfflineForm
+export default SABankIdForms
 
 const Wrapper = styled.div`
   .main {
