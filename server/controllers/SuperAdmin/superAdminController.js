@@ -1579,6 +1579,46 @@ const rejectBankIdForm = (req, res) => {
 };
 
 
+const getEdistrictForms = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM \`e-district-application\` c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+   
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getEdistrictForms from MySQL:", err);
+      return  res.status(500).json({ success: false, error: "Error getEdistrictForms" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+         return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getEdistrictForms found",
+          });
+        } else {
+
+        return  res.status(200).json({
+            success: true,
+            data: result,
+            message: "getEdistrictForms fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getEdistrictForms from MySQL:", error);
+   return res.status(500).json({
+      success: false,
+      message: "Error in fetching getEdistrictForms",
+      error: error.message,
+    });
+  }
+};
+
+
 
 
 module.exports = {
@@ -1611,5 +1651,6 @@ module.exports = {
   rejectPANOfflineForm,
   getBankIdForm,
   ApproveBankIdForm,
-  rejectBankIdForm
+  rejectBankIdForm,
+  getEdistrictForms
 };

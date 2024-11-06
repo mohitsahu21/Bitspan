@@ -50,6 +50,7 @@ import SAPendingKycUsers from "../components/SuperAdmin/SAPendingKycUsers.jsx";
 import SAEmployeeList from "../components/SuperAdmin/SAEmployeeList.jsx";
 import SAPanOfflineHistory from "../components/SuperAdmin/SAPanOfflineHistory.jsx";
 import SABankIdForms from "../components/SuperAdmin/SABankIdForms.jsx";
+import SAEdistrictHistory from "../components/SuperAdmin/SAEdistrictHistory.jsx";
 
 
 
@@ -101,6 +102,10 @@ const SuperAdminRoutes = () => {
         <Route
           path="/Bank-Id-history"
           element={<SABankIdForms />}
+        />
+        <Route
+          path="/E-district-history"
+          element={<SAEdistrictHistory />}
         />
 
         <Route path="/2-step-verification" element={<SAStepVerification />} />
