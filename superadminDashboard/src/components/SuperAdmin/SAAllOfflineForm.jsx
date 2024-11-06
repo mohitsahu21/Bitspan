@@ -469,6 +469,7 @@ const SAAllOfflineForm = () => {
                                       <th scope="col">Sr.No</th>
                                       <th scope="col">Created Date</th>
                                       <th scope="col">Order Id</th>
+                                      {/* >>>>>>> a7a67a50a4b09bd4fb5051c104346bc994204c21 */}
                                       <th scope="col">Applicant Name</th>
                                       <th scope="col">Applicant Father Name</th>
                                       <th scope="col">Applicant Number</th>
@@ -480,6 +481,7 @@ const SAAllOfflineForm = () => {
                                       <th scope="col">View KYC</th>
                                       <th scope="col">User Id</th>
                                       <th scope="col">User Name</th>
+                                      <th scope="col">User Mobile</th>
                                       <th scope="col">Status</th>
                                       <th scope="col">Note</th>
                                       <th scope="col">Action</th>
@@ -539,7 +541,8 @@ const SAAllOfflineForm = () => {
                                               ))}
                                           </td>
                                           <td>{item.user_id}</td>
-                                          <td>{item.user_id}</td>
+                                          <td>{item.UserName}</td>
+                                          <td>{item.ContactNo}</td>
                                           <td>{item.status}</td>
                                           <td>{item.note}</td>
                                           <td>

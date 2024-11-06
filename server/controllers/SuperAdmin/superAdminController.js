@@ -1188,7 +1188,7 @@ const getSuperAdminEmployee = (req, res) => {
 
 const complainGetData = (req, res) => {
   try {
-    const sql = `SELECT c.*, u.UserName , u.role , u.	ContactNo , u.Email FROM complaindata c LEFT JOIN userprofile u  ON c.userID = u.UserId ORDER BY id DESC`;
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM complaindata c LEFT JOIN userprofile u  ON c.userID = u.UserId ORDER BY id DESC`;
 
     // const sql = 
     // "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE u.Status = 'Active' AND role != 'SuperAdmin_Employee'";
@@ -1262,10 +1262,10 @@ const resolveComplaint = (req, res) => {
 
 const getApplyOfflineForm = (req, res) => {
   try {
-    const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
-
-    // const sql = 
-    // "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE u.Status = 'Active' AND role != 'SuperAdmin_Employee'";
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId WHERE applicant_select_service != 'New Bank ID' ORDER BY id DESC`;
+   
 
     db.query(sql, (err, result) => {
       if (err) {
@@ -1366,6 +1366,218 @@ const rejectOfflineForm = (req, res) => {
   }
 };
 
+const getPANOfflineForm = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM pan_offline c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+   
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error pan_offline from MySQL:", err);
+      return  res.status(500).json({ success: false, error: "Error fetching pan_offline" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+         return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No pan_offline found",
+          });
+        } else {
+
+        return  res.status(200).json({
+            success: true,
+            data: result,
+            message: "pan_offline fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching pan_offline from MySQL:", error);
+   return res.status(500).json({
+      success: false,
+      message: "Error in fetching pan_offline",
+      error: error.message,
+    });
+  }
+};
+
+
+const ApprovePANOfflineForm = (req, res) => {
+  try {
+    const { order_id , note, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE pan_offline SET note = ? , status = ? WHERE order_id = ?`;
+
+    const values = [
+      
+      note,
+      status,
+      order_id
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating pan_offline:", error);
+        return res.status(500).json({success: false, error: "Failed to updating pan_offline" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({success: false, message: "pan_offline not found" });
+      }
+
+      return res.status(200).json({success: true, message: "updating pan_offline successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({success: false, error: "An unexpected error occurred" });
+  }
+};
+const rejectPANOfflineForm = (req, res) => {
+  try {
+    const { order_id , note, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE pan_offline SET note = ? , status = ? WHERE order_id = ?`;
+
+    const values = [
+      
+      note,
+      status,
+      order_id
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating pan_offline:", error);
+        return res.status(500).json({success: false, error: "Failed to updating pan_offline" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({success: false, message: "pan_offline not found" });
+      }
+
+      return res.status(200).json({success: true, message: "updating pan_offline successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const getBankIdForm = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId WHERE applicant_select_service = 'New Bank ID' ORDER BY id DESC`;
+   
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getBankIdForm from MySQL:", err);
+      return  res.status(500).json({ success: false, error: "Error getBankIdForm" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+         return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getBankIdForm found",
+          });
+        } else {
+
+        return  res.status(200).json({
+            success: true,
+            data: result,
+            message: "getBankIdForm fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getBankIdForm from MySQL:", error);
+   return res.status(500).json({
+      success: false,
+      message: "Error in fetching getBankIdForm",
+      error: error.message,
+    });
+  }
+};
+
+const ApproveBankIdForm = (req, res) => {
+  try {
+    const { order_id , note, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE apply_offline_form SET note = ? , status = ? WHERE order_id = ?`;
+
+    const values = [
+      
+      note,
+      status,
+      order_id
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating ApproveBankIdForm:", error);
+        return res.status(500).json({success: false, error: "Failed to updating ApproveBankIdForm" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({success: false, message: "ApproveBankIdForm not found" });
+      }
+
+      return res.status(200).json({success: true, message: "updating ApproveBankIdForm successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({success: false, error: "An unexpected error occurred" });
+  }
+};
+const rejectBankIdForm = (req, res) => {
+  try {
+    const { order_id , note, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE apply_offline_form SET note = ? , status = ? WHERE order_id = ?`;
+
+    const values = [
+      
+      note,
+      status,
+      order_id
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating rejectBankIdForm:", error);
+        return res.status(500).json({success: false, error: "Failed to updating rejectBankIdForm" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({success: false, message: "rejectBankIdForm not found" });
+      }
+
+      return res.status(200).json({success: true, message: "updating rejectBankIdForm successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({success: false, error: "An unexpected error occurred" });
+  }
+};
+
 
 
 
@@ -1393,5 +1605,11 @@ module.exports = {
   resolveComplaint,
   getApplyOfflineForm,
   ApproveOfflineForm,
-  rejectOfflineForm
+  rejectOfflineForm,
+  getPANOfflineForm,
+  ApprovePANOfflineForm,
+  rejectPANOfflineForm,
+  getBankIdForm,
+  ApproveBankIdForm,
+  rejectBankIdForm
 };
