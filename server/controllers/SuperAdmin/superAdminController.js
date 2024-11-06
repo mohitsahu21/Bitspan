@@ -1260,6 +1260,112 @@ const resolveComplaint = (req, res) => {
   }
 };
 
+const getApplyOfflineForm = (req, res) => {
+  try {
+    const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+
+    // const sql = 
+    // "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE u.Status = 'Active' AND role != 'SuperAdmin_Employee'";
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error apply_offline_form from MySQL:", err);
+      return  res.status(500).json({ success: false, error: "Error fetching apply_offline_form" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+         return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No apply_offline_form found",
+          });
+        } else {
+
+        return  res.status(200).json({
+            success: true,
+            data: result,
+            message: "apply_offline_form fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching apply_offline_form from MySQL:", error);
+   return res.status(500).json({
+      success: false,
+      message: "Error in fetching apply_offline_form",
+      error: error.message,
+    });
+  }
+};
+
+const ApproveOfflineForm = (req, res) => {
+  try {
+    const { order_id , note, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE apply_offline_form SET note = ? , status = ? WHERE order_id = ?`;
+
+    const values = [
+      
+      note,
+      status,
+      order_id
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating Complaint:", error);
+        return res.status(500).json({success: false, error: "Failed to updating apply_offline_form" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({success: false, message: "apply_offline_form not found" });
+      }
+
+      return res.status(200).json({success: true, message: "updating apply_offline_form successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({success: false, error: "An unexpected error occurred" });
+  }
+};
+const rejectOfflineForm = (req, res) => {
+  try {
+    const { order_id , note, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE apply_offline_form SET note = ? , status = ? WHERE order_id = ?`;
+
+    const values = [
+      
+      note,
+      status,
+      order_id
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating Complaint:", error);
+        return res.status(500).json({success: false, error: "Failed to updating apply_offline_form" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({success: false, message: "apply_offline_form not found" });
+      }
+
+      return res.status(200).json({success: true, message: "updating apply_offline_form successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({success: false, error: "An unexpected error occurred" });
+  }
+};
+
 
 
 
@@ -1284,5 +1390,8 @@ module.exports = {
   updateUserIdPrice,
   getSuperAdminEmployee,
   complainGetData,
-  resolveComplaint
+  resolveComplaint,
+  getApplyOfflineForm,
+  ApproveOfflineForm,
+  rejectOfflineForm
 };
