@@ -80,8 +80,8 @@ const SAAllOfflineForm = () => {
                             <table class="table table-striped">
                               <thead className="table-dark">
                                 <tr>
-                                <th scope="col">Sr.No</th>
-                                <th scope="col">Order Id</th>
+                                  <th scope="col">Sr.No</th>
+                                  <th scope="col">Order Id</th>
                                   <th scope="col">Applicant Name</th>
                                   <th scope="col">Applicant Father Name</th>
                                   <th scope="col">Applicant Number</th>

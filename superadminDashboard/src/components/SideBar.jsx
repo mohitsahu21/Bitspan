@@ -476,7 +476,7 @@ const RetailerSidebarData = [
       },
       {
         title: "Bank ID History",
-        path: "#",
+        path: "/bank-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
       },

@@ -7,6 +7,7 @@ import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { toggleRefresh } from "../../redux/user/userSlice";
 
 const NewBankID = () => {
   const dispatch = useDispatch();
@@ -39,6 +40,8 @@ const NewBankID = () => {
     aadhar_card: currentUser.AadharNumber,
     pan_card: currentUser.PanCardNumber,
     business_name: currentUser.BusinessName,
+    status: "Pending",
+    user_id: currentUser.userId,
   });
 
   const [files, setFiles] = useState({
@@ -122,24 +125,25 @@ const NewBankID = () => {
       //   ...prevOptions,
       //   formData.select_bank_service,
       // ]);
+      dispatch(toggleRefresh());
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("Error submitting form");
     } finally {
       setIsLoading(false);
 
-      // setFormData({
-      //   applicant_name: "",
-      //   applicant_father: "",
-      //   applicant_mother: "",
-      //   applicant_number: "",
-      //   email: "",
-      //   applicant_select_service: "",
-      //   select_bank_service: "",
-      //   aadhar_card: "",
-      //   pan_card: "",
-      //   business_name: "",
-      // });
+      setFormData({
+        // applicant_name: "",
+        applicant_father: "",
+        applicant_mother: "",
+        // applicant_number: "",
+        // email: "",
+        applicant_select_service: "",
+        select_bank_service: "",
+        // aadhar_card: "",
+        // pan_card: "",
+        // business_name: "",
+      });
       // setFiles({
       //   attached_photo: null,
       //   attached_kyc: [],

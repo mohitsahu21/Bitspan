@@ -156,6 +156,8 @@ const bankidForm = (req, res) => {
     aadhar_card,
     pan_card,
     business_name,
+    status,
+    user_id,
   } = req.body;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
@@ -180,8 +182,12 @@ const bankidForm = (req, res) => {
     ? `${domain}/uploads/${req.files.electric_bill[0].filename}`
     : null;
 
+  const orderId = `BNK${Date.now()}`;
+  // const orderId = `BNK${createdAt}`;
+
   const query = `
         INSERT INTO apply_offline_form (
+        order_id,
             applicant_name,
     applicant_father,
     applicant_mother,
@@ -197,13 +203,16 @@ const bankidForm = (req, res) => {
     bank_passbook,
     shop_photo,
     electric_bill,
+    status,
+    user_id,
     created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
   db.query(
     query,
     [
+      orderId,
       applicant_name,
       applicant_father,
       applicant_mother,
@@ -219,6 +228,8 @@ const bankidForm = (req, res) => {
       bank_passbook,
       shop_photo,
       electric_bill,
+      status,
+      user_id,
       createdAt,
     ],
     (err, result) => {
@@ -228,9 +239,11 @@ const bankidForm = (req, res) => {
         return;
       }
 
-      res
-        .status(200)
-        .json({ message: "Form submitted successfully", id: result.insertId });
+      res.status(200).json({
+        message: "Form submitted successfully",
+        id: result.insertId,
+        orderId: orderId,
+      });
     }
   );
 };
