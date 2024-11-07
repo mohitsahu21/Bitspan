@@ -1376,6 +1376,19 @@ const SuperAdminData = [
       //   // cName: "sub-nav",
       // },
       {
+        title: "View Offline Recharge Request",
+        path: "/Offline-Recharge-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "View Offline DTH Connection Request",
+        path: "/Offline-dth-connection",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+
+      {
         title: "View Offline Forms",
         path: "/view-all-offline-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
