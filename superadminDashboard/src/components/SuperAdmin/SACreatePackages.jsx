@@ -38,6 +38,8 @@ const SACreatePackages = () => {
     eKYC_Domicile_Certificate_Price : "",
     offlineKYC_Income_Certificate_Price : "",
     offlineKYC_Domicile_Certificate_Price : "",
+    non_samagra_income_Certificate_Price : "",
+    non_samagra_Domicile_Certificate_Price : "",
     verify_edistrict_Certificate_Price : "",
     Bank_ID_Price: "",
     Offline_Services_Commission_Type: "",
@@ -55,6 +57,8 @@ const SACreatePackages = () => {
       eKYC_Domicile_Certificate_Commission : "",
       offlineKYC_Income_Certificate_Commission : "",
       offlineKYC_Domicile_Certificate_Commission : "",
+      non_samagra_income_Certificate_Commission : "",
+      non_samagra_Domicile_Certificate_Commission : "",
       verify_edistrict_Certificate_Commission : "",
     Bank_ID_Commission: "",
     Off_Prepaid_Recharge_Comm_Type: "",
@@ -171,6 +175,8 @@ const SACreatePackages = () => {
     eKYC_Domicile_Certificate_Price : "",
     offlineKYC_Income_Certificate_Price : "",
     offlineKYC_Domicile_Certificate_Price : "",
+    non_samagra_income_Certificate_Price : "",
+    non_samagra_Domicile_Certificate_Price : "",
     verify_edistrict_Certificate_Price : "",
     Bank_ID_Price: "",
     Offline_Services_Commission_Type: "",
@@ -188,6 +194,8 @@ const SACreatePackages = () => {
       eKYC_Domicile_Certificate_Commission : "",
       offlineKYC_Income_Certificate_Commission : "",
       offlineKYC_Domicile_Certificate_Commission : "",
+      non_samagra_income_Certificate_Commission : "",
+      non_samagra_Domicile_Certificate_Commission : "",
       verify_edistrict_Certificate_Commission : "",
     Bank_ID_Commission: "",
     Off_Prepaid_Recharge_Comm_Type: "",
@@ -741,6 +749,48 @@ const SACreatePackages = () => {
                       </div>
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
+                          Enter Non Samagra Income Certificate Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="non_samagra_income_Certificate_Price"
+                            value={formData.non_samagra_income_Certificate_Price}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Non Samagra Domicile Certificate Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="non_samagra_Domicile_Certificate_Price"
+                            value={formData.non_samagra_Domicile_Certificate_Price}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
                           Enter Verify e-district Certificate Price
                         </label>
                         <div class="input-group flex-nowrap">
@@ -1129,6 +1179,48 @@ const SACreatePackages = () => {
                             placeholder="Enter Commission"
                             name="offlineKYC_Domicile_Certificate_Commission"
                             value={formData.offlineKYC_Domicile_Certificate_Commission}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter Non samagra income Certificate Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="non_samagra_income_Certificate_Commission"
+                            value={formData.non_samagra_income_Certificate_Commission}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter Non Samagra Domicile Certificate Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="non_samagra_Domicile_Certificate_Commission"
+                            value={formData.non_samagra_Domicile_Certificate_Commission}
                             onChange={handleChange}
                             required
                           />

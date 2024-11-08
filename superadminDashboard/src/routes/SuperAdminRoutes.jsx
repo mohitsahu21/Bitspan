@@ -50,6 +50,9 @@ import SAPendingKycUsers from "../components/SuperAdmin/SAPendingKycUsers.jsx";
 import SAEmployeeList from "../components/SuperAdmin/SAEmployeeList.jsx";
 import SAPanOfflineHistory from "../components/SuperAdmin/SAPanOfflineHistory.jsx";
 import SABankIdForms from "../components/SuperAdmin/SABankIdForms.jsx";
+import SAEdistrictHistory from "../components/SuperAdmin/SAEdistrictHistory.jsx";
+import SAOfflineRechargeHistory from "../components/SuperAdmin/SAOfflineRechargeHistory.jsx";
+import SAOfflineDthConnection from "../components/SuperAdmin/SAOfflineDthConnection.jsx";
 
 
 
@@ -101,6 +104,18 @@ const SuperAdminRoutes = () => {
         <Route
           path="/Bank-Id-history"
           element={<SABankIdForms />}
+        />
+        <Route
+          path="/E-district-history"
+          element={<SAEdistrictHistory />}
+        />
+        <Route
+          path="/Offline-Recharge-history"
+          element={<SAOfflineRechargeHistory />}
+        />
+        <Route
+          path="/Offline-dth-connection"
+          element={<SAOfflineDthConnection />}
         />
 
         <Route path="/2-step-verification" element={<SAStepVerification />} />

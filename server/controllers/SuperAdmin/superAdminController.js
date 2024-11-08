@@ -25,6 +25,8 @@ const addPackage = (req, res) => {
       eKYC_Domicile_Certificate_Price,
       offlineKYC_Income_Certificate_Price,
       offlineKYC_Domicile_Certificate_Price,
+      non_samagra_income_Certificate_Price,
+      non_samagra_Domicile_Certificate_Price,
       verify_edistrict_Certificate_Price,
       Bank_ID_Price,
       Offline_Services_Commission_Type,
@@ -42,6 +44,8 @@ const addPackage = (req, res) => {
       eKYC_Domicile_Certificate_Commission,
       offlineKYC_Income_Certificate_Commission,
       offlineKYC_Domicile_Certificate_Commission,
+      non_samagra_income_Certificate_Commission,
+      non_samagra_Domicile_Certificate_Commission,
       verify_edistrict_Certificate_Commission,
       Bank_ID_Commission,
       Off_Prepaid_Recharge_Comm_Type,
@@ -111,10 +115,10 @@ const addPackage = (req, res) => {
     const sql = `INSERT INTO packagestable (
         package_name, package_for, offline_E_PAN_Card_Price , offline_P_PAN_Card_Price, Google_Play_Price, IRCTC_Agent_ID_Price, Birth_Certificate_Price, Death_Certificate_Price,
         E_Stamp_Price, ITR_Registration_Price, GST_Registration_Price, Sambal_Price, offline_kyc_eDistrict,
-        eKYC_Income_Certificate_Price, eKYC_Domicile_Certificate_Price,offlineKYC_Income_Certificate_Price,offlineKYC_Domicile_Certificate_Price,verify_edistrict_Certificate_Price, Bank_ID_Price, Offline_Services_Commission_Type, offline_E_PAN_Card_Commission , offline_P_PAN_Card_Commission ,Google_Play_Commission,
+        eKYC_Income_Certificate_Price, eKYC_Domicile_Certificate_Price,offlineKYC_Income_Certificate_Price,offlineKYC_Domicile_Certificate_Price,non_samagra_income_Certificate_Price, non_samagra_Domicile_Certificate_Price, verify_edistrict_Certificate_Price, Bank_ID_Price, Offline_Services_Commission_Type, offline_E_PAN_Card_Commission , offline_P_PAN_Card_Commission ,Google_Play_Commission,
         IRCTC_Agent_ID_Commission, Birth_Certificate_Commission, Death_Certificate_Commission, E_Stamp_Commission,
         ITR_Registration_Commission, GST_Registration_Commission, Sambal_Commission, eKYC_Income_Certificate_Commission,
-        eKYC_Domicile_Certificate_Commission, offlineKYC_Income_Certificate_Commission,offlineKYC_Domicile_Certificate_Commission,verify_edistrict_Certificate_Commission, Bank_ID_Commission, Off_Prepaid_Recharge_Comm_Type, Off_Airtel_Prepaid_Recharge_Comm,
+        eKYC_Domicile_Certificate_Commission, offlineKYC_Income_Certificate_Commission,offlineKYC_Domicile_Certificate_Commission, non_samagra_income_Certificate_Commission, non_samagra_Domicile_Certificate_Commission,verify_edistrict_Certificate_Commission, Bank_ID_Commission, Off_Prepaid_Recharge_Comm_Type, Off_Airtel_Prepaid_Recharge_Comm,
         Off_Jio_Prepaid_Recharge_Comm, Off_Vi_Prepaid_Recharge_Comm, Off_Bsnl_Prepaid_Recharge_Comm,
         Off_Postpaid_Recharge_Comm_Type, Off_Airtel_Postpaid_Recharge_Comm, Off_Jio_Postpaid_Recharge_Comm,
         Off_Vi_Postpaid_Recharge_Comm, Off_Bsnl_Postpaid_Recharge_Comm, On_Prepaid_Recharge_Comm_Type, On_Airtel_Prepaid_Recharge_Comm,
@@ -137,7 +141,7 @@ const addPackage = (req, res) => {
         Offline_Electricity_Bill_Pay_Commission_Type, Offline_Electricity_Bill_Pay_Commission,
         Online_Insurance_Pay_Commission_Type, Online_Insurance_Pay_Commission, Offline_Insurance_Pay_Commission_Type,
         Offline_Insurance_Pay_Commission,E_PAN_Card_Price,P_PAN_Card_Price,UTI_PAN_Coupon_Price, PAN_Card_Commission_Type, E_PAN_Card_Commission, UTI_PAN_Coupon_Commission, P_PAN_Card_Commission , created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?, ?, ? ,?, ? , ? , ? , ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?, ?, ? ,?, ? , ? , ? , ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     const values = [
       package_name,
@@ -157,6 +161,8 @@ const addPackage = (req, res) => {
       eKYC_Domicile_Certificate_Price,
       offlineKYC_Income_Certificate_Price,
       offlineKYC_Domicile_Certificate_Price,
+      non_samagra_income_Certificate_Price,
+      non_samagra_Domicile_Certificate_Price,
       verify_edistrict_Certificate_Price,
       Bank_ID_Price,
       Offline_Services_Commission_Type,
@@ -174,6 +180,8 @@ const addPackage = (req, res) => {
       eKYC_Domicile_Certificate_Commission,
       offlineKYC_Income_Certificate_Commission,
       offlineKYC_Domicile_Certificate_Commission,
+      non_samagra_income_Certificate_Commission,
+      non_samagra_Domicile_Certificate_Commission,
       verify_edistrict_Certificate_Commission,
       Bank_ID_Commission,
       Off_Prepaid_Recharge_Comm_Type,
@@ -1579,6 +1587,327 @@ const rejectBankIdForm = (req, res) => {
 };
 
 
+const getEdistrictForms = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM \`e-district-application\` c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+   
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getEdistrictForms from MySQL:", err);
+      return  res.status(500).json({ success: false, error: "Error getEdistrictForms" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+         return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getEdistrictForms found",
+          });
+        } else {
+
+        return  res.status(200).json({
+            success: true,
+            data: result,
+            message: "getEdistrictForms fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getEdistrictForms from MySQL:", error);
+   return res.status(500).json({
+      success: false,
+      message: "Error in fetching getEdistrictForms",
+      error: error.message,
+    });
+  }
+};
+
+const ApproveEdistrictForm = (req, res) => {
+  try {
+    const { order_id , note, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE \`e-district-application\` SET note = ? , status = ? WHERE order_id = ?`;
+
+    const values = [
+      
+      note,
+      status,
+      order_id
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating ApproveEdistrictForm:", error);
+        return res.status(500).json({success: false, error: "Failed to updating ApproveEdistrictForm" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({success: false, message: "ApproveEdistrictForm not found" });
+      }
+
+      return res.status(200).json({success: true, message: "updating ApproveEdistrictForm successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({success: false, error: "An unexpected error occurred" });
+  }
+};
+const rejectEdistrictForm = (req, res) => {
+  try {
+    const { order_id , note, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE \`e-district-application\` SET note = ? , status = ? WHERE order_id = ?`;
+
+    const values = [
+      
+      note,
+      status,
+      order_id
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating rejectEdistrictForm:", error);
+        return res.status(500).json({success: false, error: "Failed to updating rejectEdistrictForm" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({success: false, message: "rejectEdistrictForm not found" });
+      }
+
+      return res.status(200).json({success: true, message: "updating rejectEdistrictForm successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const getOfflineRecharge = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM offline_recharge c LEFT JOIN userprofile u  ON c.created_by_userid = u.UserId ORDER BY id DESC`;
+   
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getOfflineRecharge from MySQL:", err);
+      return  res.status(500).json({ success: false, error: "Error getOfflineRecharge" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+         return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getOfflineRecharge found",
+          });
+        } else {
+
+        return  res.status(200).json({
+            success: true,
+            data: result,
+            message: "getOfflineRecharge fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getOfflineRecharge from MySQL:", error);
+   return res.status(500).json({
+      success: false,
+      message: "Error in fetching getOfflineRecharge",
+      error: error.message,
+    });
+  }
+};
+
+const ApproveOfflineRecharge = (req, res) => {
+  try {
+    const { order_id , note, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE offline_recharge SET note = ? , status = ? WHERE orderid = ?`;
+
+    const values = [
+      
+      note,
+      status,
+      order_id
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating ApproveOfflineRecharge:", error);
+        return res.status(500).json({success: false, error: "Failed to updating ApproveOfflineRecharge" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({success: false, message: "ApproveOfflineRecharge not found" });
+      }
+
+      return res.status(200).json({success: true, message: "updating ApproveOfflineRecharge successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({success: false, error: "An unexpected error occurred" });
+  }
+};
+const rejectOfflineRecharge = (req, res) => {
+  try {
+    const { order_id , note, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE offline_recharge SET note = ? , status = ? WHERE orderid = ?`;
+
+    const values = [
+      
+      note,
+      status,
+      order_id
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating rejectOfflineRecharge:", error);
+        return res.status(500).json({success: false, error: "Failed to updating rejectOfflineRecharge" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({success: false, message: "rejectOfflineRecharge not found" });
+      }
+
+      return res.status(200).json({success: true, message: "updating rejectOfflineRecharge successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({success: false, error: "An unexpected error occurred" });
+  }
+};
+
+
+const getOfflineDTHConnection = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM offline_dth_connection c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+   
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getOfflineDTHConnection from MySQL:", err);
+      return  res.status(500).json({ success: false, error: "Error getOfflineDTHConnection" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+         return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getOfflineDTHConnection found",
+          });
+        } else {
+
+        return  res.status(200).json({
+            success: true,
+            data: result,
+            message: "getOfflineDTHConnection fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getOfflineDTHConnection from MySQL:", error);
+   return res.status(500).json({
+      success: false,
+      message: "Error in fetching getOfflineDTHConnection",
+      error: error.message,
+    });
+  }
+};
+
+const ApproveOfflineDTHConnection = (req, res) => {
+  try {
+    const { order_id , note, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE offline_dth_connection SET note = ? , status = ? WHERE orderid = ?`;
+
+    const values = [
+      
+      note,
+      status,
+      order_id
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating ApproveOfflineDTHConnection:", error);
+        return res.status(500).json({success: false, error: "Failed to updating ApproveOfflineDTHConnection" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({success: false, message: "ApproveOfflineDTHConnection not found" });
+      }
+
+      return res.status(200).json({success: true, message: "updating ApproveOfflineDTHConnection successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({success: false, error: "An unexpected error occurred" });
+  }
+};
+const rejectOfflineDTHConnection = (req, res) => {
+  try {
+    const { order_id , note, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE offline_dth_connection SET note = ? , status = ? WHERE orderid = ?`;
+
+    const values = [
+      
+      note,
+      status,
+      order_id
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating rejectOfflineDTHConnection:", error);
+        return res.status(500).json({success: false, error: "Failed to updating rejectOfflineDTHConnection" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({success: false, message: "rejectOfflineDTHConnection not found" });
+      }
+
+      return res.status(200).json({success: true, message: "updating rejectOfflineDTHConnection successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({success: false, error: "An unexpected error occurred" });
+  }
+};
+
+
+
 
 
 module.exports = {
@@ -1611,5 +1940,14 @@ module.exports = {
   rejectPANOfflineForm,
   getBankIdForm,
   ApproveBankIdForm,
-  rejectBankIdForm
+  rejectBankIdForm,
+  getEdistrictForms,
+  ApproveEdistrictForm,
+  rejectEdistrictForm,
+  getOfflineRecharge,
+  ApproveOfflineRecharge,
+  rejectOfflineRecharge,
+  getOfflineDTHConnection,
+  ApproveOfflineDTHConnection,
+  rejectOfflineDTHConnection
 };

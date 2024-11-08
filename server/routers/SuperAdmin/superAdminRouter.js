@@ -1,5 +1,5 @@
 const express = require("express");
-const { addPackage, getPackages, editPackage, deletePackage, getPendingUsers, approveUser, rejectUser, getActiveUsers, deactivateUser, activateUser, getdeactiveUsers, getUserRelations, getAllUsers, getPendingPaymentUsers, markPaymentComplete, getUserIdPriceList, addUserIdPrice, updateUserIdPrice, getSuperAdminEmployee, complainGetData, resolveComplaint, getApplyOfflineForm, ApproveOfflineForm, rejectOfflineForm, getPANOfflineForm, ApprovePANOfflineForm, rejectPANOfflineForm, getBankIdForm, ApproveBankIdForm, rejectBankIdForm } = require("../../controllers/SuperAdmin/superAdminController");
+const { addPackage, getPackages, editPackage, deletePackage, getPendingUsers, approveUser, rejectUser, getActiveUsers, deactivateUser, activateUser, getdeactiveUsers, getUserRelations, getAllUsers, getPendingPaymentUsers, markPaymentComplete, getUserIdPriceList, addUserIdPrice, updateUserIdPrice, getSuperAdminEmployee, complainGetData, resolveComplaint, getApplyOfflineForm, ApproveOfflineForm, rejectOfflineForm, getPANOfflineForm, ApprovePANOfflineForm, rejectPANOfflineForm, getBankIdForm, ApproveBankIdForm, rejectBankIdForm, getEdistrictForms, ApproveEdistrictForm, rejectEdistrictForm, getOfflineRecharge, ApproveOfflineRecharge, rejectOfflineRecharge, getOfflineDTHConnection, ApproveOfflineDTHConnection, rejectOfflineDTHConnection } = require("../../controllers/SuperAdmin/superAdminController");
 const router = express.Router();
 
 
@@ -38,5 +38,17 @@ router.put("/rejectPANOfflineForm" , rejectPANOfflineForm);
 router.get("/getBankIdForm" , getBankIdForm);
 router.put("/ApproveBankIdForm" , ApproveBankIdForm);
 router.put("/rejectBankIdForm" , rejectBankIdForm );
+
+router.get("/getEdistrictForms" , getEdistrictForms);
+router.put("/ApproveEdistrictForm" , ApproveEdistrictForm);
+router.put("/rejectEdistrictForm" , rejectEdistrictForm);
+
+router.get("/getOfflineRecharge" , getOfflineRecharge);
+router.put("/ApproveOfflineRecharge" , ApproveOfflineRecharge);
+router.put("/rejectOfflineRecharge" , rejectOfflineRecharge);
+
+router.get("/getOfflineDTHConnection" , getOfflineDTHConnection)
+router.put("/ApproveOfflineDTHConnection" , ApproveOfflineDTHConnection);
+router.put("/rejectOfflineDTHConnection" , rejectOfflineDTHConnection);
 
 module.exports = router;
