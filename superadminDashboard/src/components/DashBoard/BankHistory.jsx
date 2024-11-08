@@ -9,7 +9,7 @@ const BankHistory = () => {
   const { currentUser, token } = useSelector((state) => state.user);
 
   const [getData, setGetData] = useState([]);
-  const [selectUser, setSelectUser] = useState();
+  const [filterData, setFilterData] = useState([]);
 
   useEffect(() => {
     const fetchBankHistory = async () => {
@@ -17,19 +17,16 @@ const BankHistory = () => {
         const response = await axios.get(
           `http://localhost:7777/api/auth/retailer/getAllBranchId`
         );
-
-        console.log(response.data);
         setGetData(response.data);
+        setFilterData(
+          response.data.filter((item) => item.user_id === currentUser.userId)
+        );
       } catch (error) {
         console.log(error);
       }
     };
     fetchBankHistory();
-  }, []);
-
-  const filterData = getData.filter(
-    (item) => item.user_id === currentUser.userId
-  );
+  }, [currentUser.userId]);
 
   console.log(filterData);
   console.log(getData);
@@ -55,7 +52,7 @@ const BankHistory = () => {
                   <div className="col-12 d-flex justify-content-center">
                     <div className="border border-danger rounded shadow-sm mb-3">
                       <h2 className="text-center m-0 px-5 py-3">
-                        Bank History
+                        Bank ID History
                       </h2>
                     </div>
                   </div>
@@ -85,7 +82,7 @@ const BankHistory = () => {
                                   <th scope="col">Eletricity Bill</th>
                                   <th scope="col">Status</th>
                                   <th scope="col">Note</th>
-                                  <th scope="col">Action</th>
+                                  {/* <th scope="col">Action</th> */}
                                 </tr>
                               </thead>
                               <tbody>
@@ -106,21 +103,22 @@ const BankHistory = () => {
                                         <a
                                           href={data.attached_photo}
                                           target="_blank"
+                                          rel="noopener noreferrer"
                                         >
-                                          View Sign
+                                          View
                                         </a>
                                       </td>
                                       <td>
-                                        {data.attached_kyc
-                                          .split(",")
-                                          .map((kycurl, kycindx) => (
+                                        {data?.attached_kyc
+                                          ?.split(",")
+                                          ?.map((kycurl, kycindx) => (
                                             <div key={kycindx}>
                                               <a
                                                 href={kycurl}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                               >
-                                                View KYC {kycindx + 1}
+                                                View {kycindx + 1}
                                               </a>
                                             </div>
                                           ))}
@@ -129,30 +127,31 @@ const BankHistory = () => {
                                         <a
                                           href={data.bank_passbook}
                                           target="_blank"
+                                          rel="noopener noreferrer"
                                         >
-                                          View Sign
+                                          View
                                         </a>
                                       </td>
                                       <td>
                                         <a
                                           href={data.shop_photo}
                                           target="_blank"
+                                          rel="noopener noreferrer"
                                         >
-                                          View Sign
+                                          View
                                         </a>
                                       </td>
                                       <td>
                                         <a
-                                          href={data.attached_sign}
+                                          href={data.electric_bill}
                                           target="_blank"
+                                          rel="noopener noreferrer"
                                         >
-                                          View Sign
+                                          View
                                         </a>
                                       </td>
                                       <td>{data.status}</td>
                                       <td>{data.note}</td>
-                                      <td>Action</td>
-                                      {/* Add other data fields as needed */}
                                     </tr>
                                   ))
                                 ) : (
@@ -162,7 +161,6 @@ const BankHistory = () => {
                             </table>
                           </div>
                         </div>
-                        {/* table end */}
                       </div>
                     </div>
                   </div>
@@ -208,5 +206,8 @@ const Wrapper = styled.div`
   td {
     font-size: 14px;
     white-space: nowrap;
+  }
+  a {
+    text-decoration: none;
   }
 `;

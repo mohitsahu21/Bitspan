@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleRefresh } from "../../redux/user/userSlice";
 
 const EdistrictForm = () => {
+  const dispatch = useDispatch();
+  const { currentUser, token } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     application_type: "",
     samagar: "",
@@ -19,7 +23,8 @@ const EdistrictForm = () => {
     annual_income: "",
     previous_application: "",
     charge_amount: "",
-    // status: "Pending",
+    user_id: currentUser.userId,
+    status: "Pending",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState([]);
@@ -52,7 +57,8 @@ const EdistrictForm = () => {
 
     try {
       const response = await axios.post(
-        "http://bitspan.jyvflirl.a2hosted.com/api/auth/e-district-Form",
+        // "http://bitspan.jyvflirl.a2hosted.com/api/auth/e-district-Form",
+        "http://localhost:7777/api/auth/retailer/e-district-Form",
         data,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -91,6 +97,7 @@ const EdistrictForm = () => {
                         onChange={handleChange}
                         required
                       >
+                        <option value="">--Select Option--</option>
                         <option value="income">Income</option>
                         <option value="domicile">Domicile</option>
                       </select>
@@ -103,6 +110,7 @@ const EdistrictForm = () => {
                         value={formData.samagar}
                         onChange={handleChange}
                       >
+                        <option value="">--Select Option--</option>
                         <option value="ekyc">Ekyc</option>
                         <option value="non-ekyc">Non Ekyc</option>
                         <option value="non">Non</option>
@@ -120,6 +128,7 @@ const EdistrictForm = () => {
                         name="gender"
                         required
                       >
+                        <option value="">--Select Option--</option>
                         <option value="male">M</option>
                         <option value="female">F</option>
                       </select>
@@ -194,6 +203,7 @@ const EdistrictForm = () => {
                         onChange={handleChange}
                         required
                       >
+                        <option value="">--Select Option--</option>
                         <option value="sc">SC</option>
                         <option value="st">ST</option>
                         <option value="obc">OBC</option>
@@ -263,6 +273,7 @@ const EdistrictForm = () => {
                         onChange={handleChange}
                         required
                       >
+                        <option value="">--Select Option--</option>
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
                       </select>
@@ -288,6 +299,7 @@ const EdistrictForm = () => {
                         onChange={handleChange}
                         required
                       >
+                        <option value="">--Select Option--</option>
                         <option value="ekyc">Ekyc</option>
                         <option value="non-ekyc">Non Ekyc</option>
                         <option value="non">Non</option>

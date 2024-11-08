@@ -3,20 +3,29 @@ import { BiHomeAlt } from "react-icons/bi";
 import styled from "styled-components";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import axios from "axios";
+import ReactPaginate from "react-paginate";
 
 const AllPanForm = () => {
   const [formData, setFormData] = useState([]);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All");
+  const [loading, setLoading] = useState(false);
+  const complaintsPerPage = 10; // Set items per page
+  const [currentPage, setCurrentPage] = useState(0);
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
         `http://localhost:7777/api/auth/retailer/getApplyOfflineForm`
       );
-      setFormData(response.data);
-      console.log(response.data);
+
+      const newResponseData = response.data.filter(
+        (item) => item.applicant_select_service !== "New Bank ID"
+      );
+
+      setFormData(newResponseData);
+      console.log(newResponseData);
     } catch (error) {
       console.log(error);
     }
@@ -39,6 +48,20 @@ const AllPanForm = () => {
       return item.status?.toLowerCase() === selectedStatus.toLowerCase();
     }
   });
+
+  const totalPages = Math.ceil(filteredData.length / complaintsPerPage);
+
+  const paginateData = () => {
+    const startIndex = currentPage * complaintsPerPage;
+    const endIndex = startIndex + complaintsPerPage;
+    return filteredData.slice(startIndex, endIndex);
+  };
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
+  const displayData = paginateData();
 
   return (
     <>
@@ -147,61 +170,69 @@ const AllPanForm = () => {
                                 </tr>
                               </thead>
                               <tbody>
-                                {filteredData.map((item, index) => (
-                                  <tr key={index}>
-                                    <th scope="row">{index + 1}</th>
-                                    <td>{item.applicant_name}</td>
-                                    <td>{item.applicant_father}</td>
-                                    <td>{item.applicant_number}</td>
-                                    <td>{item.applicant_select_service}</td>
-                                    <td>{item.other}</td>
-                                    <td>
-                                      <a
-                                        href={item.attached_form}
-                                        target="_blank"
-                                      >
-                                        View Form
-                                      </a>
-                                    </td>
-                                    <td>
-                                      <a
-                                        href={item.attached_photo}
-                                        target="_blank"
-                                      >
-                                        View Photo
-                                      </a>
-                                    </td>
-                                    <td>
-                                      <a
-                                        href={item.attached_sign}
-                                        target="_blank"
-                                      >
-                                        View Sign
-                                      </a>
-                                    </td>
-                                    <td>
-                                      {item.attached_kyc
-                                        .split(",")
-                                        .map((kycurl, kycindx) => (
-                                          <div key={kycindx}>
-                                            <a
-                                              href={kycurl}
-                                              target="_blank"
-                                              rel="noopener noreferrer"
-                                            >
-                                              View KYC {kycindx + 1}
-                                            </a>
-                                          </div>
-                                        ))}
-                                    </td>
-                                    <td>{item.status}</td>
-                                    <td>{item.note}</td>
-                                  </tr>
-                                ))}
+                                {loading ? (
+                                  <>
+                                    <p>Loading...</p>
+                                  </>
+                                ) : (
+                                  <>
+                                    {displayData.map((item, index) => (
+                                      <tr key={index}>
+                                        <th scope="row">{index + 1}</th>
+                                        <td>{item.applicant_name}</td>
+                                        <td>{item.applicant_father}</td>
+                                        <td>{item.applicant_number}</td>
+                                        <td>{item.applicant_select_service}</td>
+                                        <td>{item.other}</td>
+                                        <td>
+                                          <a
+                                            href={item.attached_form}
+                                            target="_blank"
+                                          >
+                                            View Form
+                                          </a>
+                                        </td>
+                                        <td>
+                                          <a
+                                            href={item.attached_photo}
+                                            target="_blank"
+                                          >
+                                            View Photo
+                                          </a>
+                                        </td>
+                                        <td>
+                                          <a
+                                            href={item.attached_sign}
+                                            target="_blank"
+                                          >
+                                            View Sign
+                                          </a>
+                                        </td>
+                                        <td>
+                                          {item?.attached_kyc
+                                            ?.split(",")
+                                            ?.map((kycurl, kycindx) => (
+                                              <div key={kycindx}>
+                                                <a
+                                                  href={kycurl}
+                                                  target="_blank"
+                                                  rel="noopener noreferrer"
+                                                >
+                                                  View KYC {kycindx + 1}
+                                                </a>
+                                              </div>
+                                            ))}
+                                        </td>
+                                        <td>{item.status}</td>
+                                        <td>{item.note}</td>
+                                      </tr>
+                                    ))}
+                                  </>
+                                )}
                               </tbody>
                             </table>
                           </div>
-                          <div className="float-end">
+                          {/* <div className="float-end">
                             <nav aria-label="Page navigation example">
                               <ul className="pagination">
                                 <li className="page-item">
@@ -222,7 +253,20 @@ const AllPanForm = () => {
                                 </li>
                               </ul>
                             </nav>
-                          </div>
+                          </div> */}
+                          <PaginationContainer>
+                            <ReactPaginate
+                              previousLabel={"Previous"}
+                              nextLabel={"Next"}
+                              breakLabel={"..."}
+                              pageCount={totalPages}
+                              marginPagesDisplayed={2}
+                              pageRangeDisplayed={3}
+                              onPageChange={handlePageChange}
+                              containerClassName={"pagination"}
+                              activeClassName={"active"}
+                            />
+                          </PaginationContainer>
                         </div>
                       </div>
                     </div>
@@ -272,6 +316,92 @@ const Wrapper = styled.div`
   @media (min-width: 1500px) {
     .formdata {
       padding-left: 13rem;
+    }
+  }
+`;
+const PaginationContainer = styled.div`
+  .pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    list-style: none;
+    border-radius: 5px;
+  }
+
+  .pagination li {
+    margin: 0 5px;
+  }
+
+  .pagination li a {
+    display: block;
+    padding: 8px 16px;
+    border: 1px solid #e6ecf1;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 1px #000;
+    font-size: 14px; /* Default font size */
+  }
+
+  .pagination li.active a {
+    background-color: #004aad;
+    color: white;
+    border: 1px solid #004aad;
+  }
+
+  .pagination li.disabled a {
+    color: white;
+    cursor: not-allowed;
+    background-color: #3a4e69;
+    border: 1px solid #3a4e69;
+  }
+
+  .pagination li a:hover:not(.active) {
+    background-color: #004aad;
+    color: white;
+  }
+
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .pagination {
+      padding: 5px;
+      flex-wrap: wrap;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pagination {
+      padding: 5px;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 4px 8px;
+      font-size: 10px;
+    }
+
+    /* Hide the previous and next labels for extra-small screens */
+    .pagination li:first-child a::before {
+      content: "«";
+      margin-right: 5px;
+    }
+
+    .pagination li:last-child a::after {
+      content: "»";
+      margin-left: 5px;
     }
   }
 `;

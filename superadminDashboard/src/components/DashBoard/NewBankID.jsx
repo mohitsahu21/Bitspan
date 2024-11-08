@@ -13,7 +13,7 @@ const NewBankID = () => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
 
-  console.log(currentUser);
+  // console.log(currentUser);
 
   const optionsDrop = [
     { id: 1, name: "Airtel" },
@@ -144,19 +144,6 @@ const NewBankID = () => {
         // pan_card: "",
         // business_name: "",
       });
-      // setFiles({
-      //   attached_photo: null,
-      //   attached_kyc: [],
-      //   bank_passbook: null,
-      //   shop_photo: null,
-      //   electric_bill: null,
-      // });
-      // setPin(["", "", "", ""]);
-
-      // attachedPhotoRef.current.value = "";
-      // bankPassbookRef.current.value = "";
-      // shopPhotoRef.current.value = "";
-      // electricBillRef.current.value = "";
     }
   };
 
@@ -180,16 +167,6 @@ const NewBankID = () => {
     }
   };
 
-  // const handleModalSubmit = async (e) => {
-  //   const isPinValid = await verifyPin();
-  //   if (isPinValid) {
-  //     setShowPinModal(false);
-  //     handleSubmit(e);
-  //   } else {
-  //     setPin("");
-  //   }
-  // };
-
   const handleModalSubmit = async (e) => {
     const isPinValid = await verifyPin();
     if (isPinValid) {
@@ -211,13 +188,8 @@ const NewBankID = () => {
         const response = await axios.get(
           `http://localhost:7777/api/auth/retailer/getSelectedServices/${currentUser.userId}`
         );
-        console.log(response.data.selectedServices);
+        console.log(response.data);
         setSelectedOptions(response.data.selectedServices);
-        // setSelectedOptions(
-        //   Array.isArray(response.data.selectedServices)
-        //     ? response.data.selectedServices
-        //     : []
-        // );
       } catch (error) {
         console.log(error);
       }
@@ -359,7 +331,24 @@ const NewBankID = () => {
                             onChange={handleInputChange}
                           >
                             <option value="">Select an option ....</option>
-                            {optionsDrop.map((item) => (
+                            {optionsDrop.map((item) => {
+                              const selectedServices = selectedOptions.find(
+                                (option) => option.service === item.name
+                              );
+                              const isDisabled =
+                                selectedServices &&
+                                selectedServices.status !== "Reject";
+                              return (
+                                <option
+                                  key={item.id}
+                                  value={item.name}
+                                  disabled={isDisabled}
+                                >
+                                  {item.name}
+                                </option>
+                              );
+                            })}
+                            {/* {optionsDrop.map((item) => (
                               <option
                                 key={item.id}
                                 value={item.name}
@@ -367,7 +356,7 @@ const NewBankID = () => {
                               >
                                 {item.name}
                               </option>
-                            ))}
+                            ))} */}
                           </select>
                           <label htmlFor="floatingSelect">Select Bank</label>
                         </div>
@@ -804,3 +793,27 @@ const Wrapper = styled.div`
 //     alert("An error occurred. Please try again.");
 //   }
 // };
+
+// const handleModalSubmit = async (e) => {
+//   const isPinValid = await verifyPin();
+//   if (isPinValid) {
+//     setShowPinModal(false);
+//     handleSubmit(e);
+//   } else {
+//     setPin("");
+//   }
+// };
+
+// setFiles({
+//   attached_photo: null,
+//   attached_kyc: [],
+//   bank_passbook: null,
+//   shop_photo: null,
+//   electric_bill: null,
+// });
+// setPin(["", "", "", ""]);
+
+// attachedPhotoRef.current.value = "";
+// bankPassbookRef.current.value = "";
+// shopPhotoRef.current.value = "";
+// electricBillRef.current.value = "";

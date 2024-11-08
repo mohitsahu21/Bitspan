@@ -23,6 +23,7 @@ const {
   eDistrictFormData,
   getSelectedServices,
   getAllBranchId,
+  getEdistrictData,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -59,6 +60,7 @@ router.post(
   ]),
   bankidForm
 );
+
 router.get("/getApplyOfflineFormByid/:id", getApplyOfflineFormByid);
 router.get("/getApplyOfflineForm", getApplyOfflineForm);
 router.put("/updateApplyOfflineForm/:id", updateApplyOfflineForm);
@@ -148,5 +150,6 @@ router.post(
 
 router.get("/getSelectedServices/:user_id", getSelectedServices);
 router.get("/getAllBranchId", getAllBranchId);
+router.get("/getEdistrictData/:user_id", getEdistrictData);
 
 module.exports = router;

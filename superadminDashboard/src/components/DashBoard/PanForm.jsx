@@ -88,24 +88,37 @@ const PanForm = () => {
         }
       );
       alert(response.data.message);
+
+      setFormData({
+        applicant_name: "",
+        applicant_father: "",
+        applicant_number: "",
+        applicant_select_service: "",
+        other: "",
+        attached_form: null,
+        attached_photo: null,
+        attached_sign: null,
+        attached_kyc: [],
+      });
     } catch (error) {
       alert("An error occurred. Please try again.");
     }
   };
 
   const optionsDrop = [
-    { id: 1, name: "Pan Card Form" },
-    { id: 2, name: "Income" },
-    { id: 3, name: "Domicile" },
-    { id: 4, name: "Birth Certificate" },
-    { id: 5, name: "Death Certificate" },
-    { id: 6, name: "Pan Find" },
-    { id: 7, name: "E-Stamp" },
-    { id: 8, name: "ITR Registration" },
-    { id: 9, name: "GST Registration" },
-    { id: 10, name: "Udyog Aadhar" },
-    { id: 11, name: "Pan Card Services" },
-    { id: 12, name: "New Bank ID" },
+    { id: 1, name: "Birth Certificate" },
+    { id: 2, name: "Death Certificate" },
+    { id: 3, name: "Pan Find" },
+    { id: 4, name: "E-Stamp" },
+    { id: 5, name: "ITR Registration" },
+    { id: 6, name: "GST Registration" },
+    { id: 7, name: "Udyog Aadhar" },
+    { id: 8, name: "Sambal" },
+    // { id: 1, name: "Pan Card Form" },
+    // { id: 2, name: "Income" },
+    // { id: 3, name: "Domicile" },
+    // { id: 11, name: "Pan Card Services" },
+    // { id: 12, name: "New Bank ID" },
   ];
 
   return (
@@ -117,11 +130,18 @@ const PanForm = () => {
               <div className="main shadow-none">
                 <div className="row shadow-none">
                   <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                    <div className="d-flex justify-content-between align-items-center flex-wrap">
-                      <h4 className="px-lg-3">Apply Pan Card Offline</h4>
+                    {/* <div className="d-flex justify-content-between align-items-center flex-wrap">
+                      <h4 className="px-lg-3">Apply Offline</h4>
                       <h6 className="mx-lg-5">
-                        <BiHomeAlt /> &nbsp;/ &nbsp; Apply Pan Card Offline
+                        <BiHomeAlt /> &nbsp;/ &nbsp; Apply Offline
                       </h6>
+                    </div> */}
+                    <div className="col-12 d-flex justify-content-center">
+                      <div className="border border-danger rounded shadow-sm mb-3">
+                        <h2 className="text-center m-0 px-5 py-3">
+                          Offline Services
+                        </h2>
+                      </div>
                     </div>
                   </div>
                 </div>

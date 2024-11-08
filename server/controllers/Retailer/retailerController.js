@@ -35,8 +35,11 @@ const applyOfflineForm = (req, res) => {
         .join(",")
     : null;
 
+  const orderId = `OFF${Date.now()}IS`;
+
   const query = `
         INSERT INTO apply_offline_form (
+        order_id,
             applicant_name,
             applicant_father,
             applicant_number,
@@ -47,12 +50,13 @@ const applyOfflineForm = (req, res) => {
             attached_sign,
             attached_kyc,
             created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
   db.query(
     query,
     [
+      orderId,
       applicant_name,
       applicant_father,
       applicant_number,
@@ -878,6 +882,8 @@ const eDistrictFormData = (req, res) => {
     annual_income,
     previous_application,
     charge_amount,
+    user_id,
+    status,
   } = req.body;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
@@ -888,13 +894,16 @@ const eDistrictFormData = (req, res) => {
     ? req.files.map((file) => `${domain}/uploads/${file.filename}`).join(",")
     : null;
 
+  const orderId = `EDST${Date.now()}`;
+
   const sql = `INSERT INTO \`e-district-application\` (
-      application_type, samagar, gender, name, father_husband_name, dob, address,
+      order_id, application_type, samagar, gender, name, father_husband_name, dob, address,
       mobile_no, cast, aadhar_no, samagar_member_id, state, annual_income,
-      previous_application, documentUpload, charge_amount, created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+      previous_application, documentUpload, charge_amount, user_id, status, created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
   const values = [
+    orderId,
     application_type,
     samagar,
     gender,
@@ -911,6 +920,8 @@ const eDistrictFormData = (req, res) => {
     previous_application,
     documentUpload,
     charge_amount,
+    user_id,
+    status,
     createdAt,
   ];
 
@@ -929,13 +940,16 @@ const eDistrictFormData = (req, res) => {
 const getSelectedServices = (req, res) => {
   const applicationId = req.params.user_id;
 
-  const query = `SELECT select_bank_service FROM apply_offline_form WHERE user_id = ?`;
+  const query = `SELECT select_bank_service, status FROM apply_offline_form WHERE user_id = ?`;
   db.query(query, [applicationId], (err, results) => {
     if (err) {
       console.error("Error fetching selected services:", err);
       res.status(500).json({ error: "Database error" });
     } else {
-      const selectedServices = results.map((row) => row.select_bank_service);
+      const selectedServices = results.map((row) => ({
+        service: row.select_bank_service,
+        status: row.status,
+      }));
       res.status(200).json({ selectedServices });
     }
   });
@@ -953,6 +967,21 @@ const getAllBranchId = (req, res) => {
     }
 
     return res.status(200).json(result);
+  });
+};
+
+const getEdistrictData = (req, res) => {
+  const applicationId = req.params.user_id;
+
+  const selectQuery = `SELECT * FROM \`e-district-application\` WHERE user_id = ?`;
+
+  db.query(selectQuery, [applicationId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      res.status(500).json({ error: "Database Error" });
+    } else {
+      res.status(200).json(result);
+    }
   });
 };
 
@@ -977,4 +1006,5 @@ module.exports = {
   eDistrictFormData,
   getSelectedServices,
   getAllBranchId,
+  getEdistrictData,
 };
