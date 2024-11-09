@@ -278,22 +278,18 @@ const addPackage = (req, res) => {
 
     db.query(sql, values, (err, result) => {
       if (err) throw err; // Will be caught by the catch block
-      res
-        .status(200)
-        .send({
-          success: true,
-          message: "Data inserted successfully",
-          data: result,
-        });
+      res.status(200).send({
+        success: true,
+        message: "Data inserted successfully",
+        data: result,
+      });
     });
   } catch (error) {
-    res
-      .status(500)
-      .send({
-        success: false,
-        error: "Error inserting data",
-        details: error.message,
-      });
+    res.status(500).send({
+      success: false,
+      error: "Error inserting data",
+      details: error.message,
+    });
   }
 };
 
@@ -308,13 +304,11 @@ const getPackages = (req, res) => {
           .status(500)
           .json({ success: false, error: "Error fetching packages" });
       } else {
-        res
-          .status(200)
-          .json({
-            success: true,
-            data: result,
-            message: "packages fetch successfully",
-          });
+        res.status(200).json({
+          success: true,
+          data: result,
+          message: "packages fetch successfully",
+        });
       }
     });
   } catch (error) {
@@ -862,12 +856,10 @@ const deletePackage = (req, res) => {
 
       // If the package is allocated to any user, don't delete it
       if (userCount > 0) {
-        return res
-          .status(200)
-          .json({
-            success: false,
-            message: "Package cannot be deleted as it is allocated to users",
-          });
+        return res.status(200).json({
+          success: false,
+          message: "Package cannot be deleted as it is allocated to users",
+        });
       }
 
       // If the package is not allocated to any user, proceed to delete
@@ -959,12 +951,10 @@ const approveUser = (req, res) => {
             .json({ success: false, error: "Failed to save user details" });
         }
 
-        return res
-          .status(200)
-          .json({
-            success: true,
-            message: "User approved and details saved successfully",
-          });
+        return res.status(200).json({
+          success: true,
+          message: "User approved and details saved successfully",
+        });
       });
     });
 
@@ -1233,22 +1223,18 @@ const addUserIdPrice = (req, res) => {
 
     db.query(sql, values, (err, result) => {
       if (err) throw err; // Will be caught by the catch block
-      res
-        .status(200)
-        .send({
-          success: true,
-          message: "Data inserted successfully",
-          data: result,
-        });
+      res.status(200).send({
+        success: true,
+        message: "Data inserted successfully",
+        data: result,
+      });
     });
   } catch (error) {
-    res
-      .status(500)
-      .send({
-        success: false,
-        error: "Error inserting data",
-        details: error.message,
-      });
+    res.status(500).send({
+      success: false,
+      error: "Error inserting data",
+      details: error.message,
+    });
   }
 };
 
@@ -1319,12 +1305,10 @@ const getSuperAdminEmployee = (req, res) => {
     db.query(sql, (err, result) => {
       if (err) {
         console.error("Error fetchingSuperAdmin_Employee from MySQL:", err);
-        return res
-          .status(500)
-          .json({
-            success: false,
-            error: "Error fetching SuperAdmin_Employee",
-          });
+        return res.status(500).json({
+          success: false,
+          error: "Error fetching SuperAdmin_Employee",
+        });
       } else {
         // Check if the result is empty
         if (result.length === 0) {
@@ -1485,12 +1469,10 @@ const ApproveOfflineForm = (req, res) => {
     db.query(sql, values, (error, results) => {
       if (error) {
         console.error("Error updating Complaint:", error);
-        return res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to updating apply_offline_form",
-          });
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating apply_offline_form",
+        });
       }
 
       if (results.affectedRows === 0) {
@@ -1499,12 +1481,10 @@ const ApproveOfflineForm = (req, res) => {
           .json({ success: false, message: "apply_offline_form not found" });
       }
 
-      return res
-        .status(200)
-        .json({
-          success: true,
-          message: "updating apply_offline_form successfully",
-        });
+      return res.status(200).json({
+        success: true,
+        message: "updating apply_offline_form successfully",
+      });
     });
   } catch (error) {
     console.error("Unexpected error:", error);
@@ -1527,12 +1507,10 @@ const rejectOfflineForm = (req, res) => {
     db.query(sql, values, (error, results) => {
       if (error) {
         console.error("Error updating Complaint:", error);
-        return res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to updating apply_offline_form",
-          });
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating apply_offline_form",
+        });
       }
 
       if (results.affectedRows === 0) {
@@ -1541,12 +1519,10 @@ const rejectOfflineForm = (req, res) => {
           .json({ success: false, message: "apply_offline_form not found" });
       }
 
-      return res
-        .status(200)
-        .json({
-          success: true,
-          message: "updating apply_offline_form successfully",
-        });
+      return res.status(200).json({
+        success: true,
+        message: "updating apply_offline_form successfully",
+      });
     });
   } catch (error) {
     console.error("Unexpected error:", error);
@@ -1720,12 +1696,10 @@ const ApproveBankIdForm = (req, res) => {
     db.query(sql, values, (error, results) => {
       if (error) {
         console.error("Error updating ApproveBankIdForm:", error);
-        return res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to updating ApproveBankIdForm",
-          });
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating ApproveBankIdForm",
+        });
       }
 
       if (results.affectedRows === 0) {
@@ -1734,12 +1708,10 @@ const ApproveBankIdForm = (req, res) => {
           .json({ success: false, message: "ApproveBankIdForm not found" });
       }
 
-      return res
-        .status(200)
-        .json({
-          success: true,
-          message: "updating ApproveBankIdForm successfully",
-        });
+      return res.status(200).json({
+        success: true,
+        message: "updating ApproveBankIdForm successfully",
+      });
     });
   } catch (error) {
     console.error("Unexpected error:", error);
@@ -1762,12 +1734,10 @@ const rejectBankIdForm = (req, res) => {
     db.query(sql, values, (error, results) => {
       if (error) {
         console.error("Error updating rejectBankIdForm:", error);
-        return res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to updating rejectBankIdForm",
-          });
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating rejectBankIdForm",
+        });
       }
 
       if (results.affectedRows === 0) {
@@ -1776,12 +1746,10 @@ const rejectBankIdForm = (req, res) => {
           .json({ success: false, message: "rejectBankIdForm not found" });
       }
 
-      return res
-        .status(200)
-        .json({
-          success: true,
-          message: "updating rejectBankIdForm successfully",
-        });
+      return res.status(200).json({
+        success: true,
+        message: "updating rejectBankIdForm successfully",
+      });
     });
   } catch (error) {
     console.error("Unexpected error:", error);
@@ -1844,12 +1812,10 @@ const ApproveEdistrictForm = (req, res) => {
     db.query(sql, values, (error, results) => {
       if (error) {
         console.error("Error updating ApproveEdistrictForm:", error);
-        return res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to updating ApproveEdistrictForm",
-          });
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating ApproveEdistrictForm",
+        });
       }
 
       if (results.affectedRows === 0) {
@@ -1858,12 +1824,10 @@ const ApproveEdistrictForm = (req, res) => {
           .json({ success: false, message: "ApproveEdistrictForm not found" });
       }
 
-      return res
-        .status(200)
-        .json({
-          success: true,
-          message: "updating ApproveEdistrictForm successfully",
-        });
+      return res.status(200).json({
+        success: true,
+        message: "updating ApproveEdistrictForm successfully",
+      });
     });
   } catch (error) {
     console.error("Unexpected error:", error);
@@ -1886,12 +1850,10 @@ const rejectEdistrictForm = (req, res) => {
     db.query(sql, values, (error, results) => {
       if (error) {
         console.error("Error updating rejectEdistrictForm:", error);
-        return res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to updating rejectEdistrictForm",
-          });
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating rejectEdistrictForm",
+        });
       }
 
       if (results.affectedRows === 0) {
@@ -1900,12 +1862,10 @@ const rejectEdistrictForm = (req, res) => {
           .json({ success: false, message: "rejectEdistrictForm not found" });
       }
 
-      return res
-        .status(200)
-        .json({
-          success: true,
-          message: "updating rejectEdistrictForm successfully",
-        });
+      return res.status(200).json({
+        success: true,
+        message: "updating rejectEdistrictForm successfully",
+      });
     });
   } catch (error) {
     console.error("Unexpected error:", error);
@@ -1968,29 +1928,23 @@ const ApproveOfflineRecharge = (req, res) => {
     db.query(sql, values, (error, results) => {
       if (error) {
         console.error("Error updating ApproveOfflineRecharge:", error);
-        return res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to updating ApproveOfflineRecharge",
-          });
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating ApproveOfflineRecharge",
+        });
       }
 
       if (results.affectedRows === 0) {
-        return res
-          .status(404)
-          .json({
-            success: false,
-            message: "ApproveOfflineRecharge not found",
-          });
+        return res.status(404).json({
+          success: false,
+          message: "ApproveOfflineRecharge not found",
+        });
       }
 
-      return res
-        .status(200)
-        .json({
-          success: true,
-          message: "updating ApproveOfflineRecharge successfully",
-        });
+      return res.status(200).json({
+        success: true,
+        message: "updating ApproveOfflineRecharge successfully",
+      });
     });
   } catch (error) {
     console.error("Unexpected error:", error);
@@ -2013,12 +1967,10 @@ const rejectOfflineRecharge = (req, res) => {
     db.query(sql, values, (error, results) => {
       if (error) {
         console.error("Error updating rejectOfflineRecharge:", error);
-        return res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to updating rejectOfflineRecharge",
-          });
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating rejectOfflineRecharge",
+        });
       }
 
       if (results.affectedRows === 0) {
@@ -2027,12 +1979,10 @@ const rejectOfflineRecharge = (req, res) => {
           .json({ success: false, message: "rejectOfflineRecharge not found" });
       }
 
-      return res
-        .status(200)
-        .json({
-          success: true,
-          message: "updating rejectOfflineRecharge successfully",
-        });
+      return res.status(200).json({
+        success: true,
+        message: "updating rejectOfflineRecharge successfully",
+      });
     });
   } catch (error) {
     console.error("Unexpected error:", error);
@@ -2095,29 +2045,23 @@ const ApproveOfflineDTHConnection = (req, res) => {
     db.query(sql, values, (error, results) => {
       if (error) {
         console.error("Error updating ApproveOfflineDTHConnection:", error);
-        return res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to updating ApproveOfflineDTHConnection",
-          });
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating ApproveOfflineDTHConnection",
+        });
       }
 
       if (results.affectedRows === 0) {
-        return res
-          .status(404)
-          .json({
-            success: false,
-            message: "ApproveOfflineDTHConnection not found",
-          });
+        return res.status(404).json({
+          success: false,
+          message: "ApproveOfflineDTHConnection not found",
+        });
       }
 
-      return res
-        .status(200)
-        .json({
-          success: true,
-          message: "updating ApproveOfflineDTHConnection successfully",
-        });
+      return res.status(200).json({
+        success: true,
+        message: "updating ApproveOfflineDTHConnection successfully",
+      });
     });
   } catch (error) {
     console.error("Unexpected error:", error);
@@ -2140,29 +2084,23 @@ const rejectOfflineDTHConnection = (req, res) => {
     db.query(sql, values, (error, results) => {
       if (error) {
         console.error("Error updating rejectOfflineDTHConnection:", error);
-        return res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to updating rejectOfflineDTHConnection",
-          });
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating rejectOfflineDTHConnection",
+        });
       }
 
       if (results.affectedRows === 0) {
-        return res
-          .status(404)
-          .json({
-            success: false,
-            message: "rejectOfflineDTHConnection not found",
-          });
+        return res.status(404).json({
+          success: false,
+          message: "rejectOfflineDTHConnection not found",
+        });
       }
 
-      return res
-        .status(200)
-        .json({
-          success: true,
-          message: "updating rejectOfflineDTHConnection successfully",
-        });
+      return res.status(200).json({
+        success: true,
+        message: "updating rejectOfflineDTHConnection successfully",
+      });
     });
   } catch (error) {
     console.error("Unexpected error:", error);
@@ -2176,7 +2114,6 @@ const getWalletWithdrawRequests = (req, res) => {
   try {
     const sql = `SELECT * FROM user_wallet_withdraw_request ORDER BY id DESC`;
     // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
-    
 
     db.query(sql, (err, result) => {
       if (err) {
@@ -2202,10 +2139,255 @@ const getWalletWithdrawRequests = (req, res) => {
       }
     });
   } catch (error) {
-    console.error("Error fetching getWalletWithdrawRequests from MySQL:", error);
+    console.error(
+      "Error fetching getWalletWithdrawRequests from MySQL:",
+      error
+    );
     return res.status(500).json({
       success: false,
       message: "Error in fetching getWalletWithdrawRequests",
+      error: error.message,
+    });
+  }
+};
+
+// const ApproveWalletWithdrawRequests = (req, res) => {
+//   try {
+//     const { order_id, remark, Transaction_Id, status } = req.body;
+
+//     const process_date = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+//     // SQL query to update the package details
+//     const sql = `UPDATE user_wallet_withdraw_request SET remark = ? , Transaction_Id = ?, process_date = ?,  status = ? WHERE order_id = ?`;
+
+//     const values = [remark, Transaction_Id,process_date,status, order_id];
+
+//     db.query(sql, values, (error, results) => {
+//       if (error) {
+//         console.error("Error updating Approve Wallet Withdraw Request:", error);
+//         return res
+//           .status(500)
+//           .json({
+//             success: false,
+//             error: "Failed to updating Approve Wallet Withdraw Request",
+//           });
+//       }
+
+//       if (results.affectedRows === 0) {
+//         return res
+//           .status(404)
+//           .json({
+//             success: false,
+//             message: "Approve Wallet Withdraw Request not found",
+//           });
+//       }
+
+//       return res
+//         .status(200)
+//         .json({
+//           success: true,
+//           message: "updating Approve Wallet Withdraw Request successfully",
+//         });
+//     });
+//   } catch (error) {
+//     console.error("Unexpected error:", error);
+//     return res
+//       .status(500)
+//       .json({ success: false, error: "An unexpected error occurred" });
+//   }
+// };
+
+const getPendingWalletWithdrawRequests = (req, res) => {
+  try {
+    const sql = `SELECT * FROM user_wallet_withdraw_request WHERE status = 'Pending' ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getWalletWithdrawRequests from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getWalletWithdrawRequests" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getWalletWithdrawRequests found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getWalletWithdrawRequests fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error(
+      "Error fetching getWalletWithdrawRequests from MySQL:",
+      error
+    );
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getWalletWithdrawRequests",
+      error: error.message,
+    });
+  }
+};
+
+const ApproveWalletWithdrawRequests = (req, res) => {
+  try {
+    const { order_id, remark, Transaction_Id, status } = req.body;
+    const process_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the user_wallet_withdraw_request table
+    const sql1 = `UPDATE user_wallet_withdraw_request SET remark = ?, Transaction_Id = ?, process_date = ?, status = ? WHERE order_id = ?`;
+    const values1 = [remark, Transaction_Id, process_date, status, order_id];
+
+    db.query(sql1, values1, (error, results) => {
+      if (error) {
+        console.error("Error updating Approve Wallet Withdraw Request:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to update Approve Wallet Withdraw Request",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "Wallet Withdraw Request not found",
+        });
+      }
+
+      // SQL query to update the second table
+      const sql2 = `UPDATE user_wallet SET Transaction_Id = ?, 	Transaction_details = ? , status = ? WHERE Order_Id = ?`;
+      const values2 = [Transaction_Id, remark, status, order_id];
+
+      db.query(sql2, values2, (error, results) => {
+        if (error) {
+          console.error("Error updating user_wallet:", error);
+          return res.status(500).json({
+            success: false,
+            error: "Failed to update the user_wallet",
+          });
+        }
+
+        return res.status(200).json({
+          success: true,
+          message:
+            "Approve Wallet Withdraw Request updated successfully in both tables",
+        });
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const rejectWalletWithdrawRequests = (req, res) => {
+  try {
+    const { order_id, remark, status } = req.body;
+    const process_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the user_wallet_withdraw_request table
+    const sql1 = `UPDATE user_wallet_withdraw_request SET remark = ?, process_date = ?, status = ? WHERE order_id = ?`;
+    const values1 = [remark, process_date, status, order_id];
+
+    db.query(sql1, values1, (error, results) => {
+      if (error) {
+        console.error("Error updating Reject Wallet Withdraw Request:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to update Reject Wallet Withdraw Request",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "Wallet Withdraw Request not found",
+        });
+      }
+
+      // SQL query to update the second table
+      const sql2 = `UPDATE user_wallet SET Transaction_details = ? , status = ? WHERE Order_Id = ?`;
+      const values2 = [remark, status, order_id];
+
+      db.query(sql2, values2, (error, results) => {
+        if (error) {
+          console.error("Error updating user_wallet:", error);
+          return res.status(500).json({
+            success: false,
+            error: "Failed to update the user_wallet",
+          });
+        }
+
+        return res.status(200).json({
+          success: true,
+          message:
+            "Reject Wallet Withdraw Request updated successfully in both tables",
+        });
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const getWalletTransactions = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM user_wallet ORDER BY wid DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM user_wallet c LEFT JOIN userprofile u  ON c.userId = u.UserId ORDER BY wid DESC`;
+    const sql = `
+  SELECT c.*, u.UserName, u.role, u.ContactNo, u.Email 
+  FROM user_wallet c 
+  LEFT JOIN userprofile u 
+  ON c.userId = u.UserId COLLATE utf8mb4_unicode_ci 
+  ORDER BY wid DESC
+`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getWalletTransactions from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getWalletTransactions" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getWalletTransactions found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getWalletTransactions fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getWalletTransactions from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getWalletTransactions",
       error: error.message,
     });
   }
@@ -2234,8 +2416,6 @@ module.exports = {
   complainGetData,
   resolveComplaint,
 
-
-  
   getApplyOfflineForm,
   ApproveOfflineForm,
   rejectOfflineForm,
@@ -2255,6 +2435,9 @@ module.exports = {
   ApproveOfflineDTHConnection,
   rejectOfflineDTHConnection,
 
-
-  getWalletWithdrawRequests
+  getWalletWithdrawRequests,
+  getPendingWalletWithdrawRequests,
+  ApproveWalletWithdrawRequests,
+  rejectWalletWithdrawRequests,
+  getWalletTransactions,
 };

@@ -1,22 +1,442 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { MdOutlineFormatListNumbered } from "react-icons/md";
-import { FaMobileAlt } from "react-icons/fa";
+import { FaMobileAlt,FaRupeeSign  } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
-import Dropdown from 'react-bootstrap/Dropdown';
+import axios from "axios";
+import ReactPaginate from "react-paginate";
+import { Dropdown,Modal, Spinner } from "react-bootstrap";
+import { CiViewList } from "react-icons/ci";
+import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
+import Swal from "sweetalert2";
+import { MdGrid3X3 } from "react-icons/md";
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
+
+
+
+//  approve model component start//
+const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
+  const [loading, setLoading] = useState(false);
+
+  const [formData, setFormData] = useState({
+    order_id: item.order_id,
+    remark : "",
+    Transaction_Id : "",
+    status : "Approve"
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+  
+
+  const handlesubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const response = await axios.put(
+        "http://localhost:7777/api/auth/superAdmin/ApproveWalletWithdrawRequests",
+        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        formData
+      );
+      console.log(response);
+      setLoading(false);
+      if (response.data.success) {
+        Swal.fire({
+          icon: "success",
+          title: "Approve Successfully",
+        });
+        setShowApproveModel(false);
+        setIsRefresh((value) => !value);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "An error occurred during the process. Please try again.",
+        });
+      }
+    } catch (error) {
+      console.error("There was an error submitting the form!", error);
+      setLoading(false);
+      Swal.fire({
+        icon: "error",
+        title: "An error occurred during the process. Please try again.",
+      });
+    }
+  };
+  return (
+    <>
+      <div>
+        
+          <form onSubmit={handlesubmit}>
+            <div className="">
+              <label for="name" class="form-label">
+                Order Id
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <MdGrid3X3 />
+                </span>
+                <input
+                  type="text"
+                  name="package_name"
+                  class="form-control"
+                  placeholder="Enter Package Name"
+                  value={item.order_id}
+                  onChange={handleChange}
+                  disabled
+                  required
+                />
+              </div>
+            </div>
+            <div className="mt-3">
+              <label for="name" class="form-label">
+                User Name
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <MdGrid3X3 />
+                </span>
+                <input
+                  type="text"
+                  name="package_name"
+                  class="form-control"
+                  placeholder="Enter Package Name"
+                  value={item.userName}
+                  onChange={handleChange}
+                  disabled
+                  required
+                />
+              </div>
+            </div>
+            <div className="mt-3">
+              <label for="name" class="form-label">
+                Amount
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <MdGrid3X3 />
+                </span>
+                <input
+                  type="text"
+                  name="package_name"
+                  class="form-control"
+                  placeholder="Enter Package Name"
+                  value={item.amount}
+                  onChange={handleChange}
+                  disabled
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="mt-3">
+              <label for="name" class="form-label">
+                Enter Transaction ID/UTR No.
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <MdGrid3X3 />
+                </span>
+                <input
+                  type="text"
+                  name="Transaction_Id"
+                  class="form-control"
+                  placeholder="Enter Transaction ID/UTR No."
+                  value={formData.Transaction_Id}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+          
+            <div className="mt-3">
+              <label for="name" class="form-label">
+                Enter Remark
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <MdGrid3X3 />
+                </span>
+                <input
+                  type="text"
+                  name="remark"
+                  class="form-control"
+                  placeholder="Enter Remark"
+                  value={formData.remark}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+           
+
+            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+              <div className="text-center  m-5">
+                <button type="submit" className="btn p-2" disabled={loading}>
+                  {loading ? "Loading..." : "Submit"}
+                </button>
+              </div>
+            </div>
+          </form>
+      </div>
+    </>
+  );
+};
+
+
+//  approve model component end//
+
+
+//  reject model component start//
+const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
+const [loading, setLoading] = useState(false);
+
+const [formData, setFormData] = useState({
+  order_id: item.order_id,
+    remark : "",
+    status : "Reject"
+});
+
+const handleChange = (e) => {
+  setFormData({
+    ...formData,
+    [e.target.name]: e.target.value,
+  });
+};
+
+
+const handlesubmit = async (e) => {
+  e.preventDefault();
+  try {
+    setLoading(true);
+    const response = await axios.put(
+      "http://localhost:7777/api/auth/superAdmin/rejectWalletWithdrawRequests",
+      // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+      formData
+    );
+    console.log(response);
+    setLoading(false);
+    if (response.data.success) {
+      Swal.fire({
+        icon: "success",
+        title: "Reject Form Successfully",
+      });
+      setShowRejectModel(false);
+      setIsRefresh((value) => !value);
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "An error occurred during the process. Please try again.",
+      });
+    }
+  } catch (error) {
+    console.error("There was an error submitting the form!", error);
+    setLoading(false);
+    Swal.fire({
+      icon: "error",
+      title: "An error occurred during the process. Please try again.",
+    });
+  }
+};
+return (
+  <>
+    <div>
+      
+        <form onSubmit={handlesubmit}>
+          <div className="">
+            <label for="name" class="form-label">
+              Order Id
+            </label>
+            <div class="input-group flex-nowrap">
+              <span class="input-group-text" id="addon-wrapping">
+                {" "}
+                <MdGrid3X3 />
+              </span>
+              <input
+                type="text"
+                name="package_name"
+                class="form-control"
+                placeholder="Enter Package Name"
+                value={item.order_id}
+                onChange={handleChange}
+                disabled
+                required
+              />
+            </div>
+          </div>
+
+          <div className="mt-3">
+              <label for="name" class="form-label">
+                User Name
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <MdGrid3X3 />
+                </span>
+                <input
+                  type="text"
+                  name="package_name"
+                  class="form-control"
+                  placeholder="Enter Package Name"
+                  value={item.userName}
+                  onChange={handleChange}
+                  disabled
+                  required
+                />
+              </div>
+            </div>
+            <div className="mt-3">
+              <label for="name" class="form-label">
+                Amount
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <MdGrid3X3 />
+                </span>
+                <input
+                  type="text"
+                  name="package_name"
+                  class="form-control"
+                  placeholder="Enter Package Name"
+                  value={item.amount}
+                  onChange={handleChange}
+                  disabled
+                  required
+                />
+              </div>
+            </div>
+
+          
+            <div className="mt-3">
+              <label for="name" class="form-label">
+                Enter Remark
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <MdGrid3X3 />
+                </span>
+                <input
+                  type="text"
+                  name="remark"
+                  class="form-control"
+                  placeholder="Enter Remark"
+                  value={formData.remark}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+        
+         
+         
+
+          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <div className="text-center  m-5">
+              <button type="submit" className="btn p-2" disabled={loading}>
+                {loading ? "Loading..." : "Submit"}
+              </button>
+            </div>
+          </div>
+        </form>
+    </div>
+  </>
+);
+};
+
+
+//  reject model component end//
+
 
 
 const SAWalletWithdrawRequests = () => {
+     
+  const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [keyword, setKeyword] = useState("");
+  const complaintsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(0);
+  const [formStatus, setFormStatus] = useState(""); // For user type filter
+  const [ShowApproveModel, setShowApproveModel] = useState(false);
+  const [ShowRejectModel, setShowRejectModel] = useState(false);
+  const [isRefresh, setIsRefresh] = useState(false);
+  const [selectedItem,setSelectedItem] = useState("")
+  const [fromDate, setFromDate] = useState(""); // From date filter
+  const [toDate, setToDate] = useState(""); // To date filter
 
-    const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const fetchOfflineForm = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "http://localhost:7777/api/auth/superAdmin/getPendingWalletWithdrawRequests"
+      );
+      setUsers(data.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchOfflineForm();
+  }, []);
+
+  useEffect(() => {
+    fetchOfflineForm();
+  }, [isRefresh]);
+
+  const filteredItems = users.filter(
+    (row) =>{ 
+      const matchesKeyword =  (row?.user_id &&
+        row.user_id.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.userName && row.userName.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.userPhone	 &&
+          row.userPhone	.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+        (row?.userEmail &&
+          row.userEmail.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+          (row?.order_id &&
+            row.order_id.toLowerCase().includes(keyword.trim().toLowerCase()))
+           
+          // const matchesType = !formStatus || formStatus === "---Select Form Status---" || row.status === formStatus;
+          // return matchesKeyword && matchesType ;
+          const matchesDate =
+      (!fromDate || new Date(row.created_at).toISOString().split("T")[0] >= new Date(fromDate).toISOString().split("T")[0] ) &&
+      (!toDate || new Date(row.created_at).toISOString().split("T")[0]  <= new Date(toDate).toISOString().split("T")[0] );
+      console.log(matchesKeyword)
+          return matchesKeyword && matchesDate;
+          
+        }
+       
+  );
+
+  const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
+
+  const filterPagination = () => {
+    const startIndex = currentPage * complaintsPerPage;
+    const endIndex = startIndex + complaintsPerPage;
+    return filteredItems?.slice(startIndex, endIndex);
+  };
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
+  const showApiData = filterPagination();
+
+  console.log(showApiData);
+   
 
     return (
         <>
@@ -54,25 +474,54 @@ const SAWalletWithdrawRequests = () => {
                                     <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                                         <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
                                             <div className="row d-flex flex-column g-4">
-
-                                                <div className="d-flex flex-column flex-md-row gap-3">
-                                                    <div className="col-12 col-md-4 col-lg-3">
+                                            <div className="d-flex flex-column flex-md-row gap-3">
+                                                <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="fromDate" className="form-label">From</label>
-                                                        <input id="fromDate" className="form-control" type="date" />
+                                                        <input id="fromDate" className="form-control" type="date"  value={fromDate}
+                              onChange={(e) => setFromDate(e.target.value)}/>
                                                     </div>
                                                     <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="toDate" className="form-label">To</label>
-                                                        <input id="toDate" className="form-control " type="date" />
+                                                        <input id="toDate" className="form-control " type="date" value={toDate}
+                              onChange={(e) => setToDate(e.target.value)}/>
                                                     </div>
-                                                    <div className="d-flex align-items-end">
+                                                </div>
+
+                                                <div className="d-flex flex-column flex-xl-row gap-3">
+
+                                                <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                                                        {/* <label for="fromDate" className="form-label">From</label> */}
+                                                        <input id="fromDate" 
+                                                        className="form-control"
+                                                         type="search"
+                                                         placeholder="Enter User Name/User Id/Mobile/Email Id/Order Id"
+                                                         value={keyword}
+                              onChange={(e) => setKeyword(e.target.value)}
+                                                         />
+                                                    </div>
+                                                    
+                                                   
+                                                    {/* <div className="d-flex align-items-end">
                                                         <button type="button" className="btn btn-primary button">Search</button>
-                                                    </div>
+                                                    </div> */}
 
                                                 </div>
+                                              
+                                            
 
 
                                                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                                     <div class="table-responsive">
+                                                    {loading  ? ( 
+                                                          <div className="d-flex justify-content-center">
+                                                               <Spinner animation="border" role="status">
+                                                               <span className="visually-hidden ">Loading...</span>
+                                                             </Spinner>
+                                                             </div>
+                                                        )
+                                                    :
+                                                    (
+                                                        <>
                                                         <table class="table table-striped">
                                                             <thead className="table-dark">
                                                                 <tr>
@@ -83,77 +532,224 @@ const SAWalletWithdrawRequests = () => {
                                                                     <th scope="col">User Id</th>
                                                                     <th scope="col">User Name</th>
                                                                     <th scope="col">User Role</th>
+                                                                    <th scope="col">User Mobile</th>
+                                                                    <th scope="col">User Email</th>
                                                                     <th scope="col">Withdraw Reason</th>
                                                                     <th scope="col">A/c Holder Name</th>
                                                                     <th scope="col">Bank Account Number</th>
                                                                     <th scope="col">IFSC Code</th>
                                                                     <th scope="col">Bank Name</th>
-
+                                                                    <th scope="col">Remark</th>
                                                                     <th scope="col">Status</th>
                                                                     <th scope="col">Process Date</th>
                                                                     <th scope="col">Action</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr>
-                                                                    <th scope="row">1</th>
-                                                                    <td>23/05/2024 14:35:58</td>
-                                                                    <td>465484654</td>
-                                                                    <td>10000</td>
-                                                                    {/* <td>100.00</td> */}
-                                                                    <td>Ashi1234</td>
-                                                                    <td>Ashish</td>
-                                                                    <td>White lable</td>
-                                                                    <td>Money Problem</td>
-                                                                    <td>Mohit Sahu</td>
-                                                                    <td>898989898989</td>
-                                                                    <td>sbin0001503</td>
-                                                                    <td>sbi</td>
-                                                                    <td>SUCCESS</td>
-                                                                    <td>24/05/2024 14:35:58</td>
-                                                                    <td> <DropdownButton id="dropdown-basic-button" title="Action">
-                                                                        <Dropdown.Item href="#/action-1" onClick={handleShow}>Approve</Dropdown.Item>
-                                                                        <Dropdown.Item href="#/action-2">Reject</Dropdown.Item>
-                                                                       
-                                                                    </DropdownButton></td>
-                                                                </tr>
-                                                                <tr>
-                                                                <th scope="row">2</th>
-                                                                <td>23/05/2024 14:35:58</td>
-                                                                    <td>465484654</td>
-                                                                    <td>10000</td>
-                                                                    {/* <td>100.00</td> */}
-                                                                    <td>Ashi1234</td>
-                                                                    <td>Ashish</td>
-                                                                    <td>White lable</td>
-                                                                    <td>Money Problem</td>
-                                                                    <td>Mohit Sahu</td>
-                                                                    <td>898989898989</td>
-                                                                    <td>sbin0001503</td>
-                                                                    <td>sbi</td>
-                                                                    <td>SUCCESS</td>
-                                                                    <td>24/05/2024 14:35:58</td>
-                                                                    <td> <DropdownButton id="dropdown-basic-button" title="Action">
-                                                                        <Dropdown.Item href="#/action-1" onClick={handleShow}>Approve</Dropdown.Item>
-                                                                        <Dropdown.Item href="#/action-2">Reject</Dropdown.Item>
-                                                                       
-                                                                    </DropdownButton></td>
-                                                                </tr>
+                                                            
+                                                            {showApiData && showApiData.length > 0 ? (
+                                        showApiData?.map((item, index) => (
+                                          <tr key={index}>
+                                          <th scope="row">{index + 1}</th>
+                                          <td>{item.created_at}</td>
+                                          <td>{item.order_id}</td>
+                                          <td>{item.amount}</td>
+                                          <td>{item.user_id}</td>
+                                          <td>{item.userName}</td>
+                                          <td>{item.userRole}</td>
+                                          <td>{item.userPhone}</td>
+                                          <td>{item.userEmail}</td>
+                                          <td>{item.withdrawReason}</td>
+                                          <td>{item.bankholder_name}</td>
+                                          <td>{item.bankaccount_number}</td>
+                                          <td>{item.IFSC_code}</td>
+                                          <td>{item.bank_name}</td>
+                                          <td>{item.remark}</td>
+                                          <td>{item.status}</td>
+                                         
+                                          <td>{item.process_date}</td>
+                                         
+                                          <td>
+                                            { (item.status === "Pending") && 
+                                              <Dropdown>
+                                                <Dropdown.Toggle
+                                                  variant="success"
+                                                  // id={`dropdown-${user.id}`}
+                                                  as="span" style={{ border: 'none', background: 'none', cursor: 'pointer' }}
+                                                  className="custom-dropdown-toggle"
+                                                >
+                                                 <PiDotsThreeOutlineVerticalBold />
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu>
+                                                 
+                                                    <Dropdown.Item
+                                                    onClick={() => {
+                                                      // setSelectedUser(user);
+                                                      setShowApproveModel(true)
+                                                      setSelectedItem(item)
+                                                    //   deactivateUser(user.UserId)
+                                                    }}
+                                                  >
+                                                    <span className="">
+                                                      {" "}
+                                                      <CiViewList />
+                                                    </span>{" "}
+                                                    Approve
+                                                  </Dropdown.Item>
+                                                  {/* <Dropdown.Item
+                                                    onClick={() => {
+                                                      // setSelectedUser(user);
+                                                      setShowRejectModel(true)
+                                                      setSelectedItem(item)
+                                                    //   deactivateUser(user.UserId)
+                                                    }}
+                                                  >
+                                                    <span className="">
+                                                      {" "}
+                                                      <CiViewList />
+                                                    </span>{" "}
+                                                    Reject
+                                                  </Dropdown.Item> */}
+                                                
+                                             
+                                                </Dropdown.Menu>
+                                              </Dropdown>
+}
+
+                                            </td>
+                                        </tr>
 
 
+//                                           <tr key={user.id}>
+//                                             {/* <th scope="row">{index + 1}</th> */}
+//                                             <th scope="row">{user.id}</th>
+//                                             <td>{user.createdAt}</td>
+//                                             <td>{user.complainType}</td>
+//                                             <td>{user.mobileNo}</td>
+//                                             <td>{user.remark}</td>
+//                                             <td>{user.transactionNo}</td>
+    
+//                                             <td>{user.userID}</td>
+    
+//                                             <td>{user.UserName}</td>
+//                                             <td>{user.role}</td>
+//                                             <td>{user.Email}</td>
+//                                             <td>{user.ContactNo}</td>
+                                        
+    
+//                                             {/* <td>
+//                                             {item.attached_kyc
+//                                                 .split(",")
+//                                                 .map((kycurl, kycindx) => (
+//                                                   <div key={kycindx}>
+//                                                     <a
+//                                                       href={kycurl}
+//                                                       target="_blank"
+//                                                       rel="noopener noreferrer"
+//                                                     >
+//                                                       View KYC {kycindx + 1}
+//                                                     </a>
+//                                                   </div>
+//                                                 ))}
+//                                           </td> */}
+//                                             <td>
+//                                               <a
+//                                                 href={user.complainFile}
+//                                                 target="_blank"
+//                                                 rel="noopener noreferrer"
+//                                               >
+//                                                 View
+//                                               </a>
+//                                             </td>
+//                                             {/* <td>
+//                                               <a
+//                                                 href={user.AadharBack}
+//                                                 target="_blank"
+//                                                 rel="noopener noreferrer"
+//                                               >
+//                                                 View
+//                                               </a>
+//                                             </td>
+//                                             <td>
+//                                               <a
+//                                                 href={user.PanCardFront}
+//                                                 target="_blank"
+//                                                 rel="noopener noreferrer"
+//                                               >
+//                                                 View
+//                                               </a>
+//                                             </td> */}
+                                           
+//                                             {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
+//                                             {/* <td>{user?.Note}</td> */}
+//                                             <td>{user.response}</td>
+//                                             <td>{user.status}</td>
+//                                             <td>
+//                                             { user.status === "Pending" && 
+//                                               <Dropdown>
+//                                                 <Dropdown.Toggle
+//                                                   variant="success"
+//                                                   // id={`dropdown-${user.id}`}
+//                                                   as="span" style={{ border: 'none', background: 'none', cursor: 'pointer' }}
+//                                                   className="custom-dropdown-toggle"
+//                                                 >
+//                                                  <PiDotsThreeOutlineVerticalBold />
+//                                                 </Dropdown.Toggle>
+//                                                 <Dropdown.Menu>
+                                                 
+//                                                     <Dropdown.Item
+//                                                     onClick={() => {
+//                                                       // setSelectedUser(user);
+//                                                       setShowResolveModel(true)
+//                                                       setSelectedComplaint(user)
+//                                                     //   deactivateUser(user.UserId)
+//                                                     }}
+//                                                   >
+//                                                     <span className="">
+//                                                       {" "}
+//                                                       <CiViewList />
+//                                                     </span>{" "}
+//                                                     Mark Resolve
+//                                                   </Dropdown.Item>
+                                                  
+                                                
+                                             
+//                                                 </Dropdown.Menu>
+//                                               </Dropdown>
+// }
+//                                             </td>
+                                            
+//                                           </tr>
+                                        ))
+                                      ) : (
+                                        <tr>
+                                          <td colSpan="13">No data available</td>{" "}
+                                          {/* Updated colSpan to match table columns */}
+                                        </tr>
+                                      )}
+                                                                
+                                                        
+    
                                                             </tbody>
                                                         </table>
+                                                        
+                                                        <PaginationContainer>
+                                                        <ReactPaginate
+                                                          previousLabel={"previous"}
+                                                          nextLabel={"next"}
+                                                          breakLabel={"..."}
+                                                          pageCount={totalPages}
+                                                          marginPagesDisplayed={2}
+                                                          pageRangeDisplayed={5}
+                                                          onPageChange={handlePageChange}
+                                                          containerClassName={"pagination"}
+                                                          activeClassName={"active"}
+                                                        />
+                                                      </PaginationContainer>
+                                                        </>
+                                                    )}
                                                     </div>
-                                                    <div className="float-end">
-                                                        <nav aria-label="Page navigation example">
-                                                            <ul className="pagination">
-                                                                <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-                                                                <li className="page-item"><a className="page-link" href="#">1</a></li>
-
-                                                                <li className="page-item"><a className="page-link" href="#">Next</a></li>
-                                                            </ul>
-                                                        </nav>
-                                                    </div>
+                                                  
                                                 </div>
                                             </div>
                                         </div>
@@ -166,35 +762,41 @@ const SAWalletWithdrawRequests = () => {
 
 
               {/* Approve model start */}
-                <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Approve Wallet Withdraw Request</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Enter UTR/Txn number</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter UTR/Txn number"
-                autoFocus
-                required
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
           
-          <Button variant="primary" onClick={handleClose}>
-            Submit
-          </Button>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
+              <Modal
+          // size="lg"
+          show={ShowApproveModel}
+          //   fullscreen={true}
+          onHide={() => setShowApproveModel(false)}
+          aria-labelledby="packageDetail-modal-sizes-title-lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="packageDetail-modal-sizes-title-lg">Approve Form</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {selectedItem && <SAApproveModel item={selectedItem} setShowApproveModel={setShowApproveModel}  setIsRefresh={setIsRefresh}/>}
+          </Modal.Body>
+        </Modal>
        {/* Approve model end */}
+
+                {/* Reject Model  start*/}
+
+                <Modal
+          // size="lg"
+          show={ShowRejectModel}
+          //   fullscreen={true}
+          onHide={() => setShowRejectModel(false)}
+          aria-labelledby="packageDetail-modal-sizes-title-lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="packageDetail-modal-sizes-title-lg">Reject Form</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {selectedItem && <SARejectModel item={selectedItem} setShowRejectModel={setShowRejectModel}  setIsRefresh={setIsRefresh}/>}
+          </Modal.Body>
+        </Modal>
+
+        {/*  Reject Model  end*/}
             </Wrapper>
         </>
     );
@@ -229,6 +831,7 @@ const Wrapper = styled.div`
   }
   td{
    font-size: 14px;
+   white-space: nowrap;
    
   }
   @media (min-width: 1025px) and (max-width : 1500px){
@@ -242,5 +845,57 @@ const Wrapper = styled.div`
      
       padding-left: 13rem;
     }
+  }
+  .custom-dropdown-toggle::after {
+  display: none !important;
+}
+`;
+
+
+const PaginationContainer = styled.div`
+  .pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    list-style: none;
+    border-radius: 5px; 
+  }
+
+  .pagination li {
+    margin: 0 5px;
+  }
+
+  .pagination li a {
+    display: block;
+    padding: 8px 16px;
+    border: 1px solid #e6ecf1;
+    color: #007bff;
+    cursor: pointer;
+    /* background-color: #004aad0a; */
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 1px #000;
+  }
+
+  .pagination li.active a {
+    background-color: #004aad;
+    color: white;
+    border: 1px solid #004aad;
+    border-radius: 5px;
+  }
+
+  .pagination li.disabled a {
+    color: white;
+    cursor: not-allowed;
+    border-radius: 5px;
+    background-color: #3a4e69;
+    border: 1px solid #3a4e69;
+  }
+
+  .pagination li a:hover:not(.active) {
+    background-color: #004aad;
+    color: white;
+    border-radius: 5px;
+    border: 1px solid #004aad;
   }
 `;
