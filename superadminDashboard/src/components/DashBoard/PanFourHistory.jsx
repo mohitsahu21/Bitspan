@@ -4,19 +4,24 @@ import styled from "styled-components";
 import { MdFormatListNumberedRtl } from "react-icons/md";
 import { BiHomeAlt } from "react-icons/bi";
 import ReactPaginate from "react-paginate";
+import { useDispatch, useSelector } from "react-redux";
 
 const PanFourHistory = () => {
+  const dispatch = useDispatch();
+  const { currentUser, token } = useSelector((state) => state.user);
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [keyword, setKeyword] = useState("");
   const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
 
+  const userData = currentUser.userId;
+
   const fetchData = async () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/retailer/pan-4.0`
+        `http://localhost:7777/api/auth/retailer/pan-4.0/${userData}`
       );
       setApiData(response.data.data);
       console.log(response.data.data);
@@ -203,7 +208,7 @@ const PanFourHistory = () => {
                                                       target="_blank"
                                                       rel="noopener noreferrer"
                                                     >
-                                                      View KYC {kycindx + 1}
+                                                      View {kycindx + 1}
                                                     </a>
                                                   </div>
                                                 ))
@@ -215,7 +220,7 @@ const PanFourHistory = () => {
                                             href={item.attachment_form}
                                             target="_blank"
                                           >
-                                            View Sign
+                                            View
                                           </a>
                                         </td>
                                         <td>
@@ -224,7 +229,7 @@ const PanFourHistory = () => {
                                             href={item.attachment_signature}
                                             target="_blank"
                                           >
-                                            View Sign
+                                            View
                                           </a>
                                         </td>
                                         <td>
@@ -233,7 +238,7 @@ const PanFourHistory = () => {
                                             href={item.attachment_photo}
                                             target="_blank"
                                           >
-                                            View Sign
+                                            View
                                           </a>
                                         </td>
                                         <td>{item.Charge_Amount}</td>
@@ -241,12 +246,12 @@ const PanFourHistory = () => {
                                           style={{
                                             color:
                                               item.status === "Pending"
-                                                ? "#FFC107" // Yellow/Orange
+                                                ? "#FFC107"
                                                 : item.status === "Reject"
-                                                ? "#DC3545" // Red
+                                                ? "#DC3545"
                                                 : item.status === "Success"
-                                                ? "#28A745" // Green
-                                                : "black", // Default color if none of the statuses match
+                                                ? "#28A745"
+                                                : "black",
                                           }}
                                         >
                                           {item.status}
@@ -370,5 +375,48 @@ const PaginationContainer = styled.div`
     color: white;
     border-radius: 5px;
     border: 1px solid #004aad;
+  }
+
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .pagination {
+      padding: 5px;
+      flex-wrap: wrap;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pagination {
+      padding: 5px;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 4px 8px;
+      font-size: 10px;
+    }
+
+    /* Hide the previous and next labels for extra-small screens */
+    .pagination li:first-child a::before {
+      content: "«";
+      margin-right: 5px;
+    }
+
+    .pagination li:last-child a::after {
+      content: "»";
+      margin-left: 5px;
+    }
   }
 `;

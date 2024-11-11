@@ -538,6 +538,11 @@ const RetailerSidebarData = [
         path: "/E-District-Form",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+      {
+        title: "E-District History",
+        path: "/E-District-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
     ],
   },
   {

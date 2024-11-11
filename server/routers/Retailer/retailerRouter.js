@@ -92,7 +92,7 @@ router.post(
 
 router.get("/nsdl-trans-new-requst", nsdlTransactionNewRequest);
 router.get("/nsdl-trans-correction", nsdlTransactionCorrection);
-router.get("/pan-4.0", panFourZeroGetAPI);
+router.get("/pan-4.0/:user_id", panFourZeroGetAPI);
 
 const complainDataStorage = multer.diskStorage({
   destination: (req, file, cb) => {

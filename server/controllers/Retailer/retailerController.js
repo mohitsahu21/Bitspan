@@ -540,14 +540,17 @@ const panFromData = (req, res) => {
       ? `${domain}/panUploads/${req.files.attachment_signature[0].filename}`
       : null;
 
+  const orderId = `PANZ${Date.now()}`;
+
   const sql = `INSERT INTO pan_offline (
-    application_type, select_title, name, father_name, mother_name, dob, gender, office_address, aadhar_details,
+    order_id, application_type, select_title, name, father_name, mother_name, dob, gender, office_address, aadhar_details,
     Address_Communication_OfficeResident, alternative_communication_Address, mobile_no, email_id, pin_code, state,
     Change_Request, documentUpload, attachment_form, attachment_signature, attachment_photo, Charge_Amount, user_id,
     status, note, created_at
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
   const values = [
+    orderId,
     application_type,
     select_title,
     name,
@@ -614,9 +617,10 @@ const nsdlTransactionCorrection = (req, res) => {
 };
 
 const panFourZeroGetAPI = (req, res) => {
-  const query = `SELECT * FROM pan_offline ORDER BY id DESC`;
+  const applicationId = req.params.user_id;
+  const query = `SELECT * FROM pan_offline WHERE user_id = ? ORDER BY id DESC`;
 
-  db.query(query, (err, result) => {
+  db.query(query, [applicationId], (err, result) => {
     if (err) {
       console.error("Database error:", err);
       return res.status(400).json({ status: "Failure", error: err.message });

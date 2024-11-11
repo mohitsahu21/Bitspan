@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { FaMobileAlt } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
@@ -6,8 +6,15 @@ import { IoMail, IoPerson } from "react-icons/io5";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { Modal, Button } from "react-bootstrap";
 
 const PanCardFour = () => {
+  const dispatch = useDispatch();
+  const { currentUser, token } = useSelector((state) => state.user);
+  const [showPinModal, setShowPinModal] = useState(false);
+  const [pin, setPin] = useState(["", "", "", ""]);
+  const pinRefs = useRef([]);
   const [formData, setFormData] = useState({
     application_type: "",
     select_title: "",
@@ -26,7 +33,7 @@ const PanCardFour = () => {
     state: "",
     Change_Request: "",
     Charge_Amount: "",
-    user_id: "",
+    user_id: currentUser.userId,
     status: "Pending",
   });
 
@@ -37,7 +44,6 @@ const PanCardFour = () => {
     attachment_signature: null,
   });
 
-  // Handle file inputs
   const handleFileChange = (e) => {
     const { name, files } = e.target;
 
@@ -55,7 +61,6 @@ const PanCardFour = () => {
     }
   };
 
-  // Handle form data input
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -67,16 +72,13 @@ const PanCardFour = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Create FormData to send files and form data together
     const form = new FormData();
 
-    // Add form data to FormData
     Object.keys(formData).forEach((key) => {
       form.append(key, formData[key]);
     });
 
-    // Add multiple files for documentUpload
-    if (files.documentUpload) {
+    if (Array.isArray(files.documentUpload)) {
       files.documentUpload.forEach((file) => {
         form.append("documentUpload", file);
       });
@@ -97,7 +99,8 @@ const PanCardFour = () => {
 
     try {
       const response = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/pan-4.0",
+        // "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/pan-4.0",
+        "http://localhost:7777/api/auth/retailer/pan-4.0-form",
         form,
         {
           headers: {
@@ -127,24 +130,82 @@ const PanCardFour = () => {
         state: "",
         Change_Request: "",
         Charge_Amount: "",
-        user_id: "",
+        user_id: currentUser.userId,
         status: "Pending",
       });
-      setFiles({
-        documentUpload: null,
-        attachment_form: null,
-        attachment_photo: null,
-        attachment_signature: null,
-      });
+      // setFiles({
+      //   documentUpload: null,
+      //   attachment_form: null,
+      //   attachment_photo: null,
+      //   attachment_signature: null,
+      // });
 
-      // Reset file input fields manually
-      document.getElementById("documentUpload").value = "";
-      document.getElementById("attachment_form").value = "";
-      document.getElementById("attachment_photo").value = "";
-      document.getElementById("attachment_signature").value = "";
+      // // Reset file input fields manually
+      // document.getElementById("documentUpload").value = "";
+      // document.getElementById("attachment_form").value = "";
+      // document.getElementById("attachment_photo").value = "";
+      // document.getElementById("attachment_signature").value = "";
     } catch (error) {
       console.error("Error submitting form:", error);
     }
+  };
+
+  // Pin Verification Logic **
+
+  const handlePinChange = (index, value) => {
+    if (/^\d?$/.test(value)) {
+      const newPin = [...pin];
+      newPin[index] = value;
+      setPin(newPin);
+
+      // Move to next input if current is filled, move to previous if deleted
+      if (value !== "" && index < pin.length - 1) {
+        pinRefs.current[index + 1].focus();
+      } else if (value === "" && index > 0) {
+        pinRefs.current[index - 1].focus();
+      }
+    }
+  };
+
+  const handleBackspace = (index) => {
+    if (pin[index] === "" && index > 0) {
+      pinRefs.current[index - 1].focus();
+    }
+  };
+
+  const verifyPin = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        { user_id: currentUser.userId || "", pin: pin.join("") }
+      );
+
+      if (response.data.success) {
+        return true;
+      } else {
+        alert(response.data.message);
+        return false;
+      }
+    } catch (error) {
+      console.error("Error verifying PIN:", error);
+      alert("Error verifying PIN");
+      return false;
+    }
+  };
+
+  const handleModalSubmit = async (e) => {
+    const isPinValid = await verifyPin();
+    if (isPinValid) {
+      setShowPinModal(false);
+      handleSubmit(e);
+    } else {
+      setPin(["", "", "", ""]); // Clear the PIN fields on incorrect entry
+    }
+  };
+
+  const openPinModal = (e) => {
+    e.preventDefault();
+    setShowPinModal(true);
   };
 
   return (
@@ -170,7 +231,7 @@ const PanCardFour = () => {
                       <h5 className="text-center m-0 p-3">PAN 4.0</h5>
                     </div>
                   </div>
-                  <form onSubmit={handleSubmit}>
+                  <form onSubmit={openPinModal}>
                     <div className="row">
                       <div className="col-md-6 mb-3">
                         <label htmlFor="applicationType">
@@ -484,6 +545,54 @@ const PanCardFour = () => {
                       </div>
                     </div> */}
                   </form>
+                  <Modal
+                    show={showPinModal}
+                    onHide={() => setShowPinModal(false)}
+                    centered
+                  >
+                    <Modal.Header closeButton>
+                      <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <div className="pin-inputs d-flex justify-content-center">
+                        {pin.map((digit, index) => (
+                          <input
+                            key={index}
+                            ref={(el) => (pinRefs.current[index] = el)}
+                            type="text"
+                            value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
+                            maxLength="1"
+                            onChange={(e) =>
+                              handlePinChange(index, e.target.value)
+                            }
+                            onKeyDown={(e) =>
+                              e.key === "Backspace" && handleBackspace(index)
+                            }
+                            className="pin-digit form-control mx-1"
+                            style={{
+                              width: "50px",
+                              textAlign: "center",
+                              fontSize: "1.5rem",
+                              borderRadius: "8px",
+                              border: "1px solid #ced4da",
+                              boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Button
+                        variant="secondary"
+                        onClick={() => setShowPinModal(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button variant="primary" onClick={handleModalSubmit}>
+                        Verify PIN
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
                 </div>
               </div>
             </div>
