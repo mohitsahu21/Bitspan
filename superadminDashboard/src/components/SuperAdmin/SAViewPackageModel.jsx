@@ -108,7 +108,7 @@ const SAViewPackageModel = ({ packages }) => {
 
 <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Enter Offline E PAN Card Price
+                           Offline E PAN Card Price
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -130,7 +130,7 @@ const SAViewPackageModel = ({ packages }) => {
                       
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Enter Offline P PAN Card Price
+                         Offline P PAN Card Price
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -168,24 +168,7 @@ const SAViewPackageModel = ({ packages }) => {
                         />
                       </div>
                     </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        IRCTC Agent ID Price
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="text"
-                          id="name"
-                          class="form-control"
-                          placeholder="IFSC Code"
-                          value={packages.IRCTC_Agent_ID_Price}
-                        />
-                      </div>
-                    </div>
+                   
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
                         Birth Certificate Price
@@ -294,6 +277,27 @@ const SAViewPackageModel = ({ packages }) => {
                         />
                       </div>
                     </div>
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Udyog Aadhar Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="Udyog_Aadhar_Price"
+                            value={packages.Udyog_Aadhar_Price}
+                            
+                            required
+                          />
+                        </div>
+                      </div>
                    
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" className="form-label">
@@ -406,6 +410,49 @@ const SAViewPackageModel = ({ packages }) => {
                       </div>
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
+                           Non Samagra Income Certificate Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="non_samagra_income_Certificate_Price"
+                            value={packages.non_samagra_income_Certificate_Price}
+                           
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                       Non Samagra Domicile Certificate Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="non_samagra_Domicile_Certificate_Price"
+                            value={packages.non_samagra_Domicile_Certificate_Price}
+                            
+                            required
+                          />
+                        </div>
+                      </div>
+                  
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
                           Verify e-district Certificate Price
                         </label>
                         <div class="input-group flex-nowrap">
@@ -425,24 +472,7 @@ const SAViewPackageModel = ({ packages }) => {
                           />
                         </div>
                       </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Bank ID Price
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="text"
-                          id="name"
-                          class="form-control"
-                          placeholder="IFSC Code"
-                          value={packages.Bank_ID_Price}
-                        />
-                      </div>
-                    </div>
+                 
 
                     {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                             <div className="text-center  mb-5 mt-3">
@@ -450,6 +480,256 @@ const SAViewPackageModel = ({ packages }) => {
                                             </div>
                                         </div> */}
                   </div>
+
+                  <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                      <div className="text-center  my-5">
+                        <h2>Bank Id Price</h2>
+                      </div>
+
+                      
+
+                      
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          IRCTC Agent ID Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="IRCTC_Agent_ID_Price"
+                            value={packages.IRCTC_Agent_ID_Price}
+                           
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                         PayNearBy Bank ID Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="PayNearBy_BankId_Price"
+                            value={packages.PayNearBy_BankId_Price}
+                           
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                           Fino Bank ID Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="Fino_BankId_Price"
+                            value={packages.Fino_BankId_Price}
+                           
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                         Spice Money Bank ID Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="SpiceMoney_BankId_Price"
+                            value={packages.SpiceMoney_BankId_Price}
+                           
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                         Nsdl Bank ID Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="Nsdl_BankId_Price"
+                            value={packages.Nsdl_BankId_Price}
+                           
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                         Ezee pay Bank ID Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="Ezeepay_BankId_Price"
+                            value={packages.Ezeepay_BankId_Price}
+                           
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Religare Digipay Bank ID Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="ReligareDigipay_BankId_Price"
+                            value={packages.ReligareDigipay_BankId_Price}
+                            
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                         Airtel Bank ID Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="Airtel_BankId_Price"
+                            value={packages.Airtel_BankId_Price}
+                            
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                           Payworld Bank ID Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="payworld_BankId_Price"
+                            value={packages.payworld_BankId_Price}
+                           
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                         Anypay Bank ID Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="Anypay_BankId_Price"
+                            value={packages.Anypay_BankId_Price}
+                            
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                         Roinet Bank ID Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="Roinet_BankId_Price"
+                            value={packages.Roinet_BankId_Price}
+                           
+                            required
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div className="text-center  mb-5 mt-3">
+                                                <button className="btn p-2">Change</button>
+                                            </div>
+                                        </div> */}
+                    </div>
+
+
+
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
                     <div className="text-center  my-5">
                       <h2>Offline Services Commission</h2>
@@ -685,6 +965,27 @@ const SAViewPackageModel = ({ packages }) => {
                         />
                       </div>
                     </div>
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Udyog Aadhar Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="Udyog_Aadhar_Commission"
+                            value={packages.Udyog_Aadhar_Commission}
+                          
+                            required
+                          />
+                        </div>
+                      </div>
                     
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
@@ -765,6 +1066,48 @@ const SAViewPackageModel = ({ packages }) => {
                             name="offlineKYC_Domicile_Certificate_Commission"
                             value={packages.offlineKYC_Domicile_Certificate_Commission}
                             
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Non samagra income Certificate Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="non_samagra_income_Certificate_Commission"
+                            value={packages.non_samagra_income_Certificate_Commission}
+                           
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                         Non Samagra Domicile Certificate Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="non_samagra_Domicile_Certificate_Commission"
+                            value={packages.non_samagra_Domicile_Certificate_Commission}
+                            
+                            required
                           />
                         </div>
                       </div>
