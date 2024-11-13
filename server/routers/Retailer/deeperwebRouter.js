@@ -1,6 +1,9 @@
 const express = require("express");
-const { deeperwebBalance, deeperwebRecharge, deeperwebRechargeStatusCheck } = require("../../controllers/Retailer/deeperwebController");
-
+const {
+  deeperwebBalance,
+  deeperwebRecharge,
+  deeperwebRechargeStatusCheck,
+} = require("../../controllers/Retailer/deeperwebController");
 
 const router = express.Router();
 

@@ -989,6 +989,25 @@ const getEdistrictData = (req, res) => {
   });
 };
 
+const getAllRechargeApi = (req, res) => {
+  const selectQuery = `SELECT * FROM apisurl WHERE API_Status = ?`;
+
+  db.query(selectQuery, ["active"], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({
+        status: "Failure",
+        error: "An error occurred while fetching data.",
+      });
+    }
+
+    return res.status(200).json({
+      status: "Success",
+      data: result,
+    });
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -1011,4 +1030,5 @@ module.exports = {
   getSelectedServices,
   getAllBranchId,
   getEdistrictData,
+  getAllRechargeApi,
 };

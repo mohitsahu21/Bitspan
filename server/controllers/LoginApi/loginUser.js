@@ -298,11 +298,14 @@ created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?,
             });
           }
 
-          // Commit the transaction
-          db.commit((commitErr) => {
-            if (commitErr) {
+          // Insert userId and password into the credentials log table
+          const logQuery = `INSERT INTO user_credentials (userId, password, created_at) VALUES (?, ?, ?)`;
+          const logValues = [userId, password, createdAt];
+
+          db.query(logQuery, logValues, (logErr, logResult) => {
+            if (logErr) {
               return db.rollback(() => {
-                console.error("Error committing transaction:", commitErr);
+                console.error("Error logging credentials:", logErr);
                 return res.status(500).json({
                   status: "Failure",
                   message: "Internal server error",
@@ -310,46 +313,59 @@ created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?,
               });
             }
 
-            const transporter = nodemailer.createTransport({
-              service: "gmail",
-              auth: {
-                user: process.env.EMAILSENDER,
-                pass: process.env.EMAILPASSWORD,
-              },
-            });
-
-            const mailOptions = {
-              from: process.env.EMAILSENDER,
-              to: Email,
-              subject: "Your Account Details",
-              html: `
-    <p>Hello ${UserName},</p>
-    <p>Your account has been successfully created.</p>
-    <p>User ID: <span style="color: #333333; font-weight: bold;">${userId}</span></p>
-    <p>Password: <span style="color: #333333; font-weight: bold;">${password}</span></p>
-    <p>Please keep this information secure.</p>
-    <p>Please log in using this ID and password, and complete the KYC process to activate your account.</p>
-    <br>
-    <p>Regards,<br>Bitspan.com</p>
-  `,
-              // text: `Hello ${UserName},\n\nYour account has been successfully created.\n\nUser ID: ${userId}\nPassword: ${password}\n\nPlease keep this information secure.\n\nPlease login using this ID and password, and complete the KYC process to activate your account.\n\nRegards,\nBitspan.com`,
-            };
-
-            transporter.sendMail(mailOptions, (emailErr, info) => {
-              if (emailErr) {
-                console.error("Error sending email:", emailErr);
-                return res.status(500).json({
-                  status: "Failure",
-                  message: "Internal server error",
+            // Commit the transaction
+            db.commit((commitErr) => {
+              if (commitErr) {
+                return db.rollback(() => {
+                  console.error("Error committing transaction:", commitErr);
+                  return res.status(500).json({
+                    status: "Failure",
+                    message: "Internal server error",
+                  });
                 });
               }
 
-              // Respond with success
-              res.json({
-                message: "User registered successfully, email sent",
-                status: "Success",
-                userId,
-                password,
+              const transporter = nodemailer.createTransport({
+                service: "gmail",
+                auth: {
+                  user: process.env.EMAILSENDER,
+                  pass: process.env.EMAILPASSWORD,
+                },
+              });
+
+              const mailOptions = {
+                from: process.env.EMAILSENDER,
+                to: Email,
+                subject: "Your Account Details",
+                html: `
+              <p>Hello ${UserName},</p>
+              <p>Your account has been successfully created.</p>
+              <p>User ID: <span style="color: #333333; font-weight: bold;">${userId}</span></p>
+              <p>Password: <span style="color: #333333; font-weight: bold;">${password}</span></p>
+              <p>Please keep this information secure.</p>
+              <p>Please log in using this ID and password, and complete the KYC process to activate your account.</p>
+              <br>
+              <p>Regards,<br>Bitspan.com</p>
+            `,
+                // text: `Hello ${UserName},\n\nYour account has been successfully created.\n\nUser ID: ${userId}\nPassword: ${password}\n\nPlease keep this information secure.\n\nPlease login using this ID and password, and complete the KYC process to activate your account.\n\nRegards,\nBitspan.com`,
+              };
+
+              transporter.sendMail(mailOptions, (emailErr, info) => {
+                if (emailErr) {
+                  console.error("Error sending email:", emailErr);
+                  return res.status(500).json({
+                    status: "Failure",
+                    message: "Internal server error",
+                  });
+                }
+
+                // Respond with success
+                res.json({
+                  message: "User registered successfully, email sent",
+                  status: "Success",
+                  userId,
+                  password,
+                });
               });
             });
           });
