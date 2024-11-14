@@ -53,6 +53,7 @@ import SABankIdForms from "../components/SuperAdmin/SABankIdForms.jsx";
 import SAEdistrictHistory from "../components/SuperAdmin/SAEdistrictHistory.jsx";
 import SAOfflineRechargeHistory from "../components/SuperAdmin/SAOfflineRechargeHistory.jsx";
 import SAOfflineDthConnection from "../components/SuperAdmin/SAOfflineDthConnection.jsx";
+import SAAddWalletMoneyRequests from "../components/SuperAdmin/SAAddWalletMoneyRequests.jsx";
 
 
 
@@ -79,6 +80,14 @@ const SuperAdminRoutes = () => {
         <Route
           path="wallet-withdraw-requests"
           element={<SAWalletWithdrawRequests />}
+        />
+        <Route
+          path="add-wallet-money-requests"
+          element={<SAAddWalletMoneyRequests />}
+        />
+        <Route
+          path="add-wallet-money-summary"
+          element={<SAAddWalletMoneyRequests />}
         />
         <Route
           path="commision-full-summary"
