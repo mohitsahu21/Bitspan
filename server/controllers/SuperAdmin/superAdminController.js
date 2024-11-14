@@ -2621,6 +2621,287 @@ const rejectWalletAddMoneyRequests = (req, res) => {
   }
 };
 
+const getAllWalletAddMoneyRequests = (req, res) => {
+  try {
+    const sql = `SELECT * FROM user_wallet_add_money_request ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getAllWalletAddMoneyRequests from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getAllWalletAddMoneyRequests" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getAllWalletAddMoneyRequests found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getAllWalletAddMoneyRequests fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error(
+      "Error fetching getAllWalletAddMoneyRequests from MySQL:",
+      error
+    );
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getAllWalletAddMoneyRequests",
+      error: error.message,
+    });
+  }
+};
+
+const getAllApiList = (req, res) => {
+  try {
+    const sql = `SELECT * FROM apisurl`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getAllApiList from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getAllApiList" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getAllApiList found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getAllApiList fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error(
+      "Error fetching getAllApiList from MySQL:",
+      error
+    );
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getAllApiList",
+      error: error.message,
+    });
+  }
+};
+
+const ActiveApi = (req, res) => {
+  try {
+    const { id, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE apisurl SET API_Status = ? WHERE id = ?`;
+
+    const values = [status , id];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating ActiveApi:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating ActiveApi",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "ActiveApi not found",
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "updating ActiveApi successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+const DeactiveApi = (req, res) => {
+  try {
+    const { id, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE apisurl SET API_Status = ? WHERE id = ?`;
+
+    const values = [ status ,id ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating DeactiveApi:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating DeactiveApi",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "DeactiveApi not found",
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "updating DeactiveApi successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const getAllServicesList = (req, res) => {
+  try {
+    const sql = `SELECT * FROM serviceslist`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getAllServicesList from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getAllServicesList" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getAllServicesList found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getAllServicesList fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error(
+      "Error fetching getAllServicesList from MySQL:",
+      error
+    );
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getAllServicesList",
+      error: error.message,
+    });
+  }
+};
+
+const ActiveServices = (req, res) => {
+  try {
+    const { id, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE serviceslist SET status = ? WHERE id = ?`;
+
+    const values = [status , id];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating ActiveServices:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating ActiveServices",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "ActiveServices not found",
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "updating ActiveServices successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+const DeactiveServices = (req, res) => {
+  try {
+    const { id, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE serviceslist SET status = ? WHERE id = ?`;
+
+    const values = [ status ,id ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating DeactiveServices:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating DeactiveServices",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "DeactiveServices not found",
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "updating DeactiveServices successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+
+
 module.exports = {
   addPackage,
   getPackages,
@@ -2670,5 +2951,12 @@ module.exports = {
   getWalletTransactions,
   getPendingWalletAddMoneyRequests,
   ApproveWalletAddMoneyRequests,
-  rejectWalletAddMoneyRequests
+  rejectWalletAddMoneyRequests,
+  getAllWalletAddMoneyRequests,
+  getAllApiList,
+  ActiveApi,
+  DeactiveApi,
+  getAllServicesList,
+  ActiveServices,
+  DeactiveServices
 };

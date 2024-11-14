@@ -35,7 +35,7 @@ const SAActiveApi = ({ complaint, setShowActiveModel, setIsRefresh }) => {
       try {
         setLoading(true);
         const response = await axios.put(
-          "http://localhost:7777/api/auth/superAdmin/ActiveApi",
+          "http://localhost:7777/api/auth/superAdmin/ActiveServices",
           // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
           formData
         );
@@ -44,7 +44,7 @@ const SAActiveApi = ({ complaint, setShowActiveModel, setIsRefresh }) => {
         if (response.data.success) {
           Swal.fire({
             icon: "success",
-            title: "Active API Successfully",
+            title: "Active Service Successfully",
           });
           setShowActiveModel(false);
           setIsRefresh((value) => !value);
@@ -92,7 +92,7 @@ const SAActiveApi = ({ complaint, setShowActiveModel, setIsRefresh }) => {
             
               <div className="mt-3">
                 <label for="name" class="form-label">
-                  API Name
+                  Service Name
                 </label>
                 <div class="input-group flex-nowrap">
                   <span class="input-group-text" id="addon-wrapping">
@@ -104,14 +104,14 @@ const SAActiveApi = ({ complaint, setShowActiveModel, setIsRefresh }) => {
                     name="response"
                     class="form-control"
                     placeholder="Enter Note"
-                    value={complaint.API_Name}
+                    value={complaint.service_name}
                     required
                   />
                 </div>
               </div>
               <div className="mt-3">
                 <label for="name" class="form-label">
-                 API For
+                 Service For
                 </label>
                 <div class="input-group flex-nowrap">
                   <span class="input-group-text" id="addon-wrapping">
@@ -123,7 +123,7 @@ const SAActiveApi = ({ complaint, setShowActiveModel, setIsRefresh }) => {
                     name="response"
                     class="form-control"
                     placeholder="Enter Note"
-                    value={complaint.API_for}
+                    value={complaint.service_for}
                     
                     required
                   />
@@ -169,7 +169,7 @@ const SADeactiveApi = ({ complaint, setShowDeactiveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "http://localhost:7777/api/auth/superAdmin/DeactiveApi",
+        "http://localhost:7777/api/auth/superAdmin/DeactiveServices",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
         formData
       );
@@ -178,7 +178,7 @@ const SADeactiveApi = ({ complaint, setShowDeactiveModel, setIsRefresh }) => {
       if (response.data.success) {
         Swal.fire({
           icon: "success",
-          title: "Deactive API Successfully",
+          title: "Deactive Service Successfully",
         });
         setShowDeactiveModel(false);
         setIsRefresh((value) => !value);
@@ -226,7 +226,7 @@ const SADeactiveApi = ({ complaint, setShowDeactiveModel, setIsRefresh }) => {
             
               <div className="mt-3">
                 <label for="name" class="form-label">
-                  API Name
+                Services Name
                 </label>
                 <div class="input-group flex-nowrap">
                   <span class="input-group-text" id="addon-wrapping">
@@ -238,14 +238,14 @@ const SADeactiveApi = ({ complaint, setShowDeactiveModel, setIsRefresh }) => {
                     name="response"
                     class="form-control"
                     placeholder="Enter Note"
-                    value={complaint.API_Name}
+                    value={complaint.service_name}
                     required
                   />
                 </div>
               </div>
               <div className="mt-3">
                 <label for="name" class="form-label">
-                 API For
+                 Services For
                 </label>
                 <div class="input-group flex-nowrap">
                   <span class="input-group-text" id="addon-wrapping">
@@ -257,7 +257,7 @@ const SADeactiveApi = ({ complaint, setShowDeactiveModel, setIsRefresh }) => {
                     name="response"
                     class="form-control"
                     placeholder="Enter Note"
-                    value={complaint.API_for}
+                    value={complaint.service_for}
                     
                     required
                   />
@@ -285,7 +285,7 @@ const SADeactiveApi = ({ complaint, setShowDeactiveModel, setIsRefresh }) => {
 
 
 
-const SAActiveDeactiveApi = () => {
+const SAActiveDeactiveServices = () => {
 
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState([]);
@@ -303,7 +303,7 @@ const SAActiveDeactiveApi = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "http://localhost:7777/api/auth/superAdmin/getAllApiList"
+            "http://localhost:7777/api/auth/superAdmin/getAllServicesList"
           );
           setUsers(data.data);
           setLoading(false);
@@ -323,11 +323,11 @@ const SAActiveDeactiveApi = () => {
 
       const filteredItems = users.filter(
         (row) =>{ 
-          const matchesKeyword =  (row?.API_Name &&
-            row.API_Name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-          (row?.API_for && row.API_for.toLowerCase().includes(keyword.trim().toLowerCase())) 
+          const matchesKeyword =  (row?.service_name &&
+            row.service_name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+          (row?.service_for && row.service_for.toLowerCase().includes(keyword.trim().toLowerCase())) 
 
-              const matchesType = !Status || Status === "---Select Status---" || row.API_Status	 === Status;
+              const matchesType = !Status || Status === "---Select Status---" || row.status	 === Status;
               return matchesKeyword && matchesType;
             }
       );
@@ -427,7 +427,7 @@ console.log(showApiData);
                                                 <h3>Complaint Raised List</h3>
                                             </div> */}
                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Activate/Deactivate Api</h4>
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Activate/Deactivate Services</h4>
                                                 <p className="mx-lg-5">
                                                     {" "}
                                                     <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
@@ -436,7 +436,7 @@ console.log(showApiData);
                                                         style={{ fontSize: "13px" }}
                                                     >
                                                         {" "}
-                                                        Activate/Deactivate Api
+                                                        Activate/Deactivate Services
                                                     </span>{" "}
                                                 </p>
                                             </div>
@@ -465,7 +465,7 @@ console.log(showApiData);
                                                         <input id="fromDate" 
                                                         className="form-control"
                                                          type="search"
-                                                         placeholder="Enter API Name/API For"
+                                                         placeholder="Enter Service Name/Service For"
                                                          value={keyword}
                               onChange={(e) => setKeyword(e.target.value)}
                                                          />
@@ -508,11 +508,11 @@ console.log(showApiData);
                                                             <thead className="table-dark">
                                                                 <tr>
 
-                                                                    <th scope="col">API Id</th>
-                                                                    <th scope="col">API Name</th>
+                                                                    <th scope="col">Service Id</th>
+                                                                    <th scope="col">Service Name</th>
 
-                                                                    <th scope="col">API For</th>
-                                                                    <th scope="col">API URL</th>
+                                                                    <th scope="col">Service For</th>
+                                                                    <th scope="col">Service Type</th>
                                                                     <th scope="col">Status</th>
                                                                     <th scope="col">Action</th>
 
@@ -527,14 +527,15 @@ console.log(showApiData);
                                             {/* <th scope="row">{index + 1}</th> */}
                                             <th scope="row">{user.id}</th>
                                            
-                                            <td>{user.API_Name}</td>
-                                            <td>{user.API_for}</td>
-                                            <td>{user.API_URL}</td>
-                                            <td>{user.API_Status}</td>
+                                            <td>{user.service_name}</td>
+                                            <td>{user.service_for}</td>
+                                            <td>{user.service_type}</td>
+                                            <td>{user.status}</td>
+                                            
     
                                        
                                             <td>
-                                            { user.API_Status	 === "Active" && 
+                                            { user.status	 === "Active" && 
                                               <Dropdown>
                                                 <Dropdown.Toggle
                                                   variant="success"
@@ -567,7 +568,7 @@ console.log(showApiData);
                                               </Dropdown>
 }
 
-{ user.API_Status	 === "Deactive" && 
+{ user.status	 === "Deactive" && 
                                               <Dropdown>
                                                 <Dropdown.Toggle
                                                   variant="success"
@@ -657,7 +658,7 @@ console.log(showApiData);
           aria-labelledby="packageDetail-modal-sizes-title-lg"
         >
           <Modal.Header closeButton>
-            <Modal.Title id="packageDetail-modal-sizes-title-lg">Active API</Modal.Title>
+            <Modal.Title id="packageDetail-modal-sizes-title-lg">Active Service</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {selectedComplaint && <SAActiveApi complaint={selectedComplaint} setShowActiveModel={setShowActiveModel}  setIsRefresh={setIsRefresh}/>}
@@ -676,7 +677,7 @@ console.log(showApiData);
           aria-labelledby="packageDetail-modal-sizes-title-lg"
         >
           <Modal.Header closeButton>
-            <Modal.Title id="packageDetail-modal-sizes-title-lg">Deactive API</Modal.Title>
+            <Modal.Title id="packageDetail-modal-sizes-title-lg">Deactive Service</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {selectedComplaint && <SADeactiveApi complaint={selectedComplaint} setShowDeactiveModel={setShowDeactiveModel}  setIsRefresh={setIsRefresh}/>}
@@ -689,7 +690,7 @@ console.log(showApiData);
     );
 }
 
-export default SAActiveDeactiveApi
+export default SAActiveDeactiveServices
 
 const Wrapper = styled.div`
   .main {

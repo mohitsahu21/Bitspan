@@ -1644,6 +1644,11 @@ const SuperAdminData = [
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
+        title: "Active/Deactive Services",
+        path: "/active-deactive-services",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
         title: "Set Joining Price",
         path: "/change-coupon-price",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,

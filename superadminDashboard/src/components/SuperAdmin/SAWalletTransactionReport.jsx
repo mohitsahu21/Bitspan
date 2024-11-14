@@ -176,7 +176,8 @@ const SAWalletWithdrawSummary = () => {
                                                                     <th scope="col">User Id</th>
                                                                       <th scope="col">User Name</th>
                                                                     <th scope="col">User Role</th>
-                                                                    <th scope="col">Amount</th>
+                                                                    <th scope="col">Credit Amount</th>
+                                                                    <th scope="col">Debit Amount</th>
                                                                     <th scope="col">Opening <br /> Balance</th>
                                                                     <th scope="col">Closing <br /> Balance</th>
                                                                     <th scope="col">Transaction  <br /> Type</th>
@@ -198,7 +199,8 @@ const SAWalletWithdrawSummary = () => {
                                           <td>{item.role}</td>
                                           {/* <td>{item.userPhone}</td>
                                           <td>{item.userEmail}</td> */}
-                                          <td>{item.transaction_amount}</td>
+                                          <td>{item.credit_amount}</td>
+                                          <td>{item.debit_amount}</td>
                                           <td>{item.Opening_Balance}</td>
                                           <td>{item.Closing_Balance}</td>
                                           <td>{item.Transaction_Type}</td>

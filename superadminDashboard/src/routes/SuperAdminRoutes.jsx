@@ -54,6 +54,8 @@ import SAEdistrictHistory from "../components/SuperAdmin/SAEdistrictHistory.jsx"
 import SAOfflineRechargeHistory from "../components/SuperAdmin/SAOfflineRechargeHistory.jsx";
 import SAOfflineDthConnection from "../components/SuperAdmin/SAOfflineDthConnection.jsx";
 import SAAddWalletMoneyRequests from "../components/SuperAdmin/SAAddWalletMoneyRequests.jsx";
+import SAAddWalletMoneySummary from "../components/SuperAdmin/SAAddWalletMoneySummary.jsx";
+import SAActiveDeactiveServices from "../components/SuperAdmin/SAActiveDeactiveServices.jsx";
 
 
 
@@ -87,7 +89,7 @@ const SuperAdminRoutes = () => {
         />
         <Route
           path="add-wallet-money-summary"
-          element={<SAAddWalletMoneyRequests />}
+          element={<SAAddWalletMoneySummary />}
         />
         <Route
           path="commision-full-summary"
@@ -171,6 +173,7 @@ const SuperAdminRoutes = () => {
       <Route path="/wallet-withdraw" element={<SAWalletWithdraw/>} />
       <Route path="/fund-transfer-status" element={<SAFundTransferStatus />} />
       <Route path="/active-deactive-api" element={<SAActiveDeactiveApi />} />
+      <Route path="/active-deactive-services" element={<SAActiveDeactiveServices />} />
       <Route path="/today-all-transaction" element={<SATodayAllTransaction />} />
       <Route path="/all-transaction" element={<SAAllTransaction />} />
       <Route path="/choice-user-notification" element={<SAChangeUserNotification />} />
