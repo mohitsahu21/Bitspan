@@ -1,5 +1,5 @@
 const express = require("express");
-const { addPackage, getPackages, editPackage, deletePackage, getPendingUsers, approveUser, rejectUser, getActiveUsers, deactivateUser, activateUser, getdeactiveUsers, getUserRelations, getAllUsers, getPendingPaymentUsers, markPaymentComplete, getUserIdPriceList, addUserIdPrice, updateUserIdPrice, getSuperAdminEmployee, complainGetData, resolveComplaint, getApplyOfflineForm, ApproveOfflineForm, rejectOfflineForm, getPANOfflineForm, ApprovePANOfflineForm, rejectPANOfflineForm, getBankIdForm, ApproveBankIdForm, rejectBankIdForm, getEdistrictForms, ApproveEdistrictForm, rejectEdistrictForm, getOfflineRecharge, ApproveOfflineRecharge, rejectOfflineRecharge, getOfflineDTHConnection, ApproveOfflineDTHConnection, rejectOfflineDTHConnection, getWalletWithdrawRequests, ApproveWalletWithdrawRequests, rejectWalletWithdrawRequests, getPendingWalletWithdrawRequests, getWalletTransactions } = require("../../controllers/SuperAdmin/superAdminController");
+const { addPackage, getPackages, editPackage, deletePackage, getPendingUsers, approveUser, rejectUser, getActiveUsers, deactivateUser, activateUser, getdeactiveUsers, getUserRelations, getAllUsers, getPendingPaymentUsers, markPaymentComplete, getUserIdPriceList, addUserIdPrice, updateUserIdPrice, getSuperAdminEmployee, complainGetData, resolveComplaint, getApplyOfflineForm, ApproveOfflineForm, rejectOfflineForm, getPANOfflineForm, ApprovePANOfflineForm, rejectPANOfflineForm, getBankIdForm, ApproveBankIdForm, rejectBankIdForm, getEdistrictForms, ApproveEdistrictForm, rejectEdistrictForm, getOfflineRecharge, ApproveOfflineRecharge, rejectOfflineRecharge, getOfflineDTHConnection, ApproveOfflineDTHConnection, rejectOfflineDTHConnection, getWalletWithdrawRequests, ApproveWalletWithdrawRequests, rejectWalletWithdrawRequests, getPendingWalletWithdrawRequests, getWalletTransactions, getPendingWalletAddMoneyRequests, ApproveWalletAddMoneyRequests, rejectWalletAddMoneyRequests, getAllWalletAddMoneyRequests, getAllApiList, ActiveApi, DeactiveApi, getAllServicesList, ActiveServices, DeactiveServices } = require("../../controllers/SuperAdmin/superAdminController");
 const router = express.Router();
 
 
@@ -57,5 +57,19 @@ router.put("/ApproveWalletWithdrawRequests" , ApproveWalletWithdrawRequests)
 router.put("/rejectWalletWithdrawRequests" , rejectWalletWithdrawRequests)
 
 router.get("/getWalletTransactions" , getWalletTransactions);
+
+router.get("/getPendingWalletAddMoneyRequests" , getPendingWalletAddMoneyRequests);
+router.get("/getAllWalletAddMoneyRequests" , getAllWalletAddMoneyRequests);
+router.put("/ApproveWalletAddMoneyRequests" , ApproveWalletAddMoneyRequests);
+router.put("/rejectWalletAddMoneyRequests" , rejectWalletAddMoneyRequests);
+
+router.get("/getAllApiList" , getAllApiList);
+router.put("/ActiveApi" , ActiveApi);
+router.put("/DeactiveApi" , DeactiveApi);
+
+router.get("/getAllServicesList" , getAllServicesList);
+router.put("/ActiveServices" , ActiveServices)
+router.put("/DeactiveServices" , DeactiveServices)
+
 
 module.exports = router;

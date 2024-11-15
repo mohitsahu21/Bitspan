@@ -1284,6 +1284,16 @@ const SuperAdminData = [
         path: "/wallet-withdraw-summary",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+      {
+        title: "Add wallet Money Requests",
+        path: "/add-wallet-money-requests",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Add wallet Money Summary",
+        path: "/add-wallet-money-summary",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
     ],
   },
   {
@@ -1631,6 +1641,11 @@ const SuperAdminData = [
       {
         title: "Active/Deactive Api",
         path: "/active-deactive-api",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Active/Deactive Services",
+        path: "/active-deactive-services",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
