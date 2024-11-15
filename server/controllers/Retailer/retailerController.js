@@ -990,9 +990,28 @@ const getEdistrictData = (req, res) => {
 };
 
 const getAllRechargeApi = (req, res) => {
-  const selectQuery = `SELECT * FROM apisurl WHERE API_Status = ?`;
+  const selectQuery = `SELECT * FROM apisurl WHERE API_Status = ? AND API_for = ?`;
 
-  db.query(selectQuery, ["active"], (err, result) => {
+  db.query(selectQuery, ["Active", "Recharge"], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({
+        status: "Failure",
+        error: "An error occurred while fetching data.",
+      });
+    }
+
+    return res.status(200).json({
+      status: "Success",
+      data: result,
+    });
+  });
+};
+
+const getAllDTHeApi = (req, res) => {
+  const selectQuery = `SELECT * FROM apisurl WHERE API_Status = ? AND API_for = ?`;
+
+  db.query(selectQuery, ["Active", "DTH Connection"], (err, result) => {
     if (err) {
       console.error("Database error:", err);
       return res.status(500).json({
@@ -1031,4 +1050,5 @@ module.exports = {
   getAllBranchId,
   getEdistrictData,
   getAllRechargeApi,
+  getAllDTHeApi,
 };

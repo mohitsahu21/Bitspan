@@ -25,6 +25,7 @@ const {
   getAllBranchId,
   getEdistrictData,
   getAllRechargeApi,
+  getAllDTHeApi,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -153,5 +154,6 @@ router.get("/getSelectedServices/:user_id", getSelectedServices);
 router.get("/getAllBranchId", getAllBranchId);
 router.get("/getEdistrictData/:user_id", getEdistrictData);
 router.get("/getAllRechargeApi", getAllRechargeApi);
+router.get("/getAllDTHeApi", getAllDTHeApi);
 
 module.exports = router;
