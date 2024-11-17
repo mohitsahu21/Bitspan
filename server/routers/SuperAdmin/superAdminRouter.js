@@ -1,6 +1,36 @@
 const express = require("express");
-const { addPackage, getPackages, editPackage, deletePackage, getPendingUsers, approveUser, rejectUser, getActiveUsers, deactivateUser, activateUser, getdeactiveUsers, getUserRelations, getAllUsers, getPendingPaymentUsers, markPaymentComplete, getUserIdPriceList, addUserIdPrice, updateUserIdPrice, getSuperAdminEmployee, complainGetData, resolveComplaint, getApplyOfflineForm, ApproveOfflineForm, rejectOfflineForm, getPANOfflineForm, ApprovePANOfflineForm, rejectPANOfflineForm, getBankIdForm, ApproveBankIdForm, rejectBankIdForm, getEdistrictForms, ApproveEdistrictForm, rejectEdistrictForm, getOfflineRecharge, ApproveOfflineRecharge, rejectOfflineRecharge, getOfflineDTHConnection, ApproveOfflineDTHConnection, rejectOfflineDTHConnection, getWalletWithdrawRequests, ApproveWalletWithdrawRequests, rejectWalletWithdrawRequests, getPendingWalletWithdrawRequests, getWalletTransactions, getPendingWalletAddMoneyRequests, ApproveWalletAddMoneyRequests, rejectWalletAddMoneyRequests, getAllWalletAddMoneyRequests, getAllApiList, ActiveApi, DeactiveApi, getAllServicesList, ActiveServices, DeactiveServices } = require("../../controllers/SuperAdmin/superAdminController");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
+const { addPackage, getPackages, editPackage, deletePackage, getPendingUsers, approveUser, rejectUser, getActiveUsers, deactivateUser, activateUser, getdeactiveUsers, getUserRelations, getAllUsers, getPendingPaymentUsers, markPaymentComplete, getUserIdPriceList, addUserIdPrice, updateUserIdPrice, getSuperAdminEmployee, complainGetData, resolveComplaint, getApplyOfflineForm, ApproveOfflineForm, rejectOfflineForm, getPANOfflineForm, ApprovePANOfflineForm, rejectPANOfflineForm, getBankIdForm, ApproveBankIdForm, rejectBankIdForm, getEdistrictForms, ApproveEdistrictForm, rejectEdistrictForm, getOfflineRecharge, ApproveOfflineRecharge, rejectOfflineRecharge, getOfflineDTHConnection, ApproveOfflineDTHConnection, rejectOfflineDTHConnection, getWalletWithdrawRequests, ApproveWalletWithdrawRequests, rejectWalletWithdrawRequests, getPendingWalletWithdrawRequests, getWalletTransactions, getPendingWalletAddMoneyRequests, ApproveWalletAddMoneyRequests, rejectWalletAddMoneyRequests, getAllWalletAddMoneyRequests, getAllApiList, ActiveApi, DeactiveApi, getAllServicesList, ActiveServices, DeactiveServices, getSuperAdminSettings, UpdateGenralSetting, UpdateSocialLinkSetting, UpdateLogoImageSetting, UpdateHomePageSetting } = require("../../controllers/SuperAdmin/superAdminController");
+
 const router = express.Router();
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, "uploads/");
+    },
+    filename: (req, file, cb) => {
+      cb(null, `${Date.now()}-${file.originalname}`);
+    },
+  });
+  
+  const upload = multer({ storage });
+
+  // Create upload handler for form fields
+const uploadGenralSetting = upload.fields([
+    { name: 'QR_Code', maxCount: 1 }, 
+  ]);
+
+  const uploadImageLogoSetting = upload.fields([
+    { name: 'Home_Page_Background', maxCount: 1 }, 
+    { name: 'Logo', maxCount: 1 }, 
+    { name: 'Fav_Icon', maxCount: 1 }, 
+    { name: 'Signature_With_Stamp', maxCount: 1 }, 
+  ]);
+
+  const uploadHomePageSetting = upload.fields([
+    { name: 'Offer_Banner', maxCount: 1 }, 
+  ]);
 
 
 router.post("/addPackage" , addPackage );
@@ -70,6 +100,12 @@ router.put("/DeactiveApi" , DeactiveApi);
 router.get("/getAllServicesList" , getAllServicesList);
 router.put("/ActiveServices" , ActiveServices)
 router.put("/DeactiveServices" , DeactiveServices)
+
+router.get("/getSuperAdminSettings" , getSuperAdminSettings)
+router.post('/UpdateGenralSetting',uploadGenralSetting, UpdateGenralSetting)
+router.post('/UpdateLogoImageSetting',uploadImageLogoSetting, UpdateLogoImageSetting)
+router.post('/UpdateHomePageSetting',uploadHomePageSetting, UpdateHomePageSetting)
+router.put('/UpdateSocialLinkSetting', UpdateSocialLinkSetting)
 
 
 module.exports = router;

@@ -67,9 +67,9 @@ const SAWebsiteSetting = () => {
                                                     <Tab eventKey="Home Page Setting" title="Home Page Setting">
                                                         <HomePageSetting/>
                                                     </Tab>
-                                                    <Tab eventKey="Map Setting" title="Map Setting">
+                                                    {/* <Tab eventKey="Map Setting" title="Map Setting">
                                                        <MapSetting/>
-                                                    </Tab>
+                                                    </Tab> */}
                                                 </Tabs>
 
                                             </div>

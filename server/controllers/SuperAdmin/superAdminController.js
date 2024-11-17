@@ -2900,6 +2900,335 @@ const DeactiveServices = (req, res) => {
   }
 };
 
+const getSuperAdminSettings = (req, res) => {
+  try {
+    const sql = `SELECT * FROM super_admin_website_setting`;
+    
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error super_admin_website_setting from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error super_admin_website_setting" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No super_admin_website_setting found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result[0],
+            message: "super_admin_website_setting fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error(
+      "Error fetching super_admin_website_setting from MySQL:",
+      error
+    );
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching super_admin_website_setting",
+      error: error.message,
+    });
+  }
+};
+
+const UpdateGenralSetting = (req, res) => {
+  try {
+    const {
+      id,
+      Home_Page_1st_Paragraph,
+      Home_Page_2nd_Paragraph,
+      Email_Id,
+      Calling_No,
+      Whatsapp_No,
+      App_Link,
+      Bank_Holder_Name,
+      Bank_Account_Number,
+      IFSC_Code,
+      Bank_Name,
+      UPI_ID,
+      Address,
+      QR_Code_Preview
+    } = req.body;
+    console.log(req.body);
+    
+    // const QR_Code = req.files['QR_Code']?.[0];
+    
+    
+   
+
+    const domain = "http://localhost:7777";
+    const QR_Code = req.files.QR_Code
+    ? `${domain}/uploads/${req.files.QR_Code[0].filename}`
+    : QR_Code_Preview;
+    
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE super_admin_website_setting SET
+        Home_Page_1st_Paragraph = ? ,
+          Home_Page_2nd_Paragraph = ?,
+      Email_Id = ?,
+      Calling_No = ?,
+      Whatsapp_No = ?,
+      App_Link = ?,
+      Bank_Holder_Name = ?,
+      Bank_Account_Number = ?,
+      IFSC_Code = ?,
+      Bank_Name = ?,
+      UPI_ID = ?,
+      Address = ?,
+      QR_Code = ?
+      WHERE id = ?`;
+
+    const values = [
+      
+      Home_Page_1st_Paragraph,
+      Home_Page_2nd_Paragraph,
+      Email_Id,
+      Calling_No,
+      Whatsapp_No,
+      App_Link,
+      Bank_Holder_Name,
+      Bank_Account_Number,
+      IFSC_Code,
+      Bank_Name,
+      UPI_ID,
+      Address,
+      QR_Code,
+      id
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating package:", error);
+        return res.status(500).json({ success: false, error: "Failed to update the package" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ success: false, message: "Package not found" });
+      }
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Package updated successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const UpdateSocialLinkSetting = (req, res) => {
+  try {
+    const {
+      id,
+      Facebook_Link,
+      Twitter_Link,
+      LinkedIn_Link,
+      Instagram_Link,
+      Youtube_Link
+      
+    } = req.body;
+    console.log(req.body);
+ 
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE super_admin_website_setting SET
+        Facebook_Link = ? ,
+          Twitter_Link = ?,
+      LinkedIn_Link = ?,
+      Instagram_Link = ?,
+      Youtube_Link = ?
+     
+      WHERE id = ?`;
+
+    const values = [
+      
+      Facebook_Link,
+      Twitter_Link,
+      LinkedIn_Link,
+      Instagram_Link,
+      Youtube_Link,
+      id
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating package:", error);
+        return res.status(500).json({ success: false, error: "Failed to update the package" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ success: false, message: "Package not found" });
+      }
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Package updated successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const UpdateLogoImageSetting = (req, res) => {
+  try {
+    const {
+      id,
+      
+        Home_Page_Background_Preview,
+        Logo_Preview,
+        Fav_Icon_Preview,
+        Signature_With_Stamp_Preview
+    } = req.body;
+    console.log(req.body);
+    
+    // const QR_Code = req.files['QR_Code']?.[0];
+    
+    
+   
+
+    const domain = "http://localhost:7777";
+    const Home_Page_Background = req.files.Home_Page_Background
+    ? `${domain}/uploads/${req.files.Home_Page_Background[0].filename}`
+    : Home_Page_Background_Preview;
+    const Logo = req.files.Logo
+    ? `${domain}/uploads/${req.files.Logo[0].filename}`
+    : Logo_Preview;
+    const Fav_Icon = req.files.Fav_Icon
+    ? `${domain}/uploads/${req.files.Fav_Icon[0].filename}`
+    : Fav_Icon_Preview;
+    const Signature_With_Stamp = req.files.Signature_With_Stamp
+    ? `${domain}/uploads/${req.files.Signature_With_Stamp[0].filename}`
+    : Signature_With_Stamp_Preview;
+    
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE super_admin_website_setting SET
+        Home_Page_Background = ? ,
+          Logo = ?,
+      Fav_Icon = ?,
+      Signature_With_Stamp = ?
+      WHERE id = ?`;
+
+    const values = [
+      
+      
+     
+      Home_Page_Background,
+      Logo,
+      Fav_Icon,
+      Signature_With_Stamp,
+      id
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating package:", error);
+        return res.status(500).json({ success: false, error: "Failed to update the package" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ success: false, message: "Package not found" });
+      }
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Package updated successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const UpdateHomePageSetting = (req, res) => {
+  try {
+    const {
+      id,
+      Theme_Design,
+      Company_Name,
+      About_Us,
+      Notice,
+      Training_Video_Link,
+      Show_Offer_Banner,
+      Offer_Banner_Preview,
+      Google_Map_Link
+    } = req.body;
+    console.log(req.body);
+    
+    
+    
+   
+
+    const domain = "http://localhost:7777";
+    const Offer_Banner = req.files.Offer_Banner
+    ? `${domain}/uploads/${req.files.Offer_Banner[0].filename}`
+    : Offer_Banner_Preview;
+    
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE super_admin_website_setting SET
+        Theme_Design = ? ,
+          Company_Name = ?,
+      About_Us = ?,
+      Notice = ?,
+      Training_Video_Link = ?,
+      Show_Offer_Banner = ?,
+      Offer_Banner = ?,
+      Google_Map_Link = ?
+     
+      WHERE id = ?`;
+
+    const values = [
+      
+      Theme_Design,
+      Company_Name,
+      About_Us,
+      Notice,
+      Training_Video_Link,
+      Show_Offer_Banner,
+      Offer_Banner,
+      Google_Map_Link,
+      id
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating package:", error);
+        return res.status(500).json({success: false, error: "Failed to update the package" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({success: false, message: "Package not found" });
+      }
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Package updated successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({success: false, error: "An unexpected error occurred" });
+  }
+};
+
 
 
 module.exports = {
@@ -2958,5 +3287,11 @@ module.exports = {
   DeactiveApi,
   getAllServicesList,
   ActiveServices,
-  DeactiveServices
+  DeactiveServices,
+  getSuperAdminSettings,
+  UpdateGenralSetting,
+  UpdateSocialLinkSetting,
+  UpdateLogoImageSetting,
+  UpdateHomePageSetting
+
 };
