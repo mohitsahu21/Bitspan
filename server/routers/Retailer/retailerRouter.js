@@ -26,6 +26,8 @@ const {
   getEdistrictData,
   getAllRechargeApi,
   getAllDTHeApi,
+  getApiPostRechargeData,
+  getApiDTHRechargeData,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -68,7 +70,7 @@ router.get("/getApplyOfflineForm", getApplyOfflineForm);
 router.put("/updateApplyOfflineForm/:id", updateApplyOfflineForm);
 router.post("/offline-recharge", offlineRecharge);
 router.get("/getRechargeData", getRechargeData);
-router.get("/getApiRechargeData", getApiRechargeData);
+router.get("/getApiRechargeData/:userId", getApiRechargeData);
 router.post("/offline-dth-connection", offlineDthConnection);
 
 const panDataStorage = multer.diskStorage({
@@ -155,5 +157,7 @@ router.get("/getAllBranchId", getAllBranchId);
 router.get("/getEdistrictData/:user_id", getEdistrictData);
 router.get("/getAllRechargeApi", getAllRechargeApi);
 router.get("/getAllDTHeApi", getAllDTHeApi);
+router.get("/getApiPostRechargeData/:userId", getApiPostRechargeData);
+router.get("/getApiDTHRechargeData/:userId", getApiDTHRechargeData);
 
 module.exports = router;

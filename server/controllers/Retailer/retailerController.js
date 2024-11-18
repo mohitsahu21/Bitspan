@@ -356,14 +356,24 @@ const getRechargeData = (req, res) => {
 };
 
 const getApiRechargeData = (req, res) => {
-  let query = `SELECT * FROM recharges`;
+  const userId = req.params.userId;
+  const rechargeType = "Prepaid";
 
-  db.query(query, (err, result) => {
+  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ?`;
+
+  db.query(query, [rechargeType, userId], (err, result) => {
     if (err) {
-      return res.status(400).json({ status: "failure", error: err.message });
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
     }
 
-    return res.status(200).json({ status: "success", data: result });
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
   });
 };
 
@@ -1027,6 +1037,50 @@ const getAllDTHeApi = (req, res) => {
   });
 };
 
+const getApiPostRechargeData = (req, res) => {
+  const userId = req.params.userId;
+  const rechargeType = "Postpaid";
+
+  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ?`;
+
+  db.query(query, [rechargeType, userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
+const getApiDTHRechargeData = (req, res) => {
+  const userId = req.params.userId;
+  const rechargeType = "DTH";
+
+  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ?`;
+
+  db.query(query, [rechargeType, userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -1051,4 +1105,6 @@ module.exports = {
   getEdistrictData,
   getAllRechargeApi,
   getAllDTHeApi,
+  getApiPostRechargeData,
+  getApiDTHRechargeData,
 };

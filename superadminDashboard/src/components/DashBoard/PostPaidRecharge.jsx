@@ -5,8 +5,11 @@ import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../Loading";
+import { useDispatch, useSelector } from "react-redux";
 
 const PostPaidRecharge = () => {
+  const dispatch = useDispatch();
+  const { currentUser, token } = useSelector((state) => state.user);
   const [activeTab, setActiveTab] = useState("tab1");
   const [getdata, setGetData] = useState([]);
 
@@ -19,13 +22,16 @@ const PostPaidRecharge = () => {
     operatorName: "",
     number: "",
     amount: "",
+    recharge_Type: "Postpaid",
+    created_by_userid: currentUser.userId,
     // orderid: "4654747",
   });
   const [offlineForm, setOfflineForm] = useState({
     mobile_no: "",
     operator_name: "",
     amount: "",
-    created_by_userid: "1",
+    recharge_Type: "Postpaid",
+    created_by_userid: currentUser.userId,
   });
   const [response, setResponse] = useState(null);
   const [responseForm, setResponseForm] = useState(null);
@@ -47,7 +53,8 @@ const PostPaidRecharge = () => {
     const fetchdata = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:7777/api/auth/retailer/getAllRechargeApi`
+          // `http://localhost:7777/api/auth/retailer/getAllRechargeApi`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllRechargeApi`
         );
         if (response.data.status === "Success") {
           setGetData(response.data.data);

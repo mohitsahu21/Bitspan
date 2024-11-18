@@ -13,6 +13,7 @@ const MobileRecharge = () => {
   const { currentUser, token } = useSelector((state) => state.user);
   const [activeTab, setActiveTab] = useState("tab1");
   const [apiData, setApiData] = useState([]);
+  console.log(currentUser.userId);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -24,6 +25,7 @@ const MobileRecharge = () => {
     number: "",
     amount: "",
     recharge_Type: "Prepaid",
+    created_by_userid: currentUser.userId,
     // orderid: "4654747",
   });
   const [offlineForm, setOfflineForm] = useState({
@@ -31,7 +33,7 @@ const MobileRecharge = () => {
     operator_name: "",
     amount: "",
     recharge_Type: "Prepaid",
-    created_by_userid: "1",
+    created_by_userid: currentUser.userId,
   });
   const [response, setResponse] = useState(null);
   const [responseForm, setResponseForm] = useState(null);
@@ -53,7 +55,8 @@ const MobileRecharge = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:7777/api/auth/retailer/getAllRechargeApi`
+          // `http://localhost:7777/api/auth/retailer/getAllRechargeApi`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllRechargeApi`
         );
         if (response.data.status === "Success") {
           console.log(response.data.data);
