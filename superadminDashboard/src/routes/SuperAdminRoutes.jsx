@@ -47,6 +47,15 @@ import SAActiveDeactiveApi from "../components/SuperAdmin/SAActiveDeactiveApi.js
 import PanForm from "../components/SuperAdmin/PanForm.jsx";
 import SARegisterEmployee from "../components/SuperAdmin/SARegisterEmployee.jsx";
 import SAPendingKycUsers from "../components/SuperAdmin/SAPendingKycUsers.jsx";
+import SAEmployeeList from "../components/SuperAdmin/SAEmployeeList.jsx";
+import SAPanOfflineHistory from "../components/SuperAdmin/SAPanOfflineHistory.jsx";
+import SABankIdForms from "../components/SuperAdmin/SABankIdForms.jsx";
+import SAEdistrictHistory from "../components/SuperAdmin/SAEdistrictHistory.jsx";
+import SAOfflineRechargeHistory from "../components/SuperAdmin/SAOfflineRechargeHistory.jsx";
+import SAOfflineDthConnection from "../components/SuperAdmin/SAOfflineDthConnection.jsx";
+import SAAddWalletMoneyRequests from "../components/SuperAdmin/SAAddWalletMoneyRequests.jsx";
+import SAAddWalletMoneySummary from "../components/SuperAdmin/SAAddWalletMoneySummary.jsx";
+import SAActiveDeactiveServices from "../components/SuperAdmin/SAActiveDeactiveServices.jsx";
 
 
 
@@ -75,6 +84,14 @@ const SuperAdminRoutes = () => {
           element={<SAWalletWithdrawRequests />}
         />
         <Route
+          path="add-wallet-money-requests"
+          element={<SAAddWalletMoneyRequests />}
+        />
+        <Route
+          path="add-wallet-money-summary"
+          element={<SAAddWalletMoneySummary />}
+        />
+        <Route
           path="commision-full-summary"
           element={<SACommisionSummary />}
         />
@@ -90,6 +107,26 @@ const SuperAdminRoutes = () => {
         <Route
           path="/view-all-offline-history"
           element={<SAAllOfflineForm />}
+        />
+        <Route
+          path="/Pan-offline-history"
+          element={<SAPanOfflineHistory />}
+        />
+        <Route
+          path="/Bank-Id-history"
+          element={<SABankIdForms />}
+        />
+        <Route
+          path="/E-district-history"
+          element={<SAEdistrictHistory />}
+        />
+        <Route
+          path="/Offline-Recharge-history"
+          element={<SAOfflineRechargeHistory />}
+        />
+        <Route
+          path="/Offline-dth-connection"
+          element={<SAOfflineDthConnection />}
         />
 
         <Route path="/2-step-verification" element={<SAStepVerification />} />
@@ -118,14 +155,15 @@ const SuperAdminRoutes = () => {
       <Route path="/users-joining-list" element={<SAAllUsersJoinedList />} />
       <Route path="/pending-payment-users" element={<SAPendingPaymentUsers />} />
       <Route path="/white-label-joining-list" element={<SAWhiteLabelJoiningList />} />
+      <Route path="/super-admin-employee-list" element={<SAEmployeeList />} />
       <Route path="/buy-user-id-summary" element={<SABuyUserIdSummary />} />
       <Route path="/pan-transaction-report" element={<SAPanTransactionReport />} />
       <Route path="/change-price" element={<SAChangePrice />} />
       {/* <Route path="/raise-complaint" element={<WLComplaints />} /> */}
       <Route path="/complaint-raised-list" element={<SAAllComplaintsList />} />
       {/* <Route path="/download-certificate" element={<WLDownloadCertificate />} /> */}
-      <Route path="/change-coupon-price" element={<SAChangeIdSetRate />} />
-      <Route path="/whitelabel-id-set-rate" element={<SASetWhiteLabelIdPrice />} />
+      {/* <Route path="/change-coupon-price" element={<SAChangeIdSetRate />} /> */}
+      <Route path="/user-id-set-rate" element={<SASetWhiteLabelIdPrice />} />
       <Route path="/change-nsdl-price" element={<SAChangeNSDLPrice/>} />
       <Route path="/change-uti-price" element={<SAChangeUTIPanPrice/>} />
       <Route path="/change-uti-new-price" element={<SAChangeUTINewCouponPrice />} />
@@ -135,6 +173,7 @@ const SuperAdminRoutes = () => {
       <Route path="/wallet-withdraw" element={<SAWalletWithdraw/>} />
       <Route path="/fund-transfer-status" element={<SAFundTransferStatus />} />
       <Route path="/active-deactive-api" element={<SAActiveDeactiveApi />} />
+      <Route path="/active-deactive-services" element={<SAActiveDeactiveServices />} />
       <Route path="/today-all-transaction" element={<SATodayAllTransaction />} />
       <Route path="/all-transaction" element={<SAAllTransaction />} />
       <Route path="/choice-user-notification" element={<SAChangeUserNotification />} />

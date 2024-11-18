@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { MdOutlineFormatListNumbered } from "react-icons/md";
@@ -11,19 +12,133 @@ import { CiViewList } from "react-icons/ci";
 import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
 import Swal from "sweetalert2";
 import { MdGrid3X3 } from "react-icons/md";
-import DropdownButton from 'react-bootstrap/DropdownButton';
-
 
 
 //  approve model component start//
 const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
+    const [loading, setLoading] = useState(false);
+  
+    const [formData, setFormData] = useState({
+      order_id: item.orderid,
+      note : "",
+      status : "Approve"
+    });
+  
+    const handleChange = (e) => {
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.value,
+      });
+    };
+    
+  
+    const handlesubmit = async (e) => {
+      e.preventDefault();
+      try {
+        setLoading(true);
+        const response = await axios.put(
+          "http://localhost:7777/api/auth/superAdmin/ApproveOfflineDTHConnection",
+          // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+          formData
+        );
+        console.log(response);
+        setLoading(false);
+        if (response.data.success) {
+          Swal.fire({
+            icon: "success",
+            title: "Approve Form Successfully",
+          });
+          setShowApproveModel(false);
+          setIsRefresh((value) => !value);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "An error occurred during the process. Please try again.",
+          });
+        }
+      } catch (error) {
+        console.error("There was an error submitting the form!", error);
+        setLoading(false);
+        Swal.fire({
+          icon: "error",
+          title: "An error occurred during the process. Please try again.",
+        });
+      }
+    };
+    return (
+      <>
+        <div>
+          
+            <form onSubmit={handlesubmit}>
+              <div className="">
+                <label for="name" class="form-label">
+                  Order Id
+                </label>
+                <div class="input-group flex-nowrap">
+                  <span class="input-group-text" id="addon-wrapping">
+                    {" "}
+                    <MdGrid3X3 />
+                  </span>
+                  <input
+                    type="text"
+                    name="package_name"
+                    class="form-control"
+                    placeholder="Enter Package Name"
+                    value={item.orderid}
+                    onChange={handleChange}
+                    disabled
+                    required
+                  />
+                </div>
+              </div>
+            
+              <div className="mt-3">
+                <label for="name" class="form-label">
+                  Enter Note
+                </label>
+                <div class="input-group flex-nowrap">
+                  <span class="input-group-text" id="addon-wrapping">
+                    {" "}
+                    <MdGrid3X3 />
+                  </span>
+                  <input
+                    type="text"
+                    name="note"
+                    class="form-control"
+                    placeholder="Enter Note"
+                    value={formData.note}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
+             
+  
+              <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <div className="text-center  m-5">
+                  <button type="submit" className="btn p-2" disabled={loading}>
+                    {loading ? "Loading..." : "Submit"}
+                  </button>
+                </div>
+              </div>
+            </form>
+        </div>
+      </>
+    );
+  };
+
+
+  //  approve model component end//
+
+
+  //  reject model component start//
+const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    order_id: item.order_id,
-    remark : "",
-    Transaction_Id : "",
-    status : "Approve"
+    order_id: item.orderid,
+    note : "",
+    status : "Reject"
   });
 
   const handleChange = (e) => {
@@ -39,7 +154,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "http://localhost:7777/api/auth/superAdmin/ApproveWalletWithdrawRequests",
+        "http://localhost:7777/api/auth/superAdmin/rejectOfflineDTHConnection",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
         formData
       );
@@ -48,9 +163,9 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
       if (response.data.success) {
         Swal.fire({
           icon: "success",
-          title: "Approve Successfully",
+          title: "Reject Form Successfully",
         });
-        setShowApproveModel(false);
+        setShowRejectModel(false);
         setIsRefresh((value) => !value);
       } else {
         Swal.fire({
@@ -86,72 +201,9 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
                   name="package_name"
                   class="form-control"
                   placeholder="Enter Package Name"
-                  value={item.order_id}
+                  value={item.orderid}
                   onChange={handleChange}
                   disabled
-                  required
-                />
-              </div>
-            </div>
-            <div className="mt-3">
-              <label for="name" class="form-label">
-                User Name
-              </label>
-              <div class="input-group flex-nowrap">
-                <span class="input-group-text" id="addon-wrapping">
-                  {" "}
-                  <MdGrid3X3 />
-                </span>
-                <input
-                  type="text"
-                  name="package_name"
-                  class="form-control"
-                  placeholder="Enter Package Name"
-                  value={item.userName}
-                  onChange={handleChange}
-                  disabled
-                  required
-                />
-              </div>
-            </div>
-            <div className="mt-3">
-              <label for="name" class="form-label">
-                Amount
-              </label>
-              <div class="input-group flex-nowrap">
-                <span class="input-group-text" id="addon-wrapping">
-                  {" "}
-                  <MdGrid3X3 />
-                </span>
-                <input
-                  type="text"
-                  name="package_name"
-                  class="form-control"
-                  placeholder="Enter Package Name"
-                  value={item.amount}
-                  onChange={handleChange}
-                  disabled
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="mt-3">
-              <label for="name" class="form-label">
-                Enter Transaction ID/UTR No.
-              </label>
-              <div class="input-group flex-nowrap">
-                <span class="input-group-text" id="addon-wrapping">
-                  {" "}
-                  <MdGrid3X3 />
-                </span>
-                <input
-                  type="text"
-                  name="Transaction_Id"
-                  class="form-control"
-                  placeholder="Enter Transaction ID/UTR No."
-                  value={formData.Transaction_Id}
-                  onChange={handleChange}
                   required
                 />
               </div>
@@ -159,7 +211,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
           
             <div className="mt-3">
               <label for="name" class="form-label">
-                Enter Remark
+                Enter Note
               </label>
               <div class="input-group flex-nowrap">
                 <span class="input-group-text" id="addon-wrapping">
@@ -168,10 +220,10 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
                 </span>
                 <input
                   type="text"
-                  name="remark"
+                  name="note"
                   class="form-control"
-                  placeholder="Enter Remark"
-                  value={formData.remark}
+                  placeholder="Enter Note"
+                  value={formData.note}
                   onChange={handleChange}
                   required
                 />
@@ -193,270 +245,158 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 };
 
 
-//  approve model component end//
-
-
-//  reject model component start//
-const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
-const [loading, setLoading] = useState(false);
-
-const [formData, setFormData] = useState({
-  order_id: item.order_id,
-    remark : "",
-    status : "Reject"
-});
-
-const handleChange = (e) => {
-  setFormData({
-    ...formData,
-    [e.target.name]: e.target.value,
-  });
-};
-
-
-const handlesubmit = async (e) => {
-  e.preventDefault();
-  try {
-    setLoading(true);
-    const response = await axios.put(
-      "http://localhost:7777/api/auth/superAdmin/rejectWalletWithdrawRequests",
-      // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-      formData
-    );
-    console.log(response);
-    setLoading(false);
-    if (response.data.success) {
-      Swal.fire({
-        icon: "success",
-        title: "Reject Form Successfully",
-      });
-      setShowRejectModel(false);
-      setIsRefresh((value) => !value);
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "An error occurred during the process. Please try again.",
-      });
-    }
-  } catch (error) {
-    console.error("There was an error submitting the form!", error);
-    setLoading(false);
-    Swal.fire({
-      icon: "error",
-      title: "An error occurred during the process. Please try again.",
-    });
-  }
-};
-return (
-  <>
-    <div>
-      
-        <form onSubmit={handlesubmit}>
-          <div className="">
-            <label for="name" class="form-label">
-              Order Id
-            </label>
-            <div class="input-group flex-nowrap">
-              <span class="input-group-text" id="addon-wrapping">
-                {" "}
-                <MdGrid3X3 />
-              </span>
-              <input
-                type="text"
-                name="package_name"
-                class="form-control"
-                placeholder="Enter Package Name"
-                value={item.order_id}
-                onChange={handleChange}
-                disabled
-                required
-              />
-            </div>
-          </div>
-
-          <div className="mt-3">
-              <label for="name" class="form-label">
-                User Name
-              </label>
-              <div class="input-group flex-nowrap">
-                <span class="input-group-text" id="addon-wrapping">
-                  {" "}
-                  <MdGrid3X3 />
-                </span>
-                <input
-                  type="text"
-                  name="package_name"
-                  class="form-control"
-                  placeholder="Enter Package Name"
-                  value={item.userName}
-                  onChange={handleChange}
-                  disabled
-                  required
-                />
-              </div>
-            </div>
-            <div className="mt-3">
-              <label for="name" class="form-label">
-                Amount
-              </label>
-              <div class="input-group flex-nowrap">
-                <span class="input-group-text" id="addon-wrapping">
-                  {" "}
-                  <MdGrid3X3 />
-                </span>
-                <input
-                  type="text"
-                  name="package_name"
-                  class="form-control"
-                  placeholder="Enter Package Name"
-                  value={item.amount}
-                  onChange={handleChange}
-                  disabled
-                  required
-                />
-              </div>
-            </div>
-
-          
-            <div className="mt-3">
-              <label for="name" class="form-label">
-                Enter Remark
-              </label>
-              <div class="input-group flex-nowrap">
-                <span class="input-group-text" id="addon-wrapping">
-                  {" "}
-                  <MdGrid3X3 />
-                </span>
-                <input
-                  type="text"
-                  name="remark"
-                  class="form-control"
-                  placeholder="Enter Remark"
-                  value={formData.remark}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
-        
-         
-         
-
-          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-            <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
-                {loading ? "Loading..." : "Submit"}
-              </button>
-            </div>
-          </div>
-        </form>
-    </div>
-  </>
-);
-};
-
-
 //  reject model component end//
 
 
 
-const SAWalletWithdrawRequests = () => {
-     
-  const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState([]);
-  const [keyword, setKeyword] = useState("");
-  const complaintsPerPage = 10;
-  const [currentPage, setCurrentPage] = useState(0);
-  const [formStatus, setFormStatus] = useState(""); // For user type filter
-  const [ShowApproveModel, setShowApproveModel] = useState(false);
-  const [ShowRejectModel, setShowRejectModel] = useState(false);
-  const [isRefresh, setIsRefresh] = useState(false);
-  const [selectedItem,setSelectedItem] = useState("")
-  const [fromDate, setFromDate] = useState(""); // From date filter
-  const [toDate, setToDate] = useState(""); // To date filter
+const SAOfflineDthConnection = () => {
+
+    const [loading, setLoading] = useState(false);
+    const [users, setUsers] = useState([]);
+    const [keyword, setKeyword] = useState("");
+    const complaintsPerPage = 10;
+    const [currentPage, setCurrentPage] = useState(0);
+    const [formStatus, setFormStatus] = useState(""); // For user type filter
+    const [ShowApproveModel, setShowApproveModel] = useState(false);
+    const [ShowRejectModel, setShowRejectModel] = useState(false);
+    const [isRefresh, setIsRefresh] = useState(false);
+    const [selectedItem,setSelectedItem] = useState("")
 
 
-  const fetchOfflineForm = async () => {
-    setLoading(true);
-    try {
-      const { data } = await axios.get(
-        "http://localhost:7777/api/auth/superAdmin/getPendingWalletWithdrawRequests"
-      );
-      setUsers(data.data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchOfflineForm();
-  }, []);
-
-  useEffect(() => {
-    fetchOfflineForm();
-  }, [isRefresh]);
-
-  const filteredItems = users.filter(
-    (row) =>{ 
-      const matchesKeyword =  (row?.user_id &&
-        row.user_id.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.userName && row.userName.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.userPhone	 &&
-          row.userPhone	.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-        (row?.userEmail &&
-          row.userEmail.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-          (row?.order_id &&
-            row.order_id.toLowerCase().includes(keyword.trim().toLowerCase()))
-           
-          // const matchesType = !formStatus || formStatus === "---Select Form Status---" || row.status === formStatus;
-          // return matchesKeyword && matchesType ;
-          const matchesDate =
-      (!fromDate || new Date(row.created_at).toISOString().split("T")[0] >= new Date(fromDate).toISOString().split("T")[0] ) &&
-      (!toDate || new Date(row.created_at).toISOString().split("T")[0]  <= new Date(toDate).toISOString().split("T")[0] );
-      console.log(matchesKeyword)
-          return matchesKeyword && matchesDate;
-          
+    const fetchOfflineForm = async () => {
+        setLoading(true);
+        try {
+          const { data } = await axios.get(
+            "http://localhost:7777/api/auth/superAdmin/getOfflineDTHConnection"
+          );
+          setUsers(data.data);
+          setLoading(false);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+          setLoading(false);
         }
-       
-  );
+      };
 
-  const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
+      useEffect(() => {
+        fetchOfflineForm();
+      }, []);
 
-  const filterPagination = () => {
-    const startIndex = currentPage * complaintsPerPage;
-    const endIndex = startIndex + complaintsPerPage;
-    return filteredItems?.slice(startIndex, endIndex);
-  };
+      useEffect(() => {
+        fetchOfflineForm();
+      }, [isRefresh]);
 
-  const handlePageChange = ({ selected }) => {
-    setCurrentPage(selected);
-  };
+      const filteredItems = users.filter(
+        (row) =>{ 
+          const matchesKeyword =  (row?.first_name &&
+            row.first_name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+          (row?.number && row.number.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.UserName &&
+              row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+            (row?.orderid &&
+              row.orderid.toLowerCase().includes(keyword.trim().toLowerCase()))
 
-  const showApiData = filterPagination();
+              const matchesType = !formStatus || formStatus === "---Select Form Status---" || row.status === formStatus;
+              return matchesKeyword && matchesType ;
+            }
+      );
+    
+      const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
+    
+      const filterPagination = () => {
+        const startIndex = currentPage * complaintsPerPage;
+        const endIndex = startIndex + complaintsPerPage;
+        return filteredItems?.slice(startIndex, endIndex);
+      };
+    
+      const handlePageChange = ({ selected }) => {
+        setCurrentPage(selected);
+      };
+    
+      const showApiData = filterPagination();
 
-  console.log(showApiData);
-   
+      console.log(showApiData);
+      
 
+    //   const deactivateUser = async (id) => {
+    //     const swalWithBootstrapButtons = Swal.mixin({
+    //       customClass: {
+    //         confirmButton: "btn btn-success",
+    //         cancelButton: "btn btn-danger"
+    //       },
+    //       buttonsStyling: false
+    //     });
+      
+    //     swalWithBootstrapButtons.fire({
+    //       title: "Are you sure?",
+    //       // text: "You won't be able to revert this!",
+    //       icon: "warning",
+    //       showCancelButton: true,
+    //       confirmButtonText: "Yes, deactive it!",
+    //       cancelButtonText: "No, cancel!",
+    //       reverseButtons: true
+    //     }).then(async (result) => {
+    //       if (result.isConfirmed) {
+    //         setLoading(true);
+    //         try {
+    //           const { data } = await axios.put(
+    //             "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser", 
+    //             {
+    //                userId: id 
+    //             }
+    //           );
+    //           if (data.success) {
+    //             swalWithBootstrapButtons.fire({
+    //               title: "Deactivated!",
+    //               text: data.message,
+    //               icon: "success"
+    //             });
+    //            fetchActiveUsers();
+    //           } else {
+    //             swalWithBootstrapButtons.fire({
+    //               title: "Error!",
+    //               text: data.message || "An error occurred during the process. Please try again.",
+    //               icon: "error"
+    //             });
+    //           }
+    //         } catch (error) {
+    //           console.error("Error deactivate user:", error);
+    //           swalWithBootstrapButtons.fire({
+    //             title: "Error!",
+    //             text: "An error occurred during the process. Please try again.",
+    //             icon: "error"
+    //           });
+    //         } finally {
+    //           setLoading(false);
+    //         }
+    //       } else if (result.dismiss === Swal.DismissReason.cancel) {
+    //         swalWithBootstrapButtons.fire({
+    //           title: "Cancelled",
+    //           text: "Your user is safe :)",
+    //           icon: "error"
+    //         });
+    //       }
+    //     });
+    //   };
+  console.log(users)
+    
     return (
         <>
             <Wrapper>
                 <div className="main">
                     <div className="container-fluid">
-                        <div className="row flex-wrap justify-content-center ">
+                        <div className="row flex-wrap justify-content-lg-center justify-content-center ">
                             <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
                                 {/* <Sider /> */}
                             </div>
                             <div className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
-                             mt-5 formdata">
-                                <div className="main shadow-none">
-                                    <div className="row shadow-none">
-                                        <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                             mt-5 formdata ">
+                                <div className="main shadow-none ">
+                                    <div className="row shadow-none ">
+                                        <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                             {/* <div className="text-center">
-                                                <h3>Wallet Transaction Report</h3>
+                                                <h3>Complaint Raised List</h3>
                                             </div> */}
                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Wallet Withdraw Requests</h4>
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Offline DTH Connection history</h4>
                                                 <p className="mx-lg-5">
                                                     {" "}
                                                     <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
@@ -465,49 +405,61 @@ const SAWalletWithdrawRequests = () => {
                                                         style={{ fontSize: "13px" }}
                                                     >
                                                         {" "}
-                                                        Wallet Withdraw Requests
+                                                        Offline DTH Connection history
                                                     </span>{" "}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
+
                                     <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
-                                        <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
+                                        <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
                                             <div className="row d-flex flex-column g-4">
-                                            <div className="d-flex flex-column flex-md-row gap-3">
-                                                <div className="col-12 col-md-4 col-lg-3">
+
+                                                <div className="d-flex flex-column flex-xl-row gap-3">
+                                                    {/* <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="fromDate" className="form-label">From</label>
-                                                        <input id="fromDate" className="form-control" type="date"  value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}/>
+                                                        <input id="fromDate" className="form-control" type="date" />
                                                     </div>
                                                     <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="toDate" className="form-label">To</label>
-                                                        <input id="toDate" className="form-control " type="date" value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}/>
+                                                        <input id="toDate" className="form-control " type="date" />
                                                     </div>
-                                                </div>
+                                                    <div className="d-flex align-items-end">
+                                                        <button type="button" className="btn btn-primary button">Search</button>
+                                                    </div> */}
 
-                                                <div className="d-flex flex-column flex-xl-row gap-3">
-
-                                                <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                                                    <div className="col-12 col-md-12 col-lg-12 col-xl-8">
                                                         {/* <label for="fromDate" className="form-label">From</label> */}
                                                         <input id="fromDate" 
                                                         className="form-control"
                                                          type="search"
-                                                         placeholder="Enter User Name/User Id/Mobile/Email Id/Order Id"
+                                                         placeholder="Enter Applicant Name/Mobile/Order Id/User Name"
                                                          value={keyword}
                               onChange={(e) => setKeyword(e.target.value)}
                                                          />
                                                     </div>
-                                                    
-                                                   
-                                                    {/* <div className="d-flex align-items-end">
-                                                        <button type="button" className="btn btn-primary button">Search</button>
-                                                    </div> */}
+                                                    <div className="col-12 col-md-12 col-lg-12 col-xl-3">
+                                                        
+                                                  
+                                                        {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
+                                                        <select
+                                                          className="form-select"
+                                                          aria-label="Default select example"
+                                                          value={formStatus}
+                                                          onChange={(e) => setFormStatus(e.target.value)}
+                                                          
+                                                        >
+                                                          <option selected>---Select Form Status---</option>
+                                                          <option value="Pending">Pending</option>
+                                                          <option value="Approve">Approve</option>
+                                                          <option value="Reject">Reject</option>
+                                                      
+                                                        </select>
+                                                     
+                                                                                </div>
 
                                                 </div>
-                                              
-                                            
 
 
                                                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -522,28 +474,26 @@ const SAWalletWithdrawRequests = () => {
                                                     :
                                                     (
                                                         <>
-                                                        <table class="table table-striped">
+                                                         <table class="table table-striped">
                                                             <thead className="table-dark">
-                                                                <tr>
-                                                                    <th scope="col">#</th>
-                                                                    <th scope="col">Date</th>
-                                                                    <th scope="col">Order Id</th>
-                                                                    <th scope="col">Amount</th>
-                                                                    <th scope="col">User Id</th>
-                                                                    <th scope="col">User Name</th>
-                                                                    <th scope="col">User Role</th>
-                                                                    <th scope="col">User Mobile</th>
-                                                                    <th scope="col">User Email</th>
-                                                                    <th scope="col">Withdraw Reason</th>
-                                                                    <th scope="col">A/c Holder Name</th>
-                                                                    <th scope="col">Bank Account Number</th>
-                                                                    <th scope="col">IFSC Code</th>
-                                                                    <th scope="col">Bank Name</th>
-                                                                    <th scope="col">Remark</th>
-                                                                    <th scope="col">Status</th>
-                                                                    <th scope="col">Process Date</th>
-                                                                    <th scope="col">Action</th>
-                                                                </tr>
+                                                              <tr>
+                                                             <th scope="col">Sr.No</th>
+                                                             <th scope="col">Created Date</th>
+                                <th scope="col">Order Id</th>
+                                <th scope="col">first_name</th>
+                                <th scope="col">last_name</th>
+                                  <th scope="col">full_address</th>
+                                  <th scope="col">postal_code</th>
+                                  <th scope="col">number</th>
+                                  <th scope="col">amount</th>
+                                  <th scope="col">Description</th>
+                                  <th scope="col">User Id</th>
+                                  <th scope="col">User Name</th>
+                                  <th scope="col">User Mobile</th>
+                                  <th scope="col">Status</th>
+                                  <th scope="col">Note</th>
+                                  <th scope="col">Action</th>
+                                  </tr>
                                                             </thead>
                                                             <tbody>
                                                             
@@ -552,23 +502,75 @@ const SAWalletWithdrawRequests = () => {
                                           <tr key={index}>
                                           <th scope="row">{index + 1}</th>
                                           <td>{item.created_at}</td>
-                                          <td>{item.order_id}</td>
+                                          <td>{item.orderid}</td>
+                                          <td>{item.first_name}</td>
+                                          <td>{item.last_name}</td>
+                                          <td>{item.full_address}</td>
+                                          <td>{item.postal_code}</td>
+                                          <td>{item.number}</td>
                                           <td>{item.amount}</td>
+                                          <td>{item.message}</td>
+                                         
+                                          {/* <td>
+                                            <a
+                                              href={item.attached_photo}
+                                              target="_blank"
+                                            >
+                                              View Photo
+                                            </a>
+                                          </td> */}
+                                          {/* <td>
+                                            <a
+                                              href={item.attached_sign}
+                                              target="_blank"
+                                            >
+                                              View Sign
+                                            </a>
+                                          </td> */}
+                                          {/* <td>
+                                            {item.documentUpload	
+                                              ?.split(",")
+                                              ?.map((kycurl, kycindx) => (
+                                                <div key={kycindx}>
+                                                  <a
+                                                    href={kycurl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                  >
+                                                    View KYC {kycindx + 1}
+                                                  </a>
+                                                </div>
+                                              ))}
+                                          </td> */}
+                                          {/* <td>
+                                            <a
+                                              href={item.bank_passbook}
+                                              target="_blank"
+                                            >
+                                              View Passbook
+                                            </a>
+                                          </td>
+                                          <td>
+                                            <a
+                                              href={item.shop_photo}
+                                              target="_blank"
+                                            >
+                                              View Shop Photo
+                                            </a>
+                                          </td>
+                                          <td>
+                                            <a
+                                              href={item.electric_bill}
+                                              target="_blank"
+                                            >
+                                              View Electricity Bill
+                                            </a>
+                                          </td> */}
                                           <td>{item.user_id}</td>
-                                          <td>{item.userName}</td>
-                                          <td>{item.userRole}</td>
-                                          <td>{item.userPhone}</td>
-                                          <td>{item.userEmail}</td>
-                                          <td>{item.withdrawReason}</td>
-                                          <td>{item.bankholder_name}</td>
-                                          <td>{item.bankaccount_number}</td>
-                                          <td>{item.IFSC_code}</td>
-                                          <td>{item.bank_name}</td>
-                                          <td>{item.remark}</td>
+                                          <td>{item.UserName}</td>
+                                          <td>{item.ContactNo}</td>
                                           <td>{item.status}</td>
-                                         
-                                          <td>{item.process_date}</td>
-                                         
+                                          <td>{item.note}</td>
                                           <td>
                                             { (item.status === "Pending") && 
                                               <Dropdown>
@@ -596,7 +598,7 @@ const SAWalletWithdrawRequests = () => {
                                                     </span>{" "}
                                                     Approve
                                                   </Dropdown.Item>
-                                                  {/* <Dropdown.Item
+                                                  <Dropdown.Item
                                                     onClick={() => {
                                                       // setSelectedUser(user);
                                                       setShowRejectModel(true)
@@ -609,7 +611,7 @@ const SAWalletWithdrawRequests = () => {
                                                       <CiViewList />
                                                     </span>{" "}
                                                     Reject
-                                                  </Dropdown.Item> */}
+                                                  </Dropdown.Item>
                                                 
                                              
                                                 </Dropdown.Menu>
@@ -731,8 +733,9 @@ const SAWalletWithdrawRequests = () => {
                                                         
     
                                                             </tbody>
+                                                           
                                                         </table>
-                                                        
+
                                                         <PaginationContainer>
                                                         <ReactPaginate
                                                           previousLabel={"previous"}
@@ -748,11 +751,15 @@ const SAWalletWithdrawRequests = () => {
                                                       </PaginationContainer>
                                                         </>
                                                     )}
+                                                       
                                                     </div>
-                                                  
+                                                 
                                                 </div>
                                             </div>
+
+
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -760,10 +767,9 @@ const SAWalletWithdrawRequests = () => {
                     </div>
                 </div>
 
+                      {/* Approve  Model  start*/}
 
-              {/* Approve model start */}
-          
-              <Modal
+        <Modal
           // size="lg"
           show={ShowApproveModel}
           //   fullscreen={true}
@@ -777,11 +783,12 @@ const SAWalletWithdrawRequests = () => {
             {selectedItem && <SAApproveModel item={selectedItem} setShowApproveModel={setShowApproveModel}  setIsRefresh={setIsRefresh}/>}
           </Modal.Body>
         </Modal>
-       {/* Approve model end */}
 
-                {/* Reject Model  start*/}
+        {/*  Approve Model  end*/}
 
-                <Modal
+             {/* Reject Model  start*/}
+
+             <Modal
           // size="lg"
           show={ShowRejectModel}
           //   fullscreen={true}
@@ -802,23 +809,16 @@ const SAWalletWithdrawRequests = () => {
     );
 }
 
-export default SAWalletWithdrawRequests;
+export default SAOfflineDthConnection
 
 const Wrapper = styled.div`
   .main {
-    height: 100%;
+    height: 100vh;
     width: 100%;
   }
-  .button {
-   
+  button {
+    color: #fff;
     background: #6d70ff;
-    border-color: #6d70ff;
-   
-  }
-  .button:hover{
-    background: #5356fa;
-    border-color: #5356fa;
-    
   }
   .form-container {
     width: 50%;
@@ -850,7 +850,6 @@ const Wrapper = styled.div`
   display: none !important;
 }
 `;
-
 
 const PaginationContainer = styled.div`
   .pagination {

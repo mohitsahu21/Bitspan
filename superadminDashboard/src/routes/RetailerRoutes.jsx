@@ -64,6 +64,9 @@ import UtiPanNew from "../components/DashBoard/UtiPanNew";
 import DemoRegistration from "../components/DashBoard/DemoRegistration";
 import { useSelector } from "react-redux";
 import EdistrictForm from "../components/DashBoard/EdistrictForm";
+import CreatePin from "../components/DashBoard/CreatePin";
+import BankHistory from "../components/DashBoard/BankHistory";
+import Edistrict from "../components/DashBoard/Edistrict";
 
 const RetailerRoutes = () => {
   const { currentUser, token } = useSelector((state) => state.user);
@@ -734,6 +737,40 @@ const RetailerRoutes = () => {
             )
           }
         />
+
+        <Route
+          path="/generate-pin"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <CreatePin />
+            )
+          }
+        />
+
+        <Route
+          path="/bank-history"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <BankHistory />
+            )
+          }
+        />
+
+        <Route
+          path="/E-District-history"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <Edistrict />
+            )
+          }
+        />
+
         <Route path="/registration-page" element={<DemoRegistration />} />
       </Routes>
     </>

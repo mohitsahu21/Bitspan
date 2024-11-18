@@ -35,8 +35,11 @@ const applyOfflineForm = (req, res) => {
         .join(",")
     : null;
 
+  const orderId = `OFF${Date.now()}IS`;
+
   const query = `
         INSERT INTO apply_offline_form (
+        order_id,
             applicant_name,
             applicant_father,
             applicant_number,
@@ -47,12 +50,13 @@ const applyOfflineForm = (req, res) => {
             attached_sign,
             attached_kyc,
             created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
   db.query(
     query,
     [
+      orderId,
       applicant_name,
       applicant_father,
       applicant_number,
@@ -152,9 +156,12 @@ const bankidForm = (req, res) => {
     applicant_number,
     email,
     applicant_select_service,
+    select_bank_service,
     aadhar_card,
     pan_card,
     business_name,
+    status,
+    user_id,
   } = req.body;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
@@ -179,14 +186,19 @@ const bankidForm = (req, res) => {
     ? `${domain}/uploads/${req.files.electric_bill[0].filename}`
     : null;
 
+  const orderId = `BNK${Date.now()}`;
+  // const orderId = `BNK${createdAt}`;
+
   const query = `
         INSERT INTO apply_offline_form (
+        order_id,
             applicant_name,
     applicant_father,
     applicant_mother,
     applicant_number,
     email,
     applicant_select_service,
+    select_bank_service,
     aadhar_card,
     pan_card,
     business_name,
@@ -195,19 +207,23 @@ const bankidForm = (req, res) => {
     bank_passbook,
     shop_photo,
     electric_bill,
+    status,
+    user_id,
     created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
   db.query(
     query,
     [
+      orderId,
       applicant_name,
       applicant_father,
       applicant_mother,
       applicant_number,
       email,
       applicant_select_service,
+      select_bank_service,
       aadhar_card,
       pan_card,
       business_name,
@@ -216,6 +232,8 @@ const bankidForm = (req, res) => {
       bank_passbook,
       shop_photo,
       electric_bill,
+      status,
+      user_id,
       createdAt,
     ],
     (err, result) => {
@@ -225,9 +243,11 @@ const bankidForm = (req, res) => {
         return;
       }
 
-      res
-        .status(200)
-        .json({ message: "Form submitted successfully", id: result.insertId });
+      res.status(200).json({
+        message: "Form submitted successfully",
+        id: result.insertId,
+        orderId: orderId,
+      });
     }
   );
 };
@@ -336,14 +356,24 @@ const getRechargeData = (req, res) => {
 };
 
 const getApiRechargeData = (req, res) => {
-  let query = `SELECT * FROM recharges`;
+  const userId = req.params.userId;
+  const rechargeType = "Prepaid";
 
-  db.query(query, (err, result) => {
+  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ?`;
+
+  db.query(query, [rechargeType, userId], (err, result) => {
     if (err) {
-      return res.status(400).json({ status: "failure", error: err.message });
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
     }
 
-    return res.status(200).json({ status: "success", data: result });
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
   });
 };
 
@@ -520,14 +550,17 @@ const panFromData = (req, res) => {
       ? `${domain}/panUploads/${req.files.attachment_signature[0].filename}`
       : null;
 
+  const orderId = `PANZ${Date.now()}`;
+
   const sql = `INSERT INTO pan_offline (
-    application_type, select_title, name, father_name, mother_name, dob, gender, office_address, aadhar_details,
+    order_id, application_type, select_title, name, father_name, mother_name, dob, gender, office_address, aadhar_details,
     Address_Communication_OfficeResident, alternative_communication_Address, mobile_no, email_id, pin_code, state,
     Change_Request, documentUpload, attachment_form, attachment_signature, attachment_photo, Charge_Amount, user_id,
     status, note, created_at
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
   const values = [
+    orderId,
     application_type,
     select_title,
     name,
@@ -594,9 +627,10 @@ const nsdlTransactionCorrection = (req, res) => {
 };
 
 const panFourZeroGetAPI = (req, res) => {
-  const query = `SELECT * FROM pan_offline ORDER BY id DESC`;
+  const applicationId = req.params.user_id;
+  const query = `SELECT * FROM pan_offline WHERE user_id = ? ORDER BY id DESC`;
 
-  db.query(query, (err, result) => {
+  db.query(query, [applicationId], (err, result) => {
     if (err) {
       console.error("Database error:", err);
       return res.status(400).json({ status: "Failure", error: err.message });
@@ -862,6 +896,8 @@ const eDistrictFormData = (req, res) => {
     annual_income,
     previous_application,
     charge_amount,
+    user_id,
+    status,
   } = req.body;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
@@ -872,13 +908,16 @@ const eDistrictFormData = (req, res) => {
     ? req.files.map((file) => `${domain}/uploads/${file.filename}`).join(",")
     : null;
 
+  const orderId = `EDST${Date.now()}`;
+
   const sql = `INSERT INTO \`e-district-application\` (
-      application_type, samagar, gender, name, father_husband_name, dob, address,
+      order_id, application_type, samagar, gender, name, father_husband_name, dob, address,
       mobile_no, cast, aadhar_no, samagar_member_id, state, annual_income,
-      previous_application, documentUpload, charge_amount, created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+      previous_application, documentUpload, charge_amount, user_id, status, created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
   const values = [
+    orderId,
     application_type,
     samagar,
     gender,
@@ -895,6 +934,8 @@ const eDistrictFormData = (req, res) => {
     previous_application,
     documentUpload,
     charge_amount,
+    user_id,
+    status,
     createdAt,
   ];
 
@@ -907,6 +948,136 @@ const eDistrictFormData = (req, res) => {
       message: "Form data submitted successfully",
       formId: result.insertId,
     });
+  });
+};
+
+const getSelectedServices = (req, res) => {
+  const applicationId = req.params.user_id;
+
+  const query = `SELECT select_bank_service, status FROM apply_offline_form WHERE user_id = ?`;
+  db.query(query, [applicationId], (err, results) => {
+    if (err) {
+      console.error("Error fetching selected services:", err);
+      res.status(500).json({ error: "Database error" });
+    } else {
+      const selectedServices = results.map((row) => ({
+        service: row.select_bank_service,
+        status: row.status,
+      }));
+      res.status(200).json({ selectedServices });
+    }
+  });
+};
+
+const getAllBranchId = (req, res) => {
+  const selectQuery = `SELECT * FROM apply_offline_form WHERE applicant_select_service = ?`;
+
+  db.query(selectQuery, ["New Bank ID"], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res
+        .status(500)
+        .json({ error: "An error occurred while fetching data." });
+    }
+
+    return res.status(200).json(result);
+  });
+};
+
+const getEdistrictData = (req, res) => {
+  const applicationId = req.params.user_id;
+
+  const selectQuery = `SELECT * FROM \`e-district-application\` WHERE user_id = ?`;
+
+  db.query(selectQuery, [applicationId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      res.status(500).json({ error: "Database Error" });
+    } else {
+      res.status(200).json(result);
+    }
+  });
+};
+
+const getAllRechargeApi = (req, res) => {
+  const selectQuery = `SELECT * FROM apisurl WHERE API_Status = ? AND API_for = ?`;
+
+  db.query(selectQuery, ["Active", "Recharge"], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({
+        status: "Failure",
+        error: "An error occurred while fetching data.",
+      });
+    }
+
+    return res.status(200).json({
+      status: "Success",
+      data: result,
+    });
+  });
+};
+
+const getAllDTHeApi = (req, res) => {
+  const selectQuery = `SELECT * FROM apisurl WHERE API_Status = ? AND API_for = ?`;
+
+  db.query(selectQuery, ["Active", "DTH Connection"], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({
+        status: "Failure",
+        error: "An error occurred while fetching data.",
+      });
+    }
+
+    return res.status(200).json({
+      status: "Success",
+      data: result,
+    });
+  });
+};
+
+const getApiPostRechargeData = (req, res) => {
+  const userId = req.params.userId;
+  const rechargeType = "Postpaid";
+
+  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ?`;
+
+  db.query(query, [rechargeType, userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
+const getApiDTHRechargeData = (req, res) => {
+  const userId = req.params.userId;
+  const rechargeType = "DTH";
+
+  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ?`;
+
+  db.query(query, [rechargeType, userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
   });
 };
 
@@ -929,4 +1100,11 @@ module.exports = {
   profileInfo,
   profileUserKyc,
   eDistrictFormData,
+  getSelectedServices,
+  getAllBranchId,
+  getEdistrictData,
+  getAllRechargeApi,
+  getAllDTHeApi,
+  getApiPostRechargeData,
+  getApiDTHRechargeData,
 };

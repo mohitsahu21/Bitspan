@@ -4,9 +4,15 @@ import styled from "styled-components";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
+import { useDispatch, useSelector } from "react-redux";
 
-const AllPanForm = () => {
-  const [formData, setFormData] = useState([]);
+const Edistrict = () => {
+  const dispatch = useDispatch();
+  const { currentUser, token } = useSelector((state) => state.user);
+  const userData = currentUser.userId;
+  // console.log(userData);
+
+  const [formData, setFormData] = useState();
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All");
@@ -17,15 +23,10 @@ const AllPanForm = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/retailer/getApplyOfflineForm`
+        `http://localhost:7777/api/auth/retailer/getEdistrictData/${userData}`
       );
-
-      const newResponseData = response.data.filter(
-        (item) => item.applicant_select_service !== "New Bank ID"
-      );
-
-      setFormData(newResponseData);
-      console.log(newResponseData);
+      setFormData(response.data);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -39,9 +40,7 @@ const AllPanForm = () => {
     fetchData();
   };
 
-  console.log(formData);
-
-  const filteredData = formData.filter((item) => {
+  const filteredData = formData?.filter((item) => {
     if (selectedStatus === "All") {
       return true;
     } else {
@@ -49,12 +48,12 @@ const AllPanForm = () => {
     }
   });
 
-  const totalPages = Math.ceil(filteredData.length / complaintsPerPage);
+  const totalPages = Math.ceil(filteredData?.length / complaintsPerPage);
 
   const paginateData = () => {
     const startIndex = currentPage * complaintsPerPage;
     const endIndex = startIndex + complaintsPerPage;
-    return filteredData.slice(startIndex, endIndex);
+    return filteredData?.slice(startIndex, endIndex);
   };
 
   const handlePageChange = ({ selected }) => {
@@ -84,10 +83,10 @@ const AllPanForm = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          View All Offline History
+                          E-District History
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; View All Offline History{" "}
+                          <BiHomeAlt /> &nbsp;/ &nbsp; E-District History{" "}
                         </h6>
                       </div>
                     </div>
@@ -156,15 +155,23 @@ const AllPanForm = () => {
                               <thead className="table-dark">
                                 <tr>
                                   <th scope="col">Sr.No</th>
+                                  <th scope="col">Order ID</th>
+                                  <th scope="col">Applicant Type</th>
                                   <th scope="col">Applicant Name</th>
                                   <th scope="col">Applicant Father Name</th>
-                                  <th scope="col">Applicant Number</th>
-                                  <th scope="col">Service</th>
-                                  <th scope="col">other</th>
-                                  <th scope="col">View Form</th>
-                                  <th scope="col">View Photo</th>
-                                  <th scope="col">View Signature</th>
-                                  <th scope="col">View KYC</th>
+                                  <th scope="col">Mobile Number</th>
+                                  <th scope="col">DOB</th>
+                                  <th scope="col">Gender</th>
+                                  <th scope="col">Cast</th>
+                                  <th scope="col">Aadhar No</th>
+                                  <th scope="col">Samagra ID</th>
+                                  <th scope="col">Address</th>
+                                  <th scope="col">State</th>
+                                  <th scope="col">Prev Application</th>
+                                  <th scope="col">Annual inc</th>
+                                  <th scope="col">View Document</th>
+                                  <th scope="col">Charge Amt</th>
+                                  <th scope="col">Date</th>
                                   <th scope="col">Status</th>
                                   <th scope="col">Note</th>
                                 </tr>
@@ -176,40 +183,25 @@ const AllPanForm = () => {
                                   </>
                                 ) : (
                                   <>
-                                    {displayData.map((item, index) => (
+                                    {displayData?.map((item, index) => (
                                       <tr key={index}>
                                         <th scope="row">{index + 1}</th>
-                                        <td>{item.applicant_name}</td>
-                                        <td>{item.applicant_father}</td>
-                                        <td>{item.applicant_number}</td>
-                                        <td>{item.applicant_select_service}</td>
-                                        <td>{item.other}</td>
+                                        <td>{item.order_id}</td>
+                                        <td>{item.application_type}</td>
+                                        <td>{item.name}</td>
+                                        <td>{item.father_husband_name}</td>
+                                        <td>{item.mobile_no}</td>
+                                        <td>{item.dob}</td>
+                                        <td>{item.gender}</td>
+                                        <td>{item.cast}</td>
+                                        <td>{item.aadhar_no}</td>
+                                        <td>{item.samagar_member_id}</td>
+                                        <td>{item.address}</td>
+                                        <td>{item.state}</td>
+                                        <td>{item.previous_application}</td>
+                                        <td>{item.annual_income}</td>
                                         <td>
-                                          <a
-                                            href={item.attached_form}
-                                            target="_blank"
-                                          >
-                                            View Form
-                                          </a>
-                                        </td>
-                                        <td>
-                                          <a
-                                            href={item.attached_photo}
-                                            target="_blank"
-                                          >
-                                            View Photo
-                                          </a>
-                                        </td>
-                                        <td>
-                                          <a
-                                            href={item.attached_sign}
-                                            target="_blank"
-                                          >
-                                            View Sign
-                                          </a>
-                                        </td>
-                                        <td>
-                                          {item?.attached_kyc
+                                          {item?.documentUpload
                                             ?.split(",")
                                             ?.map((kycurl, kycindx) => (
                                               <div key={kycindx}>
@@ -218,11 +210,13 @@ const AllPanForm = () => {
                                                   target="_blank"
                                                   rel="noopener noreferrer"
                                                 >
-                                                  View KYC {kycindx + 1}
+                                                  View {kycindx + 1}
                                                 </a>
                                               </div>
                                             ))}
                                         </td>
+                                        <td>{item.charge_amount}</td>
+                                        <td>{item.created_at}</td>
                                         <td>{item.status}</td>
                                         <td>{item.note}</td>
                                       </tr>
@@ -232,28 +226,6 @@ const AllPanForm = () => {
                               </tbody>
                             </table>
                           </div>
-                          {/* <div className="float-end">
-                            <nav aria-label="Page navigation example">
-                              <ul className="pagination">
-                                <li className="page-item">
-                                  <a className="page-link" href="#">
-                                    Previous
-                                  </a>
-                                </li>
-                                <li className="page-item">
-                                  <a className="page-link" href="#">
-                                    1
-                                  </a>
-                                </li>
-
-                                <li className="page-item">
-                                  <a className="page-link" href="#">
-                                    Next
-                                  </a>
-                                </li>
-                              </ul>
-                            </nav>
-                          </div> */}
                           <PaginationContainer>
                             <ReactPaginate
                               previousLabel={"Previous"}
@@ -281,7 +253,7 @@ const AllPanForm = () => {
   );
 };
 
-export default AllPanForm;
+export default Edistrict;
 
 const Wrapper = styled.div`
   .main {

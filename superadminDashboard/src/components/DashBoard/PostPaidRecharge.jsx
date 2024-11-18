@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FaMobileAlt } from "react-icons/fa";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../Loading";
+import { useDispatch, useSelector } from "react-redux";
 
 const PostPaidRecharge = () => {
+  const dispatch = useDispatch();
+  const { currentUser, token } = useSelector((state) => state.user);
   const [activeTab, setActiveTab] = useState("tab1");
+  const [getdata, setGetData] = useState([]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -18,13 +22,16 @@ const PostPaidRecharge = () => {
     operatorName: "",
     number: "",
     amount: "",
+    recharge_Type: "Postpaid",
+    created_by_userid: currentUser.userId,
     // orderid: "4654747",
   });
   const [offlineForm, setOfflineForm] = useState({
     mobile_no: "",
     operator_name: "",
     amount: "",
-    created_by_userid: "1",
+    recharge_Type: "Postpaid",
+    created_by_userid: currentUser.userId,
   });
   const [response, setResponse] = useState(null);
   const [responseForm, setResponseForm] = useState(null);
@@ -41,6 +48,26 @@ const PostPaidRecharge = () => {
     // { name: "Vi", value: "Vi" },
     { name: "Vi Postpaid", value: "Vi Postpaid" },
   ];
+
+  useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        const response = await axios.get(
+          // `http://localhost:7777/api/auth/retailer/getAllRechargeApi`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllRechargeApi`
+        );
+        if (response.data.status === "Success") {
+          setGetData(response.data.data);
+          console.log(response.data.data);
+        }
+      } catch (error) {
+        console.log(`Error In API Call ${error}`);
+      }
+    };
+    fetchdata();
+  }, []);
+
+  console.log(getdata);
 
   const handleChange = (e) => {
     setFormData({
@@ -59,45 +86,92 @@ const PostPaidRecharge = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      const result = await axios.post(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/recharge-instpy",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/api-recharge",
-        formData
-      );
-      setResponse(result.data); // Update the response state with the received data
-      //   console.log(result.data.rechargeData.status);
-      console.log(result.data);
-      if (result.data.rechargeData.status === "Failure") {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Something went wrong!",
-          // footer: '<a href="#">Why do I have this issue?</a>',
-        });
-      } else if (result.data.rechargeData.status === "Success") {
-        Swal.fire({
-          title: "Done!",
-          text: "Recharge Successfull",
-          icon: "success",
-        });
+    let success = false;
+
+    for (const api of apiData) {
+      try {
+        const result = await axios.post(api.API_URL, formData);
+
+        if (result.data && result.data.message === "Recharge successful") {
+          Swal.fire({
+            title: "Done!",
+            text: "Recharge Successful",
+            icon: "success",
+          });
+          setResponse(result.data);
+          success = true;
+          break;
+        } else if (
+          result.data.rechargeData &&
+          result.data.rechargeData.status === "Failure"
+        ) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong with this API!",
+          });
+        }
+      } catch (error) {
+        console.error(
+          "Error in recharge:",
+          error.response ? error.response.data : error.message
+        );
       }
-    } catch (error) {
-      console.error(
-        "Error in recharge:",
-        error.response ? error.response.data : error.message
-      );
+    }
+
+    if (!success) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Something went wrong!",
-        footer: '<a href="#">Why do I have this issue?</a>',
+        text: "All providers are currently unavailable. Please try again later.",
       });
-      setResponse(null);
-    } finally {
-      setLoading(false); // Stop loading
     }
+
+    setLoading(false);
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   try {
+  //     const result = await axios.post(
+  //       // "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/recharge-instpy",
+  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/api-recharge",
+  //       formData
+  //     );
+  //     setResponse(result.data); // Update the response state with the received data
+  //     //   console.log(result.data.rechargeData.status);
+  //     console.log(result.data);
+  //     if (result.data.rechargeData.status === "Failure") {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Oops...",
+  //         text: "Something went wrong!",
+  //         // footer: '<a href="#">Why do I have this issue?</a>',
+  //       });
+  //     } else if (result.data.rechargeData.status === "Success") {
+  //       Swal.fire({
+  //         title: "Done!",
+  //         text: "Recharge Successfull",
+  //         icon: "success",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error(
+  //       "Error in recharge:",
+  //       error.response ? error.response.data : error.message
+  //     );
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Oops...",
+  //       text: "Something went wrong!",
+  //       footer: '<a href="#">Why do I have this issue?</a>',
+  //     });
+  //     setResponse(null);
+  //   } finally {
+  //     setLoading(false); // Stop loading
+  //   }
+  // };
 
   const handlesubmitForm = async (e) => {
     e.preventDefault();

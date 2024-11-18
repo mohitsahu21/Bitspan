@@ -13,14 +13,13 @@ import Swal from "sweetalert2";
 import { MdGrid3X3 } from "react-icons/md";
 
 
-// resolve complaint component start//
-const SAResolveComplaint = ({ complaint, setShowResolveModel, setIsRefresh }) => {
+// Active component start//
+const SAActiveApi = ({ complaint, setShowActiveModel, setIsRefresh }) => {
     const [loading, setLoading] = useState(false);
   
     const [formData, setFormData] = useState({
-      complaintId: complaint.id,
-      response : "",
-      status : "Resolve"
+      id: complaint.id,
+      status : "Active"
     });
   
     const handleChange = (e) => {
@@ -36,8 +35,8 @@ const SAResolveComplaint = ({ complaint, setShowResolveModel, setIsRefresh }) =>
       try {
         setLoading(true);
         const response = await axios.put(
-          // "http://localhost:7777/api/auth/superAdmin/rejectUser",
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+          "http://localhost:7777/api/auth/superAdmin/ActiveServices",
+          // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
           formData
         );
         console.log(response);
@@ -45,9 +44,9 @@ const SAResolveComplaint = ({ complaint, setShowResolveModel, setIsRefresh }) =>
         if (response.data.success) {
           Swal.fire({
             icon: "success",
-            title: "Resolve Complaint Successfully",
+            title: "Active Service Successfully",
           });
-          setShowResolveModel(false);
+          setShowActiveModel(false);
           setIsRefresh((value) => !value);
         } else {
           Swal.fire({
@@ -71,7 +70,7 @@ const SAResolveComplaint = ({ complaint, setShowResolveModel, setIsRefresh }) =>
             <form onSubmit={handlesubmit}>
               <div className="">
                 <label for="name" class="form-label">
-                  Complaint Id
+                  Id
                 </label>
                 <div class="input-group flex-nowrap">
                   <span class="input-group-text" id="addon-wrapping">
@@ -93,7 +92,7 @@ const SAResolveComplaint = ({ complaint, setShowResolveModel, setIsRefresh }) =>
             
               <div className="mt-3">
                 <label for="name" class="form-label">
-                  Enter Resolve Note
+                  Service Name
                 </label>
                 <div class="input-group flex-nowrap">
                   <span class="input-group-text" id="addon-wrapping">
@@ -105,8 +104,27 @@ const SAResolveComplaint = ({ complaint, setShowResolveModel, setIsRefresh }) =>
                     name="response"
                     class="form-control"
                     placeholder="Enter Note"
-                    value={formData.response}
-                    onChange={handleChange}
+                    value={complaint.service_name}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="mt-3">
+                <label for="name" class="form-label">
+                 Service For
+                </label>
+                <div class="input-group flex-nowrap">
+                  <span class="input-group-text" id="addon-wrapping">
+                    {" "}
+                    <MdGrid3X3 />
+                  </span>
+                  <input
+                    type="text"
+                    name="response"
+                    class="form-control"
+                    placeholder="Enter Note"
+                    value={complaint.service_for}
+                    
                     required
                   />
                 </div>
@@ -127,19 +145,156 @@ const SAResolveComplaint = ({ complaint, setShowResolveModel, setIsRefresh }) =>
   };
 
 
-  // resolve complaint component end//
+  // Active component end//
+
+  // Deactive component start//
+const SADeactiveApi = ({ complaint, setShowDeactiveModel, setIsRefresh }) => {
+  const [loading, setLoading] = useState(false);
+
+  const [formData, setFormData] = useState({
+    id: complaint.id,
+      status : "Deactive"
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+  
+
+  const handlesubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const response = await axios.put(
+        "http://localhost:7777/api/auth/superAdmin/DeactiveServices",
+        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        formData
+      );
+      console.log(response);
+      setLoading(false);
+      if (response.data.success) {
+        Swal.fire({
+          icon: "success",
+          title: "Deactive Service Successfully",
+        });
+        setShowDeactiveModel(false);
+        setIsRefresh((value) => !value);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "An error occurred during the process. Please try again.",
+        });
+      }
+    } catch (error) {
+      console.error("There was an error submitting the form!", error);
+      setLoading(false);
+      Swal.fire({
+        icon: "error",
+        title: "An error occurred during the process. Please try again.",
+      });
+    }
+  };
+  return (
+    <>
+      <div>
+        
+          <form onSubmit={handlesubmit}>
+          <div className="">
+                <label for="name" class="form-label">
+                  Id
+                </label>
+                <div class="input-group flex-nowrap">
+                  <span class="input-group-text" id="addon-wrapping">
+                    {" "}
+                    <MdGrid3X3 />
+                  </span>
+                  <input
+                    type="text"
+                    name="package_name"
+                    class="form-control"
+                    placeholder="Enter Package Name"
+                    value={complaint.id}
+                    onChange={handleChange}
+                    disabled
+                    required
+                  />
+                </div>
+              </div>
+            
+              <div className="mt-3">
+                <label for="name" class="form-label">
+                Services Name
+                </label>
+                <div class="input-group flex-nowrap">
+                  <span class="input-group-text" id="addon-wrapping">
+                    {" "}
+                    <MdGrid3X3 />
+                  </span>
+                  <input
+                    type="text"
+                    name="response"
+                    class="form-control"
+                    placeholder="Enter Note"
+                    value={complaint.service_name}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="mt-3">
+                <label for="name" class="form-label">
+                 Services For
+                </label>
+                <div class="input-group flex-nowrap">
+                  <span class="input-group-text" id="addon-wrapping">
+                    {" "}
+                    <MdGrid3X3 />
+                  </span>
+                  <input
+                    type="text"
+                    name="response"
+                    class="form-control"
+                    placeholder="Enter Note"
+                    value={complaint.service_for}
+                    
+                    required
+                  />
+                </div>
+              </div>
+           
+
+            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+              <div className="text-center  m-5">
+                <button type="submit" className="btn p-2" disabled={loading}>
+                  {loading ? "Loading..." : "Submit"}
+                </button>
+              </div>
+            </div>
+          </form>
+      </div>
+    </>
+  );
+};
+
+
+// Deactive component end//
 
 
 
-const SAAllComplaintsList = () => {
+
+
+const SAActiveDeactiveServices = () => {
 
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState([]);
     const [keyword, setKeyword] = useState("");
     const complaintsPerPage = 10;
     const [currentPage, setCurrentPage] = useState(0);
-    const [complaintStatus, setComplaintStatus] = useState(""); // For user type filter
-    const [ShowResolveModel, setShowResolveModel] = useState(false);
+    const [Status, setStatus] = useState(""); // For user type filter
+    const [ShowDeactiveModel, setShowDeactiveModel] = useState(false);
+    const [showActiveModel,setShowActiveModel] = useState(false)
     const [isRefresh, setIsRefresh] = useState(false);
     const [selectedComplaint,setSelectedComplaint] = useState("")
 
@@ -148,7 +303,7 @@ const SAAllComplaintsList = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/complainGetData"
+            "http://localhost:7777/api/auth/superAdmin/getAllServicesList"
           );
           setUsers(data.data);
           setLoading(false);
@@ -168,14 +323,11 @@ const SAAllComplaintsList = () => {
 
       const filteredItems = users.filter(
         (row) =>{ 
-          const matchesKeyword =  (row?.UserName &&
-            row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-          (row?.userID && row.userID.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.ContactNo &&
-              row.ContactNo.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-            (row?.Email &&
-              row.Email.toLowerCase().includes(keyword.trim().toLowerCase()))
+          const matchesKeyword =  (row?.service_name &&
+            row.service_name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+          (row?.service_for && row.service_for.toLowerCase().includes(keyword.trim().toLowerCase())) 
 
-              const matchesType = !complaintStatus || complaintStatus === "---Select Complaint Status---" || row.status === complaintStatus;
+              const matchesType = !Status || Status === "---Select Status---" || row.status	 === Status;
               return matchesKeyword && matchesType;
             }
       );
@@ -254,6 +406,7 @@ const SAAllComplaintsList = () => {
     //       }
     //     });
     //   };
+console.log(showApiData);
 
     
     return (
@@ -274,7 +427,7 @@ const SAAllComplaintsList = () => {
                                                 <h3>Complaint Raised List</h3>
                                             </div> */}
                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Complaint Raised List</h4>
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Activate/Deactivate Services</h4>
                                                 <p className="mx-lg-5">
                                                     {" "}
                                                     <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
@@ -283,7 +436,7 @@ const SAAllComplaintsList = () => {
                                                         style={{ fontSize: "13px" }}
                                                     >
                                                         {" "}
-                                                        Complaint Raised List
+                                                        Activate/Deactivate Services
                                                     </span>{" "}
                                                 </p>
                                             </div>
@@ -312,7 +465,7 @@ const SAAllComplaintsList = () => {
                                                         <input id="fromDate" 
                                                         className="form-control"
                                                          type="search"
-                                                         placeholder="Enter User Name/User Id/Mobile/Email Id"
+                                                         placeholder="Enter Service Name/Service For"
                                                          value={keyword}
                               onChange={(e) => setKeyword(e.target.value)}
                                                          />
@@ -324,13 +477,13 @@ const SAAllComplaintsList = () => {
                                                         <select
                                                           className="form-select"
                                                           aria-label="Default select example"
-                                                          value={complaintStatus}
-                                                          onChange={(e) => setComplaintStatus(e.target.value)}
+                                                          value={Status}
+                                                          onChange={(e) => setStatus(e.target.value)}
                                                           
                                                         >
-                                                          <option selected>---Select Complaint Status---</option>
-                                                          <option value="Pending">Pending</option>
-                                                          <option value="Resolve">Resolve</option>
+                                                          <option selected>---Select Status---</option>
+                                                          <option value="Active">Active</option>
+                                                          <option value="Deactive">Deactive</option>
                                                       
                                                         </select>
                                                      
@@ -355,21 +508,11 @@ const SAAllComplaintsList = () => {
                                                             <thead className="table-dark">
                                                                 <tr>
 
-                                                                    <th scope="col">Complaint ID</th>
-                                                                    <th scope="col">Ticket Raised Date</th>
+                                                                    <th scope="col">Service Id</th>
+                                                                    <th scope="col">Service Name</th>
 
-                                                                    <th scope="col">Complaint Type</th>
-                                                                    <th scope="col">Complaint Mobile</th>
-                                                                    <th scope="col">Remark</th>
-                                                                    <th scope="col">Transaction No.</th>
-                                                                  
-                                                                    <th scope="col">User Id</th>
-                                                                    <th scope="col">User Name</th>
-                                                                    <th scope="col">User Type</th>
-                                                                    <th scope="col">User Email</th>
-                                                                    <th scope="col">User Mobile</th>
-                                                                    <th scope="col">Complaint File</th>
-                                                                    <th scope="col">Response</th>
+                                                                    <th scope="col">Service For</th>
+                                                                    <th scope="col">Service Type</th>
                                                                     <th scope="col">Status</th>
                                                                     <th scope="col">Action</th>
 
@@ -383,69 +526,16 @@ const SAAllComplaintsList = () => {
                                           <tr key={user.id}>
                                             {/* <th scope="row">{index + 1}</th> */}
                                             <th scope="row">{user.id}</th>
-                                            <td>{user.createdAt}</td>
-                                            <td>{user.complainType}</td>
-                                            <td>{user.mobileNo}</td>
-                                            <td>{user.remark}</td>
-                                            <td>{user.transactionNo}</td>
-    
-                                            <td>{user.userID}</td>
-    
-                                            <td>{user.UserName}</td>
-                                            <td>{user.role}</td>
-                                            <td>{user.Email}</td>
-                                            <td>{user.ContactNo}</td>
-                                        
-    
-                                            {/* <td>
-                                            {item.attached_kyc
-                                                .split(",")
-                                                .map((kycurl, kycindx) => (
-                                                  <div key={kycindx}>
-                                                    <a
-                                                      href={kycurl}
-                                                      target="_blank"
-                                                      rel="noopener noreferrer"
-                                                    >
-                                                      View KYC {kycindx + 1}
-                                                    </a>
-                                                  </div>
-                                                ))}
-                                          </td> */}
-                                            <td>
-                                              <a
-                                                href={user.complainFile}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                              >
-                                                View
-                                              </a>
-                                            </td>
-                                            {/* <td>
-                                              <a
-                                                href={user.AadharBack}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                              >
-                                                View
-                                              </a>
-                                            </td>
-                                            <td>
-                                              <a
-                                                href={user.PanCardFront}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                              >
-                                                View
-                                              </a>
-                                            </td> */}
                                            
-                                            {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
-                                            {/* <td>{user?.Note}</td> */}
-                                            <td>{user.response}</td>
+                                            <td>{user.service_name}</td>
+                                            <td>{user.service_for}</td>
+                                            <td>{user.service_type}</td>
                                             <td>{user.status}</td>
+                                            
+    
+                                       
                                             <td>
-                                            { user.status === "Pending" && 
+                                            { user.status	 === "Active" && 
                                               <Dropdown>
                                                 <Dropdown.Toggle
                                                   variant="success"
@@ -460,7 +550,7 @@ const SAAllComplaintsList = () => {
                                                     <Dropdown.Item
                                                     onClick={() => {
                                                       // setSelectedUser(user);
-                                                      setShowResolveModel(true)
+                                                      setShowDeactiveModel(true)
                                                       setSelectedComplaint(user)
                                                     //   deactivateUser(user.UserId)
                                                     }}
@@ -469,7 +559,40 @@ const SAAllComplaintsList = () => {
                                                       {" "}
                                                       <CiViewList />
                                                     </span>{" "}
-                                                    Mark Resolve
+                                                 Deactive
+                                                  </Dropdown.Item>
+                                                  
+                                                
+                                             
+                                                </Dropdown.Menu>
+                                              </Dropdown>
+}
+
+{ user.status	 === "Deactive" && 
+                                              <Dropdown>
+                                                <Dropdown.Toggle
+                                                  variant="success"
+                                                  // id={`dropdown-${user.id}`}
+                                                  as="span" style={{ border: 'none', background: 'none', cursor: 'pointer' }}
+                                                  className="custom-dropdown-toggle"
+                                                >
+                                                 <PiDotsThreeOutlineVerticalBold />
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu>
+                                                 
+                                                    <Dropdown.Item
+                                                    onClick={() => {
+                                                      // setSelectedUser(user);
+                                                      setShowActiveModel(true)
+                                                      setSelectedComplaint(user)
+                                                    //   deactivateUser(user.UserId)
+                                                    }}
+                                                  >
+                                                    <span className="">
+                                                      {" "}
+                                                      <CiViewList />
+                                                    </span>{" "}
+                                                 Active
                                                   </Dropdown.Item>
                                                   
                                                 
@@ -525,30 +648,49 @@ const SAAllComplaintsList = () => {
                     </div>
                 </div>
 
-                      {/* Resolve user Model  start*/}
+                      {/* Active Model  start*/}
 
         <Modal
           // size="lg"
-          show={ShowResolveModel}
+          show={showActiveModel}
           //   fullscreen={true}
-          onHide={() => setShowResolveModel(false)}
+          onHide={() => setShowActiveModel(false)}
           aria-labelledby="packageDetail-modal-sizes-title-lg"
         >
           <Modal.Header closeButton>
-            <Modal.Title id="packageDetail-modal-sizes-title-lg">Resolve Complaint</Modal.Title>
+            <Modal.Title id="packageDetail-modal-sizes-title-lg">Active Service</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {selectedComplaint && <SAResolveComplaint complaint={selectedComplaint} setShowResolveModel={setShowResolveModel}  setIsRefresh={setIsRefresh}/>}
+            {selectedComplaint && <SAActiveApi complaint={selectedComplaint} setShowActiveModel={setShowActiveModel}  setIsRefresh={setIsRefresh}/>}
           </Modal.Body>
         </Modal>
 
-        {/*  Resolve user Model  end*/}
+        {/*  Active Model  end*/}
+
+                      {/* Deactive Model  start*/}
+
+        <Modal
+          // size="lg"
+          show={ShowDeactiveModel}
+          //   fullscreen={true}
+          onHide={() => setShowDeactiveModel(false)}
+          aria-labelledby="packageDetail-modal-sizes-title-lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="packageDetail-modal-sizes-title-lg">Deactive Service</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {selectedComplaint && <SADeactiveApi complaint={selectedComplaint} setShowDeactiveModel={setShowDeactiveModel}  setIsRefresh={setIsRefresh}/>}
+          </Modal.Body>
+        </Modal>
+
+        {/*  Deactive  Model  end*/}
             </Wrapper>
         </>
     );
 }
 
-export default SAAllComplaintsList
+export default SAActiveDeactiveServices
 
 const Wrapper = styled.div`
   .main {

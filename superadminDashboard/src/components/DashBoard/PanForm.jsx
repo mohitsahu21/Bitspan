@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { FaMobileAlt } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { IoMail, IoPerson } from "react-icons/io5";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
+import { Modal, Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 
 const PanForm = () => {
+  const dispatch = useDispatch();
+  const { currentUser, token } = useSelector((state) => state.user);
   const [fileError, setFileError] = useState("");
   const [selectOption, setSelectOption] = useState(false);
+  const [showPinModal, setShowPinModal] = useState(false);
+  const [pin, setPin] = useState(["", "", "", ""]);
+  const pinRefs = useRef([]);
   const [formData, setFormData] = useState({
     applicant_name: "",
     applicant_father: "",
@@ -88,25 +95,96 @@ const PanForm = () => {
         }
       );
       alert(response.data.message);
+
+      setFormData({
+        applicant_name: "",
+        applicant_father: "",
+        applicant_number: "",
+        applicant_select_service: "",
+        other: "",
+        attached_form: null,
+        attached_photo: null,
+        attached_sign: null,
+        attached_kyc: [],
+      });
     } catch (error) {
       alert("An error occurred. Please try again.");
     }
   };
 
   const optionsDrop = [
-    { id: 1, name: "Pan Card Form" },
-    { id: 2, name: "Income" },
-    { id: 3, name: "Domicile" },
-    { id: 4, name: "Birth Certificate" },
-    { id: 5, name: "Death Certificate" },
-    { id: 6, name: "Pan Find" },
-    { id: 7, name: "E-Stamp" },
-    { id: 8, name: "ITR Registration" },
-    { id: 9, name: "GST Registration" },
-    { id: 10, name: "Udyog Aadhar" },
-    { id: 11, name: "Pan Card Services" },
-    { id: 12, name: "New Bank ID" },
+    { id: 1, name: "Birth Certificate" },
+    { id: 2, name: "Death Certificate" },
+    { id: 3, name: "Pan Find" },
+    { id: 4, name: "E-Stamp" },
+    { id: 5, name: "ITR Registration" },
+    { id: 6, name: "GST Registration" },
+    { id: 7, name: "Udyog Aadhar" },
+    { id: 8, name: "Sambal" },
+    // { id: 1, name: "Pan Card Form" },
+    // { id: 2, name: "Income" },
+    // { id: 3, name: "Domicile" },
+    // { id: 11, name: "Pan Card Services" },
+    // { id: 12, name: "New Bank ID" },
   ];
+
+  // Pin Verification Logic **
+
+  const handlePinChange = (index, value) => {
+    if (/^\d?$/.test(value)) {
+      const newPin = [...pin];
+      newPin[index] = value;
+      setPin(newPin);
+
+      // Move to next input if current is filled, move to previous if deleted
+      if (value !== "" && index < pin.length - 1) {
+        pinRefs.current[index + 1].focus();
+      } else if (value === "" && index > 0) {
+        pinRefs.current[index - 1].focus();
+      }
+    }
+  };
+
+  const handleBackspace = (index) => {
+    if (pin[index] === "" && index > 0) {
+      pinRefs.current[index - 1].focus();
+    }
+  };
+
+  const verifyPin = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        { user_id: currentUser.userId || "", pin: pin.join("") }
+      );
+
+      if (response.data.success) {
+        return true;
+      } else {
+        alert(response.data.message);
+        return false;
+      }
+    } catch (error) {
+      console.error("Error verifying PIN:", error);
+      alert("Error verifying PIN");
+      return false;
+    }
+  };
+
+  const handleModalSubmit = async (e) => {
+    const isPinValid = await verifyPin();
+    if (isPinValid) {
+      setShowPinModal(false);
+      handleSubmit(e);
+    } else {
+      setPin(["", "", "", ""]); // Clear the PIN fields on incorrect entry
+    }
+  };
+
+  const openPinModal = (e) => {
+    e.preventDefault();
+    setShowPinModal(true);
+  };
 
   return (
     <Wrapper>
@@ -117,15 +195,22 @@ const PanForm = () => {
               <div className="main shadow-none">
                 <div className="row shadow-none">
                   <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                    <div className="d-flex justify-content-between align-items-center flex-wrap">
-                      <h4 className="px-lg-3">Apply Pan Card Offline</h4>
+                    {/* <div className="d-flex justify-content-between align-items-center flex-wrap">
+                      <h4 className="px-lg-3">Apply Offline</h4>
                       <h6 className="mx-lg-5">
-                        <BiHomeAlt /> &nbsp;/ &nbsp; Apply Pan Card Offline
+                        <BiHomeAlt /> &nbsp;/ &nbsp; Apply Offline
                       </h6>
+                    </div> */}
+                    <div className="col-12 d-flex justify-content-center">
+                      <div className="border border-danger rounded shadow-sm mb-3">
+                        <h2 className="text-center m-0 px-5 py-3">
+                          Offline Services
+                        </h2>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={openPinModal}>
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="input-group mb-3">
@@ -314,6 +399,54 @@ const PanForm = () => {
                     </div>
                   </div>
                 </form>
+                <Modal
+                  show={showPinModal}
+                  onHide={() => setShowPinModal(false)}
+                  centered
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <div className="pin-inputs d-flex justify-content-center">
+                      {pin.map((digit, index) => (
+                        <input
+                          key={index}
+                          ref={(el) => (pinRefs.current[index] = el)}
+                          type="text"
+                          value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
+                          maxLength="1"
+                          onChange={(e) =>
+                            handlePinChange(index, e.target.value)
+                          }
+                          onKeyDown={(e) =>
+                            e.key === "Backspace" && handleBackspace(index)
+                          }
+                          className="pin-digit form-control mx-1"
+                          style={{
+                            width: "50px",
+                            textAlign: "center",
+                            fontSize: "1.5rem",
+                            borderRadius: "8px",
+                            border: "1px solid #ced4da",
+                            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button
+                      variant="secondary"
+                      onClick={() => setShowPinModal(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button variant="primary" onClick={handleModalSubmit}>
+                      Verify PIN
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
               </div>
             </div>
           </div>

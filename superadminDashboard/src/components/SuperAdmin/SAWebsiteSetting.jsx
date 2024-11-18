@@ -9,6 +9,7 @@ import LogoAndImages from "./WebsiteSetting/LogoAndImages";
 import SocialLinks from "./WebsiteSetting/SocialLinks";
 import HomePageSetting from "./WebsiteSetting/HomePageSetting";
 import MapSetting from "./WebsiteSetting/MapSetting";
+import SetJoiningPrice from "./WebsiteSetting/SetJoiningPrice";
 
 
 const SAWebsiteSetting = () => {
@@ -67,9 +68,12 @@ const SAWebsiteSetting = () => {
                                                     <Tab eventKey="Home Page Setting" title="Home Page Setting">
                                                         <HomePageSetting/>
                                                     </Tab>
-                                                    <Tab eventKey="Map Setting" title="Map Setting">
-                                                       <MapSetting/>
+                                                    <Tab eventKey="Set Joining Price" title="Set Joining Price">
+                                                        <SetJoiningPrice/>
                                                     </Tab>
+                                                    {/* <Tab eventKey="Map Setting" title="Map Setting">
+                                                       <MapSetting/>
+                                                    </Tab> */}
                                                 </Tabs>
 
                                             </div>

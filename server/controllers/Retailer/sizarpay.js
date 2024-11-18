@@ -3,32 +3,27 @@
 //    } = require("../../APIS URL/sizarPayApis");
 //    const moment = require("moment-timezone");
 //    const { db } = require("../../connect");
- 
+
 //    const sizarpayBalance = (req,res) =>{
 //      const endpoint = "/Balance";
 //     getDataFromSizarPayClientApi(endpoint,
 //      {
-         
+
 //         "Format" : "1",
 //         "OutletID" : "999"
- 
+
 //        }
 //     ).then((data)=>{
 //       res.json(data)
 //     }).catch((error)=>{
 //      res.status(500).send("Error fetching data from client API")
 //     })
-   
-   
+
 //    }
- 
+
 //    module.exports = {
 //      sizarpayBalance
 //    };
-
-
-
-
 
 // const {
 //   getDataFromSizarPayClientApi
@@ -43,58 +38,58 @@ const sizarPayBaseURL = process.env.sizarPayBaseURL;
 const Token = process.env.sizarPayToken;
 const UserID = process.env.sizarPayUserID;
 const apiClient = axios.create({
-baseURL: sizarPayBaseURL,
+  baseURL: sizarPayBaseURL,
 });
-const getDataFromSizarPayClientApi = (endpoint,params = {}) => {
-return apiClient
-  .get(endpoint, {
-    params: {
-      UserID: UserID,
-      Token : Token,
-      ...params
-    },
-  })
-  .then((response) => {
-    return response.data;
-  })
-  .catch((error) => {
-    console.error("Error fetching data from client API:", error.message);
-    throw error;
-  });
+const getDataFromSizarPayClientApi = (endpoint, params = {}) => {
+  return apiClient
+    .get(endpoint, {
+      params: {
+        UserID: UserID,
+        Token: Token,
+        ...params,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error("Error fetching data from client API:", error.message);
+      throw error;
+    });
 };
 
-const sizarpayBalance = (req,res) =>{
+const sizarpayBalance = (req, res) => {
   const endpoint = "/Balance";
   // Generate random 6-digit number for OutletID
   const randomOutletID = Math.floor(100000 + Math.random() * 900000).toString();
-//   getDataFromSizarPayClientApi(endpoint,
-//     {
-      
-//       "Format" : "1",
-//       "OutletID" : "999"
+  //   getDataFromSizarPayClientApi(endpoint,
+  //     {
 
-//       }
-//   ).then((data)=>{
-//      res.json(data);
-//   }).catch((error)=>{
-//     res.status(500).send("Error fetching data from client API");
-//   });
+  //       "Format" : "1",
+  //       "OutletID" : "999"
 
-getDataFromSizarPayClientApi(endpoint, {
-  Format: "1",
-  OutletID: randomOutletID,
-})
-.then((data) => {
-  res.json(data);
-})
-.catch((error) => {
-  console.error("Error details:", error.response ? error.response.data : error.message);
-  res.status(500).send("Error fetching data from client API");
-});
+  //       }
+  //   ).then((data)=>{
+  //      res.json(data);
+  //   }).catch((error)=>{
+  //     res.status(500).send("Error fetching data from client API");
+  //   });
 
-
+  getDataFromSizarPayClientApi(endpoint, {
+    Format: "1",
+    OutletID: randomOutletID,
+  })
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      console.error(
+        "Error details:",
+        error.response ? error.response.data : error.message
+      );
+      res.status(500).send("Error fetching data from client API");
+    });
 };
-
 
 const operatorMapping = {
   Airtel: { code: "3", category: "Prepaid" },
@@ -107,35 +102,50 @@ const operatorMapping = {
   Vi: { code: "37", category: "Prepaid" },
   "Vi Postpaid": { code: "114", category: "Postpaid" },
 
-
   "Dish TV": { code: "6802", category: "DTH" },
   "Tata Sky": { code: "6804", category: "DTH" },
-  "Videocon": { code: "6805", category: "DTH" },
+  Videocon: { code: "6805", category: "DTH" },
   "Sun Direct": { code: "6803", category: "DTH" },
   "Airtel DTH": { code: "6801", category: "DTH" },
 
   "Airtel Broadband": { code: "268", category: "Broadband" },
   "Hathway Broadband": { code: "253", category: "Broadband" },
-  "Tikona Broadband" : { code: "251", category: "Broadband" },
+  "Tikona Broadband": { code: "251", category: "Broadband" },
 
+  "Airtel Landline": { code: "201", category: "Landline" },
+  "BSNL Corporate": { code: "202", category: "Landline" },
+  "BSNL Individual": { code: "203", category: "Landline" },
+  "Tata Teleservices": { code: "208", category: "Landline" },
 
+  "M.P. Madhya Kshetra Vidyut Vitaran - RURAL": {
+    code: "320",
+    category: "Electricity",
+  },
+  "M.P. Madhya Kshetra Vidyut Vitaran - URBAN": {
+    code: "374",
+    category: "Electricity",
+  },
+  "M.P. Paschim Kshetra Vidyut Vitaran": {
+    code: "342",
+    category: "Electricity",
+  },
+  "M.P. Poorv Kshetra Vidyut Vitaran - RURAL": {
+    code: "341",
+    category: "Electricity",
+  },
+  "M.P. Poorv Kshetra Vidyut Vitaran - URBAN": {
+    code: "378",
+    category: "Electricity",
+  },
+  "M.P. Poorva Kshetra Vidyut Vitaran Co. Ltd Jabalpur - NGB Billing System": {
+    code: "381",
+    category: "Electricity",
+  },
 
-  "Airtel Landline" : { code: "201", category: "Landline" },
-  "BSNL Corporate" : { code: "202", category: "Landline" },
-  "BSNL Individual" : { code: "203", category: "Landline" },
-  "Tata Teleservices" : { code: "208", category: "Landline" },
-
-
-  "M.P. Madhya Kshetra Vidyut Vitaran - RURAL" : { code: "320", category: "Electricity" },
-  "M.P. Madhya Kshetra Vidyut Vitaran - URBAN" : { code: "374", category: "Electricity" },
-  "M.P. Paschim Kshetra Vidyut Vitaran" : { code: "342", category: "Electricity" },
-  "M.P. Poorv Kshetra Vidyut Vitaran - RURAL" : { code: "341", category: "Electricity" },
-  "M.P. Poorv Kshetra Vidyut Vitaran - URBAN" : { code: "378", category: "Electricity" },
-  "M.P. Poorva Kshetra Vidyut Vitaran Co. Ltd Jabalpur - NGB Billing System" : { code: "381", category: "Electricity" },
-
-
-  "LIC- Life Insurance Corporation Of India" : {code : "912" , category: "Insurance" }
-
+  "LIC- Life Insurance Corporation Of India": {
+    code: "912",
+    category: "Insurance",
+  },
 };
 
 // const sizarpayRecharge = (req, res) => {
@@ -262,17 +272,18 @@ const operatorMapping = {
 // };
 
 const sizarpayRecharge = (req, res) => {
-  const { number, amount, operatorName, recharge_Type } = req.body;
+  const { number, amount, operatorName, recharge_Type, created_by_userid } =
+    req.body;
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const providerName = "Sizar Pay";
-  
+
   let responseSent = false; // Flag to track if response has been sent
-  
+
   if (!number || !amount || !operatorName) {
     return res.status(400).json({ error: "All fields are required" });
   }
-  
+
   const operatorDetails = operatorMapping[operatorName];
   const randomOutletID = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -283,9 +294,15 @@ const sizarpayRecharge = (req, res) => {
   })
     .then((balanceData) => {
       if (balanceData?.bal < amount) {
-        if (!responseSent) { // Check if response was already sent
+        if (!responseSent) {
+          // Check if response was already sent
           responseSent = true;
-          return res.status(400).json({ message: "Recharge failed", error: "Insufficient balance in Recharge Api" });
+          return res
+            .status(400)
+            .json({
+              message: "Recharge failed",
+              error: "Insufficient balance in Recharge Api",
+            });
         }
       }
 
@@ -299,8 +316,16 @@ const sizarpayRecharge = (req, res) => {
 
       // Step 3: Insert initial row to generate orderid
       const insertQuery =
-        "INSERT INTO recharges (mobile_no, amount, operator_name, providerName, recharge_Type, created_at) VALUES (?, ?, ?, ?, ?, ?)";
-      const values = [number, amount, operatorName, providerName, recharge_Type, createdAt];
+        "INSERT INTO recharges (mobile_no, amount, operator_name, providerName, recharge_Type, created_by_userid, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
+      const values = [
+        number,
+        amount,
+        operatorName,
+        providerName,
+        recharge_Type,
+        created_by_userid,
+        createdAt,
+      ];
 
       return new Promise((resolve, reject) => {
         db.query(insertQuery, values, (err, result) => {
@@ -310,7 +335,10 @@ const sizarpayRecharge = (req, res) => {
           }
 
           const autoGeneratedOrderId = result.insertId;
-          const formattedOrderId = String(autoGeneratedOrderId).padStart(6, "0");
+          const formattedOrderId = `RES${String(autoGeneratedOrderId).padStart(
+            6,
+            "0"
+          )}`;
           resolve({ orderid: formattedOrderId, id: autoGeneratedOrderId });
         });
       });
@@ -359,7 +387,9 @@ const sizarpayRecharge = (req, res) => {
           console.error("Error updating recharge data:", err.message);
           if (!responseSent) {
             responseSent = true;
-            return res.status(500).json({ error: "Database update error", message: err.message });
+            return res
+              .status(500)
+              .json({ error: "Database update error", message: err.message });
           }
         }
 
@@ -397,29 +427,28 @@ const sizarpayRecharge = (req, res) => {
     });
 };
 
-const sizarPayRechargeStatusCheck = (req,res) =>{
+const sizarPayRechargeStatusCheck = (req, res) => {
   const { transaction_id } = req.body;
   const endpoint = "/StatusCheck";
   // Generate random 6-digit number for OutletID
   const randomOutletID = Math.floor(100000 + Math.random() * 900000).toString();
 
-getDataFromSizarPayClientApi(endpoint, {
-
-  RPID : transaction_id,
-  AGENTID: randomOutletID,
-  Format: "1",
-})
-.then((data) => {
-  res.json(data);
-})
-.catch((error) => {
-  console.error("Error details:", error.response ? error.response.data : error.message);
-  res.status(500).send("Error fetching data from client API");
-});
-
-
+  getDataFromSizarPayClientApi(endpoint, {
+    RPID: transaction_id,
+    AGENTID: randomOutletID,
+    Format: "1",
+  })
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      console.error(
+        "Error details:",
+        error.response ? error.response.data : error.message
+      );
+      res.status(500).send("Error fetching data from client API");
+    });
 };
-
 
 // const operatorMappingDTH = {
 //   "Dish TV": { code: "53", category: "DTH" },
@@ -442,13 +471,13 @@ getDataFromSizarPayClientApi(endpoint, {
 //   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 //   const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 //   const providerName = "Sizar Pay";
-  
+
 //   let responseSent = false; // Flag to track if response has been sent
-  
+
 //   if (!number || !amount || !operatorName) {
 //     return res.status(400).json({ error: "All fields are required" });
 //   }
-  
+
 //   const operatorDetails = operatorMappingDTH[operatorName];
 //   const randomOutletID = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -584,13 +613,13 @@ getDataFromSizarPayClientApi(endpoint, {
 //   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 //   const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 //   const providerName = "Sizar Pay";
-  
+
 //   let responseSent = false; // Flag to track if response has been sent
-  
+
 //   if (!number || !amount || !operatorName) {
 //     return res.status(400).json({ error: "All fields are required" });
 //   }
-  
+
 //   const operatorDetails = operatorMappingBroadband[operatorName];
 //   const randomOutletID = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -714,8 +743,6 @@ getDataFromSizarPayClientApi(endpoint, {
 //       }
 //     });
 // };
-
-
 
 module.exports = {
   sizarpayBalance,

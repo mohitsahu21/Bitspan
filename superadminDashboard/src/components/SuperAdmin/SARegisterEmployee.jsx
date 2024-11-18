@@ -13,9 +13,11 @@ import { SlLocationPin } from "react-icons/sl";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const SARegisterEmployee = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     contact: "",
@@ -27,6 +29,7 @@ const SARegisterEmployee = () => {
     pincode: "",
     userType: "SuperAdmin_Employee",
     password: "",
+    status : "Active"
   });
 
   const handleChange = (e) => {
@@ -38,6 +41,12 @@ const SARegisterEmployee = () => {
           [name]: value,
         }));
       }
+    }
+    else if(name === "panNumber"){
+      setFormData({
+        ...formData,
+        [name]: value.toUpperCase(),
+      });
     } else {
       setFormData((prevData) => ({
         ...prevData,
@@ -50,16 +59,47 @@ const SARegisterEmployee = () => {
 
   const superAdminEmpRegister = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await axios.post(
-        "http://localhost:7171/api/auth/log-reg/superAdminEmployeeRegiser",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/superAdminEmployeeRegiser",
         formData
       );
       console.log(res);
-      alert("user registered successfully");
-      navigate("/");
+      // alert("user registered successfully");
+      setLoading(false);
+      if (res.data.status == "Success") {
+        Swal.fire({
+          icon: "success",
+          title: res.data.message ,
+        })
+      setFormData({
+        name: "",
+        contact: "",
+        email: "",
+        panNumber: "",
+        aadhar: "",
+        city: "",
+        state: "",
+        pincode: "",
+        userType: "SuperAdmin_Employee",
+        password: "",  
+        status : "Active"
+      })}
+        else{
+          Swal.fire({
+            icon: "error",
+            title:  res.data.message || "An error occurred during the process. Please try again.",
+          });
+        }
+      // navigate("/");
     } catch (error) {
+      setLoading(false);
       console.log(error);
+      Swal.fire({
+        icon: "error",
+        title:  error.response.data.message || "An error occurred during the process. Please try again.",
+      });
     }
   };
 
@@ -122,7 +162,11 @@ const SARegisterEmployee = () => {
                             onChange={handleChange}
                             required
                             className="form-control"
-                            placeholder="Enter Name"
+                            pattern="[A-Za-z\s]*"
+                            title="Text should contain only letters"
+                            placeholder="Enter full name"
+                            autocomplete="off"
+                            maxLength={100}
                           />
                         </div>
                       </div>
@@ -144,10 +188,13 @@ const SARegisterEmployee = () => {
                             name="contact"
                             value={formData.contact}
                             onChange={handleChange}
-                            maxLength={10}
                             required
                             className="form-control"
-                            placeholder="Enter Contact No"
+                            placeholder="Enter 10-digit mobile number"
+                    pattern="[0-9]{10}"
+                    title="Mobile number should be 10 digits"
+                    maxLength={10}
+                    minLength={10}
                           />
                         </div>
                       </div>
@@ -192,10 +239,14 @@ const SARegisterEmployee = () => {
                             name="panNumber"
                             value={formData.panNumber}
                             onChange={handleChange}
-                            maxLength={10}
+                            placeholder="Enter Pan Card Number" 
                             required
                             className="form-control"
-                            placeholder="Enter Pan Card Number"
+                            style={{ textTransform: 'uppercase' }}
+                            pattern="[A-Za-z]{5}[0-9]{4}[A-Za-z]{1}"
+     title="PAN card number should be in the format: 5 letters, 4 digits, 1 letter (e.g., ABCDE1234F)"
+     maxLength={10}
+     minLength={10}
                           />
                         </div>
                       </div>
@@ -217,10 +268,13 @@ const SARegisterEmployee = () => {
                             name="aadhar"
                             value={formData.aadhar}
                             onChange={handleChange}
-                            maxLength={12}
                             required
                             className="form-control"
-                            placeholder="Enter Aadhar No."
+                            placeholder="Enter 12-digit aadhaar number"
+                            pattern="[0-9]{12}"
+                            title="Aadhaar number should be 12 digits"
+                            maxLength={12}
+                            minLength={12}
                           />
                         </div>
                       </div>
@@ -356,9 +410,13 @@ const SARegisterEmployee = () => {
                             name="pincode"
                             value={formData.pincode}
                             onChange={handleChange}
+                            placeholder="Enter Pin Code" 
                             required
                             className="form-control"
-                            placeholder="Enter Pin Code"
+                            pattern="[0-9]{6}"
+                            title="Mobile number should be 6 digits"
+                            maxLength={6}
+                            minLength={6}
                           />
                         </div>
                       </div>
@@ -550,8 +608,8 @@ const SARegisterEmployee = () => {
 
                       <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                         <div className="text-start mb-3">
-                          <button className="btn btn-warning p-2" type="submit">
-                            Create
+                          <button className="btn btn-warning p-2" type="submit" disabled={loading}>
+                            {loading ? "Loading..." : "Create"}
                           </button>
                         </div>
                       </div>

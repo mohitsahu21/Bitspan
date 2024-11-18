@@ -1,37 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { FaMobileAlt } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { IoMail, IoPerson } from "react-icons/io5";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
+import { Modal, Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleRefresh } from "../../redux/user/userSlice";
 
 const NewBankID = () => {
+  const dispatch = useDispatch();
+  const { currentUser, token } = useSelector((state) => state.user);
+
+  // console.log(currentUser);
+
   const optionsDrop = [
-    { id: 1, name: "New Bank ID" },
-    // { id: 1, name: "Pan Card Form" },
-    // { id: 2, name: "Income" },
-    // { id: 3, name: "Domicile" },
-    // { id: 4, name: "Birth Certificate" },
-    // { id: 5, name: "Death Certificate" },
-    // { id: 6, name: "Pan Find" },
-    // { id: 7, name: "E-Stamp" },
-    // { id: 8, name: "ITR Registration" },
-    // { id: 9, name: "GST Registration" },
-    // { id: 10, name: "Udyog Aadhar" },
-    // { id: 11, name: "Pan Card Services" },
+    { id: 1, name: "Airtel" },
+    { id: 2, name: "Anypay" },
+    { id: 3, name: "Ezeepay" },
+    { id: 4, name: "Fino" },
+    { id: 5, name: "IRCTC" },
+    { id: 6, name: "NSDL" },
+    { id: 7, name: "PayNearBy" },
+    { id: 8, name: "Payworld" },
+    { id: 9, name: "Religare Digipay" },
+    { id: 10, name: "Roinet" },
+    { id: 11, name: "Spice Money" },
   ];
 
   const [formData, setFormData] = useState({
-    applicant_name: "",
+    applicant_name: currentUser.username,
     applicant_father: "",
     applicant_mother: "",
-    applicant_number: "",
-    email: "",
-    applicant_select_service: "",
-    aadhar_card: "",
-    pan_card: "",
-    business_name: "",
+    applicant_number: currentUser.ContactNo,
+    email: currentUser.email,
+    applicant_select_service: "New Bank ID",
+    select_bank_service: "",
+    aadhar_card: currentUser.AadharNumber,
+    pan_card: currentUser.PanCardNumber,
+    business_name: currentUser.BusinessName,
+    status: "Pending",
+    user_id: currentUser.userId,
   });
 
   const [files, setFiles] = useState({
@@ -43,6 +53,11 @@ const NewBankID = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [showPinModal, setShowPinModal] = useState(false);
+  // const [pin, setPin] = useState("");
+  const [pin, setPin] = useState(["", "", "", ""]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const pinRefs = useRef([]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -55,6 +70,27 @@ const NewBankID = () => {
       setFiles({ ...files, [name]: [...selectedFiles] });
     } else {
       setFiles({ ...files, [name]: selectedFiles[0] });
+    }
+  };
+
+  const handlePinChange = (index, value) => {
+    if (/^\d?$/.test(value)) {
+      const newPin = [...pin];
+      newPin[index] = value;
+      setPin(newPin);
+
+      // Move to next input if current is filled, move to previous if deleted
+      if (value !== "" && index < pin.length - 1) {
+        pinRefs.current[index + 1].focus();
+      } else if (value === "" && index > 0) {
+        pinRefs.current[index - 1].focus();
+      }
+    }
+  };
+
+  const handleBackspace = (index) => {
+    if (pin[index] === "" && index > 0) {
+      pinRefs.current[index - 1].focus();
     }
   };
 
@@ -79,18 +115,87 @@ const NewBankID = () => {
 
     try {
       const response = await axios.post(
-        "http://bitspan.jyvflirl.a2hosted.com/api/auth/bankidForm",
+        // "http://bitspan.jyvflirl.a2hosted.com/api/auth/bankidForm",
+        "http://localhost:7777/api/auth/retailer/bankidForm",
         submitForm,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
       alert(response.data.message);
+      // setSelectedOptions((prevOptions) => [
+      //   ...prevOptions,
+      //   formData.select_bank_service,
+      // ]);
+      dispatch(toggleRefresh());
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("Error submitting form");
     } finally {
       setIsLoading(false);
+
+      setFormData({
+        // applicant_name: "",
+        applicant_father: "",
+        applicant_mother: "",
+        // applicant_number: "",
+        // email: "",
+        applicant_select_service: "",
+        select_bank_service: "",
+        // aadhar_card: "",
+        // pan_card: "",
+        // business_name: "",
+      });
     }
   };
+
+  const verifyPin = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        { user_id: currentUser.userId || "", pin: pin.join("") }
+      );
+
+      if (response.data.success) {
+        return true;
+      } else {
+        alert(response.data.message);
+        return false;
+      }
+    } catch (error) {
+      console.error("Error verifying PIN:", error);
+      alert("Error verifying PIN");
+      return false;
+    }
+  };
+
+  const handleModalSubmit = async (e) => {
+    const isPinValid = await verifyPin();
+    if (isPinValid) {
+      setShowPinModal(false);
+      handleSubmit(e);
+    } else {
+      setPin(["", "", "", ""]); // Clear the PIN fields on incorrect entry
+    }
+  };
+
+  const openPinModal = (e) => {
+    e.preventDefault();
+    setShowPinModal(true);
+  };
+
+  useEffect(() => {
+    const getServices = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:7777/api/auth/retailer/getSelectedServices/${currentUser.userId}`
+        );
+        console.log(response.data);
+        setSelectedOptions(response.data.selectedServices);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getServices();
+  }, [currentUser.userId]);
 
   return (
     <Wrapper>
@@ -110,7 +215,8 @@ const NewBankID = () => {
                   </div>
                 </div>
 
-                <form onSubmit={handleSubmit} encType="multipart/form-data">
+                {/* <form onSubmit={handleSubmit} encType="multipart/form-data"> */}
+                <form onSubmit={openPinModal} encType="multipart/form-data">
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="input-group mb-3">
@@ -210,15 +316,6 @@ const NewBankID = () => {
                         </div>
                       </div>
                     </div>
-                    {/* <div>
-                      <label>Select Service</label>
-                      <input
-                        type="text"
-                        name="applicant_select_service"
-                        value={formData.applicant_select_service}
-                        onChange={handleInputChange}
-                      />
-                    </div> */}
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="input-group">
                         <span className="input-group-text">
@@ -229,18 +326,39 @@ const NewBankID = () => {
                             className="form-select custom-dropdown"
                             id="floatingSelect"
                             aria-label="Floating label select example"
-                            name="applicant_select_service"
-                            value={formData.applicant_select_service}
+                            name="select_bank_service"
+                            value={formData.select_bank_service}
                             onChange={handleInputChange}
                           >
                             <option value="">Select an option ....</option>
-                            {optionsDrop.map((item) => (
-                              <option key={item.id} value={item.name}>
+                            {optionsDrop.map((item) => {
+                              const selectedServices = selectedOptions.find(
+                                (option) => option.service === item.name
+                              );
+                              const isDisabled =
+                                selectedServices &&
+                                selectedServices.status !== "Reject";
+                              return (
+                                <option
+                                  key={item.id}
+                                  value={item.name}
+                                  disabled={isDisabled}
+                                >
+                                  {item.name}
+                                </option>
+                              );
+                            })}
+                            {/* {optionsDrop.map((item) => (
+                              <option
+                                key={item.id}
+                                value={item.name}
+                                disabled={selectedOptions?.includes(item?.name)}
+                              >
                                 {item.name}
                               </option>
-                            ))}
+                            ))} */}
                           </select>
-                          <label htmlFor="floatingSelect">Choose Option</label>
+                          <label htmlFor="floatingSelect">Select Bank</label>
                         </div>
                       </div>
                     </div>
@@ -299,7 +417,7 @@ const NewBankID = () => {
                             onChange={handleInputChange}
                           />
                           <label htmlFor="floatingInputGroup3">
-                            aadhar_card
+                            Business Name
                           </label>
                         </div>
                       </div>
@@ -391,6 +509,53 @@ const NewBankID = () => {
                     </div>
                   </div>
                 </form>
+                <Modal
+                  show={showPinModal}
+                  onHide={() => setShowPinModal(false)}
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <div className="pin-inputs d-flex justify-content-center">
+                      {pin.map((digit, index) => (
+                        <input
+                          key={index}
+                          ref={(el) => (pinRefs.current[index] = el)}
+                          type="text"
+                          value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
+                          maxLength="1"
+                          onChange={(e) =>
+                            handlePinChange(index, e.target.value)
+                          }
+                          onKeyDown={(e) =>
+                            e.key === "Backspace" && handleBackspace(index)
+                          }
+                          className="pin-digit form-control mx-1"
+                          style={{
+                            width: "50px",
+                            textAlign: "center",
+                            fontSize: "1.5rem",
+                            borderRadius: "8px",
+                            border: "1px solid #ced4da",
+                            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button
+                      variant="secondary"
+                      onClick={() => setShowPinModal(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button variant="primary" onClick={handleModalSubmit}>
+                      Verify PIN
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
               </div>
             </div>
           </div>
@@ -457,235 +622,55 @@ const Wrapper = styled.div`
                       </div>
                     )} */
 }
+
 {
-  /* <form onSubmit={handleSubmit}>
-                  <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div className="input-group mb-3">
-                        <span className="input-group-text">
-                          <IoPerson />
-                        </span>
-                        <div className="form-floating">
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="floatingInputGroup1"
-                            placeholder="Username"
-                            name="applicant_name"
-                            value={formData.applicant_name}
-                            onChange={handleChange}
-                          />
-                          <label htmlFor="floatingInputGroup1">
-                            Applicant Name
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div className="input-group mb-3">
-                        <span className="input-group-text">
-                          <IoMail />
-                        </span>
-                        <div className="form-floating">
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="floatingInputGroup2"
-                            placeholder="Username"
-                            name="applicant_father"
-                            value={formData.applicant_father}
-                            onChange={handleChange}
-                          />
-                          <label htmlFor="floatingInputGroup2">
-                            Applicant Father Name
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div className="input-group mb-3">
-                        <span className="input-group-text">
-                          <IoMail />
-                        </span>
-                        <div className="form-floating">
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="floatingInputGroup2"
-                            placeholder="Username"
-                            name="applicant_mother"
-                            value={formData.applicant_mother}
-                            onChange={handleChange}
-                          />
-                          <label htmlFor="floatingInputGroup2">
-                            Applicant Mother Name
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div className="input-group">
-                        <span className="input-group-text">
-                          <FaMobileAlt />
-                        </span>
-                        <div className="form-floating">
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="floatingInputGroup3"
-                            placeholder="Username"
-                            name="applicant_number"
-                            value={formData.applicant_number}
-                            onChange={handleChange}
-                          />
-                          <label htmlFor="floatingInputGroup3">
-                            Applicant Number
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div className="input-group">
-                        <span className="input-group-text">
-                          <FaMobileAlt />
-                        </span>
-                        <div className="form-floating">
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="floatingInputGroup3"
-                            placeholder="Username"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                          />
-                          <label htmlFor="floatingInputGroup3">Email ID</label>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div className="input-group">
-                        <span className="input-group-text">
-                          <RiMarkPenLine />
-                        </span>
-                        <div className="form-floating">
-                          <select
-                            className="form-select custom-dropdown"
-                            id="floatingSelect"
-                            aria-label="Floating label select example"
-                            name="applicant_select_service"
-                            value={formData.applicant_select_service}
-                            onChange={(e) => {
-                              handleChange(e);
-                              // handleSelect(e);
-                            }}
-                          >
-                            <option value="">Select an option ....</option>
-                            {optionsDrop.map((item) => (
-                              <option key={item.id} value={item.name}>
-                                {item.name}
-                              </option>
-                            ))}
-                          </select>
-                          <label htmlFor="floatingSelect">Choose Option</label>
-                        </div>
-                      </div>
-                    </div>
-                   
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div className="input-group">
-                        <span className="input-group-text">
-                          <FaMobileAlt />
-                        </span>
-                        <div className="form-floating">
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="floatingInputGroup3"
-                            placeholder="Username"
-                            name="aadhar_card"
-                            value={formData.aadhar_card}
-                            onChange={handleChange}
-                          />
-                          <label htmlFor="floatingInputGroup3">
-                            aadhar_card
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div>
-                        <label htmlFor="formFileLg1" className="form-label">
-                          Attachment Form (PDF only)
-                        </label>
+  /* <Modal
+                  show={showPinModal}
+                  onHide={() => setShowPinModal(false)}
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <div className="pin-inputs d-flex justify-content-center">
+                      {pin.map((digit, index) => (
                         <input
-                          className="form-control form-control-lg"
-                          id="formFileLg1"
-                          type="file"
-                          name="attached_form"
-                          accept="application/pdf"
-                          onChange={handleFileChange}
+                          key={index}
+                          ref={(el) => (pinRefs.current[index] = el)}
+                          type="text"
+                          value={digit}
+                          maxLength="1"
+                          onChange={(e) =>
+                            handlePinChange(index, e.target.value)
+                          }
+                          onKeyDown={(e) =>
+                            e.key === "Backspace" && handleBackspace(index)
+                          }
+                          className="pin-digit form-control mx-1"
+                          style={{
+                            width: "50px",
+                            textAlign: "center",
+                            fontSize: "1.5rem",
+                            borderRadius: "8px",
+                            border: "1px solid #ced4da",
+                            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                          }}
                         />
-                        {fileError && (
-                          <p className="text-danger fs-6">{fileError}</p>
-                        )}
-                      </div>
+                      ))}
                     </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div>
-                        <label htmlFor="formFileLg2" className="form-label">
-                          Attachment Photo (JPG, JPEG, PNG)
-                        </label>
-                        <input
-                          className="form-control form-control-lg"
-                          id="formFileLg2"
-                          type="file"
-                          accept=".jpg,.jpeg,.png"
-                          name="attached_photo"
-                          onChange={handleFileChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div>
-                        <label htmlFor="formFileLg3" className="form-label">
-                          Attachment Signature (JPG, JPEG, PNG)
-                        </label>
-                        <input
-                          className="form-control form-control-lg"
-                          id="formFileLg3"
-                          type="file"
-                          name="attached_sign"
-                          accept=".jpg,.jpeg,.png"
-                          onChange={handleFileChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div>
-                        <label htmlFor="formFileLg4" className="form-label">
-                          Attachment KYC (JPG, JPEG, PNG)
-                        </label>
-                        <input
-                          className="form-control form-control-lg"
-                          id="formFileLg4"
-                          type="file"
-                          name="attached_kyc"
-                          multiple
-                          accept=".jpg,.jpeg,.png"
-                          onChange={handleFileChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      <div className="text-start mb-3">
-                        <button className="btn p-2" type="submit">
-                          Submit
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </form> */
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button
+                      variant="secondary"
+                      onClick={() => setShowPinModal(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button variant="primary" onClick={handleModalSubmit}>
+                      Verify PIN
+                    </Button>
+                  </Modal.Footer>
+                </Modal> */
 }
 
 // const [fileError, setFileError] = useState("");
@@ -706,6 +691,21 @@ const Wrapper = styled.div`
 //   shop_photo: null,
 //   electric_bill: null,
 // });
+
+// const optionsDrop = [
+//   { id: 1, name: "New Bank ID" },
+// { id: 1, name: "Pan Card Form" },
+// { id: 2, name: "Income" },
+// { id: 3, name: "Domicile" },
+// { id: 4, name: "Birth Certificate" },
+// { id: 5, name: "Death Certificate" },
+// { id: 6, name: "Pan Find" },
+// { id: 7, name: "E-Stamp" },
+// { id: 8, name: "ITR Registration" },
+// { id: 9, name: "GST Registration" },
+// { id: 10, name: "Udyog Aadhar" },
+// { id: 11, name: "Pan Card Services" },
+// ];
 
 // const handleChange = (e) => {
 //   const { name, value } = e.target;
@@ -793,3 +793,27 @@ const Wrapper = styled.div`
 //     alert("An error occurred. Please try again.");
 //   }
 // };
+
+// const handleModalSubmit = async (e) => {
+//   const isPinValid = await verifyPin();
+//   if (isPinValid) {
+//     setShowPinModal(false);
+//     handleSubmit(e);
+//   } else {
+//     setPin("");
+//   }
+// };
+
+// setFiles({
+//   attached_photo: null,
+//   attached_kyc: [],
+//   bank_passbook: null,
+//   shop_photo: null,
+//   electric_bill: null,
+// });
+// setPin(["", "", "", ""]);
+
+// attachedPhotoRef.current.value = "";
+// bankPassbookRef.current.value = "";
+// shopPhotoRef.current.value = "";
+// electricBillRef.current.value = "";

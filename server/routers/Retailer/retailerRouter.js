@@ -21,6 +21,13 @@ const {
   profileInfo,
   profileUserKyc,
   eDistrictFormData,
+  getSelectedServices,
+  getAllBranchId,
+  getEdistrictData,
+  getAllRechargeApi,
+  getAllDTHeApi,
+  getApiPostRechargeData,
+  getApiDTHRechargeData,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -57,12 +64,13 @@ router.post(
   ]),
   bankidForm
 );
+
 router.get("/getApplyOfflineFormByid/:id", getApplyOfflineFormByid);
 router.get("/getApplyOfflineForm", getApplyOfflineForm);
 router.put("/updateApplyOfflineForm/:id", updateApplyOfflineForm);
 router.post("/offline-recharge", offlineRecharge);
 router.get("/getRechargeData", getRechargeData);
-router.get("/getApiRechargeData", getApiRechargeData);
+router.get("/getApiRechargeData/:userId", getApiRechargeData);
 router.post("/offline-dth-connection", offlineDthConnection);
 
 const panDataStorage = multer.diskStorage({
@@ -88,7 +96,7 @@ router.post(
 
 router.get("/nsdl-trans-new-requst", nsdlTransactionNewRequest);
 router.get("/nsdl-trans-correction", nsdlTransactionCorrection);
-router.get("/pan-4.0", panFourZeroGetAPI);
+router.get("/pan-4.0/:user_id", panFourZeroGetAPI);
 
 const complainDataStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -143,5 +151,13 @@ router.post(
   upload.array("documentUpload", 10),
   eDistrictFormData
 );
+
+router.get("/getSelectedServices/:user_id", getSelectedServices);
+router.get("/getAllBranchId", getAllBranchId);
+router.get("/getEdistrictData/:user_id", getEdistrictData);
+router.get("/getAllRechargeApi", getAllRechargeApi);
+router.get("/getAllDTHeApi", getAllDTHeApi);
+router.get("/getApiPostRechargeData/:userId", getApiPostRechargeData);
+router.get("/getApiDTHRechargeData/:userId", getApiDTHRechargeData);
 
 module.exports = router;

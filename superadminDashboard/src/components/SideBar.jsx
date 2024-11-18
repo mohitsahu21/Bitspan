@@ -476,7 +476,7 @@ const RetailerSidebarData = [
       },
       {
         title: "Bank ID History",
-        path: "#",
+        path: "/bank-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
       },
@@ -536,6 +536,11 @@ const RetailerSidebarData = [
       {
         title: "E-District Form",
         path: "/E-District-Form",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "E-District History",
+        path: "/E-District-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],
@@ -882,6 +887,11 @@ const RetailerSidebarData = [
       {
         title: "Change Password",
         path: "/change-password",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Create Pin",
+        path: "/generate-pin",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],
@@ -1274,6 +1284,16 @@ const SuperAdminData = [
         path: "/wallet-withdraw-summary",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+      {
+        title: "Add wallet Money Requests",
+        path: "/add-wallet-money-requests",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Add wallet Money Summary",
+        path: "/add-wallet-money-summary",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
     ],
   },
   {
@@ -1371,8 +1391,39 @@ const SuperAdminData = [
       //   // cName: "sub-nav",
       // },
       {
-        title: "View All History",
+        title: "View Offline Recharge Request",
+        path: "/Offline-Recharge-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "View Offline DTH Connection Request",
+        path: "/Offline-dth-connection",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+
+      {
+        title: "View Offline Forms",
         path: "/view-all-offline-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "View PAN Offline Forms",
+        path: "/Pan-offline-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "View Bank Id Forms",
+        path: "/Bank-Id-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "View E-district Forms",
+        path: "/E-district-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
       },
@@ -1399,11 +1450,11 @@ const SuperAdminData = [
   //   // 	},
   //   // ],
   // },
-  {
-    title: "Set PIN and 2 Step",
-    path: "/2-step-verification",
-    icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
-  },
+  // {
+  //   title: "Set PIN and 2 Step",
+  //   path: "/2-step-verification",
+  //   icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
+  // },
   {
     title: "Web Settings",
     path: "/website-setting",
@@ -1537,6 +1588,11 @@ const SuperAdminData = [
         path: "/users-joining-list",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+      {
+        title: "Super Admin Employee List",
+        path: "/super-admin-employee-list",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
       // {
       //   title: "White Label Joined List",
       //   path: "/white-label-joining-list",
@@ -1588,30 +1644,35 @@ const SuperAdminData = [
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
-        title: "Set Joining Price",
-        path: "/change-coupon-price",
+        title: "Active/Deactive Services",
+        path: "/active-deactive-services",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+      // {
+      //   title: "Set Joining Price",
+      //   path: "/change-coupon-price",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
       {
-        title: "White Label ID Set Rate",
-        path: "/whitelabel-id-set-rate",
+        title: "User ID Set Rate",
+        path: "/user-id-set-rate",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
-      {
-        title: "Change NSDL Price",
-        path: "/change-nsdl-price",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Change UTI 2.0 Price",
-        path: "/change-uti-price",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Change UTI New Price",
-        path: "/change-uti-new-price",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
+      // {
+      //   title: "Change NSDL Price",
+      //   path: "/change-nsdl-price",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
+      // {
+      //   title: "Change UTI 2.0 Price",
+      //   path: "/change-uti-price",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
+      // {
+      //   title: "Change UTI New Price",
+      //   path: "/change-uti-new-price",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
       {
         title: "Change Password",
         path: "/change-password",

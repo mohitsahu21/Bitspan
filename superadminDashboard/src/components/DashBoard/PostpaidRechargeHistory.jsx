@@ -3,49 +3,71 @@ import axios from "axios";
 import styled from "styled-components";
 import { MdFormatListNumberedRtl } from "react-icons/md";
 import { BiHomeAlt } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
+import ReactPaginate from "react-paginate";
 
 const PostpaidRechargeHistory = () => {
-  const [allData, setAllData] = useState([]); // Store all data
-  const [currentData, setCurrentData] = useState([]); // Data for current page
-  const [page, setPage] = useState(1);
-  const [limit] = useState(10); // Items per page
-  const [totalPages, setTotalPages] = useState(1); // Total pages based on data length
-  const [search, setSearch] = useState("");
+  const [allData, setAllData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [filterValue, setFilterValue] = useState("");
+  const dispatch = useDispatch();
+  const { currentUser, token } = useSelector((state) => state.user);
+  const complaintsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const userID = currentUser.userId;
 
   const fetchRechargeData = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApiRechargeData`,
-        {
-          params: {
-            mobile_no: search,
-          },
-        }
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApiPostRechargeData/${userID}`
       );
       const data = response.data.data;
-      const newdata = data.filter((item) => item.recharge_Type === "postpaid");
-      setAllData(newdata); // Only setting filtered data
-      setTotalPages(Math.ceil(newdata.length / limit));
-      setPage(1);
+      console.log(data);
+      setAllData(data);
+      setFilteredData(data);
     } catch (error) {
       console.log(error);
     }
   };
+  console.log(allData);
+
+  useEffect(() => {
+    const filtered = allData.filter((item) => {
+      const searchValue = filterValue.toLowerCase();
+      const mobileNo = item.mobile_no ? item.mobile_no.toLowerCase() : "";
+      const transactionId = item.transaction_id
+        ? item.transaction_id.toLowerCase()
+        : "";
+      const orderId = item.orderid ? item.orderid.toLowerCase() : "";
+
+      return (
+        mobileNo.includes(searchValue) ||
+        transactionId.includes(searchValue) ||
+        orderId.includes(searchValue)
+      );
+    });
+    setFilteredData(filtered);
+  }, [filterValue, allData]);
 
   useEffect(() => {
     fetchRechargeData();
-  }, [search]);
+  }, []);
 
-  // Update currentData based on page
-  useEffect(() => {
-    const startIdx = (page - 1) * limit;
-    const endIdx = startIdx + limit;
-    setCurrentData(allData.slice(startIdx, endIdx)); // Slice data for the current page
-  }, [page, allData]);
+  const totalPages = Math.ceil(filteredData.length / complaintsPerPage);
 
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
+  const paginateData = () => {
+    const startIndex = currentPage * complaintsPerPage;
+    const endIndex = startIndex + complaintsPerPage;
+    return filteredData.slice(startIndex, endIndex);
   };
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
+  const displayData = paginateData();
   return (
     <>
       <Wrapper>
@@ -83,14 +105,26 @@ const PostpaidRechargeHistory = () => {
                           <div className="col-12 col-md-4 col-lg-3">
                             <input
                               className="form-control"
+                              type="search"
                               id="floatingInputGroup1"
-                              placeholder="Search by name"
-                              value={search}
-                              onChange={handleSearch}
+                              placeholder="Search by Mob No, TXN ID, or Ord ID"
+                              value={filterValue}
+                              onChange={(e) => {
+                                setFilterValue(e.target.value);
+                                if (e.target.value === "") {
+                                  setCurrentPage(0);
+                                }
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === "Escape") {
+                                  setFilterValue("");
+                                  setCurrentPage(0);
+                                }
+                              }}
                             />
                           </div>
 
-                          <div className="d-flex">
+                          {/* <div className="d-flex">
                             <button
                               type="button"
                               className="btn btn-primary button px-4"
@@ -98,7 +132,7 @@ const PostpaidRechargeHistory = () => {
                             >
                               Search
                             </button>
-                          </div>
+                          </div> */}
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -119,8 +153,8 @@ const PostpaidRechargeHistory = () => {
                                 </tr>
                               </thead>
                               <tbody>
-                                {currentData.length > 0 ? (
-                                  currentData.map((item) => (
+                                {displayData.length > 0 ? (
+                                  displayData.map((item) => (
                                     <tr key={item.id}>
                                       <td>{item.created_at}</td>
                                       <td>{item.transaction_id}</td>
@@ -144,57 +178,19 @@ const PostpaidRechargeHistory = () => {
                               </tbody>
                             </table>
                           </div>
-                          {currentData.length > 0 && (
-                            <div className="float-end">
-                              <nav aria-label="Page navigation example">
-                                <ul className="pagination">
-                                  <li
-                                    className={`page-item ${
-                                      page === 1 ? "disabled" : ""
-                                    }`}
-                                  >
-                                    <button
-                                      className="page-link"
-                                      onClick={() =>
-                                        setPage((prev) => Math.max(prev - 1, 1))
-                                      }
-                                      disabled={page === 1}
-                                    >
-                                      Previous
-                                    </button>
-                                  </li>
-                                  <li className="page-item">
-                                    <span className="page-link">{page}</span>
-                                  </li>
-                                  <li
-                                    className={`page-item ${
-                                      page === totalPages ? "disabled" : ""
-                                    }`}
-                                  >
-                                    <button
-                                      className="page-link"
-                                      onClick={() =>
-                                        setPage((prev) => prev + 1)
-                                      }
-                                      disabled={page === totalPages}
-                                    >
-                                      Next
-                                    </button>
-                                  </li>
-                                </ul>
-                              </nav>
-                            </div>
-                          )}
-                          {/* <div className="float-end">
-                                                        <nav aria-label="Page navigation example">
-                                                            <ul className="pagination">
-                                                                <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-                                                                <li className="page-item"><a className="page-link" href="#">1</a></li>
-
-                                                                <li className="page-item"><a className="page-link" href="#">Next</a></li>
-                                                            </ul>
-                                                        </nav>
-                                                    </div> */}
+                          <PaginationContainer>
+                            <ReactPaginate
+                              previousLabel={"Previous"}
+                              nextLabel={"Next"}
+                              breakLabel={"..."}
+                              pageCount={totalPages}
+                              marginPagesDisplayed={2}
+                              pageRangeDisplayed={3}
+                              onPageChange={handlePageChange}
+                              containerClassName={"pagination"}
+                              activeClassName={"active"}
+                            />
+                          </PaginationContainer>
                         </div>
                       </div>
                     </div>
@@ -239,6 +235,92 @@ const Wrapper = styled.div`
   @media (min-width: 1500px) {
     .formdata {
       padding-left: 13rem;
+    }
+  }
+`;
+const PaginationContainer = styled.div`
+  .pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    list-style: none;
+    border-radius: 5px;
+  }
+
+  .pagination li {
+    margin: 0 5px;
+  }
+
+  .pagination li a {
+    display: block;
+    padding: 8px 16px;
+    border: 1px solid #e6ecf1;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 1px #000;
+    font-size: 14px; /* Default font size */
+  }
+
+  .pagination li.active a {
+    background-color: #004aad;
+    color: white;
+    border: 1px solid #004aad;
+  }
+
+  .pagination li.disabled a {
+    color: white;
+    cursor: not-allowed;
+    background-color: #3a4e69;
+    border: 1px solid #3a4e69;
+  }
+
+  .pagination li a:hover:not(.active) {
+    background-color: #004aad;
+    color: white;
+  }
+
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .pagination {
+      padding: 5px;
+      flex-wrap: wrap;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pagination {
+      padding: 5px;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 4px 8px;
+      font-size: 10px;
+    }
+
+    /* Hide the previous and next labels for extra-small screens */
+    .pagination li:first-child a::before {
+      content: "«";
+      margin-right: 5px;
+    }
+
+    .pagination li:last-child a::after {
+      content: "»";
+      margin-left: 5px;
     }
   }
 `;
