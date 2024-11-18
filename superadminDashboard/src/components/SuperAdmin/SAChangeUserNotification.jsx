@@ -1,14 +1,101 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { MdOutlineFormatListNumbered } from "react-icons/md";
-import { FaMobileAlt, FaRupeeSign } from "react-icons/fa";
-import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { Spinner } from "react-bootstrap";
 
 const SAChangeUserNotification = () => {
+    const [data,setData] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({
+        id : "",
+        White_Label_Notification : "",
+        Super_Distributor_Notification : "",
+        Distributor_Notification : "",
+        Retailer_Notification : ""
+    });
+
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+          const { data } = await axios.get(
+            "http://localhost:7777/api/auth/superAdmin/getUserNotification"
+          );
+          setData(data.data);
+          setFormData({
+            id : data.data.id,
+            White_Label_Notification : data.data.White_Label_Notification,
+        Super_Distributor_Notification : data.data.Super_Distributor_Notification,
+        Distributor_Notification : data.data.Distributor_Notification,
+        Retailer_Notification : data.data.Retailer_Notification
+
+           
+          })
+          setLoading(false);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+          setLoading(false);
+        }
+      };
+      console.log(data)
+
+      useEffect(()=>{
+         fetchData()
+      },[])
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    // const handleFileChange = (e) => {
+    //     const { name } = e.target;
+    //     setFormData({
+    //         ...formData,
+    //         [name]: e.target.files[0], // Handle file input
+    //     });
+    // };
+
+  
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            const response = await axios.put("http://localhost:7777/api/auth/superAdmin/UpdateUserNotification", formData);
+            setLoading(false);
+            if(response.data.success){
+                Swal.fire({
+                    icon: "success",
+                    title: "Details updated successfully!",
+                  });
+            }
+            else{
+                Swal.fire({
+                    icon: "error",
+                    title: "Failed to update details. Please try again.",
+                  });
+            }
+            console.log(response.data);
+        } catch (error) {
+            setLoading(false);
+            console.error("Error updating details:", error);
+            Swal.fire({
+                icon: "error",
+                title: "Failed to update details. Please try again.",
+              });
+        }
+    };
+    console.log(formData);
+    
     return (
         <>
             <Wrapper>
+                <form onSubmit={handleSubmit}>
                 {/* <HeadBar /> */}
                 <div className="main">
                     <div className="container-fluid">
@@ -40,6 +127,14 @@ const SAChangeUserNotification = () => {
                                         </div>
                                     </div>
                                     <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
+                                    {loading ? (
+                              <div className="d-flex justify-content-center">
+                              <Spinner animation="border" role="status">
+                              <span className="visually-hidden ">Loading...</span>
+                            </Spinner>
+                            </div>
+                            ) : (
+                                <>
                                         <div className="text-center my-5">
                                             <h2>Choice User Notification</h2>
                                         </div>
@@ -51,7 +146,10 @@ const SAChangeUserNotification = () => {
                                             <div class="input-group flex-nowrap">
                                                
                                             
-  <textarea class="form-control" placeholder="Enter User Notification for White Label" id="whiteLabeltext" style={{height:"150px"}}></textarea>
+  <textarea class="form-control" placeholder="Enter User Notification for White Label" id="whiteLabeltext" style={{height:"150px"}} 
+  name="White_Label_Notification"
+  value={formData.White_Label_Notification}
+  onChange={handleChange} ></textarea>
   {/* <label for="whiteLabeltext">Enter User Notification for White Label</label> */}
 </div>
                                             </div>
@@ -62,7 +160,10 @@ const SAChangeUserNotification = () => {
                                             <div class="input-group flex-nowrap">
                                                
                                             
-  <textarea class="form-control" placeholder="Enter User Notification for Super Distributor" id="SuperDistributortext" style={{height:"150px"}}></textarea>
+  <textarea class="form-control" placeholder="Enter User Notification for Super Distributor" id="SuperDistributortext" style={{height:"150px"}}
+    name="Super_Distributor_Notification"
+    value={formData.Super_Distributor_Notification}
+    onChange={handleChange}></textarea>
 </div>
                                             </div>
                                         <div className="col-xl-12  col-sm-12 mt-5">
@@ -72,7 +173,9 @@ const SAChangeUserNotification = () => {
                                             <div class="input-group flex-nowrap">
                                                
                                             
-  <textarea class="form-control" placeholder="Enter User Notification for Distributor" id="Distributortext" style={{height:"150px"}}></textarea>
+  <textarea class="form-control" placeholder="Enter User Notification for Distributor" id="Distributortext" style={{height:"150px"}}   name="Distributor_Notification"
+  value={formData.Distributor_Notification}
+  onChange={handleChange}></textarea>
 </div>
                                             </div>
                                         <div className="col-xl-12  col-sm-12 mt-5">
@@ -82,7 +185,9 @@ const SAChangeUserNotification = () => {
                                             <div class="input-group flex-nowrap">
                                                
                                             
-  <textarea class="form-control" placeholder="Enter User Notification for Retailer" id="Retailertext" style={{height:"150px"}}></textarea>
+  <textarea class="form-control" placeholder="Enter User Notification for Retailer" id="Retailertext" style={{height:"150px"}}   name="Retailer_Notification"
+  value={formData.Retailer_Notification}
+  onChange={handleChange}></textarea>
 </div>
                                             </div>
                                        
@@ -109,15 +214,18 @@ const SAChangeUserNotification = () => {
 
                                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                             <div className="text-center mb-5 mt-3">
-                                                <button className="btn p-2">Submit</button>
+                                                <button type="submit" disabled={loading} className="btn p-2"> {loading ? "Loading..." : "Submit"}</button>
                                             </div>
                                         </div>
+                                        </>
+                            )}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                </form>
             </Wrapper>
         </>
     );

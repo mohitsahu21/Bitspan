@@ -4,16 +4,16 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { Spinner } from "react-bootstrap";
 
-const SocialLinks = () => {
+const SetJoiningPrice = () => {
     const [data,setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         id : "",
-        Facebook_Link : "",
-        Twitter_Link : "",
-        LinkedIn_Link : "",
-        Instagram_Link : "",
-        Youtube_Link : ""
+        Retailer_Joining_Price : "",
+        Distributor_Joining_Price : "",
+        Super_Distributor_Joining_Price : "",
+        White_Label_Joining_Price : "",
+       
     });
 
     const fetchData = async () => {
@@ -25,11 +25,11 @@ const SocialLinks = () => {
           setData(data.data);
           setFormData({
             id : data.data.id,
-            Facebook_Link : data.data.Facebook_Link,
-            Twitter_Link : data.data.Twitter_Link,
-            LinkedIn_Link : data.data.LinkedIn_Link,
-            Instagram_Link : data.data.Instagram_Link,
-            Youtube_Link : data.data.Youtube_Link
+            Retailer_Joining_Price : data.data.Retailer_Joining_Price,
+            Distributor_Joining_Price : data.data.Distributor_Joining_Price,
+            Super_Distributor_Joining_Price : data.data.Super_Distributor_Joining_Price,
+            White_Label_Joining_Price : data.data.White_Label_Joining_Price
+           
 
            
           })
@@ -67,7 +67,7 @@ const SocialLinks = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.put("http://localhost:7777/api/auth/superAdmin/UpdateSocialLinkSetting", formData);
+            const response = await axios.put("http://localhost:7777/api/auth/superAdmin/UpdateSAWebsiteJoiningPrice", formData);
             setLoading(false);
             if(response.data.success){
                 Swal.fire({
@@ -114,29 +114,33 @@ const SocialLinks = () => {
                             ) : (
                                 <>
                                     <div className="text-center">
-                                        <h4>Enter All Correct Details For Update</h4>
+                                        <h4>Change Joining Price</h4>
                                     </div>
-                                    <div className=" col-sm-12">
+                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                     <label for="name" class="form-label">
-                                           Facebook Link
+                                     Enter Retailer Joining Price
                                         </label>
                                         <div class="input-group flex-nowrap">
                                            
                                             <input
                                                 type="text"
                                                 id="name"
-                                                name="Facebook_Link"
+                                                name="Retailer_Joining_Price"
                                                 class="form-control"
-                                                placeholder="Enter Facebook Link"
-                                                value={formData.Facebook_Link}
+                                                placeholder="Enter Retailer Joining Price"
+                                                value={formData.Retailer_Joining_Price}
                                                 onChange={handleChange}
+                                                required
+                                                pattern="^[0-9]*$"
+                                                //  pattern="^\d+(\.\d+)?$" 
+                                                title="Price should be digits Only"
 
                                             />
                                         </div>
                                     </div>
-                                    <div className=" col-sm-12">
+                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                     <label for="name" class="form-label">
-                                          Twitter Link
+                                    Enter Distributor Joining Price
                                         </label>
                                         <div class="input-group flex-nowrap">
                                            
@@ -144,16 +148,20 @@ const SocialLinks = () => {
                                                 type="text"
                                                 id="name"
                                                 class="form-control"
-                                                placeholder="Enter Twitter Link"
-                                                name="Twitter_Link"
-                                                value={formData.Twitter_Link}
+                                                placeholder="Enter Distributor Joining Price"
+                                                name="Distributor_Joining_Price"
+                                                value={formData.Distributor_Joining_Price}
                                                 onChange={handleChange}
+                                                required
+                                                pattern="^[0-9]*$"
+                                                title="Price should be digits Only"
                                             />
                                         </div>
                                     </div>
-                                    <div className="col-sm-12">
+                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                         <label for="name" class="form-label">
-                                            LinkedIn Link
+                                        Enter Super Distributor Joining Price
+
                                         </label>
                                         <div class="input-group flex-nowrap">
                                            
@@ -161,16 +169,19 @@ const SocialLinks = () => {
                                                 type="text"
                                                 id="name"
                                                 class="form-control"
-                                                placeholder="Enter LinkedIn Link"
-                                                name="LinkedIn_Link"
-                                                value={formData.LinkedIn_Link}
+                                                placeholder="Enter Super Distributor Joining Price"
+                                                name="Super_Distributor_Joining_Price"
+                                                value={formData.Super_Distributor_Joining_Price}
                                                 onChange={handleChange}
+                                                required
+                                                pattern="^[0-9]*$"
+                                                title="Price should be digits Only"
                                             />
                                         </div>
                                     </div>
-                                    <div className="col-sm-12">
+                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                         <label for="name" class="form-label">
-                                           Instagram Link
+                                        Enter White Label Joining Price
                                         </label>
                                         <div class="input-group flex-nowrap">
                                           
@@ -178,40 +189,19 @@ const SocialLinks = () => {
                                                 type="text"
                                                 id="name"
                                                 class="form-control"
-                                                placeholder="Enter Instagram Link"
-                                                name="Instagram_Link"
-                                                value={formData.Instagram_Link}
+                                                placeholder="Enter White Label Joining Price"
+                                                name="White_Label_Joining_Price"
+                                                value={formData.White_Label_Joining_Price}
                                                 onChange={handleChange}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-12">
-                                        <label for="name" class="form-label">
-                                           Youtube Link
-                                        </label>
-                                        <div class="input-group flex-nowrap">
-                                           
-                                            <input
-                                                type="text"
-                                                id="name"
-                                                class="form-control"
-                                                placeholder="Enter  Youtube Link"
-                                                name="Youtube_Link"
-                                                value={formData.Youtube_Link}
-                                                onChange={handleChange}
+                                                required
+                                                pattern="^[0-9]*$"
+                                                title="Price should be digits Only"
+                                                // maxLength={10}
+                                                // minLength={10}
                                             />
                                         </div>
                                     </div>
                                   
-                                   
-                                   
-                                  
-                                   
-
-
-
-
-
                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                         <div className="text-center mb-2">
                                             <button type="submit" className="btn p-2" disabled={loading}>{loading ? "Loading..." :  "UPDATE"}</button>
@@ -230,7 +220,7 @@ const SocialLinks = () => {
     )
 }
 
-export default SocialLinks
+export default SetJoiningPrice
 
 const Wrapper = styled.div`
   .main {

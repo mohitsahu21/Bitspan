@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Spinner } from "react-bootstrap";
 
 const Genral = () => {
    
@@ -134,6 +135,7 @@ const Genral = () => {
     });
     formDataSend.append("QR_Code_Preview", data.QR_Code);
         console.log(formDataSend)
+        setLoading(true);
 
         try {
             const response = await axios.post("http://localhost:7777/api/auth/superAdmin/UpdateGenralSetting", formDataSend, {
@@ -141,6 +143,7 @@ const Genral = () => {
                     "Content-Type": "multipart/form-data",
                 },
             });
+            setLoading(false);
             if(response.data.success){
                 Swal.fire({
                     icon: "success",
@@ -155,6 +158,7 @@ const Genral = () => {
             }
             console.log(response.data);
         } catch (error) {
+            setLoading(false);
             console.error("Error updating details:", error);
             Swal.fire({
                 icon: "error",
@@ -176,6 +180,14 @@ const Genral = () => {
                             <div className="main shadow-none">
 
                                 <div className="row g-4 shadow bg-body-tertiary rounded m-1 px-3 pb-4">
+                                {loading ? (
+                              <div className="d-flex justify-content-center">
+                              <Spinner animation="border" role="status">
+                              <span className="visually-hidden ">Loading...</span>
+                            </Spinner>
+                            </div>
+                            ) : (
+                                <>
                                     <div className="text-center">
                                         <h4>Enter All Correct Details For Update</h4>
                                     </div>
@@ -373,10 +385,14 @@ const Genral = () => {
 
                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                         <div className="text-center mb-2">
-                                            <button type="submit"  className="btn p-2">UPDATE</button>
+                                            <button type="submit" disabled={loading} className="btn p-2">{loading ? "Loading..." :  "UPDATE"}</button>
                                         </div>
                                     </div>
+                                    </>
+                            )
+                        }
                                 </div>
+                          
                             </div>
                         </div>
                     </div>
