@@ -67,6 +67,7 @@ import EdistrictForm from "../components/DashBoard/EdistrictForm";
 import CreatePin from "../components/DashBoard/CreatePin";
 import BankHistory from "../components/DashBoard/BankHistory";
 import Edistrict from "../components/DashBoard/Edistrict";
+import SambalForm from "../components/DashBoard/SambalForm";
 
 const RetailerRoutes = () => {
   const { currentUser, token } = useSelector((state) => state.user);
@@ -767,6 +768,17 @@ const RetailerRoutes = () => {
               <Navigate to="/update-profile" />
             ) : (
               <Edistrict />
+            )
+          }
+        />
+
+        <Route
+          path="/SambalForm"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SambalForm />
             )
           }
         />

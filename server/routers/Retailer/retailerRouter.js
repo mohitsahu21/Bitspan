@@ -28,6 +28,8 @@ const {
   getAllDTHeApi,
   getApiPostRechargeData,
   getApiDTHRechargeData,
+  getApiEletricityRechargeData,
+  getApiBroadbrandRechargeData,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -159,5 +161,13 @@ router.get("/getAllRechargeApi", getAllRechargeApi);
 router.get("/getAllDTHeApi", getAllDTHeApi);
 router.get("/getApiPostRechargeData/:userId", getApiPostRechargeData);
 router.get("/getApiDTHRechargeData/:userId", getApiDTHRechargeData);
+router.get(
+  "/getApiEletricityRechargeData/:userId",
+  getApiEletricityRechargeData
+);
+router.get(
+  "/getApiBroadbrandRechargeData/:userId",
+  getApiBroadbrandRechargeData
+);
 
 module.exports = router;
