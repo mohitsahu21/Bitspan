@@ -1081,6 +1081,50 @@ const getApiDTHRechargeData = (req, res) => {
   });
 };
 
+const getApiEletricityRechargeData = (req, res) => {
+  const userId = req.params.userId;
+  const rechargeType = "Electricity";
+
+  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ?`;
+
+  db.query(query, [rechargeType, userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
+const getApiBroadbrandRechargeData = (req, res) => {
+  const userId = req.params.userId;
+  const rechargeType = "Broadband";
+
+  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ?`;
+
+  db.query(query, [rechargeType, userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -1107,4 +1151,6 @@ module.exports = {
   getAllDTHeApi,
   getApiPostRechargeData,
   getApiDTHRechargeData,
+  getApiEletricityRechargeData,
+  getApiBroadbrandRechargeData,
 };
