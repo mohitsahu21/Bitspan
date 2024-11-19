@@ -162,7 +162,7 @@ const SuperAdminRoutes = () => {
       {/* <Route path="/raise-complaint" element={<WLComplaints />} /> */}
       <Route path="/complaint-raised-list" element={<SAAllComplaintsList />} />
       {/* <Route path="/download-certificate" element={<WLDownloadCertificate />} /> */}
-      <Route path="/change-coupon-price" element={<SAChangeIdSetRate />} />
+      {/* <Route path="/change-coupon-price" element={<SAChangeIdSetRate />} /> */}
       <Route path="/user-id-set-rate" element={<SASetWhiteLabelIdPrice />} />
       <Route path="/change-nsdl-price" element={<SAChangeNSDLPrice/>} />
       <Route path="/change-uti-price" element={<SAChangeUTIPanPrice/>} />

@@ -146,20 +146,23 @@ const SASetWhiteLabelIdPrice = () => {
                     </div>
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
+                      <label for="name" className="form-label">
                         Enter White Label Id Price
                       </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
+                      <div className="input-group flex-nowrap">
+                        <span className="input-group-text" id="addon-wrapping">
                           {" "}
                           <FaRupeeSign />
                         </span>
                         <input
-                          type="number"
+                          type="text"
                           name="whiteLabel_id_price"
                           value={formData.whiteLabel_id_price || ""}
                           className="form-control"
                           onChange={handleChange}
+                          required
+                          pattern="^[0-9]*$"
+                          title="Price should be digits Only"
                         />
                       </div>
                     </div>
@@ -173,11 +176,14 @@ const SASetWhiteLabelIdPrice = () => {
                           <FaRupeeSign />
                         </span>
                         <input
-                          type="number"
+                          type="text"
                           name="whiteLabel_min_id_limit"
                           value={formData.whiteLabel_min_id_limit || ""}
                           className="form-control"
                           onChange={handleChange}
+                          pattern="^[0-9]*$"
+                          title="should be digits Only"
+                          required
                         />
                       </div>
                     </div>
@@ -191,11 +197,14 @@ const SASetWhiteLabelIdPrice = () => {
                           <FaRupeeSign />
                         </span>
                         <input
-                          type="number"
+                          type="text" 
                           name="whiteLabel_max_id_limit"
                           value={formData.whiteLabel_max_id_limit || ""}
                           className="form-control"
                           onChange={handleChange}
+                          pattern="^[0-9]*$"
+                          title="should be digits Only"
+                          required
                         />
                       </div>
                     </div>
@@ -214,11 +223,14 @@ const SASetWhiteLabelIdPrice = () => {
                           <FaRupeeSign />
                         </span>
                         <input
-                          type="number"
+                          type="text"
                           name="superDistributor_id_price"
                           value={formData.superDistributor_id_price || ""}
                           className="form-control"
                           onChange={handleChange}
+                          pattern="^[0-9]*$"
+                          title="Price should be digits Only"
+                          required
                         />
                       </div>
                     </div>
@@ -232,11 +244,14 @@ const SASetWhiteLabelIdPrice = () => {
                           <FaRupeeSign />
                         </span>
                         <input
-                          type="number"
+                          type="text"
                           name="superDistributor_min_id_limit"
                           value={formData.superDistributor_min_id_limit || ""}
                           className="form-control"
                           onChange={handleChange}
+                          pattern="^[0-9]*$"
+                          title="should be digits Only"
+                          required
                         />
                       </div>
                     </div>
@@ -250,11 +265,14 @@ const SASetWhiteLabelIdPrice = () => {
                           <FaRupeeSign />
                         </span>
                         <input
-                          type="number"
+                          type="text"
                           name="superDistributor_max_id_limit"
                           value={formData.superDistributor_max_id_limit || ""}
                           className="form-control"
                           onChange={handleChange}
+                          pattern="^[0-9]*$"
+                          title="should be digits Only"
+                          required
                         />
                       </div>
                     </div>
@@ -273,11 +291,14 @@ const SASetWhiteLabelIdPrice = () => {
                           <FaRupeeSign />
                         </span>
                         <input
-                          type="number"
+                          type="text"
                           name="distributor_id_price"
                           value={formData.distributor_id_price || ""}
                           className="form-control"
                           onChange={handleChange}
+                          pattern="^[0-9]*$"
+                          title="Price should be digits Only"
+                          required
                         />
                       </div>
                     </div>
@@ -291,11 +312,14 @@ const SASetWhiteLabelIdPrice = () => {
                           <FaRupeeSign />
                         </span>
                         <input
-                          type="number"
+                          type="text"
                           name="distributor_min_id_limit"
                           value={formData.distributor_min_id_limit || ""}
                           className="form-control"
                           onChange={handleChange}
+                          pattern="^[0-9]*$"
+                          title="should be digits Only"
+                          required
                         />
                       </div>
                     </div>
@@ -309,11 +333,14 @@ const SASetWhiteLabelIdPrice = () => {
                           <FaRupeeSign />
                         </span>
                         <input
-                          type="number"
+                          type="text"
                           name="distributor_max_id_limit"
                           value={formData.distributor_max_id_limit || ""}
                           className="form-control"
                           onChange={handleChange}
+                          pattern="^[0-9]*$"
+                          title="should be digits Only"
+                          required
                         />
                       </div>
                     </div>
@@ -332,11 +359,14 @@ const SASetWhiteLabelIdPrice = () => {
                           <FaRupeeSign />
                         </span>
                         <input
-                          type="number"
+                          type="text"
                           name="retailer_id_price"
                           value={formData.retailer_id_price || ""}
                           className="form-control"
                           onChange={handleChange}
+                          pattern="^[0-9]*$"
+                          title="Price should be digits Only"
+                          required
                         />
                       </div>
                     </div>
@@ -350,11 +380,14 @@ const SASetWhiteLabelIdPrice = () => {
                           <FaRupeeSign />
                         </span>
                         <input
-                          type="number"
+                          type="text"
                           name="retailer_min_id_limit"
                           value={formData.retailer_min_id_limit || ""}
                           className="form-control"
                           onChange={handleChange}
+                          pattern="^[0-9]*$"
+                          title="should be digits Only"
+                          required
                         />
                       </div>
                     </div>
@@ -368,11 +401,14 @@ const SASetWhiteLabelIdPrice = () => {
                           <FaRupeeSign />
                         </span>
                         <input
-                          type="number"
+                          type="text"
                           name="retailer_max_id_limit"
                           value={formData.retailer_max_id_limit || ""}
                           className="form-control"
                           onChange={handleChange}
+                          pattern="^[0-9]*$"
+                          title="should be digits Only"
+                          required
                         />
                       </div>
                     </div>

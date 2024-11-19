@@ -3,6 +3,7 @@ import styled from "styled-components";
 import logo from "../../../assets/images/logo.png"
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Spinner } from "react-bootstrap";
 
 
 const HomePageSetting = () => {
@@ -162,6 +163,7 @@ const HomePageSetting = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         // const formDataToSend = new FormData();
         // Object.entries(formData).forEach(([key, value]) => {
@@ -192,11 +194,13 @@ const HomePageSetting = () => {
                     "Content-Type": "multipart/form-data",
                 },
             });
+            setLoading(false);
             if(response.data.success){
                 Swal.fire({
                     icon: "success",
                     title: "Details updated successfully!",
                   });
+                  setErrors({});
             }
             else{
                 Swal.fire({
@@ -206,6 +210,7 @@ const HomePageSetting = () => {
             }
             console.log(response.data);
         } catch (error) {
+            setLoading(false);
             console.error("Error updating details:", error);
             Swal.fire({
                 icon: "error",
@@ -226,6 +231,14 @@ const HomePageSetting = () => {
                             <div className="main shadow-none">
 
                                 <div className="row g-4 shadow bg-body-tertiary rounded m-1 px-3 pb-4">
+                                {loading ? (
+                              <div className="d-flex justify-content-center">
+                              <Spinner animation="border" role="status">
+                              <span className="visually-hidden ">Loading...</span>
+                            </Spinner>
+                            </div>
+                            ) : (
+                                <>
                                     <div className="text-center">
                                         <h4>Enter All Correct Details For Update</h4>
                                     </div>
@@ -374,9 +387,11 @@ const HomePageSetting = () => {
 
                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                         <div className="text-center mb-2">
-                                            <button type="submit" className="btn p-2">UPDATE</button>
+                                            <button type="submit" className="btn p-2" disabled={loading}>{loading ? "Loading..." :  "UPDATE"}</button>
                                         </div>
                                     </div>
+                                     </>
+                            )}
                                 </div>
                             </div>
                         </div>

@@ -3228,7 +3228,148 @@ const UpdateHomePageSetting = (req, res) => {
     return res.status(500).json({success: false, error: "An unexpected error occurred" });
   }
 };
+const getUserNotification = (req, res) => {
+  try {
+    const sql = `SELECT * FROM user_notification`;
+    
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error user_notification from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error user_notification" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No user_notification found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result[0],
+            message: "user_notification fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error(
+      "Error fetching super_admin_website_setting from MySQL:",
+      error
+    );
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching super_admin_website_setting",
+      error: error.message,
+    });
+  }
+};
 
+const UpdateUserNotification = (req, res) => {
+  try {
+    const {
+      id,
+      White_Label_Notification,
+      Super_Distributor_Notification,
+      Distributor_Notification,
+      Retailer_Notification
+      
+    } = req.body;
+    console.log(req.body);
+ 
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE user_notification SET
+        White_Label_Notification = ? ,
+          Super_Distributor_Notification = ?,
+      Distributor_Notification = ?,
+      Retailer_Notification = ?
+     
+      WHERE id = ?`;
+
+    const values = [
+      
+      White_Label_Notification,
+      Super_Distributor_Notification,
+      Distributor_Notification,
+      Retailer_Notification,
+      id
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating package:", error);
+        return res.status(500).json({ success: false, error: "Failed to update the package" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ success: false, message: "Package not found" });
+      }
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Package updated successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const UpdateSAWebsiteJoiningPrice = (req, res) => {
+  try {
+    const {
+      id,
+      Retailer_Joining_Price,
+      Distributor_Joining_Price,
+      Super_Distributor_Joining_Price,
+      White_Label_Joining_Price,
+      
+    } = req.body;
+    console.log(req.body);
+ 
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE super_admin_website_setting SET
+        Retailer_Joining_Price = ? ,
+          Distributor_Joining_Price = ?,
+      Super_Distributor_Joining_Price = ?,
+      White_Label_Joining_Price = ?
+      WHERE id = ?`;
+
+    const values = [
+      
+      Retailer_Joining_Price,
+      Distributor_Joining_Price,
+      Super_Distributor_Joining_Price,
+      White_Label_Joining_Price,
+      id
+    ];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating package:", error);
+        return res.status(500).json({ success: false, error: "Failed to UpdateSAWebsiteJoiningPrice" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ success: false, message: "Data not found" });
+      }
+
+      return res
+        .status(200)
+        .json({ success: true, message: "UpdateSAWebsiteJoiningPrice successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({ success: false, error: "An unexpected error occurred" });
+  }
+};
 
 
 module.exports = {
@@ -3292,6 +3433,9 @@ module.exports = {
   UpdateGenralSetting,
   UpdateSocialLinkSetting,
   UpdateLogoImageSetting,
-  UpdateHomePageSetting
+  UpdateHomePageSetting,
+  getUserNotification,
+  UpdateUserNotification,
+  UpdateSAWebsiteJoiningPrice
 
 };
