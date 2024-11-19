@@ -28,6 +28,7 @@ const SACreateWhiteLabel = () => {
     PinCode: "",
     Status: "Pending",
     payment_status: "Complete",
+    White_Label_Website_URL : "",
     created_By_User_Id: "SA-ASHI0002",
     created_By_User_Role: "SuperAdmin",
     created_By_Website: "www.bitspan.in"
@@ -80,6 +81,7 @@ const SACreateWhiteLabel = () => {
             PinCode: "",
             Status: "Pending",
             payment_status: "Complete",
+            White_Label_Website_URL : "",
             created_By_User_Id: "SA-ASHI0002",
             created_By_User_Role: "SuperAdmin",
             created_By_Website: "www.bitspan.in"
@@ -166,7 +168,8 @@ const SACreateWhiteLabel = () => {
                     pattern="[0-9]{10}"
                     title="Mobile number should be 10 digits"
                     maxLength={10}
-                    minLength={10}/>
+                    minLength={10}
+                    required/>
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
@@ -187,6 +190,7 @@ const SACreateWhiteLabel = () => {
                          name="PanCardNumber"
                          value={formData.PanCardNumber}
                          onChange={handleChange}
+                         required
                          style={{ textTransform: 'uppercase' }}
                          pattern="[A-Za-z]{5}[0-9]{4}[A-Za-z]{1}"
   title="PAN card number should be in the format: 5 letters, 4 digits, 1 letter (e.g., ABCDE1234F)"
@@ -220,7 +224,8 @@ const SACreateWhiteLabel = () => {
                         <input type="text" id="name" class="form-control" placeholder="Enter Shop/ Company Name" 
                          name="BusinessName"
                          value={formData.BusinessName}
-                         onChange={handleChange}/>
+                         onChange={handleChange}
+                         required/>
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
@@ -230,7 +235,8 @@ const SACreateWhiteLabel = () => {
                         <input type="text" id="name" class="form-control" placeholder="Enter City" 
                          name="City"
                          value={formData.City}
-                         onChange={handleChange}/>
+                         onChange={handleChange}
+                         required/>
                       </div>
                     </div>
 
@@ -243,6 +249,7 @@ const SACreateWhiteLabel = () => {
                           class="form-select" aria-label="Default select example"
                           name="State"
                           value={formData.State}
+                          required
                           onChange={handleChange}>
                           <option selected value="">Select...</option>
                           <option value="Andhra Pradesh">Andhra Pradesh</option>
@@ -299,6 +306,7 @@ const SACreateWhiteLabel = () => {
                          title="Mobile number should be 6 digits"
                          maxLength={6}
                          minLength={6}
+                         required
                          />
                       </div>
                     </div>
@@ -307,6 +315,18 @@ const SACreateWhiteLabel = () => {
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"> <LuUserCheck /></span>
                         <input type="text" id="name" class="form-control" placeholder="User Type" value={"White Label"} disabled />
+                      </div>
+                    </div>
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <label for="name" class="form-label">Enter White Lable Website</label>
+                      <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping"><PiAddressBook /></span>
+                        <input type="text" id="name" class="form-control" placeholder="Enter White Lable Website" 
+                         name="White_Label_Website_URL"
+                         value={formData.White_Label_Website_URL}
+                         onChange={handleChange}
+                         required/>
+                         
                       </div>
                     </div>
                     {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">

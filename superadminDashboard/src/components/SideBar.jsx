@@ -1294,6 +1294,11 @@ const SuperAdminData = [
         path: "/add-wallet-money-summary",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+      {
+        title: "Add wallet Money Direct",
+        path: "/add-wallet-money-direct",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
     ],
   },
   {

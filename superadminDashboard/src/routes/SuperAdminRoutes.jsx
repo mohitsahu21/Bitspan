@@ -56,6 +56,7 @@ import SAOfflineDthConnection from "../components/SuperAdmin/SAOfflineDthConnect
 import SAAddWalletMoneyRequests from "../components/SuperAdmin/SAAddWalletMoneyRequests.jsx";
 import SAAddWalletMoneySummary from "../components/SuperAdmin/SAAddWalletMoneySummary.jsx";
 import SAActiveDeactiveServices from "../components/SuperAdmin/SAActiveDeactiveServices.jsx";
+import SAAddWalletMoneyDirect from "../components/SuperAdmin/SAAddWalletMoneyDirect.jsx";
 
 
 
@@ -86,6 +87,10 @@ const SuperAdminRoutes = () => {
         <Route
           path="add-wallet-money-requests"
           element={<SAAddWalletMoneyRequests />}
+        />
+        <Route
+          path="add-wallet-money-direct"
+          element={<SAAddWalletMoneyDirect />}
         />
         <Route
           path="add-wallet-money-summary"

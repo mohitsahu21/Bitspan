@@ -73,7 +73,7 @@ const CustomTooltip = styled(Tooltip)`
                   </div>
               <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10 mt-4">
                 <div className="container-fluid">
-                  <div className="row d-flex formdata justify-content-center mb-3">
+                  {/* <div className="row d-flex formdata justify-content-center mb-3">
                        <div className="col-12 boarder bg-white p-2">
                            <div className="news d-flex align-items-center">
                             <span className="p-3 bg-info news-icon">
@@ -82,7 +82,7 @@ const CustomTooltip = styled(Tooltip)`
                           <p className="d-flex align-items-center mb-0 ms-2">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio asperiores, autem optio, obcaecati consequatur deleniti soluta eius sequi assumenda, accusantium maxime! Voluptatibus aut corrupti dolores veniam? Eveniet, nemo quod? Inventore.</p>
                           </div>
                        </div>
-                  </div>
+                  </div> */}
                   <div className="row  d-flex formdata justify-content-center">
                 
                  

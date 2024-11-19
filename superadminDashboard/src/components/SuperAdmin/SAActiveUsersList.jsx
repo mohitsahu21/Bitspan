@@ -281,7 +281,7 @@ const SAActiveUsersList = () => {
                                         <td>{user.State}</td>
                                         <td>{user.PinCode}</td>
                                         <td>{user?.created_By_User_Id + " " + user?.created_By_User_Role}</td>
-                                        <td>{user?.WebsiteName}</td>
+                                        <td>{user?.role == "WhiteLabel" ? user?.White_Label_Website_URL :  user?.created_By_Website}</td>
                                         <td>{user?.PaymentStatus}</td>
 
                                         {/* <td>

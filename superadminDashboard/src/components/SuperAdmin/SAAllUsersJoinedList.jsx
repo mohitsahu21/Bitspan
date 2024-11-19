@@ -270,7 +270,7 @@ const [status, setStatus] = useState(""); // For status filter
                                               " " +
                                               user?.created_By_User_Role}
                                           </td>
-                                          <td>{user?.WebsiteName}</td>
+                                          <td>{user?.role == "WhiteLabel" ? user?.White_Label_Website_URL :  user?.created_By_Website}</td>
                                           <td>{user?.PaymentStatus}</td>
 
                                           {/* <td>
