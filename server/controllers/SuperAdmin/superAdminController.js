@@ -3371,6 +3371,154 @@ const UpdateSAWebsiteJoiningPrice = (req, res) => {
   }
 };
 
+const AddWalletAddMoneyDirect = (req, res) => {
+  try {
+    const {userId, amount, Transaction_details, status } = req.body;
+    const Transaction_Type =  "Add wallet balance";
+    const transaction_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+      const Order_Id = `${Date.now()}`;
+      const Transaction_Id = `${Date.now()}`;
+    const process_date = moment()
+    .tz("Asia/Kolkata")
+    .format("YYYY-MM-DD HH:mm:ss");
+
+    // Query to get the user's current closing balance from the user_wallet table
+    const getClosingBalanceQuery = `SELECT Closing_Balance FROM user_wallet WHERE userId = ? ORDER BY wid DESC LIMIT 1`;
+    
+    db.query(getClosingBalanceQuery, [userId], (error, results) => {
+      if (error) {
+        console.error("Error fetching closing balance:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to fetch closing balance",
+        });
+      }
+
+      // if (results.length === 0) {
+      //   return res.status(404).json({
+      //     success: false,
+      //     message: "Wallet Add Money Request not found",
+      //   });
+      // }
+
+      console.log(results)
+      const old_balance = results.length != 0 ?  results[0].Closing_Balance : 0;
+      const opening_balance = Number(old_balance);
+      const credit_amount = Number(amount);
+      const debit_amount = 0;
+      const new_balance = credit_amount + opening_balance;
+
+
+        // SQL query to update the user_wallet table with new balance
+      
+        const sql2 = `INSERT INTO user_wallet (userId, transaction_date, Order_Id , Transaction_Id , Opening_Balance, Closing_Balance , credit_amount, debit_amount,Transaction_Type,Transaction_details ,status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)`;
+        const values2 = [userId,transaction_date , Order_Id,Transaction_Id, opening_balance, new_balance,
+          credit_amount,debit_amount,Transaction_Type,Transaction_details, status];
+
+        db.query(sql2, values2, (error, results) => {
+          if (error) {
+            console.error("Error inserting into user_wallet:", error);
+            return res.status(500).json({
+              success: false,
+              error: "Failed to inserting into the user_wallet",
+            });
+          }
+
+          return res.status(200).json({
+            success: true,
+            message:
+              "Add wallet Money Direct Success",
+          });
+        });
+      });
+   
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+const WithdrawWalletAddMoneyDirect = (req, res) => {
+  try {
+    const {userId, amount, Transaction_details, status } = req.body;
+    const Transaction_Type =  "Withdraw wallet balance";
+    const transaction_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+      const Order_Id = `${Date.now()}`;
+      const Transaction_Id = `${Date.now()}`;
+    const process_date = moment()
+    .tz("Asia/Kolkata")
+    .format("YYYY-MM-DD HH:mm:ss");
+
+    // Query to get the user's current closing balance from the user_wallet table
+    const getClosingBalanceQuery = `SELECT Closing_Balance FROM user_wallet WHERE userId = ? ORDER BY wid DESC LIMIT 1`;
+    
+    db.query(getClosingBalanceQuery, [userId], (error, results) => {
+      if (error) {
+        console.error("Error fetching closing balance:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to fetch closing balance",
+        });
+      }
+
+      if (results.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "User have no wallet money",
+        });
+      }
+
+      console.log(results)
+      const old_balance = results.length != 0 ?  results[0].Closing_Balance : 0;
+      const opening_balance = Number(old_balance);
+      const credit_amount = 0;
+      const debit_amount = Number(amount);
+      const new_balance =  opening_balance - debit_amount;
+
+      if (opening_balance < debit_amount) {
+        return res.status(404).json({
+          success: false,
+          message: "User have not sufficient wallet money to process this transaction",
+        });
+      }
+
+
+        // SQL query to update the user_wallet table with new balance
+      
+        const sql2 = `INSERT INTO user_wallet (userId, transaction_date, Order_Id , Transaction_Id , Opening_Balance, Closing_Balance , credit_amount, debit_amount,Transaction_Type,Transaction_details ,status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)`;
+        const values2 = [userId,transaction_date , Order_Id,Transaction_Id, opening_balance, new_balance,
+          credit_amount,debit_amount,Transaction_Type,Transaction_details, status];
+
+        db.query(sql2, values2, (error, results) => {
+          if (error) {
+            console.error("Error inserting into user_wallet:", error);
+            return res.status(500).json({
+              success: false,
+              error: "Failed to inserting into the user_wallet",
+            });
+          }
+
+          return res.status(200).json({
+            success: true,
+            message:
+              "Withdraw wallet Money Direct Success",
+          });
+        });
+      });
+   
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
 
 module.exports = {
   addPackage,
@@ -3436,6 +3584,9 @@ module.exports = {
   UpdateHomePageSetting,
   getUserNotification,
   UpdateUserNotification,
-  UpdateSAWebsiteJoiningPrice
+  UpdateSAWebsiteJoiningPrice,
+
+  AddWalletAddMoneyDirect,
+  WithdrawWalletAddMoneyDirect
 
 };

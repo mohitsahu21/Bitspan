@@ -1299,6 +1299,11 @@ const SuperAdminData = [
         path: "/add-wallet-money-direct",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+      {
+        title: "Withdraw wallet Money Direct",
+        path: "/withdraw-wallet-money-direct",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
     ],
   },
   {
