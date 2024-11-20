@@ -17,6 +17,7 @@ const {
   superAdminEmployeeRegiser,
 } = require("../../controllers/LoginApi/loginUser");
 const authenticateToken = require("../../middleware/authenticateToken");
+const { userRegisterDumy } = require("../../controllers/LoginApi/DummyRegst");
 
 const router = express.Router();
 
@@ -48,5 +49,7 @@ router.post("/verify-otp", verifyOtp);
 router.get("/check-user", getUserId);
 router.post("/verify-pin", verifyPin);
 router.post("/superAdminEmployeeRegiser", superAdminEmployeeRegiser);
+
+router.post("/userRegisterDumy", userRegisterDumy);
 
 module.exports = router;
