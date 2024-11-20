@@ -21,6 +21,8 @@ const SAAddWalletMoneyDirect = () => {
 
 
   const [loading, setLoading] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
+  const [isRefresh, setIsRefresh] = useState(false);
   const [users, setUsers] = useState([]);
   const [options, setOptions] = useState([]); // Store options for Select
   const [selectedOption, setSelectedOption] = useState(null); // Store selected option
@@ -61,6 +63,10 @@ const SAAddWalletMoneyDirect = () => {
   useEffect(() => {
     fetchActiveUsers();
   }, []);
+
+  useEffect(() => {
+    fetchActiveUsers();
+  }, [isRefresh]);
 
 
 //   const options = [
@@ -105,7 +111,7 @@ const SAAddWalletMoneyDirect = () => {
   const handlesubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
+      setButtonLoading(true);
      
       const response = await axios.put(
         "http://localhost:7777/api/auth/superAdmin/AddWalletAddMoneyDirect",
@@ -113,7 +119,7 @@ const SAAddWalletMoneyDirect = () => {
         formData
       );
       // console.log(response);
-      setLoading(false);
+      setButtonLoading(false);
       if (response.data.success) {
         setFormData({
         
@@ -124,6 +130,7 @@ const SAAddWalletMoneyDirect = () => {
 
         })
         setSelectedOption(null)
+        setIsRefresh((item) => !item);
         Swal.fire({
           icon: "success",
           title: response.data.message ,
@@ -140,7 +147,7 @@ const SAAddWalletMoneyDirect = () => {
       }
     } catch (error) {
       console.error("There was an error submitting the form!", error);
-      setLoading(false);
+      setButtonLoading(false);
       Swal.fire({
         icon: "error",
         title: "An error occurred during the process. Please try again.",
@@ -278,7 +285,7 @@ const SAAddWalletMoneyDirect = () => {
                 
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="text-start mb-3">
-                        <button type="submit" className="btn p-2" disabled={loading}>{loading ? "Loading..." : "Submit"}</button>
+                      <button type="submit" className="btn p-2" disabled={buttonLoading}>{buttonLoading ? "Loading..." : "Submit"}</button>
                       </div>
                     </div>
 

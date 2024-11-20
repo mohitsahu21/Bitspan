@@ -21,6 +21,8 @@ const SAWithdrawWalletMoneyDirect = () => {
 
 
   const [loading, setLoading] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
+  const [isRefresh, setIsRefresh] = useState(false);
   const [users, setUsers] = useState([]);
   const [options, setOptions] = useState([]); // Store options for Select
   const [selectedOption, setSelectedOption] = useState(null); // Store selected option
@@ -61,6 +63,9 @@ const SAWithdrawWalletMoneyDirect = () => {
   useEffect(() => {
     fetchActiveUsers();
   }, []);
+  useEffect(() => {
+    fetchActiveUsers();
+  }, [isRefresh]);
 
 
 //   const options = [
@@ -105,7 +110,8 @@ const SAWithdrawWalletMoneyDirect = () => {
   const handlesubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
+      setButtonLoading(true);
+    //   setIsRefresh(true)
      
       const response = await axios.put(
         "http://localhost:7777/api/auth/superAdmin/WithdrawWalletAddMoneyDirect",
@@ -113,7 +119,8 @@ const SAWithdrawWalletMoneyDirect = () => {
         formData
       );
       // console.log(response);
-      setLoading(false);
+      setButtonLoading(false);
+     
       if (response.data.success) {
         setFormData({
         
@@ -124,6 +131,8 @@ const SAWithdrawWalletMoneyDirect = () => {
 
         })
         setSelectedOption(null)
+        setIsRefresh((item) => !item);
+        
         Swal.fire({
           icon: "success",
           title: response.data.message ,
@@ -140,7 +149,7 @@ const SAWithdrawWalletMoneyDirect = () => {
       }
     } catch (error) {
       console.error("There was an error submitting the form!", error);
-      setLoading(false);
+      setButtonLoading(false);
       Swal.fire({
         icon: "error",
         title: error.response.data.message || "An error occurred during the process. Please try again.",
@@ -197,7 +206,7 @@ const SAWithdrawWalletMoneyDirect = () => {
                           // onChange={setSelectedOption}
 
                           // defaultValue={formData.package_for}
-                          value={options.find(option => option.value === formData.package_for)} // Match the selected value
+                          value={options.find(option => option.value === formData.userId)} // Match the selected value
                           onChange={(selectedOption) => handleSelectChange(selectedOption)} // Pass selected option
                           options={options}
                           classNamePrefix="react-select"
@@ -278,7 +287,7 @@ const SAWithdrawWalletMoneyDirect = () => {
                 
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="text-start mb-3">
-                        <button type="submit" className="btn p-2" disabled={loading}>{loading ? "Loading..." : "Submit"}</button>
+                        <button type="submit" className="btn p-2" disabled={buttonLoading}>{buttonLoading ? "Loading..." : "Submit"}</button>
                       </div>
                     </div>
 
