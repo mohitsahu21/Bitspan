@@ -3519,6 +3519,52 @@ const WithdrawWalletAddMoneyDirect = (req, res) => {
   }
 };
 
+const getBuyUserIdSummary = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM user_wallet ORDER BY wid DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM user_wallet c LEFT JOIN userprofile u  ON c.userId = u.UserId ORDER BY wid DESC`;
+    const sql = `
+  SELECT c.*, u.UserName, u.role, u.ContactNo, u.Email 
+  FROM userId_bought_summary c 
+  LEFT JOIN userprofile u 
+  ON c.userId = u.UserId COLLATE utf8mb4_unicode_ci 
+  ORDER BY bid DESC
+`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getBuyUserIdSummary from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getBuyUserIdSummary" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getBuyUserIdSummary found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getBuyUserIdSummary fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getBuyUserIdSummary from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getBuyUserIdSummary",
+      error: error.message,
+    });
+  }
+};
+
+
 
 module.exports = {
   addPackage,
@@ -3587,6 +3633,8 @@ module.exports = {
   UpdateSAWebsiteJoiningPrice,
 
   AddWalletAddMoneyDirect,
-  WithdrawWalletAddMoneyDirect
+  WithdrawWalletAddMoneyDirect,
+  
+  getBuyUserIdSummary
 
 };
