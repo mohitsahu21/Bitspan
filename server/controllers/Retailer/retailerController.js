@@ -1125,6 +1125,143 @@ const getApiBroadbrandRechargeData = (req, res) => {
   });
 };
 
+const addSambalForm = (req, res) => {
+  const {
+    samagraId,
+    familyId,
+    applicantType,
+    education,
+    occupation,
+    smsNotification,
+    incomeTaxPayer,
+    landOwnership,
+    govtService,
+    mobileNumber,
+    user_id,
+  } = req.body;
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const orderId = `ORDS${Date.now()}`;
+
+  const sql = `
+  INSERT INTO SambalForm (
+    order_id, samagra_id, family_id, applicant_type, education, occupation,
+    sms_notification, income_tax_payer, land_ownership, govt_service, mobile_number, user_id, status, created_at
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+`;
+
+  const values = [
+    orderId,
+    samagraId,
+    familyId,
+    applicantType,
+    education,
+    occupation,
+    smsNotification,
+    incomeTaxPayer,
+    landOwnership,
+    govtService,
+    mobileNumber,
+    user_id,
+    "Pending",
+    createdAt,
+  ];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error inserting data:", err);
+      return res
+        .status(500)
+        .json({ status: "Failure", error: "Database error" });
+    }
+    res.status(201).json({
+      status: "Success",
+      message: "SambalForm submitted successfully",
+      id: result.insertId,
+    });
+  });
+};
+
+const addVerifyDistrictForm = (req, res) => {
+  const { applicationType, name, mobileNo, rsNumber, user_id } = req.body;
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const orderId = `VED${Date.now()}`;
+
+  const sql = `
+  INSERT INTO verifyedistrict (
+     order_id, applicationType, name, mobileNo, rsNumber, user_id, status, created_at
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+`;
+
+  const values = [
+    orderId,
+    applicationType,
+    name,
+    mobileNo,
+    rsNumber,
+    user_id,
+    "Pending",
+    createdAt,
+  ];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error inserting data:", err);
+      return res
+        .status(500)
+        .json({ status: "Failure", error: "Database error" });
+    }
+    res.status(201).json({
+      status: "Success",
+      message: "Verify E-Districtn Form submitted successfully",
+      id: result.insertId,
+    });
+  });
+};
+
+const getVerifyEdistrict = (req, res) => {
+  const userId = req.params.userId;
+
+  let query = `SELECT * FROM verifyedistrict WHERE user_id = ?`;
+
+  db.query(query, [userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
+const getSambalHistory = (req, res) => {
+  const userId = req.params.userId;
+
+  let query = `SELECT * FROM sambalform WHERE user_id = ?`;
+
+  db.query(query, [userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -1153,4 +1290,8 @@ module.exports = {
   getApiDTHRechargeData,
   getApiEletricityRechargeData,
   getApiBroadbrandRechargeData,
+  addSambalForm,
+  addVerifyDistrictForm,
+  getVerifyEdistrict,
+  getSambalHistory,
 };

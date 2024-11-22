@@ -20,10 +20,6 @@ const rolePrefixes = {
   SuperAdmin_Employee: "SAE",
 };
 
-const cleanName = (name) => {
-  return name.replace(/[^a-zA-Z]/g, "");
-};
-
 const generatePassword = () => {
   const chars =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -79,17 +75,9 @@ const userRegisterDumy = async (req, res) => {
   }
 
   try {
-    // Generate UserId first
-    // const cleanedName = cleanName(UserName);
     const cleanName = (name) => {
       return name.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
     };
-    // let namePart = cleanedName.slice(0, 4).toUpperCase();
-    // if (cleanedName.length < 4) {
-    //   namePart = (cleanedName + cleanedName.slice(0, 4))
-    //     .slice(0, 4)
-    //     .toUpperCase();
-    // }
     let namePart = cleanName(UserName).slice(0, 4);
     if (namePart.length < 4) {
       namePart = (namePart + namePart.slice(0, 4)).slice(0, 4);
@@ -106,28 +94,9 @@ const userRegisterDumy = async (req, res) => {
           .json({ status: "Failure", message: "Internal server error" });
       }
 
-      let sequenceNumber = 1;
-      if (results.length > 0) {
-        const lastUserId = results[0].UserId;
-        // const numericPart = lastUserId.match(/\d+$/);
-        // if (numericPart) {
-        //   sequenceNumber = parseInt(numericPart[0], 10) + 1;
-        // }
-        const numericPart = lastUserId.replace(
-          new RegExp(`^${rolePrefix}-${namePart}`),
-          ""
-        );
-        if (/^\d+$/.test(numericPart)) {
-          sequenceNumber = parseInt(numericPart, 10) + 1;
-        }
-      }
-
-      const paddingLength = 4;
-
       const shortTimestamp = Date.now().toString().slice(-7);
       const userId = `${rolePrefix}-${namePart}${shortTimestamp}`;
 
-      // Perform duplicate check with UserId
       const duplicateCheckQuery = `
               SELECT * FROM userprofile 
               WHERE Email = ? OR ContactNo = ? OR UserId = ?`;
@@ -152,7 +121,6 @@ const userRegisterDumy = async (req, res) => {
             });
           }
 
-          // Proceed with user registration
           const createdAt = moment()
             .tz("Asia/Kolkata")
             .format("YYYY-MM-DD HH:mm:ss");
@@ -194,7 +162,6 @@ const userRegisterDumy = async (req, res) => {
               });
             }
 
-            // Insert userId and password into the credentials log table
             const logQuery = `INSERT INTO user_credentials (userId, password, created_at) VALUES (?, ?, ?)`;
             const logValues = [userId, password, createdAt];
 
@@ -209,7 +176,6 @@ const userRegisterDumy = async (req, res) => {
                 });
               }
 
-              // Commit transaction and send response
               db.commit((commitErr) => {
                 if (commitErr) {
                   return db.rollback(() => {
@@ -243,7 +209,6 @@ const userRegisterDumy = async (req, res) => {
                                      <br>
                                      <p>Regards,<br>Bitspan.com</p>
                                    `,
-                  // text: `Hello ${UserName},\n\nYour account has been successfully created.\n\nUser ID: ${userId}\nPassword: ${password}\n\nPlease keep this information secure.\n\nPlease login using this ID and password, and complete the KYC process to activate your account.\n\nRegards,\nBitspan.com`,
                 };
 
                 transporter.sendMail(mailOptions, (emailErr, info) => {

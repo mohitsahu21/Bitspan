@@ -68,6 +68,9 @@ import CreatePin from "../components/DashBoard/CreatePin";
 import BankHistory from "../components/DashBoard/BankHistory";
 import Edistrict from "../components/DashBoard/Edistrict";
 import SambalForm from "../components/DashBoard/SambalForm";
+import VerifyEdistrict from "../components/DashBoard/VerifyEdistrict";
+import VerifyDistrictHistory from "../components/DashBoard/VerifyDistrictHistory";
+import SambalHistory from "../components/DashBoard/SambalHistory";
 
 const RetailerRoutes = () => {
   const { currentUser, token } = useSelector((state) => state.user);
@@ -779,6 +782,39 @@ const RetailerRoutes = () => {
               <Navigate to="/update-profile" />
             ) : (
               <SambalForm />
+            )
+          }
+        />
+
+        <Route
+          path="/verify-Edistrict"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <VerifyEdistrict />
+            )
+          }
+        />
+
+        <Route
+          path="/verify-Edistrict-History"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <VerifyDistrictHistory />
+            )
+          }
+        />
+
+        <Route
+          path="/Sambal-History"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SambalHistory />
             )
           }
         />

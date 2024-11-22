@@ -483,7 +483,7 @@ const RetailerSidebarData = [
     ],
   },
   {
-    title: "Offline Services",
+    title: "Other Services",
     path: "#",
     icon: <MdFilterListOff color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
@@ -503,8 +503,19 @@ const RetailerSidebarData = [
         // cName: "sub-nav",
       },
       {
+        title: "Sambal Form",
+        path: "/SambalForm",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
         title: "View All History",
         path: "/view-all-offline-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "Sambal History",
+        path: "/Sambal-History",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
       },
@@ -539,8 +550,18 @@ const RetailerSidebarData = [
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
+        title: "Verify E-District",
+        path: "/verify-Edistrict",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
         title: "E-District History",
         path: "/E-District-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Verify E-District History",
+        path: "/verify-Edistrict-History",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],

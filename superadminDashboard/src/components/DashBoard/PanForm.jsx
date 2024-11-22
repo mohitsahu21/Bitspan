@@ -270,7 +270,7 @@ const PanForm = () => {
                             onChange={handleChange}
                           />
                           <label htmlFor="floatingInputGroup3">
-                            Applicant Number
+                            Mobile Number
                           </label>
                         </div>
                       </div>

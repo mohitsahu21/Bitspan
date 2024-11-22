@@ -30,6 +30,10 @@ const {
   getApiDTHRechargeData,
   getApiEletricityRechargeData,
   getApiBroadbrandRechargeData,
+  addSambalForm,
+  addVerifyDistrictForm,
+  getVerifyEdistrict,
+  getSambalHistory,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -169,5 +173,9 @@ router.get(
   "/getApiBroadbrandRechargeData/:userId",
   getApiBroadbrandRechargeData
 );
+router.post("/addSambalForm", addSambalForm);
+router.post("/verify-Edistrict", addVerifyDistrictForm);
+router.get("/getVerifyEdistrict/:userId", getVerifyEdistrict);
+router.get("/getSambalHistory/:userId", getSambalHistory);
 
 module.exports = router;
