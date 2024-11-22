@@ -158,9 +158,9 @@ const SAAllComplaintsList = () => {
         }
       };
 
-      useEffect(() => {
-        fetchComplaints();
-      }, []);
+      // useEffect(() => {
+      //   fetchComplaints();
+      // }, []);
 
       useEffect(() => {
         fetchComplaints();

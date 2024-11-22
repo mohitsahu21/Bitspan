@@ -38,9 +38,9 @@ const SAPendingPaymentUsers = () => {
         }
       };
     
-      useEffect(() => {
-        fetchPendingUsers();
-      }, []);
+      // useEffect(() => {
+      //   fetchPendingUsers();
+      // }, []);
       useEffect(() => {
         fetchPendingUsers();
       }, [isRefresh]);

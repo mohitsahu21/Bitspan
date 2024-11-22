@@ -277,9 +277,9 @@ const SAOfflineDthConnection = () => {
         }
       };
 
-      useEffect(() => {
-        fetchOfflineForm();
-      }, []);
+      // useEffect(() => {
+      //   fetchOfflineForm();
+      // }, []);
 
       useEffect(() => {
         fetchOfflineForm();

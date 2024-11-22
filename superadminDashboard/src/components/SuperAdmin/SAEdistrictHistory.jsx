@@ -277,9 +277,9 @@ const SAEdistrictHistory = () => {
         }
       };
 
-      useEffect(() => {
-        fetchOfflineForm();
-      }, []);
+      // useEffect(() => {
+      //   fetchOfflineForm();
+      // }, []);
 
       useEffect(() => {
         fetchOfflineForm();

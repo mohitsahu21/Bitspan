@@ -277,9 +277,9 @@ const SABankIdForms = () => {
         }
       };
 
-      useEffect(() => {
-        fetchOfflineForm();
-      }, []);
+      // useEffect(() => {
+      //   fetchOfflineForm();
+      // }, []);
 
       useEffect(() => {
         fetchOfflineForm();

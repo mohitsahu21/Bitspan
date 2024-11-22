@@ -416,9 +416,9 @@ const SAAddWalletMoneyRequests = () => {
     }
   };
 
-  useEffect(() => {
-    fetchOfflineForm();
-  }, []);
+  // useEffect(() => {
+  //   fetchOfflineForm();
+  // }, []);
 
   useEffect(() => {
     fetchOfflineForm();

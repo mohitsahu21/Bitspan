@@ -390,9 +390,9 @@ const SAWalletWithdrawRequests = () => {
     }
   };
 
-  useEffect(() => {
-    fetchOfflineForm();
-  }, []);
+  // useEffect(() => {
+  //   fetchOfflineForm();
+  // }, []);
 
   useEffect(() => {
     fetchOfflineForm();

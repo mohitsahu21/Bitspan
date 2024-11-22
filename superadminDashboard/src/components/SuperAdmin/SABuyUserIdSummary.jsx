@@ -37,9 +37,9 @@ const SABuyUserIdSummary = () => {
       }
     };
   
-    useEffect(() => {
-      fetchOfflineForm();
-    }, []);
+    // useEffect(() => {
+    //   fetchOfflineForm();
+    // }, []);
   
     useEffect(() => {
       fetchOfflineForm();

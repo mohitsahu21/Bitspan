@@ -60,9 +60,9 @@ const SAAddWalletMoneyDirect = () => {
     }
   };
 
-  useEffect(() => {
-    fetchActiveUsers();
-  }, []);
+  // useEffect(() => {
+  //   fetchActiveUsers();
+  // }, []);
 
   useEffect(() => {
     fetchActiveUsers();

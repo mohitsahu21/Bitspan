@@ -262,9 +262,9 @@ const SAAllOfflineForm = () => {
     }
   };
 
-  useEffect(() => {
-    fetchOfflineForm();
-  }, []);
+  // useEffect(() => {
+  //   fetchOfflineForm();
+  // }, []);
 
   useEffect(() => {
     fetchOfflineForm();

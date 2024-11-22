@@ -416,9 +416,9 @@ const SAAddWalletMoneySummary = () => {
     }
   };
 
-  useEffect(() => {
-    fetchOfflineForm();
-  }, []);
+  // useEffect(() => {
+  //   fetchOfflineForm();
+  // }, []);
 
   useEffect(() => {
     fetchOfflineForm();

@@ -41,9 +41,9 @@ const SAWalletWithdrawSummary = () => {
     fetchOfflineForm();
   }, []);
 
-  useEffect(() => {
-    fetchOfflineForm();
-  }, [isRefresh]);
+  // useEffect(() => {
+  //   fetchOfflineForm();
+  // }, [isRefresh]);
 
   const filteredItems = users.filter(
     (row) =>{ 

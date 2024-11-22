@@ -658,9 +658,9 @@ const SAPendingKycUsers = () => {
     }
   };
 
-  useEffect(() => {
-    fetchPendingUsers();
-  }, []);
+  // useEffect(() => {
+  //   fetchPendingUsers();
+  // }, []);
   useEffect(() => {
     fetchPendingUsers();
   }, [isRefresh]);

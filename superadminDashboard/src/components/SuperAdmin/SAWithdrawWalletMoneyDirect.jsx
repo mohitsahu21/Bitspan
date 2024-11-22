@@ -60,9 +60,9 @@ const SAWithdrawWalletMoneyDirect = () => {
     }
   };
 
-  useEffect(() => {
-    fetchActiveUsers();
-  }, []);
+  // useEffect(() => {
+  //   fetchActiveUsers();
+  // }, []);
   useEffect(() => {
     fetchActiveUsers();
   }, [isRefresh]);
