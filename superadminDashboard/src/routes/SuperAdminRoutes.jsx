@@ -58,6 +58,8 @@ import SAAddWalletMoneySummary from "../components/SuperAdmin/SAAddWalletMoneySu
 import SAActiveDeactiveServices from "../components/SuperAdmin/SAActiveDeactiveServices.jsx";
 import SAAddWalletMoneyDirect from "../components/SuperAdmin/SAAddWalletMoneyDirect.jsx";
 import SAWithdrawWalletMoneyDirect from "../components/SuperAdmin/SAWithdrawWalletMoneyDirect.jsx";
+import SAVerifyEdistrictHistory from "../components/SuperAdmin/SAVerifyEdistrictHistory.jsx";
+import SASambalHistory from "../components/SuperAdmin/SASambalHistory.jsx";
 
 const SuperAdminRoutes = () => {
   return (
@@ -110,6 +112,8 @@ const SuperAdminRoutes = () => {
         <Route path="/Pan-offline-history" element={<SAPanOfflineHistory />} />
         <Route path="/Bank-Id-history" element={<SABankIdForms />} />
         <Route path="/E-district-history" element={<SAEdistrictHistory />} />
+        <Route path="/verify-E-district-form-history" element={<SAVerifyEdistrictHistory />} />
+        <Route path="/sambal-form-history" element={<SASambalHistory />} />
         <Route
           path="/Offline-Recharge-history"
           element={<SAOfflineRechargeHistory />}

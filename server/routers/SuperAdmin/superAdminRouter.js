@@ -2,7 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const { addPackage, getPackages, editPackage, deletePackage, getPendingUsers, approveUser, rejectUser, getActiveUsers, deactivateUser, activateUser, getdeactiveUsers, getUserRelations, getAllUsers, getPendingPaymentUsers, markPaymentComplete, getUserIdPriceList, addUserIdPrice, updateUserIdPrice, getSuperAdminEmployee, complainGetData, resolveComplaint, getApplyOfflineForm, ApproveOfflineForm, rejectOfflineForm, getPANOfflineForm, ApprovePANOfflineForm, rejectPANOfflineForm, getBankIdForm, ApproveBankIdForm, rejectBankIdForm, getEdistrictForms, ApproveEdistrictForm, rejectEdistrictForm, getOfflineRecharge, ApproveOfflineRecharge, rejectOfflineRecharge, getOfflineDTHConnection, ApproveOfflineDTHConnection, rejectOfflineDTHConnection, getWalletWithdrawRequests, ApproveWalletWithdrawRequests, rejectWalletWithdrawRequests, getPendingWalletWithdrawRequests, getWalletTransactions, getPendingWalletAddMoneyRequests, ApproveWalletAddMoneyRequests, rejectWalletAddMoneyRequests, getAllWalletAddMoneyRequests, getAllApiList, ActiveApi, DeactiveApi, getAllServicesList, ActiveServices, DeactiveServices, getSuperAdminSettings, UpdateGenralSetting, UpdateSocialLinkSetting, UpdateLogoImageSetting, UpdateHomePageSetting, getUserNotification, UpdateUserNotification, UpdateSAWebsiteJoiningPrice, AddWalletAddMoneyDirect, WithdrawWalletAddMoneyDirect, getBuyUserIdSummary } = require("../../controllers/SuperAdmin/superAdminController");
+const { addPackage, getPackages, editPackage, deletePackage, getPendingUsers, approveUser, rejectUser, getActiveUsers, deactivateUser, activateUser, getdeactiveUsers, getUserRelations, getAllUsers, getPendingPaymentUsers, markPaymentComplete, getUserIdPriceList, addUserIdPrice, updateUserIdPrice, getSuperAdminEmployee, complainGetData, resolveComplaint, getApplyOfflineForm, ApproveOfflineForm, rejectOfflineForm, getPANOfflineForm, ApprovePANOfflineForm, rejectPANOfflineForm, getBankIdForm, ApproveBankIdForm, rejectBankIdForm, getEdistrictForms, ApproveEdistrictForm, rejectEdistrictForm, getOfflineRecharge, ApproveOfflineRecharge, rejectOfflineRecharge, getOfflineDTHConnection, ApproveOfflineDTHConnection, rejectOfflineDTHConnection, getWalletWithdrawRequests, ApproveWalletWithdrawRequests, rejectWalletWithdrawRequests, getPendingWalletWithdrawRequests, getWalletTransactions, getPendingWalletAddMoneyRequests, ApproveWalletAddMoneyRequests, rejectWalletAddMoneyRequests, getAllWalletAddMoneyRequests, getAllApiList, ActiveApi, DeactiveApi, getAllServicesList, ActiveServices, DeactiveServices, getSuperAdminSettings, UpdateGenralSetting, UpdateSocialLinkSetting, UpdateLogoImageSetting, UpdateHomePageSetting, getUserNotification, UpdateUserNotification, UpdateSAWebsiteJoiningPrice, AddWalletAddMoneyDirect, WithdrawWalletAddMoneyDirect, getBuyUserIdSummary, getVerifyEdistrictForms, ApproveVerifyEdistrictForm, rejectVerifyEdistrictForm, getSambalForms, ApproveSambalForm, rejectSambalForm } = require("../../controllers/SuperAdmin/superAdminController");
 
 const router = express.Router();
 const storage = multer.diskStorage({
@@ -72,6 +72,16 @@ router.put("/rejectBankIdForm" , rejectBankIdForm );
 router.get("/getEdistrictForms" , getEdistrictForms);
 router.put("/ApproveEdistrictForm" , ApproveEdistrictForm);
 router.put("/rejectEdistrictForm" , rejectEdistrictForm);
+
+router.get("/getVerifyEdistrictForms" , getVerifyEdistrictForms);
+router.put("/ApproveVerifyEdistrictForm" , ApproveVerifyEdistrictForm);
+router.put("/rejectVerifyEdistrictForm" , rejectVerifyEdistrictForm);
+
+router.get("/getSambalForms" , getSambalForms);
+router.put("/ApproveSambalForm" , ApproveSambalForm);
+router.put("/rejectSambalForm" , rejectSambalForm);
+
+
 
 router.get("/getOfflineRecharge" , getOfflineRecharge);
 router.put("/ApproveOfflineRecharge" , ApproveOfflineRecharge);
