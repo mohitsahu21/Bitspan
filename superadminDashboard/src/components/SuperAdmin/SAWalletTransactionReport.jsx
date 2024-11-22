@@ -27,7 +27,7 @@ const SAWalletWithdrawSummary = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "http://localhost:7777/api/auth/superAdmin/getWalletTransactions"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getWalletTransactions"
       );
       setUsers(data.data);
       setLoading(false);

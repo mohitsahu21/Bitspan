@@ -42,7 +42,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "http://localhost:7777/api/auth/superAdmin/ApproveWalletAddMoneyRequests",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveWalletAddMoneyRequests",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
         formData
       );
@@ -226,7 +226,7 @@ const handlesubmit = async (e) => {
   try {
     setLoading(true);
     const response = await axios.put(
-      "http://localhost:7777/api/auth/superAdmin/rejectWalletAddMoneyRequests",
+      "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectWalletAddMoneyRequests",
       // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
       formData
     );
@@ -406,7 +406,7 @@ const SAAddWalletMoneyRequests = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "http://localhost:7777/api/auth/superAdmin/getPendingWalletAddMoneyRequests"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletAddMoneyRequests"
       );
       setUsers(data.data);
       setLoading(false);

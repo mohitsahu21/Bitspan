@@ -39,7 +39,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "http://localhost:7777/api/auth/superAdmin/ApproveWalletWithdrawRequests",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveWalletWithdrawRequests",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
         formData
       );
@@ -219,7 +219,7 @@ const handlesubmit = async (e) => {
   try {
     setLoading(true);
     const response = await axios.put(
-      "http://localhost:7777/api/auth/superAdmin/rejectWalletWithdrawRequests",
+      "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectWalletWithdrawRequests",
       // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
       formData
     );
@@ -380,7 +380,7 @@ const SAWalletWithdrawRequests = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "http://localhost:7777/api/auth/superAdmin/getPendingWalletWithdrawRequests"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletWithdrawRequests"
       );
       setUsers(data.data);
       setLoading(false);

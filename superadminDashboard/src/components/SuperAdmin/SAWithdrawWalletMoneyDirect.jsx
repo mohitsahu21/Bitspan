@@ -114,7 +114,7 @@ const SAWithdrawWalletMoneyDirect = () => {
     //   setIsRefresh(true)
      
       const response = await axios.put(
-        "http://localhost:7777/api/auth/superAdmin/WithdrawWalletAddMoneyDirect",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/WithdrawWalletAddMoneyDirect",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
         formData
       );

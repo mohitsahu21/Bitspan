@@ -35,7 +35,7 @@ const SAActiveApi = ({ complaint, setShowActiveModel, setIsRefresh }) => {
       try {
         setLoading(true);
         const response = await axios.put(
-          "http://localhost:7777/api/auth/superAdmin/ActiveApi",
+          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ActiveApi",
           // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
           formData
         );
@@ -169,7 +169,7 @@ const SADeactiveApi = ({ complaint, setShowDeactiveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "http://localhost:7777/api/auth/superAdmin/DeactiveApi",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/DeactiveApi",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
         formData
       );
@@ -303,7 +303,7 @@ const SAActiveDeactiveApi = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "http://localhost:7777/api/auth/superAdmin/getAllApiList"
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllApiList"
           );
           setUsers(data.data);
           setLoading(false);

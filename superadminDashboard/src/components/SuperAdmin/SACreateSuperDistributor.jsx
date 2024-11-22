@@ -56,7 +56,7 @@ const SACreateSuperDistributor = () => {
       setLoading(true);
      
       const response = await axios.post(
-        // "http://localhost:7777/api/auth/superAdmin/approveUser",
+        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
         "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
         formData
       );

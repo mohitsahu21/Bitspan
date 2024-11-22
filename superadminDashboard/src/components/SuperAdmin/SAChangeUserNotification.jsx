@@ -20,7 +20,7 @@ const SAChangeUserNotification = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "http://localhost:7777/api/auth/superAdmin/getUserNotification"
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserNotification"
           );
           setData(data.data);
           setFormData({
@@ -66,7 +66,7 @@ const SAChangeUserNotification = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.put("http://localhost:7777/api/auth/superAdmin/UpdateUserNotification", formData);
+            const response = await axios.put("https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateUserNotification", formData);
             setLoading(false);
             if(response.data.success){
                 Swal.fire({

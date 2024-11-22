@@ -34,7 +34,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "http://localhost:7777/api/auth/superAdmin/ApproveOfflineForm",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveOfflineForm",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
         formData
       );
@@ -146,7 +146,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "http://localhost:7777/api/auth/superAdmin/rejectOfflineForm",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectOfflineForm",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
         formData
       );
@@ -252,7 +252,7 @@ const SAAllOfflineForm = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "http://localhost:7777/api/auth/superAdmin/getApplyOfflineForm"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getApplyOfflineForm"
       );
       setUsers(data.data);
       setLoading(false);

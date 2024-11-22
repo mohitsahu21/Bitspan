@@ -37,7 +37,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
       try {
         setLoading(true);
         const response = await axios.put(
-          "http://localhost:7777/api/auth/superAdmin/ApprovePANOfflineForm",
+          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApprovePANOfflineForm",
           // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
           formData
         );
@@ -154,7 +154,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "http://localhost:7777/api/auth/superAdmin/rejectPANOfflineForm",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectPANOfflineForm",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
         formData
       );
@@ -267,7 +267,7 @@ const SAPanOfflineHistory = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "http://localhost:7777/api/auth/superAdmin/getPANOfflineForm"
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPANOfflineForm"
           );
           setUsers(data.data);
           setLoading(false);

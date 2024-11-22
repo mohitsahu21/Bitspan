@@ -32,7 +32,7 @@ const Genral = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "http://localhost:7777/api/auth/superAdmin/getSuperAdminSettings"
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
           );
           setData(data.data);
           setFormData({
@@ -138,7 +138,7 @@ const Genral = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post("http://localhost:7777/api/auth/superAdmin/UpdateGenralSetting", formDataSend, {
+            const response = await axios.post("https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateGenralSetting", formDataSend, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

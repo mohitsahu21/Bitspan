@@ -37,7 +37,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
       try {
         setLoading(true);
         const response = await axios.put(
-          "http://localhost:7777/api/auth/superAdmin/ApproveEdistrictForm",
+          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveEdistrictForm",
           // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
           formData
         );
@@ -154,7 +154,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "http://localhost:7777/api/auth/superAdmin/rejectEdistrictForm",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectEdistrictForm",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
         formData
       );
@@ -267,7 +267,7 @@ const SAEdistrictHistory = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "http://localhost:7777/api/auth/superAdmin/getEdistrictForms"
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getEdistrictForms"
           );
           setUsers(data.data);
           setLoading(false);
