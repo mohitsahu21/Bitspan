@@ -236,7 +236,7 @@ const handlePackageSelect = (e) => {
       setLoading(true);
      
       const response = await axios.put(
-        // "http://localhost:7777/api/auth/superAdmin/approveUser",
+        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
         formDataToSend
       );
@@ -519,7 +519,7 @@ const SARejectUser = ({ user, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        // "http://localhost:7777/api/auth/superAdmin/rejectUser",
+        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectUser",
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectUser",
         formData
       );
@@ -658,9 +658,9 @@ const SAPendingKycUsers = () => {
     }
   };
 
-  useEffect(() => {
-    fetchPendingUsers();
-  }, []);
+  // useEffect(() => {
+  //   fetchPendingUsers();
+  // }, []);
   useEffect(() => {
     fetchPendingUsers();
   }, [isRefresh]);

@@ -27,7 +27,7 @@ const SAWalletWithdrawSummary = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "http://localhost:7777/api/auth/superAdmin/getWalletWithdrawRequests"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getWalletWithdrawRequests"
       );
       setUsers(data.data);
       setLoading(false);
@@ -41,9 +41,9 @@ const SAWalletWithdrawSummary = () => {
     fetchOfflineForm();
   }, []);
 
-  useEffect(() => {
-    fetchOfflineForm();
-  }, [isRefresh]);
+  // useEffect(() => {
+  //   fetchOfflineForm();
+  // }, [isRefresh]);
 
   const filteredItems = users.filter(
     (row) =>{ 

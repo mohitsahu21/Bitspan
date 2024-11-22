@@ -37,7 +37,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
       try {
         setLoading(true);
         const response = await axios.put(
-          "http://localhost:7777/api/auth/superAdmin/ApproveOfflineRecharge",
+          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveOfflineRecharge",
           // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
           formData
         );
@@ -154,7 +154,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "http://localhost:7777/api/auth/superAdmin/rejectOfflineRecharge",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectOfflineRecharge",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
         formData
       );
@@ -267,7 +267,7 @@ const SAOfflineRechargeHistory = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "http://localhost:7777/api/auth/superAdmin/getOfflineRecharge"
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getOfflineRecharge"
           );
           setUsers(data.data);
           setLoading(false);
@@ -277,9 +277,9 @@ const SAOfflineRechargeHistory = () => {
         }
       };
 
-      useEffect(() => {
-        fetchOfflineForm();
-      }, []);
+      // useEffect(() => {
+      //   fetchOfflineForm();
+      // }, []);
 
       useEffect(() => {
         fetchOfflineForm();

@@ -60,9 +60,9 @@ const SAAddWalletMoneyDirect = () => {
     }
   };
 
-  useEffect(() => {
-    fetchActiveUsers();
-  }, []);
+  // useEffect(() => {
+  //   fetchActiveUsers();
+  // }, []);
 
   useEffect(() => {
     fetchActiveUsers();
@@ -114,7 +114,7 @@ const SAAddWalletMoneyDirect = () => {
       setButtonLoading(true);
      
       const response = await axios.put(
-        "http://localhost:7777/api/auth/superAdmin/AddWalletAddMoneyDirect",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/AddWalletAddMoneyDirect",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
         formData
       );

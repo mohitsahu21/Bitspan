@@ -136,10 +136,12 @@ const SAViewPackages = () => {
   //     });
   //   }
   // };
-  useEffect(() => {
+
   
-    fetchPackages();
-  }, []);
+  // useEffect(() => {
+  
+  //   fetchPackages();
+  // }, []);
 
   useEffect(()=>{
     fetchPackages();

@@ -148,7 +148,7 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
         try {
           setLoading(true);
           const response = await axios.put(
-            // "http://localhost:7777/api/auth/superAdmin/editPackage",
+            // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/editPackage",
             "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/editPackage",
             formData
           );

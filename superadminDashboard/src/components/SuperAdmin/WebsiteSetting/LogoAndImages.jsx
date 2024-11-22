@@ -86,7 +86,7 @@ const LogoAndImages = () => {
        
         try {
           const { data } = await axios.get(
-            "http://localhost:7777/api/auth/superAdmin/getSuperAdminSettings"
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
           );
           setData(data.data);
           setFormData({
@@ -163,7 +163,7 @@ const LogoAndImages = () => {
         
 
         try {
-            const response = await axios.post("http://localhost:7777/api/auth/superAdmin/UpdateLogoImageSetting", formDataSend, {
+            const response = await axios.post("https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateLogoImageSetting", formDataSend, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
