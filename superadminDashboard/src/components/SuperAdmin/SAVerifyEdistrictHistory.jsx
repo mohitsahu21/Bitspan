@@ -37,8 +37,8 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
       try {
         setLoading(true);
         const response = await axios.put(
-          "http://localhost:7777/api/auth/superAdmin/ApproveVerifyEdistrictForm",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveVerifyEdistrictForm",
+          // "http://localhost:7777/api/auth/superAdmin/ApproveVerifyEdistrictForm",
+          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveVerifyEdistrictForm",
           formData
         );
         console.log(response);
@@ -154,8 +154,8 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectVerifyEdistrictForm",
-          "http://localhost:7777/api/auth/superAdmin/rejectVerifyEdistrictForm",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectVerifyEdistrictForm",
+          // "http://localhost:7777/api/auth/superAdmin/rejectVerifyEdistrictForm",
         formData
       );
       console.log(response);
@@ -267,8 +267,8 @@ const SAVerifyEdistrictHistory = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "http://localhost:7777/api/auth/superAdmin/getVerifyEdistrictForms"
-            // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getEdistrictForms"
+            // "http://localhost:7777/api/auth/superAdmin/getVerifyEdistrictForms"
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getVerifyEdistrictForms"
           );
           setUsers(data.data);
           setLoading(false);
