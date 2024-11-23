@@ -1875,6 +1875,238 @@ const rejectEdistrictForm = (req, res) => {
   }
 };
 
+const getVerifyEdistrictForms = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM verifyedistrict c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getVerifyEdistrictForms from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getVerifyEdistrictForms" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getVerifyEdistrictForms found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getVerifyEdistrictForms fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getVerifyEdistrictForms from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getVerifyEdistrictForms",
+      error: error.message,
+    });
+  }
+};
+
+const ApproveVerifyEdistrictForm = (req, res) => {
+  try {
+    const { order_id, note, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE verifyedistrict SET note = ? , status = ? WHERE order_id = ?`;
+
+    const values = [note, status, order_id];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating ApproveVerifyEdistrictForm:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating ApproveVerifyEdistrictForm",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "ApproveVerifyEdistrictForm not found" });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "updating ApproveVerifyEdistrictForm successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+const rejectVerifyEdistrictForm = (req, res) => {
+  try {
+    const { order_id, note, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE verifyedistrict SET note = ? , status = ? WHERE order_id = ?`;
+
+    const values = [note, status, order_id];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating rejectVerifyEdistrictForm:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating rejectVerifyEdistrictForm",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "rejectVerifyEdistrictForm not found" });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "updating rejectVerifyEdistrictForm successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const getSambalForms = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM sambalform c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getSambalForms from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getSambalForms" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getSambalForms found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getSambalForms fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getSambalForms from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getSambalForms",
+      error: error.message,
+    });
+  }
+};
+
+const ApproveSambalForm = (req, res) => {
+  try {
+    const { order_id, note, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE sambalform SET note = ? , status = ? WHERE order_id = ?`;
+
+    const values = [note, status, order_id];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating ApproveSambalForm:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating ApproveSambalForm",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "ApproveSambalForm not found" });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "updating ApproveSambalForm successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+const rejectSambalForm = (req, res) => {
+  try {
+    const { order_id, note, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE sambalform SET note = ? , status = ? WHERE order_id = ?`;
+
+    const values = [note, status, order_id];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating rejectSambalForm:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating rejectSambalForm",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "rejectSambalForm not found" });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "updating rejectSambalForm successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
 const getOfflineRecharge = (req, res) => {
   try {
     // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
@@ -3601,6 +3833,12 @@ module.exports = {
   getEdistrictForms,
   ApproveEdistrictForm,
   rejectEdistrictForm,
+  getVerifyEdistrictForms,
+  ApproveVerifyEdistrictForm,
+  rejectVerifyEdistrictForm,
+  getSambalForms,
+  ApproveSambalForm,
+  rejectSambalForm,
   getOfflineRecharge,
   ApproveOfflineRecharge,
   rejectOfflineRecharge,

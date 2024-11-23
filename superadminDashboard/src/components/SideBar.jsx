@@ -1458,6 +1458,24 @@ const SuperAdminData = [
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
       },
+      // {
+      //   title: "View E-district Forms",
+      //   path: "/E-district-history",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   // cName: "sub-nav",
+      // },
+      {
+        title: "View Verify E-district Forms Requests",
+        path: "/verify-E-district-form-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "View Sambal Forms",
+        path: "/sambal-form-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
     ],
   },
   // {
