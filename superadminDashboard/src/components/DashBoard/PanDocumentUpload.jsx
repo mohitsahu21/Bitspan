@@ -1,12 +1,64 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
-import { MdOutlineFormatListNumbered } from "react-icons/md";
-import { FaMobileAlt } from "react-icons/fa";
-import { RiMarkPenLine } from "react-icons/ri";
-import { FaRupeeSign } from "react-icons/fa";
 import { BiHomeAlt } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
 
 const PanDocumentUpload = () => {
+  const dispatch = useDispatch();
+  const { currentUser, token } = useSelector((state) => state.user);
+  const [formData, setFormData] = useState({
+    userId: currentUser.userId,
+    agency: currentUser.BusinessName,
+    applicationDetails: "",
+    documentCount: "",
+    courierDate: "",
+    trackingNumber: "",
+    courierCompany: "",
+    deliveryDate: "",
+    deliveryLocation: "",
+    confirmAddress: "",
+    remark: "",
+  });
+
+  const [file, setFile] = useState(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formDataToSend = new FormData();
+    for (let key in formData) {
+      formDataToSend.append(key, formData[key]);
+    }
+    if (file) {
+      formDataToSend.append("podfile", file); // Append file
+    }
+
+    try {
+      const response = await axios.post(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/panDocument",
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      alert("Form submitted successfully: " + response.data.message);
+    } catch (error) {
+      console.error("Error uploading document:", error);
+      alert("Error uploading document: " + error.message);
+    }
+  };
+
   return (
     <>
       <Wrapper>
@@ -38,7 +90,7 @@ const PanDocumentUpload = () => {
                   </div>
                   <div className="row justify-content-center ">
                     <div className="col-xxl-6 col-xl-9 col-lg-9 col-md-10 col-sm-9 shadow rounded m-4  px-5 py-5 bg-body-tertiary">
-                      <form action="">
+                      <form onSubmit={handleSubmit}>
                         <div className="row d-flex flex-column g-4">
                           <div className="d-flex justify-content-center flex-column flex-xl-row gap-3">
                             <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
@@ -48,9 +100,12 @@ const PanDocumentUpload = () => {
                                     type="text"
                                     class="form-control"
                                     id="floatingInputGroup1"
-                                    placeholder="Transaction Number"
+                                    name="userId"
+                                    value={formData.userId}
+                                    onChange={handleChange}
+                                    placeholder="User ID"
+                                    required
                                     readOnly
-                                    value="ASHI6462"
                                   />
                                   <label for="floatingInputGroup1">
                                     Your User Id
@@ -65,9 +120,12 @@ const PanDocumentUpload = () => {
                                     type="text"
                                     class="form-control"
                                     id="floatingInputGroup1"
-                                    placeholder="Transaction Number"
+                                    name="agency"
+                                    value={formData.agency}
+                                    onChange={handleChange}
+                                    placeholder="Agency"
+                                    required
                                     readOnly
-                                    value="2KADAMONLINE"
                                   />
                                   <label for="floatingInputGroup1">
                                     Agency
@@ -94,7 +152,11 @@ const PanDocumentUpload = () => {
                                     class="form-control"
                                     id="exampleFormControlTextarea1"
                                     rows="3"
+                                    name="applicationDetails"
+                                    value={formData.applicationDetails}
+                                    onChange={handleChange}
                                     placeholder="Enter Appication Details"
+                                    required
                                   ></textarea>
                                 </div>
                               </div>
@@ -109,7 +171,11 @@ const PanDocumentUpload = () => {
                                     type="text"
                                     class="form-control"
                                     id="floatingInputGroup1"
-                                    placeholder="Transaction Number"
+                                    name="documentCount"
+                                    value={formData.documentCount}
+                                    onChange={handleChange}
+                                    placeholder="Document Count"
+                                    required
                                   />
                                   <label for="floatingInputGroup1">
                                     No. of Document
@@ -124,7 +190,10 @@ const PanDocumentUpload = () => {
                                     type="date"
                                     class="form-control"
                                     id="floatingInputGroup1"
-                                    placeholder="Transaction Number"
+                                    name="courierDate"
+                                    value={formData.courierDate}
+                                    onChange={handleChange}
+                                    placeholder="Courier Date"
                                   />
                                   <label for="floatingInputGroup1">
                                     Date of Courier
@@ -141,7 +210,10 @@ const PanDocumentUpload = () => {
                                     type="text"
                                     class="form-control"
                                     id="floatingInputGroup1"
-                                    placeholder="Transaction Number"
+                                    name="trackingNumber"
+                                    value={formData.trackingNumber}
+                                    onChange={handleChange}
+                                    placeholder="Tracking Number"
                                   />
                                   <label for="floatingInputGroup1">
                                     POD/Tracking Number
@@ -156,7 +228,10 @@ const PanDocumentUpload = () => {
                                     type="text"
                                     class="form-control"
                                     id="floatingInputGroup1"
-                                    placeholder="Transaction Number"
+                                    name="courierCompany"
+                                    value={formData.courierCompany}
+                                    onChange={handleChange}
+                                    placeholder="Courier Company"
                                   />
                                   <label for="floatingInputGroup1">
                                     Courier Company Name
@@ -173,7 +248,10 @@ const PanDocumentUpload = () => {
                                     type="date"
                                     class="form-control"
                                     id="floatingInputGroup1"
-                                    placeholder="Transaction Number"
+                                    name="deliveryDate"
+                                    value={formData.deliveryDate}
+                                    onChange={handleChange}
+                                    placeholder="Delivery Date"
                                   />
                                   <label for="floatingInputGroup1">
                                     Delivery Date
@@ -188,7 +266,10 @@ const PanDocumentUpload = () => {
                                     type="text"
                                     class="form-control"
                                     id="floatingInputGroup1"
-                                    placeholder="Transaction Number"
+                                    name="deliveryLocation"
+                                    value={formData.deliveryLocation}
+                                    onChange={handleChange}
+                                    placeholder="Delivery Location"
                                   />
                                   <label for="floatingInputGroup1">
                                     Delivery Location
@@ -205,7 +286,10 @@ const PanDocumentUpload = () => {
                                     type="text"
                                     class="form-control"
                                     id="floatingInputGroup1"
-                                    placeholder="Transaction Number"
+                                    name="confirmAddress"
+                                    value={formData.confirmAddress}
+                                    onChange={handleChange}
+                                    placeholder="Confirm Address"
                                   />
                                   <label for="floatingInputGroup1">
                                     Confirm the Address
@@ -219,6 +303,9 @@ const PanDocumentUpload = () => {
                                   class="form-control"
                                   id="exampleFormControlTextarea1"
                                   rows="3"
+                                  name="remark"
+                                  value={formData.remark}
+                                  onChange={handleChange}
                                   placeholder="Remark"
                                 ></textarea>
                               </div>
@@ -235,6 +322,7 @@ const PanDocumentUpload = () => {
                                   class="form-control form-control-lg"
                                   id="formFileLg"
                                   type="file"
+                                  onChange={handleFileChange}
                                 />
                               </div>
                             </div>
@@ -242,7 +330,9 @@ const PanDocumentUpload = () => {
 
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div className="text-start mb-3">
-                              <button className="btn p-2">Upload</button>
+                              <button className="btn p-2" type="submit">
+                                Upload
+                              </button>
                             </div>
                           </div>
                         </div>

@@ -34,6 +34,9 @@ const {
   addVerifyDistrictForm,
   getVerifyEdistrict,
   getSambalHistory,
+  PanDocumentUpload,
+  getPanDocument,
+  walletOffline,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -133,7 +136,7 @@ const profileDataStorage = multer.diskStorage({
 const profileDataUpload = multer({ storage: profileDataStorage });
 
 router.put(
-  "/user-profile",
+  "/user-profile/:UserId",
   upload.fields([
     { name: "aadharFront", maxCount: 1 },
     { name: "aadharBack", maxCount: 1 },
@@ -177,5 +180,17 @@ router.post("/addSambalForm", addSambalForm);
 router.post("/verify-Edistrict", addVerifyDistrictForm);
 router.get("/getVerifyEdistrict/:userId", getVerifyEdistrict);
 router.get("/getSambalHistory/:userId", getSambalHistory);
+
+router.post(
+  "/panDocument",
+  upload.fields([{ name: "podfile", maxCount: 1 }]),
+  PanDocumentUpload
+);
+router.get("/getPanDocument/:userId", getPanDocument);
+router.post(
+  "/add-money-wallet",
+  upload.fields([{ name: "Receiept_Attechment", maxCount: 1 }]),
+  walletOffline
+);
 
 module.exports = router;

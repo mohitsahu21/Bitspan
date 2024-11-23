@@ -15,8 +15,44 @@ import axios from "axios";
 const Profile = () => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
-
   const [isLoading, setIsLoading] = useState(false);
+  const [aadharFront, setAadharFront] = useState(null);
+  const [aadharBack, setAadharBack] = useState(null);
+  const [panCardFront, setPanCardFront] = useState(null);
+
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    if (name === "aadharFront") setAadharFront(files[0]);
+    if (name === "aadharBack") setAadharBack(files[0]);
+    if (name === "panCardFront") setPanCardFront(files[0]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("aadharFront", aadharFront);
+    formData.append("aadharBack", aadharBack);
+    formData.append("panCardFront", panCardFront);
+
+    try {
+      const response = await axios.put(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/user-profile/${currentUser?.userId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log(response.data.message || "Upload successful!");
+    } catch (error) {
+      console.log(
+        error.response?.data?.error || "An error occurred. Please try again."
+      );
+    }
+  };
 
   return (
     <>
@@ -43,7 +79,7 @@ const Profile = () => {
                       </div>
                     </div>
                   </div>
-                  <form>
+                  <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <div className="row g-4 shadow bg-body-tertiary rounded px-3 proForm">
                       <div className="text-center">
                         <h4>Profile Information</h4>
@@ -221,6 +257,9 @@ const Profile = () => {
                               class="form-control"
                               type="file"
                               id="formFile"
+                              name="aadharFront"
+                              accept="image/*"
+                              onChange={handleFileChange}
                             />
                           </div>
                         </div>
@@ -231,6 +270,9 @@ const Profile = () => {
                               class="form-control"
                               type="file"
                               id="formFile"
+                              name="aadharBack"
+                              accept="image/*"
+                              onChange={handleFileChange}
                             />
                           </div>
                         </div>
@@ -241,6 +283,9 @@ const Profile = () => {
                               class="form-control"
                               type="file"
                               id="formFile"
+                              name="panCardFront"
+                              accept="image/*"
+                              onChange={handleFileChange}
                             />
                           </div>
                         </div>
