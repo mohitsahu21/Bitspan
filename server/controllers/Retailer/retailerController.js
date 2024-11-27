@@ -1415,6 +1415,27 @@ const walletOffline = (req, res) => {
   }
 };
 
+const getWalletOffline = (req, res) => {
+  const userId = req.params.userId;
+
+  let query = `SELECT * FROM user_wallet_add_money_request WHERE user_id = ?`;
+
+  db.query(query, [userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -1450,4 +1471,5 @@ module.exports = {
   PanDocumentUpload,
   getPanDocument,
   walletOffline,
+  getWalletOffline,
 };

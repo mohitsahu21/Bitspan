@@ -194,10 +194,18 @@ const RetailerRoutes = () => {
             )
           }
         />
+
         <Route
           path="/wallet-offline-request"
-          element={<AddWalletOfflineSummary />}
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <AddWalletOfflineSummary />
+            )
+          }
         />
+
         <Route
           path="/wallet-transaction-report"
           element={

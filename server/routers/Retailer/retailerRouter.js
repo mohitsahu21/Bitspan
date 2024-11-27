@@ -37,6 +37,7 @@ const {
   PanDocumentUpload,
   getPanDocument,
   walletOffline,
+  getWalletOffline,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -192,5 +193,6 @@ router.post(
   upload.fields([{ name: "Receiept_Attechment", maxCount: 1 }]),
   walletOffline
 );
+router.get("/getWalletOffline/:userId", getWalletOffline);
 
 module.exports = router;
