@@ -303,6 +303,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { PiBankFill } from "react-icons/pi";
 import pancard from "../assets/Form_49A (1).pdf";
 import { clearUser } from "../redux/user/userSlice";
+import { RiBaseStationLine } from "react-icons/ri";
 
 const Nav = styled.div`
   background-color: #e4e4e1;
@@ -1504,6 +1505,30 @@ const SuperAdminData = [
   //   path: "/2-step-verification",
   //   icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
   // },
+  {
+    title: "Online Services",
+    path: "#",
+    icon: <RiBaseStationLine color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+     
+      {
+        title: "View Recharge History",
+        path: "/online-recharge-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "View DTH Connection History",
+        path: "/online-dth-connection-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      }
+
+    ],
+  },
   {
     title: "Web Settings",
     path: "/website-setting",
