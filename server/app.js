@@ -18,6 +18,7 @@ const easyPayRouter = require("./routers/SuperAdmin/easyPayUpiPaymentRouter");
 const superAdminRouter = require("./routers/SuperAdmin/superAdminRouter");
 const loginRouter = require("./routers/LoginApi/loginUserRoute");
 const paymentRouter = require("./routers/PaymentGateway/orderRoute");
+const walletRouter = require("./routers/PaymentGateway/walletRoute");
 const moment = require("moment-timezone");
 const { db } = require("./connect");
 const {
@@ -36,6 +37,7 @@ app.use(express.json());
 app.use("/api/auth/retailer", retailerRouter);
 app.use("/api/auth/log-reg", loginRouter);
 app.use("/api/auth/pay", paymentRouter);
+app.use("/api/auth/wallet", walletRouter);
 app.use("/api/auth/instpay", instpayRouter);
 app.use("/api/auth/ezytm", ezytmRouter);
 app.use("/api/auth/sizarpay", sizarPayRouter);

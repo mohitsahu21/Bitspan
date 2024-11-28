@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
-import { setUser } from "../redux/user/userSlice";
+import { setUser, fetchWalletBalance } from "../redux/user/userSlice";
 import axios from "axios";
 
 // const LoginBitspan = () => {
@@ -279,6 +279,9 @@ const LoginBitspan = () => {
           const user = response.data.user;
           const token = response.data.token;
           dispatch(setUser({ user, token }));
+          console.log(user);
+
+          dispatch(fetchWalletBalance(user?.userId));
           Swal.fire({
             position: "center",
             icon: "success",
@@ -286,7 +289,7 @@ const LoginBitspan = () => {
             showConfirmButton: false,
             timer: 1500,
           });
-          navigate("/dashboard");
+          // navigate("/dashboard");
         }
       } else {
         Swal.fire({
@@ -370,6 +373,8 @@ const LoginBitspan = () => {
         const user = response.data.user;
         const token = response.data.token;
         dispatch(setUser({ user, token }));
+        console.log(user);
+        dispatch(fetchWalletBalance(user.userId));
         Swal.fire({
           position: "center",
           icon: "success",
