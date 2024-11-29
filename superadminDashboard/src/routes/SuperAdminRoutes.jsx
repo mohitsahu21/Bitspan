@@ -60,6 +60,8 @@ import SAAddWalletMoneyDirect from "../components/SuperAdmin/SAAddWalletMoneyDir
 import SAWithdrawWalletMoneyDirect from "../components/SuperAdmin/SAWithdrawWalletMoneyDirect.jsx";
 import SAVerifyEdistrictHistory from "../components/SuperAdmin/SAVerifyEdistrictHistory.jsx";
 import SASambalHistory from "../components/SuperAdmin/SASambalHistory.jsx";
+import SAOnlineRecharges from "../components/SuperAdmin/SAOnlineRecharges.jsx";
+import SAOnlineDthConnection from "../components/SuperAdmin/SAOnlineDthConnection.jsx";
 
 const SuperAdminRoutes = () => {
   return (
@@ -207,6 +209,14 @@ const SuperAdminRoutes = () => {
           element={<SAChangeUserNotification />}
         />
         <Route path="/Panform" element={<PanForm />} />
+        <Route
+          path="/online-recharge-history"
+          element={<SAOnlineRecharges />}
+        />
+        <Route
+          path="/online-dth-connection-history"
+          element={<SAOnlineDthConnection />}
+        />
 
         {/* <Route path="/download-certificate-print" element={<Certificate user="WHITE LABEL" name="Aashish Kumar"
         address="Jabalpur, BIHAR - 482001"

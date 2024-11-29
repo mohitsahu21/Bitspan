@@ -4603,6 +4603,94 @@ const getBuyUserIdSummary = (req, res) => {
   }
 };
 
+const getOnlineRecharge = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM user_wallet ORDER BY wid DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM user_wallet c LEFT JOIN userprofile u  ON c.userId = u.UserId ORDER BY wid DESC`;
+    const sql = `
+  SELECT c.*, u.UserName, u.role, u.ContactNo, u.Email 
+  FROM recharges c 
+  LEFT JOIN userprofile u 
+  ON c.created_by_userid = u.UserId ORDER BY id DESC
+`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getOnlineRecharge from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getOnlineRecharge" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getOnlineRecharge found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getOnlineRecharge fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getOnlineRecharge from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getOnlineRecharge",
+      error: error.message,
+    });
+  }
+};
+
+const getOnlineDthConnection = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM user_wallet ORDER BY wid DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM user_wallet c LEFT JOIN userprofile u  ON c.userId = u.UserId ORDER BY wid DESC`;
+    const sql = `
+  SELECT c.*, u.UserName, u.role, u.ContactNo, u.Email 
+  FROM dth_connection c 
+  LEFT JOIN userprofile u 
+  ON c.user_id = u.UserId ORDER BY id DESC
+`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getOnlineRecharge from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getOnlineDthConnection" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getOnlineDthConnection found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getOnlineDthConnection fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getOnlineDthConnection from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getOnlineDthConnection",
+      error: error.message,
+    });
+  }
+};
+
 
 
 
@@ -4693,6 +4781,8 @@ module.exports = {
   AddWalletAddMoneyDirect,
   WithdrawWalletAddMoneyDirect,
   
-  getBuyUserIdSummary
+  getBuyUserIdSummary,
+  getOnlineRecharge,
+  getOnlineDthConnection
 
 };
