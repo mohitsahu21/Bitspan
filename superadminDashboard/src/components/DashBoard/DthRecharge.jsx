@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { BiHomeAlt } from "react-icons/bi";
 import { FaMobileAlt } from "react-icons/fa";
@@ -6,6 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../Loading";
 import { useDispatch, useSelector } from "react-redux";
+import { Modal, Button } from "react-bootstrap";
 
 const DthRecharge = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,9 @@ const DthRecharge = () => {
   const [response, setResponse] = useState(null);
   const [responseForm, setResponseForm] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showPinModal, setShowPinModal] = useState(false);
+  const [pin, setPin] = useState(["", "", "", ""]);
+  const pinRefs = useRef([]);
 
   const operatorOptions = [
     { name: "Dish TV", value: "DTV" },
@@ -172,11 +176,34 @@ const DthRecharge = () => {
     e.preventDefault();
     setLoading(true);
     try {
+      const walletResponse = await axios.put(
+        `http://localhost:7777/api/auth/wallet/updateWalletBalance`,
+        {
+          userId: currentUser.userId,
+          amount: offlineForm.amount,
+          transactionDetails: `DTH Recharge for ${offlineForm.mobile_no}`,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (walletResponse.data.status === "Failure") {
+        Swal.fire({
+          icon: "error",
+          title: "Failure",
+          text: walletResponse.data.message,
+        });
+        setLoading(false);
+        return;
+      }
+
       const result = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/offline-recharge",
+        // "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/offline-recharge",
+        "http://localhost:7777/api/auth/retailer/offline-recharge",
         offlineForm
       );
-      setResponseForm(result.data); // Update the response state with the received data
+      setResponseForm(result.data);
       console.log(result.data);
       if (result.data.status === "Failure") {
         Swal.fire({
@@ -205,8 +232,66 @@ const DthRecharge = () => {
       });
       setResponseForm(null);
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
+  };
+
+  // PIN Integration
+  const handlePinChange = (index, value) => {
+    if (/^\d?$/.test(value)) {
+      const newPin = [...pin];
+      newPin[index] = value;
+      setPin(newPin);
+
+      // Move to next input if current is filled, move to previous if deleted
+      if (value !== "" && index < pin.length - 1) {
+        pinRefs.current[index + 1].focus();
+      } else if (value === "" && index > 0) {
+        pinRefs.current[index - 1].focus();
+      }
+    }
+  };
+
+  const handleBackspace = (index) => {
+    if (pin[index] === "" && index > 0) {
+      pinRefs.current[index - 1].focus();
+    }
+  };
+
+  const verifyPin = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        { user_id: currentUser.userId || "", pin: pin.join("") }
+      );
+
+      if (response.data.success) {
+        return true;
+      } else {
+        alert(response.data.message);
+        return false;
+      }
+    } catch (error) {
+      console.error("Error verifying PIN:", error);
+      alert("Error verifying PIN");
+      return false;
+    }
+  };
+
+  const handleModalSubmit = async (e) => {
+    const isPinValid = await verifyPin();
+    if (isPinValid) {
+      setShowPinModal(false);
+      handlesubmitForm(e);
+      setPin(["", "", "", ""]);
+    } else {
+      setPin(["", "", "", ""]);
+    }
+  };
+
+  const openPinModal = (e) => {
+    e.preventDefault();
+    setShowPinModal(true);
   };
 
   return (
@@ -379,7 +464,7 @@ const DthRecharge = () => {
                                   <div className="text-center">
                                     <h3 className="mb-4">DTH Recharge 2</h3>
                                     <div>
-                                      <form onSubmit={handlesubmitForm}>
+                                      <form onSubmit={openPinModal}>
                                         <div class="input-group mb-3">
                                           <span class="input-group-text">
                                             <FaMobileAlt />
@@ -491,6 +576,56 @@ const DthRecharge = () => {
             </div>
           </div>
         )}
+        <Modal
+          show={showPinModal}
+          onHide={() => setShowPinModal(false)}
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="pin-inputs d-flex justify-content-center">
+              {pin.map((digit, index) => (
+                <input
+                  key={index}
+                  ref={(el) => (pinRefs.current[index] = el)}
+                  type="text"
+                  value={digit ? "●" : ""}
+                  maxLength="1"
+                  onChange={(e) => handlePinChange(index, e.target.value)}
+                  onKeyDown={(e) =>
+                    e.key === "Backspace" && handleBackspace(index)
+                  }
+                  className="pin-digit form-control mx-1"
+                  style={{
+                    width: "50px",
+                    textAlign: "center",
+                    fontSize: "1.5rem",
+                    borderRadius: "8px",
+                    border: "1px solid #ced4da",
+                    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                  }}
+                />
+              ))}
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <div className="w-100 d-flex justify-content-center">
+              <Button
+                variant="secondary"
+                onClick={() => setShowPinModal(false)}
+                className="mx-1"
+              >
+                Cancel
+              </Button>
+
+              <Button variant="primary" onClick={handleModalSubmit}>
+                Verify PIN
+              </Button>
+            </div>
+          </Modal.Footer>
+        </Modal>
       </Wrapper>
     </>
   );

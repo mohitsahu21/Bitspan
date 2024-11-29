@@ -38,6 +38,7 @@ const {
   getPanDocument,
   walletOffline,
   getWalletOffline,
+  getPackageData,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -194,5 +195,6 @@ router.post(
   walletOffline
 );
 router.get("/getWalletOffline/:userId", getWalletOffline);
+router.get("/getPackageData/:packageId", getPackageData);
 
 module.exports = router;
