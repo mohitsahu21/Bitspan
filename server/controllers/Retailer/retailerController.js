@@ -255,7 +255,6 @@ const bankidForm = (req, res) => {
 const offlineRecharge = (req, res) => {
   const { mobile_no, operator_name, amount, recharge_Type, created_by_userid } =
     req.body;
-  // console.log(req.body);
 
   if (!mobile_no || !operator_name || !amount) {
     return res
@@ -265,82 +264,41 @@ const offlineRecharge = (req, res) => {
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
-  // Function to generate new order ID
-  const generateNewOrderId = (maxOrderId) => {
-    let numericPart = parseInt(maxOrderId.replace("OR", "")) + 1;
-    return `OR${String(numericPart).padStart(9, "0")}`; // Ensures it remains OR00001, OR00002, etc.
-  };
+  // Use the current timestamp to generate the order ID
+  const orderId = `${Date.now()}`;
 
-  // Query to get the maximum order ID
-  const getMaxOrderIdQuery = `SELECT MAX(orderid) as maxOrderId FROM offline_recharge`;
+  // Insert data into the database
+  const insertQuery = `INSERT INTO offline_recharge 
+    (mobile_no, operator_name, amount, orderid, recharge_Type, created_by_userid, created_at) 
+    VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
-  db.query(getMaxOrderIdQuery, (err, result) => {
-    if (err) {
-      console.error("Error fetching maximum order ID:", err);
-      return res
-        .status(500)
-        .json({ status: "Failure", error: "Database error" });
-    }
+  db.query(
+    insertQuery,
+    [
+      mobile_no,
+      operator_name,
+      amount,
+      orderId,
+      recharge_Type,
+      created_by_userid,
+      createdAt,
+    ],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting data into MySQL:", err);
+        return res
+          .status(500)
+          .json({ status: "Failure", error: "Database error" });
+      }
 
-    let maxOrderId = result[0].maxOrderId || "OR00000"; // Default if no order ID is present
-    let newOrderId = generateNewOrderId(maxOrderId);
-
-    // Function to check if order ID is unique
-    const checkOrderIdUnique = () => {
-      const checkOrderIdQuery = `SELECT orderid FROM offline_recharge WHERE orderid = ?`;
-
-      db.query(checkOrderIdQuery, [newOrderId], (err, result) => {
-        if (err) {
-          console.error("Error checking order ID:", err);
-          return res
-            .status(500)
-            .json({ status: "Failure", error: "Database error" });
-        }
-
-        if (result.length > 0) {
-          // Order ID exists, generate a new one
-          newOrderId = generateNewOrderId(newOrderId);
-          checkOrderIdUnique(); // Recursively check until unique
-        } else {
-          // Order ID is unique, proceed with inserting the record
-          const insertQuery = `INSERT INTO offline_recharge 
-            (mobile_no, operator_name, amount, orderid, recharge_Type, created_by_userid, created_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)`;
-
-          db.query(
-            insertQuery,
-            [
-              mobile_no,
-              operator_name,
-              amount,
-              newOrderId,
-              recharge_Type,
-              created_by_userid,
-              createdAt,
-            ],
-            (err, result) => {
-              if (err) {
-                console.error("Error inserting data into MySQL:", err);
-                return res
-                  .status(500)
-                  .json({ status: "Failure", error: "Database error" });
-              }
-
-              res.status(200).json({
-                status: "Success",
-                message: "Data inserted successfully",
-                id: result.insertId,
-                orderid: newOrderId,
-              });
-            }
-          );
-        }
+      res.status(200).json({
+        status: "Success",
+        message: "Data inserted successfully",
+        id: result.insertId,
+        orderid: orderId,
       });
-    };
-
-    // Start the check for order ID uniqueness
-    checkOrderIdUnique();
-  });
+    }
+  );
 };
 
 const getRechargeData = (req, res) => {

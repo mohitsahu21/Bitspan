@@ -32,7 +32,7 @@ const DthRecharge = () => {
     operator_name: "",
     amount: "",
     recharge_Type: "DTH",
-    created_by_userid: currentUser.userId,
+    userId: currentUser.userId,
   });
   const [response, setResponse] = useState(null);
   const [responseForm, setResponseForm] = useState(null);
@@ -129,26 +129,47 @@ const DthRecharge = () => {
     setLoading(false);
   };
 
-  // const handleSubmit = async (e) => {
+  // const handlesubmitForm = async (e) => {
   //   e.preventDefault();
   //   setLoading(true);
   //   try {
-  //     const result = await axios.post(
-  //       // "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/recharge-instpy",
-  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/api-recharge",
-  //       formData
+  //     const walletResponse = await axios.put(
+  //       `http://localhost:7777/api/auth/wallet/updateWalletBalance`,
+  //       {
+  //         userId: currentUser.userId,
+  //         amount: offlineForm.amount,
+  //         transactionDetails: `DTH Recharge for ${offlineForm.mobile_no}`,
+  //       },
+  //       {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       }
   //     );
-  //     setResponse(result.data); // Update the response state with the received data
-  //     // console.log(result.data.rechargeData.status);
+
+  //     if (walletResponse.data.status === "Failure") {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Failure",
+  //         text: walletResponse.data.message,
+  //       });
+  //       setLoading(false);
+  //       return;
+  //     }
+
+  //     const result = await axios.post(
+  //       // "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/offline-recharge",
+  //       "http://localhost:7777/api/auth/retailer/offline-recharge",
+  //       offlineForm
+  //     );
+  //     setResponseForm(result.data);
   //     console.log(result.data);
-  //     if (result.data.rechargeData.status === "Failure") {
+  //     if (result.data.status === "Failure") {
   //       Swal.fire({
   //         icon: "error",
   //         title: "Oops...",
   //         text: "Something went wrong!",
   //         // footer: '<a href="#">Why do I have this issue?</a>',
   //       });
-  //     } else if (result.data.rechargeData.status === "Success") {
+  //     } else if (result.data.status === "Success") {
   //       Swal.fire({
   //         title: "Done!",
   //         text: "Recharge Successfull",
@@ -166,9 +187,9 @@ const DthRecharge = () => {
   //       text: "Something went wrong!",
   //       footer: '<a href="#">Why do I have this issue?</a>',
   //     });
-  //     setResponse(null);
+  //     setResponseForm(null);
   //   } finally {
-  //     setLoading(false); // Stop loading
+  //     setLoading(false);
   //   }
   // };
 
@@ -176,47 +197,31 @@ const DthRecharge = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const walletResponse = await axios.put(
-        `http://localhost:7777/api/auth/wallet/updateWalletBalance`,
-        {
-          userId: currentUser.userId,
-          amount: offlineForm.amount,
-          transactionDetails: `DTH Recharge for ${offlineForm.mobile_no}`,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      if (walletResponse.data.status === "Failure") {
-        Swal.fire({
-          icon: "error",
-          title: "Failure",
-          text: walletResponse.data.message,
-        });
-        setLoading(false);
-        return;
-      }
-
+      // Make the API call
       const result = await axios.post(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/offline-recharge",
-        "http://localhost:7777/api/auth/retailer/offline-recharge",
+        "http://localhost:7777/api/auth/wallet/offlineRechargeAndUpdateWallet",
         offlineForm
       );
+
       setResponseForm(result.data);
-      console.log(result.data);
+      console.log("API Response:", result.data);
+
       if (result.data.status === "Failure") {
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: "Something went wrong!",
-          // footer: '<a href="#">Why do I have this issue?</a>',
+          text: result.data.error || result.data.message || "Recharge failed!",
         });
       } else if (result.data.status === "Success") {
         Swal.fire({
           title: "Done!",
-          text: "Recharge Successfull",
+          text: `Recharge Successful! Order ID: ${result.data.details.recharge.orderId}`,
           icon: "success",
+        });
+        setOfflineForm({
+          mobile_no: "",
+          operator_name: "",
+          amount: "",
         });
       }
     } catch (error) {
@@ -227,8 +232,7 @@ const DthRecharge = () => {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Something went wrong!",
-        footer: '<a href="#">Why do I have this issue?</a>',
+        text: "Something went wrong! Please try again later.",
       });
       setResponseForm(null);
     } finally {
@@ -715,3 +719,46 @@ const Wrapper = styled.div`
     }
   }
 `;
+
+// const handleSubmit = async (e) => {
+//   e.preventDefault();
+//   setLoading(true);
+//   try {
+//     const result = await axios.post(
+//       // "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/recharge-instpy",
+//       "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/api-recharge",
+//       formData
+//     );
+//     setResponse(result.data); // Update the response state with the received data
+//     // console.log(result.data.rechargeData.status);
+//     console.log(result.data);
+//     if (result.data.rechargeData.status === "Failure") {
+//       Swal.fire({
+//         icon: "error",
+//         title: "Oops...",
+//         text: "Something went wrong!",
+//         // footer: '<a href="#">Why do I have this issue?</a>',
+//       });
+//     } else if (result.data.rechargeData.status === "Success") {
+//       Swal.fire({
+//         title: "Done!",
+//         text: "Recharge Successfull",
+//         icon: "success",
+//       });
+//     }
+//   } catch (error) {
+//     console.error(
+//       "Error in recharge:",
+//       error.response ? error.response.data : error.message
+//     );
+//     Swal.fire({
+//       icon: "error",
+//       title: "Oops...",
+//       text: "Something went wrong!",
+//       footer: '<a href="#">Why do I have this issue?</a>',
+//     });
+//     setResponse(null);
+//   } finally {
+//     setLoading(false); // Stop loading
+//   }
+// };
