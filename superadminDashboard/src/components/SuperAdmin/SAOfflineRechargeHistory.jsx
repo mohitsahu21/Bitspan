@@ -138,7 +138,10 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
   const [formData, setFormData] = useState({
     order_id: item.orderid,
     note : "",
-    status : "Reject"
+    status : "Reject",
+    user_id : item.created_by_userid,
+    refundAmount : item.amount
+
   });
 
   const handleChange = (e) => {
@@ -202,6 +205,49 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
                   class="form-control"
                   placeholder="Enter Package Name"
                   value={item.orderid}
+                  onChange={handleChange}
+                  disabled
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="mt-3">
+              <label for="name" class="form-label">
+                User Name
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <MdGrid3X3 />
+                </span>
+                <input
+                  type="text"
+                  name="package_name"
+                  class="form-control"
+                  placeholder="Enter UserName"
+                  value={item.UserName}
+                  onChange={handleChange}
+                  disabled
+                  required
+                />
+              </div>
+            </div>
+            <div className="mt-3">
+              <label for="name" class="form-label">
+              Refund Amount
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <MdGrid3X3 />
+                </span>
+                <input
+                  type="text"
+                  name="package_name"
+                  class="form-control"
+                  placeholder="Enter Amount"
+                  value={item.amount}
                   onChange={handleChange}
                   disabled
                   required
@@ -291,7 +337,9 @@ const SAOfflineRechargeHistory = () => {
           (row?.mobile_no && row.mobile_no.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.UserName &&
               row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
             (row?.orderid &&
-              row.orderid.toLowerCase().includes(keyword.trim().toLowerCase()))
+              row.orderid.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+              (row?.created_by_userid &&
+                row.created_by_userid.toLowerCase().includes(keyword.trim().toLowerCase()))
 
               const matchesType = !formStatus || formStatus === "---Select Form Status---" || row.status === formStatus;
               return matchesKeyword && matchesType ;
@@ -433,7 +481,7 @@ const SAOfflineRechargeHistory = () => {
                                                         <input id="fromDate" 
                                                         className="form-control"
                                                          type="search"
-                                                         placeholder="Enter Number/Order Id/User Name"
+                                                         placeholder="Enter Number/Order Id/User Name/User Id"
                                                          value={keyword}
                               onChange={(e) => setKeyword(e.target.value)}
                                                          />

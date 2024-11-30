@@ -62,6 +62,7 @@ import SAVerifyEdistrictHistory from "../components/SuperAdmin/SAVerifyEdistrict
 import SASambalHistory from "../components/SuperAdmin/SASambalHistory.jsx";
 import SAOnlineRecharges from "../components/SuperAdmin/SAOnlineRecharges.jsx";
 import SAOnlineDthConnection from "../components/SuperAdmin/SAOnlineDthConnection.jsx";
+import SAPanCouponRequests from "../components/SuperAdmin/SAPanCouponRequests.jsx";
 
 const SuperAdminRoutes = () => {
   return (
@@ -216,6 +217,10 @@ const SuperAdminRoutes = () => {
         <Route
           path="/online-dth-connection-history"
           element={<SAOnlineDthConnection />}
+        />
+        <Route
+          path="/pan-coupon-requests"
+          element={<SAPanCouponRequests />}
         />
 
         {/* <Route path="/download-certificate-print" element={<Certificate user="WHITE LABEL" name="Aashish Kumar"

@@ -1540,6 +1540,11 @@ const SuperAdminData = [
     icon: <IoIcons.IoIosPaper color="#fe662b" />,
   },
   {
+    title: "PAN Coupon Requests",
+    path: "/pan-coupon-requests",
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  },
+  {
     title: "Create A Parter",
     // path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
