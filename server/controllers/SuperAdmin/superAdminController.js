@@ -5444,6 +5444,197 @@ const rejectPanCouponRequest = (req, res) => {
   }
 };
 
+const getUserRelationData = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM user_wallet ORDER BY wid DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM user_wallet c LEFT JOIN userprofile u  ON c.userId = u.UserId ORDER BY wid DESC`;
+    const sql = `
+    SELECT DISTINCT c.*, u.UserName, u.role, u.ContactNo, u.Email 
+    FROM user_relations c
+    LEFT JOIN userprofile u 
+    ON c.UserId = u.UserId
+    GROUP BY c.UserId
+    ORDER BY c.ur_id DESC
+  `;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getUserRelationData from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getUserRelationData" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getUserRelationData found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getUserRelationData fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getUserRelationData from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getUserRelationData",
+      error: error.message,
+    });
+  }
+};
+
+const changeUserWhiteLabel = (req, res) => {
+  try {
+    const { WhiteLabelId, UserId} = req.body;
+
+     // Validate `order_id`: Check for undefined, null, or invalid value
+     if (!WhiteLabelId || !UserId) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing data",
+      });
+    }
+    const process_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+
+
+
+    // SQL query to update the rejectWalletAddMoneyRequests table
+    const sql1 = `UPDATE user_relations SET white_lable = ? WHERE UserId = ?`;
+    const values1 = [WhiteLabelId,UserId];
+
+    db.query(sql1, values1, (error, results) => {
+      if (error) {
+        console.error("Error updating changeUserWhiteLabel:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to update changeUserWhiteLabel",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "changeUserWhiteLabel not found",
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "changeUserWhiteLabel successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const changeUserSuperDistributor = (req, res) => {
+  try {
+    const { superDistributorID, UserId} = req.body;
+
+     // Validate `order_id`: Check for undefined, null, or invalid value
+     if (!superDistributorID || !UserId) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing data",
+      });
+    }
+    const process_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+
+
+
+    // SQL query to update the rejectWalletAddMoneyRequests table
+    const sql1 = `UPDATE user_relations SET superDistributor = ? WHERE UserId = ?`;
+    const values1 = [superDistributorID,UserId];
+
+    db.query(sql1, values1, (error, results) => {
+      if (error) {
+        console.error("Error updating changeUserSuperDistributor:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to update changeUserSuperDistributor",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "changeUserSuperDistributor not found",
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "changeUserSuperDistributor successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+const changeUserDistributor = (req, res) => {
+  try {
+    const { distributorID, UserId} = req.body;
+
+     // Validate `order_id`: Check for undefined, null, or invalid value
+     if (!distributorID || !UserId) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing data",
+      });
+    }
+    const process_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+
+
+
+    // SQL query to update the rejectWalletAddMoneyRequests table
+    const sql1 = `UPDATE user_relations SET distributor = ? WHERE UserId = ?`;
+    const values1 = [distributorID,UserId];
+
+    db.query(sql1, values1, (error, results) => {
+      if (error) {
+        console.error("Error updating changeUserDistributor:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to update changeUserDistributor",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "changeUserDistributor not found",
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "changeUserDistributor successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
 
 
 
@@ -5539,6 +5730,11 @@ module.exports = {
   getOnlineDthConnection,
   getPanCouponRequests,
   approvePanCouponRequest,
-  rejectPanCouponRequest
+  rejectPanCouponRequest,
+  getUserRelationData,
+  changeUserWhiteLabel,
+  changeUserDistributor,
+  changeUserSuperDistributor
+
 
 };
