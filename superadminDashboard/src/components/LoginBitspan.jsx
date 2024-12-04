@@ -254,7 +254,8 @@ const LoginBitspan = () => {
   const navigate = useNavigate();
   const inputsRef = useRef([]);
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     setLoading(true);
     try {
       const response = await axios.post(
@@ -402,6 +403,12 @@ const LoginBitspan = () => {
     }
   };
 
+  const handlebutton = (e) => {
+    if (e.key === "Enter") {
+      handleLogin();
+    }
+  };
+
   // const handleOtpVerification = async () => {
   //   if (!otp) {
   //     Swal.fire({
@@ -467,7 +474,8 @@ const LoginBitspan = () => {
                     Sign in to continue to Bitspan.
                   </p>
                 </div>
-                <form onSubmit={(e) => e.preventDefault()}>
+                {/* <form onSubmit={(e) => e.preventDefault()}> */}
+                <form onSubmit={handleLogin}>
                   {!isOtpSent ? (
                     <>
                       <div className="form-outline mb-4">
@@ -475,11 +483,13 @@ const LoginBitspan = () => {
                           User Name
                         </label>
                         <input
-                          type="email"
+                          type="text"
                           id="form2Example1"
                           className="form-control"
                           value={userName}
                           onChange={(e) => setUserName(e.target.value)}
+                          onKeyDown={handlebutton}
+                          required
                         />
                       </div>
 
@@ -493,6 +503,8 @@ const LoginBitspan = () => {
                           className="form-control"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
+                          onKeyDown={handlebutton}
+                          required
                         />
                       </div>
 
@@ -504,9 +516,10 @@ const LoginBitspan = () => {
 
                       <div className="d-grid gap-2">
                         <button
-                          type="button"
+                          // type="button"
+                          type="submit"
                           className="btn btn-primary btn-block mb-4"
-                          onClick={handleLogin}
+                          // onClick={handleLogin}
                           disabled={loading}
                         >
                           {loading ? "Signing in..." : "Sign in"}

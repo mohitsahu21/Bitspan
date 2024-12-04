@@ -27,6 +27,7 @@ const NewBankID = () => {
     { id: 9, name: "Religare Digipay" },
     { id: 10, name: "Roinet" },
     { id: 11, name: "Spice Money" },
+    { id: 12, name: "Ayushman ID" },
   ];
 
   const [formData, setFormData] = useState({

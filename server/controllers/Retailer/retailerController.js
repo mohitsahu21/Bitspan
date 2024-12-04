@@ -5,13 +5,93 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
+// const applyOfflineForm = (req, res) => {
+//   const {
+//     applicant_name,
+//     applicant_father,
+//     applicant_number,
+//     applicant_select_service,
+//     other,
+//   } = req.body;
+
+//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+//   const domain = "http://localhost:7777";
+//   const attached_form = req.files.attached_form
+//     ? `${domain}/uploads/${req.files.attached_form[0].filename}`
+//     : null;
+//   const attached_photo = req.files.attached_photo
+//     ? `${domain}/uploads/${req.files.attached_photo[0].filename}`
+//     : null;
+//   const attached_sign = req.files.attached_sign
+//     ? `${domain}/uploads/${req.files.attached_sign[0].filename}`
+//     : null;
+//   // const attached_kyc = req.files.attached_kyc
+//   //   ? `${domain}/uploads/${req.files.attached_kyc[0].filename}`
+//   //   : null;
+//   const attached_kyc = req.files.attached_kyc
+//     ? req.files.attached_kyc
+//         .map((file) => `${domain}/uploads/${file.filename}`)
+//         .join(",")
+//     : null;
+
+//   const orderId = `OFF${Date.now()}IS`;
+
+//   const query = `
+//         INSERT INTO apply_offline_form (
+//         order_id,
+//             applicant_name,
+//             applicant_father,
+//             applicant_number,
+//             applicant_select_service,
+//             other,
+//             attached_form,
+//             attached_photo,
+//             attached_sign,
+//             attached_kyc,
+//             created_at
+//         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+//     `;
+
+//   db.query(
+//     query,
+//     [
+//       orderId,
+//       applicant_name,
+//       applicant_father,
+//       applicant_number,
+//       applicant_select_service,
+//       other,
+//       attached_form,
+//       attached_photo,
+//       attached_sign,
+//       attached_kyc,
+//       createdAt,
+//     ],
+//     (err, result) => {
+//       if (err) {
+//         console.error("Error inserting data into MySQL:", err);
+//         res.status(500).json({ error: "Database error" });
+//         return;
+//       }
+
+//       res
+//         .status(200)
+//         .json({ message: "Form submitted successfully", id: result.insertId });
+//     }
+//   );
+// };
 const applyOfflineForm = (req, res) => {
   const {
     applicant_name,
     applicant_father,
     applicant_number,
+    email,
     applicant_select_service,
     other,
+    eStampAmount,
+    amount,
+    userId,
   } = req.body;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
@@ -35,7 +115,7 @@ const applyOfflineForm = (req, res) => {
         .join(",")
     : null;
 
-  const orderId = `OFF${Date.now()}IS`;
+  const orderId = `ORF${Date.now()}`;
 
   const query = `
         INSERT INTO apply_offline_form (
@@ -43,14 +123,18 @@ const applyOfflineForm = (req, res) => {
             applicant_name,
             applicant_father,
             applicant_number,
+                email,
             applicant_select_service,
             other,
+                eStampAmount,
+    amount,
             attached_form,
             attached_photo,
             attached_sign,
             attached_kyc,
+            	user_id,
             created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
   db.query(
@@ -60,12 +144,16 @@ const applyOfflineForm = (req, res) => {
       applicant_name,
       applicant_father,
       applicant_number,
+      email,
       applicant_select_service,
       other,
+      eStampAmount,
+      amount,
       attached_form,
       attached_photo,
       attached_sign,
       attached_kyc,
+      userId,
       createdAt,
     ],
     (err, result) => {
@@ -75,9 +163,120 @@ const applyOfflineForm = (req, res) => {
         return;
       }
 
-      res
-        .status(200)
-        .json({ message: "Form submitted successfully", id: result.insertId });
+      const queryBalance = `
+      SELECT Closing_Balance 
+      FROM user_wallet 
+      WHERE userId = ? 
+      ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+      LIMIT 1
+    `;
+
+      db.query(queryBalance, [userId], (err, balanceResult) => {
+        if (err) {
+          console.error("Error fetching wallet balance:", err);
+          return res.status(500).json({
+            status: "Failure",
+            step: "Fetch Wallet Balance",
+            error: "Failed to fetch wallet balance",
+            details: err.message,
+          });
+        }
+
+        if (balanceResult.length === 0) {
+          return res.status(404).json({
+            status: "Failure",
+            step: "Fetch Wallet Balance",
+            message: "No balance found for the user.",
+          });
+        }
+
+        const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+        if (isNaN(currentBalance)) {
+          return res.status(500).json({
+            status: "Failure",
+            step: "Fetch Wallet Balance",
+            error: "Current balance is invalid.",
+          });
+        }
+
+        if (currentBalance < amount) {
+          return res.status(400).json({
+            status: "Failure",
+            step: "Wallet Deduction",
+            message: "Insufficient balance.",
+            currentBalance,
+            requiredAmount: amount,
+          });
+        }
+
+        const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+        if (isNaN(newBalance)) {
+          return res.status(500).json({
+            status: "Failure",
+            step: "Wallet Deduction",
+            error: "New balance calculation is invalid.",
+          });
+        }
+
+        const transactionId = `TXNW${Date.now()}`;
+        const transactionDetails = `Services Deduction ${applicant_number}`;
+
+        const updateWalletQuery = `
+        INSERT INTO user_wallet 
+        (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
+
+        db.query(
+          updateWalletQuery,
+          [
+            userId,
+            createdAt,
+            orderId,
+            transactionId,
+            currentBalance.toFixed(2),
+            newBalance,
+            "Debit",
+            amount,
+            transactionDetails,
+            "Completed",
+          ],
+          (err, walletResult) => {
+            if (err) {
+              console.error("Error updating wallet balance:", err);
+              return res.status(500).json({
+                status: "Failure",
+                step: "Update Wallet Balance",
+                error: "Failed to update wallet balance",
+                details: err.message,
+              });
+            }
+
+            return res.status(200).json({
+              status: "Success",
+              message:
+                "DTH Connection processed and wallet updated successfully.",
+              details: {
+                offlineServices: {
+                  orderId,
+                  applicant_name,
+                  applicant_father,
+                  applicant_number,
+                  email,
+                  applicant_select_service,
+                  amount,
+                },
+                wallet: {
+                  transactionId,
+                  newBalance,
+                  previousBalance: currentBalance.toFixed(2),
+                  deductedAmount: amount,
+                },
+              },
+            });
+          }
+        );
+      });
     }
   );
 };
@@ -344,7 +543,7 @@ const offlineDthConnection = (req, res) => {
     postal_code,
     number,
     amount,
-    message, // Removed orderid from req.body since it's generated
+    message,
     user_id,
   } = req.body;
 
@@ -367,7 +566,7 @@ const offlineDthConnection = (req, res) => {
   // Function to generate new order ID
   const generateNewOrderId = (maxOrderId) => {
     let numericPart = parseInt(maxOrderId.replace("DOR", "")) + 1;
-    return `DOR${String(numericPart).padStart(5, "0")}`; // Generates DOR00001, etc.
+    return `DOR${String(numericPart).padStart(5, "0")}`;
   };
 
   // Query to get the maximum order ID
@@ -1415,6 +1614,19 @@ const getPackageData = (req, res) => {
   });
 };
 
+const getDthConnectionPlan = (req, res) => {
+  const getquery = `SELECT * FROM dth_connection_plain`;
+
+  db.query(getquery, (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    } else {
+      return res.status(200).json({ status: "Success", data: result });
+    }
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -1452,4 +1664,5 @@ module.exports = {
   walletOffline,
   getWalletOffline,
   getPackageData,
+  getDthConnectionPlan,
 };

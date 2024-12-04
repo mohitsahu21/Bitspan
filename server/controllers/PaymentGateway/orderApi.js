@@ -3,83 +3,139 @@ const FormData = require("form-data");
 const { db } = require("../../connect");
 const moment = require("moment-timezone");
 const createOrderInstance = require("./orderController");
+// PAYMENT - 1
+// const createOrder = async (req, res) => {
+//   const { customer_mobile, amount, redirect_url, remark1, remark2 } = req.body;
+
+//   //   console.log(req.body);
+//   const order_id = `OR${Date.now()}`;
+//   const user_token = process.env.PAYMENT_TOKEN;
+//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+//   try {
+//     const sql = `
+//         INSERT INTO orders (customer_mobile, amount, order_id, remark1, remark2, status, created_at)
+//         VALUES (?, ?, ?, ?, ?, ?, ?)`;
+
+//     const values = [
+//       customer_mobile,
+//       amount,
+//       order_id,
+//       remark1,
+//       remark2,
+//       "PENDING",
+//       createdAt,
+//     ];
+
+//     db.query(sql, values, async (err, result) => {
+//       if (err) {
+//         console.error("Error saving order to database:", err.message);
+//         return res.status(500).json({
+//           status: false,
+//           message: "Error saving order to database",
+//           Error: err,
+//         });
+//       }
+
+//       console.log(`Order saved with ID: ${result.insertId}`);
+
+//       try {
+//         const order = await createOrderInstance.createOrder(
+//           customer_mobile,
+//           user_token,
+//           amount,
+//           order_id,
+//           redirect_url,
+//           remark1,
+//           remark2
+//         );
+
+//         return res.status(200).json({
+//           status: true,
+//           message: "Order created successfully!",
+//           data: order,
+//           dbId: result.insertId,
+//         });
+//       } catch (apiError) {
+//         console.error("Error in external API call:", apiError.message);
+
+//         db.query(
+//           "DELETE FROM orders WHERE id = ?",
+//           [result.insertId],
+//           (deleteErr) => {
+//             if (deleteErr) {
+//               console.error(
+//                 "Error deleting order from database:",
+//                 deleteErr.message
+//               );
+//             }
+//           }
+//         );
+
+//         return res.status(500).json({
+//           status: false,
+//           message: "Error in external API call",
+//         });
+//       }
+//     });
+//   } catch (error) {
+//     res.status(500).json({ status: false, message: error.message });
+//   }
+// };
 
 const createOrder = async (req, res) => {
   const { customer_mobile, amount, redirect_url, remark1, remark2 } = req.body;
-
-  //   console.log(req.body);
-  const order_id = `OR${Date.now()}`;
-  const user_token = process.env.PAYMENT_TOKEN;
+  const order_id = `OR${Date.now()}`; // Dynamic order ID based on timestamp
+  const user_token = process.env.PAYMENT_TOKEN; // Security token from environment
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
+  const sql = `
+    INSERT INTO orders (customer_mobile, amount, order_id, remark1, remark2, status, created_at)
+    VALUES (?, ?, ?, ?, ?, 'PENDING', ?)`;
+
+  const values = [
+    customer_mobile,
+    amount,
+    order_id,
+    remark1,
+    remark2,
+    createdAt,
+  ];
+
   try {
-    const sql = `
-        INSERT INTO orders (customer_mobile, amount, order_id, remark1, remark2, status, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?)`;
-
-    const values = [
-      customer_mobile,
-      amount,
-      order_id,
-      remark1,
-      remark2,
-      "PENDING",
-      createdAt,
-    ];
-
-    db.query(sql, values, async (err, result) => {
-      if (err) {
-        console.error("Error saving order to database:", err.message);
-        return res.status(500).json({
-          status: false,
-          message: "Error saving order to database",
-          Error: err,
-        });
-      }
-
-      console.log(`Order saved with ID: ${result.insertId}`);
-
-      try {
-        const order = await createOrderInstance.createOrder(
-          customer_mobile,
-          user_token,
-          amount,
-          order_id,
-          redirect_url,
-          remark1,
-          remark2
-        );
-
-        return res.status(200).json({
-          status: true,
-          message: "Order created successfully!",
-          data: order,
-          dbId: result.insertId,
-        });
-      } catch (apiError) {
-        console.error("Error in external API call:", apiError.message);
-
-        db.query(
-          "DELETE FROM orders WHERE id = ?",
-          [result.insertId],
-          (deleteErr) => {
-            if (deleteErr) {
-              console.error(
-                "Error deleting order from database:",
-                deleteErr.message
-              );
-            }
-          }
-        );
-
-        return res.status(500).json({
-          status: false,
-          message: "Error in external API call",
-        });
-      }
+    const result = await db.query(sql, values);
+    try {
+      const order = await createOrderInstance.createOrder(
+        customer_mobile,
+        user_token,
+        amount,
+        order_id,
+        redirect_url,
+        remark1,
+        remark2
+      );
+      res.status(200).json({
+        status: true,
+        message: "Order created successfully!",
+        data: order,
+        dbId: result.insertId,
+      });
+    } catch (apiError) {
+      console.error("Error in external API call:", apiError.message);
+      await db.query("DELETE FROM orders WHERE id = ?", [result.insertId]);
+      res.status(500).json({
+        status: false,
+        message: "Error in external API call",
+        error: apiError.message,
+      });
+    }
+  } catch (dbError) {
+    console.error("Error saving order to database:", dbError.message);
+    res.status(500).json({
+      status: false,
+      message: "Error saving order to database",
+      error: dbError.message,
     });
-  } catch (error) {
-    res.status(500).json({ status: false, message: error.message });
   }
 };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { FaMobileAlt } from "react-icons/fa";
 import { BiHomeAlt } from "react-icons/bi";
@@ -10,8 +10,12 @@ import { LuSquareCode } from "react-icons/lu";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../Loading";
+import { useDispatch, useSelector } from "react-redux";
+import { Modal, Button } from "react-bootstrap";
 
 const DthConnection = () => {
+  const dispatch = useDispatch();
+  const { currentUser, token } = useSelector((state) => state.user);
   const [activeTab, setActiveTab] = useState("tab1");
 
   const handleTabClick = (tab) => {
@@ -32,6 +36,9 @@ const DthConnection = () => {
 
   const [plans, setPlan] = useState([]);
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const [showPinModal, setShowPinModal] = useState(false);
+  const [pin, setPin] = useState(["", "", "", ""]);
+  const pinRefs = useRef([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -94,37 +101,184 @@ const DthConnection = () => {
     postal_code: "",
     number: "",
     amount: "",
+    validity: "",
     message: "",
-    user_id: "",
+    userId: currentUser.userId,
   });
+
+  const [offlineDTHPlan, setOfflineDTHPlan] = useState();
+  const [selectedOfflinePlan, setSelectedOfflinePlan] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await axios.get(
+          `http://localhost:7777/api/auth/retailer/getDthConnectionPlan`
+        );
+        if (data.data) {
+          console.log("Fetched plans:", data.data);
+          setOfflineDTHPlan(data.data);
+        } else {
+          console.error("No plans available in response.");
+        }
+      } catch (error) {
+        console.error("Error fetching plans:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  console.log(offlineForm);
+
+  const handleOfflinePlanChange = (plan) => {
+    if (!plan) {
+      console.error("Selected plan not found.");
+      return;
+    }
+    setSelectedOfflinePlan(plan);
+    setOfflineForm({
+      ...offlineForm,
+      operatorName: plan.operator,
+      amount: plan.amount,
+      validity: plan.validity,
+    });
+  };
 
   const handleOfflineChange = (e) => {
     const { name, value } = e.target;
     setOfflineForm({ ...offlineForm, [name]: value });
   };
 
+  // const handleOfflineSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   const requestData = {
+  //     ...offlineForm,
+  //   };
+
+  //   try {
+  //     const response = await axios.post(
+  //       `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/offline-dth-connection`,
+  //       requestData
+  //     );
+
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.log(`Error in Apply Connection ${error}`);
+  //   }
+  // };
+
   const handleOfflineSubmit = async (e) => {
     e.preventDefault();
-
-    const operatorName = "Tata Play";
-    const opcode = "TPC";
-
-    const requestData = {
-      ...offlineForm,
-      operatorName,
-      opcode,
-    };
-
+    setLoading(true);
     try {
-      const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/offline-dth-connection`,
-        requestData
+      // Make the API call
+      const result = await axios.post(
+        "http://localhost:7777/api/auth/wallet/dthConnectionAndUpdateWallet",
+        offlineForm
       );
 
-      console.log(response.data);
+      // setResponseForm(result.data);
+      console.log("API Response:", result.data);
+
+      if (result.data.status === "Failure") {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: result.data.error || result.data.message || "Recharge failed!",
+        });
+      } else if (result.data.status === "Success") {
+        Swal.fire({
+          title: "Done!",
+          text: `Recharge Successful! Order ID: ${result.data.details.dthConnection.orderId}`,
+          icon: "success",
+        });
+        setOfflineForm({
+          operatorName: "",
+          first_name: "",
+          last_name: "",
+          full_address: "",
+          postal_code: "",
+          number: "",
+          amount: "",
+          validity: "",
+          message: "",
+          userId: currentUser.userId,
+        });
+      }
     } catch (error) {
-      console.log(`Error in Apply Connection ${error}`);
+      console.error(
+        "Error in recharge:",
+        error.response ? error.response.data : error.message
+      );
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong! Please try again later.",
+      });
+    } finally {
+      setLoading(false);
     }
+  };
+
+  console.log("Submitting form data:", offlineForm);
+
+  // PIN Integration
+  const handlePinChange = (index, value) => {
+    if (/^\d?$/.test(value)) {
+      const newPin = [...pin];
+      newPin[index] = value;
+      setPin(newPin);
+
+      // Move to next input if current is filled, move to previous if deleted
+      if (value !== "" && index < pin.length - 1) {
+        pinRefs.current[index + 1].focus();
+      } else if (value === "" && index > 0) {
+        pinRefs.current[index - 1].focus();
+      }
+    }
+  };
+
+  const handleBackspace = (index) => {
+    if (pin[index] === "" && index > 0) {
+      pinRefs.current[index - 1].focus();
+    }
+  };
+
+  const verifyPin = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        { user_id: currentUser.userId || "", pin: pin.join("") }
+      );
+
+      if (response.data.success) {
+        return true;
+      } else {
+        alert(response.data.message);
+        return false;
+      }
+    } catch (error) {
+      console.error("Error verifying PIN:", error);
+      alert("Error verifying PIN");
+      return false;
+    }
+  };
+
+  const handleModalSubmit = async (e) => {
+    const isPinValid = await verifyPin();
+    if (isPinValid) {
+      setShowPinModal(false);
+      handleOfflineSubmit(e);
+      setPin(["", "", "", ""]);
+    } else {
+      setPin(["", "", "", ""]);
+    }
+  };
+
+  const openPinModal = (e) => {
+    e.preventDefault();
+    setShowPinModal(true);
   };
 
   return (
@@ -426,7 +580,44 @@ const DthConnection = () => {
                                   <div className="text-center">
                                     <h3 className="mb-4">DTH Connection 2</h3>
                                     <div>
-                                      <form onSubmit={handleOfflineSubmit}>
+                                      <form onSubmit={openPinModal}>
+                                        <div class="input-group mb-3">
+                                          <div class="form-floating">
+                                            <select
+                                              class="form-select"
+                                              id="plans"
+                                              value={
+                                                selectedOfflinePlan?.id || ""
+                                              }
+                                              onChange={(e) => {
+                                                const selectedPlan =
+                                                  offlineDTHPlan?.find(
+                                                    (plan) =>
+                                                      plan.id ===
+                                                      parseInt(e.target.value)
+                                                  );
+                                                handleOfflinePlanChange(
+                                                  selectedPlan
+                                                );
+                                              }}
+                                            >
+                                              <option value="">
+                                                Select Operator
+                                              </option>
+                                              {offlineDTHPlan?.map((plan) => (
+                                                <option
+                                                  key={plan.id}
+                                                  value={plan.id}
+                                                >
+                                                  {plan.operator}
+                                                </option>
+                                              ))}
+                                            </select>
+                                            <label for="floatingSelectOperator">
+                                              Select Operator
+                                            </label>
+                                          </div>
+                                        </div>
                                         <div class="input-group mb-3">
                                           <span class="input-group-text">
                                             <BiGroup />
@@ -534,6 +725,26 @@ const DthConnection = () => {
                                         </div>
                                         <div class="input-group mb-3">
                                           <span class="input-group-text">
+                                            <FaMobileAlt />
+                                          </span>
+                                          <div class="form-floating">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              id="floatingInputGroup1"
+                                              name="number"
+                                              placeholder=""
+                                              value={offlineForm.validity}
+                                              onChange={handleOfflineChange}
+                                              required
+                                            />
+                                            <label for="floatingInputGroup1">
+                                              Validity
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text">
                                             <FaMoneyBillAlt />
                                           </span>
                                           <div class="form-floating">
@@ -601,6 +812,56 @@ const DthConnection = () => {
             </div>
           </div>
         )}
+        <Modal
+          show={showPinModal}
+          onHide={() => setShowPinModal(false)}
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="pin-inputs d-flex justify-content-center">
+              {pin.map((digit, index) => (
+                <input
+                  key={index}
+                  ref={(el) => (pinRefs.current[index] = el)}
+                  type="text"
+                  value={digit ? "●" : ""}
+                  maxLength="1"
+                  onChange={(e) => handlePinChange(index, e.target.value)}
+                  onKeyDown={(e) =>
+                    e.key === "Backspace" && handleBackspace(index)
+                  }
+                  className="pin-digit form-control mx-1"
+                  style={{
+                    width: "50px",
+                    textAlign: "center",
+                    fontSize: "1.5rem",
+                    borderRadius: "8px",
+                    border: "1px solid #ced4da",
+                    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                  }}
+                />
+              ))}
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <div className="w-100 d-flex justify-content-center">
+              <Button
+                variant="secondary"
+                onClick={() => setShowPinModal(false)}
+                className="mx-1"
+              >
+                Cancel
+              </Button>
+
+              <Button variant="primary" onClick={handleModalSubmit}>
+                Verify PIN
+              </Button>
+            </div>
+          </Modal.Footer>
+        </Modal>
       </Wrapper>
     </>
   );
