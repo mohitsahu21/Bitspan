@@ -10,6 +10,7 @@ const addPackage = (req, res) => {
       package_for,
       offline_E_PAN_Card_Price,
       offline_P_PAN_Card_Price,
+      Pan_Find_Price,
       Google_Play_Price,
       Birth_Certificate_Price,
       Death_Certificate_Price,
@@ -26,6 +27,7 @@ const addPackage = (req, res) => {
       non_samagra_income_Certificate_Price,
       non_samagra_Domicile_Certificate_Price,
       verify_edistrict_Certificate_Price,
+      Ayushman_Id_Price,
       IRCTC_Agent_ID_Price,
       PayNearBy_BankId_Price,
       Fino_BankId_Price,
@@ -40,6 +42,7 @@ const addPackage = (req, res) => {
       Offline_Services_Commission_Type,
       offline_E_PAN_Card_Commission,
       offline_P_PAN_Card_Commission,
+      Pan_Find_Commission,
       Google_Play_Commission,
       IRCTC_Agent_ID_Commission,
       Birth_Certificate_Commission,
@@ -101,6 +104,10 @@ const addPackage = (req, res) => {
       Off_Videocon_New_DTH_Connection_Commission,
       Off_Sun_Direct_New_DTH_Connection_Commission,
       Off_Airtel_New_DTH_Connection_Commission,
+      Online_Broadband_Bill_Pay_Commission_Type,
+      Online_Broadband_Bill_Pay_Commission,
+      Offline_Broadband_Bill_Pay_Commission_Type,
+      Offline_Broadband_Bill_Pay_Commission,
       Online_Electricity_Bill_Pay_Commission_Type,
       Online_Electricity_Bill_Pay_Commission,
       Offline_Electricity_Bill_Pay_Commission_Type,
@@ -122,9 +129,9 @@ const addPackage = (req, res) => {
     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
     const sql = `INSERT INTO packagestable (
-        package_name, package_for, offline_E_PAN_Card_Price , offline_P_PAN_Card_Price, Google_Play_Price, Birth_Certificate_Price, Death_Certificate_Price,
+        package_name, package_for, offline_E_PAN_Card_Price , offline_P_PAN_Card_Price,Pan_Find_Price, Google_Play_Price, Birth_Certificate_Price, Death_Certificate_Price,
         E_Stamp_Price, ITR_Registration_Price, GST_Registration_Price, Sambal_Price, Udyog_Aadhar_Price, offline_kyc_eDistrict,
-        eKYC_Income_Certificate_Price, eKYC_Domicile_Certificate_Price,offlineKYC_Income_Certificate_Price,offlineKYC_Domicile_Certificate_Price,non_samagra_income_Certificate_Price, non_samagra_Domicile_Certificate_Price, verify_edistrict_Certificate_Price, IRCTC_Agent_ID_Price,
+        eKYC_Income_Certificate_Price, eKYC_Domicile_Certificate_Price,offlineKYC_Income_Certificate_Price,offlineKYC_Domicile_Certificate_Price,non_samagra_income_Certificate_Price, non_samagra_Domicile_Certificate_Price, verify_edistrict_Certificate_Price,Ayushman_Id_Price, IRCTC_Agent_ID_Price,
       PayNearBy_BankId_Price,
       Fino_BankId_Price,
       SpiceMoney_BankId_Price,
@@ -134,7 +141,7 @@ const addPackage = (req, res) => {
       Airtel_BankId_Price,
       payworld_BankId_Price,
       Anypay_BankId_Price,
-      Roinet_BankId_Price, Offline_Services_Commission_Type, offline_E_PAN_Card_Commission , offline_P_PAN_Card_Commission ,Google_Play_Commission,
+      Roinet_BankId_Price, Offline_Services_Commission_Type, offline_E_PAN_Card_Commission , offline_P_PAN_Card_Commission ,Pan_Find_Commission,Google_Play_Commission,
         IRCTC_Agent_ID_Commission, Birth_Certificate_Commission, Death_Certificate_Commission, E_Stamp_Commission,
         ITR_Registration_Commission, GST_Registration_Commission, Sambal_Commission,Udyog_Aadhar_Commission, eKYC_Income_Certificate_Commission,
         eKYC_Domicile_Certificate_Commission, offlineKYC_Income_Certificate_Commission,offlineKYC_Domicile_Certificate_Commission, non_samagra_income_Certificate_Commission, non_samagra_Domicile_Certificate_Commission,verify_edistrict_Certificate_Commission, Bank_ID_Commission, Off_Prepaid_Recharge_Comm_Type, Off_Airtel_Prepaid_Recharge_Comm,
@@ -155,18 +162,22 @@ const addPackage = (req, res) => {
     Off_Tata_Sky_New_DTH_Connection_Commission,
     Off_Videocon_New_DTH_Connection_Commission,
     Off_Sun_Direct_New_DTH_Connection_Commission,
-    Off_Airtel_New_DTH_Connection_Commission,
+    Off_Airtel_New_DTH_Connection_Commission,Online_Broadband_Bill_Pay_Commission_Type,
+      Online_Broadband_Bill_Pay_Commission,
+      Offline_Broadband_Bill_Pay_Commission_Type,
+      Offline_Broadband_Bill_Pay_Commission,
         Online_Electricity_Bill_Pay_Commission_Type, Online_Electricity_Bill_Pay_Commission,
         Offline_Electricity_Bill_Pay_Commission_Type, Offline_Electricity_Bill_Pay_Commission,
         Online_Insurance_Pay_Commission_Type, Online_Insurance_Pay_Commission, Offline_Insurance_Pay_Commission_Type,
         Offline_Insurance_Pay_Commission,E_PAN_Card_Price,P_PAN_Card_Price,UTI_PAN_Coupon_Price, PAN_Card_Commission_Type, E_PAN_Card_Commission, UTI_PAN_Coupon_Commission, P_PAN_Card_Commission , created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?, ?, ? ,?, ? , ? , ? , ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?)`;
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?, ?, ? ,?, ? , ? , ? , ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ? , ?, ?, ?, ?, ?, ?, ?)`;
 
     const values = [
       package_name,
       package_for,
       offline_E_PAN_Card_Price,
       offline_P_PAN_Card_Price,
+      Pan_Find_Price,
       Google_Play_Price,
       Birth_Certificate_Price,
       Death_Certificate_Price,
@@ -183,6 +194,7 @@ const addPackage = (req, res) => {
       non_samagra_income_Certificate_Price,
       non_samagra_Domicile_Certificate_Price,
       verify_edistrict_Certificate_Price,
+      Ayushman_Id_Price,
       IRCTC_Agent_ID_Price,
       PayNearBy_BankId_Price,
       Fino_BankId_Price,
@@ -197,6 +209,7 @@ const addPackage = (req, res) => {
       Offline_Services_Commission_Type,
       offline_E_PAN_Card_Commission,
       offline_P_PAN_Card_Commission,
+      Pan_Find_Commission,
       Google_Play_Commission,
       IRCTC_Agent_ID_Commission,
       Birth_Certificate_Commission,
@@ -258,6 +271,10 @@ const addPackage = (req, res) => {
       Off_Videocon_New_DTH_Connection_Commission,
       Off_Sun_Direct_New_DTH_Connection_Commission,
       Off_Airtel_New_DTH_Connection_Commission,
+      Online_Broadband_Bill_Pay_Commission_Type,
+      Online_Broadband_Bill_Pay_Commission,
+      Offline_Broadband_Bill_Pay_Commission_Type,
+      Offline_Broadband_Bill_Pay_Commission,
       Online_Electricity_Bill_Pay_Commission_Type,
       Online_Electricity_Bill_Pay_Commission,
       Offline_Electricity_Bill_Pay_Commission_Type,
@@ -533,6 +550,7 @@ const editPackage = (req, res) => {
       package_for,
       offline_E_PAN_Card_Price,
       offline_P_PAN_Card_Price,
+      Pan_Find_Price,
       Google_Play_Price,
       Birth_Certificate_Price,
       Death_Certificate_Price,
@@ -549,6 +567,7 @@ const editPackage = (req, res) => {
       non_samagra_income_Certificate_Price,
       non_samagra_Domicile_Certificate_Price,
       verify_edistrict_Certificate_Price,
+      Ayushman_Id_Price,
       IRCTC_Agent_ID_Price,
       PayNearBy_BankId_Price,
       Fino_BankId_Price,
@@ -563,6 +582,7 @@ const editPackage = (req, res) => {
       Offline_Services_Commission_Type,
       offline_E_PAN_Card_Commission,
       offline_P_PAN_Card_Commission,
+      Pan_Find_Commission,
       Google_Play_Commission,
       IRCTC_Agent_ID_Commission,
       Birth_Certificate_Commission,
@@ -624,6 +644,10 @@ const editPackage = (req, res) => {
       Off_Videocon_New_DTH_Connection_Commission,
       Off_Sun_Direct_New_DTH_Connection_Commission,
       Off_Airtel_New_DTH_Connection_Commission,
+      Online_Broadband_Bill_Pay_Commission_Type,
+      Online_Broadband_Bill_Pay_Commission,
+      Offline_Broadband_Bill_Pay_Commission_Type,
+      Offline_Broadband_Bill_Pay_Commission,
       Online_Electricity_Bill_Pay_Commission_Type,
       Online_Electricity_Bill_Pay_Commission,
       Offline_Electricity_Bill_Pay_Commission_Type,
@@ -647,12 +671,14 @@ const editPackage = (req, res) => {
     const sql = `UPDATE packagestable SET
         package_name = ?, package_for = ?, 
         offline_E_PAN_Card_Price = ?, offline_P_PAN_Card_Price = ?,
+        Pan_Find_Price = ?,
         Google_Play_Price = ?, 
         Birth_Certificate_Price = ?, Death_Certificate_Price = ?, E_Stamp_Price = ?, ITR_Registration_Price = ?, 
         GST_Registration_Price = ?, Sambal_Price = ?,
         Udyog_Aadhar_Price = ?, offline_kyc_eDistrict = ?,
         eKYC_Income_Certificate_Price = ?, eKYC_Domicile_Certificate_Price = ?,offlineKYC_Income_Certificate_Price = ?,offlineKYC_Domicile_Certificate_Price = ?, non_samagra_income_Certificate_Price = ? ,
         non_samagra_Domicile_Certificate_Price = ? , verify_edistrict_Certificate_Price = ?, 
+        Ayushman_Id_Price = ? ,
         IRCTC_Agent_ID_Price = ?,
          PayNearBy_BankId_Price = ?,
       Fino_BankId_Price = ?, 
@@ -666,6 +692,7 @@ const editPackage = (req, res) => {
       Roinet_BankId_Price = ?,  
          Offline_Services_Commission_Type = ?, 
         offline_E_PAN_Card_Commission = ?, offline_P_PAN_Card_Commission = ?,
+        Pan_Find_Commission = ? ,
         Google_Play_Commission = ?, 
         IRCTC_Agent_ID_Commission = ?, Birth_Certificate_Commission = ?, Death_Certificate_Commission = ?, 
         E_Stamp_Commission = ?, ITR_Registration_Commission = ?, GST_Registration_Commission = ?, Sambal_Commission = ?,
@@ -691,6 +718,7 @@ const editPackage = (req, res) => {
         Offline_New_DTH_Connection_Commission_Type = ?, Off_Dish_TV_New_DTH_Connection_Commission = ?, 
         Off_Tata_Sky_New_DTH_Connection_Commission = ?, Off_Videocon_New_DTH_Connection_Commission = ?, 
         Off_Sun_Direct_New_DTH_Connection_Commission = ?, Off_Airtel_New_DTH_Connection_Commission = ?, 
+        Online_Broadband_Bill_Pay_Commission_Type = ? ,Online_Broadband_Bill_Pay_Commission = ? ,Offline_Broadband_Bill_Pay_Commission_Type = ? ,Offline_Broadband_Bill_Pay_Commission = ?,
         Online_Electricity_Bill_Pay_Commission_Type = ?, Online_Electricity_Bill_Pay_Commission = ?, 
         Offline_Electricity_Bill_Pay_Commission_Type = ?, Offline_Electricity_Bill_Pay_Commission = ?, 
         Online_Insurance_Pay_Commission_Type = ?, Online_Insurance_Pay_Commission = ?, 
@@ -1577,8 +1605,26 @@ const rejectOfflineForm = (req, res) => {
   try {
     const { order_id, note, status,user_id,refundAmount } = req.body;
 
+       // Validate `order_id`: Check for undefined, null, or invalid value
+       if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status || !user_id) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid or missing order_id",
+        });
+      }
+
+       // Validate `refundAmount`: Check for undefined, null, or invalid number
+    if (refundAmount == null || isNaN(parseFloat(refundAmount)) || parseFloat(refundAmount) < 0) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing refund amount",
+      });
+    }
+
+    const refundAmountNumber = parseFloat(refundAmount);
+
     // const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-    const Transaction_Id = `${Date.now()}`;
+    const Transaction_Id = `TXNW${Date.now()}`;
     const Transaction_Type = "Refund";
     const Transaction_details = note;
     const Transaction_status = "Success"
@@ -1627,14 +1673,34 @@ const rejectOfflineForm = (req, res) => {
         //     message: "Wallet Add Money Request not found",
         //   });
         // }
+
+        const old_balance = results.length !== 0 ? results[0].Closing_Balance : 0;
+
+        // Ensure `old_balance` is a valid number
+        if (isNaN(old_balance)) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid closing balance in user wallet",
+          });
+        }
   
         console.log(results)
-        const old_balance = results.length != 0 ?  results[0].Closing_Balance : 0;
+        
         const opening_balance = Number(old_balance);
-        const credit_amount = Number(refundAmount);
+        const credit_amount = refundAmountNumber;
         const debit_amount = 0;
         const new_balance = credit_amount + opening_balance;
-        const new_balance_final = new_balance.toFixed(2); // Format to 2 decimal places
+
+
+         // Ensure all calculated balances are valid numbers
+         if (isNaN(opening_balance) || isNaN(credit_amount) || isNaN(new_balance)) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid balance calculations",
+          });
+        }
+
+        const new_balance_final = parseFloat(new_balance.toFixed(2)); // Ensure `new_balance` remains a number
 
   
   
@@ -1821,10 +1887,27 @@ const SuccessPANOfflineForm = (req, res) => {
 const rejectPANOfflineForm = (req, res) => {
   try {
     const { order_id, note, status,user_id,refundAmount  } = req.body;
+       // Validate `order_id`: Check for undefined, null, or invalid value
+       if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status || !user_id) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid or missing order_id",
+        });
+      }
 
     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
-    const Transaction_Id = `${Date.now()}`;
+          // Validate `refundAmount`: Check for undefined, null, or invalid number
+          if (refundAmount == null || isNaN(parseFloat(refundAmount)) || parseFloat(refundAmount) < 0) {
+            return res.status(400).json({
+              success: false,
+              error: "Invalid or missing refund amount",
+            });
+          }
+      
+          const refundAmountNumber = parseFloat(refundAmount);
+
+    const Transaction_Id = `TXNW${Date.now()}`;
     const Transaction_Type = "Refund";
     const Transaction_details = note;
     const Transaction_status = "Success"
@@ -1873,13 +1956,31 @@ const rejectPANOfflineForm = (req, res) => {
         //   });
         // }
   
-        console.log(results)
+       
         const old_balance = results.length != 0 ?  results[0].Closing_Balance : 0;
+
+            // Ensure `old_balance` is a valid number
+            if (isNaN(old_balance)) {
+              return res.status(400).json({
+                success: false,
+                error: "Invalid closing balance in user wallet",
+              });
+            }
+
+
         const opening_balance = Number(old_balance);
-        const credit_amount = Number(refundAmount);
+        const credit_amount = refundAmountNumber;
         const debit_amount = 0;
         const new_balance = credit_amount + opening_balance;
-        const new_balance_final = new_balance.toFixed(2); // Format to 2 decimal places
+       // Ensure all calculated balances are valid numbers
+       if (isNaN(opening_balance) || isNaN(credit_amount) || isNaN(new_balance)) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid balance calculations",
+        });
+      }
+
+      const new_balance_final = parseFloat(new_balance.toFixed(2)); // Ensure `new_balance` remains a number
 
   
   
@@ -2073,8 +2174,28 @@ const rejectBankIdForm = (req, res) => {
   try {
     const { order_id, note, status, user_id,refundAmount } = req.body;
 
+     // Validate `order_id`: Check for undefined, null, or invalid value
+     if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status || !user_id) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing order_id",
+      });
+    }
+
+     // Validate `refundAmount`: Check for undefined, null, or invalid number
+  if (refundAmount == null || isNaN(parseFloat(refundAmount)) || parseFloat(refundAmount) < 0) {
+    return res.status(400).json({
+      success: false,
+      error: "Invalid or missing refund amount",
+    });
+  }
+
+  const refundAmountNumber = parseFloat(refundAmount);
+
+
+
     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-    const Transaction_Id = `${Date.now()}`;
+    const Transaction_Id = `TXNW${Date.now()}`;
     const Transaction_Type = "Refund";
     const Transaction_details = note;
     const Transaction_status = "Success"
@@ -2118,13 +2239,31 @@ const rejectBankIdForm = (req, res) => {
         }
   
   
-        console.log(results)
+        
         const old_balance = results.length != 0 ?  results[0].Closing_Balance : 0;
+       
+           // Ensure `old_balance` is a valid number
+           if (isNaN(old_balance)) {
+            return res.status(400).json({
+              success: false,
+              error: "Invalid closing balance in user wallet",
+            });
+          }
+
         const opening_balance = Number(old_balance);
-        const credit_amount = Number(refundAmount);
+        const credit_amount = refundAmountNumber;
         const debit_amount = 0;
         const new_balance = credit_amount + opening_balance;
-        const new_balance_final = new_balance.toFixed(2); // Format to 2 decimal places
+
+       // Ensure all calculated balances are valid numbers
+       if (isNaN(opening_balance) || isNaN(credit_amount) || isNaN(new_balance)) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid balance calculations",
+        });
+      }
+
+      const new_balance_final = parseFloat(new_balance.toFixed(2)); // Ensure `new_balance` remains a number
 
   
   
@@ -2318,9 +2457,28 @@ const SuccessEdistrictForm = (req, res) => {
 const rejectEdistrictForm = (req, res) => {
   try {
     const { order_id, note, status, user_id,refundAmount } = req.body;
+   
+     // Validate `order_id`: Check for undefined, null, or invalid value
+     if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status || !user_id) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing order_id",
+      });
+    }
+
+      // Validate `refundAmount`: Check for undefined, null, or invalid number
+      if (refundAmount == null || isNaN(parseFloat(refundAmount)) || parseFloat(refundAmount) < 0) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid or missing refund amount",
+        });
+      }
+  
+      const refundAmountNumber = parseFloat(refundAmount);
+
 
     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-    const Transaction_Id = `${Date.now()}`;
+    const Transaction_Id = `TXNW${Date.now()}`;
     const Transaction_Type = "Refund";
     const Transaction_details = note;
     const Transaction_status = "Success"
@@ -2370,14 +2528,33 @@ const rejectEdistrictForm = (req, res) => {
         //   });
         // }
   
-        console.log(results)
+       
         const old_balance = results.length != 0 ?  results[0].Closing_Balance : 0;
+
+          // Ensure `old_balance` is a valid number
+          if (isNaN(old_balance)) {
+            return res.status(400).json({
+              success: false,
+              error: "Invalid closing balance in user wallet",
+            });
+          }
+
         const opening_balance = Number(old_balance);
-        const credit_amount = Number(refundAmount);
+        const credit_amount = refundAmountNumber;
         const debit_amount = 0;
         const new_balance = credit_amount + opening_balance;
-        const new_balance_final = new_balance.toFixed(2); // Format to 2 decimal places
 
+         // Ensure all calculated balances are valid numbers
+         if (isNaN(opening_balance) || isNaN(credit_amount) || isNaN(new_balance)) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid balance calculations",
+          });
+        }
+
+        const new_balance_final = parseFloat(new_balance.toFixed(2)); // Ensure `new_balance` remains a number
+
+  
   
   
           // SQL query to update the user_wallet table with new balance
@@ -2570,8 +2747,26 @@ const rejectVerifyEdistrictForm = (req, res) => {
   try {
     const { order_id, note, status, user_id,refundAmount  } = req.body;
 
+     // Validate `order_id`: Check for undefined, null, or invalid value
+     if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status || !user_id) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing order_id",
+      });
+    }
+
+      // Validate `refundAmount`: Check for undefined, null, or invalid number
+      if (refundAmount == null || isNaN(parseFloat(refundAmount)) || parseFloat(refundAmount) < 0) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid or missing refund amount",
+        });
+      }
+  
+      const refundAmountNumber = parseFloat(refundAmount);
+
     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-    const Transaction_Id = `${Date.now()}`;
+    const Transaction_Id = `TXNW${Date.now()}`;
     const Transaction_Type = "Refund";
     const Transaction_details = note;
     const Transaction_status = "Success"
@@ -2622,13 +2817,32 @@ const rejectVerifyEdistrictForm = (req, res) => {
         //   });
         // }
   
-        console.log(results)
+      
         const old_balance = results.length != 0 ?  results[0].Closing_Balance : 0;
+
+         // Ensure `old_balance` is a valid number
+         if (isNaN(old_balance)) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid closing balance in user wallet",
+          });
+        }
         const opening_balance = Number(old_balance);
-        const credit_amount = Number(refundAmount);
+        const credit_amount = refundAmountNumber;
         const debit_amount = 0;
         const new_balance = credit_amount + opening_balance;
-        const new_balance_final = new_balance.toFixed(2); // Format to 2 decimal places
+
+          // Ensure all calculated balances are valid numbers
+          if (isNaN(opening_balance) || isNaN(credit_amount) || isNaN(new_balance)) {
+            return res.status(400).json({
+              success: false,
+              error: "Invalid balance calculations",
+            });
+          }
+  
+          const new_balance_final = parseFloat(new_balance.toFixed(2)); // Ensure `new_balance` remains a number
+  
+    
 
   
   
@@ -2821,8 +3035,26 @@ const rejectSambalForm = (req, res) => {
   try {
     const { order_id, note, status , user_id,refundAmount } = req.body;
 
+      // Validate `order_id`: Check for undefined, null, or invalid value
+      if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status || !user_id) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid or missing order_id",
+        });
+      }
+
+       // Validate `refundAmount`: Check for undefined, null, or invalid number
+    if (refundAmount == null || isNaN(parseFloat(refundAmount)) || parseFloat(refundAmount) < 0) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing refund amount",
+      });
+    }
+
+    const refundAmountNumber = parseFloat(refundAmount);
+
     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-    const Transaction_Id = `${Date.now()}`;
+    const Transaction_Id = `TXNW${Date.now()}`;
     const Transaction_Type = "Refund";
     const Transaction_details = note;
     const Transaction_status = "Success"
@@ -2873,13 +3105,30 @@ const rejectSambalForm = (req, res) => {
         //   });
         // }
   
-        console.log(results)
+       
         const old_balance = results.length != 0 ?  results[0].Closing_Balance : 0;
+
+          // Ensure `old_balance` is a valid number
+          if (isNaN(old_balance)) {
+            return res.status(400).json({
+              success: false,
+              error: "Invalid closing balance in user wallet",
+            });
+          }
         const opening_balance = Number(old_balance);
-        const credit_amount = Number(refundAmount);
+        const credit_amount = refundAmountNumber;
         const debit_amount = 0;
         const new_balance = credit_amount + opening_balance;
-        const new_balance_final = new_balance.toFixed(2); // Format to 2 decimal places
+          // Ensure all calculated balances are valid numbers
+          if (isNaN(opening_balance) || isNaN(credit_amount) || isNaN(new_balance)) {
+            return res.status(400).json({
+              success: false,
+              error: "Invalid balance calculations",
+            });
+          }
+  
+          const new_balance_final = parseFloat(new_balance.toFixed(2)); // Ensure `new_balance` remains a number
+  
 
   
   
@@ -2992,14 +3241,78 @@ const ApproveOfflineRecharge = (req, res) => {
       .json({ success: false, error: "An unexpected error occurred" });
   }
 };
+// const rejectOfflineRecharge = (req, res) => {
+//   try {
+//     const { order_id, note, status } = req.body;
+
+//     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+//     // SQL query to update the package details
+//     const sql = `UPDATE offline_recharge SET note = ? , status = ? WHERE orderid = ?`;
+
+//     const values = [note, status, order_id];
+
+//     db.query(sql, values, (error, results) => {
+//       if (error) {
+//         console.error("Error updating rejectOfflineRecharge:", error);
+//         return res.status(500).json({
+//           success: false,
+//           error: "Failed to updating rejectOfflineRecharge",
+//         });
+//       }
+
+//       if (results.affectedRows === 0) {
+//         return res
+//           .status(404)
+//           .json({ success: false, message: "rejectOfflineRecharge not found" });
+//       }
+
+//       return res.status(200).json({
+//         success: true,
+//         message: "updating rejectOfflineRecharge successfully",
+//       });
+//     });
+//   } catch (error) {
+//     console.error("Unexpected error:", error);
+//     return res
+//       .status(500)
+//       .json({ success: false, error: "An unexpected error occurred" });
+//   }
+// };
+
 const rejectOfflineRecharge = (req, res) => {
   try {
-    const { order_id, note, status } = req.body;
+    const { order_id, note, status , user_id,refundAmount } = req.body;
+
+      // Validate `order_id`: Check for undefined, null, or invalid value
+      if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status || !user_id) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid or missing data",
+        });
+      }
+
+       // Validate `refundAmount`: Check for undefined, null, or invalid number
+    if (refundAmount == null || isNaN(parseFloat(refundAmount)) || parseFloat(refundAmount) < 0) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing refund amount",
+      });
+    }
+
+    const refundAmountNumber = parseFloat(refundAmount);
 
     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+    const Transaction_Id = `TXNW${Date.now()}`;
+    const Transaction_Type = "Refund";
+    const Transaction_details = note;
+    const Transaction_status = "Success"
+    const transaction_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
 
     // SQL query to update the package details
-    const sql = `UPDATE offline_recharge SET note = ? , status = ? WHERE orderid = ?`;
+    const sql = `UPDATE offline_recharge SET note = ? , status = ?  WHERE	orderid = ?`;
 
     const values = [note, status, order_id];
 
@@ -3018,10 +3331,78 @@ const rejectOfflineRecharge = (req, res) => {
           .json({ success: false, message: "rejectOfflineRecharge not found" });
       }
 
-      return res.status(200).json({
-        success: true,
-        message: "updating rejectOfflineRecharge successfully",
-      });
+      // return res.status(200).json({
+      //   success: true,
+      //   message: "updating rejectOfflineRecharge successfully",
+      // });
+
+      const getClosingBalanceQuery = `SELECT Closing_Balance FROM user_wallet WHERE userId = ? ORDER BY wid DESC LIMIT 1`;
+    
+      db.query(getClosingBalanceQuery, [user_id], (error, results) => {
+        if (error) {
+          console.error("Error fetching closing balance:", error);
+          return res.status(500).json({
+            success: false,
+            error: "Failed to fetch closing balance",
+          });
+        }
+  
+        // if (results.length === 0) {
+        //   return res.status(404).json({
+        //     success: false,
+        //     message: "Wallet Add Money Request not found",
+        //   });
+        // }
+  
+       
+        const old_balance = results.length != 0 ?  results[0].Closing_Balance : 0;
+
+          // Ensure `old_balance` is a valid number
+          if (isNaN(old_balance)) {
+            return res.status(400).json({
+              success: false,
+              error: "Invalid closing balance in user wallet",
+            });
+          }
+        const opening_balance = Number(old_balance);
+        const credit_amount = refundAmountNumber;
+        const debit_amount = 0;
+        const new_balance = credit_amount + opening_balance;
+          // Ensure all calculated balances are valid numbers
+          if (isNaN(opening_balance) || isNaN(credit_amount) || isNaN(new_balance)) {
+            return res.status(400).json({
+              success: false,
+              error: "Invalid balance calculations",
+            });
+          }
+  
+          const new_balance_final = parseFloat(new_balance.toFixed(2)); // Ensure `new_balance` remains a number
+  
+
+  
+  
+          // SQL query to update the user_wallet table with new balance
+        
+          const sql2 = `INSERT INTO user_wallet (userId, transaction_date, Order_Id , Transaction_Id , Opening_Balance, Closing_Balance , credit_amount, debit_amount,Transaction_Type,Transaction_details ,status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)`;
+          const values2 = [user_id,transaction_date , order_id,Transaction_Id, opening_balance, new_balance_final,
+            credit_amount,debit_amount,Transaction_Type,Transaction_details, Transaction_status];
+  
+          db.query(sql2, values2, (error, results) => {
+            if (error) {
+              console.error("Error inserting into user_wallet:", error);
+              return res.status(500).json({
+                success: false,
+                error: "Failed to inserting refund amount into the user_wallet",
+              });
+            }
+  
+            return res.status(200).json({
+              success: true,
+              message:
+                "Reject the form and refund money successfully",
+            });
+          });
+        });
     });
   } catch (error) {
     console.error("Unexpected error:", error);
@@ -3030,7 +3411,6 @@ const rejectOfflineRecharge = (req, res) => {
       .json({ success: false, error: "An unexpected error occurred" });
   }
 };
-
 const getOfflineDTHConnection = (req, res) => {
   try {
     // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
@@ -3279,7 +3659,8 @@ const getPendingWalletWithdrawRequests = (req, res) => {
 
 const ApproveWalletWithdrawRequests = (req, res) => {
   try {
-    const { order_id, remark, Transaction_Id, status } = req.body;
+    const { order_id, remark, status,Transaction_Id } = req.body;
+    // const Transaction_Id = `TXNW${Date.now()}`;
     const process_date = moment()
       .tz("Asia/Kolkata")
       .format("YYYY-MM-DD HH:mm:ss");
@@ -3303,26 +3684,14 @@ const ApproveWalletWithdrawRequests = (req, res) => {
           message: "Wallet Withdraw Request not found",
         });
       }
+      return res
+              .status(200)
+              .json({
+                success: true,
+                message: "updating Approve Wallet Withdraw Request successfully",
+              });
 
-      // SQL query to update the second table
-      const sql2 = `UPDATE user_wallet SET Transaction_Id = ?, 	Transaction_details = ? , status = ? WHERE Order_Id = ?`;
-      const values2 = [Transaction_Id, remark, status, order_id];
 
-      db.query(sql2, values2, (error, results) => {
-        if (error) {
-          console.error("Error updating user_wallet:", error);
-          return res.status(500).json({
-            success: false,
-            error: "Failed to update the user_wallet",
-          });
-        }
-
-        return res.status(200).json({
-          success: true,
-          message:
-            "Approve Wallet Withdraw Request updated successfully in both tables",
-        });
-      });
     });
   } catch (error) {
     console.error("Unexpected error:", error);
@@ -3334,10 +3703,40 @@ const ApproveWalletWithdrawRequests = (req, res) => {
 
 const rejectWalletWithdrawRequests = (req, res) => {
   try {
-    const { order_id, remark, status } = req.body;
+    const { order_id, remark, status,amount,user_id } = req.body;
     const process_date = moment()
       .tz("Asia/Kolkata")
       .format("YYYY-MM-DD HH:mm:ss");
+
+        // Validate `order_id`: Check for undefined, null, or invalid value
+        if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status || !user_id) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid or missing order_id",
+          });
+        }
+      
+        
+       // Validate `Amount`: Check for undefined, null, or invalid number
+    if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing amount",
+      });
+    }
+
+    const AmountNumber = parseFloat(amount);
+
+    const Transaction_Id = `TXNW${Date.now()}`;
+    const Transaction_Type = "Refund";
+    const Transaction_details = remark;
+    const Transaction_status = "Success"
+    const transaction_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+
+
+
 
     // SQL query to update the user_wallet_withdraw_request table
     const sql1 = `UPDATE user_wallet_withdraw_request SET remark = ?, process_date = ?, status = ? WHERE order_id = ?`;
@@ -3359,25 +3758,63 @@ const rejectWalletWithdrawRequests = (req, res) => {
         });
       }
 
-      // SQL query to update the second table
-      const sql2 = `UPDATE user_wallet SET Transaction_details = ? , status = ? WHERE Order_Id = ?`;
-      const values2 = [remark, status, order_id];
-
-      db.query(sql2, values2, (error, results) => {
+      const getClosingBalanceQuery = `SELECT Closing_Balance FROM user_wallet WHERE userId = ? ORDER BY wid DESC LIMIT 1`;
+    
+      db.query(getClosingBalanceQuery, [user_id], (error, results) => {
         if (error) {
-          console.error("Error updating user_wallet:", error);
+          console.error("Error fetching closing balance:", error);
           return res.status(500).json({
             success: false,
-            error: "Failed to update the user_wallet",
+            error: "Failed to fetch closing balance",
           });
         }
 
-        return res.status(200).json({
-          success: true,
-          message:
-            "Reject Wallet Withdraw Request updated successfully in both tables",
+        const old_balance = results.length != 0 ?  results[0].Closing_Balance : 0;
+
+        // Ensure `old_balance` is a valid number
+        if (isNaN(old_balance)) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid closing balance in user wallet",
+          });
+        }
+
+        const opening_balance = Number(old_balance);
+        const credit_amount = AmountNumber
+        const debit_amount = 0;
+        const new_balance = credit_amount + opening_balance;
+          // Ensure all calculated balances are valid numbers
+          if (isNaN(opening_balance) || isNaN(credit_amount) || isNaN(new_balance)) {
+            return res.status(400).json({
+              success: false,
+              error: "Invalid balance calculations",
+            });
+          }
+  
+          const new_balance_final = parseFloat(new_balance.toFixed(2)); // Ensure `new_balance` remains a number
+
+          // SQL query to update the user_wallet table with new balance
+        
+          const sql2 = `INSERT INTO user_wallet (userId, transaction_date, Order_Id , Transaction_Id , Opening_Balance, Closing_Balance , credit_amount, debit_amount,Transaction_Type,Transaction_details ,status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)`;
+          const values2 = [user_id,transaction_date , order_id,Transaction_Id, opening_balance, new_balance_final,
+            credit_amount,debit_amount,Transaction_Type,Transaction_details, Transaction_status];
+  
+          db.query(sql2, values2, (error, results) => {
+            if (error) {
+              console.error("Error inserting into user_wallet:", error);
+              return res.status(500).json({
+                success: false,
+                error: "Failed to inserting refund amount into the user_wallet",
+              });
+            }
+  
+            return res.status(200).json({
+              success: true,
+              message:
+                "Reject wallet withdrawal request and refund money successfully",
+            });
+          });
         });
-      });
     });
   } catch (error) {
     console.error("Unexpected error:", error);
@@ -3532,6 +3969,28 @@ const getPendingWalletAddMoneyRequests = (req, res) => {
 const ApproveWalletAddMoneyRequests = (req, res) => {
   try {
     const {user_id, order_id, amount, remark, Transaction_Reference, status } = req.body;
+
+     // Validate `order_id`: Check for undefined, null, or invalid value
+     if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status || !user_id) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing data",
+      });
+    }
+
+         // Validate `Amount`: Check for undefined, null, or invalid number
+         if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid or missing refund amount",
+          });
+        }
+    
+        const AmountNumber = parseFloat(amount);
+
+
+
+    const Transaction_Id = `TXNW${Date.now()}`;
     const Transaction_Type =  "Add wallet balance";
     const Transaction_details = "Approve Add wallet balance request"
     const transaction_date = moment()
@@ -3560,12 +4019,31 @@ const ApproveWalletAddMoneyRequests = (req, res) => {
       //   });
       // }
 
-      console.log(results)
+     
       const old_balance = results.length != 0 ?  results[0].Closing_Balance : 0;
+
+        // Ensure `old_balance` is a valid number
+        if (isNaN(old_balance)) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid closing balance in user wallet",
+          });
+        }
+
       const opening_balance = Number(old_balance);
-      const credit_amount = Number(amount);
+      const credit_amount = AmountNumber;
       const debit_amount = 0;
-      const new_balance = credit_amount + opening_balance;
+      let new_balance = credit_amount + opening_balance;
+
+          // Ensure all calculated balances are valid numbers
+          if (isNaN(opening_balance) || isNaN(credit_amount) || isNaN(new_balance)) {
+            return res.status(400).json({
+              success: false,
+              error: "Invalid balance calculations",
+            });
+          }
+
+      new_balance = parseFloat(new_balance.toFixed(2)); // Convert back to a number
 
 
       
@@ -3593,7 +4071,7 @@ const ApproveWalletAddMoneyRequests = (req, res) => {
         // SQL query to update the user_wallet table with new balance
       
         const sql2 = `INSERT INTO user_wallet (userId, transaction_date, Order_Id , Transaction_Id , Opening_Balance, Closing_Balance , credit_amount, debit_amount,Transaction_Type,Transaction_details ,status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)`;
-        const values2 = [user_id,transaction_date , order_id,Transaction_Reference, opening_balance, new_balance,
+        const values2 = [user_id,transaction_date , order_id,Transaction_Id, opening_balance, new_balance,
           credit_amount,debit_amount,Transaction_Type,Transaction_details, status];
 
         db.query(sql2, values2, (error, results) => {
@@ -4413,12 +4891,33 @@ const UpdateSAWebsiteJoiningPrice = (req, res) => {
 const AddWalletAddMoneyDirect = (req, res) => {
   try {
     const {userId, amount, Transaction_details, status } = req.body;
+    
+      // Validate `order_id`: Check for undefined, null, or invalid value
+      if ( !status || !userId) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid or missing order_id",
+        });
+      }
+
+
+       // Validate `refundAmount`: Check for undefined, null, or invalid number
+    if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing amount",
+      });
+    }
+
+    const AmountNumber = parseFloat(amount);
+
+
     const Transaction_Type =  "Add wallet balance";
     const transaction_date = moment()
       .tz("Asia/Kolkata")
       .format("YYYY-MM-DD HH:mm:ss");
-      const Order_Id = `${Date.now()}`;
-      const Transaction_Id = `${Date.now()}`;
+      const Order_Id = `ORW${Date.now()}`;
+      const Transaction_Id = `TXNW${Date.now()}`;
     const process_date = moment()
     .tz("Asia/Kolkata")
     .format("YYYY-MM-DD HH:mm:ss");
@@ -4444,10 +4943,30 @@ const AddWalletAddMoneyDirect = (req, res) => {
 
       console.log(results)
       const old_balance = results.length != 0 ?  results[0].Closing_Balance : 0;
+
+      
+        // Ensure `old_balance` is a valid number
+        if (isNaN(old_balance)) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid closing balance in user wallet",
+          });
+        }
+
+
       const opening_balance = Number(old_balance);
-      const credit_amount = Number(amount);
+      const credit_amount = AmountNumber;
       const debit_amount = 0;
-      const new_balance = credit_amount + opening_balance;
+      let new_balance = credit_amount + opening_balance;
+
+        // Ensure all calculated balances are valid numbers
+        if (isNaN(opening_balance) || isNaN(credit_amount) || isNaN(new_balance)) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid balance calculations",
+          });
+        }
+      new_balance = parseFloat(new_balance.toFixed(2)); // Convert back to a number
 
 
         // SQL query to update the user_wallet table with new balance
@@ -4483,12 +5002,31 @@ const AddWalletAddMoneyDirect = (req, res) => {
 const WithdrawWalletAddMoneyDirect = (req, res) => {
   try {
     const {userId, amount, Transaction_details, status } = req.body;
+
+      // Validate `order_id`: Check for undefined, null, or invalid value
+      if ( !status || !userId) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid or missing order_id",
+        });
+      }
+
+             // Validate `Amount`: Check for undefined, null, or invalid number
+    if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing amount",
+      });
+    }
+
+    const AmountNumber = parseFloat(amount);
+
     const Transaction_Type =  "Withdraw wallet balance";
     const transaction_date = moment()
       .tz("Asia/Kolkata")
       .format("YYYY-MM-DD HH:mm:ss");
-      const Order_Id = `${Date.now()}`;
-      const Transaction_Id = `${Date.now()}`;
+      const Order_Id = `ORW${Date.now()}`;
+      const Transaction_Id = `TXNW${Date.now()}`;
     const process_date = moment()
     .tz("Asia/Kolkata")
     .format("YYYY-MM-DD HH:mm:ss");
@@ -4512,12 +5050,30 @@ const WithdrawWalletAddMoneyDirect = (req, res) => {
         });
       }
 
-      console.log(results)
+     
       const old_balance = results.length != 0 ?  results[0].Closing_Balance : 0;
+
+        // Ensure `old_balance` is a valid number
+        if (isNaN(old_balance)) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid closing balance in user wallet",
+          });
+        }
+
       const opening_balance = Number(old_balance);
       const credit_amount = 0;
-      const debit_amount = Number(amount);
-      const new_balance =  opening_balance - debit_amount;
+      const debit_amount = AmountNumber;
+      let new_balance =  opening_balance - debit_amount;
+
+       // Ensure all calculated balances are valid numbers
+       if (isNaN(opening_balance) || isNaN(credit_amount) || isNaN(new_balance)) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid balance calculations",
+        });
+      }
+      new_balance = parseFloat(new_balance.toFixed(2)); // Convert back to a number
 
       if (opening_balance < debit_amount) {
         return res.status(404).json({
@@ -4691,6 +5247,458 @@ const getOnlineDthConnection = (req, res) => {
   }
 };
 
+const getPanCouponRequests = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM user_wallet ORDER BY wid DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM user_wallet c LEFT JOIN userprofile u  ON c.userId = u.UserId ORDER BY wid DESC`;
+    const sql = `
+  SELECT c.*, u.UserName, u.role, u.ContactNo, u.Email 
+  FROM pan_coupon_requests c 
+  LEFT JOIN userprofile u 
+  ON c.user_id = u.UserId ORDER BY id DESC
+`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getPanCouponRequests from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getPanCouponRequests" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getPanCouponRequests found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getPanCouponRequests fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getPanCouponRequests from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getPanCouponRequests",
+      error: error.message,
+    });
+  }
+};
+
+const approvePanCouponRequest = (req, res) => {
+  try {
+    const { order_id, note, status} = req.body;
+
+     // Validate `order_id`: Check for undefined, null, or invalid value
+     if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing data",
+      });
+    }
+    const process_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+
+
+
+    // SQL query to update the rejectWalletAddMoneyRequests table
+    const sql1 = `UPDATE pan_coupon_requests SET note = ?, process_date = ?, status = ? WHERE order_id = ?`;
+    const values1 = [note, process_date, status, order_id];
+
+    db.query(sql1, values1, (error, results) => {
+      if (error) {
+        console.error("Error updating approvePanCouponRequest:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to update approvePanCouponRequest",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "approvePanCouponRequest not found",
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "approvePanCouponRequest successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const rejectPanCouponRequest = (req, res) => {
+  try {
+    const { order_id, note, status , user_id,refundAmount } = req.body;
+
+      // Validate `order_id`: Check for undefined, null, or invalid value
+      if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status || !user_id) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid or missing data",
+        });
+      }
+
+       // Validate `refundAmount`: Check for undefined, null, or invalid number
+    if (refundAmount == null || isNaN(parseFloat(refundAmount)) || parseFloat(refundAmount) < 0) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing refund amount",
+      });
+    }
+
+    const refundAmountNumber = parseFloat(refundAmount);
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+    const Transaction_Id = `TXNW${Date.now()}`;
+    const Transaction_Type = "Refund";
+    const Transaction_details = note;
+    const Transaction_status = "Success"
+    const transaction_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE pan_coupon_requests SET note = ? , status = ? , process_date = ? WHERE order_id = ?`;
+
+    const values = [note, status,updatedAt, order_id];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating rejectPanCouponRequest:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating rejectPanCouponRequest",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "rejectPanCouponRequest not found" });
+      }
+
+      // return res.status(200).json({
+      //   success: true,
+      //   message: "updating rejectPanCouponRequest successfully",
+      // });
+
+      const getClosingBalanceQuery = `SELECT Closing_Balance FROM user_wallet WHERE userId = ? ORDER BY wid DESC LIMIT 1`;
+    
+      db.query(getClosingBalanceQuery, [user_id], (error, results) => {
+        if (error) {
+          console.error("Error fetching closing balance:", error);
+          return res.status(500).json({
+            success: false,
+            error: "Failed to fetch closing balance",
+          });
+        }
+  
+        // if (results.length === 0) {
+        //   return res.status(404).json({
+        //     success: false,
+        //     message: "Wallet Add Money Request not found",
+        //   });
+        // }
+  
+       
+        const old_balance = results.length != 0 ?  results[0].Closing_Balance : 0;
+
+          // Ensure `old_balance` is a valid number
+          if (isNaN(old_balance)) {
+            return res.status(400).json({
+              success: false,
+              error: "Invalid closing balance in user wallet",
+            });
+          }
+        const opening_balance = Number(old_balance);
+        const credit_amount = refundAmountNumber;
+        const debit_amount = 0;
+        const new_balance = credit_amount + opening_balance;
+          // Ensure all calculated balances are valid numbers
+          if (isNaN(opening_balance) || isNaN(credit_amount) || isNaN(new_balance)) {
+            return res.status(400).json({
+              success: false,
+              error: "Invalid balance calculations",
+            });
+          }
+  
+          const new_balance_final = parseFloat(new_balance.toFixed(2)); // Ensure `new_balance` remains a number
+  
+
+  
+  
+          // SQL query to update the user_wallet table with new balance
+        
+          const sql2 = `INSERT INTO user_wallet (userId, transaction_date, Order_Id , Transaction_Id , Opening_Balance, Closing_Balance , credit_amount, debit_amount,Transaction_Type,Transaction_details ,status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)`;
+          const values2 = [user_id,transaction_date , order_id,Transaction_Id, opening_balance, new_balance_final,
+            credit_amount,debit_amount,Transaction_Type,Transaction_details, Transaction_status];
+  
+          db.query(sql2, values2, (error, results) => {
+            if (error) {
+              console.error("Error inserting into user_wallet:", error);
+              return res.status(500).json({
+                success: false,
+                error: "Failed to inserting refund amount into the user_wallet",
+              });
+            }
+  
+            return res.status(200).json({
+              success: true,
+              message:
+                "Reject the form and refund money successfully",
+            });
+          });
+        });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const getUserRelationData = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM user_wallet ORDER BY wid DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM user_wallet c LEFT JOIN userprofile u  ON c.userId = u.UserId ORDER BY wid DESC`;
+    const sql = `
+    SELECT DISTINCT c.*, u.UserName, u.role, u.ContactNo, u.Email 
+    FROM user_relations c
+    LEFT JOIN userprofile u 
+    ON c.UserId = u.UserId
+    GROUP BY c.UserId
+    ORDER BY c.ur_id DESC
+  `;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getUserRelationData from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getUserRelationData" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getUserRelationData found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getUserRelationData fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getUserRelationData from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getUserRelationData",
+      error: error.message,
+    });
+  }
+};
+
+const changeUserWhiteLabel = (req, res) => {
+  try {
+    const { WhiteLabelId, UserId} = req.body;
+
+     // Validate `order_id`: Check for undefined, null, or invalid value
+     if (!WhiteLabelId || !UserId) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing data",
+      });
+    }
+    const process_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+
+
+
+    // SQL query to update the rejectWalletAddMoneyRequests table
+    const sql1 = `UPDATE user_relations SET white_lable = ? WHERE UserId = ?`;
+    const values1 = [WhiteLabelId,UserId];
+
+    db.query(sql1, values1, (error, results) => {
+      if (error) {
+        console.error("Error updating changeUserWhiteLabel:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to update changeUserWhiteLabel",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "changeUserWhiteLabel not found",
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "changeUserWhiteLabel successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const changeUserSuperDistributor = (req, res) => {
+  try {
+    const { superDistributorID, UserId} = req.body;
+
+     // Validate `order_id`: Check for undefined, null, or invalid value
+     if (!superDistributorID || !UserId) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing data",
+      });
+    }
+    const process_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+
+
+
+    // SQL query to update the rejectWalletAddMoneyRequests table
+    const sql1 = `UPDATE user_relations SET superDistributor = ? WHERE UserId = ?`;
+    const values1 = [superDistributorID,UserId];
+
+    db.query(sql1, values1, (error, results) => {
+      if (error) {
+        console.error("Error updating changeUserSuperDistributor:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to update changeUserSuperDistributor",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "changeUserSuperDistributor not found",
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "changeUserSuperDistributor successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+const changeUserDistributor = (req, res) => {
+  try {
+    const { distributorID, UserId} = req.body;
+
+     // Validate `order_id`: Check for undefined, null, or invalid value
+     if (!distributorID || !UserId) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing data",
+      });
+    }
+    const process_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+
+
+
+    // SQL query to update the rejectWalletAddMoneyRequests table
+    const sql1 = `UPDATE user_relations SET distributor = ? WHERE UserId = ?`;
+    const values1 = [distributorID,UserId];
+
+    db.query(sql1, values1, (error, results) => {
+      if (error) {
+        console.error("Error updating changeUserDistributor:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to update changeUserDistributor",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "changeUserDistributor not found",
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "changeUserDistributor successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const ChangeUserInfo = (req, res) => {
+  try {
+    const {  UserId,
+      ContactNo ,
+      Email,
+      PackageId,
+      White_Label_Website_URL } = req.body;
+
+    if (!UserId || !ContactNo || !Email || !PackageId ) {
+      return res
+        .status(200)
+        .json({ success: false, message: "All fields are required" });
+    }
+
+    // If the package is not allocated to any user, proceed to delete
+    const Sql = `UPDATE userprofile SET ContactNo = ? , Email = ? , package_Id = ? , White_Label_Website_URL = ? WHERE UserId = ?`;
+    db.query(Sql, [ContactNo ,Email ,PackageId,White_Label_Website_URL, UserId], (Error, Results) => {
+      if (Error) {
+        console.error("Error Change User Info:", Error);
+        return res.status(500).json({ error: "Failed to Change User Info" });
+      }
+
+      if (Results.affectedRows === 0) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Change User Info  successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({ error: "An unexpected error occurred" });
+  }
+};
 
 
 
@@ -4783,6 +5791,15 @@ module.exports = {
   
   getBuyUserIdSummary,
   getOnlineRecharge,
-  getOnlineDthConnection
+  getOnlineDthConnection,
+  getPanCouponRequests,
+  approvePanCouponRequest,
+  rejectPanCouponRequest,
+  getUserRelationData,
+  changeUserWhiteLabel,
+  changeUserDistributor,
+  changeUserSuperDistributor,
+  ChangeUserInfo
+
 
 };

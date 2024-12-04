@@ -139,7 +139,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
               </div>
             </div>
 
-            <div className="mt-3">
+            {/* <div className="mt-3">
               <label for="name" class="form-label">
                 Transaction ID/UTR No.
               </label>
@@ -158,7 +158,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
                   required
                 />
               </div>
-            </div>
+            </div> */}
           
             <div className="mt-3">
               <label for="name" class="form-label">
@@ -323,7 +323,7 @@ return (
               </div>
             </div>
 
-            <div className="mt-3">
+            {/* <div className="mt-3">
               <label for="name" class="form-label">
                 Transaction ID/UTR No.
               </label>
@@ -342,7 +342,7 @@ return (
                   required
                 />
               </div>
-            </div>
+            </div> */}
           
             <div className="mt-3">
               <label for="name" class="form-label">

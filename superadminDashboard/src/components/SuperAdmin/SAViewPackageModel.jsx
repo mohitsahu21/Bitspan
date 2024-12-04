@@ -149,6 +149,27 @@ const SAViewPackageModel = ({ packages }) => {
                           />
                         </div>
                       </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                         Pan Find Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="Pan_Find_Price"
+                            value={packages.Pan_Find_Price}
+                         
+                            required
+                          />
+                        </div>
+                      </div>
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
@@ -491,6 +512,27 @@ const SAViewPackageModel = ({ packages }) => {
                       
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
+                        Ayushman ID Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="Ayushman_Id_Price"
+                            value={packages.Ayushman_Id_Price}
+                           
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
                           IRCTC Agent ID Price
                         </label>
                         <div class="input-group flex-nowrap">
@@ -816,6 +858,26 @@ const SAViewPackageModel = ({ packages }) => {
                             placeholder="Enter Commission"
                             name="offline_P_PAN_Card_Commission"
                             value={packages.offline_P_PAN_Card_Commission}
+                            
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Pan Find Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="Pan_Find_Commission"
+                            value={packages.Pan_Find_Commission}
                             
                           />
                         </div>
@@ -2083,6 +2145,109 @@ const SAViewPackageModel = ({ packages }) => {
                                                 <button className="btn p-2">Change</button>
                                             </div>
                                         </div> */}
+                  </div>
+                  <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                    <div className="text-center  my-5">
+                      <h2>Online Broadband Bill Pay Commission</h2>
+                    </div>
+
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <label for="name" className="form-label">
+                        Select Commission Type
+                      </label>
+                      <div className="input-group flex-nowrap">
+                        <span className="input-group-text" id="addon-wrapping">
+                          {" "}
+                          <LuTextSelect />
+                        </span>
+                        <select
+                          name="Online_Broadband_Bill_Pay_Commission_Type"
+                          
+                          className="form-select"
+                          aria-label="Default select example"
+                          value={packages.Online_Broadband_Bill_Pay_Commission_Type}
+                          disabled
+                        >
+                          <option value="">
+                            Select...
+                          </option>
+
+                          <option value="Percentage">Percentage (%)</option>
+                          <option value="Rupees">Rupees (&#8377;)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <label for="name" class="form-label">
+                        Online Broadband Bill Pay Commission
+                      </label>
+                      <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping">
+                          {" "}
+                          <MdNumbers />
+                        </span>
+                        <input
+                          type="number"
+                          class="form-control"
+                          placeholder="Enter Commission"
+                          name="Online_Broadband_Bill_Pay_Commission"
+                          value={packages.Online_Broadband_Bill_Pay_Commission}
+                         
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                    <div className="text-center  my-5">
+                      <h2>Offline Broadband Bill Pay Commission</h2>
+                    </div>
+
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <label for="name" className="form-label">
+                        Commission Type
+                      </label>
+                      <div className="input-group flex-nowrap">
+                        <span className="input-group-text" id="addon-wrapping">
+                          {" "}
+                          <LuTextSelect />
+                        </span>
+                        <select
+                          name="Offline_Broadband_Bill_Pay_Commission_Type"
+                          value={packages.Offline_Broadband_Bill_Pay_Commission_Type}
+                          className="form-select"
+                          aria-label="Default select example"
+                          disabled
+                        >
+                          <option >
+                            Select...
+                          </option>
+
+                          <option value="Percentage">Percentage (%)</option>
+                          <option value="Rupees">Rupees (&#8377;)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <label for="name" class="form-label">
+                        Offline Broadband Bill Pay Commission
+                      </label>
+                      <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping">
+                          {" "}
+                          <MdNumbers />
+                        </span>
+                        <input
+                          type="number"
+                          class="form-control"
+                          placeholder="Enter Commission"
+                          name="Offline_Broadband_Bill_Pay_Commission"
+                          value={packages.Offline_Broadband_Bill_Pay_Commission}
+                          required
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">

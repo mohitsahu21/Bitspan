@@ -20,10 +20,13 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
+    user_id : item.user_id ,
+
     order_id: item.order_id,
-    remark : "",
-    Transaction_Id : "",
-    status : "Approve"
+    note : "",
+    // amount : item.amount,
+    // Transaction_Reference : item.Transaction_Reference,
+    status : "Success"
   });
 
   const handleChange = (e) => {
@@ -39,7 +42,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveWalletWithdrawRequests",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approvePanCouponRequest",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
         formData
       );
@@ -85,7 +88,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
                   type="text"
                   name="package_name"
                   class="form-control"
-                  placeholder="Enter Package Name"
+                  placeholder="Enter Order Id"
                   value={item.order_id}
                   onChange={handleChange}
                   disabled
@@ -106,15 +109,15 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
                   type="text"
                   name="package_name"
                   class="form-control"
-                  placeholder="Enter Package Name"
-                  value={item.userName}
+                  placeholder="Enter User Name"
+                  value={item.UserName}
                   onChange={handleChange}
                   disabled
                   required
                 />
               </div>
             </div>
-            <div className="mt-3">
+            {/* <div className="mt-3">
               <label for="name" class="form-label">
                 Amount
               </label>
@@ -134,11 +137,11 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
                   required
                 />
               </div>
-            </div>
+            </div> */}
 
-            <div className="mt-3">
+            {/* <div className="mt-3">
               <label for="name" class="form-label">
-                Enter Transaction ID/UTR No.
+                Transaction ID/UTR No.
               </label>
               <div class="input-group flex-nowrap">
                 <span class="input-group-text" id="addon-wrapping">
@@ -150,16 +153,16 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
                   name="Transaction_Id"
                   class="form-control"
                   placeholder="Enter Transaction ID/UTR No."
-                  value={formData.Transaction_Id}
+                  value={item.Transaction_Reference}
                   onChange={handleChange}
                   required
                 />
               </div>
-            </div>
+            </div> */}
           
             <div className="mt-3">
               <label for="name" class="form-label">
-                Enter Remark
+                Enter Note
               </label>
               <div class="input-group flex-nowrap">
                 <span class="input-group-text" id="addon-wrapping">
@@ -168,10 +171,10 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
                 </span>
                 <input
                   type="text"
-                  name="remark"
+                  name="note"
                   class="form-control"
-                  placeholder="Enter Remark"
-                  value={formData.remark}
+                  placeholder="Enter Note"
+                  value={formData.note}
                   onChange={handleChange}
                   required
                 />
@@ -201,11 +204,13 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 const [loading, setLoading] = useState(false);
 
 const [formData, setFormData] = useState({
+  user_id : item.user_id ,
+
   order_id: item.order_id,
-    remark : "",
-    amount : item.amount,
-    status : "Reject",
-    user_id : item.user_id
+  note : "",
+  refundAmount : item.total_Amount,
+  // Transaction_Reference : item.Transaction_Reference,
+  status : "Reject"
 });
 
 const handleChange = (e) => {
@@ -221,7 +226,7 @@ const handlesubmit = async (e) => {
   try {
     setLoading(true);
     const response = await axios.put(
-      "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectWalletWithdrawRequests",
+      "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectPanCouponRequest",
       // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
       formData
     );
@@ -254,29 +259,28 @@ return (
     <div>
       
         <form onSubmit={handlesubmit}>
-          <div className="">
-            <label for="name" class="form-label">
-              Order Id
-            </label>
-            <div class="input-group flex-nowrap">
-              <span class="input-group-text" id="addon-wrapping">
-                {" "}
-                <MdGrid3X3 />
-              </span>
-              <input
-                type="text"
-                name="package_name"
-                class="form-control"
-                placeholder="Enter Package Name"
-                value={item.order_id}
-                onChange={handleChange}
-                disabled
-                required
-              />
+        <div className="">
+              <label for="name" class="form-label">
+                Order Id
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <MdGrid3X3 />
+                </span>
+                <input
+                  type="text"
+                  name="package_name"
+                  class="form-control"
+                  placeholder="Enter Package Name"
+                  value={item.order_id}
+                  onChange={handleChange}
+                  disabled
+                  required
+                />
+              </div>
             </div>
-          </div>
-
-          <div className="mt-3">
+            <div className="mt-3">
               <label for="name" class="form-label">
                 User Name
               </label>
@@ -289,8 +293,8 @@ return (
                   type="text"
                   name="package_name"
                   class="form-control"
-                  placeholder="Enter Package Name"
-                  value={item.userName}
+                  placeholder="Enter UserName"
+                  value={item.UserName}
                   onChange={handleChange}
                   disabled
                   required
@@ -299,7 +303,7 @@ return (
             </div>
             <div className="mt-3">
               <label for="name" class="form-label">
-                Amount
+              Refund Amount
               </label>
               <div class="input-group flex-nowrap">
                 <span class="input-group-text" id="addon-wrapping">
@@ -310,8 +314,8 @@ return (
                   type="text"
                   name="package_name"
                   class="form-control"
-                  placeholder="Enter Package Name"
-                  value={item.amount}
+                  placeholder="Enter Amount"
+                  value={item.total_Amount}
                   onChange={handleChange}
                   disabled
                   required
@@ -319,10 +323,9 @@ return (
               </div>
             </div>
 
-          
-            <div className="mt-3">
+            {/* <div className="mt-3">
               <label for="name" class="form-label">
-                Enter Remark
+                Transaction ID/UTR No.
               </label>
               <div class="input-group flex-nowrap">
                 <span class="input-group-text" id="addon-wrapping">
@@ -331,10 +334,31 @@ return (
                 </span>
                 <input
                   type="text"
-                  name="remark"
+                  name="Transaction_Id"
                   class="form-control"
-                  placeholder="Enter Remark"
-                  value={formData.remark}
+                  placeholder="Enter Transaction ID/UTR No."
+                  value={item.Transaction_Reference}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div> */}
+          
+            <div className="mt-3">
+              <label for="name" class="form-label">
+                Enter Note
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <MdGrid3X3 />
+                </span>
+                <input
+                  type="text"
+                  name="note"
+                  class="form-control"
+                  placeholder="Enter note"
+                  value={formData.note}
                   onChange={handleChange}
                   required
                 />
@@ -362,7 +386,7 @@ return (
 
 
 
-const SAWalletWithdrawRequests = () => {
+const SAPanCouponRequests = () => {
      
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
@@ -382,7 +406,7 @@ const SAWalletWithdrawRequests = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletWithdrawRequests"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPanCouponRequests"
       );
       setUsers(data.data);
       setLoading(false);
@@ -404,10 +428,10 @@ const SAWalletWithdrawRequests = () => {
     (row) =>{ 
       const matchesKeyword =  (row?.user_id &&
         row.user_id.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.userName && row.userName.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.userPhone	 &&
-          row.userPhone	.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-        (row?.userEmail &&
-          row.userEmail.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.UserName && row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.ContactNo	 &&
+          row.ContactNo	.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+        (row?.Email &&
+          row.Email.toLowerCase().includes(keyword.trim().toLowerCase())) ||
           (row?.order_id &&
             row.order_id.toLowerCase().includes(keyword.trim().toLowerCase()))
            
@@ -458,7 +482,7 @@ const SAWalletWithdrawRequests = () => {
                                                 <h3>Wallet Transaction Report</h3>
                                             </div> */}
                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Wallet Withdraw Requests</h4>
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">PAN Coupon Requests</h4>
                                                 <p className="mx-lg-5">
                                                     {" "}
                                                     <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
@@ -467,7 +491,7 @@ const SAWalletWithdrawRequests = () => {
                                                         style={{ fontSize: "13px" }}
                                                     >
                                                         {" "}
-                                                        Wallet Withdraw Requests
+                                                        PAN Coupon Requests
                                                     </span>{" "}
                                                 </p>
                                             </div>
@@ -530,20 +554,20 @@ const SAWalletWithdrawRequests = () => {
                                                                     <th scope="col">#</th>
                                                                     <th scope="col">Date</th>
                                                                     <th scope="col">Order Id</th>
-                                                                    <th scope="col">Amount</th>
+                                                                    <th scope="col">Coupon quantity</th>
+                                                                    <th scope="col">Coupon Price</th>
+                                                                    <th scope="col">Total Amount</th>
+                                                                    <th scope="col">Coupon Type</th>
                                                                     <th scope="col">User Id</th>
                                                                     <th scope="col">User Name</th>
-                                                                    <th scope="col">User Role</th>
+                                                                    {/* <th scope="col">User Role</th> */}
                                                                     <th scope="col">User Mobile</th>
                                                                     <th scope="col">User Email</th>
-                                                                    <th scope="col">Withdraw Reason</th>
-                                                                    <th scope="col">A/c Holder Name</th>
-                                                                    <th scope="col">Bank Account Number</th>
-                                                                    <th scope="col">IFSC Code</th>
-                                                                    <th scope="col">Bank Name</th>
-                                                                    <th scope="col">Remark</th>
-                                                                    <th scope="col">Status</th>
+                                                                    {/* <th scope="col">Receiept Attechment</th> */}
+                                                                    <th scope="col">Note</th>
                                                                     <th scope="col">Process Date</th>
+                                                                    <th scope="col">Status</th>
+                                                                  
                                                                     <th scope="col">Action</th>
                                                                 </tr>
                                                             </thead>
@@ -555,21 +579,22 @@ const SAWalletWithdrawRequests = () => {
                                           <th scope="row">{index + 1}</th>
                                           <td>{item.created_at}</td>
                                           <td>{item.order_id}</td>
-                                          <td>{item.amount}</td>
+                                          <td>{item.coupon_Quantity}</td>
+                                          <td>{item.coupon_Price}</td>
+                                          <td>{item.total_Amount}</td>
+                                          <td>{item.coupon_Type}</td>
+                                         
                                           <td>{item.user_id}</td>
-                                          <td>{item.userName}</td>
-                                          <td>{item.userRole}</td>
-                                          <td>{item.userPhone}</td>
-                                          <td>{item.userEmail}</td>
-                                          <td>{item.withdrawReason}</td>
-                                          <td>{item.bankholder_name}</td>
-                                          <td>{item.bankaccount_number}</td>
-                                          <td>{item.IFSC_code}</td>
-                                          <td>{item.bank_name}</td>
-                                          <td>{item.remark}</td>
+                                          <td>{item.UserName}</td>
+                                          {/* <td>{item.role}</td> */}
+                                          <td>{item.ContactNo}</td>
+                                          <td>{item.Email}</td>
+                                         
+                                          <td>{item.note}</td>
+                                          <td>{item.process_date}</td>
                                           <td>{item.status}</td>
                                          
-                                          <td>{item.process_date}</td>
+                                         
                                          
                                           <td>
                                             { (item.status === "Pending") && 
@@ -773,7 +798,7 @@ const SAWalletWithdrawRequests = () => {
           aria-labelledby="packageDetail-modal-sizes-title-lg"
         >
           <Modal.Header closeButton>
-            <Modal.Title id="packageDetail-modal-sizes-title-lg">Approve Form</Modal.Title>
+            <Modal.Title id="packageDetail-modal-sizes-title-lg">Approve</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {selectedItem && <SAApproveModel item={selectedItem} setShowApproveModel={setShowApproveModel}  setIsRefresh={setIsRefresh}/>}
@@ -791,7 +816,7 @@ const SAWalletWithdrawRequests = () => {
           aria-labelledby="packageDetail-modal-sizes-title-lg"
         >
           <Modal.Header closeButton>
-            <Modal.Title id="packageDetail-modal-sizes-title-lg">Reject Form</Modal.Title>
+            <Modal.Title id="packageDetail-modal-sizes-title-lg">Reject</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {selectedItem && <SARejectModel item={selectedItem} setShowRejectModel={setShowRejectModel}  setIsRefresh={setIsRefresh}/>}
@@ -804,7 +829,7 @@ const SAWalletWithdrawRequests = () => {
     );
 }
 
-export default SAWalletWithdrawRequests;
+export default SAPanCouponRequests;
 
 const Wrapper = styled.div`
   .main {
