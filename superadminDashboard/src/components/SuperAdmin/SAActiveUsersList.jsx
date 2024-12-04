@@ -1,19 +1,326 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { MdOutlineFormatListNumbered } from "react-icons/md";
-import { FaMobileAlt } from "react-icons/fa";
+import { FaMobileAlt ,FaRupeeSign} from "react-icons/fa";
+import { LuTextSelect } from "react-icons/lu";
 import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
-import { Dropdown, Spinner } from "react-bootstrap";
+import { Dropdown, Modal, Spinner } from "react-bootstrap";
 import { CiViewList } from "react-icons/ci";
 import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
 import Swal from "sweetalert2";
 
+
+const SAChangeUserInfo = ({ user, setShowChangeUserinfoModel, setIsRefresh }) => {
+  const [loading, setLoading] = useState(false);
+ 
+  const [formData, setFormData] = useState({
+    UserName: user?.UserName,
+    UserId: user?.UserId,
+    UserRole : user?.role,
+    ContactNo : user?.ContactNo,
+    Email : user?.Email,
+    PackageId: user?.package_Id,
+    White_Label_Website_URL : user?.White_Label_Website_URL
+   
+  });
+
+
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // Package selection handler
+const handlePackageSelect = (e) => {
+  const selectedPackageId = e.target.value;
+
+  // Update the respective form data based on the user's role
+  
+    setFormData((prev) => ({
+      ...prev,
+      PackageId: selectedPackageId,
+    }));
+  }
+
+  const [packages, setPackages] = useState([]);
+  const [packagesLoading, setPackagesLoading] = useState(false);
+
+
+  const fetchPackages = async () => {
+    setPackagesLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPackage"
+      );
+      const packageFind = ()=>{
+        if(user.role == "Retailer"){
+          return "package_Retailer"
+        }
+       else if(user.role == "WhiteLabel"){
+          return "package_WhiteLabel"
+        }
+      else  if(user.role == "SuperDistributor"){
+          return "package_SuperDistributor"
+        }
+       else if(user.role == "Distributor"){
+          return "package_Distributor"
+        }
+       
+      }
+      const packagefor = packageFind();
+      const filterPackage = data?.data?.filter((item)=>{
+        return item?.package_for?.includes(packagefor) 
+      })
+      console.log(filterPackage)
+      setPackages(filterPackage);
+      // setPackages(data.data);
+      setPackagesLoading(false);
+    } catch (error) {
+      console.error("Error fetching package data:", error);
+      setPackagesLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPackages();
+   
+  }, []);
+
+  console.log(packages);
+
+  const handlesubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+     
+      const response = await axios.put(
+        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ChangeUserInfo",
+        formData
+      );
+      console.log(response);
+      setLoading(false);
+      if (response.data.success) {
+        Swal.fire({
+          icon: "success",
+          title: "Active User Successfully",
+        });
+        setShowChangeUserinfoModel(false);
+        setIsRefresh((value) => !value);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "An error occurred during the process. Please try again.",
+        });
+        setShowChangeUserinfoModel(false);
+      }
+    } catch (error) {
+      console.error("There was an error submitting the form!", error);
+      setLoading(false);
+      Swal.fire({
+        icon: "error",
+        title: "An error occurred during the process. Please try again.",
+      });
+    }
+  };
+  return (
+    <>
+      <div>
+        {packagesLoading ? (
+          <div> Loading...</div>
+        ) : (
+          <form onSubmit={handlesubmit}>
+            <div className="">
+              <label for="name" class="form-label">
+                User Name
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <FaRupeeSign />
+                </span>
+                <input
+                  type="text"
+                  // name="package_name"
+                  class="form-control"
+                  // placeholder="Enter Package Name"
+                  value={user.UserName}
+                  onChange={handleChange}
+                  disabled
+                  required
+                />
+              </div>
+            </div>
+            <div className="mt-3">
+              <label for="name" class="form-label">
+                User Id
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <FaRupeeSign />
+                </span>
+                <input
+                  type="text"
+                  // name="package_name"
+                  class="form-control"
+                  // placeholder="Enter Package Name"
+                  value={user.UserId}
+                  onChange={handleChange}
+                  disabled
+                  required
+                />
+              </div>
+            </div>
+            <div className="mt-3">
+              <label for="name" class="form-label">
+                User Role
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <FaRupeeSign />
+                </span>
+                <input
+                  type="text"
+                  // name="package_name"
+                  class="form-control"
+                  // placeholder="Enter Package Name"
+                  value={user.role}
+                  onChange={handleChange}
+                  disabled
+                  required
+                />
+              </div>
+            </div>
+            <div className="mt-3">
+              <label for="name" class="form-label">
+                Email
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <FaRupeeSign />
+                </span>
+                <input
+                  type="email"
+                  name="Email"
+                  class="form-control"
+                  placeholder="Enter Email Id"
+                  value={formData.Email}
+                  onChange={handleChange}
+                  
+                  required
+                />
+              </div>
+            </div>
+            <div className="mt-3">
+              <label for="name" class="form-label">
+               Mobile Number
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <FaRupeeSign />
+                </span>
+                <input
+                  type="text"
+                  name="ContactNo"
+                  class="form-control"
+                  placeholder="Enter Mobile Number"
+                  value={formData.ContactNo}
+                  onChange={handleChange}
+                  pattern="[0-9]{10}"
+                    title="Mobile number should be 10 digits"
+                    maxLength={10}
+                    minLength={10}
+                 
+                  required
+                />
+              </div>
+            </div>
+
+           {
+            formData.UserRole === "WhiteLabel" &&
+            <div className="mt-3">
+            <label for="name" class="form-label">
+             White Label Website
+            </label>
+            <div class="input-group flex-nowrap">
+              <span class="input-group-text" id="addon-wrapping">
+                {" "}
+                <FaRupeeSign />
+              </span>
+              <input
+                type="text"
+                name="White_Label_Website_URL"
+                class="form-control"
+                placeholder="Enter White Label Website"
+                value={formData.White_Label_Website_URL}
+                onChange={handleChange}
+               
+                required
+              />
+            </div>
+          </div>
+           } 
+            <div className="mt-3">
+              <label for="name" class="form-label">
+                Select Package
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <LuTextSelect />
+                </span>
+                <select
+                  name="PackageId"
+                  value={formData.PackageId}
+                  onChange={handlePackageSelect}
+                  class="form-select"
+                  aria-label="Default select example"
+                  required
+                >
+                  <option value="" selected>
+                    Select...
+                  </option>
+
+                  {packages.map((pkg) => (
+                    <option key={pkg.id} value={pkg.id}>
+                      {pkg.package_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+  
+            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+              <div className="text-center  m-5">
+                <button type="submit" className="btn p-2" disabled={loading}>
+                  {loading ? "Loading..." : "Submit"}
+                </button>
+              </div>
+            </div>
+          </form>
+        )}
+      </div>
+    </>
+  );
+}
+
+
 const SAActiveUsersList = () => {
 
     const [loading, setLoading] = useState(false);
+    const [isRefresh, setIsRefresh] = useState(false);
+    const [ShowChangeUserinfoModel, setShowChangeUserinfoModel] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
     const [users, setUsers] = useState([]);
     const [keyword, setKeyword] = useState("");
     const complaintsPerPage = 10;
@@ -36,7 +343,7 @@ const SAActiveUsersList = () => {
     
       useEffect(() => {
         fetchActiveUsers();
-      }, []);
+      }, [isRefresh]);
 
       const filteredItems = users.filter(
         (row) =>{ 
@@ -355,6 +662,19 @@ const SAActiveUsersList = () => {
                                                 Deactivate User
                                               </Dropdown.Item>
                                               }
+                                                <Dropdown.Item
+                                                onClick={() => {
+                                                  setSelectedUser(user);
+                                                  setShowChangeUserinfoModel(true);
+                                                  // deactivateUser(user.UserId)
+                                                }}
+                                              >
+                                                <span className="">
+                                                  {" "}
+                                                  <CiViewList />
+                                                </span>{" "}
+                                               Change User Info
+                                              </Dropdown.Item>
                                             
                                          
                                             </Dropdown.Menu>
@@ -402,6 +722,32 @@ const SAActiveUsersList = () => {
                         </div>
                     </div>
                 </div>
+                  {/* Change user info Model  start*/}
+
+        <Modal
+          // size="lg"
+          show={ShowChangeUserinfoModel}
+          //   fullscreen={true}
+          onHide={() => setShowChangeUserinfoModel(false)}
+          aria-labelledby="packageDetail-modal-sizes-title-lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="packageDetail-modal-sizes-title-lg">
+              Change User Info
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {selectedUser && (
+              <SAChangeUserInfo
+                user={selectedUser}
+                setShowChangeUserinfoModel={setShowChangeUserinfoModel}
+                setIsRefresh={setIsRefresh}
+              />
+            )}
+          </Modal.Body>
+        </Modal>
+
+        {/*  Change user info Model  end*/}
             </Wrapper>
         </>
     );

@@ -34,6 +34,7 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
         package_for: packages.package_for, // This will store the selected options
         offline_E_PAN_Card_Price : packages.offline_E_PAN_Card_Price,
         offline_P_PAN_Card_Price : packages.offline_P_PAN_Card_Price,
+        Pan_Find_Price : packages.Pan_Find_Price,
         Google_Play_Price: packages.Google_Play_Price,
         Birth_Certificate_Price: packages.Birth_Certificate_Price,
         Death_Certificate_Price: packages.Death_Certificate_Price,
@@ -50,6 +51,7 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
     non_samagra_income_Certificate_Price : packages.non_samagra_income_Certificate_Price,
     non_samagra_Domicile_Certificate_Price : packages.non_samagra_Domicile_Certificate_Price,
     verify_edistrict_Certificate_Price : packages.verify_edistrict_Certificate_Price,
+    Ayushman_Id_Price : packages.Ayushman_Id_Price,
         IRCTC_Agent_ID_Price: packages.IRCTC_Agent_ID_Price,
         PayNearBy_BankId_Price : packages.PayNearBy_BankId_Price ,
         Fino_BankId_Price : packages.Fino_BankId_Price,
@@ -64,6 +66,7 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
         Offline_Services_Commission_Type: packages.Offline_Services_Commission_Type,
         offline_E_PAN_Card_Commission : packages.offline_E_PAN_Card_Commission,
         offline_P_PAN_Card_Commission : packages.offline_P_PAN_Card_Commission,
+        Pan_Find_Commission : packages.Pan_Find_Commission,
         Google_Play_Commission: packages.Google_Play_Commission,
         IRCTC_Agent_ID_Commission: packages.IRCTC_Agent_ID_Commission,
         Birth_Certificate_Commission: packages.Birth_Certificate_Commission,
@@ -125,6 +128,10 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
         Off_Videocon_New_DTH_Connection_Commission: packages.Off_Videocon_New_DTH_Connection_Commission,
         Off_Sun_Direct_New_DTH_Connection_Commission: packages.Off_Sun_Direct_New_DTH_Connection_Commission,
         Off_Airtel_New_DTH_Connection_Commission: packages.Off_Airtel_New_DTH_Connection_Commission,
+        Online_Broadband_Bill_Pay_Commission_Type: packages.Online_Broadband_Bill_Pay_Commission_Type,
+        Online_Broadband_Bill_Pay_Commission: packages.Online_Broadband_Bill_Pay_Commission,
+        Offline_Broadband_Bill_Pay_Commission_Type: packages.Offline_Broadband_Bill_Pay_Commission_Type,
+        Offline_Broadband_Bill_Pay_Commission: packages.Offline_Broadband_Bill_Pay_Commission,
         Online_Electricity_Bill_Pay_Commission_Type: packages.Online_Electricity_Bill_Pay_Commission_Type,
         Online_Electricity_Bill_Pay_Commission: packages.Online_Electricity_Bill_Pay_Commission,
         Offline_Electricity_Bill_Pay_Commission_Type: packages.Offline_Electricity_Bill_Pay_Commission_Type,
@@ -387,6 +394,26 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                             placeholder="Enter Price"
                             name="offline_P_PAN_Card_Price"
                             value={formData.offline_P_PAN_Card_Price}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Pan Find Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="Pan_Find_Price"
+                            value={formData.Pan_Find_Price}
                             onChange={handleChange}
                             required
                           />
@@ -749,7 +776,27 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                       </div>
 
                       
-
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Ayushman ID Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                           
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="Ayushman_Id_Price"
+                            value={formData.Ayushman_Id_Price}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
                       
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
@@ -1077,6 +1124,28 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                             placeholder="Enter Commission"
                             name="offline_P_PAN_Card_Commission"
                             value={formData.offline_P_PAN_Card_Commission}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Pan Find Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                           
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="Pan_Find_Commission"
+                            value={formData.Pan_Find_Commission}
                             onChange={handleChange}
                             required
                           />
@@ -2504,6 +2573,159 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                           />
                         </div>
                       </div>
+
+                      {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div className="text-center  mb-5 mt-3">
+                                                <button className="btn p-2">Change</button>
+                                            </div>
+                                        </div> */}
+                    </div>
+
+                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                      <div className="text-center  my-5">
+                        <h2>Edit Online Broadband Bill Pay Commission</h2>
+                      </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" className="form-label">
+                          Select Commission Type
+                        </label>
+                        <div className="input-group flex-nowrap">
+                          <span
+                            className="input-group-text"
+                            id="addon-wrapping"
+                          >
+                            {" "}
+                            <LuTextSelect />
+                          </span>
+                          <select
+                            name="Online_Broadband_Bill_Pay_Commission_Type" value={formData.Online_Broadband_Bill_Pay_Commission_Type} onChange={handleChange}
+                            className="form-select"
+                            aria-label="Default select example"
+                            required
+                          >
+                            <option value="" selected>Select...</option>
+
+                            <option value="Percentage">Percentage (%)</option>
+                            <option value="Rupees">Rupees (&#8377;)</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Online Broadband Bill Pay Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="Online_Broadband_Bill_Pay_Commission"
+                            value={formData.Online_Broadband_Bill_Pay_Commission}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+
+                     
+                    </div>
+                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                      <div className="text-center  my-5">
+                        <h2>Edit Offline Broadband Bill Pay Commission</h2>
+                      </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" className="form-label">
+                          Select Commission Type
+                        </label>
+                        <div className="input-group flex-nowrap">
+                          <span
+                            className="input-group-text"
+                            id="addon-wrapping"
+                          >
+                            {" "}
+                            <LuTextSelect />
+                          </span>
+                          <select
+                            name="Offline_Broadband_Bill_Pay_Commission_Type" value={formData.Offline_Broadband_Bill_Pay_Commission_Type} onChange={handleChange}
+                            className="form-select"
+                            aria-label="Default select example"
+                            required
+                          >
+                            <option value="" selected>Select...</option>
+
+                            <option value="Percentage">Percentage (%)</option>
+                            <option value="Rupees">Rupees (&#8377;)</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Offline Broadband Bill Pay Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="Offline_Broadband_Bill_Pay_Commission"
+                            value={formData.Offline_Broadband_Bill_Pay_Commission}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                            Enter M.P. Madhya Kshetra Vidyut Vitaran - RURAL Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                            Enter M.P. Poorv Kshetra Vidyut Vitaran Company Ltd (RURAL) Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div> */}
 
                       {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                             <div className="text-center  mb-5 mt-3">

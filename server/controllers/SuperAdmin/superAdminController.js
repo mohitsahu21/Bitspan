@@ -10,6 +10,7 @@ const addPackage = (req, res) => {
       package_for,
       offline_E_PAN_Card_Price,
       offline_P_PAN_Card_Price,
+      Pan_Find_Price,
       Google_Play_Price,
       Birth_Certificate_Price,
       Death_Certificate_Price,
@@ -26,6 +27,7 @@ const addPackage = (req, res) => {
       non_samagra_income_Certificate_Price,
       non_samagra_Domicile_Certificate_Price,
       verify_edistrict_Certificate_Price,
+      Ayushman_Id_Price,
       IRCTC_Agent_ID_Price,
       PayNearBy_BankId_Price,
       Fino_BankId_Price,
@@ -40,6 +42,7 @@ const addPackage = (req, res) => {
       Offline_Services_Commission_Type,
       offline_E_PAN_Card_Commission,
       offline_P_PAN_Card_Commission,
+      Pan_Find_Commission,
       Google_Play_Commission,
       IRCTC_Agent_ID_Commission,
       Birth_Certificate_Commission,
@@ -101,6 +104,10 @@ const addPackage = (req, res) => {
       Off_Videocon_New_DTH_Connection_Commission,
       Off_Sun_Direct_New_DTH_Connection_Commission,
       Off_Airtel_New_DTH_Connection_Commission,
+      Online_Broadband_Bill_Pay_Commission_Type,
+      Online_Broadband_Bill_Pay_Commission,
+      Offline_Broadband_Bill_Pay_Commission_Type,
+      Offline_Broadband_Bill_Pay_Commission,
       Online_Electricity_Bill_Pay_Commission_Type,
       Online_Electricity_Bill_Pay_Commission,
       Offline_Electricity_Bill_Pay_Commission_Type,
@@ -122,9 +129,9 @@ const addPackage = (req, res) => {
     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
     const sql = `INSERT INTO packagestable (
-        package_name, package_for, offline_E_PAN_Card_Price , offline_P_PAN_Card_Price, Google_Play_Price, Birth_Certificate_Price, Death_Certificate_Price,
+        package_name, package_for, offline_E_PAN_Card_Price , offline_P_PAN_Card_Price,Pan_Find_Price, Google_Play_Price, Birth_Certificate_Price, Death_Certificate_Price,
         E_Stamp_Price, ITR_Registration_Price, GST_Registration_Price, Sambal_Price, Udyog_Aadhar_Price, offline_kyc_eDistrict,
-        eKYC_Income_Certificate_Price, eKYC_Domicile_Certificate_Price,offlineKYC_Income_Certificate_Price,offlineKYC_Domicile_Certificate_Price,non_samagra_income_Certificate_Price, non_samagra_Domicile_Certificate_Price, verify_edistrict_Certificate_Price, IRCTC_Agent_ID_Price,
+        eKYC_Income_Certificate_Price, eKYC_Domicile_Certificate_Price,offlineKYC_Income_Certificate_Price,offlineKYC_Domicile_Certificate_Price,non_samagra_income_Certificate_Price, non_samagra_Domicile_Certificate_Price, verify_edistrict_Certificate_Price,Ayushman_Id_Price, IRCTC_Agent_ID_Price,
       PayNearBy_BankId_Price,
       Fino_BankId_Price,
       SpiceMoney_BankId_Price,
@@ -134,7 +141,7 @@ const addPackage = (req, res) => {
       Airtel_BankId_Price,
       payworld_BankId_Price,
       Anypay_BankId_Price,
-      Roinet_BankId_Price, Offline_Services_Commission_Type, offline_E_PAN_Card_Commission , offline_P_PAN_Card_Commission ,Google_Play_Commission,
+      Roinet_BankId_Price, Offline_Services_Commission_Type, offline_E_PAN_Card_Commission , offline_P_PAN_Card_Commission ,Pan_Find_Commission,Google_Play_Commission,
         IRCTC_Agent_ID_Commission, Birth_Certificate_Commission, Death_Certificate_Commission, E_Stamp_Commission,
         ITR_Registration_Commission, GST_Registration_Commission, Sambal_Commission,Udyog_Aadhar_Commission, eKYC_Income_Certificate_Commission,
         eKYC_Domicile_Certificate_Commission, offlineKYC_Income_Certificate_Commission,offlineKYC_Domicile_Certificate_Commission, non_samagra_income_Certificate_Commission, non_samagra_Domicile_Certificate_Commission,verify_edistrict_Certificate_Commission, Bank_ID_Commission, Off_Prepaid_Recharge_Comm_Type, Off_Airtel_Prepaid_Recharge_Comm,
@@ -155,18 +162,22 @@ const addPackage = (req, res) => {
     Off_Tata_Sky_New_DTH_Connection_Commission,
     Off_Videocon_New_DTH_Connection_Commission,
     Off_Sun_Direct_New_DTH_Connection_Commission,
-    Off_Airtel_New_DTH_Connection_Commission,
+    Off_Airtel_New_DTH_Connection_Commission,Online_Broadband_Bill_Pay_Commission_Type,
+      Online_Broadband_Bill_Pay_Commission,
+      Offline_Broadband_Bill_Pay_Commission_Type,
+      Offline_Broadband_Bill_Pay_Commission,
         Online_Electricity_Bill_Pay_Commission_Type, Online_Electricity_Bill_Pay_Commission,
         Offline_Electricity_Bill_Pay_Commission_Type, Offline_Electricity_Bill_Pay_Commission,
         Online_Insurance_Pay_Commission_Type, Online_Insurance_Pay_Commission, Offline_Insurance_Pay_Commission_Type,
         Offline_Insurance_Pay_Commission,E_PAN_Card_Price,P_PAN_Card_Price,UTI_PAN_Coupon_Price, PAN_Card_Commission_Type, E_PAN_Card_Commission, UTI_PAN_Coupon_Commission, P_PAN_Card_Commission , created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?, ?, ? ,?, ? , ? , ? , ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?)`;
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?, ?, ? ,?, ? , ? , ? , ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ? , ?, ?, ?, ?, ?, ?, ?)`;
 
     const values = [
       package_name,
       package_for,
       offline_E_PAN_Card_Price,
       offline_P_PAN_Card_Price,
+      Pan_Find_Price,
       Google_Play_Price,
       Birth_Certificate_Price,
       Death_Certificate_Price,
@@ -183,6 +194,7 @@ const addPackage = (req, res) => {
       non_samagra_income_Certificate_Price,
       non_samagra_Domicile_Certificate_Price,
       verify_edistrict_Certificate_Price,
+      Ayushman_Id_Price,
       IRCTC_Agent_ID_Price,
       PayNearBy_BankId_Price,
       Fino_BankId_Price,
@@ -197,6 +209,7 @@ const addPackage = (req, res) => {
       Offline_Services_Commission_Type,
       offline_E_PAN_Card_Commission,
       offline_P_PAN_Card_Commission,
+      Pan_Find_Commission,
       Google_Play_Commission,
       IRCTC_Agent_ID_Commission,
       Birth_Certificate_Commission,
@@ -258,6 +271,10 @@ const addPackage = (req, res) => {
       Off_Videocon_New_DTH_Connection_Commission,
       Off_Sun_Direct_New_DTH_Connection_Commission,
       Off_Airtel_New_DTH_Connection_Commission,
+      Online_Broadband_Bill_Pay_Commission_Type,
+      Online_Broadband_Bill_Pay_Commission,
+      Offline_Broadband_Bill_Pay_Commission_Type,
+      Offline_Broadband_Bill_Pay_Commission,
       Online_Electricity_Bill_Pay_Commission_Type,
       Online_Electricity_Bill_Pay_Commission,
       Offline_Electricity_Bill_Pay_Commission_Type,
@@ -533,6 +550,7 @@ const editPackage = (req, res) => {
       package_for,
       offline_E_PAN_Card_Price,
       offline_P_PAN_Card_Price,
+      Pan_Find_Price,
       Google_Play_Price,
       Birth_Certificate_Price,
       Death_Certificate_Price,
@@ -549,6 +567,7 @@ const editPackage = (req, res) => {
       non_samagra_income_Certificate_Price,
       non_samagra_Domicile_Certificate_Price,
       verify_edistrict_Certificate_Price,
+      Ayushman_Id_Price,
       IRCTC_Agent_ID_Price,
       PayNearBy_BankId_Price,
       Fino_BankId_Price,
@@ -563,6 +582,7 @@ const editPackage = (req, res) => {
       Offline_Services_Commission_Type,
       offline_E_PAN_Card_Commission,
       offline_P_PAN_Card_Commission,
+      Pan_Find_Commission,
       Google_Play_Commission,
       IRCTC_Agent_ID_Commission,
       Birth_Certificate_Commission,
@@ -624,6 +644,10 @@ const editPackage = (req, res) => {
       Off_Videocon_New_DTH_Connection_Commission,
       Off_Sun_Direct_New_DTH_Connection_Commission,
       Off_Airtel_New_DTH_Connection_Commission,
+      Online_Broadband_Bill_Pay_Commission_Type,
+      Online_Broadband_Bill_Pay_Commission,
+      Offline_Broadband_Bill_Pay_Commission_Type,
+      Offline_Broadband_Bill_Pay_Commission,
       Online_Electricity_Bill_Pay_Commission_Type,
       Online_Electricity_Bill_Pay_Commission,
       Offline_Electricity_Bill_Pay_Commission_Type,
@@ -647,12 +671,14 @@ const editPackage = (req, res) => {
     const sql = `UPDATE packagestable SET
         package_name = ?, package_for = ?, 
         offline_E_PAN_Card_Price = ?, offline_P_PAN_Card_Price = ?,
+        Pan_Find_Price = ?,
         Google_Play_Price = ?, 
         Birth_Certificate_Price = ?, Death_Certificate_Price = ?, E_Stamp_Price = ?, ITR_Registration_Price = ?, 
         GST_Registration_Price = ?, Sambal_Price = ?,
         Udyog_Aadhar_Price = ?, offline_kyc_eDistrict = ?,
         eKYC_Income_Certificate_Price = ?, eKYC_Domicile_Certificate_Price = ?,offlineKYC_Income_Certificate_Price = ?,offlineKYC_Domicile_Certificate_Price = ?, non_samagra_income_Certificate_Price = ? ,
         non_samagra_Domicile_Certificate_Price = ? , verify_edistrict_Certificate_Price = ?, 
+        Ayushman_Id_Price = ? ,
         IRCTC_Agent_ID_Price = ?,
          PayNearBy_BankId_Price = ?,
       Fino_BankId_Price = ?, 
@@ -666,6 +692,7 @@ const editPackage = (req, res) => {
       Roinet_BankId_Price = ?,  
          Offline_Services_Commission_Type = ?, 
         offline_E_PAN_Card_Commission = ?, offline_P_PAN_Card_Commission = ?,
+        Pan_Find_Commission = ? ,
         Google_Play_Commission = ?, 
         IRCTC_Agent_ID_Commission = ?, Birth_Certificate_Commission = ?, Death_Certificate_Commission = ?, 
         E_Stamp_Commission = ?, ITR_Registration_Commission = ?, GST_Registration_Commission = ?, Sambal_Commission = ?,
@@ -691,6 +718,7 @@ const editPackage = (req, res) => {
         Offline_New_DTH_Connection_Commission_Type = ?, Off_Dish_TV_New_DTH_Connection_Commission = ?, 
         Off_Tata_Sky_New_DTH_Connection_Commission = ?, Off_Videocon_New_DTH_Connection_Commission = ?, 
         Off_Sun_Direct_New_DTH_Connection_Commission = ?, Off_Airtel_New_DTH_Connection_Commission = ?, 
+        Online_Broadband_Bill_Pay_Commission_Type = ? ,Online_Broadband_Bill_Pay_Commission = ? ,Offline_Broadband_Bill_Pay_Commission_Type = ? ,Offline_Broadband_Bill_Pay_Commission = ?,
         Online_Electricity_Bill_Pay_Commission_Type = ?, Online_Electricity_Bill_Pay_Commission = ?, 
         Offline_Electricity_Bill_Pay_Commission_Type = ?, Offline_Electricity_Bill_Pay_Commission = ?, 
         Online_Insurance_Pay_Commission_Type = ?, Online_Insurance_Pay_Commission = ?, 
@@ -5636,6 +5664,42 @@ const changeUserDistributor = (req, res) => {
   }
 };
 
+const ChangeUserInfo = (req, res) => {
+  try {
+    const {  UserId,
+      ContactNo ,
+      Email,
+      PackageId,
+      White_Label_Website_URL } = req.body;
+
+    if (!UserId || !ContactNo || !Email || !PackageId ) {
+      return res
+        .status(200)
+        .json({ success: false, message: "All fields are required" });
+    }
+
+    // If the package is not allocated to any user, proceed to delete
+    const Sql = `UPDATE userprofile SET ContactNo = ? , Email = ? , package_Id = ? , White_Label_Website_URL = ? WHERE UserId = ?`;
+    db.query(Sql, [ContactNo ,Email ,PackageId,White_Label_Website_URL, UserId], (Error, Results) => {
+      if (Error) {
+        console.error("Error Change User Info:", Error);
+        return res.status(500).json({ error: "Failed to Change User Info" });
+      }
+
+      if (Results.affectedRows === 0) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Change User Info  successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({ error: "An unexpected error occurred" });
+  }
+};
+
 
 
 module.exports = {
@@ -5734,7 +5798,8 @@ module.exports = {
   getUserRelationData,
   changeUserWhiteLabel,
   changeUserDistributor,
-  changeUserSuperDistributor
+  changeUserSuperDistributor,
+  ChangeUserInfo
 
 
 };
