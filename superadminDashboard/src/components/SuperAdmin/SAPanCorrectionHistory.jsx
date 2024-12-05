@@ -1,107 +1,110 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { BiHomeAlt } from "react-icons/bi";
+import { MdFormatListNumberedRtl } from "react-icons/md";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { Dropdown,Modal, Spinner } from "react-bootstrap";
 import { CiViewList } from "react-icons/ci";
 import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
-import { IoSearch } from "react-icons/io5";
 
 
 
+const SAPanCorrectionHistory = () => {
 
-
-const SATodayAllTransaction = () => {
+    const [loading, setLoading] = useState(false);
+    const [users, setUsers] = useState([]);
+    const [keyword, setKeyword] = useState("");
+    const complaintsPerPage = 10;
+    const [currentPage, setCurrentPage] = useState(0);
+    const [isRefresh, setIsRefresh] = useState(false);
+    const [fromDate, setFromDate] = useState(""); // From date filter
+    const [toDate, setToDate] = useState(""); // To date filter
+    const [PaymentMode, setPaymentMode] = useState("")
+  
+  
+    const fetchOfflineForm = async () => {
+      setLoading(true);
+      try {
+        const { data } = await axios.get(
+          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getOnlinePanCorrectionData"
+        );
+        setUsers(data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      }
+    };
+  
+    // useEffect(() => {
+    //   fetchOfflineForm();
+    // }, []);
+  
+    useEffect(() => {
+      fetchOfflineForm();
+    }, [isRefresh]);
+  
+    const filteredItems = users.filter(
+      (row) =>{ 
+        const matchesKeyword =  (row?.userId &&
+          row.userId.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+        (row?.UserName && row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.orderid &&
+            row.orderid.toLowerCase().includes(keyword.trim().toLowerCase())) || 
+             (row?.txid &&
+                row.txid.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.name &&
+                    row.name.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.mobile &&
+                        row.mobile.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.email &&
+                            row.email.toLowerCase().includes(keyword.trim().toLowerCase())) 
+             
+            const matchesType = !PaymentMode || PaymentMode === "---Select---" || row.status === PaymentMode;
+            // return matchesKeyword && matchesType ;
+            const matchesDate =
+        (!fromDate || new Date(row.created_at).toISOString().split("T")[0] >= new Date(fromDate).toISOString().split("T")[0] ) &&
+        (!toDate || new Date(row.created_at).toISOString().split("T")[0]  <= new Date(toDate).toISOString().split("T")[0] );
+        console.log(matchesKeyword)
+            return matchesKeyword && matchesDate && matchesType;
+            
+          }
+         
+    );
+  
+    const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
+  
+    const filterPagination = () => {
+      const startIndex = currentPage * complaintsPerPage;
+      const endIndex = startIndex + complaintsPerPage;
+      return filteredItems?.slice(startIndex, endIndex);
+    };
+  
+    const handlePageChange = ({ selected }) => {
+      setCurrentPage(selected);
+    };
+  
+    const showApiData = filterPagination();
+  
+  
+    console.log(showApiData);
      
-  const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState([]);
-  const [keyword, setKeyword] = useState("");
-  const complaintsPerPage = 10;
-  const [currentPage, setCurrentPage] = useState(0);
-  const [isRefresh, setIsRefresh] = useState(false);
-  const [fromDate, setFromDate] = useState(""); // From date filter
-  const [toDate, setToDate] = useState(""); // To date filter
-
-
-  const fetchOfflineForm = async () => {
-    setLoading(true);
-    try {
-      const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getTodayWalletTransactions"
-      );
-      setUsers(data.data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchOfflineForm();
-  }, []);
-
-  // useEffect(() => {
-  //   fetchOfflineForm();
-  // }, [isRefresh]);
-
-  const filteredItems = users.filter(
-    (row) =>{ 
-      const matchesKeyword =  (row?.userId &&
-        row.userId.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.UserName && row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.Order_Id &&
-          row.Order_Id.toLowerCase().includes(keyword.trim().toLowerCase())) 
-           
-          // const matchesType = !formStatus || formStatus === "---Select Form Status---" || row.status === formStatus;
-          // return matchesKeyword && matchesType ;
-          const matchesDate =
-      (!fromDate || new Date(row.transaction_date).toISOString().split("T")[0] >= new Date(fromDate).toISOString().split("T")[0] ) &&
-      (!toDate || new Date(row.transaction_date).toISOString().split("T")[0]  <= new Date(toDate).toISOString().split("T")[0] );
-      console.log(matchesKeyword)
-          return matchesKeyword && matchesDate;
-          
-        }
-       
-  );
-
-  const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
-
-  const filterPagination = () => {
-    const startIndex = currentPage * complaintsPerPage;
-    const endIndex = startIndex + complaintsPerPage;
-    return filteredItems?.slice(startIndex, endIndex);
-  };
-
-  const handlePageChange = ({ selected }) => {
-    setCurrentPage(selected);
-  };
-
-  const showApiData = filterPagination();
-
-
-  console.log(showApiData);
-   
-
     return (
         <>
             <Wrapper>
                 <div className="main">
                     <div className="container-fluid">
-                        <div className="row flex-wrap justify-content-center ">
+                        <div className="row flex-wrap justify-content-lg-center justify-content-center ">
                             <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
                                 {/* <Sider /> */}
                             </div>
                             <div className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
-                             mt-5 formdata">
-                                <div className="main shadow-none">
-                                    <div className="row shadow-none">
-                                        <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                             mt-5 formdata ">
+                                <div className="main shadow-none ">
+                                    <div className="row shadow-none ">
+                                        <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                             {/* <div className="text-center">
-                                                <h3>Wallet Transaction Report</h3>
+                                                <h3>Complaint Raised List</h3>
                                             </div> */}
                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Today All Transaction</h4>
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">PAN Correction History</h4>
                                                 <p className="mx-lg-5">
                                                     {" "}
                                                     <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
@@ -110,19 +113,21 @@ const SATodayAllTransaction = () => {
                                                         style={{ fontSize: "13px" }}
                                                     >
                                                         {" "}
-                                                      Today All Transaction
+                                                        PAN Correction History
                                                     </span>{" "}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
+
                                     <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
-                                        <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
+                                        <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
                                             <div className="row d-flex flex-column g-4">
-                                            {/* <div className="d-flex flex-column flex-md-row gap-3">
-                                                <div className="col-12 col-md-4 col-lg-3">
+
+                                                <div className="d-flex flex-column flex-md-row gap-3">
+                                                    <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="fromDate" className="form-label">From</label>
-                                                        <input id="fromDate" className="form-control" type="date"  value={fromDate}
+                                                        <input id="fromDate" className="form-control" type="date" value={fromDate}
                               onChange={(e) => setFromDate(e.target.value)}/>
                                                     </div>
                                                     <div className="col-12 col-md-4 col-lg-3">
@@ -130,32 +135,43 @@ const SATodayAllTransaction = () => {
                                                         <input id="toDate" className="form-control " type="date" value={toDate}
                               onChange={(e) => setToDate(e.target.value)}/>
                                                     </div>
-                                                </div> */}
+                                                    <div className="col-12 col-md-4 col-lg-3">
+                                                        <label for="toDate" className="form-label">Select Status</label>
+                                                        <select className="form-select" aria-label="Default select example"
+                                                         value={PaymentMode}
+                                                         onChange={(e) => setPaymentMode(e.target.value)}>
+                                                             <option selected>---Select---</option>
+                                                            <option value="Success">Success</option>
+                                                            <option value="Failed">Failed</option>
 
-                                                <div className="d-flex flex-column flex-xl-row gap-3">
 
-                                                <div className="col-12 col-md-12 col-lg-12 col-xl-8">
-                                                        {/* <label for="fromDate" className="form-label">From</label> */}
-                                                        <div class="input-group flex-nowrap">
-                                                        <span class="input-group-text" id="addon-wrapping"> <IoSearch /></span>
-                                                        <input id="fromDate" 
-                                                        className="form-control"
-                                                         type="search"
-                                                         placeholder="Enter User Name/User Id/Order Id"
-                                                         value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
-                                                         />
-                                                          </div>
+                                                        </select>
                                                     </div>
                                                     
-                                                   
                                                     {/* <div className="d-flex align-items-end">
                                                         <button type="button" className="btn btn-primary button">Search</button>
                                                     </div> */}
 
                                                 </div>
-                                              
-                                            
+                                                <div className="d-flex flex-column flex-xl-row gap-3">
+
+<div className="col-12 col-md-12 col-lg-12 col-xl-8">
+        {/* <label for="fromDate" className="form-label">From</label> */}
+        <input id="fromDate" 
+        className="form-control"
+         type="search"
+         placeholder="Enter Name/Mobile/Email/Order Id/Txn Id/Retailer Name/Id"
+         value={keyword}
+onChange={(e) => setKeyword(e.target.value)}
+         />
+    </div>
+    
+   
+    {/* <div className="d-flex align-items-end">
+        <button type="button" className="btn btn-primary button">Search</button>
+    </div> */}
+
+</div>
 
 
                                                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -170,49 +186,62 @@ const SATodayAllTransaction = () => {
                                                     :
                                                     (
                                                         <>
-                                                        <table class="table table-striped">
+                                                        <table className="table table-striped">
                                                             <thead className="table-dark">
-                                                            <tr>
-                                                                    <th scope="col">#</th>
+                                                                <tr>
+
+                                                                <th scope="col">#</th>
                                                                     <th scope="col">Date</th>
+
                                                                     <th scope="col">Order Id</th>
                                                                     <th scope="col">Transaction Id</th>
-                                                                    <th scope="col">User Id</th>
-                                                                      <th scope="col">User Name</th>
-                                                                    <th scope="col">User Role</th>
-                                                                    <th scope="col">Credit Amount</th>
-                                                                    <th scope="col">Debit Amount</th>
-                                                                    <th scope="col">Opening <br /> Balance</th>
-                                                                    <th scope="col">Closing <br /> Balance</th>
-                                                                    <th scope="col">Transaction  <br /> Type</th>
-                                                                    <th scope="col">Transaction Details</th>
+                                                                    <th scope="col">Application Mode</th>
+                                                                    <th scope="col">Select Type</th>
+                                                                    <th scope="col">Name</th>
+                                                                    <th scope="col">DOB</th>
+                                                                    <th scope="col">Gender</th>
+                                                                    <th scope="col">Mobile</th>
+                                                                    <th scope="col">Email</th>
+                                                                    <th scope="col">PAN NO.</th>
+                                                                    <th scope="col">Physical Pan</th>
+                                                                    <th scope="col">Retailer Id</th>
+                                                                    <th scope="col">Retailer Name</th>
+                                                                    {/* <th scope="col">User Role</th> */}
+                                                                    {/* <th scope="col">No Of User Id</th> */}
+                                                                 
+                                                                    <th scope="col">Amount</th>
+                                                                    <th scope="col">Message</th>
+                                                                    <th scope="col">API Provider Name</th>
+                                                                   
                                                                     <th scope="col">Status</th>
+
+
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                            
                                                             {showApiData && showApiData.length > 0 ? (
                                         showApiData?.map((item, index) => (
                                           <tr key={index}>
                                           <th scope="row">{index + 1}</th>
-                                          <td>{item.transaction_date}</td>
-                                          <td>{item.Order_Id}</td>
-                                          <td>{item.Transaction_Id}</td>
+                                          <td>{item.created_at}</td>
+                                          <td>{item.orderid}</td>
+                                          <td>{item.txid}</td>
+                                          <td>{item.applicationMode}</td>
+                                          <td>{item.selectType}</td>
+                                          <td>{item.name}</td>
+                                          <td>{item.dob}</td>
+                                          <td>{item.gender}</td>
+                                          <td>{item.mobile}</td>
+                                          <td>{item.email}</td>
+                                          <td>{item.pan_no}</td>
+                                          <td>{item.physicalPan}</td>
                                           <td>{item.userId}</td>
                                           <td>{item.UserName}</td>
-                                          <td>{item.role}</td>
-                                          {/* <td>{item.userPhone}</td>
-                                          <td>{item.userEmail}</td> */}
-                                          <td>{item.credit_amount}</td>
-                                          <td>{item.debit_amount}</td>
-                                          <td>{item.Opening_Balance}</td>
-                                          <td>{item.Closing_Balance}</td>
-                                          <td>{item.Transaction_Type}</td>
-                                          <td>{item.Transaction_details}</td>
+                                          <td>{item.amount}</td>
+                                          <td>{item.message}</td>
+                                          <td>{item.providerName}</td>
                                           <td>{item.status}</td>
-                                         
-                                        
-                                         
+                                       
                                         </tr>
                                         ))
                                       ) : (
@@ -221,12 +250,9 @@ const SATodayAllTransaction = () => {
                                           {/* Updated colSpan to match table columns */}
                                         </tr>
                                       )}
-                                                                
-                                                        
-    
-                                                            </tbody>
+                                       </tbody>
                                                         </table>
-                                                        
+
                                                         <PaginationContainer>
                                                         <ReactPaginate
                                                           previousLabel={"previous"}
@@ -243,41 +269,34 @@ const SATodayAllTransaction = () => {
                                                         </>
                                                     )}
                                                     </div>
-                                                  
+                                                 
                                                 </div>
                                             </div>
+
+
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-             
             </Wrapper>
         </>
     );
 }
 
-export default SATodayAllTransaction;
+export default SAPanCorrectionHistory
 
 const Wrapper = styled.div`
   .main {
-    height: 100%;
+    height: 100vh;
     width: 100%;
   }
-  .button {
-   
+  button {
+    color: #fff;
     background: #6d70ff;
-    border-color: #6d70ff;
-   
-  }
-  .button:hover{
-    background: #5356fa;
-    border-color: #5356fa;
-    
   }
   .form-container {
     width: 50%;
@@ -305,11 +324,14 @@ const Wrapper = styled.div`
       padding-left: 13rem;
     }
   }
+
   .custom-dropdown-toggle::after {
   display: none !important;
 }
+.form-label{
+    white-space: nowrap;
+}
 `;
-
 
 const PaginationContainer = styled.div`
   .pagination {
@@ -358,3 +380,4 @@ const PaginationContainer = styled.div`
     border: 1px solid #004aad;
   }
 `;
+

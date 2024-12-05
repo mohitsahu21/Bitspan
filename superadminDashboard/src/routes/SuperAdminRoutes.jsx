@@ -64,6 +64,7 @@ import SAOnlineRecharges from "../components/SuperAdmin/SAOnlineRecharges.jsx";
 import SAOnlineDthConnection from "../components/SuperAdmin/SAOnlineDthConnection.jsx";
 import SAPanCouponRequests from "../components/SuperAdmin/SAPanCouponRequests.jsx";
 import SAUserRelation from "../components/SuperAdmin/SAUserRelation.jsx";
+import SAPanCorrectionHistory from "../components/SuperAdmin/SAPanCorrectionHistory.jsx";
 
 const SuperAdminRoutes = () => {
   return (
@@ -169,6 +170,10 @@ const SuperAdminRoutes = () => {
         <Route
           path="/pan-transaction-report"
           element={<SAPanTransactionReport />}
+        />
+        <Route
+          path="/pan-correction-report"
+          element={<SAPanCorrectionHistory />}
         />
         <Route path="/change-price" element={<SAChangePrice />} />
         {/* <Route path="/raise-complaint" element={<WLComplaints />} /> */}

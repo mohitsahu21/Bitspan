@@ -6,6 +6,7 @@ import ReactPaginate from "react-paginate";
 import { Dropdown,Modal, Spinner } from "react-bootstrap";
 import { CiViewList } from "react-icons/ci";
 import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
+import { IoSearch } from "react-icons/io5";
 
 
 
@@ -135,6 +136,8 @@ const SAWalletWithdrawSummary = () => {
 
                                                 <div className="col-12 col-md-12 col-lg-12 col-xl-8">
                                                         {/* <label for="fromDate" className="form-label">From</label> */}
+                                                        <div class="input-group flex-nowrap">
+                                                        <span class="input-group-text" id="addon-wrapping"> <IoSearch /></span>
                                                         <input id="fromDate" 
                                                         className="form-control"
                                                          type="search"
@@ -142,6 +145,7 @@ const SAWalletWithdrawSummary = () => {
                                                          value={keyword}
                               onChange={(e) => setKeyword(e.target.value)}
                                                          />
+                                                          </div>
                                                     </div>
                                                     
                                                    

@@ -735,6 +735,7 @@ const editPackage = (req, res) => {
       package_for,
       offline_E_PAN_Card_Price,
       offline_P_PAN_Card_Price,
+      Pan_Find_Price,
       Google_Play_Price,
       Birth_Certificate_Price,
       Death_Certificate_Price,
@@ -751,6 +752,7 @@ const editPackage = (req, res) => {
       non_samagra_income_Certificate_Price,
       non_samagra_Domicile_Certificate_Price,
       verify_edistrict_Certificate_Price,
+      Ayushman_Id_Price,
       IRCTC_Agent_ID_Price,
       PayNearBy_BankId_Price,
       Fino_BankId_Price,
@@ -765,6 +767,7 @@ const editPackage = (req, res) => {
       Offline_Services_Commission_Type,
       offline_E_PAN_Card_Commission,
       offline_P_PAN_Card_Commission,
+      Pan_Find_Commission,
       Google_Play_Commission,
       IRCTC_Agent_ID_Commission,
       Birth_Certificate_Commission,
@@ -826,6 +829,10 @@ const editPackage = (req, res) => {
       Off_Videocon_New_DTH_Connection_Commission,
       Off_Sun_Direct_New_DTH_Connection_Commission,
       Off_Airtel_New_DTH_Connection_Commission,
+      Online_Broadband_Bill_Pay_Commission_Type,
+      Online_Broadband_Bill_Pay_Commission,
+      Offline_Broadband_Bill_Pay_Commission_Type,
+      Offline_Broadband_Bill_Pay_Commission,
       Online_Electricity_Bill_Pay_Commission_Type,
       Online_Electricity_Bill_Pay_Commission,
       Offline_Electricity_Bill_Pay_Commission_Type,
@@ -5700,6 +5707,141 @@ const ChangeUserInfo = (req, res) => {
   }
 };
 
+const getOnlinePanApplyData = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM user_wallet ORDER BY wid DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM user_wallet c LEFT JOIN userprofile u  ON c.userId = u.UserId ORDER BY wid DESC`;
+    const sql = `
+  SELECT c.*, u.UserName, u.role, u.ContactNo, u.Email 
+  FROM nsdlpan c 
+  LEFT JOIN userprofile u 
+  ON c.userId = u.UserId ORDER BY id DESC
+`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getOnlinePanApplyData from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getOnlinePanApplyData" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getOnlinePanApplyData found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getOnlinePanApplyData fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getOnlinePanApplyData from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getOnlinePanApplyData",
+      error: error.message,
+    });
+  }
+};
+const getOnlinePanCorrectionData = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM user_wallet ORDER BY wid DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM user_wallet c LEFT JOIN userprofile u  ON c.userId = u.UserId ORDER BY wid DESC`;
+    const sql = `
+  SELECT c.*, u.UserName, u.role, u.ContactNo, u.Email 
+  FROM nsdlpancorrection c 
+  LEFT JOIN userprofile u 
+  ON c.userId = u.UserId ORDER BY id DESC
+`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getOnlinePanCorrectionData from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getOnlinePanCorrectionData" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getOnlinePanCorrectionData found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getOnlinePanCorrectionData fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getOnlinePanCorrectionData from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getOnlinePanCorrectionData",
+      error: error.message,
+    });
+  }
+};
+
+const getTodayWalletTransactions = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM user_wallet ORDER BY wid DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM user_wallet c LEFT JOIN userprofile u  ON c.userId = u.UserId ORDER BY wid DESC`;
+    const today_date = moment()
+    .tz("Asia/Kolkata")
+    .format("YYYY-MM-DD");
+    const sql = `
+  SELECT c.*, u.UserName, u.role, u.ContactNo, u.Email 
+  FROM user_wallet c 
+  LEFT JOIN userprofile u 
+  ON c.userId = u.UserId COLLATE utf8mb4_unicode_ci WHERE DATE(c.transaction_date) = '${today_date}'
+  ORDER BY wid DESC
+`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getTodayWalletTransactions from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getTodayWalletTransactions" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getTodayWalletTransactions found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getTodayWalletTransactions fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getTodayWalletTransactions from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getTodayWalletTransactions",
+      error: error.message,
+    });
+  }
+};
+
 
 
 module.exports = {
@@ -5799,7 +5941,10 @@ module.exports = {
   changeUserWhiteLabel,
   changeUserDistributor,
   changeUserSuperDistributor,
-  ChangeUserInfo
+  ChangeUserInfo,
+  getOnlinePanApplyData,
+  getOnlinePanCorrectionData,
+  getTodayWalletTransactions
 
 
 };

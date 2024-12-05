@@ -1525,7 +1525,17 @@ const SuperAdminData = [
         path: "/online-dth-connection-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
-      }
+      },
+      {
+        title: "PAN Transaction History",
+        path: "/pan-transaction-report",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "PAN Correction History",
+        path: "/pan-correction-report",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
 
     ],
   },
@@ -1534,11 +1544,7 @@ const SuperAdminData = [
     path: "/website-setting",
     icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
   },
-  {
-    title: "PAN Transaction History",
-    path: "/pan-transaction-report",
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  },
+ 
   {
     title: "PAN Coupon Requests",
     path: "/pan-coupon-requests",
