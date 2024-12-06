@@ -808,8 +808,9 @@ const SAEdistrictHistory = () => {
                                     ---Select Form Status---
                                   </option>
                                   <option value="Pending">Pending</option>
-                                  <option value="Approve">Approve</option>
-                                  <option value="Reject">Reject</option>
+                              <option value="Success">Success</option>
+                              <option value="Mark Edit">Mark Edit</option>
+                              <option value="Reject">Reject</option>
                                 </select>
                               </div>
                             </div>

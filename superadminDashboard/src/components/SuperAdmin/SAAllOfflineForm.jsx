@@ -813,7 +813,8 @@ const SAAllOfflineForm = () => {
                             >
                               <option selected>---Select Form Status---</option>
                               <option value="Pending">Pending</option>
-                              <option value="Approve">Approve</option>
+                              <option value="Success">Success</option>
+                              <option value="Mark Edit">Mark Edit</option>
                               <option value="Reject">Reject</option>
                             </select>
                           </div>
@@ -843,6 +844,7 @@ const SAAllOfflineForm = () => {
                                       <th scope="col">Applicant Number</th>
                                       <th scope="col">Service</th>
                                       <th scope="col">E-Stamp Type</th>
+                                      <th scope="col">E-Stamp Amount</th>
                                       <th scope="col">View Form</th>
                                       <th scope="col">View Photo</th>
                                       <th scope="col">View Signature</th>
@@ -870,6 +872,7 @@ const SAAllOfflineForm = () => {
                                             {item.applicant_select_service}
                                           </td>
                                           <td>{item.other}</td>
+                                          <td>{item.eStampAmount}</td>
                                           <td>
                                             <a
                                               href={item.attached_form}
@@ -1023,8 +1026,8 @@ const SAAllOfflineForm = () => {
                               onChange={(e) => setKeyword(e.target.value)}
                             />
                           </div>
-                          <div className="col-12 col-md-12 col-lg-12 col-xl-3">
-                            {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
+                          {/* <div className="col-12 col-md-12 col-lg-12 col-xl-3">
+                            <label for="toDate" className="form-label fw-bold">PAN Mode</label>
                             <select
                               className="form-select"
                               aria-label="Default select example"
@@ -1036,7 +1039,7 @@ const SAAllOfflineForm = () => {
                               <option value="Approve">Approve</option>
                               <option value="Reject">Reject</option>
                             </select>
-                          </div>
+                          </div> */}
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -1063,6 +1066,7 @@ const SAAllOfflineForm = () => {
                                       <th scope="col">Applicant Number</th>
                                       <th scope="col">Service</th>
                                       <th scope="col">E-Stamp Type</th>
+                                      <th scope="col">E-Stamp Amount</th>
                                       <th scope="col">View Form</th>
                                       <th scope="col">View Photo</th>
                                       <th scope="col">View Signature</th>
@@ -1090,6 +1094,7 @@ const SAAllOfflineForm = () => {
                                             {item.applicant_select_service}
                                           </td>
                                           <td>{item.other}</td>
+                                          <td>{item.eStampAmount}</td>
                                           <td>
                                             <a
                                               href={item.attached_form}
