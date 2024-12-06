@@ -227,10 +227,14 @@ const SAAllTransaction = () => {
                                                             </tbody>
                                                         </table>
                                                         
-                                                        <PaginationContainer>
+                                                      
+                                                        </>
+                                                    )}
+                                                    </div>
+                                                    <PaginationContainer>
                                                         <ReactPaginate
-                                                          previousLabel={"previous"}
-                                                          nextLabel={"next"}
+                                                          previousLabel={"Previous"}
+                                                          nextLabel={"Next"}
                                                           breakLabel={"..."}
                                                           pageCount={totalPages}
                                                           marginPagesDisplayed={2}
@@ -240,10 +244,6 @@ const SAAllTransaction = () => {
                                                           activeClassName={"active"}
                                                         />
                                                       </PaginationContainer>
-                                                        </>
-                                                    )}
-                                                    </div>
-                                                  
                                                 </div>
                                             </div>
                                         </div>
@@ -311,13 +311,61 @@ const Wrapper = styled.div`
 `;
 
 
+// const PaginationContainer = styled.div`
+//   .pagination {
+//     display: flex;
+//     justify-content: center;
+//     padding: 10px;
+//     list-style: none;
+//     border-radius: 5px; 
+//   }
+
+//   .pagination li {
+//     margin: 0 5px;
+//   }
+
+//   .pagination li a {
+//     display: block;
+//     padding: 8px 16px;
+//     border: 1px solid #e6ecf1;
+//     color: #007bff;
+//     cursor: pointer;
+//     /* background-color: #004aad0a; */
+//     text-decoration: none;
+//     border-radius: 5px;
+//     box-shadow: 0px 0px 1px #000;
+//   }
+
+//   .pagination li.active a {
+//     background-color: #004aad;
+//     color: white;
+//     border: 1px solid #004aad;
+//     border-radius: 5px;
+//   }
+
+//   .pagination li.disabled a {
+//     color: white;
+//     cursor: not-allowed;
+//     border-radius: 5px;
+//     background-color: #3a4e69;
+//     border: 1px solid #3a4e69;
+//   }
+
+//   .pagination li a:hover:not(.active) {
+//     background-color: #004aad;
+//     color: white;
+//     border-radius: 5px;
+//     border: 1px solid #004aad;
+//   }
+// `;
+
 const PaginationContainer = styled.div`
   .pagination {
     display: flex;
     justify-content: center;
     padding: 10px;
     list-style: none;
-    border-radius: 5px; 
+    border-radius: 5px;
   }
 
   .pagination li {
@@ -330,23 +378,21 @@ const PaginationContainer = styled.div`
     border: 1px solid #e6ecf1;
     color: #007bff;
     cursor: pointer;
-    /* background-color: #004aad0a; */
     text-decoration: none;
     border-radius: 5px;
     box-shadow: 0px 0px 1px #000;
+    font-size: 14px; /* Default font size */
   }
 
   .pagination li.active a {
     background-color: #004aad;
     color: white;
     border: 1px solid #004aad;
-    border-radius: 5px;
   }
 
   .pagination li.disabled a {
     color: white;
     cursor: not-allowed;
-    border-radius: 5px;
     background-color: #3a4e69;
     border: 1px solid #3a4e69;
   }
@@ -354,7 +400,48 @@ const PaginationContainer = styled.div`
   .pagination li a:hover:not(.active) {
     background-color: #004aad;
     color: white;
-    border-radius: 5px;
-    border: 1px solid #004aad;
+  }
+
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .pagination {
+      padding: 5px;
+      flex-wrap: wrap;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pagination {
+      padding: 5px;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 4px 8px;
+      font-size: 10px;
+    }
+
+    /* Hide the previous and next labels for extra-small screens */
+    .pagination li:first-child a::before {
+      content: "«";
+      margin-right: 5px;
+    }
+
+    .pagination li:last-child a::after {
+      content: "»";
+      margin-left: 5px;
+    }
   }
 `;
