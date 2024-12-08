@@ -2,7 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const { addPackage, getPackages, editPackage, deletePackage, getPendingUsers, approveUser, rejectUser, getActiveUsers, deactivateUser, activateUser, getdeactiveUsers, getUserRelations, getAllUsers, getPendingPaymentUsers, markPaymentComplete, getUserIdPriceList, addUserIdPrice, updateUserIdPrice, getSuperAdminEmployee, complainGetData, resolveComplaint, getApplyOfflineForm, ApproveOfflineForm, rejectOfflineForm, getPANOfflineForm, ApprovePANOfflineForm, rejectPANOfflineForm, getBankIdForm, ApproveBankIdForm, rejectBankIdForm, getEdistrictForms, ApproveEdistrictForm, rejectEdistrictForm, getOfflineRecharge, ApproveOfflineRecharge, rejectOfflineRecharge, getOfflineDTHConnection, ApproveOfflineDTHConnection, rejectOfflineDTHConnection, getWalletWithdrawRequests, ApproveWalletWithdrawRequests, rejectWalletWithdrawRequests, getPendingWalletWithdrawRequests, getWalletTransactions, getPendingWalletAddMoneyRequests, ApproveWalletAddMoneyRequests, rejectWalletAddMoneyRequests, getAllWalletAddMoneyRequests, getAllApiList, ActiveApi, DeactiveApi, getAllServicesList, ActiveServices, DeactiveServices, getSuperAdminSettings, UpdateGenralSetting, UpdateSocialLinkSetting, UpdateLogoImageSetting, UpdateHomePageSetting, getUserNotification, UpdateUserNotification, UpdateSAWebsiteJoiningPrice, AddWalletAddMoneyDirect, WithdrawWalletAddMoneyDirect, getBuyUserIdSummary, getVerifyEdistrictForms, ApproveVerifyEdistrictForm, rejectVerifyEdistrictForm, getSambalForms, ApproveSambalForm, rejectSambalForm, markForEditOfflineForm, SuccessOfflineForm, markForEditPANOfflineForm, SuccessPANOfflineForm, markForEditBankIdForm, SuccessBankIdForm, getOnlineRecharge, getOnlineDthConnection, getPanCouponRequests, approvePanCouponRequest, rejectPanCouponRequest, getUserRelationData, changeUserWhiteLabel, changeUserSuperDistributor, changeUserDistributor, ChangeUserInfo, getOnlinePanApplyData, getOnlinePanCorrectionData, getTodayWalletTransactions, markForEditEdistrictForm, SuccessEdistrictForm, markForEditVerifyEdistrictForm, SuccessVerifyEdistrictForm, markForEditSambalForm, SuccessSambalForm } = require("../../controllers/SuperAdmin/superAdminController");
+const { addPackage, getPackages, editPackage, deletePackage, getPendingUsers, approveUser, rejectUser, getActiveUsers, deactivateUser, activateUser, getdeactiveUsers, getUserRelations, getAllUsers, getPendingPaymentUsers, markPaymentComplete, getUserIdPriceList, addUserIdPrice, updateUserIdPrice, getSuperAdminEmployee, complainGetData, resolveComplaint, getApplyOfflineForm, ApproveOfflineForm, rejectOfflineForm, getPANOfflineForm, ApprovePANOfflineForm, rejectPANOfflineForm, getBankIdForm, ApproveBankIdForm, rejectBankIdForm, getEdistrictForms, ApproveEdistrictForm, rejectEdistrictForm, getOfflineRecharge, ApproveOfflineRecharge, rejectOfflineRecharge, getOfflineDTHConnection, ApproveOfflineDTHConnection,markForEditOfflineDTHConnection,SuccessOfflineDTHConnection, rejectOfflineDTHConnection, getWalletWithdrawRequests, ApproveWalletWithdrawRequests, rejectWalletWithdrawRequests, getPendingWalletWithdrawRequests, getWalletTransactions, getPendingWalletAddMoneyRequests, ApproveWalletAddMoneyRequests, rejectWalletAddMoneyRequests, getAllWalletAddMoneyRequests, getAllApiList, ActiveApi, DeactiveApi, getAllServicesList, ActiveServices, DeactiveServices, getSuperAdminSettings, UpdateGenralSetting, UpdateSocialLinkSetting, UpdateLogoImageSetting, UpdateHomePageSetting, getUserNotification, UpdateUserNotification, UpdateSAWebsiteJoiningPrice, AddWalletAddMoneyDirect, WithdrawWalletAddMoneyDirect, getBuyUserIdSummary, getVerifyEdistrictForms, ApproveVerifyEdistrictForm, rejectVerifyEdistrictForm, getSambalForms, ApproveSambalForm, rejectSambalForm, markForEditOfflineForm, SuccessOfflineForm, markForEditPANOfflineForm, SuccessPANOfflineForm, markForEditBankIdForm, SuccessBankIdForm, getOnlineRecharge, getOnlineDthConnection, getPanCouponRequests, approvePanCouponRequest, rejectPanCouponRequest, getUserRelationData, changeUserWhiteLabel, changeUserSuperDistributor, changeUserDistributor, ChangeUserInfo, getOnlinePanApplyData, getOnlinePanCorrectionData, getTodayWalletTransactions, markForEditEdistrictForm, SuccessEdistrictForm, markForEditVerifyEdistrictForm, SuccessVerifyEdistrictForm, markForEditSambalForm, SuccessSambalForm, getDTHConnectionPlans, CreateDTHConnectionPlans, EditDTHConnetionPlans, DeleteDTHConnetionPlans } = require("../../controllers/SuperAdmin/superAdminController");
 
 const router = express.Router();
 const storage = multer.diskStorage({
@@ -101,6 +101,8 @@ router.put("/rejectOfflineRecharge" , rejectOfflineRecharge);
 
 router.get("/getOfflineDTHConnection" , getOfflineDTHConnection);
 router.put("/ApproveOfflineDTHConnection" , ApproveOfflineDTHConnection);
+router.put("/markForEditOfflineDTHConnection" , markForEditOfflineDTHConnection);
+router.put("/SuccessOfflineDTHConnection" , SuccessOfflineDTHConnection);
 router.put("/rejectOfflineDTHConnection" , rejectOfflineDTHConnection);
 
 router.get("/getWalletWithdrawRequests" , getWalletWithdrawRequests);
@@ -151,6 +153,11 @@ router.put("/ChangeUserInfo" , ChangeUserInfo)
 router.get("/getOnlinePanApplyData" , getOnlinePanApplyData)
 router.get("/getOnlinePanCorrectionData" , getOnlinePanCorrectionData)
 router.get("/getTodayWalletTransactions" , getTodayWalletTransactions)
+
+router.get("/getDTHConnectionPlans" , getDTHConnectionPlans)
+router.post("/CreateDTHConnectionPlans", CreateDTHConnectionPlans)
+router.put("/EditDTHConnetionPlans", EditDTHConnetionPlans)
+router.delete("/DeleteDTHConnetionPlans", DeleteDTHConnetionPlans)
 
 
 

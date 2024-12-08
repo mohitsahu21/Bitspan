@@ -1743,6 +1743,11 @@ const SuperAdminData = [
         path: "/user-id-set-rate",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+      {
+        title: "Set DTH Connection Plans",
+        path: "/Set-DTH-Connection-Plans",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
       // {
       //   title: "Change NSDL Price",
       //   path: "/change-nsdl-price",

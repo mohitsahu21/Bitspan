@@ -65,6 +65,7 @@ import SAOnlineDthConnection from "../components/SuperAdmin/SAOnlineDthConnectio
 import SAPanCouponRequests from "../components/SuperAdmin/SAPanCouponRequests.jsx";
 import SAUserRelation from "../components/SuperAdmin/SAUserRelation.jsx";
 import SAPanCorrectionHistory from "../components/SuperAdmin/SAPanCorrectionHistory.jsx";
+import SASetDTHPlans from "../components/SuperAdmin/SASetDTHPlans.jsx";
 
 const SuperAdminRoutes = () => {
   return (
@@ -202,6 +203,7 @@ const SuperAdminRoutes = () => {
           element={<SAFundTransferStatus />}
         />
         <Route path="/active-deactive-api" element={<SAActiveDeactiveApi />} />
+        <Route path="/Set-DTH-Connection-Plans" element={<SASetDTHPlans />} />
         <Route
           path="/active-deactive-services"
           element={<SAActiveDeactiveServices />}

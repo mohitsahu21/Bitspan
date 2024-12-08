@@ -3496,11 +3496,113 @@ const ApproveOfflineDTHConnection = (req, res) => {
       .json({ success: false, error: "An unexpected error occurred" });
   }
 };
-const rejectOfflineDTHConnection = (req, res) => {
+const markForEditOfflineDTHConnection = (req, res) => {
   try {
     const { order_id, note, status } = req.body;
 
     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE offline_dth_connection SET note = ? , status = ? WHERE orderid = ?`;
+
+    const values = [note, status, order_id];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating markForEditOfflineDTHConnection:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating markForEditOfflineDTHConnection",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "markForEditOfflineDTHConnection not found" });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "updating markForEditOfflineDTHConnection successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+const SuccessOfflineDTHConnection = (req, res) => {
+  try {
+    const { order_id, note, status } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE offline_dth_connection SET note = ? , status = ? WHERE orderid = ?`;
+
+    const values = [note, status, order_id];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating SuccessOfflineDTHConnection:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating SuccessOfflineDTHConnection",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "SuccessOfflineDTHConnection not found" });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "updating SuccessOfflineDTHConnection successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const rejectOfflineDTHConnection = (req, res) => {
+  try {
+    const { order_id, note, status , user_id,refundAmount } = req.body;
+
+      // Validate `order_id`: Check for undefined, null, or invalid value
+      if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status || !user_id) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid or missing order_id",
+        });
+      }
+
+       // Validate `refundAmount`: Check for undefined, null, or invalid number
+    if (refundAmount == null || isNaN(parseFloat(refundAmount)) || parseFloat(refundAmount) < 0) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing refund amount",
+      });
+    }
+
+    const refundAmountNumber = parseFloat(refundAmount);
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+    const Transaction_Id = `TXNW${Date.now()}`;
+    const Transaction_Type = "Refund";
+    const Transaction_details = note;
+    const Transaction_status = "Success"
+    const transaction_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
 
     // SQL query to update the package details
     const sql = `UPDATE offline_dth_connection SET note = ? , status = ? WHERE orderid = ?`;
@@ -3517,16 +3619,83 @@ const rejectOfflineDTHConnection = (req, res) => {
       }
 
       if (results.affectedRows === 0) {
-        return res.status(404).json({
-          success: false,
-          message: "rejectOfflineDTHConnection not found",
-        });
+        return res
+          .status(404)
+          .json({ success: false, message: "rejectOfflineDTHConnection not found" });
       }
 
-      return res.status(200).json({
-        success: true,
-        message: "updating rejectOfflineDTHConnection successfully",
-      });
+      // return res.status(200).json({
+      //   success: true,
+      //   message: "updating rejectOfflineDTHConnection successfully",
+      // });
+
+      const getClosingBalanceQuery = `SELECT Closing_Balance FROM user_wallet WHERE userId = ? ORDER BY wid DESC LIMIT 1`;
+    
+      db.query(getClosingBalanceQuery, [user_id], (error, results) => {
+        if (error) {
+          console.error("Error fetching closing balance:", error);
+          return res.status(500).json({
+            success: false,
+            error: "Failed to fetch closing balance",
+          });
+        }
+  
+        // if (results.length === 0) {
+        //   return res.status(404).json({
+        //     success: false,
+        //     message: "Wallet Add Money Request not found",
+        //   });
+        // }
+  
+       
+        const old_balance = results.length != 0 ?  results[0].Closing_Balance : 0;
+
+          // Ensure `old_balance` is a valid number
+          if (isNaN(old_balance)) {
+            return res.status(400).json({
+              success: false,
+              error: "Invalid closing balance in user wallet",
+            });
+          }
+        const opening_balance = Number(old_balance);
+        const credit_amount = refundAmountNumber;
+        const debit_amount = 0;
+        const new_balance = credit_amount + opening_balance;
+          // Ensure all calculated balances are valid numbers
+          if (isNaN(opening_balance) || isNaN(credit_amount) || isNaN(new_balance)) {
+            return res.status(400).json({
+              success: false,
+              error: "Invalid balance calculations",
+            });
+          }
+  
+          const new_balance_final = parseFloat(new_balance.toFixed(2)); // Ensure `new_balance` remains a number
+  
+
+  
+  
+          // SQL query to update the user_wallet table with new balance
+        
+          const sql2 = `INSERT INTO user_wallet (userId, transaction_date, Order_Id , Transaction_Id , Opening_Balance, Closing_Balance , credit_amount, debit_amount,Transaction_Type,Transaction_details ,status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)`;
+          const values2 = [user_id,transaction_date , order_id,Transaction_Id, opening_balance, new_balance_final,
+            credit_amount,debit_amount,Transaction_Type,Transaction_details, Transaction_status];
+  
+          db.query(sql2, values2, (error, results) => {
+            if (error) {
+              console.error("Error inserting into user_wallet:", error);
+              return res.status(500).json({
+                success: false,
+                error: "Failed to inserting refund amount into the user_wallet",
+              });
+            }
+  
+            return res.status(200).json({
+              success: true,
+              message:
+                "Reject the form and refund money successfully",
+            });
+          });
+        });
     });
   } catch (error) {
     console.error("Unexpected error:", error);
@@ -3535,6 +3704,45 @@ const rejectOfflineDTHConnection = (req, res) => {
       .json({ success: false, error: "An unexpected error occurred" });
   }
 };
+// const rejectOfflineDTHConnection = (req, res) => {
+//   try {
+//     const { order_id, note, status } = req.body;
+
+//     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+//     // SQL query to update the package details
+//     const sql = `UPDATE offline_dth_connection SET note = ? , status = ? WHERE orderid = ?`;
+
+//     const values = [note, status, order_id];
+
+//     db.query(sql, values, (error, results) => {
+//       if (error) {
+//         console.error("Error updating rejectOfflineDTHConnection:", error);
+//         return res.status(500).json({
+//           success: false,
+//           error: "Failed to updating rejectOfflineDTHConnection",
+//         });
+//       }
+
+//       if (results.affectedRows === 0) {
+//         return res.status(404).json({
+//           success: false,
+//           message: "rejectOfflineDTHConnection not found",
+//         });
+//       }
+
+//       return res.status(200).json({
+//         success: true,
+//         message: "updating rejectOfflineDTHConnection successfully",
+//       });
+//     });
+//   } catch (error) {
+//     console.error("Unexpected error:", error);
+//     return res
+//       .status(500)
+//       .json({ success: false, error: "An unexpected error occurred" });
+//   }
+// };
 
 const getWalletWithdrawRequests = (req, res) => {
   try {
@@ -5842,6 +6050,172 @@ const getTodayWalletTransactions = (req, res) => {
   }
 };
 
+const getDTHConnectionPlans = (req, res) => {
+  try {
+    const sql = `SELECT * FROM dth_connection_plans`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getDTHConnectionPlans from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getDTHConnectionPlans" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getDTHConnectionPlans found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getDTHConnectionPlans fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error(
+      "Error fetching getDTHConnectionPlans from MySQL:",
+      error
+    );
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getDTHConnectionPlans",
+      error: error.message,
+    });
+  }
+};
+
+const CreateDTHConnectionPlans = (req, res) => {
+  try {
+    const {
+      operator,
+      amount,
+      validity
+    } = req.body;
+
+    if (!operator || !amount || !validity ) {
+      return res
+        .status(200)
+        .json({ success: false, message: "All fields are required" });
+    }
+
+
+    // const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+    // const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+         // Validate `refundAmount`: Check for undefined, null, or invalid number
+         if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid or missing amount",
+          });
+        }
+
+    const sql = `INSERT INTO dth_connection_plans (
+        operator , amount ,validity	
+    ) VALUES (?, ?, ?)`;
+
+    const values = [
+      operator,
+      amount,
+      validity
+    ];
+
+    db.query(sql, values, (err, result) => {
+      if (err) throw err; // Will be caught by the catch block
+      res.status(200).send({
+        success: true,
+        message: "Data inserted successfully",
+        data: result,
+      });
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      error: "Error inserting data",
+      details: error.message,
+    });
+  }
+};
+
+const EditDTHConnetionPlans = (req, res) => {
+  try {
+    const {  id,
+      amount,
+      validity } = req.body;
+
+    if (!id || !amount || !validity ) {
+      return res
+        .status(200)
+        .json({ success: false, message: "All fields are required" });
+    }
+
+    if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing amount",
+      });
+    }
+
+    // If the package is not allocated to any user, proceed to delete
+    const Sql = `UPDATE dth_connection_plans SET amount = ? , validity = ?  WHERE id = ?`;
+    db.query(Sql, [amount,validity,id], (Error, Results) => {
+      if (Error) {
+        console.error("Error Change plan:", Error);
+        return res.status(500).json({ error: "Failed to Change plan" });
+      }
+
+      if (Results.affectedRows === 0) {
+        return res.status(404).json({ message: "Plan not found" });
+      }
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Change plan successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({ error: "An unexpected error occurred" });
+  }
+};
+
+const DeleteDTHConnetionPlans = (req, res) => {
+  try {
+    const {  id } = req.body;
+
+    if (!id) {
+      return res
+        .status(200)
+        .json({ success: false, message: "All fields are required" });
+    }
+
+
+    // If the package is not allocated to any user, proceed to delete
+    const Sql = `DELETE FROM dth_connection_plans WHERE id = ?`;
+    db.query(Sql, [id], (Error, Results) => {
+      if (Error) {
+        console.error("Error Change plan:", Error);
+        return res.status(500).json({ error: "Failed to delete plan" });
+      }
+
+      if (Results.affectedRows === 0) {
+        return res.status(404).json({ message: "Plan not found" });
+      }
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Delete plan successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({ error: "An unexpected error occurred" });
+  }
+};
 
 
 module.exports = {
@@ -5902,6 +6276,8 @@ module.exports = {
   rejectOfflineRecharge,
   getOfflineDTHConnection,
   ApproveOfflineDTHConnection,
+  markForEditOfflineDTHConnection,
+  SuccessOfflineDTHConnection,
   rejectOfflineDTHConnection,
 
   getWalletWithdrawRequests,
@@ -5944,7 +6320,11 @@ module.exports = {
   ChangeUserInfo,
   getOnlinePanApplyData,
   getOnlinePanCorrectionData,
-  getTodayWalletTransactions
+  getTodayWalletTransactions,
+  getDTHConnectionPlans,
+  CreateDTHConnectionPlans,
+  EditDTHConnetionPlans,
+  DeleteDTHConnetionPlans
 
 
 };
