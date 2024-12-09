@@ -4,16 +4,21 @@ import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 const VerifyEdistrict = () => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
+  const [prices, setPrices] = useState([]);
   const [formData, setFormData] = useState({
     applicationType: "",
     name: "",
     mobileNo: "",
     rsNumber: "",
-    user_id: currentUser.userId,
+    district: "",
+    tehsil: "",
+    amount: prices[0]?.verify_edistrict_Certificate_Price,
+    userId: currentUser.userId,
   });
 
   const [loading, setLoading] = useState(false);
@@ -21,34 +26,121 @@ const VerifyEdistrict = () => {
   const [pin, setPin] = useState(["", "", "", ""]);
   const pinRefs = useRef([]);
 
+  useEffect(() => {
+    const fetchPackage = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:7777/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+        );
+        // console.log(response.data.data);
+        if (Array.isArray(response.data.data)) {
+          setPrices(response.data.data);
+        } else {
+          console.error("Expected an array, received:", response.data.data);
+        }
+      } catch (error) {
+        console.error("Fetching package data failed:", error);
+      }
+    };
+    fetchPackage();
+  }, []);
+
+  useEffect(() => {
+    if (prices.length > 0) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        amount: prices[0].verify_edistrict_Certificate_Price,
+      }));
+    }
+  }, [prices]);
+
+  // console.log(prices[0]?.verify_edistrict_Certificate_Price);
+  console.log(formData);
+
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData({ ...formData, [name]: value });
+  // };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   console.log("Form Data Submitted: ", formData);
+  //   try {
+  //     const response = await axios.post(
+  //       `http://localhost:7777/api/auth/retailer/verify-Edistrict`,
+  //       formData
+  //     );
+  //     // alert("Form Submitted");
+  //     Swal.fire({
+  //       title: "Form Sumitted Success",
+  //       text: `${resData}`,
+  //       icon: "success",
+  //     });
+  //     setFormData({
+  //       applicationType: "",
+  //       name: "",
+  //       mobileNo: "",
+  //       rsNumber: "",
+  //       district: "",
+  //       tehsil: "",
+  //       amount: "",
+  //       user_id: "",
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+
+  //   // setFormData({
+  //   //   applicationType: "",
+  //   //   name: "",
+  //   //   mobileNo: "",
+  //   //   rsNumber: "",
+  //   //   user_id: "",
+  //   // });
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log("Form Data Submitted: ", formData);
     try {
       const response = await axios.post(
         `http://localhost:7777/api/auth/retailer/verify-Edistrict`,
-        formData
+        formData,
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      alert("Form Submitted");
+      Swal.fire({
+        title: "Form Submitted Successfully",
+        text: response.data.message,
+        icon: "success",
+      });
+      setFormData({
+        applicationType: "",
+        name: "",
+        mobileNo: "",
+        rsNumber: "",
+        district: "",
+        tehsil: "",
+        amount: prices[0]?.verify_edistrict_Certificate_Price || "",
+        user_id: currentUser.userId,
+      });
     } catch (error) {
-      console.log(error);
+      Swal.fire({
+        title: "Error",
+        text: error.response?.data?.message || "Something went wrong!",
+        icon: "error",
+      });
+      console.error("Error submitting form:", error);
     } finally {
       setLoading(false);
     }
-
-    setFormData({
-      applicationType: "",
-      name: "",
-      mobileNo: "",
-      rsNumber: "",
-      user_id: "",
-    });
   };
 
   const handlePinChange = (index, value) => {
@@ -181,6 +273,44 @@ const VerifyEdistrict = () => {
                           value={formData.rsNumber}
                           onChange={handleChange}
                           required
+                        />
+                      </div>
+                    </div>
+                    <div className="row mb-3">
+                      <div className="col-md-6">
+                        <label className="form-label">District</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="district"
+                          value={formData.district}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label">Tehsil / Block</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="tehsil"
+                          value={formData.tehsil}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="row mb-3">
+                      <div className="col-md-6">
+                        <label className="form-label">Amount</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="amount"
+                          value={formData.amount}
+                          onChange={handleChange}
+                          required
+                          readOnly
                         />
                       </div>
                     </div>

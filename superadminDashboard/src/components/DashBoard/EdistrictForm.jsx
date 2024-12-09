@@ -1,9 +1,10 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleRefresh } from "../../redux/user/userSlice";
 import { Modal, Button } from "react-bootstrap";
+import Swal from "sweetalert2";
 
 const EdistrictForm = () => {
   const dispatch = useDispatch();
@@ -26,18 +27,78 @@ const EdistrictForm = () => {
     state: "",
     annual_income: "",
     previous_application: "",
-    charge_amount: "",
-    user_id: currentUser.userId,
+    // charge_amount: "",
+    amount: "",
+    userId: currentUser.userId,
     status: "Pending",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState([]);
   const [message, setMessage] = useState("");
+  const [prices, setPrices] = useState([]);
+
+  useEffect(() => {
+    const fetchPackage = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:7777/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+        );
+        // console.log(response.data.data);
+        if (Array.isArray(response.data.data)) {
+          setPrices(response.data.data);
+        } else {
+          console.error("Expected an array, received:", response.data.data);
+        }
+      } catch (error) {
+        console.error("Fetching package data failed:", error);
+      }
+    };
+    fetchPackage();
+  }, []);
+
+  // console.log(prices[0]?.offline_kyc_eDistrict);
+
+  // const handleChange = (e) => {
+  //   setFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+    const { name, value } = e.target;
+
+    setFormData((prevFormData) => {
+      const newFormData = { ...prevFormData, [name]: value };
+
+      if (name === "application_type" || name === "samagar") {
+        let priceKey = "";
+        if (newFormData.application_type === "income") {
+          if (newFormData.samagar === "ekyc") {
+            priceKey = "eKYC_Income_Certificate_Price";
+          } else if (newFormData.samagar === "non-ekyc") {
+            priceKey = "offlineKYC_Income_Certificate_Price";
+          } else if (newFormData.samagar === "non") {
+            priceKey = "non_samagra_income_Certificate_Price";
+          }
+        } else if (newFormData.application_type === "domicile") {
+          if (newFormData.samagar === "ekyc") {
+            priceKey = "eKYC_Domicile_Certificate_Price";
+          } else if (newFormData.samagar === "non-ekyc") {
+            priceKey = "offlineKYC_Domicile_Certificate_Price";
+          } else if (newFormData.samagar === "non") {
+            priceKey = "non_samagra_Domicile_Certificate_Price";
+          }
+        }
+        // Set the price if priceKey has been determined and is available in prices array
+        if (priceKey && prices.length > 0 && prices[0][priceKey]) {
+          newFormData.amount = prices[0][priceKey];
+        } else {
+          newFormData.amount = "";
+        }
+      }
+
+      return newFormData;
     });
   };
 
@@ -67,6 +128,31 @@ const EdistrictForm = () => {
       );
       setMessage(response.data.message);
       console.log(response.data.message);
+      const resData = response.data.message;
+      Swal.fire({
+        title: "Form Sumitted Success",
+        text: `${resData}`,
+        icon: "success",
+      });
+      setFormData({
+        application_type: "",
+        samagar: "",
+        gender: "",
+        name: "",
+        father_husband_name: "",
+        dob: "",
+        address: "",
+        mobile_no: "",
+        cast: "",
+        aadhar_no: "",
+        samagar_member_id: "",
+        state: "",
+        annual_income: "",
+        previous_application: "",
+        amount: "",
+        userId: "",
+        status: "",
+      });
     } catch (error) {
       setMessage("Error submitting form");
       console.error("Error:", error);
@@ -83,7 +169,6 @@ const EdistrictForm = () => {
       newPin[index] = value;
       setPin(newPin);
 
-      // Move to next input if current is filled, move to previous if deleted
       if (value !== "" && index < pin.length - 1) {
         pinRefs.current[index + 1].focus();
       } else if (value === "" && index > 0) {
@@ -171,8 +256,16 @@ const EdistrictForm = () => {
                       >
                         <option value="">--Select Option--</option>
                         <option value="ekyc">Ekyc</option>
-                        <option value="non-ekyc">Non Ekyc</option>
-                        <option value="non">Non</option>
+                        {prices[0]?.offline_kyc_eDistrict === "Yes" ? (
+                          <option value="non-ekyc">Non Ekyc</option>
+                        ) : (
+                          ""
+                        )}
+                        {prices[0]?.offline_kyc_eDistrict === "Yes" ? (
+                          <option value="non">Non</option>
+                        ) : (
+                          ""
+                        )}
                       </select>
                     </div>
                   </div>
@@ -310,20 +403,18 @@ const EdistrictForm = () => {
                       />
                     </div>
                     <div className="col-md-6 mb-3">
-                      <label>Annual Income</label>
+                      <label>Document Upload</label>
                       <input
-                        type="number"
+                        type="file"
                         className="form-control"
-                        name="annual_income"
-                        value={formData.annual_income}
-                        onChange={handleChange}
-                        required
+                        multiple
+                        onChange={handleFileChange}
                       />
                     </div>
                   </div>
 
                   <div className="row mb-3">
-                    <div className="col-md-6 mb-3">
+                    <div className="col-md-4 mb-3">
                       <label>Have you ever applied before?</label>
                       <select
                         className="form-select"
@@ -337,18 +428,32 @@ const EdistrictForm = () => {
                         <option value="no">No</option>
                       </select>
                     </div>
-                    <div className="col-md-6 mb-3">
-                      <label>Document Upload</label>
+                    <div className="col-md-4 mb-3">
+                      <label>Annual Income</label>
                       <input
-                        type="file"
+                        type="number"
                         className="form-control"
-                        multiple
-                        onChange={handleFileChange}
+                        name="annual_income"
+                        value={formData.annual_income}
+                        onChange={handleChange}
+                        required
+                        disabled={formData.application_type === "domicile"}
+                      />
+                    </div>
+                    <div className="col-md-4 mb-3">
+                      <label htmlFor="amount">Amount</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="amount"
+                        name="amount"
+                        value={formData.amount || ""}
+                        readOnly
                       />
                     </div>
                   </div>
 
-                  <div className="row mb-3">
+                  {/* <div className="row mb-3">
                     <div className="col-md-12 mb-3">
                       <label>Charge Amount</label>
                       <select
@@ -364,7 +469,7 @@ const EdistrictForm = () => {
                         <option value="non">Non</option>
                       </select>
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="text-center">
                     <button

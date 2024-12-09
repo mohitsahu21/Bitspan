@@ -9,7 +9,7 @@ import { Modal, Button } from "react-bootstrap";
 const SambalForm = () => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
-
+  const [prices, setPrices] = useState([]);
   const [formData, setFormData] = useState({
     samagraId: "",
     familyId: "",
@@ -21,13 +21,42 @@ const SambalForm = () => {
     landOwnership: "",
     govtService: "",
     mobileNumber: "",
-    user_id: currentUser.userId,
+    amount: prices[0]?.Sambal_Price,
+    userId: currentUser?.userId,
   });
 
   const [loading, setLoading] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
   const pinRefs = useRef([]);
+
+  useEffect(() => {
+    const fetchPackage = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:7777/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+        );
+        // console.log(response.data.data);
+        if (Array.isArray(response.data.data)) {
+          setPrices(response.data.data);
+        } else {
+          console.error("Expected an array, received:", response.data.data);
+        }
+      } catch (error) {
+        console.error("Fetching package data failed:", error);
+      }
+    };
+    fetchPackage();
+  }, []);
+
+  useEffect(() => {
+    if (prices.length > 0) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        amount: prices[0].verify_edistrict_Certificate_Price,
+      }));
+    }
+  }, [prices]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,9 +72,19 @@ const SambalForm = () => {
         `http://localhost:7777/api/auth/retailer/addSambalForm`,
         formData
       );
-      alert("Form Submitted");
+      // alert("Form Submitted");
+      Swal.fire({
+        title: "Form Submitted Successfully",
+        text: response.data.message,
+        icon: "success",
+      });
     } catch (error) {
       console.log(error);
+      Swal.fire({
+        title: "Error",
+        text: error.response?.data?.message || "Something went wrong!",
+        icon: "error",
+      });
     } finally {
       setLoading(false);
     }
@@ -61,6 +100,7 @@ const SambalForm = () => {
       landOwnership: "",
       govtService: "",
       mobileNumber: "",
+      // amount: "",
       user_id: "",
     });
   };
@@ -432,7 +472,7 @@ const SambalForm = () => {
                         </div>
                       </div>
                       <div className="row mb-3">
-                        <div className="col-md-6">
+                        <div className="col-md-5">
                           <label className="form-label">
                             क्या आप या आपकी पति /पत्नी किसी शासकीय सेवा में
                             कार्यरत हैं ?
@@ -449,13 +489,24 @@ const SambalForm = () => {
                             <option value="No">No</option>
                           </select>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-4">
                           <label className="form-label">मोबाइल नंबर:</label>
                           <input
                             type="text"
                             className="form-control"
                             name="mobileNumber"
                             value={formData.mobileNumber}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                        <div className="col-md-3">
+                          <label className="form-label">कीमत:</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            name="amount"
+                            value={formData.amount}
                             onChange={handleChange}
                             required
                           />

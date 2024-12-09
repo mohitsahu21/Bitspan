@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { MdAlternateEmail } from "react-icons/md";
 import { SlPeople } from "react-icons/sl";
 import { FaIndianRupeeSign } from "react-icons/fa6";
+import Swal from "sweetalert2";
 
 const PanForm = () => {
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ const PanForm = () => {
         const { data } = await axios.get(
           `http://localhost:7777/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
         );
-        // console.log(data.data);
+        console.log(data.data);
         setPrices(data.data);
       } catch (error) {
         console.log(error);
@@ -52,104 +53,58 @@ const PanForm = () => {
     fetchPackage();
   }, []);
 
-  // console.log(prices?.E_Stamp_Price);
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   // setFormData({ ...formData, [name]: value });
-  //   let newFormData = { ...formData, [name]: value };
-
-  //   if (name === "eStampAmount") {
-  //     // setEStampAmount(value);
-  //     const total = parseInt(value, 10) + (parseInt(selectedPrice, 10) || 0);
-  //     // setTotalAmount(total.toString());
-  //     newFormData = {
-  //       ...newFormData,
-  //       eStampAmount: value,
-  //       amount: total.toString(),
-  //     };
-  //   }
-  //   setFormData(newFormData);
-  // };
   console.log("Break comments");
 
   // const handleChange = (e) => {
   //   const { name, value } = e.target;
-  //   let updatedValue = value;
 
-  //   // If updating eStampAmount, calculate the total amount dynamically
-  //   if (name === "eStampAmount") {
-  //     const total = parseInt(value, 10) + (parseInt(selectedPrice, 10) || 0);
-  //     updatedValue = {
-  //       ...formData,
-  //       eStampAmount: value,
-  //       amount: total.toString(), // Ensure this is what the backend expects
-  //     };
-  //   } else {
-  //     updatedValue = { ...formData, [name]: value };
-  //   }
+  //   setFormData((prevFormData) => {
+  //     if (name === "eStampAmount") {
+  //       const parsedValue = parseInt(value, 10);
+  //       const parsedSelectedPrice = parseInt(selectedPrice, 10) || 0;
 
-  //   setFormData(updatedValue);
+  //       const total = isNaN(parsedValue)
+  //         ? ""
+  //         : (parsedValue + parsedSelectedPrice).toString();
+
+  //       return {
+  //         ...prevFormData,
+  //         eStampAmount: value, // Update eStampAmount directly from the input
+  //         amount: total, // Update amount based on calculation
+  //       };
+  //     } else {
+  //       // For all other inputs, update normally
+  //       return {
+  //         ...prevFormData,
+  //         [name]: value,
+  //       };
+  //     }
+  //   });
   // };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Use a function within setFormData to ensure access to the most current state
-    setFormData((prevFormData) => {
-      // Handle eStampAmount updates with special logic
-      if (name === "eStampAmount") {
-        const parsedValue = parseInt(value, 10); // Parse the input value
-        const parsedSelectedPrice = parseInt(selectedPrice, 10) || 0; // Safely parse the selected price or default to 0
+    if (name === "eStampAmount") {
+      let parsedValue = parseInt(value, 10);
+      parsedValue = isNaN(parsedValue) ? 0 : parsedValue; // Default to 0 if not a number
 
-        const total = isNaN(parsedValue)
-          ? ""
-          : (parsedValue + parsedSelectedPrice).toString();
+      const parsedSelectedPrice = parseInt(selectedPrice, 10) || 0;
+      const total = parsedValue + parsedSelectedPrice;
 
-        return {
-          ...prevFormData,
-          eStampAmount: value, // Update eStampAmount directly from the input
-          amount: total, // Update amount based on calculation
-        };
-      } else {
-        // For all other inputs, update normally
-        return {
-          ...prevFormData,
-          [name]: value,
-        };
-      }
-    });
-  };
-
-  // useEffect(() => {
-  //   if (selectOption && selectedPrice) {
-  //     const total =
-  //       parseInt(eStampAmount, 10) + (parseInt(selectedPrice, 10) || 0);
-  //     setTotalAmount(total.toString());
-  //   } else {
-  //     setTotalAmount(selectedPrice || "");
-  //   }
-  // }, [selectedPrice, eStampAmount, selectOption]);
-
-  useEffect(() => {
-    if (selectOption && selectedPrice) {
-      const total =
-        parseInt(eStampAmount, 10) + (parseInt(selectedPrice, 10) || 0);
-      const totalAsString = total.toString();
-      setTotalAmount(totalAsString);
+      setEStampAmount(value); // Always update the input value to allow changes
       setFormData((prevFormData) => ({
         ...prevFormData,
-        amount: totalAsString, // Ensuring amount is always updated
+        [name]: value, // Reflect the input directly
+        amount: total.toString(), // Calculate the total amount
       }));
     } else {
-      const fallbackValue = selectedPrice || "0";
-      setTotalAmount(fallbackValue);
       setFormData((prevFormData) => ({
         ...prevFormData,
-        amount: fallbackValue,
+        [name]: value,
       }));
     }
-  }, [selectedPrice, eStampAmount, selectOption]);
+  };
 
   // useEffect(() => {
   //   if (selectOption && selectedPrice) {
@@ -157,23 +112,39 @@ const PanForm = () => {
   //       parseInt(eStampAmount, 10) + (parseInt(selectedPrice, 10) || 0);
   //     const totalAsString = total.toString();
   //     setTotalAmount(totalAsString);
-
-  //     // Update formData.amount directly
   //     setFormData((prevFormData) => ({
   //       ...prevFormData,
-  //       amount: totalAsString, // This keeps formData.amount in sync with totalAmount
+  //       amount: totalAsString, // Ensuring amount is always updated
   //     }));
   //   } else {
-  //     const fallbackValue = selectedPrice || "";
+  //     const fallbackValue = selectedPrice || "0";
   //     setTotalAmount(fallbackValue);
-
-  //     // Update formData.amount if there's a fallback value
   //     setFormData((prevFormData) => ({
   //       ...prevFormData,
   //       amount: fallbackValue,
   //     }));
   //   }
   // }, [selectedPrice, eStampAmount, selectOption]);
+
+  useEffect(() => {
+    let calculatedTotal = 0;
+
+    if (selectOption && selectedPrice) {
+      calculatedTotal =
+        parseInt(eStampAmount, 10) + (parseInt(selectedPrice, 10) || 0);
+    } else {
+      calculatedTotal = parseInt(selectedPrice, 10) || 0;
+    }
+
+    const totalAsString = calculatedTotal.toString();
+
+    setTotalAmount(totalAsString);
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      amount: totalAsString,
+    }));
+  }, [selectedPrice, eStampAmount, selectOption]);
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
@@ -200,7 +171,10 @@ const PanForm = () => {
     };
 
     const priceKey = priceKeyMapping[serviceName];
+
     const price = prices && prices.length > 0 ? prices[0][priceKey] : undefined;
+    console.log(`${priceKey}: ${price}`);
+
     // const price = prices[serviceName];
     setSelectedPrice(price || "Price not available");
     setSelectOption(serviceName === "E-Stamp");
@@ -268,7 +242,14 @@ const PanForm = () => {
         }
       );
       // alert(response.data.message);
+      const resData = response.data.message;
       console.log(response.data.message);
+
+      Swal.fire({
+        title: "Form Sumitted Success",
+        text: `${resData}`,
+        icon: "success",
+      });
 
       setFormData({
         applicant_name: "",
@@ -392,6 +373,7 @@ const PanForm = () => {
                             name="applicant_name"
                             value={formData.applicant_name}
                             onChange={handleChange}
+                            required
                           />
                           <label htmlFor="floatingInputGroup1">
                             Applicant Name
@@ -413,6 +395,7 @@ const PanForm = () => {
                             name="applicant_father"
                             value={formData.applicant_father}
                             onChange={handleChange}
+                            required
                           />
                           <label htmlFor="floatingInputGroup2">
                             Applicant Father Name
@@ -427,13 +410,18 @@ const PanForm = () => {
                         </span>
                         <div className="form-floating">
                           <input
-                            type="text"
+                            type="number"
                             className="form-control"
                             id="floatingInputGroup3"
                             placeholder="Username"
                             name="applicant_number"
                             value={formData.applicant_number}
                             onChange={handleChange}
+                            onInput={(e) => {
+                              if (e.target.value.length > 10)
+                                e.target.value = e.target.value.slice(0, 10);
+                            }}
+                            required
                           />
                           <label htmlFor="floatingInputGroup3">
                             Mobile Number
@@ -455,6 +443,7 @@ const PanForm = () => {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
+                            required
                           />
                           <label htmlFor="floatingInputGroup3">
                             User Email
@@ -478,6 +467,7 @@ const PanForm = () => {
                               handleChange(e);
                               handleSelect(e);
                             }}
+                            required
                           >
                             <option value="">Select an option ....</option>
                             {optionsDrop.map((item) => (
@@ -490,11 +480,6 @@ const PanForm = () => {
                         </div>
                       </div>
                     </div>
-                    {/* {formData.applicant_select_service && (
-                      <div className="alert alert-info mt-2">
-                        Price for selected service: {selectedPrice}
-                      </div>
-                    )} */}
                     {selectOption && (
                       <>
                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
