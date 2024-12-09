@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import HeadBar from "../components/HeadBar";
 import Sider from "../components/SideBar";
@@ -19,9 +19,154 @@ import { LuUserPlus } from "react-icons/lu";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { BsInfoSquare } from "react-icons/bs";
+import axios from "axios";
 
 const SuperAdminDashboard = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [walletWithdrawalRequests,setWalletWithdrawalRequests] = useState([]);
+  const [addWalletMoneyRequests , setAddWalletMoneyRequests] = useState([]);
+  const [pendingComplaints , setPendingComplaints] = useState([]);
+  const [pendingOfflineRecharge , setPendingOfflineRecharge] = useState([]);
+  const [pendingOfflineForm , setPendingOfflineForm] = useState([]);
+  const [pendingPanOfflineForm , setPendingPanOfflineForm] = useState([]);
+  const [pendingBankIdForm , setPendingBankIdForm] = useState([]);
+  const TotalUsers = {
+     WhiteLabel : 0,
+     SuperDistributor : 0,
+     Distributor : 0,
+     Retailer : 0
+  }
+
+  if(users.length > 0){
+      users.map((item)=>{
+        // if(item.role === "WhiteLabel"){
+        //   TotalUsers.WhiteLabel += 1
+        // }
+        TotalUsers[item?.role] +=1
+      })
+  }
+  const fetchActiveUsers = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers"
+      );
+      setUsers(data.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+
+  const fetchWalletWithdrawalRequest = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletWithdrawRequests"
+      );
+      setWalletWithdrawalRequests(data.dataLength);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+
+  const fetchAddWalletMoneyRequest = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletAddMoneyRequests"
+      );
+      setAddWalletMoneyRequests(data.dataLength);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+
+  const fetchComplaints = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingComplaintData"
+      );
+      setPendingComplaints(data.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+  const fetchPendingOfflineRecharge = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingOfflineRecharge"
+      );
+      setPendingOfflineRecharge(data.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+  const fetchPendingOfflineForm = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingApplyOfflineForm"
+      );
+      setPendingOfflineForm(data.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+  const fetchPendingPanOfflineForm = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingPANOfflineForm"
+      );
+      setPendingPanOfflineForm(data.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+  const fetchPendingBankIdForm = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingBankIdForm"
+      );
+      setPendingBankIdForm(data.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchActiveUsers()
+    fetchWalletWithdrawalRequest()
+    fetchAddWalletMoneyRequest()
+    fetchComplaints()
+    fetchPendingOfflineRecharge()
+    fetchPendingOfflineForm()
+    fetchPendingPanOfflineForm()
+    fetchPendingBankIdForm()
+  }, []);
+
+  console.log(pendingComplaints)
   // Define the custom tooltip styled component
 const CustomTooltip = styled(Tooltip)`
 .tooltip-inner {
@@ -36,7 +181,7 @@ const CustomTooltip = styled(Tooltip)`
 `;
 
   const User = ({ id, children, title }) => (
-    <OverlayTrigger overlay={<CustomTooltip id={id}>{`Total WhiteLabel - ${10}` }<br/> {`Total Super Distributor - ${20}` } <br/> {`Total Distributor - ${30}` } <br/> {`Total Retailer - ${50}` }</CustomTooltip>}>
+    <OverlayTrigger overlay={<CustomTooltip id={id}>{`Total WhiteLabel - ${TotalUsers.WhiteLabel}` }<br/> {`Total Super Distributor - ${TotalUsers.SuperDistributor}` } <br/> {`Total Distributor - ${TotalUsers.Distributor}` } <br/> {`Total Retailer - ${TotalUsers.Retailer}` }</CustomTooltip>}>
       {children}
     </OverlayTrigger>
   );
@@ -112,7 +257,7 @@ const CustomTooltip = styled(Tooltip)`
                    
                  
                   
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                    {/* <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       
                       <div className="card card-4">
                         <div className="d-flex">
@@ -127,7 +272,7 @@ const CustomTooltip = styled(Tooltip)`
                         </div>
                       </div>
                      
-                    </div>
+                    </div> */}
                     <User  id="t-1">
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-4">
@@ -138,7 +283,7 @@ const CustomTooltip = styled(Tooltip)`
                           <div></div>
                           <div className="d-flex flex-column cardtext">
                             <p className="mb-0 px-2 my-0 fs-6">Total Users</p>
-                            <h4 className="px-2 my-0">0</h4>{" "}
+                            <h4 className="px-2 my-0">{users?.length}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -218,9 +363,73 @@ const CustomTooltip = styled(Tooltip)`
                           <div></div>
                           <div className="d-flex flex-column cardtext">
                             <p className="mb-0 px-2 my-0 fs-6">
-                            Total Complaints
+                            Pending Offline Recharge
                             </p>
-                            <h4 className="px-2 my-0">0</h4>{" "}
+                            <h4 className="px-2 my-0">{pendingOfflineRecharge}</h4>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      <div className="card card-3">
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                            <MdAddCard />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">
+                            Pending Offline Form
+                            </p>
+                            <h4 className="px-2 my-0">{pendingOfflineForm}</h4>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      <div className="card card-3">
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                            <MdAddCard />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">
+                            Pending PAN Offline Form
+                            </p>
+                            <h4 className="px-2 my-0">{pendingPanOfflineForm}</h4>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      <div className="card card-3">
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                            <MdAddCard />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">
+                            Pending Bank Id Form
+                            </p>
+                            <h4 className="px-2 my-0">{pendingBankIdForm}</h4>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      <div className="card card-3">
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                            <MdAddCard />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">
+                            Total Pending Complaints
+                            </p>
+                            <h4 className="px-2 my-0">{pendingComplaints}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -236,7 +445,23 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Wallet Withdraw Requests
                             </p>
-                            <h4 className="px-2 my-0">0</h4>{" "}
+                            <h4 className="px-2 my-0">{walletWithdrawalRequests}</h4>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      <div className="card card-3">
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                            <MdAddCard />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">
+                           Add Wallet Money Requests
+                            </p>
+                            <h4 className="px-2 my-0">{addWalletMoneyRequests}</h4>{" "}
                           </div>
                         </div>
                       </div>
