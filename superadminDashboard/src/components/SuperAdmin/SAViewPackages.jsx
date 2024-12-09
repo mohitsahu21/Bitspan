@@ -328,42 +328,42 @@ const SAViewPackages = () => {
                         }
                           
                           </div>
-                          <PaginationContainer>
-                            <ReactPaginate
-                              previousLabel={"previous"}
-                              nextLabel={"next"}
-                              breakLabel={"..."}
-                              pageCount={totalPages}
-                              marginPagesDisplayed={2}
-                              pageRangeDisplayed={5}
-                              onPageChange={handlePageChange}
-                              containerClassName={"pagination"}
-                              activeClassName={"active"}
-                            />
-                          </PaginationContainer>
                           {/* <div className="float-end">
                             <nav aria-label="Page navigation example">
-                              <ul className="pagination">
-                                <li className="page-item">
-                                  <a className="page-link" href="#">
-                                    Previous
-                                  </a>
-                                </li>
-                                <li className="page-item">
-                                  <a className="page-link" href="#">
-                                    1
-                                  </a>
-                                </li>
+                            <ul className="pagination">
+                            <li className="page-item">
+                            <a className="page-link" href="#">
+                            Previous
+                            </a>
+                            </li>
+                            <li className="page-item">
+                            <a className="page-link" href="#">
+                            1
+                            </a>
+                            </li>
 
                                 <li className="page-item">
                                   <a className="page-link" href="#">
-                                    Next
+                                  Next
                                   </a>
-                                </li>
-                              </ul>
-                            </nav>
-                          </div> */}
+                                  </li>
+                                  </ul>
+                                  </nav>
+                                  </div> */}
                         </div>
+                                  <PaginationContainer>
+                                    <ReactPaginate
+                                      previousLabel={"Previous"}
+                                      nextLabel={"Next"}
+                                      breakLabel={"..."}
+                                      pageCount={totalPages}
+                                      marginPagesDisplayed={2}
+                                      pageRangeDisplayed={5}
+                                      onPageChange={handlePageChange}
+                                      containerClassName={"pagination"}
+                                      activeClassName={"active"}
+                                    />
+                                  </PaginationContainer>
                       </div>
                     </div>
                   </div>
@@ -446,6 +446,7 @@ const Wrapper = styled.div`
   }
   td {
     font-size: 14px;
+    white-space: nowrap;
   }
   @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
@@ -465,7 +466,7 @@ const PaginationContainer = styled.div`
     justify-content: center;
     padding: 10px;
     list-style: none;
-    border-radius: 5px; 
+    border-radius: 5px;
   }
 
   .pagination li {
@@ -478,23 +479,21 @@ const PaginationContainer = styled.div`
     border: 1px solid #e6ecf1;
     color: #007bff;
     cursor: pointer;
-    /* background-color: #004aad0a; */
     text-decoration: none;
     border-radius: 5px;
     box-shadow: 0px 0px 1px #000;
+    font-size: 14px; /* Default font size */
   }
 
   .pagination li.active a {
     background-color: #004aad;
     color: white;
     border: 1px solid #004aad;
-    border-radius: 5px;
   }
 
   .pagination li.disabled a {
     color: white;
     cursor: not-allowed;
-    border-radius: 5px;
     background-color: #3a4e69;
     border: 1px solid #3a4e69;
   }
@@ -502,7 +501,48 @@ const PaginationContainer = styled.div`
   .pagination li a:hover:not(.active) {
     background-color: #004aad;
     color: white;
-    border-radius: 5px;
-    border: 1px solid #004aad;
+  }
+
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .pagination {
+      padding: 5px;
+      flex-wrap: wrap;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pagination {
+      padding: 5px;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 4px 8px;
+      font-size: 10px;
+    }
+
+    /* Hide the previous and next labels for extra-small screens */
+    .pagination li:first-child a::before {
+      content: "«";
+      margin-right: 5px;
+    }
+
+    .pagination li:last-child a::after {
+      content: "»";
+      margin-left: 5px;
+    }
   }
 `;

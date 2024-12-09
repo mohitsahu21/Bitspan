@@ -64,6 +64,8 @@ import SAOnlineRecharges from "../components/SuperAdmin/SAOnlineRecharges.jsx";
 import SAOnlineDthConnection from "../components/SuperAdmin/SAOnlineDthConnection.jsx";
 import SAPanCouponRequests from "../components/SuperAdmin/SAPanCouponRequests.jsx";
 import SAUserRelation from "../components/SuperAdmin/SAUserRelation.jsx";
+import SAPanCorrectionHistory from "../components/SuperAdmin/SAPanCorrectionHistory.jsx";
+import SASetDTHPlans from "../components/SuperAdmin/SASetDTHPlans.jsx";
 
 const SuperAdminRoutes = () => {
   return (
@@ -170,6 +172,10 @@ const SuperAdminRoutes = () => {
           path="/pan-transaction-report"
           element={<SAPanTransactionReport />}
         />
+        <Route
+          path="/pan-correction-report"
+          element={<SAPanCorrectionHistory />}
+        />
         <Route path="/change-price" element={<SAChangePrice />} />
         {/* <Route path="/raise-complaint" element={<WLComplaints />} /> */}
         <Route
@@ -197,6 +203,7 @@ const SuperAdminRoutes = () => {
           element={<SAFundTransferStatus />}
         />
         <Route path="/active-deactive-api" element={<SAActiveDeactiveApi />} />
+        <Route path="/Set-DTH-Connection-Plans" element={<SASetDTHPlans />} />
         <Route
           path="/active-deactive-services"
           element={<SAActiveDeactiveServices />}

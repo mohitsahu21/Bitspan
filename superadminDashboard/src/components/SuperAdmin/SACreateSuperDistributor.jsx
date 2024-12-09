@@ -99,7 +99,7 @@ const SACreateSuperDistributor = () => {
       setLoading(false);
       Swal.fire({
         icon: "error",
-        title: "An error occurred during the process. Please try again.",
+        title: error.response.data.message || "An error occurred during the process. Please try again.",
       });
     }
   };
