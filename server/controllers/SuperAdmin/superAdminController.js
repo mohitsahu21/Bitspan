@@ -504,7 +504,7 @@ const getdeactiveUsers = (req, res) => {
 const getAllUsers = (req, res) => {
   try {
     const sql =
-      "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE role != 'SuperAdmin_Employee'";
+      "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE role NOT IN ('SuperAdmin_Employee', 'SuperAdmin')";
 
     db.query(sql, (err, result) => {
       if (err) {
