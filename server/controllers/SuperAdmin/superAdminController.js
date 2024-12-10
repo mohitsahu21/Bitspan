@@ -1414,6 +1414,46 @@ const complainGetData = (req, res) => {
   }
 };
 
+const getPendingComplaintData = (req, res) => {
+  try {
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM complaindata c LEFT JOIN userprofile u  ON c.userID = u.UserId  WHERE c.status = 'Pending'  ORDER BY id DESC`;
+
+    // const sql =
+    // "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE u.Status = 'Active' AND role != 'SuperAdmin_Employee'";
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error complaindata from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error fetching complaindata" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: 0,
+            message: "No complaindata found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result.length,
+            message: "complaindata fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching complaindata from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching complaindata",
+      error: error.message,
+    });
+  }
+};
+
 const resolveComplaint = (req, res) => {
   try {
     const { complaintId, response, status } = req.body;
@@ -3848,12 +3888,14 @@ const getPendingWalletWithdrawRequests = (req, res) => {
           return res.status(200).json({
             success: true,
             data: [],
+            dataLength : 0,
             message: "No getWalletWithdrawRequests found",
           });
         } else {
           return res.status(200).json({
             success: true,
             data: result,
+            dataLength : result.length ? result.length : 0,
             message: "getWalletWithdrawRequests fetched successfully",
           });
         }
@@ -4101,12 +4143,14 @@ const getPendingWalletAddMoneyRequests = (req, res) => {
           return res.status(200).json({
             success: true,
             data: [],
+            dataLength : 0,
             message: "No getPendingWalletAddMoneyRequests found",
           });
         } else {
           return res.status(200).json({
             success: true,
             data: result,
+            dataLength : result.length ? result.length : 0,
             message: "getPendingWalletAddMoneyRequests fetched successfully",
           });
         }
@@ -6217,6 +6261,161 @@ const DeleteDTHConnetionPlans = (req, res) => {
   }
 };
 
+const getPendingOfflineRecharge = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM offline_recharge c LEFT JOIN userprofile u  ON c.created_by_userid = u.UserId  WHERE c.status = 'Pending'  ORDER BY id DESC`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getPendingOfflineRecharge from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getPendingOfflineRecharge" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: 0,
+            message: "No getPendingOfflineRecharge found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result.length,
+            message: "getPendingOfflineRecharge fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getPendingOfflineRecharge from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getPendingOfflineRecharge",
+      error: error.message,
+    });
+  }
+};
+
+const getPendingApplyOfflineForm = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId WHERE applicant_select_service != 'New Bank ID' AND c.status = 'Pending'  ORDER BY id DESC`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error apply_offline_form from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error fetching apply_offline_form" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: 0,
+            message: "No apply_offline_form found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result.length,
+            message: "apply_offline_form fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching apply_offline_form from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching apply_offline_form",
+      error: error.message,
+    });
+  }
+};
+
+const getPendingPANOfflineForm = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM pan_offline c LEFT JOIN userprofile u  ON c.user_id = u.UserId WHERE c.status = 'Pending' ORDER BY id DESC`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error pan_offline from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error fetching pan_offline" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: 0,
+            message: "No pan_offline found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result.length,
+            message: "pan_offline fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching pan_offline from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching pan_offline",
+      error: error.message,
+    });
+  }
+};
+
+const getPendingBankIdForm = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId WHERE applicant_select_service = 'New Bank ID' AND c.status = 'Pending' ORDER BY id DESC`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getPendingBankIdForm from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getPendingBankIdForm" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: 0,
+            message: "No getPendingBankIdForm found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result.length,
+            message: "getPendingBankIdForm fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getPendingBankIdForm from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getPendingBankIdForm",
+      error: error.message,
+    });
+  }
+};
+
 
 module.exports = {
   addPackage,
@@ -6239,6 +6438,7 @@ module.exports = {
   updateUserIdPrice,
   getSuperAdminEmployee,
   complainGetData,
+  getPendingComplaintData,
   resolveComplaint,
 
   getApplyOfflineForm,
@@ -6324,7 +6524,11 @@ module.exports = {
   getDTHConnectionPlans,
   CreateDTHConnectionPlans,
   EditDTHConnetionPlans,
-  DeleteDTHConnetionPlans
+  DeleteDTHConnetionPlans,
+  getPendingOfflineRecharge,
+  getPendingApplyOfflineForm,
+  getPendingPANOfflineForm,
+  getPendingBankIdForm
 
 
 };

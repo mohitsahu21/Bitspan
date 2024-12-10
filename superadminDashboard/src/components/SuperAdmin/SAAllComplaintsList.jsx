@@ -169,11 +169,13 @@ const SAAllComplaintsList = () => {
       const filteredItems = users.filter(
         (row) =>{ 
           const matchesKeyword =  (row?.UserName &&
-            row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-          (row?.userID && row.userID.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.ContactNo &&
-              row.ContactNo.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+            row?.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+            (row?.id &&
+              row?.id.toString().toLowerCase().includes(keyword.trim().toLowerCase())) ||
+          (row?.userID && row?.userID.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.ContactNo &&
+              row?.ContactNo.toLowerCase().includes(keyword.trim().toLowerCase())) ||
             (row?.Email &&
-              row.Email.toLowerCase().includes(keyword.trim().toLowerCase()))
+              row?.Email.toLowerCase().includes(keyword.trim().toLowerCase()))
 
               const matchesType = !complaintStatus || complaintStatus === "---Select Complaint Status---" || row.status === complaintStatus;
               return matchesKeyword && matchesType;
@@ -255,6 +257,8 @@ const SAAllComplaintsList = () => {
     //     });
     //   };
 
+    console.log(users)
+    console.log(showApiData);
     
     return (
         <>
