@@ -360,7 +360,8 @@ const bankidForm = (req, res) => {
     pan_card,
     business_name,
     status,
-    user_id,
+    amount,
+    userId,
   } = req.body;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
@@ -407,9 +408,10 @@ const bankidForm = (req, res) => {
     shop_photo,
     electric_bill,
     status,
+    amount,
     user_id,
     created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
   db.query(
@@ -431,8 +433,9 @@ const bankidForm = (req, res) => {
       bank_passbook,
       shop_photo,
       electric_bill,
-      status,
-      user_id,
+      "Pending",
+      amount,
+      userId,
       createdAt,
     ],
     (err, result) => {
@@ -442,10 +445,119 @@ const bankidForm = (req, res) => {
         return;
       }
 
-      res.status(200).json({
-        message: "Form submitted successfully",
-        id: result.insertId,
-        orderId: orderId,
+      const queryBalance = `
+        SELECT Closing_Balance 
+        FROM user_wallet 
+        WHERE userId = ? 
+        ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+        LIMIT 1
+      `;
+
+      db.query(queryBalance, [userId], (err, balanceResult) => {
+        if (err) {
+          console.error("Error fetching wallet balance:", err);
+          return res.status(500).json({
+            status: "Failure",
+            step: "Fetch Wallet Balance",
+            error: "Failed to fetch wallet balance",
+            details: err.message,
+          });
+        }
+
+        if (balanceResult.length === 0) {
+          return res.status(404).json({
+            status: "Failure",
+            step: "Fetch Wallet Balance",
+            message: "No balance found for the user.",
+          });
+        }
+
+        const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+        if (isNaN(currentBalance)) {
+          return res.status(500).json({
+            status: "Failure",
+            step: "Fetch Wallet Balance",
+            error: "Current balance is invalid.",
+          });
+        }
+
+        if (currentBalance < amount) {
+          return res.status(400).json({
+            status: "Failure",
+            step: "Wallet Deduction",
+            message: "Insufficient balance.",
+            currentBalance,
+            requiredAmount: amount,
+          });
+        }
+
+        const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+        if (isNaN(newBalance)) {
+          return res.status(500).json({
+            status: "Failure",
+            step: "Wallet Deduction",
+            error: "New balance calculation is invalid.",
+          });
+        }
+
+        const transactionId = `TXNW${Date.now()}`;
+        const transactionDetails = `Recharge Deduction ${applicant_number}`;
+
+        const updateWalletQuery = `
+          INSERT INTO user_wallet 
+          (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        db.query(
+          updateWalletQuery,
+          [
+            userId,
+            createdAt,
+            orderId,
+            transactionId,
+            currentBalance.toFixed(2),
+            newBalance,
+            "Debit",
+            amount,
+            transactionDetails,
+            "Completed",
+          ],
+          (err, walletResult) => {
+            if (err) {
+              console.error("Error updating wallet balance:", err);
+              return res.status(500).json({
+                status: "Failure",
+                step: "Update Wallet Balance",
+                error: "Failed to update wallet balance",
+                details: err.message,
+              });
+            }
+
+            return res.status(200).json({
+              status: "Success",
+              message: "Bank ID processed and wallet updated successfully.",
+              details: {
+                bankid: {
+                  orderId,
+                  applicant_name,
+                  applicant_number,
+                  email,
+                  applicant_select_service,
+                  select_bank_service,
+                  business_name,
+                  createdAt,
+                },
+                wallet: {
+                  transactionId,
+                  newBalance,
+                  previousBalance: currentBalance.toFixed(2),
+                  deductedAmount: amount,
+                },
+              },
+            });
+          }
+        );
       });
     }
   );

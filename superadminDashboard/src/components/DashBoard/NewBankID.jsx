@@ -8,12 +8,14 @@ import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleRefresh } from "../../redux/user/userSlice";
+import Swal from "sweetalert2";
 
 const NewBankID = () => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
-
-  // console.log(currentUser);
+  const [optionPrices, setOptionPrices] = useState({});
+  const [selectedPrice, setSelectedPrice] = useState(null);
+  // console.log(selectedPrice);
 
   const optionsDrop = [
     { id: 1, name: "Airtel" },
@@ -30,6 +32,41 @@ const NewBankID = () => {
     { id: 12, name: "Ayushman ID" },
   ];
 
+  useEffect(() => {
+    const fetchPackage = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:7777/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+        );
+
+        const priceData = response.data.data[0];
+        console.log("Price Data:", priceData);
+
+        const priceMap = {
+          Airtel: priceData?.Airtel_BankId_Price || "N/A",
+          Anypay: priceData?.Anypay_BankId_Price || "N/A",
+          Ezeepay: priceData?.Ezeepay_BankId_Price || "N/A",
+          Fino: priceData?.Fino_BankId_Price || "N/A",
+          IRCTC: priceData?.IRCTC_Agent_ID_Price || "N/A",
+          NSDL: priceData?.Nsdl_BankId_Price || "N/A",
+          PayNearBy: priceData?.PayNearBy_BankId_Price || "N/A",
+          Payworld: priceData?.payworld_BankId_Price || "N/A",
+          "Religare Digipay": priceData?.ReligareDigipay_BankId_Price || "N/A",
+          Roinet: priceData?.Roinet_BankId_Price || "N/A",
+          "Spice Money": priceData?.SpiceMoney_BankId_Price || "N/A",
+          "Ayushman ID": priceData?.Ayushman_Id_Price || "N/A",
+        };
+
+        console.log("Mapped Price Data:", priceMap);
+        setOptionPrices(priceMap);
+      } catch (error) {
+        console.error("Fetching package data failed:", error);
+      }
+    };
+
+    fetchPackage();
+  }, []);
+
   const [formData, setFormData] = useState({
     applicant_name: currentUser.username,
     applicant_father: "",
@@ -42,7 +79,8 @@ const NewBankID = () => {
     pan_card: currentUser.PanCardNumber,
     business_name: currentUser.BusinessName,
     status: "Pending",
-    user_id: currentUser.userId,
+    amount: "",
+    userId: currentUser.userId,
   });
 
   const [files, setFiles] = useState({
@@ -63,6 +101,17 @@ const NewBankID = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleDropdownChange = (e) => {
+    const selectedOption = e.target.value;
+    console.log("Selected Option:", selectedOption);
+    console.log("Option Prices:", optionPrices);
+    console.log("Price for Selected Option:", optionPrices[selectedOption]);
+    // setSelectedPrice(optionPrices[selectedOption] || null);
+    setSelectedPrice(optionPrices[selectedOption] || "Price not available");
+
+    handleInputChange(e);
   };
 
   const handleFileChange = (e) => {
@@ -121,15 +170,21 @@ const NewBankID = () => {
         submitForm,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
-      alert(response.data.message);
-      // setSelectedOptions((prevOptions) => [
-      //   ...prevOptions,
-      //   formData.select_bank_service,
-      // ]);
+      // alert(response.data.message);
+      Swal.fire({
+        title: "Form Submitted Successfully",
+        text: response.data.message,
+        icon: "success",
+      });
       dispatch(toggleRefresh());
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert("Error submitting form");
+      // alert("Error submitting form");
+      Swal.fire({
+        title: "Error",
+        text: error.response?.data?.message || "Something went wrong!",
+        icon: "error",
+      });
     } finally {
       setIsLoading(false);
 
@@ -232,6 +287,7 @@ const NewBankID = () => {
                             name="applicant_name"
                             value={formData.applicant_name}
                             onChange={handleInputChange}
+                            readOnly
                           />
                           <label htmlFor="floatingInputGroup1">
                             Applicant Name
@@ -292,6 +348,7 @@ const NewBankID = () => {
                             name="applicant_number"
                             value={formData.applicant_number}
                             onChange={handleInputChange}
+                            readOnly
                           />
                           <label htmlFor="floatingInputGroup3">
                             Applicant Number
@@ -299,7 +356,7 @@ const NewBankID = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <div className="col-xl-5 col-lg-5 col-md-5 col-sm-12">
                       <div className="input-group">
                         <span className="input-group-text">
                           <FaMobileAlt />
@@ -312,12 +369,13 @@ const NewBankID = () => {
                             name="email"
                             value={formData.email}
                             onChange={handleInputChange}
+                            readOnly
                           />
                           <label htmlFor="floatingInputGroup3">Email ID</label>
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12">
                       <div className="input-group">
                         <span className="input-group-text">
                           <RiMarkPenLine />
@@ -329,7 +387,8 @@ const NewBankID = () => {
                             aria-label="Floating label select example"
                             name="select_bank_service"
                             value={formData.select_bank_service}
-                            onChange={handleInputChange}
+                            // onChange={handleInputChange}
+                            onChange={handleDropdownChange}
                           >
                             <option value="">Select an option ....</option>
                             {optionsDrop.map((item) => {
@@ -362,6 +421,30 @@ const NewBankID = () => {
                           <label htmlFor="floatingSelect">Select Bank</label>
                         </div>
                       </div>
+                      {/* {selectedPrice !== null && (
+                        <div className="mt-2">
+                          <strong>Price:</strong> ₹{selectedPrice}
+                        </div>
+                      )} */}
+                    </div>
+                    <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+                      <div className="input-group">
+                        <span className="input-group-text">
+                          <FaMobileAlt />
+                        </span>
+                        <div className="form-floating">
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="floatingInputGroup3"
+                            name="amount"
+                            value={selectedPrice}
+                            onChange={handleInputChange}
+                            readOnly
+                          />
+                          <label htmlFor="floatingInputGroup3">Amount</label>
+                        </div>
+                      </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="input-group">
@@ -376,6 +459,7 @@ const NewBankID = () => {
                             id="floatingInputGroup3"
                             value={formData.aadhar_card}
                             onChange={handleInputChange}
+                            readOnly
                           />
                           <label htmlFor="floatingInputGroup3">
                             Aadhar Card Number
@@ -396,6 +480,7 @@ const NewBankID = () => {
                             name="pan_card"
                             value={formData.pan_card}
                             onChange={handleInputChange}
+                            readOnly
                           />
                           <label htmlFor="floatingInputGroup3">
                             Pan Card Number
@@ -416,6 +501,7 @@ const NewBankID = () => {
                             name="business_name"
                             value={formData.business_name}
                             onChange={handleInputChange}
+                            readOnly
                           />
                           <label htmlFor="floatingInputGroup3">
                             Business Name
@@ -513,6 +599,7 @@ const NewBankID = () => {
                 <Modal
                   show={showPinModal}
                   onHide={() => setShowPinModal(false)}
+                  centered
                 >
                   <Modal.Header closeButton>
                     <Modal.Title>Enter 4-Digit PIN</Modal.Title>
