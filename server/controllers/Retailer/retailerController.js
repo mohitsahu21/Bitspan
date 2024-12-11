@@ -255,7 +255,7 @@ const applyOfflineForm = (req, res) => {
             return res.status(200).json({
               status: "Success",
               message:
-                "DTH Connection processed and wallet updated successfully.",
+                "Other Services processed and wallet updated successfully.",
               details: {
                 offlineServices: {
                   orderId,
@@ -1696,7 +1696,7 @@ const addSambalForm = (req, res) => {
       }
 
       const transactionId = `TXNW${Date.now()}`;
-      const transactionDetails = `Recharge Deduction ${mobileNumber}`;
+      const transactionDetails = `Sambal Deduction ${mobileNumber}`;
 
       const updateWalletQuery = `
       INSERT INTO user_wallet 
@@ -1886,7 +1886,7 @@ const addVerifyDistrictForm = (req, res) => {
 
       const newBalance = (currentBalance - amount).toFixed(2);
       const transactionId = `TXNW${Date.now()}`;
-      const transactionDetails = `Recharge Deduction ${mobileNo}`;
+      const transactionDetails = `Verify E-District Deduction ${mobileNo}`;
 
       const updateWalletQuery = `
         INSERT INTO user_wallet 

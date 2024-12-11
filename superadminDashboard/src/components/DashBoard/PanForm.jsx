@@ -235,7 +235,8 @@ const PanForm = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:7777/api/auth/retailer/applyOfflineForm`,
+        // `http://localhost:7777/api/auth/retailer/applyOfflineForm`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/applyOfflineForm`,
         formDataObj,
         {
           headers: { "Content-Type": "multipart/form-data" },

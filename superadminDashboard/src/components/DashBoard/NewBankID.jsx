@@ -165,8 +165,8 @@ const NewBankID = () => {
 
     try {
       const response = await axios.post(
-        // "http://bitspan.jyvflirl.a2hosted.com/api/auth/bankidForm",
-        "http://localhost:7777/api/auth/retailer/bankidForm",
+        // "http://localhost:7777/api/auth/retailer/bankidForm",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/bankidForm",
         submitForm,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

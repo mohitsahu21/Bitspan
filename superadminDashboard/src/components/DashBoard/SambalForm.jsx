@@ -69,7 +69,8 @@ const SambalForm = () => {
     console.log("Form Data Submitted: ", formData);
     try {
       const response = await axios.post(
-        `http://localhost:7777/api/auth/retailer/addSambalForm`,
+        // `http://localhost:7777/api/auth/retailer/addSambalForm`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/addSambalForm`,
         formData
       );
       // alert("Form Submitted");

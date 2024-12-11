@@ -146,7 +146,8 @@ const ElectricityRecharge = () => {
     try {
       // Make the API call
       const result = await axios.post(
-        "http://localhost:7777/api/auth/wallet/offlineRechargeAndUpdateWallet",
+        // "http://localhost:7777/api/auth/wallet/offlineRechargeAndUpdateWallet",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/wallet/offlineRechargeAndUpdateWallet",
         offlineForm
       );
 
