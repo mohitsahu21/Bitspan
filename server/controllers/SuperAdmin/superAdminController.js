@@ -6416,6 +6416,166 @@ const getPendingBankIdForm = (req, res) => {
   }
 };
 
+const getPendingEdistrictForms = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM \`e-district-application\` c LEFT JOIN userprofile u  ON c.user_id = u.UserId WHERE c.status = 'Pending' ORDER BY id DESC`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getPendingEdistrictForms from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getPendingEdistrictForms" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: 0,
+            message: "No getPendingEdistrictForms found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result.length,
+            message: "getPendingEdistrictForms fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getPendingEdistrictForms from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getPendingEdistrictForms",
+      error: error.message,
+    });
+  }
+};
+
+const getPendingVerifyEdistrictForms = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM verifyedistrict c LEFT JOIN userprofile u  ON c.user_id = u.UserId WHERE c.status = 'Pending' ORDER BY id DESC`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getPendingVerifyEdistrictForms from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getPendingVerifyEdistrictForms" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: 0,
+            message: "No getPendingVerifyEdistrictForms found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result.length,
+            message: "getPendingVerifyEdistrictForms fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getPendingVerifyEdistrictForms from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getPendingVerifyEdistrictForms",
+      error: error.message,
+    });
+  }
+};
+
+const getPendingSambalForms = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM sambalform c LEFT JOIN userprofile u  ON c.user_id = u.UserId WHERE c.status = 'Pending' ORDER BY id DESC`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getPendingSambalForms from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getPendingSambalForms" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: 0,
+            message: "No getPendingSambalForms found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result.length,
+            message: "getPendingSambalForms fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getPendingSambalForms from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getPendingSambalForms",
+      error: error.message,
+    });
+  }
+};
+const getPendingPanCouponRequests = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM user_wallet ORDER BY wid DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM user_wallet c LEFT JOIN userprofile u  ON c.userId = u.UserId ORDER BY wid DESC`;
+    const sql = `
+  SELECT c.*, u.UserName, u.role, u.ContactNo, u.Email 
+  FROM pan_coupon_requests c 
+  LEFT JOIN userprofile u 
+  ON c.user_id = u.UserId WHERE c.status = 'Pending' ORDER BY id DESC
+`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getPendingPanCouponRequests from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getPendingPanCouponRequests" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: 0,
+            message: "No getPendingPanCouponRequests found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result.length,
+            message: "getPendingPanCouponRequests fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getPendingPanCouponRequests from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getPendingPanCouponRequests",
+      error: error.message,
+    });
+  }
+};
+
 
 module.exports = {
   addPackage,
@@ -6528,7 +6688,11 @@ module.exports = {
   getPendingOfflineRecharge,
   getPendingApplyOfflineForm,
   getPendingPANOfflineForm,
-  getPendingBankIdForm
+  getPendingBankIdForm,
+  getPendingEdistrictForms,
+  getPendingVerifyEdistrictForms,
+  getPendingSambalForms,
+  getPendingPanCouponRequests
 
 
 };

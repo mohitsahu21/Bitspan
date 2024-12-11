@@ -11,6 +11,7 @@ import { MdManageSearch } from "react-icons/md";
 import { IoIosLogIn } from "react-icons/io";
 import { MdCrop } from "react-icons/md";
 import { MdAddCard } from "react-icons/md";
+import { LuIndianRupee } from "react-icons/lu";
 import { AiOutlineForm } from "react-icons/ai";
 import { MdAddShoppingCart } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
@@ -25,6 +26,13 @@ const SuperAdminDashboard = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
+  const [cgOnePayBalance,setCgOnePayBalance] = useState([]);
+  const [instPayBalance,setInstPayBalance] = useState([]);
+  const [ezytmBalance,setEzytmBalance] = useState([]);
+  const [deeperWebBalance,setDeeperWebBalance] = useState([]);
+  const [easySmartBalance,seteasySmartBalance] = useState([]);
+  const [sizarpayBalance,setSizarpayBalance] = useState([]);
+  const [zlinkBalance,setZlinkBalance] = useState([]);
   const [walletWithdrawalRequests,setWalletWithdrawalRequests] = useState([]);
   const [addWalletMoneyRequests , setAddWalletMoneyRequests] = useState([]);
   const [pendingComplaints , setPendingComplaints] = useState([]);
@@ -32,6 +40,10 @@ const SuperAdminDashboard = () => {
   const [pendingOfflineForm , setPendingOfflineForm] = useState([]);
   const [pendingPanOfflineForm , setPendingPanOfflineForm] = useState([]);
   const [pendingBankIdForm , setPendingBankIdForm] = useState([]);
+  const [pendingEdistrictForm , setPendingEdistrictForm] = useState([]);
+  const [pendingVerifyEdistrictForm , setPendingVerifyEdistrictForm] = useState([]);
+  const [pendingSmabalForm , setPendingSambalForm] = useState([]);
+  const [pendingPanCouponRequest , setPendingPanCouponRequest] = useState([]);
   const TotalUsers = {
      WhiteLabel : 0,
      SuperDistributor : 0,
@@ -61,6 +73,97 @@ const SuperAdminDashboard = () => {
     }
   };
 
+  const fetchCgOnePayBalance = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/cgonepay/cgonePayBalance"
+      );
+      setCgOnePayBalance(data.MESSAGE);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+  const fetchInstPayBalance = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/get-balance"
+      );
+      setInstPayBalance(data.balance);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+  const fetchEzytmBalance = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/ezytm/get-balance-ezytm"
+      );
+      setEzytmBalance(data.BALANCE);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+  const fetchDeeperWebBalance = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/deeperweb/deeperwebBalance"
+      );
+      setDeeperWebBalance(data.totalBalance);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+  const fetchEasySmartBalance = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/nsdlpan/easysmartBalance"
+      );
+      seteasySmartBalance(data.user_balance);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+  const fetchSizarpayBalance = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/sizarpay/sizarpayBalance"
+      );
+      setSizarpayBalance(data.bal);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+  const fetchZlinkBalance = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/zlinkBalance"
+      );
+      setZlinkBalance(data.user_balance);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
   const fetchWalletWithdrawalRequest = async () => {
     setLoading(true);
     try {
@@ -154,6 +257,58 @@ const SuperAdminDashboard = () => {
       setLoading(false);
     }
   };
+  const fetchPendingEdistrictForm = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingEdistrictForms"
+      );
+      setPendingEdistrictForm(data.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+  const fetchPendingVerifyEdistrictForm = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingVerifyEdistrictForms"
+      );
+      setPendingVerifyEdistrictForm(data.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+  const fetchPendingSambalForm = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingSambalForms"
+      );
+      setPendingSambalForm(data.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+  const fetchPendingPanCouponRequest = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingPanCouponRequests"
+      );
+      setPendingPanCouponRequest(data.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchActiveUsers()
@@ -164,6 +319,17 @@ const SuperAdminDashboard = () => {
     fetchPendingOfflineForm()
     fetchPendingPanOfflineForm()
     fetchPendingBankIdForm()
+    fetchPendingEdistrictForm()
+    fetchPendingVerifyEdistrictForm()
+    fetchPendingSambalForm()
+    fetchPendingPanCouponRequest()
+    fetchCgOnePayBalance()
+    fetchInstPayBalance()
+    fetchEzytmBalance()
+    fetchDeeperWebBalance()
+    fetchEasySmartBalance()
+    fetchSizarpayBalance()
+    fetchZlinkBalance()
   }, []);
 
   console.log(pendingComplaints)
@@ -309,7 +475,7 @@ const CustomTooltip = styled(Tooltip)`
                       <div className="card card-2">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <MdAddCard />
+                          <LuIndianRupee />
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
@@ -317,7 +483,7 @@ const CustomTooltip = styled(Tooltip)`
                             INS PAY Wallet Balance
 
                             </p>
-                            <h4 className="px-2 my-0">0</h4>{" "}
+                            <h4 className="px-2 my-0">{instPayBalance ? instPayBalance : "NA" }</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -326,14 +492,14 @@ const CustomTooltip = styled(Tooltip)`
                       <div className="card card-3">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <MdAddCard />
+                          <LuIndianRupee />
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
                             <p className="mb-0 px-2 my-0 fs-6">
                             Ezytm Wallet Balance
                             </p>
-                            <h4 className="px-2 my-0">0</h4>{" "}
+                            <h4 className="px-2 my-0">{ezytmBalance ? ezytmBalance : "NA"}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -342,14 +508,78 @@ const CustomTooltip = styled(Tooltip)`
                       <div className="card card-3">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <MdAddCard />
+                          <LuIndianRupee />
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
                             <p className="mb-0 px-2 my-0 fs-6">
                             CGONE PAY Wallet Balance
                             </p>
-                            <h4 className="px-2 my-0">0</h4>{" "}
+                            <h4 className="px-2 my-0">{cgOnePayBalance ? cgOnePayBalance : "NA"}</h4>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      <div className="card card-3">
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                          <LuIndianRupee />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">
+                           Deeper Web Wallet Balance
+                            </p>
+                            <h4 className="px-2 my-0">{deeperWebBalance ? deeperWebBalance : "NA"}</h4>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      <div className="card card-3">
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                          <LuIndianRupee />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">
+                           Easy Smart Wallet Balance
+                            </p>
+                            <h4 className="px-2 my-0">{easySmartBalance ? easySmartBalance : "NA"}</h4>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      <div className="card card-3">
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                          <LuIndianRupee />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">
+                           Sizar Pay Wallet Balance
+                            </p>
+                            <h4 className="px-2 my-0">{sizarpayBalance ? sizarpayBalance : "NA"}</h4>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      <div className="card card-3">
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                          <LuIndianRupee />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">
+                           ZLink Wallet Balance
+                            </p>
+                            <h4 className="px-2 my-0">{zlinkBalance ? zlinkBalance : "NA"}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -414,6 +644,70 @@ const CustomTooltip = styled(Tooltip)`
                             Pending Bank Id Form
                             </p>
                             <h4 className="px-2 my-0">{pendingBankIdForm}</h4>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      <div className="card card-3">
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                            <MdAddCard />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">
+                            Pending E-district Form
+                            </p>
+                            <h4 className="px-2 my-0">{pendingEdistrictForm}</h4>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      <div className="card card-3">
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                            <MdAddCard />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">
+                            Pending Verify E-district Form
+                            </p>
+                            <h4 className="px-2 my-0">{pendingVerifyEdistrictForm}</h4>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      <div className="card card-3">
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                            <MdAddCard />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">
+                            Pending Sambal Form
+                            </p>
+                            <h4 className="px-2 my-0">{pendingSmabalForm}</h4>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      <div className="card card-3">
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                            <MdAddCard />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">
+                            Pending Pan Coupon Request
+                            </p>
+                            <h4 className="px-2 my-0">{pendingPanCouponRequest}</h4>{" "}
                           </div>
                         </div>
                       </div>
