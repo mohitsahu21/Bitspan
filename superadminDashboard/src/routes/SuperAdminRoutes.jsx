@@ -1,75 +1,86 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import { Suspense, lazy } from "react";
+import { Spinner } from "react-bootstrap";
+import styled from "styled-components";
 
 import AadharLinkingStatus from "../components/DashBoard/AadharLinkingStatus";
 import TrainingVideo from "../components/DashBoard/TrainingVideo";
-import SuperAdminDashboard from "../pages/SuperAdminDashboard";
-import SAProfile from "../components/SuperAdmin/SAProfile";
-import SAWalletTransactionReport from "../components/SuperAdmin/SAWalletTransactionReport";
-import SAAllOfflineForm from "../components/SuperAdmin/SAAllOfflineForm";
-import SAStepVerification from "../components/SuperAdmin/SAStepVerification";
-import SAWebsiteSetting from "../components/SuperAdmin/SAWebsiteSetting";
-import SAUTIPanTransactionReport from "../components/SuperAdmin/SAUTIPanTransactionReport";
-import SACreateWhiteLabel from "../components/SuperAdmin/SACreateWhiteLabel";
-import SADistributeCoupon from "../components/SuperAdmin/SADistributeCoupon";
-import SAUTICouponHistory from "../components/SuperAdmin/SAUTICouponHistory";
-import SAActiveUsersList from "../components/SuperAdmin/SAActiveUsersList";
-import SADeactiveUsersList from "../components/SuperAdmin/SADeactiveUsersList";
-import SAAllUsersJoinedList from "../components/SuperAdmin/SAAllUsersJoinedList";
-import SAPendingPaymentUsers from "../components/SuperAdmin/SAPendingPaymentUsers";
-import SAWhiteLabelJoiningList from "../components/SuperAdmin/SAWhiteLabelJoiningList";
-import SABuyUserIdSummary from "../components/SuperAdmin/SABuyUserIdSummary";
-import SAPanTransactionReport from "../components/SuperAdmin/SAPanTransactionReport";
-import SAChangePrice from "../components/SuperAdmin/SAChangePrice";
-import SAAllComplaintsList from "../components/SuperAdmin/SAAllComplaintsList";
-import SAChangeIdSetRate from "../components/SuperAdmin/SAChangeIdSetRate";
-import SAChangeNSDLPrice from "../components/SuperAdmin/SAChangeNSDLPrice";
-import SAChangeUTIPanPrice from "../components/SuperAdmin/SAChangeUTIPanPrice";
-import SAChangeUTINewCouponPrice from "../components/SuperAdmin/SAChangeUTINewCouponPrice";
-import SAChangePassword from "../components/SuperAdmin/SAChangePassword";
-import SABankAccountSetup from "../components/SuperAdmin/SABankAccountSetup";
-import SABankAccountVerify from "../components/SuperAdmin/SABankAccountVerify";
-import SAWalletWithdraw from "../components/SuperAdmin/SAWalletWithdraw";
-import SAFundTransferStatus from "../components/SuperAdmin/SAFundTransferStatus";
-import SAWalletWithdrawRequests from "../components/SuperAdmin/SAWalletWithdrawRequests";
-import SACommisionSummary from "../components/SuperAdmin/SACommisionSummary.jsx";
-import SACreateSuperDistributor from "../components/SuperAdmin/SACreateSuperDistributor.jsx";
-import SACreateDistributor from "../components/SuperAdmin/SACreateDistributor.jsx";
-import SACreateRetailer from "../components/SuperAdmin/SACreateRetailer.jsx";
-import SACreatePackages from "../components/SuperAdmin/SACreatePackages.jsx";
-import SAViewPackages from "../components/SuperAdmin/SAViewPackages.jsx";
-import SATodayAllTransaction from "../components/SuperAdmin/SATodayAllTransaction.jsx";
-import SAAllTransaction from "../components/SuperAdmin/SAAllTransaction.jsx";
-import SAChangeUserNotification from "../components/SuperAdmin/SAChangeUserNotification.jsx";
-import SAWalletWithdrawSummary from "../components/SuperAdmin/SAWalletWithdrawSummary.jsx";
-import SASetWhiteLabelIdPrice from "../components/SuperAdmin/SASetWhiteLabelIdPrice.jsx";
-import SAActiveDeactiveApi from "../components/SuperAdmin/SAActiveDeactiveApi.jsx";
-import PanForm from "../components/SuperAdmin/PanForm.jsx";
-import SARegisterEmployee from "../components/SuperAdmin/SARegisterEmployee.jsx";
-import SAPendingKycUsers from "../components/SuperAdmin/SAPendingKycUsers.jsx";
-import SAEmployeeList from "../components/SuperAdmin/SAEmployeeList.jsx";
-import SAPanOfflineHistory from "../components/SuperAdmin/SAPanOfflineHistory.jsx";
-import SABankIdForms from "../components/SuperAdmin/SABankIdForms.jsx";
-import SAEdistrictHistory from "../components/SuperAdmin/SAEdistrictHistory.jsx";
-import SAOfflineRechargeHistory from "../components/SuperAdmin/SAOfflineRechargeHistory.jsx";
-import SAOfflineDthConnection from "../components/SuperAdmin/SAOfflineDthConnection.jsx";
-import SAAddWalletMoneyRequests from "../components/SuperAdmin/SAAddWalletMoneyRequests.jsx";
-import SAAddWalletMoneySummary from "../components/SuperAdmin/SAAddWalletMoneySummary.jsx";
-import SAActiveDeactiveServices from "../components/SuperAdmin/SAActiveDeactiveServices.jsx";
-import SAAddWalletMoneyDirect from "../components/SuperAdmin/SAAddWalletMoneyDirect.jsx";
-import SAWithdrawWalletMoneyDirect from "../components/SuperAdmin/SAWithdrawWalletMoneyDirect.jsx";
-import SAVerifyEdistrictHistory from "../components/SuperAdmin/SAVerifyEdistrictHistory.jsx";
-import SASambalHistory from "../components/SuperAdmin/SASambalHistory.jsx";
-import SAOnlineRecharges from "../components/SuperAdmin/SAOnlineRecharges.jsx";
-import SAOnlineDthConnection from "../components/SuperAdmin/SAOnlineDthConnection.jsx";
-import SAPanCouponRequests from "../components/SuperAdmin/SAPanCouponRequests.jsx";
-import SAUserRelation from "../components/SuperAdmin/SAUserRelation.jsx";
-import SAPanCorrectionHistory from "../components/SuperAdmin/SAPanCorrectionHistory.jsx";
-import SASetDTHPlans from "../components/SuperAdmin/SASetDTHPlans.jsx";
+// Lazy imports
+const SuperAdminDashboard = lazy(() => import("../pages/SuperAdminDashboard"));
+const SAProfile = lazy(() => import("../components/SuperAdmin/SAProfile"));
+const SAWalletTransactionReport = lazy(() => import("../components/SuperAdmin/SAWalletTransactionReport"));
+const SAAllOfflineForm = lazy(() => import("../components/SuperAdmin/SAAllOfflineForm"));
+const SAStepVerification = lazy(() => import("../components/SuperAdmin/SAStepVerification"));
+const SAWebsiteSetting = lazy(() => import("../components/SuperAdmin/SAWebsiteSetting"));
+const SAUTIPanTransactionReport = lazy(() => import("../components/SuperAdmin/SAUTIPanTransactionReport"));
+const SACreateWhiteLabel = lazy(() => import("../components/SuperAdmin/SACreateWhiteLabel"));
+const SADistributeCoupon = lazy(() => import("../components/SuperAdmin/SADistributeCoupon"));
+const SAUTICouponHistory = lazy(() => import("../components/SuperAdmin/SAUTICouponHistory"));
+const SAActiveUsersList = lazy(() => import("../components/SuperAdmin/SAActiveUsersList"));
+const SADeactiveUsersList = lazy(() => import("../components/SuperAdmin/SADeactiveUsersList"));
+const SAAllUsersJoinedList = lazy(() => import("../components/SuperAdmin/SAAllUsersJoinedList"));
+const SAPendingPaymentUsers = lazy(() => import("../components/SuperAdmin/SAPendingPaymentUsers"));
+const SAWhiteLabelJoiningList = lazy(() => import("../components/SuperAdmin/SAWhiteLabelJoiningList"));
+const SABuyUserIdSummary = lazy(() => import("../components/SuperAdmin/SABuyUserIdSummary"));
+const SAPanTransactionReport = lazy(() => import("../components/SuperAdmin/SAPanTransactionReport"));
+const SAChangePrice = lazy(() => import("../components/SuperAdmin/SAChangePrice"));
+const SAAllComplaintsList = lazy(() => import("../components/SuperAdmin/SAAllComplaintsList"));
+const SAChangeIdSetRate = lazy(() => import("../components/SuperAdmin/SAChangeIdSetRate"));
+const SAChangeNSDLPrice = lazy(() => import("../components/SuperAdmin/SAChangeNSDLPrice"));
+const SAChangeUTIPanPrice = lazy(() => import("../components/SuperAdmin/SAChangeUTIPanPrice"));
+const SAChangeUTINewCouponPrice = lazy(() => import("../components/SuperAdmin/SAChangeUTINewCouponPrice"));
+const SAChangePassword = lazy(() => import("../components/SuperAdmin/SAChangePassword"));
+const SABankAccountSetup = lazy(() => import("../components/SuperAdmin/SABankAccountSetup"));
+const SABankAccountVerify = lazy(() => import("../components/SuperAdmin/SABankAccountVerify"));
+const SAWalletWithdraw = lazy(() => import("../components/SuperAdmin/SAWalletWithdraw"));
+const SAFundTransferStatus = lazy(() => import("../components/SuperAdmin/SAFundTransferStatus"));
+const SAWalletWithdrawRequests = lazy(() => import("../components/SuperAdmin/SAWalletWithdrawRequests"));
+const SACommisionSummary = lazy(() => import("../components/SuperAdmin/SACommisionSummary.jsx"));
+const SACreateSuperDistributor = lazy(() => import("../components/SuperAdmin/SACreateSuperDistributor.jsx"));
+const SACreateDistributor = lazy(() => import("../components/SuperAdmin/SACreateDistributor.jsx"));
+const SACreateRetailer = lazy(() => import("../components/SuperAdmin/SACreateRetailer.jsx"));
+const SACreatePackages = lazy(() => import("../components/SuperAdmin/SACreatePackages.jsx"));
+const SAViewPackages = lazy(() => import("../components/SuperAdmin/SAViewPackages.jsx"));
+const SATodayAllTransaction = lazy(() => import("../components/SuperAdmin/SATodayAllTransaction.jsx"));
+const SAAllTransaction = lazy(() => import("../components/SuperAdmin/SAAllTransaction.jsx"));
+const SAChangeUserNotification = lazy(() => import("../components/SuperAdmin/SAChangeUserNotification.jsx"));
+const SAWalletWithdrawSummary = lazy(() => import("../components/SuperAdmin/SAWalletWithdrawSummary.jsx"));
+const SASetWhiteLabelIdPrice = lazy(() => import("../components/SuperAdmin/SASetWhiteLabelIdPrice.jsx"));
+const SAActiveDeactiveApi = lazy(() => import("../components/SuperAdmin/SAActiveDeactiveApi.jsx"));
+const PanForm = lazy(() => import("../components/SuperAdmin/PanForm.jsx"));
+const SARegisterEmployee = lazy(() => import("../components/SuperAdmin/SARegisterEmployee.jsx"));
+const SAPendingKycUsers = lazy(() => import("../components/SuperAdmin/SAPendingKycUsers.jsx"));
+const SAEmployeeList = lazy(() => import("../components/SuperAdmin/SAEmployeeList.jsx"));
+const SAPanOfflineHistory = lazy(() => import("../components/SuperAdmin/SAPanOfflineHistory.jsx"));
+const SABankIdForms = lazy(() => import("../components/SuperAdmin/SABankIdForms.jsx"));
+const SAEdistrictHistory = lazy(() => import("../components/SuperAdmin/SAEdistrictHistory.jsx"));
+const SAOfflineRechargeHistory = lazy(() => import("../components/SuperAdmin/SAOfflineRechargeHistory.jsx"));
+const SAOfflineDthConnection = lazy(() => import("../components/SuperAdmin/SAOfflineDthConnection.jsx"));
+const SAAddWalletMoneyRequests = lazy(() => import("../components/SuperAdmin/SAAddWalletMoneyRequests.jsx"));
+const SAAddWalletMoneySummary = lazy(() => import("../components/SuperAdmin/SAAddWalletMoneySummary.jsx"));
+const SAActiveDeactiveServices = lazy(() => import("../components/SuperAdmin/SAActiveDeactiveServices.jsx"));
+const SAAddWalletMoneyDirect = lazy(() => import("../components/SuperAdmin/SAAddWalletMoneyDirect.jsx"));
+const SAWithdrawWalletMoneyDirect = lazy(() => import("../components/SuperAdmin/SAWithdrawWalletMoneyDirect.jsx"));
+const SAVerifyEdistrictHistory = lazy(() => import("../components/SuperAdmin/SAVerifyEdistrictHistory.jsx"));
+const SASambalHistory = lazy(() => import("../components/SuperAdmin/SASambalHistory.jsx"));
+const SAOnlineRecharges = lazy(() => import("../components/SuperAdmin/SAOnlineRecharges.jsx"));
+const SAOnlineDthConnection = lazy(() => import("../components/SuperAdmin/SAOnlineDthConnection.jsx"));
+const SAPanCouponRequests = lazy(() => import("../components/SuperAdmin/SAPanCouponRequests.jsx"));
+const SAUserRelation = lazy(() => import("../components/SuperAdmin/SAUserRelation.jsx"));
+const SAPanCorrectionHistory = lazy(() => import("../components/SuperAdmin/SAPanCorrectionHistory.jsx"));
+const SASetDTHPlans = lazy(() => import("../components/SuperAdmin/SASetDTHPlans.jsx"));
+
 
 const SuperAdminRoutes = () => {
   return (
     <React.Fragment>
+      <Wrapper>
+      <Suspense fallback={ <div className="loading-container">
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    </div>}>
       <Routes>
         <Route path="/dashboard" element={<SuperAdminDashboard />} />
         <Route path="/update-profile" element={<SAProfile />} />
@@ -240,8 +251,26 @@ const SuperAdminRoutes = () => {
         date="02-Jul-2024"
         id="AASHISD29164"/>} /> */}
       </Routes>
+      </Suspense>
+      </Wrapper>
     </React.Fragment>
   );
 };
 
 export default SuperAdminRoutes;
+
+const Wrapper = styled.div`
+.loading-container {
+  position: fixed; /* Sticks to the viewport */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center; /* Horizontally centers the content */
+  align-items: center; /* Vertically centers the content */
+  background-color: rgba(255, 255, 255, 0.8); /* Optional: Add a semi-transparent background */
+  z-index: 9999; /* Ensures it stays above other content */
+}
+
+`
