@@ -48,6 +48,7 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import styled from "styled-components";
+import NotFound from "./components/NotFound";
 // Lazy routes
 const LoginBitspan = lazy(() => import("./components/LoginBitspan"));
 const Sider = lazy(() => import("./components/SideBar"));
@@ -74,7 +75,7 @@ function App() {
         <span className="visually-hidden">Loading...</span>
       </Spinner>
     </div>}>
-      {location.pathname !== "/" &&
+      { currentUser && location.pathname !== "/" &&
         location.pathname !== "/password-reset" &&
         location.pathname !== "/download-certificate-print" &&
         location.pathname !== "/registration-page" && <Sider />}
@@ -82,12 +83,14 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginBitspan />} />
         <Route path="/password-reset" element={<ForgotPassword />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       {user === "Retailer" && <RetailerRoutes />}
       {user === "SuperDistributor" && <SuperDistributorRoutes />}
       {user === "Distributor" && <Distributor />}
       {user === "WhiteLabel" && <WhiteLabelRoutes />}
       {user === "SuperAdmin" && <SuperAdminRoutes />}
+          
       </Suspense>
       </Wrapper>
     </>
