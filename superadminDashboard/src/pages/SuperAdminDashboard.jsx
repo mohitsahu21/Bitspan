@@ -442,6 +442,7 @@ const CustomTooltip = styled(Tooltip)`
                     <User  id="t-1">
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-4">
+                        <Link to="/users-joining-list">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                           <LuUserPlus />
@@ -452,6 +453,7 @@ const CustomTooltip = styled(Tooltip)`
                             <h4 className="px-2 my-0">{users?.length}</h4>{" "}
                           </div>
                         </div>
+                        </Link>
                       </div>
                     </div>
                     </User>
@@ -586,6 +588,7 @@ const CustomTooltip = styled(Tooltip)`
                     </div>
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-3">
+                        <Link to="/Offline-Recharge-history">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <MdAddCard />
@@ -598,10 +601,12 @@ const CustomTooltip = styled(Tooltip)`
                             <h4 className="px-2 my-0">{pendingOfflineRecharge}</h4>{" "}
                           </div>
                         </div>
+                        </Link>
                       </div>
                     </div>
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-3">
+                        <Link to="/view-all-offline-history">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <MdAddCard />
@@ -614,10 +619,12 @@ const CustomTooltip = styled(Tooltip)`
                             <h4 className="px-2 my-0">{pendingOfflineForm}</h4>{" "}
                           </div>
                         </div>
+                        </Link>
                       </div>
                     </div>
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-3">
+                        <Link to="/Pan-offline-history">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <MdAddCard />
@@ -630,10 +637,12 @@ const CustomTooltip = styled(Tooltip)`
                             <h4 className="px-2 my-0">{pendingPanOfflineForm}</h4>{" "}
                           </div>
                         </div>
+                        </Link>
                       </div>
                     </div>
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-3">
+                        <Link to="/Bank-Id-history">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <MdAddCard />
@@ -646,10 +655,12 @@ const CustomTooltip = styled(Tooltip)`
                             <h4 className="px-2 my-0">{pendingBankIdForm}</h4>{" "}
                           </div>
                         </div>
+                        </Link>
                       </div>
                     </div>
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-3">
+                        <Link to="/E-district-history">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <MdAddCard />
@@ -662,10 +673,12 @@ const CustomTooltip = styled(Tooltip)`
                             <h4 className="px-2 my-0">{pendingEdistrictForm}</h4>{" "}
                           </div>
                         </div>
+                        </Link>
                       </div>
                     </div>
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-3">
+                        <Link to="/verify-E-district-form-history">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <MdAddCard />
@@ -678,10 +691,12 @@ const CustomTooltip = styled(Tooltip)`
                             <h4 className="px-2 my-0">{pendingVerifyEdistrictForm}</h4>{" "}
                           </div>
                         </div>
+                        </Link>
                       </div>
                     </div>
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-3">
+                        <Link to="/sambal-form-history">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <MdAddCard />
@@ -694,10 +709,12 @@ const CustomTooltip = styled(Tooltip)`
                             <h4 className="px-2 my-0">{pendingSmabalForm}</h4>{" "}
                           </div>
                         </div>
+                        </Link>
                       </div>
                     </div>
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-3">
+                        <Link to="/pan-coupon-requests">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <MdAddCard />
@@ -710,10 +727,12 @@ const CustomTooltip = styled(Tooltip)`
                             <h4 className="px-2 my-0">{pendingPanCouponRequest}</h4>{" "}
                           </div>
                         </div>
+                        </Link>
                       </div>
                     </div>
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-3">
+                        <Link to="/complaint-raised-list">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <MdAddCard />
@@ -726,10 +745,12 @@ const CustomTooltip = styled(Tooltip)`
                             <h4 className="px-2 my-0">{pendingComplaints}</h4>{" "}
                           </div>
                         </div>
+                        </Link>
                       </div>
                     </div>
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-3">
+                        <Link to="/wallet-withdraw-requests">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <MdAddCard />
@@ -742,10 +763,12 @@ const CustomTooltip = styled(Tooltip)`
                             <h4 className="px-2 my-0">{walletWithdrawalRequests}</h4>{" "}
                           </div>
                         </div>
+                        </Link>
                       </div>
                     </div>
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-3">
+                        <Link to="/add-wallet-money-requests">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
                             <MdAddCard />
@@ -758,6 +781,7 @@ const CustomTooltip = styled(Tooltip)`
                             <h4 className="px-2 my-0">{addWalletMoneyRequests}</h4>{" "}
                           </div>
                         </div>
+                        </Link>
                       </div>
                     </div>
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
