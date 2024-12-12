@@ -3119,7 +3119,7 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                       </div>
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Enter UTI PAN Coupon Price
+                          Enter PAN Coupon Price
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -3199,7 +3199,7 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                       </div>
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Enter UTI PAN Coupon Commission
+                          Enter PAN Coupon Commission
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">

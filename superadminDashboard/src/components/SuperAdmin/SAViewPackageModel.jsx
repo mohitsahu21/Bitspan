@@ -2510,7 +2510,7 @@ const SAViewPackageModel = ({ packages }) => {
                       </div>
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          UTI PAN Coupon Price
+                          PAN Coupon Price
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -2588,7 +2588,7 @@ const SAViewPackageModel = ({ packages }) => {
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        UTI PAN Coupon Commission
+                        PAN Coupon Commission
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
