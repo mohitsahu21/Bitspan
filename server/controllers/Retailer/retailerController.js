@@ -784,8 +784,9 @@ const panFromData = (req, res) => {
     pin_code,
     state,
     Change_Request,
-    Charge_Amount,
-    user_id,
+    pantype,
+    amount,
+    userId,
     status,
     note,
   } = req.body;
@@ -793,30 +794,30 @@ const panFromData = (req, res) => {
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const domain = "http://localhost:7777";
 
-  console.log("Request body:", req.body);
-  console.log("Uploaded files:", req.files);
+  // console.log("Request body:", req.body);
+  // console.log("Uploaded files:", req.files);
 
   // Handle files carefully
   const documentUpload =
     req.files && req.files.documentUpload
       ? req.files.documentUpload
-          .map((file) => `${domain}/panUploads/${file.filename}`)
+          .map((file) => `${domain}/uploads/${file.filename}`)
           .join(",")
       : null;
 
   const attachment_form =
     req.files && req.files.attachment_form
-      ? `${domain}/panUploads/${req.files.attachment_form[0].filename}`
+      ? `${domain}/uploads/${req.files.attachment_form[0].filename}`
       : null;
 
   const attachment_photo =
     req.files && req.files.attachment_photo
-      ? `${domain}/panUploads/${req.files.attachment_photo[0].filename}`
+      ? `${domain}/uploads/${req.files.attachment_photo[0].filename}`
       : null;
 
   const attachment_signature =
     req.files && req.files.attachment_signature
-      ? `${domain}/panUploads/${req.files.attachment_signature[0].filename}`
+      ? `${domain}/uploads/${req.files.attachment_signature[0].filename}`
       : null;
 
   const orderId = `PANZ${Date.now()}`;
@@ -824,9 +825,9 @@ const panFromData = (req, res) => {
   const sql = `INSERT INTO pan_offline (
     order_id, application_type, select_title, name, father_name, mother_name, dob, gender, office_address, aadhar_details,
     Address_Communication_OfficeResident, alternative_communication_Address, mobile_no, email_id, pin_code, state,
-    Change_Request, documentUpload, attachment_form, attachment_signature, attachment_photo, Charge_Amount, user_id,
+    Change_Request, pantype, documentUpload, attachment_form, attachment_signature, attachment_photo, Charge_Amount, user_id,
     status, note, created_at
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
   const values = [
     orderId,
@@ -846,12 +847,13 @@ const panFromData = (req, res) => {
     pin_code,
     state,
     Change_Request,
+    pantype,
     documentUpload,
     attachment_form,
     attachment_signature,
     attachment_photo,
-    Charge_Amount,
-    user_id,
+    amount,
+    userId,
     status,
     note,
     createdAt,
@@ -862,9 +864,127 @@ const panFromData = (req, res) => {
       console.error("Database error:", err);
       return res.status(500).json({ error: err.message });
     }
-    res.status(201).json({
-      message: "Form data submitted successfully",
-      formId: result.insertId,
+    // res.status(201).json({
+    //   message: "Form data submitted successfully",
+    //   formId: result.insertId,
+    // });
+
+    const queryBalance = `
+    SELECT Closing_Balance 
+    FROM user_wallet 
+    WHERE userId = ? 
+    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+    LIMIT 1
+  `;
+
+    db.query(queryBalance, [userId], (err, balanceResult) => {
+      if (err) {
+        console.error("Error fetching wallet balance:", err);
+        return res.status(500).json({
+          status: "Failure",
+          step: "Fetch Wallet Balance",
+          error: "Failed to fetch wallet balance",
+          details: err.message,
+        });
+      }
+
+      if (balanceResult.length === 0) {
+        return res.status(404).json({
+          status: "Failure",
+          step: "Fetch Wallet Balance",
+          message: "No balance found for the user.",
+        });
+      }
+
+      const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+      if (isNaN(currentBalance)) {
+        return res.status(500).json({
+          status: "Failure",
+          step: "Fetch Wallet Balance",
+          error: "Current balance is invalid.",
+        });
+      }
+
+      if (currentBalance < amount) {
+        return res.status(400).json({
+          status: "Failure",
+          step: "Wallet Deduction",
+          message: "Insufficient balance.",
+          currentBalance,
+          requiredAmount: amount,
+        });
+      }
+
+      const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+      if (isNaN(newBalance)) {
+        return res.status(500).json({
+          status: "Failure",
+          step: "Wallet Deduction",
+          error: "New balance calculation is invalid.",
+        });
+      }
+
+      const transactionId = `TXNW${Date.now()}`;
+      const transactionDetails = `Pan 4.0 Deduction ${mobile_no}`;
+      const creditAmt = 0;
+
+      const updateWalletQuery = `
+      INSERT INTO user_wallet 
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+      db.query(
+        updateWalletQuery,
+        [
+          userId,
+          createdAt,
+          orderId,
+          transactionId,
+          currentBalance.toFixed(2),
+          newBalance,
+          "Debit",
+          creditAmt,
+          amount,
+          transactionDetails,
+          "Completed",
+        ],
+        (err, walletResult) => {
+          if (err) {
+            console.error("Error updating wallet balance:", err);
+            return res.status(500).json({
+              status: "Failure",
+              step: "Update Wallet Balance",
+              error: "Failed to update wallet balance",
+              details: err.message,
+            });
+          }
+
+          return res.status(200).json({
+            status: "Success",
+            message: "Pan 4.0 processed and wallet updated successfully.",
+            details: {
+              dthConnection: {
+                orderId,
+                application_type,
+                select_title,
+                name,
+                dob,
+                gender,
+                mobile_no,
+                email_id,
+                createdAt,
+              },
+              wallet: {
+                transactionId,
+                newBalance,
+                previousBalance: currentBalance.toFixed(2),
+                deductedAmount: amount,
+              },
+            },
+          });
+        }
+      );
     });
   });
 };
