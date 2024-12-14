@@ -97,7 +97,7 @@ const panDataStorage = multer.diskStorage({
 const panDataUpload = multer({ storage: panDataStorage });
 router.post(
   "/pan-4.0-form",
-  panDataUpload.fields([
+  upload.fields([
     { name: "documentUpload", maxCount: 10 },
     { name: "attachment_form", maxCount: 10 },
     { name: "attachment_photo", maxCount: 10 },
