@@ -1,5 +1,6 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Suspense, lazy } from "react";
 import { Spinner } from "react-bootstrap";
 import styled from "styled-components";
@@ -73,6 +74,8 @@ const SASetDTHPlans = lazy(() => import("../components/SuperAdmin/SASetDTHPlans.
 
 
 const SuperAdminRoutes = () => {
+   const { currentUser, token } = useSelector((state) => state.user);
+    // const userStatus = currentUser?.Status;
   return (
     <React.Fragment>
       <Wrapper>
@@ -269,8 +272,10 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center; /* Horizontally centers the content */
   align-items: center; /* Vertically centers the content */
-  background-color: rgba(255, 255, 255, 0.8); /* Optional: Add a semi-transparent background */
+  /* background-color: rgba(255, 255, 255, 0.8); */
+   /* Optional: Add a semi-transparent background */
   z-index: 9999; /* Ensures it stays above other content */
+  background-color: transparent;
 }
 
 `
