@@ -6,7 +6,10 @@ import ReactPaginate from "react-paginate";
 import { Dropdown,Modal, Spinner } from "react-bootstrap";
 import { CiViewList } from "react-icons/ci";
 import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
-
+import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -14,6 +17,9 @@ import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
 const SAOnlineDthConnection = () => {
      
   const [loading, setLoading] = useState(false);
+ const navigate = useNavigate();
+ const dispatch = useDispatch();
+ const { token } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
   const [keyword, setKeyword] = useState("");
   const complaintsPerPage = 10;
@@ -28,12 +34,27 @@ const SAOnlineDthConnection = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getOnlineDthConnection"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getOnlineDthConnection",
+        {
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+}
       );
       setUsers(data.data);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
     }
   };

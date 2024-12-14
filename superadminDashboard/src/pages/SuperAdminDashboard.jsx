@@ -21,10 +21,16 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { BsInfoSquare } from "react-icons/bs";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import { clearUser } from "../redux/user/userSlice";
+
 
 const SuperAdminDashboard = () => {
   const navigate = useNavigate();
+   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const { token } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
   const [cgOnePayBalance,setCgOnePayBalance] = useState([]);
   const [instPayBalance,setInstPayBalance] = useState([]);
@@ -168,12 +174,27 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletWithdrawRequests"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletWithdrawRequests" ,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setWalletWithdrawalRequests(data.dataLength);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
     }
   };

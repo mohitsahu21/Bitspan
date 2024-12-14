@@ -983,7 +983,7 @@ const SAUserRelation = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Pending KYC Users
+                          User Relation Table
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -993,7 +993,7 @@ const SAUserRelation = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Pending KYC Users
+                            User Relation Table
                           </span>{" "}
                         </p>
                       </div>

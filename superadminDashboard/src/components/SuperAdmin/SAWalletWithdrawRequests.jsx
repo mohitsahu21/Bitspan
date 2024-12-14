@@ -12,13 +12,18 @@ import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
 import Swal from "sweetalert2";
 import { MdGrid3X3 } from "react-icons/md";
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 
 
 //  approve model component start//
 const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
-
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { token } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     order_id: item.order_id,
     remark : "",
@@ -41,7 +46,13 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
       const response = await axios.put(
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveWalletWithdrawRequests",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response);
       setLoading(false);
@@ -60,6 +71,15 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
       }
     } catch (error) {
       console.error("There was an error submitting the form!", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
       Swal.fire({
         icon: "error",
@@ -199,6 +219,9 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 //  reject model component start//
 const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 const [loading, setLoading] = useState(false);
+const navigate = useNavigate();
+const dispatch = useDispatch();
+const { token } = useSelector((state) => state.user);
 
 const [formData, setFormData] = useState({
   order_id: item.order_id,
@@ -223,7 +246,13 @@ const handlesubmit = async (e) => {
     const response = await axios.put(
       "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectWalletWithdrawRequests",
       // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-      formData
+      formData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     console.log(response);
     setLoading(false);
@@ -243,6 +272,15 @@ const handlesubmit = async (e) => {
   } catch (error) {
     console.error("There was an error submitting the form!", error);
     setLoading(false);
+    if (error?.response?.status == 401) {
+      // alert("Your token is expired please login again")
+      Swal.fire({
+                icon: "error",
+                title: "Your token is expired please login again",
+              });
+      dispatch(clearUser());
+      navigate("/");
+    }
     Swal.fire({
       icon: "error",
       title: "An error occurred during the process. Please try again.",
@@ -365,6 +403,9 @@ return (
 const SAWalletWithdrawRequests = () => {
      
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
   const [keyword, setKeyword] = useState("");
   const complaintsPerPage = 10;
@@ -382,12 +423,27 @@ const SAWalletWithdrawRequests = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletWithdrawRequests"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletWithdrawRequests" ,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setUsers(data.data);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
     }
   };

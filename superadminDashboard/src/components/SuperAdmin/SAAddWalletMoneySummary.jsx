@@ -12,12 +12,19 @@ import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
 import Swal from "sweetalert2";
 import { MdGrid3X3 } from "react-icons/md";
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 
 
 //  approve model component start//
 const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
+  
+ const navigate = useNavigate();
+ const dispatch = useDispatch();
+ const { token } = useSelector((state) => state.user);
 
   const [formData, setFormData] = useState({
     user_id : item.user_id ,
@@ -44,7 +51,13 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
       const response = await axios.put(
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveWalletAddMoneyRequests",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response);
       setLoading(false);
@@ -63,6 +76,15 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
       }
     } catch (error) {
       console.error("There was an error submitting the form!", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
       Swal.fire({
         icon: "error",
@@ -203,6 +225,9 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 const [loading, setLoading] = useState(false);
 
+const navigate = useNavigate();
+const dispatch = useDispatch();
+const { token } = useSelector((state) => state.user);
 const [formData, setFormData] = useState({
   user_id : item.user_id ,
 
@@ -228,7 +253,13 @@ const handlesubmit = async (e) => {
     const response = await axios.put(
       "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectWalletAddMoneyRequests",
       // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-      formData
+      formData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     console.log(response);
     setLoading(false);
@@ -248,6 +279,15 @@ const handlesubmit = async (e) => {
   } catch (error) {
     console.error("There was an error submitting the form!", error);
     setLoading(false);
+    if (error?.response?.status == 401) {
+      // alert("Your token is expired please login again")
+      Swal.fire({
+                icon: "error",
+                title: "Your token is expired please login again",
+              });
+      dispatch(clearUser());
+      navigate("/");
+    }
     Swal.fire({
       icon: "error",
       title: "An error occurred during the process. Please try again.",
@@ -389,6 +429,10 @@ return (
 const SAAddWalletMoneySummary = () => {
      
   const [loading, setLoading] = useState(false);
+  
+ const navigate = useNavigate();
+ const dispatch = useDispatch();
+ const { token } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
   const [keyword, setKeyword] = useState("");
   const complaintsPerPage = 10;
@@ -406,12 +450,27 @@ const SAAddWalletMoneySummary = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllWalletAddMoneyRequests"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllWalletAddMoneyRequests",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setUsers(data.data);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
     }
   };
@@ -482,7 +541,7 @@ const SAAddWalletMoneySummary = () => {
                                                 <h3>Wallet Transaction Report</h3>
                                             </div> */}
                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Add Wallet Money Requests</h4>
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Add Wallet Money Summary</h4>
                                                 <p className="mx-lg-5">
                                                     {" "}
                                                     <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
@@ -491,7 +550,7 @@ const SAAddWalletMoneySummary = () => {
                                                         style={{ fontSize: "13px" }}
                                                     >
                                                         {" "}
-                                                        Add Wallet Money Requests
+                                                        Add Wallet Money Summary
                                                     </span>{" "}
                                                 </p>
                                             </div>

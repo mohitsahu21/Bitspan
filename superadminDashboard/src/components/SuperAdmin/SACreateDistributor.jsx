@@ -9,12 +9,13 @@ import { LuTextSelect, LuUserCheck } from "react-icons/lu";
 import { SlLocationPin } from "react-icons/sl";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
 
 
 const SACreateDistributor = () => {
 
   const [loading, setLoading] = useState(false);
-
+  const { currentUser } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
 
     UserName: "",
@@ -29,8 +30,8 @@ const SACreateDistributor = () => {
     PinCode: "",
     Status: "Pending",
     payment_status: "Complete",
-    created_By_User_Id: "SA-ASHI0002",
-    created_By_User_Role: "SuperAdmin",
+    created_By_User_Id: currentUser.userId,
+    created_By_User_Role: currentUser.role,
     created_By_Website: "www.bitspan.in"
   });
 
@@ -81,8 +82,8 @@ const SACreateDistributor = () => {
             PinCode: "",
             Status: "Pending",
             payment_status: "Complete",
-            created_By_User_Id: "SA-ASHI0002",
-            created_By_User_Role: "SuperAdmin",
+            created_By_User_Id: currentUser.userId,
+            created_By_User_Role: currentUser.role,
             created_By_Website: "www.bitspan.in"
 
         })

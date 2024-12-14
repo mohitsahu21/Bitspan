@@ -12,6 +12,9 @@ import Swal from "sweetalert2";
 import Select from "react-select";
 import { Spinner } from "react-bootstrap";
 import { FaIndianRupeeSign } from "react-icons/fa6";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -21,6 +24,9 @@ const SAWithdrawWalletMoneyDirect = () => {
 
 
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
   const [buttonLoading, setButtonLoading] = useState(false);
   const [isRefresh, setIsRefresh] = useState(false);
   const [users, setUsers] = useState([]);
@@ -42,7 +48,14 @@ const SAWithdrawWalletMoneyDirect = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
       );
         // Transform users into the required format for react-select
         const userOptions = data.data.map((user) => ({
@@ -56,6 +69,15 @@ const SAWithdrawWalletMoneyDirect = () => {
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
     }
   };
@@ -116,7 +138,14 @@ const SAWithdrawWalletMoneyDirect = () => {
       const response = await axios.put(
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/WithdrawWalletAddMoneyDirect",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
       );
       // console.log(response);
       setButtonLoading(false);
@@ -150,6 +179,15 @@ const SAWithdrawWalletMoneyDirect = () => {
     } catch (error) {
       console.error("There was an error submitting the form!", error);
       setButtonLoading(false);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       Swal.fire({
         icon: "error",
         title: error.response.data.message || "An error occurred during the process. Please try again.",

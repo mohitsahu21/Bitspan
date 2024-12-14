@@ -13,11 +13,16 @@ import Swal from "sweetalert2";
 import { MdGrid3X3 } from "react-icons/md";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 //  approve model component start//
 const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     order_id: item.order_id,
     note: "",
@@ -38,7 +43,13 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
       const response = await axios.put(
         // "http://localhost:7777/api/auth/superAdmin/ApproveSambalForm",
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveSambalForm",
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response);
       setLoading(false);
@@ -57,6 +68,15 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
       }
     } catch (error) {
       console.error("There was an error submitting the form!", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
       Swal.fire({
         icon: "error",
@@ -129,7 +149,9 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 // Mark for edit Model start //
 const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     order_id: item.order_id,
     note: "",
@@ -150,7 +172,13 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
       const response = await axios.put(
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/markForEditSambalForm",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response);
       setLoading(false);
@@ -170,6 +198,15 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     } catch (error) {
       console.error("There was an error submitting the form!", error);
       setLoading(false);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       Swal.fire({
         icon: "error",
         title: "An error occurred during the process. Please try again.",
@@ -240,7 +277,9 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
 // Success Model start //
 const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
-
+ const navigate = useNavigate();
+ const dispatch = useDispatch();
+ const { token } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     order_id: item.order_id,
     note: "",
@@ -261,7 +300,13 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
       const response = await axios.put(
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessSambalForm",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-        formData
+        formData,
+        {
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+}
       );
       console.log(response);
       setLoading(false);
@@ -280,6 +325,15 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
       }
     } catch (error) {
       console.error("There was an error submitting the form!", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
       Swal.fire({
         icon: "error",
@@ -351,7 +405,9 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
 //  reject model component start//
 const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
-
+ const navigate = useNavigate();
+ const dispatch = useDispatch();
+ const { token } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     order_id: item.order_id,
     note: "",
@@ -397,7 +453,13 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
       const response = await axios.put(
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectSambalForm",
         // "http://localhost:7777/api/auth/superAdmin/rejectSambalForm",
-        formData
+        formData,
+        {
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+}
       );
       console.log(response);
       setLoading(false);
@@ -416,6 +478,15 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
       }
     } catch (error) {
       console.error("There was an error submitting the form!", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
       Swal.fire({
         icon: "error",
@@ -552,6 +623,9 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 
 const SASambalHistory = () => {
   const [loading, setLoading] = useState(false);
+ const navigate = useNavigate();
+ const dispatch = useDispatch();
+ const { token } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
   const [underProcessForms, setUnderProcessForms] = useState([]);
   const [keyword, setKeyword] = useState("");
@@ -570,7 +644,13 @@ const SASambalHistory = () => {
     try {
       const { data } = await axios.get(
         // "http://localhost:7777/api/auth/superAdmin/getSambalForms"
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSambalForms"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSambalForms",
+        {
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+}
       );
       const applicationData = data?.data?.filter(
         (item) => item.status !== "Under Process"
@@ -584,6 +664,15 @@ const SASambalHistory = () => {
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
     }
   };
