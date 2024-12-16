@@ -4,10 +4,16 @@ import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const SAChangeUserNotification = () => {
     const [data,setData] = useState([]);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { token } = useSelector((state) => state.user);
     const [formData, setFormData] = useState({
         id : "",
         White_Label_Notification : "",
@@ -20,7 +26,14 @@ const SAChangeUserNotification = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserNotification"
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserNotification",
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+    
           );
           setData(data.data);
           setFormData({
@@ -35,6 +48,15 @@ const SAChangeUserNotification = () => {
           setLoading(false);
         } catch (error) {
           console.error("Error fetching data:", error);
+          if (error?.response?.status == 401) {
+            // alert("Your token is expired please login again")
+            Swal.fire({
+                      icon: "error",
+                      title: "Your token is expired please login again",
+                    });
+            dispatch(clearUser());
+            navigate("/");
+          }
           setLoading(false);
         }
       };
@@ -66,7 +88,15 @@ const SAChangeUserNotification = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.put("https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateUserNotification", formData);
+            const response = await axios.put("https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateUserNotification", formData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+      
+            );
             setLoading(false);
             if(response.data.success){
                 Swal.fire({
@@ -84,6 +114,15 @@ const SAChangeUserNotification = () => {
         } catch (error) {
             setLoading(false);
             console.error("Error updating details:", error);
+            if (error?.response?.status == 401) {
+              // alert("Your token is expired please login again")
+              Swal.fire({
+                        icon: "error",
+                        title: "Your token is expired please login again",
+                      });
+              dispatch(clearUser());
+              navigate("/");
+            }
             Swal.fire({
                 icon: "error",
                 title: "Failed to update details. Please try again.",

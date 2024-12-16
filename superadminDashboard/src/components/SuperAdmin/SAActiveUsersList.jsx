@@ -11,10 +11,16 @@ import { Dropdown, Modal, Spinner } from "react-bootstrap";
 import { CiViewList } from "react-icons/ci";
 import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 
 const SAChangeUserInfo = ({ user, setShowChangeUserinfoModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
  
   const [formData, setFormData] = useState({
     UserName: user?.UserName,
@@ -56,7 +62,15 @@ const handlePackageSelect = (e) => {
     setPackagesLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPackage"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPackage",
+        
+{
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+}
+
       );
       const packageFind = ()=>{
         if(user.role == "Retailer"){
@@ -83,6 +97,15 @@ const handlePackageSelect = (e) => {
       setPackagesLoading(false);
     } catch (error) {
       console.error("Error fetching package data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setPackagesLoading(false);
     }
   };
@@ -102,7 +125,14 @@ const handlePackageSelect = (e) => {
       const response = await axios.put(
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ChangeUserInfo",
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
       );
       console.log(response);
       setLoading(false);
@@ -122,6 +152,15 @@ const handlePackageSelect = (e) => {
       }
     } catch (error) {
       console.error("There was an error submitting the form!", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
       Swal.fire({
         icon: "error",
@@ -318,6 +357,9 @@ const handlePackageSelect = (e) => {
 const SAActiveUsersList = () => {
 
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { token } = useSelector((state) => state.user);
     const [isRefresh, setIsRefresh] = useState(false);
     const [ShowChangeUserinfoModel, setShowChangeUserinfoModel] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
@@ -331,12 +373,28 @@ const SAActiveUsersList = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getActiveUsers"
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getActiveUsers",
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+    
           );
           setUsers(data.data);
           setLoading(false);
         } catch (error) {
           console.error("Error fetching data:", error);
+          if (error?.response?.status == 401) {
+            // alert("Your token is expired please login again")
+            Swal.fire({
+                      icon: "error",
+                      title: "Your token is expired please login again",
+                    });
+            dispatch(clearUser());
+            navigate("/");
+          }
           setLoading(false);
         }
       };
@@ -399,7 +457,14 @@ const SAActiveUsersList = () => {
                 "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser", 
                 {
                    userId: id 
+                },
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
                 }
+        
               );
               if (data.success) {
                 swalWithBootstrapButtons.fire({
@@ -417,6 +482,15 @@ const SAActiveUsersList = () => {
               }
             } catch (error) {
               console.error("Error deactivate user:", error);
+              if (error?.response?.status == 401) {
+                // alert("Your token is expired please login again")
+                Swal.fire({
+                          icon: "error",
+                          title: "Your token is expired please login again",
+                        });
+                dispatch(clearUser());
+                navigate("/");
+              }
               swalWithBootstrapButtons.fire({
                 title: "Error!",
                 text: "An error occurred during the process. Please try again.",

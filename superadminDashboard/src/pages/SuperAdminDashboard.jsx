@@ -69,7 +69,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setUsers(data.data);
       setLoading(false);
@@ -203,7 +209,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletAddMoneyRequests"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletAddMoneyRequests",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setAddWalletMoneyRequests(data.dataLength);
       setLoading(false);
@@ -217,7 +229,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingComplaintData"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingComplaintData",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPendingComplaints(data.data);
       setLoading(false);
@@ -230,7 +248,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingOfflineRecharge"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingOfflineRecharge",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPendingOfflineRecharge(data.data);
       setLoading(false);
@@ -243,7 +267,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingApplyOfflineForm"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingApplyOfflineForm",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPendingOfflineForm(data.data);
       setLoading(false);
@@ -256,7 +286,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingPANOfflineForm"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingPANOfflineForm",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPendingPanOfflineForm(data.data);
       setLoading(false);
@@ -269,7 +305,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingBankIdForm"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingBankIdForm",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPendingBankIdForm(data.data);
       setLoading(false);
@@ -282,7 +324,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingEdistrictForms"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingEdistrictForms",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPendingEdistrictForm(data.data);
       setLoading(false);
@@ -295,7 +343,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingVerifyEdistrictForms"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingVerifyEdistrictForms",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPendingVerifyEdistrictForm(data.data);
       setLoading(false);
@@ -308,7 +362,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingSambalForms"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingSambalForms",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPendingSambalForm(data.data);
       setLoading(false);
@@ -321,7 +381,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingPanCouponRequests"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingPanCouponRequests",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPendingPanCouponRequest(data.data);
       setLoading(false);

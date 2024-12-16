@@ -11,12 +11,17 @@ import { CiViewList } from "react-icons/ci";
 import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
 import Swal from "sweetalert2";
 import { MdGrid3X3 } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 
 // Active component start//
 const SAActiveApi = ({ complaint, setShowActiveModel, setIsRefresh }) => {
     const [loading, setLoading] = useState(false);
-  
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { token } = useSelector((state) => state.user);
     const [formData, setFormData] = useState({
       id: complaint.id,
       status : "Active"
@@ -37,7 +42,14 @@ const SAActiveApi = ({ complaint, setShowActiveModel, setIsRefresh }) => {
         const response = await axios.put(
           "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ActiveServices",
           // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-          formData
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+  
         );
         console.log(response);
         setLoading(false);
@@ -56,6 +68,15 @@ const SAActiveApi = ({ complaint, setShowActiveModel, setIsRefresh }) => {
         }
       } catch (error) {
         console.error("There was an error submitting the form!", error);
+        if (error?.response?.status == 401) {
+          // alert("Your token is expired please login again")
+          Swal.fire({
+                    icon: "error",
+                    title: "Your token is expired please login again",
+                  });
+          dispatch(clearUser());
+          navigate("/");
+        }
         setLoading(false);
         Swal.fire({
           icon: "error",
@@ -150,7 +171,9 @@ const SAActiveApi = ({ complaint, setShowActiveModel, setIsRefresh }) => {
   // Deactive component start//
 const SADeactiveApi = ({ complaint, setShowDeactiveModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     id: complaint.id,
       status : "Deactive"
@@ -171,7 +194,14 @@ const SADeactiveApi = ({ complaint, setShowDeactiveModel, setIsRefresh }) => {
       const response = await axios.put(
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/DeactiveServices",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
       );
       console.log(response);
       setLoading(false);
@@ -190,6 +220,15 @@ const SADeactiveApi = ({ complaint, setShowDeactiveModel, setIsRefresh }) => {
       }
     } catch (error) {
       console.error("There was an error submitting the form!", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
       Swal.fire({
         icon: "error",
@@ -288,6 +327,9 @@ const SADeactiveApi = ({ complaint, setShowDeactiveModel, setIsRefresh }) => {
 const SAActiveDeactiveServices = () => {
 
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { token } = useSelector((state) => state.user);
     const [users, setUsers] = useState([]);
     const [keyword, setKeyword] = useState("");
     const complaintsPerPage = 10;
@@ -303,12 +345,28 @@ const SAActiveDeactiveServices = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllServicesList"
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllServicesList",
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+    
           );
           setUsers(data.data);
           setLoading(false);
         } catch (error) {
           console.error("Error fetching data:", error);
+          if (error?.response?.status == 401) {
+            // alert("Your token is expired please login again")
+            Swal.fire({
+                      icon: "error",
+                      title: "Your token is expired please login again",
+                    });
+            dispatch(clearUser());
+            navigate("/");
+          }
           setLoading(false);
         }
       };

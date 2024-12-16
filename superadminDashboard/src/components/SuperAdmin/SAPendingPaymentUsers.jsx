@@ -12,10 +12,16 @@ import { LuTextSelect } from "react-icons/lu";
 import Swal from "sweetalert2";
 import ReactPaginate from "react-paginate";
 import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const SAPendingPaymentUsers = () => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { token } = useSelector((state) => state.user);
     const [users, setUsers] = useState([]);
   
     const [keyword, setKeyword] = useState("");
@@ -28,12 +34,28 @@ const SAPendingPaymentUsers = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingPaymentUsers"
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingPaymentUsers",
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+    
           );
           setUsers(data.data);
           setLoading(false);
         } catch (error) {
           console.error("Error fetching package data:", error);
+          if (error?.response?.status == 401) {
+            // alert("Your token is expired please login again")
+            Swal.fire({
+                      icon: "error",
+                      title: "Your token is expired please login again",
+                    });
+            dispatch(clearUser());
+            navigate("/");
+          }
           setLoading(false);
         }
       };
@@ -108,7 +130,14 @@ const SAPendingPaymentUsers = () => {
                 "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/markPaymentComplete", 
                 {
                    userId: id 
+                },
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
                 }
+        
               );
               if (data.success) {
                 swalWithBootstrapButtons.fire({
@@ -126,6 +155,15 @@ const SAPendingPaymentUsers = () => {
               }
             } catch (error) {
               console.error("Error:", error);
+              if (error?.response?.status == 401) {
+                // alert("Your token is expired please login again")
+                Swal.fire({
+                          icon: "error",
+                          title: "Your token is expired please login again",
+                        });
+                dispatch(clearUser());
+                navigate("/");
+              }
               swalWithBootstrapButtons.fire({
                 title: "Error!",
                 text: "An error occurred during the process. Please try again.",

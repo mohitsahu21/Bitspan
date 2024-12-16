@@ -10,12 +10,17 @@ import { SlLocationPin } from "react-icons/sl";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 
 const SACreateSuperDistributor = () => {
 
   const [loading, setLoading] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
 
     UserName: "",
@@ -44,11 +49,22 @@ const SACreateSuperDistributor = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
-    setFormData({
-      ...formData,
-      [name]: name === "PanCardNumber" ? value.toUpperCase() : value,
-    });
+    
+    if (name === "ContactNo" || name === "AadharNumber" || name === "PinCode") {
+      if (/^\d*$/.test(value)) {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+    }
+    else {
+      setFormData({
+        ...formData,
+        [name]: name === "PanCardNumber" ? value.toUpperCase() : value,
+      });
+    }
+   
   };
 
   const handlesubmit = async (e) => {
@@ -59,7 +75,15 @@ const SACreateSuperDistributor = () => {
       const response = await axios.post(
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
         "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
-        formData
+        formData,
+        
+{
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+}
+
       );
       // console.log(response);
       setLoading(false);
@@ -97,6 +121,15 @@ const SACreateSuperDistributor = () => {
       }
     } catch (error) {
       console.error("There was an error submitting the form!", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
       Swal.fire({
         icon: "error",
