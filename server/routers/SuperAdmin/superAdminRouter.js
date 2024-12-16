@@ -34,141 +34,141 @@ const uploadGenralSetting = upload.fields([
   ]);
 
 
-router.post("/addPackage" , addPackage );
-router.get('/getPackage',  getPackages);
-router.put('/editPackage',  editPackage);
-router.delete('/deletePackage',  deletePackage);
-router.get("/getAllUsers", getAllUsers);
-router.get("/getPendingUsers", getPendingUsers);
-router.get("/getPendingPaymentUsers", getPendingPaymentUsers);
-router.get("/getActiveUsers", getActiveUsers);
-router.get("/getdeactiveUsers", getdeactiveUsers);
-router.get("/getUserRelations/:userId", getUserRelations);
-router.put('/approveUser',  approveUser);
-router.put('/rejectUser',  rejectUser);
-router.put('/deactivateUser',  deactivateUser);
-router.put('/activateUser',  activateUser);
-router.put('/markPaymentComplete',  markPaymentComplete);
-router.get("/getUserIdPriceList",  getUserIdPriceList);
+router.post("/addPackage" , authenticateToken, addPackage );
+router.get('/getPackage', authenticateToken,  getPackages);
+router.put('/editPackage', authenticateToken,  editPackage);
+router.delete('/deletePackage',authenticateToken,  deletePackage);
+router.get("/getAllUsers",authenticateToken, getAllUsers);
+router.get("/getPendingUsers", authenticateToken, getPendingUsers);
+router.get("/getPendingPaymentUsers",authenticateToken, getPendingPaymentUsers);
+router.get("/getActiveUsers",authenticateToken, getActiveUsers);
+router.get("/getdeactiveUsers",authenticateToken, getdeactiveUsers);
+router.get("/getUserRelations/:userId",authenticateToken, getUserRelations);
+router.put('/approveUser',authenticateToken,  approveUser);
+router.put('/rejectUser',authenticateToken,  rejectUser);
+router.put('/deactivateUser',authenticateToken,  deactivateUser);
+router.put('/activateUser',authenticateToken,  activateUser);
+router.put('/markPaymentComplete',authenticateToken,  markPaymentComplete);
+router.get("/getUserIdPriceList", authenticateToken, getUserIdPriceList);
 router.post("/addUserIdPrice" , addUserIdPrice );
-router.put("/updateUserIdPrice" , updateUserIdPrice );
-router.get("/getSuperAdminEmployee" , getSuperAdminEmployee);
-router.get("/complainGetData" , complainGetData);
-router.get("/getPendingComplaintData", getPendingComplaintData);
-router.put("/resolveComplaint" , resolveComplaint );
+router.put("/updateUserIdPrice" , authenticateToken, updateUserIdPrice );
+router.get("/getSuperAdminEmployee" ,authenticateToken, getSuperAdminEmployee);
+router.get("/complainGetData" ,authenticateToken, complainGetData);
+router.get("/getPendingComplaintData",authenticateToken, getPendingComplaintData);
+router.put("/resolveComplaint" ,authenticateToken, resolveComplaint );
 
 
-router.get("/getApplyOfflineForm" , getApplyOfflineForm);
-router.put("/ApproveOfflineForm" , ApproveOfflineForm);
-router.put("/markForEditOfflineForm" , markForEditOfflineForm);
-router.put("/SuccessOfflineForm" , SuccessOfflineForm);
-router.put("/rejectOfflineForm" , rejectOfflineForm);
+router.get("/getApplyOfflineForm" ,authenticateToken, getApplyOfflineForm);
+router.put("/ApproveOfflineForm" ,authenticateToken, ApproveOfflineForm);
+router.put("/markForEditOfflineForm" ,authenticateToken, markForEditOfflineForm);
+router.put("/SuccessOfflineForm" ,authenticateToken, SuccessOfflineForm);
+router.put("/rejectOfflineForm" ,authenticateToken, rejectOfflineForm);
 
-router.get("/getPANOfflineForm" , getPANOfflineForm);
-router.put("/ApprovePANOfflineForm" , ApprovePANOfflineForm);
-router.put("/markForEditPANOfflineForm" , markForEditPANOfflineForm);
-router.put("/SuccessPANOfflineForm" , SuccessPANOfflineForm);
-router.put("/rejectPANOfflineForm" , rejectPANOfflineForm);
-
-
-router.get("/getBankIdForm" , getBankIdForm);
-router.put("/ApproveBankIdForm" , ApproveBankIdForm);
-router.put("/markForEditBankIdForm" , markForEditBankIdForm);
-router.put("/SuccessBankIdForm" , SuccessBankIdForm);
-router.put("/rejectBankIdForm" , rejectBankIdForm );
-
-router.get("/getEdistrictForms" , getEdistrictForms);
-router.put("/ApproveEdistrictForm" , ApproveEdistrictForm);
-router.put("/markForEditEdistrictForm" , markForEditEdistrictForm);
-router.put("/SuccessEdistrictForm" , SuccessEdistrictForm);
-router.put("/rejectEdistrictForm" , rejectEdistrictForm);
-
-router.get("/getVerifyEdistrictForms" , getVerifyEdistrictForms);
-router.put("/ApproveVerifyEdistrictForm" , ApproveVerifyEdistrictForm);
-router.put("/markForEditVerifyEdistrictForm" , markForEditVerifyEdistrictForm);
-router.put("/SuccessVerifyEdistrictForm" , SuccessVerifyEdistrictForm);
-router.put("/rejectVerifyEdistrictForm" , rejectVerifyEdistrictForm);
-
-router.get("/getSambalForms" , getSambalForms);
-router.put("/ApproveSambalForm" , ApproveSambalForm);
-router.put("/markForEditSambalForm" , markForEditSambalForm);
-router.put("/SuccessSambalForm" , SuccessSambalForm);
-router.put("/rejectSambalForm" , rejectSambalForm);
+router.get("/getPANOfflineForm" ,authenticateToken, getPANOfflineForm);
+router.put("/ApprovePANOfflineForm" ,authenticateToken, ApprovePANOfflineForm);
+router.put("/markForEditPANOfflineForm" ,authenticateToken, markForEditPANOfflineForm);
+router.put("/SuccessPANOfflineForm" ,authenticateToken, SuccessPANOfflineForm);
+router.put("/rejectPANOfflineForm" ,authenticateToken, rejectPANOfflineForm);
 
 
+router.get("/getBankIdForm" ,authenticateToken, getBankIdForm);
+router.put("/ApproveBankIdForm" ,authenticateToken, ApproveBankIdForm);
+router.put("/markForEditBankIdForm" ,authenticateToken, markForEditBankIdForm);
+router.put("/SuccessBankIdForm" ,authenticateToken, SuccessBankIdForm);
+router.put("/rejectBankIdForm" , authenticateToken, rejectBankIdForm );
 
-router.get("/getOfflineRecharge" , getOfflineRecharge);
-router.put("/ApproveOfflineRecharge" , ApproveOfflineRecharge);
-router.put("/rejectOfflineRecharge" , rejectOfflineRecharge);
+router.get("/getEdistrictForms" ,authenticateToken, getEdistrictForms);
+router.put("/ApproveEdistrictForm" ,authenticateToken, ApproveEdistrictForm);
+router.put("/markForEditEdistrictForm" ,authenticateToken, markForEditEdistrictForm);
+router.put("/SuccessEdistrictForm" ,authenticateToken, SuccessEdistrictForm);
+router.put("/rejectEdistrictForm" ,authenticateToken, rejectEdistrictForm);
 
-router.get("/getOfflineDTHConnection" , getOfflineDTHConnection);
-router.put("/ApproveOfflineDTHConnection" , ApproveOfflineDTHConnection);
-router.put("/markForEditOfflineDTHConnection" , markForEditOfflineDTHConnection);
-router.put("/SuccessOfflineDTHConnection" , SuccessOfflineDTHConnection);
-router.put("/rejectOfflineDTHConnection" , rejectOfflineDTHConnection);
+router.get("/getVerifyEdistrictForms" ,authenticateToken, getVerifyEdistrictForms);
+router.put("/ApproveVerifyEdistrictForm" , authenticateToken, ApproveVerifyEdistrictForm);
+router.put("/markForEditVerifyEdistrictForm" ,authenticateToken, markForEditVerifyEdistrictForm);
+router.put("/SuccessVerifyEdistrictForm" ,authenticateToken, SuccessVerifyEdistrictForm);
+router.put("/rejectVerifyEdistrictForm" ,authenticateToken, rejectVerifyEdistrictForm);
 
-router.get("/getWalletWithdrawRequests" , getWalletWithdrawRequests);
+router.get("/getSambalForms" ,authenticateToken, getSambalForms);
+router.put("/ApproveSambalForm" ,authenticateToken, ApproveSambalForm);
+router.put("/markForEditSambalForm" ,authenticateToken, markForEditSambalForm);
+router.put("/SuccessSambalForm" ,authenticateToken, SuccessSambalForm);
+router.put("/rejectSambalForm" ,authenticateToken, rejectSambalForm);
+
+
+
+router.get("/getOfflineRecharge" ,authenticateToken, getOfflineRecharge);
+router.put("/ApproveOfflineRecharge" ,authenticateToken, ApproveOfflineRecharge);
+router.put("/rejectOfflineRecharge" ,authenticateToken, rejectOfflineRecharge);
+
+router.get("/getOfflineDTHConnection" ,authenticateToken, getOfflineDTHConnection);
+router.put("/ApproveOfflineDTHConnection" ,authenticateToken, ApproveOfflineDTHConnection);
+router.put("/markForEditOfflineDTHConnection" ,authenticateToken, markForEditOfflineDTHConnection);
+router.put("/SuccessOfflineDTHConnection" ,authenticateToken, SuccessOfflineDTHConnection);
+router.put("/rejectOfflineDTHConnection" ,authenticateToken, rejectOfflineDTHConnection);
+
+router.get("/getWalletWithdrawRequests" ,authenticateToken, getWalletWithdrawRequests);
 router.get("/getPendingWalletWithdrawRequests" ,authenticateToken, getPendingWalletWithdrawRequests);
-router.put("/ApproveWalletWithdrawRequests" , ApproveWalletWithdrawRequests)
-router.put("/rejectWalletWithdrawRequests" , rejectWalletWithdrawRequests)
+router.put("/ApproveWalletWithdrawRequests" ,authenticateToken, ApproveWalletWithdrawRequests)
+router.put("/rejectWalletWithdrawRequests" ,authenticateToken, rejectWalletWithdrawRequests)
 
-router.get("/getWalletTransactions" , getWalletTransactions);
+router.get("/getWalletTransactions" ,authenticateToken, getWalletTransactions);
 
-router.get("/getPendingWalletAddMoneyRequests" , getPendingWalletAddMoneyRequests);
-router.get("/getAllWalletAddMoneyRequests" , getAllWalletAddMoneyRequests);
-router.put("/ApproveWalletAddMoneyRequests" , ApproveWalletAddMoneyRequests);
-router.put("/rejectWalletAddMoneyRequests" , rejectWalletAddMoneyRequests);
+router.get("/getPendingWalletAddMoneyRequests" ,authenticateToken, getPendingWalletAddMoneyRequests);
+router.get("/getAllWalletAddMoneyRequests" ,authenticateToken, getAllWalletAddMoneyRequests);
+router.put("/ApproveWalletAddMoneyRequests" ,authenticateToken, ApproveWalletAddMoneyRequests);
+router.put("/rejectWalletAddMoneyRequests" ,authenticateToken, rejectWalletAddMoneyRequests);
 
-router.get("/getAllApiList" , getAllApiList);
-router.put("/ActiveApi" , ActiveApi);
-router.put("/DeactiveApi" , DeactiveApi);
+router.get("/getAllApiList" ,authenticateToken, getAllApiList);
+router.put("/ActiveApi" ,authenticateToken, ActiveApi);
+router.put("/DeactiveApi" ,authenticateToken, DeactiveApi);
 
-router.get("/getAllServicesList" , getAllServicesList);
-router.put("/ActiveServices" , ActiveServices)
-router.put("/DeactiveServices" , DeactiveServices)
+router.get("/getAllServicesList" ,authenticateToken, getAllServicesList);
+router.put("/ActiveServices" ,authenticateToken, ActiveServices)
+router.put("/DeactiveServices" ,authenticateToken, DeactiveServices)
 
 router.get("/getSuperAdminSettings" , getSuperAdminSettings)
-router.post('/UpdateGenralSetting',uploadGenralSetting, UpdateGenralSetting)
-router.post('/UpdateLogoImageSetting',uploadImageLogoSetting, UpdateLogoImageSetting)
-router.post('/UpdateHomePageSetting',uploadHomePageSetting, UpdateHomePageSetting)
-router.put('/UpdateSocialLinkSetting', UpdateSocialLinkSetting)
-router.put("/UpdateSAWebsiteJoiningPrice" , UpdateSAWebsiteJoiningPrice)
+router.post('/UpdateGenralSetting', authenticateToken,uploadGenralSetting, UpdateGenralSetting)
+router.post('/UpdateLogoImageSetting', authenticateToken,uploadImageLogoSetting, UpdateLogoImageSetting)
+router.post('/UpdateHomePageSetting',authenticateToken,uploadHomePageSetting, UpdateHomePageSetting)
+router.put('/UpdateSocialLinkSetting',authenticateToken, UpdateSocialLinkSetting)
+router.put("/UpdateSAWebsiteJoiningPrice" ,authenticateToken, UpdateSAWebsiteJoiningPrice)
 
-router.get('/getUserNotification', getUserNotification)
-router.put("/UpdateUserNotification" , UpdateUserNotification)
+router.get('/getUserNotification',authenticateToken, getUserNotification)
+router.put("/UpdateUserNotification" ,authenticateToken, UpdateUserNotification)
 
-router.put("/AddWalletAddMoneyDirect" , AddWalletAddMoneyDirect)
-router.put("/WithdrawWalletAddMoneyDirect" , WithdrawWalletAddMoneyDirect)
+router.put("/AddWalletAddMoneyDirect" ,authenticateToken, AddWalletAddMoneyDirect)
+router.put("/WithdrawWalletAddMoneyDirect" ,authenticateToken, WithdrawWalletAddMoneyDirect)
 
-router.get("/getBuyUserIdSummary" , getBuyUserIdSummary)
-router.get("/getOnlineRecharge" , getOnlineRecharge)
-router.get("/getOnlineDthConnection" , getOnlineDthConnection)
-router.get("/getPanCouponRequests" , getPanCouponRequests)
-router.put("/approvePanCouponRequest",approvePanCouponRequest)
-router.put("/rejectPanCouponRequest",rejectPanCouponRequest)
-router.get("/getUserRelationData" , getUserRelationData)
-router.put("/changeUserWhiteLabel" , changeUserWhiteLabel)
-router.put("/changeUserSuperDistributor" , changeUserSuperDistributor)
-router.put("/changeUserDistributor" , changeUserDistributor)
-router.put("/ChangeUserInfo" , ChangeUserInfo)
+router.get("/getBuyUserIdSummary" ,authenticateToken, getBuyUserIdSummary)
+router.get("/getOnlineRecharge" ,authenticateToken, getOnlineRecharge)
+router.get("/getOnlineDthConnection" ,authenticateToken, getOnlineDthConnection)
+router.get("/getPanCouponRequests" ,authenticateToken, getPanCouponRequests)
+router.put("/approvePanCouponRequest",authenticateToken,approvePanCouponRequest)
+router.put("/rejectPanCouponRequest",authenticateToken,rejectPanCouponRequest)
+router.get("/getUserRelationData" ,authenticateToken, getUserRelationData)
+router.put("/changeUserWhiteLabel" ,authenticateToken, changeUserWhiteLabel)
+router.put("/changeUserSuperDistributor" ,authenticateToken, changeUserSuperDistributor)
+router.put("/changeUserDistributor" ,authenticateToken, changeUserDistributor)
+router.put("/ChangeUserInfo" ,authenticateToken, ChangeUserInfo)
 
-router.get("/getOnlinePanApplyData" , getOnlinePanApplyData)
-router.get("/getOnlinePanCorrectionData" , getOnlinePanCorrectionData)
-router.get("/getTodayWalletTransactions" , getTodayWalletTransactions)
+router.get("/getOnlinePanApplyData" ,authenticateToken, getOnlinePanApplyData)
+router.get("/getOnlinePanCorrectionData" ,authenticateToken, getOnlinePanCorrectionData)
+router.get("/getTodayWalletTransactions" ,authenticateToken, getTodayWalletTransactions)
 
-router.get("/getDTHConnectionPlans" , getDTHConnectionPlans)
-router.post("/CreateDTHConnectionPlans", CreateDTHConnectionPlans)
-router.put("/EditDTHConnetionPlans", EditDTHConnetionPlans)
-router.delete("/DeleteDTHConnetionPlans", DeleteDTHConnetionPlans)
+router.get("/getDTHConnectionPlans" ,authenticateToken, getDTHConnectionPlans)
+router.post("/CreateDTHConnectionPlans",authenticateToken, CreateDTHConnectionPlans)
+router.put("/EditDTHConnetionPlans",authenticateToken, EditDTHConnetionPlans)
+router.delete("/DeleteDTHConnetionPlans",authenticateToken, DeleteDTHConnetionPlans)
 
-router.get("/getPendingOfflineRecharge" ,  getPendingOfflineRecharge)
-router.get("/getPendingApplyOfflineForm" ,  getPendingApplyOfflineForm)
-router.get("/getPendingPANOfflineForm" ,  getPendingPANOfflineForm)
-router.get("/getPendingBankIdForm" ,  getPendingBankIdForm)
-router.get("/getPendingEdistrictForms" ,  getPendingEdistrictForms)
-router.get("/getPendingVerifyEdistrictForms" ,  getPendingVerifyEdistrictForms)
-router.get("/getPendingSambalForms" ,  getPendingSambalForms)
-router.get("/getPendingPanCouponRequests" ,  getPendingPanCouponRequests)
+router.get("/getPendingOfflineRecharge" , authenticateToken, getPendingOfflineRecharge)
+router.get("/getPendingApplyOfflineForm" , authenticateToken,  getPendingApplyOfflineForm)
+router.get("/getPendingPANOfflineForm" , authenticateToken, getPendingPANOfflineForm)
+router.get("/getPendingBankIdForm" ,authenticateToken,  getPendingBankIdForm)
+router.get("/getPendingEdistrictForms" , authenticateToken, getPendingEdistrictForms)
+router.get("/getPendingVerifyEdistrictForms" , authenticateToken, getPendingVerifyEdistrictForms)
+router.get("/getPendingSambalForms" , authenticateToken, getPendingSambalForms)
+router.get("/getPendingPanCouponRequests" , authenticateToken, getPendingPanCouponRequests)
 
 
 
