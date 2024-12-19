@@ -6,10 +6,16 @@ import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const SASetWhiteLabelIdPrice = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
 
   const [formData, setFormData] = useState({
     id : "",
@@ -31,7 +37,14 @@ const SASetWhiteLabelIdPrice = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserIdPriceList"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserIdPriceList",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
       );
       setData(data.data);
       setFormData({
@@ -52,6 +65,15 @@ const SASetWhiteLabelIdPrice = () => {
       setLoading(false);
     } catch (error) {
       console.error(error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
     }
   };
@@ -66,7 +88,14 @@ const SASetWhiteLabelIdPrice = () => {
       setLoading(true);
     const {data} =  await axios.put(
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/updateUserIdPrice",
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
       );
       console.log(data)
       if (data.success) {
@@ -88,6 +117,15 @@ const SASetWhiteLabelIdPrice = () => {
       
     } catch (error) {
       console.error(error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
       Swal.fire({
         icon: "error",

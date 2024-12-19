@@ -11,6 +11,9 @@ import Dropdown from "react-bootstrap/Dropdown";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const SAViewPackages = () => {
   const [showPackgeDetail, setShowPackgeDetail] = useState(false);
@@ -18,6 +21,9 @@ const SAViewPackages = () => {
   const [packages, setPackages] = useState([]);
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [loading, setLoading] = useState(false);
+ const navigate = useNavigate();
+ const dispatch = useDispatch();
+ const { token } = useSelector((state) => state.user);
   const [keyword, setKeyword] = useState("");
   const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
@@ -28,12 +34,28 @@ const SAViewPackages = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPackage"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPackage",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
       );
       setPackages(data.data);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching package data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
     }
   };
@@ -64,7 +86,11 @@ const SAViewPackages = () => {
           const { data } = await axios.delete(
             "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deletePackage", 
             {
-              data: { package_id: id }
+              data: { package_id: id },
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
             }
           );
           if (data.success) {
@@ -83,6 +109,15 @@ const SAViewPackages = () => {
           }
         } catch (error) {
           console.error("Error deleting package:", error);
+          if (error?.response?.status == 401) {
+            // alert("Your token is expired please login again")
+            Swal.fire({
+                      icon: "error",
+                      title: "Your token is expired please login again",
+                    });
+            dispatch(clearUser());
+            navigate("/");
+          }
           swalWithBootstrapButtons.fire({
             title: "Error!",
             text: "An error occurred during the process. Please try again.",

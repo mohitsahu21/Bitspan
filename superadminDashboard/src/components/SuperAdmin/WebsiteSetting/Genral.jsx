@@ -3,10 +3,16 @@ import styled from "styled-components";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Genral = () => {
    
     const [data,setData] = useState([]);
+ const navigate = useNavigate();
+ const dispatch = useDispatch();
+ const { token } = useSelector((state) => state.user);
     const qrCodeRef = useRef(null);
     const [qrCodeError, setQrCodeError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -141,6 +147,7 @@ const Genral = () => {
             const response = await axios.post("https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateGenralSetting", formDataSend, {
                 headers: {
                     "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${token}`
                 },
             });
             setLoading(false);
@@ -160,6 +167,15 @@ const Genral = () => {
         } catch (error) {
             setLoading(false);
             console.error("Error updating details:", error);
+            if (error?.response?.status == 401) {
+                // alert("Your token is expired please login again")
+                Swal.fire({
+                          icon: "error",
+                          title: "Your token is expired please login again",
+                        });
+                dispatch(clearUser());
+                navigate("/");
+              }
             Swal.fire({
                 icon: "error",
                 title: "Failed to update details. Please try again.",

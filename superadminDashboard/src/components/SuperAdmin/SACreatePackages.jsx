@@ -10,9 +10,16 @@ import Select from "react-select";
 import axios from "axios"
 import messageSound from "../../assets/sound/sound.mp3";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const SACreatePackages = () => {
   const sound = new Audio(messageSound);
+  
+ const navigate = useNavigate();
+ const dispatch = useDispatch();
+ const { token } = useSelector((state) => state.user);
 
   const [loading, setLoading] = useState(false);
 
@@ -166,7 +173,14 @@ const SACreatePackages = () => {
       setLoading(true);
       const response = await axios.post(
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addPackage",
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
       );
       console.log(response);
       setLoading(false);
@@ -303,6 +317,15 @@ const SACreatePackages = () => {
       }     
     } catch (error) {
       console.error("There was an error submitting the form!", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
       Swal.fire({
         icon: "error",

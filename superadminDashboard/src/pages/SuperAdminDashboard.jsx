@@ -21,10 +21,16 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { BsInfoSquare } from "react-icons/bs";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import { clearUser } from "../redux/user/userSlice";
+
 
 const SuperAdminDashboard = () => {
   const navigate = useNavigate();
+   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const { token } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
   const [cgOnePayBalance,setCgOnePayBalance] = useState([]);
   const [instPayBalance,setInstPayBalance] = useState([]);
@@ -63,7 +69,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setUsers(data.data);
       setLoading(false);
@@ -168,12 +180,27 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletWithdrawRequests"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletWithdrawRequests" ,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setWalletWithdrawalRequests(data.dataLength);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
     }
   };
@@ -182,7 +209,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletAddMoneyRequests"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletAddMoneyRequests",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setAddWalletMoneyRequests(data.dataLength);
       setLoading(false);
@@ -196,7 +229,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingComplaintData"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingComplaintData",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPendingComplaints(data.data);
       setLoading(false);
@@ -209,7 +248,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingOfflineRecharge"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingOfflineRecharge",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPendingOfflineRecharge(data.data);
       setLoading(false);
@@ -222,7 +267,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingApplyOfflineForm"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingApplyOfflineForm",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPendingOfflineForm(data.data);
       setLoading(false);
@@ -235,7 +286,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingPANOfflineForm"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingPANOfflineForm",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPendingPanOfflineForm(data.data);
       setLoading(false);
@@ -248,7 +305,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingBankIdForm"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingBankIdForm",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPendingBankIdForm(data.data);
       setLoading(false);
@@ -261,7 +324,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingEdistrictForms"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingEdistrictForms",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPendingEdistrictForm(data.data);
       setLoading(false);
@@ -274,7 +343,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingVerifyEdistrictForms"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingVerifyEdistrictForms",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPendingVerifyEdistrictForm(data.data);
       setLoading(false);
@@ -287,7 +362,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingSambalForms"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingSambalForms",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPendingSambalForm(data.data);
       setLoading(false);
@@ -300,7 +381,13 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingPanCouponRequests"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingPanCouponRequests",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPendingPanCouponRequest(data.data);
       setLoading(false);

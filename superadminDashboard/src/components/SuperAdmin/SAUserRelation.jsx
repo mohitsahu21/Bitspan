@@ -13,6 +13,9 @@ import Swal from "sweetalert2";
 import ReactPaginate from "react-paginate";
 import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
 import Select from "react-select";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 
 // Change White Label User Model Component start ----------
@@ -20,6 +23,9 @@ import Select from "react-select";
 const SAChangeWhiteLabel = ({ user, setWhiteLabelModel, setIsRefresh }) => {
     const [loading, setLoading] = useState(false);
     const [userRelation,setUserRelation] = useState([]);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { token } = useSelector((state) => state.user);
   
     const [formData, setFormData] = useState({
       UserName: user?.UserName,
@@ -64,7 +70,14 @@ const SAChangeWhiteLabel = ({ user, setWhiteLabelModel, setIsRefresh }) => {
       setPackagesLoading(true);
       try {
         const { data } = await axios.get(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers"
+          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+  
         );
 
         const filterPackage = data?.data?.filter((item)=>{
@@ -86,6 +99,15 @@ const SAChangeWhiteLabel = ({ user, setWhiteLabelModel, setIsRefresh }) => {
         setPackagesLoading(false);
       } catch (error) {
         console.error("Error fetching package data:", error);
+        if (error?.response?.status == 401) {
+          // alert("Your token is expired please login again")
+          Swal.fire({
+                    icon: "error",
+                    title: "Your token is expired please login again",
+                  });
+          dispatch(clearUser());
+          navigate("/");
+        }
         setPackagesLoading(false);
       }
     };
@@ -113,7 +135,14 @@ const SAChangeWhiteLabel = ({ user, setWhiteLabelModel, setIsRefresh }) => {
         const response = await axios.put(
           // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
           "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/changeUserWhiteLabel",
-         formData
+         formData,
+         {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
         );
         console.log(response);
         setLoading(false);
@@ -133,6 +162,15 @@ const SAChangeWhiteLabel = ({ user, setWhiteLabelModel, setIsRefresh }) => {
         }
       } catch (error) {
         console.error("There was an error submitting the form!", error);
+        if (error?.response?.status == 401) {
+          // alert("Your token is expired please login again")
+          Swal.fire({
+                    icon: "error",
+                    title: "Your token is expired please login again",
+                  });
+          dispatch(clearUser());
+          navigate("/");
+        }
         setLoading(false);
         Swal.fire({
           icon: "error",
@@ -285,7 +323,9 @@ const SAChangeWhiteLabel = ({ user, setWhiteLabelModel, setIsRefresh }) => {
 
 const SAChangeSuperDistributor = ({ user, setSuperDistributorModel, setIsRefresh }) => {
     const [loading, setLoading] = useState(false);
-    
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { token } = useSelector((state) => state.user);
   
     const [formData, setFormData] = useState({
       UserName: user?.UserName,
@@ -330,7 +370,14 @@ const SAChangeSuperDistributor = ({ user, setSuperDistributorModel, setIsRefresh
       setPackagesLoading(true);
       try {
         const { data } = await axios.get(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers"
+          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+  
         );
 
         const filterPackage = data?.data?.filter((item)=>{
@@ -352,6 +399,15 @@ const SAChangeSuperDistributor = ({ user, setSuperDistributorModel, setIsRefresh
         setPackagesLoading(false);
       } catch (error) {
         console.error("Error fetching package data:", error);
+        if (error?.response?.status == 401) {
+          // alert("Your token is expired please login again")
+          Swal.fire({
+                    icon: "error",
+                    title: "Your token is expired please login again",
+                  });
+          dispatch(clearUser());
+          navigate("/");
+        }
         setPackagesLoading(false);
       }
     };
@@ -379,7 +435,14 @@ const SAChangeSuperDistributor = ({ user, setSuperDistributorModel, setIsRefresh
         const response = await axios.put(
           // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
           "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/changeUserSuperDistributor",
-         formData
+         formData,
+         {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
         );
         console.log(response);
         setLoading(false);
@@ -399,6 +462,15 @@ const SAChangeSuperDistributor = ({ user, setSuperDistributorModel, setIsRefresh
         }
       } catch (error) {
         console.error("There was an error submitting the form!", error);
+        if (error?.response?.status == 401) {
+          // alert("Your token is expired please login again")
+          Swal.fire({
+                    icon: "error",
+                    title: "Your token is expired please login again",
+                  });
+          dispatch(clearUser());
+          navigate("/");
+        }
         setLoading(false);
         Swal.fire({
           icon: "error",
@@ -518,7 +590,9 @@ const SAChangeSuperDistributor = ({ user, setSuperDistributorModel, setIsRefresh
 
 const SAChangeDistributor = ({ user, setDistributorModel, setIsRefresh }) => {
     const [loading, setLoading] = useState(false);
-    
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { token } = useSelector((state) => state.user);
   
     const [formData, setFormData] = useState({
       UserName: user?.UserName,
@@ -563,7 +637,14 @@ const SAChangeDistributor = ({ user, setDistributorModel, setIsRefresh }) => {
       setPackagesLoading(true);
       try {
         const { data } = await axios.get(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers"
+          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+  
         );
 
         const filterPackage = data?.data?.filter((item)=>{
@@ -585,6 +666,15 @@ const SAChangeDistributor = ({ user, setDistributorModel, setIsRefresh }) => {
         setPackagesLoading(false);
       } catch (error) {
         console.error("Error fetching package data:", error);
+        if (error?.response?.status == 401) {
+          // alert("Your token is expired please login again")
+          Swal.fire({
+                    icon: "error",
+                    title: "Your token is expired please login again",
+                  });
+          dispatch(clearUser());
+          navigate("/");
+        }
         setPackagesLoading(false);
       }
     };
@@ -612,7 +702,14 @@ const SAChangeDistributor = ({ user, setDistributorModel, setIsRefresh }) => {
         const response = await axios.put(
           // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
           "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/changeUserDistributor",
-         formData
+         formData,
+         {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
         );
         console.log(response);
         setLoading(false);
@@ -632,6 +729,15 @@ const SAChangeDistributor = ({ user, setDistributorModel, setIsRefresh }) => {
         }
       } catch (error) {
         console.error("There was an error submitting the form!", error);
+        if (error?.response?.status == 401) {
+          // alert("Your token is expired please login again")
+          Swal.fire({
+                    icon: "error",
+                    title: "Your token is expired please login again",
+                  });
+          dispatch(clearUser());
+          navigate("/");
+        }
         setLoading(false);
         Swal.fire({
           icon: "error",
@@ -754,7 +860,9 @@ const SAChangeDistributor = ({ user, setDistributorModel, setIsRefresh }) => {
 
 const SARejectUser = ({ user, setShowRejectModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
+ const dispatch = useDispatch();
+ const { token } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     UserName: user.UserName,
     UserId: user.UserId,
@@ -778,7 +886,14 @@ const SARejectUser = ({ user, setShowRejectModel, setIsRefresh }) => {
       const response = await axios.put(
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectUser",
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectUser",
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
       );
       console.log(response);
       setLoading(false);
@@ -797,6 +912,15 @@ const SARejectUser = ({ user, setShowRejectModel, setIsRefresh }) => {
       }
     } catch (error) {
       console.error("There was an error submitting the form!", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
       Swal.fire({
         icon: "error",
@@ -890,6 +1014,9 @@ const SARejectUser = ({ user, setShowRejectModel, setIsRefresh }) => {
 
 const SAUserRelation = () => {
   const [ShowApproveModel, setShowApproveModel] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
   const [whiteLabelModel,setWhiteLabelModel] = useState(false);
   const [superDistributor,setSuperDistributorModel] = useState(false);
   const [Distributor,setDistributorModel] = useState(false);
@@ -908,12 +1035,28 @@ const SAUserRelation = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelationData"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelationData",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
       );
       setUsers(data.data);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching package data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
     }
   };
@@ -983,7 +1126,7 @@ const SAUserRelation = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Pending KYC Users
+                          User Relation Table
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -993,7 +1136,7 @@ const SAUserRelation = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Pending KYC Users
+                            User Relation Table
                           </span>{" "}
                         </p>
                       </div>
