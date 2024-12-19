@@ -125,7 +125,7 @@ router.post(
   complainInsertApi
 );
 
-router.get("/complain-data", complainGetData);
+router.get("/complain-data/:userid", complainGetData);
 
 const profileDataStorage = multer.diskStorage({
   destination: (req, file, cb) => {

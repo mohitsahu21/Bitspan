@@ -7,7 +7,7 @@ import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
-import { Modal, Button } from "react-bootstrap";
+import { Button, Modal, Spinner } from "react-bootstrap";
 
 const PanCardFour = () => {
   const dispatch = useDispatch();
@@ -15,6 +15,7 @@ const PanCardFour = () => {
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
   const pinRefs = useRef([]);
+  const [isVerifying, setIsVerifying] = useState(false);
   const [prices, setPrices] = useState({
     electronicPrice: "",
     physicalPrice: "",
@@ -38,11 +39,11 @@ const PanCardFour = () => {
     // Change_Request: "",
     Change_Request: {
       name: false,
-      father_name: false,
+      father: false,
       dob: false,
-      mother_name: false,
-      email_id: false,
-      mobile_no: false,
+      mother: false,
+      email: false,
+      mobile: false,
       gender: false,
     },
     amount: "",
@@ -54,7 +55,7 @@ const PanCardFour = () => {
     const fetchPrices = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:7777/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
         );
         if (response.data?.data?.length > 0) {
           const packageData = response.data.data[0];
@@ -134,12 +135,21 @@ const PanCardFour = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const filteredChangeRequest = Object.entries(
+      formData.Change_Request
+    ).reduce((acc, [key, value]) => {
+      if (value) {
+        acc[key] = value; // Include only if the value is true
+      }
+      return acc;
+    }, {});
+
     const form = new FormData();
 
     Object.keys(formData).forEach((key) => {
       // form.append(key, formData[key]);
       if (key === "Change_Request") {
-        form.append(key, JSON.stringify(formData[key]));
+        form.append(key, JSON.stringify(filteredChangeRequest));
       } else {
         form.append(key, formData[key]);
       }
@@ -243,7 +253,7 @@ const PanCardFour = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") }
       );
 
@@ -261,7 +271,9 @@ const PanCardFour = () => {
   };
 
   const handleModalSubmit = async (e) => {
+    setIsVerifying(true); // Start loading
     const isPinValid = await verifyPin();
+    setIsVerifying(false); // Stop loading
     if (isPinValid) {
       setShowPinModal(false);
       handleSubmit(e);
@@ -542,6 +554,9 @@ const PanCardFour = () => {
                                 name={field}
                                 checked={formData.Change_Request[field]}
                                 onChange={handleCheckboxChange}
+                                style={
+                                  field === "name" ? { fontWeight: "bold" } : {}
+                                }
                               />
                               <label
                                 className="form-check-label"
@@ -700,8 +715,21 @@ const PanCardFour = () => {
                       >
                         Cancel
                       </Button>
-                      <Button variant="primary" onClick={handleModalSubmit}>
-                        Verify PIN
+                      <Button
+                        variant="primary"
+                        onClick={handleModalSubmit}
+                        disabled={isVerifying}
+                      >
+                        {isVerifying ? "Verifying..." : "Verify PIN"}
+                        {isVerifying && (
+                          <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                        )}
                       </Button>
                     </Modal.Footer>
                   </Modal>

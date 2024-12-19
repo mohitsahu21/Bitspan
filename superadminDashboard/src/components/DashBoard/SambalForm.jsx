@@ -34,7 +34,7 @@ const SambalForm = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:7777/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
         );
         // console.log(response.data.data);
         if (Array.isArray(response.data.data)) {
@@ -130,7 +130,8 @@ const SambalForm = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        // `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") }
       );
 

@@ -5,8 +5,11 @@ import { BiHomeAlt } from "react-icons/bi";
 import ReactPaginate from "react-paginate";
 import axios from "axios";
 import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
 
 const AllComplaintsList = () => {
+  const dispatch = useDispatch();
+  const { currentUser, token } = useSelector((state) => state.user);
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [keyword, setKeyword] = useState("");
@@ -19,7 +22,8 @@ const AllComplaintsList = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/retailer/complain-data`
+        // `http://localhost:7777/api/auth/retailer/complain-data`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/complain-data/${currentUser?.userId}`
       );
       setApiData(response.data.data);
       console.log(response.data.data);

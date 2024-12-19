@@ -326,9 +326,10 @@ const dthConnectionAndUpdateWallet = (req, res) => {
     amount,
     orderid,
     message,
-    user_id, 
+    user_id,
+    status, 
     created_at) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
   db.query(
     insertRechargeQuery,
@@ -344,6 +345,7 @@ const dthConnectionAndUpdateWallet = (req, res) => {
       orderId,
       message,
       userId,
+      "Pending",
       createdAt,
     ],
     (err, rechargeResult) => {

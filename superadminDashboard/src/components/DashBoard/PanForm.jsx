@@ -42,7 +42,7 @@ const PanForm = () => {
     const fetchPackage = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:7777/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
         );
         console.log(data.data);
         setPrices(data.data);

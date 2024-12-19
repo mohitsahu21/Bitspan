@@ -11,7 +11,6 @@ const Edistrict = () => {
   const { currentUser, token } = useSelector((state) => state.user);
   const userData = currentUser.userId;
   // console.log(userData);
-
   const [formData, setFormData] = useState();
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
@@ -23,30 +22,45 @@ const Edistrict = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/retailer/getEdistrictData/${userData}`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getEdistrictData/${userData}`
       );
       setFormData(response.data);
       console.log(response.data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchData();
-  }, [fromDate, toDate]);
+    setCurrentPage(0);
+  }, []);
 
-  const handleSearch = () => {
-    fetchData();
-  };
+  // const handleSearch = () => {
+  //   fetchData();
+  // };
 
   const filteredData = formData?.filter((item) => {
-    if (selectedStatus === "All") {
-      return true;
-    } else {
-      return item.status?.toLowerCase() === selectedStatus.toLowerCase();
-    }
+    const term = searchTerm.toLowerCase();
+    return (
+      (selectedStatus === "All" ||
+        item.status?.toLowerCase() === selectedStatus.toLowerCase()) &&
+      (searchTerm === "" ||
+        item.name.toLowerCase().includes(term) ||
+        item.mobile_no.includes(searchTerm) ||
+        item.order_id.includes(searchTerm))
+    );
   });
+
+  // const filteredData = formData?.filter((item) => {
+  //   if (selectedStatus === "All") {
+  //     return true;
+  //   } else {
+  //     return item.status?.toLowerCase() === selectedStatus.toLowerCase();
+  //   }
+  // });
 
   const totalPages = Math.ceil(filteredData?.length / complaintsPerPage);
 
@@ -96,7 +110,7 @@ const Edistrict = () => {
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
                       <div className="row d-flex flex-column g-4">
                         <div className="d-flex flex-column flex-md-row gap-3">
-                          <div className="col-12 col-md-4 col-lg-3">
+                          {/* <div className="col-12 col-md-4 col-lg-3">
                             <label for="fromDate" className="form-label">
                               From
                             </label>
@@ -119,8 +133,21 @@ const Edistrict = () => {
                               value={toDate}
                               onChange={(e) => setToDate(e.target.value)}
                             />
+                          </div> */}
+
+                          <div className="col-12 col-md-4 col-lg-3">
+                            <label for="fromDate" className="form-label">
+                              Search
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Search by Name, Mobile, or Order ID"
+                              // value={searchTerm}
+                              onChange={(e) => setSearchTerm(e.target.value)}
+                            />
                           </div>
-                          <div className="d-flex align-items-end">
+                          {/* <div className="d-flex align-items-end">
                             <button
                               type="button"
                               className="btn btn-primary button"
@@ -128,7 +155,7 @@ const Edistrict = () => {
                             >
                               Search
                             </button>
-                          </div>
+                          </div> */}
                           <div className="col-12 col-md-4 col-lg-3 d-flex align-items-end">
                             <DropdownButton
                               id="dropdown-basic-button"
@@ -289,6 +316,9 @@ const Wrapper = styled.div`
     .formdata {
       padding-left: 13rem;
     }
+  }
+  a {
+    text-decoration: none;
   }
 `;
 const PaginationContainer = styled.div`

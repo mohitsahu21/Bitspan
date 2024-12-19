@@ -3,7 +3,7 @@ import axios from "axios";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleRefresh } from "../../redux/user/userSlice";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
 import Swal from "sweetalert2";
 
 const EdistrictForm = () => {
@@ -12,6 +12,7 @@ const EdistrictForm = () => {
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
   const pinRefs = useRef([]);
+  const [isVerifying, setIsVerifying] = useState(false);
   const [formData, setFormData] = useState({
     application_type: "",
     samagar: "",
@@ -41,7 +42,7 @@ const EdistrictForm = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:7777/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
         );
         // console.log(response.data.data);
         if (Array.isArray(response.data.data)) {
@@ -119,8 +120,8 @@ const EdistrictForm = () => {
 
     try {
       const response = await axios.post(
-        // "http://bitspan.jyvflirl.a2hosted.com/api/auth/e-district-Form",
-        "http://localhost:7777/api/auth/retailer/e-district-Form",
+        // "http://localhost:7777/api/auth/retailer/e-district-Form",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/e-district-Form",
         data,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -186,7 +187,7 @@ const EdistrictForm = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") }
       );
 
@@ -204,7 +205,9 @@ const EdistrictForm = () => {
   };
 
   const handleModalSubmit = async (e) => {
+    setIsVerifying(true); // Start loading
     const isPinValid = await verifyPin();
+    setIsVerifying(false); // Stop loading
     if (isPinValid) {
       setShowPinModal(false);
       handleSubmit(e);
@@ -524,8 +527,21 @@ const EdistrictForm = () => {
                     >
                       Cancel
                     </Button>
-                    <Button variant="primary" onClick={handleModalSubmit}>
-                      Verify PIN
+                    <Button
+                      variant="primary"
+                      onClick={handleModalSubmit}
+                      disabled={isVerifying}
+                    >
+                      {isVerifying ? "Verifying..." : "Verify PIN"}
+                      {isVerifying && (
+                        <Spinner
+                          as="span"
+                          animation="border"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                        />
+                      )}
                     </Button>
                   </Modal.Footer>
                 </Modal>

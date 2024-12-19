@@ -3,10 +3,12 @@ import axios from "axios";
 import styled from "styled-components";
 import { BiHomeAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 const PanDocumentUpload = () => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     userId: currentUser.userId,
     agency: currentUser.BusinessName,
@@ -34,6 +36,7 @@ const PanDocumentUpload = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const formDataToSend = new FormData();
     for (let key in formData) {
       formDataToSend.append(key, formData[key]);
@@ -52,10 +55,37 @@ const PanDocumentUpload = () => {
           },
         }
       );
-      alert("Form submitted successfully: " + response.data.message);
+      if (response.data.status === "Success") {
+        Swal.fire({
+          title: "Done!",
+          text: `${response.data.message}`,
+          icon: "success",
+        });
+        setFormData({
+          userId: "",
+          agency: "",
+          applicationDetails: "",
+          documentCount: "",
+          courierDate: "",
+          trackingNumber: "",
+          courierCompany: "",
+          deliveryDate: "",
+          deliveryLocation: "",
+          confirmAddress: "",
+          remark: "",
+        });
+      }
+      console.log("Form submitted successfully: " + response.data.message);
     } catch (error) {
       console.error("Error uploading document:", error);
-      alert("Error uploading document: " + error.message);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error.message,
+      });
+      // alert("Error uploading document: " + error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -330,8 +360,12 @@ const PanDocumentUpload = () => {
 
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div className="text-start mb-3">
-                              <button className="btn p-2" type="submit">
-                                Upload
+                              <button
+                                className="btn p-2"
+                                type="submit"
+                                disabled={loading}
+                              >
+                                {loading ? "Submit...." : "Submit"}
                               </button>
                             </div>
                           </div>

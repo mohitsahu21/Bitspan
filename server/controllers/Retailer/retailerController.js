@@ -220,11 +220,12 @@ const applyOfflineForm = (req, res) => {
 
         const transactionId = `TXNW${Date.now()}`;
         const transactionDetails = `Services Deduction ${applicant_number}`;
+        const creditAmt = 0;
 
         const updateWalletQuery = `
         INSERT INTO user_wallet 
-        (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
 
         db.query(
@@ -237,6 +238,7 @@ const applyOfflineForm = (req, res) => {
             currentBalance.toFixed(2),
             newBalance,
             "Debit",
+            creditAmt,
             amount,
             transactionDetails,
             "Completed",
@@ -1067,15 +1069,32 @@ const complainInsertApi = (req, res) => {
 };
 
 const complainGetData = (req, res) => {
-  const query = `SELECT * FROM complaindata ORDER BY id DESC`;
+  const { userid } = req.params;
 
-  db.query(query, (err, result) => {
+  // Query to fetch complaints for a specific user
+  const query = `SELECT * FROM complaindata WHERE userid = ? ORDER BY id DESC`;
+
+  // Execute the query with the `userid` parameter
+  db.query(query, [userid], (err, result) => {
     if (err) {
       console.error("Database error:", err);
-      return res.status(400).json({ status: "Failure", error: err.message });
-    } else {
-      return res.status(200).json({ status: "Success", data: result });
+      return res
+        .status(500) // Use 500 for server/database errors
+        .json({ status: "Failure", message: "Internal server error" });
     }
+
+    // Return data or handle the case where no results are found
+    if (result.length === 0) {
+      return res.status(404).json({
+        status: "Failure",
+        message: "No complaints found for the given user ID.",
+      });
+    }
+
+    return res.status(200).json({
+      status: "Success",
+      data: result,
+    });
   });
 };
 
@@ -2162,9 +2181,10 @@ const PanDocumentUpload = (req, res) => {
     db.query(sql, values, (err, result) => {
       if (err) {
         console.error("Database error:", err);
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: "Failure", error: err.message });
       }
       res.status(201).json({
+        status: "Success",
         message: "Form data submitted successfully",
         formId: result.insertId,
       });

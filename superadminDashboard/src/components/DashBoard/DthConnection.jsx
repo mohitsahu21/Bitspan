@@ -107,13 +107,14 @@ const DthConnection = () => {
   });
 
   const [offlineDTHPlan, setOfflineDTHPlan] = useState();
-  const [selectedOfflinePlan, setSelectedOfflinePlan] = useState(null);
+  // const [selectedOfflinePlan, setSelectedOfflinePlan] = useState(null);
+  const [filteredValidities, setFilteredValidities] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:7777/api/auth/retailer/getDthConnectionPlan`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getDthConnectionPlan`
         );
         if (data.data) {
           console.log("Fetched plans:", data.data);
@@ -128,19 +129,49 @@ const DthConnection = () => {
     fetchData();
   }, []);
 
-  console.log(offlineForm);
+  // console.log(offlineForm);
 
-  const handleOfflinePlanChange = (plan) => {
-    if (!plan) {
-      console.error("Selected plan not found.");
-      return;
-    }
-    setSelectedOfflinePlan(plan);
+  // const handleOfflinePlanChange = (plan) => {
+  //   if (!plan) {
+  //     console.error("Selected plan not found.");
+  //     return;
+  //   }
+  //   setSelectedOfflinePlan(plan);
+  //   setOfflineForm({
+  //     ...offlineForm,
+  //     operatorName: plan.operator,
+  //     amount: plan.amount,
+  //     validity: plan.validity,
+  //   });
+  // };
+
+  const handleOperatorChange = (e) => {
+    const selectedOperator = e.target.value;
+    const validities = offlineDTHPlan
+      .filter((item) => item.operator === selectedOperator)
+      .map((item) => item.validity);
+
+    setFilteredValidities([...new Set(validities)]); // Remove duplicates
     setOfflineForm({
       ...offlineForm,
-      operatorName: plan.operator,
-      amount: plan.amount,
-      validity: plan.validity,
+      operatorName: selectedOperator,
+      validity: "",
+      amount: "",
+    });
+  };
+
+  const handleValidityChange = (e) => {
+    const selectedValidity = e.target.value;
+    const selectedPlan = offlineDTHPlan.find(
+      (item) =>
+        item.operator === offlineForm.operatorName &&
+        item.validity === selectedValidity
+    );
+
+    setOfflineForm({
+      ...offlineForm,
+      validity: selectedValidity,
+      amount: selectedPlan ? selectedPlan.amount : "",
     });
   };
 
@@ -249,7 +280,7 @@ const DthConnection = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") }
       );
 
@@ -390,6 +421,34 @@ const DthConnection = () => {
                                             </label>
                                           </div>
                                         </div>
+                                        {/* <div class="input-group mb-3">
+                                          <div class="form-floating">
+                                            <select
+                                              class="form-select"
+                                              id="plans"
+                                              // value={}
+                                            >
+                                              <option value="" disabled>
+                                                Select Operator
+                                              </option>
+                                              <option value="Sun Direct">
+                                                Sun Direct
+                                              </option>
+                                              <option value="Videocon">
+                                                Videocon
+                                              </option>
+                                              <option value="Tata Sky">
+                                                Tata Sky
+                                              </option>
+                                              <option value="Dish TV">
+                                                Dish TV
+                                              </option>
+                                            </select>
+                                            <label for="floatingSelectOperator">
+                                              Select Operator
+                                            </label>
+                                          </div>
+                                        </div> */}
 
                                         <div class="input-group mb-3">
                                           <span class="input-group-text">
@@ -582,7 +641,7 @@ const DthConnection = () => {
                                     <h3 className="mb-4">DTH Connection 2</h3>
                                     <div>
                                       <form onSubmit={openPinModal}>
-                                        <div class="input-group mb-3">
+                                        {/* <div class="input-group mb-3">
                                           <div class="form-floating">
                                             <select
                                               class="form-select"
@@ -616,6 +675,42 @@ const DthConnection = () => {
                                             </select>
                                             <label for="floatingSelectOperator">
                                               Select Operator
+                                            </label>
+                                          </div>
+                                        </div> */}
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text">
+                                            <FaMobileAlt />
+                                          </span>
+                                          <div class="form-floating">
+                                            <select
+                                              class="form-select"
+                                              id="operatorSelect"
+                                              name="operator"
+                                              value={offlineForm.operator}
+                                              onChange={handleOperatorChange}
+                                              required
+                                            >
+                                              <option value="">
+                                                Select Operator
+                                              </option>
+                                              {Array.from(
+                                                new Set(
+                                                  offlineDTHPlan?.map(
+                                                    (item) => item.operator
+                                                  )
+                                                )
+                                              ).map((operator, index) => (
+                                                <option
+                                                  key={index}
+                                                  value={operator}
+                                                >
+                                                  {operator}
+                                                </option>
+                                              ))}
+                                            </select>
+                                            <label for="operatorSelect">
+                                              Operator
                                             </label>
                                           </div>
                                         </div>
@@ -724,7 +819,7 @@ const DthConnection = () => {
                                             </label>
                                           </div>
                                         </div>
-                                        <div class="input-group mb-3">
+                                        {/* <div class="input-group mb-3">
                                           <span class="input-group-text">
                                             <FaMobileAlt />
                                           </span>
@@ -740,6 +835,41 @@ const DthConnection = () => {
                                               required
                                             />
                                             <label for="floatingInputGroup1">
+                                              Validity
+                                            </label>
+                                          </div>
+                                        </div> */}
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text">
+                                            <FaMobileAlt />
+                                          </span>
+                                          <div class="form-floating">
+                                            <select
+                                              class="form-select"
+                                              id="validitySelect"
+                                              name="validity"
+                                              value={offlineForm.validity}
+                                              onChange={handleValidityChange}
+                                              required
+                                              disabled={
+                                                !filteredValidities.length
+                                              }
+                                            >
+                                              <option value="">
+                                                Select Validity
+                                              </option>
+                                              {filteredValidities.map(
+                                                (validity, index) => (
+                                                  <option
+                                                    key={index}
+                                                    value={validity}
+                                                  >
+                                                    {validity}
+                                                  </option>
+                                                )
+                                              )}
+                                            </select>
+                                            <label for="validitySelect">
                                               Validity
                                             </label>
                                           </div>
@@ -759,6 +889,7 @@ const DthConnection = () => {
                                               onChange={handleOfflineChange}
                                               required
                                               autoComplete="new-password"
+                                              readOnly
                                             />
                                             <label for="floatingInputGroup1">
                                               Amount
