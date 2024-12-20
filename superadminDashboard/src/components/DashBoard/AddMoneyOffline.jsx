@@ -5,6 +5,7 @@ import { TbTransactionRupee } from "react-icons/tb";
 import { BiHomeAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const AddMoneyOffline = () => {
   const { currentUser, token } = useSelector((state) => state.user);
@@ -52,10 +53,26 @@ const AddMoneyOffline = () => {
         }
       );
 
-      alert(response.data.message);
+      // alert(response.data.message);
+      Swal.fire({
+        title: "Form Submitted Successfully",
+        text: response.data.message,
+        icon: "success",
+      });
+      setFormData({
+        amount: "",
+        Payment_Mode: "",
+        Transaction_Reference: "",
+      });
     } catch (error) {
       console.error("Error submitting form:", error.response.data);
       alert("Failed to submit form. Please try again.");
+      Swal.fire({
+        title: "Error",
+        text:
+          error.response?.data || "Failed to submit form. Please try again.",
+        icon: "error",
+      });
     } finally {
       setIsLoading(false);
     }

@@ -15,7 +15,7 @@ const BankHistory = () => {
     const fetchBankHistory = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:7777/api/auth/retailer/getAllBranchId`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllBranchId`
         );
         setGetData(response.data);
         setFilterData(
@@ -66,6 +66,8 @@ const BankHistory = () => {
                               <thead className="table-dark">
                                 <tr>
                                   <th scope="col">Sr.No</th>
+                                  <th scope="col">Date</th>
+                                  <th scope="col">Order ID</th>
                                   <th scope="col">Name</th>
                                   <th scope="col">Father Name</th>
                                   <th scope="col">Mother Name</th>
@@ -90,6 +92,8 @@ const BankHistory = () => {
                                   filterData.map((data, index) => (
                                     <tr key={index}>
                                       <td>{index + 1}</td>
+                                      <td>{data.created_at}</td>
+                                      <td>{data.order_id}</td>
                                       <td>{data.applicant_name}</td>
                                       <td>{data.applicant_father}</td>
                                       <td>{data.applicant_mother}</td>

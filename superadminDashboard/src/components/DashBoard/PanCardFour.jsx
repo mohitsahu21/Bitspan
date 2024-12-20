@@ -358,6 +358,7 @@ const PanCardFour = () => {
                           name="name"
                           value={formData.name}
                           onChange={handleChange}
+                          required
                         />
                       </div>
                       <div className="col-md-6 mb-3">
@@ -370,6 +371,7 @@ const PanCardFour = () => {
                           name="father_name"
                           value={formData.father_name}
                           onChange={handleChange}
+                          required
                         />
                       </div>
                     </div>
@@ -385,6 +387,7 @@ const PanCardFour = () => {
                           name="mother_name"
                           value={formData.mother_name}
                           onChange={handleChange}
+                          required
                         />
                       </div>
                       <div className="col-md-3 mb-3">
@@ -479,6 +482,9 @@ const PanCardFour = () => {
                           name="mobile_no"
                           value={formData.mobile_no}
                           onChange={handleChange}
+                          maxLength={10}
+                          minLength={10}
+                          required
                         />
                       </div>
                       <div className="col-md-4 mb-3">

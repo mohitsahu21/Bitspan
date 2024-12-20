@@ -18,6 +18,7 @@ const Edistrict = () => {
   const [loading, setLoading] = useState(false);
   const complaintsPerPage = 10; // Set items per page
   const [currentPage, setCurrentPage] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchData = async () => {
     try {
@@ -35,23 +36,19 @@ const Edistrict = () => {
 
   useEffect(() => {
     fetchData();
-    setCurrentPage(0);
+    // setCurrentPage(0);
   }, []);
 
-  // const handleSearch = () => {
-  //   fetchData();
-  // };
-
   const filteredData = formData?.filter((item) => {
-    const term = searchTerm.toLowerCase();
-    return (
-      (selectedStatus === "All" ||
-        item.status?.toLowerCase() === selectedStatus.toLowerCase()) &&
-      (searchTerm === "" ||
-        item.name.toLowerCase().includes(term) ||
-        item.mobile_no.includes(searchTerm) ||
-        item.order_id.includes(searchTerm))
-    );
+    const matchesSearch =
+      item.name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
+      item.mobile_no?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
+      item.order_id?.toLowerCase()?.includes(searchQuery?.toLowerCase());
+    const matchesStatus =
+      selectedStatus === "All" ||
+      item.status?.toLowerCase() === selectedStatus?.toLowerCase();
+
+    return matchesSearch && matchesStatus;
   });
 
   // const filteredData = formData?.filter((item) => {
@@ -141,10 +138,10 @@ const Edistrict = () => {
                             </label>
                             <input
                               type="text"
-                              className="form-control"
+                              className="form-control responsive-input"
                               placeholder="Search by Name, Mobile, or Order ID"
-                              // value={searchTerm}
-                              onChange={(e) => setSearchTerm(e.target.value)}
+                              value={searchQuery}
+                              onChange={(e) => setSearchQuery(e.target.value)}
                             />
                           </div>
                           {/* <div className="d-flex align-items-end">
@@ -163,8 +160,8 @@ const Edistrict = () => {
                               onSelect={(e) => setSelectedStatus(e)}
                             >
                               <Dropdown.Item eventKey="All">All</Dropdown.Item>
-                              <Dropdown.Item eventKey="Approved">
-                                Approved
+                              <Dropdown.Item eventKey="Success">
+                                Success
                               </Dropdown.Item>
                               <Dropdown.Item eventKey="Reject">
                                 Reject
@@ -319,6 +316,10 @@ const Wrapper = styled.div`
   }
   a {
     text-decoration: none;
+  }
+  .responsive-input {
+    padding: 10px;
+    width: 100%; /* Ensures full width within the grid */
   }
 `;
 const PaginationContainer = styled.div`

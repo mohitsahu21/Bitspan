@@ -14,14 +14,15 @@ const SambalHistory = () => {
   const { currentUser, token } = useSelector((state) => state.user);
   const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [dataLoading, setDataLoading] = useState(false);
 
   const userID = currentUser.userId;
 
   const fetchRechargeData = async () => {
+    setDataLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/retailer/getSambalHistory/${userID}`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getSambalHistory/${userID}`
       );
       const data = response.data.data;
       console.log(data);
@@ -29,6 +30,8 @@ const SambalHistory = () => {
       setFilteredData(data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setDataLoading(false);
     }
   };
   console.log(allData);
@@ -68,127 +71,132 @@ const SambalHistory = () => {
       <Wrapper>
         <div className="main">
           <div className="container-fluid">
-            <div className="row flex-wrap justify-content-lg-center justify-content-center ">
-              <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
-                {/* <Sider /> */}
-              </div>
-              <div
-                className="col-xxl-12 col-xl-12 col-lg-12 col-md-10  col-sm-10  col-11
+            {dataLoading ? (
+              <div className="loader">Loading data, please wait...</div>
+            ) : (
+              <div className="row flex-wrap justify-content-lg-center justify-content-center ">
+                <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
+                  {/* <Sider /> */}
+                </div>
+                <div
+                  className="col-xxl-12 col-xl-12 col-lg-12 col-md-10  col-sm-10  col-11
                              mt-5 formdata "
-              >
-                <div className="main shadow-none ">
-                  <div className="row shadow-none ">
-                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      {/* <div className="text-center">
+                >
+                  <div className="main shadow-none ">
+                    <div className="row shadow-none ">
+                      <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        {/* <div className="text-center">
                                                 <h3>Prepaid Recharge History</h3>
                                             </div> */}
-                      <div className="d-flex justify-content-between align-items-center flex-wrap">
-                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Verify E-District History
-                        </h4>
-                        <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; Verify E-District History
-                        </h6>
+                        <div className="d-flex justify-content-between align-items-center flex-wrap">
+                          <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
+                            Verify E-District History
+                          </h4>
+                          <h6 className="mx-lg-5">
+                            <BiHomeAlt /> &nbsp;/ &nbsp; Verify E-District
+                            History
+                          </h6>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
-                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
-                      <div className="row d-flex flex-column g-4">
-                        <div className="d-flex flex-column flex-md-row gap-3">
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <input
-                              className="form-control"
-                              type="search"
-                              id="floatingInputGroup1"
-                              placeholder="Search by Mob No - Ord ID"
-                              value={filterValue}
-                              onChange={(e) => {
-                                setFilterValue(e.target.value);
-                                if (e.target.value === "") {
-                                  setCurrentPage(0);
-                                }
-                              }}
-                              onKeyDown={(e) => {
-                                if (e.key === "Escape") {
-                                  setFilterValue("");
-                                  setCurrentPage(0);
-                                }
-                              }}
-                            />
+                    <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
+                      <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
+                        <div className="row d-flex flex-column g-4">
+                          <div className="d-flex flex-column flex-md-row gap-3">
+                            <div className="col-12 col-md-4 col-lg-3">
+                              <input
+                                className="form-control"
+                                type="search"
+                                id="floatingInputGroup1"
+                                placeholder="Search by Mob No - Ord ID"
+                                value={filterValue}
+                                onChange={(e) => {
+                                  setFilterValue(e.target.value);
+                                  if (e.target.value === "") {
+                                    setCurrentPage(0);
+                                  }
+                                }}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Escape") {
+                                    setFilterValue("");
+                                    setCurrentPage(0);
+                                  }
+                                }}
+                              />
+                            </div>
                           </div>
-                        </div>
 
-                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                          <div class="table-responsive">
-                            <table class="table table-striped">
-                              <thead className="table-dark">
-                                <tr>
-                                  <th scope="col">Date</th>
-                                  <th scope="col">Order ID</th>
-                                  <th scope="col">Samagra ID</th>
-                                  <th scope="col">Family ID</th>
-                                  <th scope="col">Applicant Type</th>
-                                  <th scope="col">Education</th>
-                                  <th scope="col">Occupation</th>
-                                  <th scope="col">SMS Notification</th>
-                                  <th scope="col">Income Tax Payer</th>
-                                  <th scope="col">Land Ownership</th>
-                                  <th scope="col">Govt Service</th>
-                                  <th scope="col">Mobile Number</th>
-                                  <th scope="col">Status</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {displayData.length > 0 ? (
-                                  displayData.map((item) => (
-                                    <tr key={item.id}>
-                                      <td>{item.created_at}</td>
-                                      <td>{item.order_id}</td>
-                                      <td>{item.samagra_id}</td>
-                                      <td>{item.family_id}</td>
-                                      <td>{item.applicant_type}</td>
-                                      <td>{item.education}</td>
-                                      <td>{item.occupation}</td>
-                                      <td>{item.sms_notification}</td>
-                                      <td>{item.income_tax_payer}</td>
-                                      <td>{item.land_ownership}</td>
-                                      <td>{item.govt_service}</td>
-                                      <td>{item.mobile_number}</td>
-                                      <td>{item.status}</td>
-                                    </tr>
-                                  ))
-                                ) : (
+                          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <div class="table-responsive">
+                              <table class="table table-striped">
+                                <thead className="table-dark">
                                   <tr>
-                                    <td colSpan="10" className="text-center">
-                                      No results found
-                                    </td>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Order ID</th>
+                                    <th scope="col">Samagra ID</th>
+                                    <th scope="col">Family ID</th>
+                                    <th scope="col">Applicant Type</th>
+                                    <th scope="col">Education</th>
+                                    <th scope="col">Occupation</th>
+                                    <th scope="col">SMS Notification</th>
+                                    <th scope="col">Income Tax Payer</th>
+                                    <th scope="col">Land Ownership</th>
+                                    <th scope="col">Govt Service</th>
+                                    <th scope="col">Mobile Number</th>
+                                    <th scope="col">Status</th>
                                   </tr>
-                                )}
-                              </tbody>
-                            </table>
+                                </thead>
+                                <tbody>
+                                  {displayData.length > 0 ? (
+                                    displayData.map((item) => (
+                                      <tr key={item.id}>
+                                        <td>{item.created_at}</td>
+                                        <td>{item.order_id}</td>
+                                        <td>{item.samagra_id}</td>
+                                        <td>{item.family_id}</td>
+                                        <td>{item.applicant_type}</td>
+                                        <td>{item.education}</td>
+                                        <td>{item.occupation}</td>
+                                        <td>{item.sms_notification}</td>
+                                        <td>{item.income_tax_payer}</td>
+                                        <td>{item.land_ownership}</td>
+                                        <td>{item.govt_service}</td>
+                                        <td>{item.mobile_number}</td>
+                                        <td>{item.status}</td>
+                                      </tr>
+                                    ))
+                                  ) : (
+                                    <tr>
+                                      <td colSpan="10" className="text-center">
+                                        No results found
+                                      </td>
+                                    </tr>
+                                  )}
+                                </tbody>
+                              </table>
+                            </div>
+                            <PaginationContainer>
+                              <ReactPaginate
+                                previousLabel={"Previous"}
+                                nextLabel={"Next"}
+                                breakLabel={"..."}
+                                pageCount={totalPages}
+                                marginPagesDisplayed={2}
+                                pageRangeDisplayed={3}
+                                onPageChange={handlePageChange}
+                                containerClassName={"pagination"}
+                                activeClassName={"active"}
+                              />
+                            </PaginationContainer>
                           </div>
-                          <PaginationContainer>
-                            <ReactPaginate
-                              previousLabel={"Previous"}
-                              nextLabel={"Next"}
-                              breakLabel={"..."}
-                              pageCount={totalPages}
-                              marginPagesDisplayed={2}
-                              pageRangeDisplayed={3}
-                              onPageChange={handlePageChange}
-                              containerClassName={"pagination"}
-                              activeClassName={"active"}
-                            />
-                          </PaginationContainer>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </Wrapper>

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 
@@ -10,6 +10,7 @@ const VerifyEdistrict = () => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
   const [prices, setPrices] = useState([]);
+  const [isVerifying, setIsVerifying] = useState(false);
   const [formData, setFormData] = useState({
     applicationType: "",
     name: "",
@@ -187,7 +188,9 @@ const VerifyEdistrict = () => {
   };
 
   const handleModalSubmit = async (e) => {
+    setIsVerifying(true); // Start loading
     const isPinValid = await verifyPin();
+    setIsVerifying(false); // Stop loading
     if (isPinValid) {
       setShowPinModal(false);
       handleSubmit(e);
@@ -368,8 +371,21 @@ const VerifyEdistrict = () => {
                       >
                         Cancel
                       </Button>
-                      <Button variant="primary" onClick={handleModalSubmit}>
-                        Verify PIN
+                      <Button
+                        variant="primary"
+                        onClick={handleModalSubmit}
+                        disabled={isVerifying}
+                      >
+                        {isVerifying ? "Verifying..." : "Verify PIN"}
+                        {isVerifying && (
+                          <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                        )}
                       </Button>
                     </Modal.Footer>
                   </Modal>

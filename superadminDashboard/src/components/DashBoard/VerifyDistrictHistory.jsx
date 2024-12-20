@@ -21,7 +21,7 @@ const VerifyDistrictHistory = () => {
   const fetchRechargeData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/retailer/getVerifyEdistrict/${userID}`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getVerifyEdistrict/${userID}`
       );
       const data = response.data.data;
       console.log(data);

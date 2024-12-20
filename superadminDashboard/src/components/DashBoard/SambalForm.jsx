@@ -4,12 +4,13 @@ import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
 
 const SambalForm = () => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
   const [prices, setPrices] = useState([]);
+  const [isVerifying, setIsVerifying] = useState(false);
   const [formData, setFormData] = useState({
     samagraId: "",
     familyId: "",
@@ -149,7 +150,9 @@ const SambalForm = () => {
   };
 
   const handleModalSubmit = async (e) => {
+    setIsVerifying(true);
     const isPinValid = await verifyPin();
+    setIsVerifying(false);
     if (isPinValid) {
       setShowPinModal(false);
       handleSubmit(e);
@@ -499,6 +502,8 @@ const SambalForm = () => {
                             name="mobileNumber"
                             value={formData.mobileNumber}
                             onChange={handleChange}
+                            maxLength={10}
+                            minLength={10}
                             required
                           />
                         </div>
@@ -565,8 +570,21 @@ const SambalForm = () => {
                         >
                           Cancel
                         </Button>
-                        <Button variant="primary" onClick={handleModalSubmit}>
-                          Verify PIN
+                        <Button
+                          variant="primary"
+                          onClick={handleModalSubmit}
+                          disabled={isVerifying}
+                        >
+                          {isVerifying ? "Verifying..." : "Verify PIN"}
+                          {isVerifying && (
+                            <Spinner
+                              as="span"
+                              animation="border"
+                              size="sm"
+                              role="status"
+                              aria-hidden="true"
+                            />
+                          )}
                         </Button>
                       </Modal.Footer>
                     </Modal>

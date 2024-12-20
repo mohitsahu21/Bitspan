@@ -1590,7 +1590,7 @@ const getAllBranchId = (req, res) => {
 const getEdistrictData = (req, res) => {
   const applicationId = req.params.user_id;
 
-  const selectQuery = `SELECT * FROM \`e-district-application\` WHERE user_id = ?`;
+  const selectQuery = `SELECT * FROM \`e-district-application\` WHERE user_id = ? ORDER BY id DESC`;
 
   db.query(selectQuery, [applicationId], (err, result) => {
     if (err) {
@@ -2088,7 +2088,7 @@ const addVerifyDistrictForm = (req, res) => {
 const getVerifyEdistrict = (req, res) => {
   const userId = req.params.userId;
 
-  let query = `SELECT * FROM verifyedistrict WHERE user_id = ?`;
+  let query = `SELECT * FROM verifyedistrict WHERE user_id = ? ORDER BY id DESC`;
 
   db.query(query, [userId], (err, result) => {
     if (err) {

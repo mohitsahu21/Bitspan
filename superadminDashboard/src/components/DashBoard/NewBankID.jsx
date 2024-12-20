@@ -5,7 +5,7 @@ import { RiMarkPenLine } from "react-icons/ri";
 import { IoMail, IoPerson } from "react-icons/io5";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleRefresh } from "../../redux/user/userSlice";
 import Swal from "sweetalert2";
@@ -16,6 +16,7 @@ const NewBankID = () => {
   const [optionPrices, setOptionPrices] = useState({});
   const [selectedPrice, setSelectedPrice] = useState(null);
   // console.log(selectedPrice);
+  const [isVerifying, setIsVerifying] = useState(false);
 
   const optionsDrop = [
     { id: 1, name: "Airtel" },
@@ -224,7 +225,9 @@ const NewBankID = () => {
   };
 
   const handleModalSubmit = async (e) => {
+    setIsVerifying(true);
     const isPinValid = await verifyPin();
+    setIsVerifying(false);
     if (isPinValid) {
       setShowPinModal(false);
       handleSubmit(e);
@@ -242,7 +245,7 @@ const NewBankID = () => {
     const getServices = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:7777/api/auth/retailer/getSelectedServices/${currentUser.userId}`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getSelectedServices/${currentUser.userId}`
         );
         console.log(response.data);
         setSelectedOptions(response.data.selectedServices);
@@ -639,8 +642,21 @@ const NewBankID = () => {
                     >
                       Cancel
                     </Button>
-                    <Button variant="primary" onClick={handleModalSubmit}>
-                      Verify PIN
+                    <Button
+                      variant="primary"
+                      onClick={handleModalSubmit}
+                      disabled={isVerifying}
+                    >
+                      {isVerifying ? "Verifying..." : "Verify PIN"}
+                      {isVerifying && (
+                        <Spinner
+                          as="span"
+                          animation="border"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                        />
+                      )}
                     </Button>
                   </Modal.Footer>
                 </Modal>
