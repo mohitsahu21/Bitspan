@@ -19,6 +19,7 @@ const superAdminRouter = require("./routers/SuperAdmin/superAdminRouter");
 const loginRouter = require("./routers/LoginApi/loginUserRoute");
 const paymentRouter = require("./routers/PaymentGateway/orderRoute");
 const walletRouter = require("./routers/PaymentGateway/walletRoute");
+const planRouter = require("./routers/Retailer/planRouter");
 const moment = require("moment-timezone");
 const { db } = require("./connect");
 const {
@@ -47,6 +48,7 @@ app.use("/api/auth/nsdlpan", nsdlPanEasySmart);
 app.use("/api/auth/zlink", zlink);
 app.use("/api/auth/easyPayUpi", easyPayRouter);
 app.use("/api/auth/superAdmin", superAdminRouter);
+app.use("/api/auth/fetch/plan", planRouter);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/panUploads", express.static(path.join(__dirname, "panUploads")));
 app.use(

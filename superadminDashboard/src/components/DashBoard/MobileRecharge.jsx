@@ -7,14 +7,15 @@ import Swal from "sweetalert2";
 import Loading from "../Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleRefresh } from "../../redux/user/userSlice";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
 
 const MobileRecharge = () => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
   const [activeTab, setActiveTab] = useState("tab1");
   const [apiData, setApiData] = useState([]);
-  console.log(currentUser.userId);
+  const [isVerifying, setIsVerifying] = useState(false);
+  // console.log(currentUser.userId);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -74,7 +75,7 @@ const MobileRecharge = () => {
     fetchData();
   }, []);
 
-  console.log(apiData);
+  // console.log(apiData);
 
   const handleChange = (e) => {
     setFormData({
@@ -270,10 +271,13 @@ const MobileRecharge = () => {
   };
 
   const handleModalSubmit = async (e) => {
+    setIsVerifying(true);
     const isPinValid = await verifyPin();
+    setIsVerifying(false);
     if (isPinValid) {
       setShowPinModal(false);
       handlesubmitForm(e);
+      // handleSubmit(e);
       setPin(["", "", "", ""]);
     } else {
       setPin(["", "", "", ""]);
@@ -625,8 +629,21 @@ const MobileRecharge = () => {
                 Cancel
               </Button>
 
-              <Button variant="primary" onClick={handleModalSubmit}>
-                Verify PIN
+              <Button
+                variant="primary"
+                onClick={handleModalSubmit}
+                disabled={isVerifying}
+              >
+                {isVerifying ? "Verifying..." : "Verify PIN"}
+                {isVerifying && (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                )}
               </Button>
             </div>
           </Modal.Footer>
