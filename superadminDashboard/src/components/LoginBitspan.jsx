@@ -403,9 +403,19 @@ const LoginBitspan = () => {
     }
   };
 
+  // const handlebutton = (e) => {
+  //   if (e.key === "Enter") {
+  //     handleLogin();
+  //   }
+  // };
+
   const handlebutton = (e) => {
     if (e.key === "Enter") {
-      handleLogin();
+      if (isOtpSent) {
+        handleOtpVerification();
+      } else {
+        handleLogin();
+      }
     }
   };
 
@@ -565,7 +575,11 @@ const LoginBitspan = () => {
                               value={digit}
                               ref={(el) => (inputsRef.current[index] = el)}
                               onChange={(e) => handleChange(e.target, index)}
-                              onKeyDown={(e) => handleKeyDown(e, index)}
+                              // onKeyDown={(e) => handleKeyDown(e, index)}
+                              onKeyDown={(e) => {
+                                handleKeyDown(e, index);
+                                handlebutton(e); // Also check for "Enter" key
+                              }}
                               className="otp-input"
                             />
                           ))}
