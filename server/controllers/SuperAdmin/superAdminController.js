@@ -6575,6 +6575,158 @@ const getPendingPanCouponRequests = (req, res) => {
     });
   }
 };
+const getUserPackageDetails = (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const sql = `SELECT p.* FROM userprofile u JOIN packagestable p ON u.package_Id = p.id WHERE u.UserId = ?`;
+    db.query(sql, [userId], (err, result) => {
+      if (err) {
+        console.error("Error fetching Package details from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error fetching Package details" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No Package details found",
+          });
+        } else {
+          // Remove the password field from each user object
+          // const sanitizedResult = result.map(({ password, ...rest }) => rest);
+
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "Package details fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching Package details from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching Package details",
+      error: error.message,
+    });
+  }
+};
+
+const CreditCommission = (req, res) => {
+  try {
+    const {userId, amount, Transaction_details, status } = req.body;
+    
+      // Validate `order_id`: Check for undefined, null, or invalid value
+      if ( !status || !userId) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid or missing user id",
+        });
+      }
+
+
+       // Validate `refundAmount`: Check for undefined, null, or invalid number
+    if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing amount",
+      });
+    }
+
+    const AmountNumber = parseFloat(amount);
+
+
+    const Transaction_Type =  "Credit";
+    const transaction_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+      const Order_Id = `ORW${Date.now()}`;
+      const Transaction_Id = `TXNW${Date.now()}`;
+    const process_date = moment()
+    .tz("Asia/Kolkata")
+    .format("YYYY-MM-DD HH:mm:ss");
+
+    // Query to get the user's current closing balance from the user_wallet table
+    const getClosingBalanceQuery = `SELECT Closing_Balance FROM user_wallet WHERE userId = ? ORDER BY wid DESC LIMIT 1`;
+    
+    db.query(getClosingBalanceQuery, [userId], (error, results) => {
+      if (error) {
+        console.error("Error fetching closing balance:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to fetch closing balance",
+        });
+      }
+
+      // if (results.length === 0) {
+      //   return res.status(404).json({
+      //     success: false,
+      //     message: "Wallet Add Money Request not found",
+      //   });
+      // }
+
+      console.log(results)
+      const old_balance = results.length != 0 ?  results[0].Closing_Balance : 0;
+
+      
+        // Ensure `old_balance` is a valid number
+        if (isNaN(old_balance)) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid closing balance in user wallet",
+          });
+        }
+
+
+      const opening_balance = Number(old_balance);
+      const credit_amount = AmountNumber;
+      const debit_amount = 0;
+      let new_balance = credit_amount + opening_balance;
+
+        // Ensure all calculated balances are valid numbers
+        if (isNaN(opening_balance) || isNaN(credit_amount) || isNaN(new_balance)) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid balance calculations",
+          });
+        }
+      new_balance = parseFloat(new_balance.toFixed(2)); // Convert back to a number
+
+
+        // SQL query to update the user_wallet table with new balance
+      
+        const sql2 = `INSERT INTO user_wallet (userId, transaction_date, Order_Id , Transaction_Id , Opening_Balance, Closing_Balance , credit_amount, debit_amount,Transaction_Type,Transaction_details ,status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)`;
+        const values2 = [userId,transaction_date , Order_Id,Transaction_Id, opening_balance, new_balance,
+          credit_amount,debit_amount,Transaction_Type,Transaction_details, status];
+
+        db.query(sql2, values2, (error, results) => {
+          if (error) {
+            console.error("Error inserting into user_wallet:", error);
+            return res.status(500).json({
+              success: false,
+              error: "Failed to inserting into the user_wallet",
+            });
+          }
+
+          return res.status(200).json({
+            success: true,
+            message:
+              "Credit Commission Success",
+          });
+        });
+      });
+   
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
 
 
 module.exports = {
@@ -6692,7 +6844,9 @@ module.exports = {
   getPendingEdistrictForms,
   getPendingVerifyEdistrictForms,
   getPendingSambalForms,
-  getPendingPanCouponRequests
+  getPendingPanCouponRequests,
+  getUserPackageDetails,
+  CreditCommission
 
 
 };

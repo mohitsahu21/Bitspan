@@ -22,6 +22,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     const [loading, setLoading] = useState(false);
  const navigate = useNavigate();
  const dispatch = useDispatch();
+ const [userRelation,setUserRelation] = useState([]);
  const { token } = useSelector((state) => state.user);
     const [formData, setFormData] = useState({
       order_id: item.orderid,
@@ -37,14 +38,383 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     };
     
   
+    // const handlesubmit = async (e) => {
+    //   e.preventDefault();
+    //   try {
+    //     setLoading(true);
+    //     const response = await axios.put(
+    //       "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveOfflineRecharge",
+    //       // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+    //       formData,
+    //       {
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //           Authorization: `Bearer ${token}`,
+    //         },
+    //       }
+    //     );
+    //     console.log(response);
+    //     setLoading(false);
+    //     if (response.data.success) {
+    //       Swal.fire({
+    //         icon: "success",
+    //         title: "Approve Form Successfully",
+    //       });
+    //       setShowApproveModel(false);
+    //       setIsRefresh((value) => !value);
+    //     } else {
+    //       Swal.fire({
+    //         icon: "error",
+    //         title: "An error occurred during the process. Please try again.",
+    //       });
+    //     }
+    //   } catch (error) {
+    //     console.error("There was an error submitting the form!", error);
+    //     if (error?.response?.status == 401) {
+    //       // alert("Your token is expired please login again")
+    //       Swal.fire({
+    //                 icon: "error",
+    //                 title: "Your token is expired please login again",
+    //               });
+    //       dispatch(clearUser());
+    //       navigate("/");
+    //     }
+    //     setLoading(false);
+    //     Swal.fire({
+    //       icon: "error",
+    //       title: "An error occurred during the process. Please try again.",
+    //     });
+    //   }
+    // };
+
+    // const handlesubmit = async (e) => {
+    //   e.preventDefault();
+    //   try {
+    //     setLoading(true);
+
+    //     const { data } = await axios.get(
+    //       `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${item.created_by_userid}`,
+    //       {
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //           Authorization: `Bearer ${token}`,
+    //         },
+    //       }
+  
+    //     );
+    //     console.log(item.created_By_User_Id);
+        
+    //     console.log(data)
+    //     setUserRelation(data.data);
+    //     // const distributor = data.data.distributor
+    //     if(data.data){
+         
+    //       const { distributor, superDistributor, white_lable } = data.data;
+          
+    //        // Create an array to hold promises for all API calls
+    //        const promises = [];
+
+    //        if (distributor) {
+    //         const distributorPromise = axios.get(
+    //           `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+    //           {
+    //             headers: {
+    //               "Content-Type": "application/json",
+    //               Authorization: `Bearer ${token}`,
+    //             },
+    //           }
+    //         );
+            
+    //         promises.push(distributorPromise);
+    //       }
+            
+    //       if (superDistributor) {
+    //         const superDistributorPromise = axios.get(
+    //           `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+    //           {
+    //             headers: {
+    //               "Content-Type": "application/json",
+    //               Authorization: `Bearer ${token}`,
+    //             },
+    //           }
+    //         );
+    //         promises.push(superDistributorPromise);
+    //       }
+             
+    //       if (white_lable) {
+    //         const whiteLablePromise = axios.get(
+    //           `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+    //           {
+    //             headers: {
+    //               "Content-Type": "application/json",
+    //               Authorization: `Bearer ${token}`,
+    //             },
+    //           }
+    //         );
+    //         promises.push(whiteLablePromise);
+    //       }
+    //        // Wait for all API calls to resolve
+    //   const results = await Promise.all(promises);
+
+    //   // Handle each response
+    //   results.forEach((response, index) => {
+    //     console.log(`Response ${index + 1}:`, response.data.data);
+    //   });
+    // }
+        
+        
+    //   } catch (error) {
+    //     console.error("There was an error submitting the form!", error);
+    //     if (error?.response?.status == 401) {
+    //       // alert("Your token is expired please login again")
+    //       Swal.fire({
+    //                 icon: "error",
+    //                 title: "Your token is expired please login again",
+    //               });
+    //       dispatch(clearUser());
+    //       navigate("/");
+    //     }
+    //     setLoading(false);
+    //     Swal.fire({
+    //       icon: "error",
+    //       title: "An error occurred during the process. Please try again.",
+    //     });
+    //   }
+    //   finally {
+    //     setLoading(false);
+    //   }
+    // };
+
+    const prepaidRechargeComm = async (retailer, distributor, superDistributor, white_lable ,packageDetails,item)=>{
+     const  retailerFormData = {
+        userId: retailer,
+    amount : "",
+    Transaction_details : "Commission Credit",
+    status : "Success"
+      }
+      const  distributorFormData = {
+        userId: distributor,
+    amount : "",
+    Transaction_details : "Commission Credit",
+    status : "Success"
+      }
+      const  superDistributorFormData = {
+        userId: superDistributor,
+    amount : "",
+    Transaction_details : "Commission Credit",
+    status : "Success"
+      }
+      const  whiteLableFormData = {
+        userId: white_lable,
+    amount : "",
+    Transaction_details : "Commission Credit",
+    status : "Success"
+      }
+      const retailerPackage = packageDetails?.retailer ? packageDetails?.retailer[0]:  {};
+      const distributorPackage = packageDetails?.distributor ? packageDetails?.distributor[0] : {};
+      const superDistributorPackage = packageDetails?.superDistributor ? packageDetails?.superDistributor[0] : {} ;
+      const whiteLablePackage = packageDetails?.whiteLable ? packageDetails?.whiteLable[0] : {} ;
+
+      const operatorName = item.operator_name;
+      const amount = parseFloat(item.amount);
+
+      let retailerCommAmount = 0;
+      let distributorCommAmount = 0;
+      let superDistributorCommAmount = 0;
+      let whiteLableCommAmount = 0;
+
+
+      try {
+            
+            if(retailerPackage.Off_Prepaid_Recharge_Comm_Type == "Percentage"){
+              if(operatorName == "Jio"){
+                retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Jio_Prepaid_Recharge_Comm))/100
+                
+              }
+              else if(operatorName == "Airtel"){
+                retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Airtel_Prepaid_Recharge_Comm))/100
+              }
+              else if(operatorName == "Vi"){
+                retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Vi_Prepaid_Recharge_Comm))/100
+              }
+              else if(operatorName == "BSNL STV"){
+                retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Bsnl_Prepaid_Recharge_Comm))/100
+              }
+              else if(operatorName == "BSNL TOPUP"){
+                retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Bsnl_Prepaid_Recharge_Comm))/100
+              }
+
+            }
+            else{
+              if(operatorName == "Jio"){
+                retailerCommAmount = parseFloat(retailerPackage.Off_Jio_Prepaid_Recharge_Comm)
+                
+              }
+              else if(operatorName == "Airtel"){
+                retailerCommAmount = parseFloat(retailerPackage.Off_Airtel_Prepaid_Recharge_Comm)
+              }
+              else if(operatorName == "Vi"){
+                retailerCommAmount = parseFloat(retailerPackage.Off_Vi_Prepaid_Recharge_Comm)
+              }
+              else if(operatorName == "BSNL STV"){
+                retailerCommAmount = parseFloat(retailerPackage.Off_Bsnl_Prepaid_Recharge_Comm)
+              }
+              else if(operatorName == "BSNL TOPUP"){
+                retailerCommAmount = parseFloat(retailerPackage.Off_Bsnl_Prepaid_Recharge_Comm)
+              }
+
+              
+            }
+
+            if(distributor && distributorPackage){
+              if(distributorPackage.Off_Prepaid_Recharge_Comm_Type == "Percentage"){
+                if(operatorName == "Jio"){
+                  distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Jio_Prepaid_Recharge_Comm))/100
+                  
+                }
+                else if(operatorName == "Airtel"){
+                  distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Airtel_Prepaid_Recharge_Comm))/100
+                }
+                else if(operatorName == "Vi"){
+                  distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Vi_Prepaid_Recharge_Comm))/100
+                }
+                else if(operatorName == "BSNL STV"){
+                  distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Bsnl_Prepaid_Recharge_Comm))/100
+                }
+                else if(operatorName == "BSNL TOPUP"){
+                  distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Bsnl_Prepaid_Recharge_Comm))/100
+                }
+  
+              }
+              else{
+                if(operatorName == "Jio"){
+                  distributorCommAmount = parseFloat(distributorPackage.Off_Jio_Prepaid_Recharge_Comm)
+                  
+                }
+                else if(operatorName == "Airtel"){
+                  distributorCommAmount = parseFloat(distributorPackage.Off_Airtel_Prepaid_Recharge_Comm)
+                }
+                else if(operatorName == "Vi"){
+                  distributorCommAmount = parseFloat(distributorPackage.Off_Vi_Prepaid_Recharge_Comm)
+                }
+                else if(operatorName == "BSNL STV"){
+                  distributorCommAmount = parseFloat(distributorPackage.Off_Bsnl_Prepaid_Recharge_Comm)
+                }
+                else if(operatorName == "BSNL TOPUP"){
+                  distributorCommAmount = parseFloat(distributorPackage.Off_Bsnl_Prepaid_Recharge_Comm)
+                }
+  
+                
+              }
+
+            }
+            if(superDistributor && superDistributorPackage){
+              if(superDistributorPackage.Off_Prepaid_Recharge_Comm_Type == "Percentage"){
+                if(operatorName == "Jio"){
+                  superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Jio_Prepaid_Recharge_Comm))/100
+                  
+                }
+                else if(operatorName == "Airtel"){
+                  superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Airtel_Prepaid_Recharge_Comm))/100
+                }
+                else if(operatorName == "Vi"){
+                  superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Vi_Prepaid_Recharge_Comm))/100
+                }
+                else if(operatorName == "BSNL STV"){
+                  superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Bsnl_Prepaid_Recharge_Comm))/100
+                }
+                else if(operatorName == "BSNL TOPUP"){
+                  superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Bsnl_Prepaid_Recharge_Comm))/100
+                }
+  
+              }
+              else{
+                if(operatorName == "Jio"){
+                  superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Jio_Prepaid_Recharge_Comm)
+                  
+                }
+                else if(operatorName == "Airtel"){
+                  superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Airtel_Prepaid_Recharge_Comm)
+                }
+                else if(operatorName == "Vi"){
+                  superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Vi_Prepaid_Recharge_Comm)
+                }
+                else if(operatorName == "BSNL STV"){
+                  superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Bsnl_Prepaid_Recharge_Comm)
+                }
+                else if(operatorName == "BSNL TOPUP"){
+                  superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Bsnl_Prepaid_Recharge_Comm)
+                }
+  
+                
+              }
+
+            }
+            if(white_lable && whiteLablePackage){
+              if(whiteLablePackage.Off_Prepaid_Recharge_Comm_Type == "Percentage"){
+                if(operatorName == "Jio"){
+                  whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Jio_Prepaid_Recharge_Comm))/100
+                  
+                }
+                else if(operatorName == "Airtel"){
+                  whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Airtel_Prepaid_Recharge_Comm))/100
+                }
+                else if(operatorName == "Vi"){
+                  whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Vi_Prepaid_Recharge_Comm))/100
+                }
+                else if(operatorName == "BSNL STV"){
+                  whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Bsnl_Prepaid_Recharge_Comm))/100
+                }
+                else if(operatorName == "BSNL TOPUP"){
+                  whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Bsnl_Prepaid_Recharge_Comm))/100
+                }
+  
+              }
+              else{
+                if(operatorName == "Jio"){
+                  whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Jio_Prepaid_Recharge_Comm)
+                  
+                }
+                else if(operatorName == "Airtel"){
+                  whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Airtel_Prepaid_Recharge_Comm)
+                }
+                else if(operatorName == "Vi"){
+                  whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Vi_Prepaid_Recharge_Comm)
+                }
+                else if(operatorName == "BSNL STV"){
+                  whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Bsnl_Prepaid_Recharge_Comm)
+                }
+                else if(operatorName == "BSNL TOPUP"){
+                  whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Bsnl_Prepaid_Recharge_Comm)
+                }
+  
+                
+              }
+
+            }
+
+
+           retailerFormData.amount = retailerCommAmount;
+           distributorFormData.amount = distributorCommAmount;
+           superDistributorFormData.amount = superDistributorCommAmount;
+           whiteLableFormData.amount = whiteLableCommAmount;
+          //  console.log(retailerCommAmount)
+          //  console.log(distributorCommAmount)
+          //  console.log(superDistributorCommAmount)
+          //  console.log(whiteLableCommAmount)
+            
+      } catch (error) {
+        console.log(error)
+      }
+      return { retailerFormData, distributorFormData, superDistributorFormData, whiteLableFormData };
+    }
     const handlesubmit = async (e) => {
       e.preventDefault();
       try {
         setLoading(true);
-        const response = await axios.put(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveOfflineRecharge",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-          formData,
+    
+        const { data } = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${item.created_by_userid}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -52,37 +422,222 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
             },
           }
         );
-        console.log(response);
-        setLoading(false);
-        if (response.data.success) {
-          Swal.fire({
-            icon: "success",
-            title: "Approve Form Successfully",
+    
+        console.log(item.created_By_User_Id);
+        console.log(data);
+        setUserRelation(data.data);
+    
+        if (data.data) {
+          const { distributor, superDistributor, white_lable } = data.data;
+          const retailer = item.created_by_userid
+          // Create an array to hold promises and a mapping object
+          const promises = [];
+          const resultsMap = {
+            retailer : null,
+            distributor: null,
+            superDistributor: null,
+            whiteLable: null,
+          };
+
+        const retailerPromise = axios
+          .get(
+            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((response) => {
+            resultsMap.retailer = response.data.data;
           });
-          setShowApproveModel(false);
-          setIsRefresh((value) => !value);
+          promises.push(retailerPromise);
+    
+          if (distributor) {
+            const distributorPromise = axios
+              .get(
+                `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .then((response) => {
+                resultsMap.distributor = response.data.data;
+              });
+            promises.push(distributorPromise);
+          }
+    
+          if (superDistributor) {
+            const superDistributorPromise = axios
+              .get(
+                `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .then((response) => {
+                resultsMap.superDistributor = response.data.data;
+              });
+            promises.push(superDistributorPromise);
+          }
+    
+          if (white_lable) {
+            const whiteLablePromise = axios
+              .get(
+                `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .then((response) => {
+                resultsMap.whiteLable = response.data.data;
+              });
+            promises.push(whiteLablePromise);
+          }
+    
+          // Wait for all promises to resolve
+          await Promise.all(promises);
+    
+          // Log the results
+          console.log("retailer Package:", resultsMap.retailer);
+          console.log("Distributor Package:", resultsMap.distributor);
+          console.log("Super Distributor Package:", resultsMap.superDistributor);
+          console.log("White Label Package:", resultsMap.whiteLable);
+         
+          let result = {};
+          // Use the results as needed
+          if(item.recharge_Type == "Prepaid"){
+            result = await prepaidRechargeComm(retailer, distributor, superDistributor, white_lable ,resultsMap,item)
+           console.log(result)
+          }
+
+           // Track whether all commissions were processed successfully
+      let allProcessesSuccessful = true;
+          
+          if(result.retailerFormData.amount){
+            const response = await axios.put(
+              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              result.retailerFormData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            ).catch(() => {
+              allProcessesSuccessful = false;
+            });
+          }
+          if(result.distributorFormData.amount){
+            const response = await axios.put(
+              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              result.distributorFormData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            ).catch(() => {
+              allProcessesSuccessful = false;
+            });
+          }
+          if(result.superDistributorFormData.amount){
+            const response = await axios.put(
+              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              result.superDistributorFormData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            ).catch(() => {
+              allProcessesSuccessful = false;
+            });
+          }
+          if(result.whiteLableFormData.amount){
+            const response = await axios.put(
+              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              result.whiteLableFormData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            ).catch(() => {
+              allProcessesSuccessful = false;
+            });
+          }
+
+            await axios.put(
+                  "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveOfflineRecharge",
+                  // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+                  formData,
+                  {
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${token}`,
+                    },
+                  }
+                ).catch(() => {
+                  allProcessesSuccessful = false;
+                });
+          
+           // Show success message if all processes succeeded
+      if (allProcessesSuccessful) {
+        setShowApproveModel(false);
+        setIsRefresh((value) => !value);
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "All commissions have been processed successfully!",
+        });
+      } else {
+        setShowApproveModel(false);
+        setIsRefresh((value) => !value);
+        Swal.fire({
+          icon: "warning",
+          title: "Partial Success",
+          text: "Some commissions were not processed. Please check the logs.",
+        });
+      }
+
+
+
+        }
+      } catch (error) {
+        console.error("There was an error submitting the form!", error);
+        if (error?.response?.status === 401) {
+          Swal.fire({
+            icon: "error",
+            title: "Your token is expired please login again",
+          });
+          dispatch(clearUser());
+          navigate("/");
         } else {
           Swal.fire({
             icon: "error",
             title: "An error occurred during the process. Please try again.",
           });
         }
-      } catch (error) {
-        console.error("There was an error submitting the form!", error);
-        if (error?.response?.status == 401) {
-          // alert("Your token is expired please login again")
-          Swal.fire({
-                    icon: "error",
-                    title: "Your token is expired please login again",
-                  });
-          dispatch(clearUser());
-          navigate("/");
-        }
+      } finally {
         setLoading(false);
-        Swal.fire({
-          icon: "error",
-          title: "An error occurred during the process. Please try again.",
-        });
       }
     };
     return (
