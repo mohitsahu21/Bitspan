@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
 
 const SAViewPackages = () => {
   const [showPackgeDetail, setShowPackgeDetail] = useState(false);
@@ -277,7 +278,11 @@ const SAViewPackages = () => {
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div className="table-responsive">
                             {loading ? (
-                                <p>Loading...</p>
+                               <div className="d-flex justify-content-center">
+                               <Spinner animation="border" role="status">
+                               <span className="visually-hidden ">Loading...</span>
+                             </Spinner>
+                             </div>
                             )
                             : (
                                 <table className="table table-striped">
