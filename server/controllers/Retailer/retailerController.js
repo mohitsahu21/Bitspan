@@ -241,7 +241,7 @@ const applyOfflineForm = (req, res) => {
             creditAmt,
             amount,
             transactionDetails,
-            "Completed",
+            "Success",
           ],
           (err, walletResult) => {
             if (err) {
@@ -523,7 +523,7 @@ const bankidForm = (req, res) => {
             "Debit",
             amount,
             transactionDetails,
-            "Completed",
+            "Success",
           ],
           (err, walletResult) => {
             if (err) {
@@ -949,7 +949,7 @@ const panFromData = (req, res) => {
           creditAmt,
           amount,
           transactionDetails,
-          "Completed",
+          "Success",
         ],
         (err, walletResult) => {
           if (err) {
@@ -1514,7 +1514,7 @@ const eDistrictFormData = (req, res) => {
           "Debit",
           amount,
           transactionDetails,
-          "Completed",
+          "Success",
         ],
         (err, walletResult) => {
           if (err) {
@@ -1855,7 +1855,7 @@ const addSambalForm = (req, res) => {
           "Debit",
           amount,
           transactionDetails,
-          "Completed",
+          "Success",
         ],
         (err, walletResult) => {
           if (err) {
@@ -2045,7 +2045,7 @@ const addVerifyDistrictForm = (req, res) => {
           "Debit",
           amount,
           transactionDetails,
-          "Completed",
+          "Success",
         ],
         (err, walletResult) => {
           if (err) {

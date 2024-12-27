@@ -89,7 +89,7 @@ const updateWalletBalance = (req, res) => {
         "Debit",
         amount,
         transactionDetails || "Recharge Deduction",
-        "Completed",
+        "Success",
       ],
       (err, result) => {
         if (err) {
@@ -131,10 +131,11 @@ const offlineRechargeAndUpdateWallet = (req, res) => {
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const orderId = `ORDR${Date.now()}`;
+  const status = "Pending";
 
   const insertRechargeQuery = `INSERT INTO offline_recharge 
-    (mobile_no, operator_name, amount, orderid, recharge_Type, created_by_userid, created_at) 
-    VALUES (?, ?, ?, ?, ?, ?, ?)`;
+    (mobile_no, operator_name, amount, orderid, recharge_Type, created_by_userid, status, created_at) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
   db.query(
     insertRechargeQuery,
@@ -145,6 +146,7 @@ const offlineRechargeAndUpdateWallet = (req, res) => {
       orderId,
       recharge_Type,
       userId,
+      status,
       createdAt,
     ],
     (err, rechargeResult) => {
@@ -234,7 +236,7 @@ const offlineRechargeAndUpdateWallet = (req, res) => {
             "Debit",
             amount,
             transactionDetails,
-            "Completed",
+            "Success",
           ],
           (err, walletResult) => {
             if (err) {
@@ -435,7 +437,7 @@ const dthConnectionAndUpdateWallet = (req, res) => {
             "Debit",
             amount,
             transactionDetails,
-            "Completed",
+            "Success",
           ],
           (err, walletResult) => {
             if (err) {
