@@ -24,6 +24,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { clearUser } from "../redux/user/userSlice";
+import Loading from "../components/SuperAdmin/Loading";
 
 
 const SuperAdminDashboard = () => {
@@ -420,6 +421,13 @@ const SuperAdminDashboard = () => {
   }, []);
 
   console.log(pendingComplaints)
+  console.log(instPayBalance );
+  console.log(sizarpayBalance.toString().length );
+  console.log(pendingOfflineRecharge);
+  console.log(users);
+  
+  
+  
   // Define the custom tooltip styled component
 const CustomTooltip = styled(Tooltip)`
 .tooltip-inner {
@@ -537,7 +545,7 @@ const CustomTooltip = styled(Tooltip)`
                           <div></div>
                           <div className="d-flex flex-column cardtext">
                             <p className="mb-0 px-2 my-0 fs-6">Total Users</p>
-                            <h4 className="px-2 my-0">{users?.length}</h4>{" "}
+                            <h4 className="px-2 my-0">{users.length ? users?.length : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -572,7 +580,7 @@ const CustomTooltip = styled(Tooltip)`
                             INS PAY Wallet Balance
 
                             </p>
-                            <h4 className="px-2 my-0">{instPayBalance ? instPayBalance : "NA" }</h4>{" "}
+                            <h4 className="px-2 my-0">{instPayBalance.length ? instPayBalance : "..." }</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -588,7 +596,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Ezytm Wallet Balance
                             </p>
-                            <h4 className="px-2 my-0">{ezytmBalance ? ezytmBalance : "NA"}</h4>{" "}
+                            <h4 className="px-2 my-0">{ezytmBalance.length ? ezytmBalance : "..."}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -604,7 +612,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             CGONE PAY Wallet Balance
                             </p>
-                            <h4 className="px-2 my-0">{cgOnePayBalance ? cgOnePayBalance : "NA"}</h4>{" "}
+                            <h4 className="px-2 my-0">{cgOnePayBalance.length ? cgOnePayBalance : "..."}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -620,7 +628,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                            Deeper Web Wallet Balance
                             </p>
-                            <h4 className="px-2 my-0">{deeperWebBalance ? deeperWebBalance : "NA"}</h4>{" "}
+                            <h4 className="px-2 my-0">{deeperWebBalance.length ? deeperWebBalance : "..."}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -636,7 +644,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                            Easy Smart Wallet Balance
                             </p>
-                            <h4 className="px-2 my-0">{easySmartBalance ? easySmartBalance : "NA"}</h4>{" "}
+                            <h4 className="px-2 my-0">{easySmartBalance.length ? easySmartBalance : "..."}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -652,7 +660,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                            Sizar Pay Wallet Balance
                             </p>
-                            <h4 className="px-2 my-0">{sizarpayBalance ? sizarpayBalance : "NA"}</h4>{" "}
+                            <h4 className="px-2 my-0">{sizarpayBalance.toString().length ? sizarpayBalance : "..."}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -668,7 +676,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                            ZLink Wallet Balance
                             </p>
-                            <h4 className="px-2 my-0">{zlinkBalance ? zlinkBalance : "NA"}</h4>{" "}
+                            <h4 className="px-2 my-0">{zlinkBalance.length ? zlinkBalance : "..."}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -685,7 +693,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Pending Offline Recharge
                             </p>
-                            <h4 className="px-2 my-0">{pendingOfflineRecharge}</h4>{" "}
+                            <h4 className="px-2 my-0">{pendingOfflineRecharge.toString().length ? pendingOfflineRecharge : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -703,7 +711,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Pending Offline Form
                             </p>
-                            <h4 className="px-2 my-0">{pendingOfflineForm}</h4>{" "}
+                            <h4 className="px-2 my-0">{pendingOfflineForm.toString().length ? pendingOfflineForm : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -721,7 +729,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Pending PAN Offline Form
                             </p>
-                            <h4 className="px-2 my-0">{pendingPanOfflineForm}</h4>{" "}
+                            <h4 className="px-2 my-0">{pendingPanOfflineForm.toString().length ? pendingPanOfflineForm : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -739,7 +747,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Pending Bank Id Form
                             </p>
-                            <h4 className="px-2 my-0">{pendingBankIdForm}</h4>{" "}
+                            <h4 className="px-2 my-0">{pendingBankIdForm.toString().length ? pendingBankIdForm : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -757,7 +765,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Pending E-district Form
                             </p>
-                            <h4 className="px-2 my-0">{pendingEdistrictForm}</h4>{" "}
+                            <h4 className="px-2 my-0">{pendingEdistrictForm.toString().length ? pendingEdistrictForm : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -775,7 +783,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Pending Verify E-district Form
                             </p>
-                            <h4 className="px-2 my-0">{pendingVerifyEdistrictForm}</h4>{" "}
+                            <h4 className="px-2 my-0">{pendingVerifyEdistrictForm.toString().length ? pendingVerifyEdistrictForm : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -793,7 +801,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Pending Sambal Form
                             </p>
-                            <h4 className="px-2 my-0">{pendingSmabalForm}</h4>{" "}
+                            <h4 className="px-2 my-0">{pendingSmabalForm.toString().length ? pendingSmabalForm : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -811,7 +819,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Pending Pan Coupon Request
                             </p>
-                            <h4 className="px-2 my-0">{pendingPanCouponRequest}</h4>{" "}
+                            <h4 className="px-2 my-0">{pendingPanCouponRequest.toString().length ? pendingPanCouponRequest : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -829,7 +837,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Total Pending Complaints
                             </p>
-                            <h4 className="px-2 my-0">{pendingComplaints}</h4>{" "}
+                            <h4 className="px-2 my-0">{pendingComplaints.toString().length ?  pendingComplaints : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -847,7 +855,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Wallet Withdraw Requests
                             </p>
-                            <h4 className="px-2 my-0">{walletWithdrawalRequests}</h4>{" "}
+                            <h4 className="px-2 my-0">{walletWithdrawalRequests.toString().length ?  walletWithdrawalRequests : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -865,7 +873,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                            Add Wallet Money Requests
                             </p>
-                            <h4 className="px-2 my-0">{addWalletMoneyRequests}</h4>{" "}
+                            <h4 className="px-2 my-0">{addWalletMoneyRequests.toString().length ? addWalletMoneyRequests : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
