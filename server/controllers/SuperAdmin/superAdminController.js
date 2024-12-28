@@ -6618,7 +6618,7 @@ const getUserPackageDetails = (req, res) => {
 
 const CreditCommission = (req, res) => {
   try {
-    const {userId, amount, Transaction_details, status } = req.body;
+    const {userId, amount, Transaction_details, status ,Order_Id,Transaction_Id } = req.body;
     
       // Validate `order_id`: Check for undefined, null, or invalid value
       if ( !status || !userId) {
@@ -6644,8 +6644,8 @@ const CreditCommission = (req, res) => {
     const transaction_date = moment()
       .tz("Asia/Kolkata")
       .format("YYYY-MM-DD HH:mm:ss");
-      const Order_Id = `ORW${Date.now()}`;
-      const Transaction_Id = `TXNW${Date.now()}`;
+      // const Order_Id = `ORW${Date.now()}`;
+      // const Transaction_Id = `TXNW${Date.now()}`;
     const process_date = moment()
     .tz("Asia/Kolkata")
     .format("YYYY-MM-DD HH:mm:ss");
@@ -6725,6 +6725,109 @@ const CreditCommission = (req, res) => {
     return res
       .status(500)
       .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const addCommissionEntry = (req, res) => {
+  try {
+    const {
+      order_id,
+      transaction_id,
+      amount,
+      whiteLabel_id,
+      super_Distributor_id,
+      distributor_id,
+      retailer_id,
+      whiteLabel_Commission ,
+      super_Distributor_Commission,
+      distributor_Commission,
+      retailer_Commission ,
+      transaction_type ,
+      transaction_details ,
+      status,
+    } = req.body;
+
+    const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+    // const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    const sql = `INSERT INTO commission_table ( order_id,transaction_id,amount,whiteLabel_id,super_Distributor_id,
+distributor_id,retailer_id,whiteLabel_Commission ,super_Distributor_Commission,distributor_Commission,retailer_Commission ,
+transaction_type ,transaction_details ,status,created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?)`;
+
+    const values = [
+      order_id,
+      transaction_id,
+      amount,
+      whiteLabel_id,
+      super_Distributor_id,
+      distributor_id,
+      retailer_id,
+      whiteLabel_Commission ,
+      super_Distributor_Commission,
+      distributor_Commission,
+      retailer_Commission ,
+      transaction_type ,
+      transaction_details ,
+      status,
+      createdAt
+    ];
+
+    db.query(sql, values, (err, result) => {
+      if (err) throw err; // Will be caught by the catch block
+      res.status(200).send({
+        success: true,
+        message: "Data inserted successfully",
+        data: result,
+      });
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      error: "Error inserting data",
+      details: error.message,
+    });
+  }
+};
+
+const getCommissionEntry = (req, res) => {
+  try {
+    // const sql = "SELECT * FROM userprofile WHERE Status = 'Pending'";
+    const sql =
+      "SELECT * FROM commission_table ORDER BY id DESC";
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error fetching CommissionEntry from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getCommissionEntry" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No entry found",
+          });
+        } else {
+          // Remove the password field from each user object
+          const sanitizedResult = result.map(({ password, ...rest }) => rest);
+
+          return res.status(200).json({
+            success: true,
+            data: sanitizedResult,
+            message: "getCommissionEntry successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error getCommissionEntry from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in getCommissionEntry",
+      error: error.message,
+    });
   }
 };
 
@@ -6846,7 +6949,9 @@ module.exports = {
   getPendingSambalForms,
   getPendingPanCouponRequests,
   getUserPackageDetails,
-  CreditCommission
+  CreditCommission,
+  addCommissionEntry,
+  getCommissionEntry
 
 
 };

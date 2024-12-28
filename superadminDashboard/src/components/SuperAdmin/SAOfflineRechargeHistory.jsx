@@ -185,30 +185,42 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     //   }
     // };
 
+  
+            
     const prepaidRechargeComm = async (retailer, distributor, superDistributor, white_lable ,packageDetails,item)=>{
+      const Order_Id = `ORW${Date.now()}`;
+      const Transaction_Id = `TXNW${Date.now()}`;
      const  retailerFormData = {
         userId: retailer,
     amount : "",
-    Transaction_details : "Commission Credit",
-    status : "Success"
+    Transaction_details : `Commission Credit for Prepaid recharge Order Id ${item.orderid}`,
+    status : "Success",
+    Order_Id,
+    Transaction_Id
       }
       const  distributorFormData = {
         userId: distributor,
     amount : "",
-    Transaction_details : "Commission Credit",
-    status : "Success"
+    Transaction_details : `Commission Credit for Prepaid recharge Order Id ${item.orderid}`,
+    status : "Success",
+    Order_Id,
+    Transaction_Id
       }
       const  superDistributorFormData = {
         userId: superDistributor,
     amount : "",
-    Transaction_details : "Commission Credit",
-    status : "Success"
+    Transaction_details : `Commission Credit for Prepaid recharge Order Id ${item.orderid}`,
+    status : "Success",
+    Order_Id,
+    Transaction_Id
       }
       const  whiteLableFormData = {
         userId: white_lable,
     amount : "",
-    Transaction_details : "Commission Credit",
-    status : "Success"
+    Transaction_details : `Commission Credit for Prepaid recharge Order Id ${item.orderid}`,
+    status : "Success",
+    Order_Id,
+    Transaction_Id
       }
       const retailerPackage = packageDetails?.retailer ? packageDetails?.retailer[0]:  {};
       const distributorPackage = packageDetails?.distributor ? packageDetails?.distributor[0] : {};
@@ -406,8 +418,904 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
       } catch (error) {
         console.log(error)
       }
-      return { retailerFormData, distributorFormData, superDistributorFormData, whiteLableFormData };
+      return { retailerFormData, distributorFormData, superDistributorFormData, whiteLableFormData,Order_Id,Transaction_Id };
     }
+    const postpaidRechargeComm = async (retailer, distributor, superDistributor, white_lable ,packageDetails,item)=>{
+      const Order_Id = `ORW${Date.now()}`;
+      const Transaction_Id = `TXNW${Date.now()}`;
+      const  retailerFormData = {
+         userId: retailer,
+     amount : "",
+     Transaction_details : `Commission Credit for Postpaid recharge Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  distributorFormData = {
+         userId: distributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Postpaid recharge Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  superDistributorFormData = {
+         userId: superDistributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Postpaid recharge Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  whiteLableFormData = {
+         userId: white_lable,
+     amount : "",
+     Transaction_details : `Commission Credit for Postpaid recharge Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const retailerPackage = packageDetails?.retailer ? packageDetails?.retailer[0]:  {};
+       const distributorPackage = packageDetails?.distributor ? packageDetails?.distributor[0] : {};
+       const superDistributorPackage = packageDetails?.superDistributor ? packageDetails?.superDistributor[0] : {} ;
+       const whiteLablePackage = packageDetails?.whiteLable ? packageDetails?.whiteLable[0] : {} ;
+ 
+       const operatorName = item.operator_name;
+       const amount = parseFloat(item.amount);
+ 
+       let retailerCommAmount = 0;
+       let distributorCommAmount = 0;
+       let superDistributorCommAmount = 0;
+       let whiteLableCommAmount = 0;
+ 
+ 
+       try {
+             
+             if(retailerPackage.Off_Postpaid_Recharge_Comm_Type == "Percentage"){
+               if(operatorName == "Jio Postpaid"){
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Jio_Postpaid_Recharge_Comm))/100
+                 
+               }
+               else if(operatorName == "Airtel Postpaid"){
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Airtel_Postpaid_Recharge_Comm))/100
+               }
+               else if(operatorName == "Vi Postpaid"){
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Vi_Postpaid_Recharge_Comm))/100
+               }
+               else if(operatorName == "BSNL Postpaid"){
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Bsnl_Postpaid_Recharge_Comm))/100
+               }
+ 
+             }
+             else{
+               if(operatorName == "Jio Postpaid"){
+                 retailerCommAmount = parseFloat(retailerPackage.Off_Jio_Postpaid_Recharge_Comm)
+                 
+               }
+               else if(operatorName == "Airtel Postpaid"){
+                 retailerCommAmount = parseFloat(retailerPackage.Off_Airtel_Postpaid_Recharge_Comm)
+               }
+               else if(operatorName == "Vi Postpaid"){
+                 retailerCommAmount = parseFloat(retailerPackage.Off_Vi_Postpaid_Recharge_Comm)
+               }
+               else if(operatorName == "BSNL Postpaid"){
+                 retailerCommAmount = parseFloat(retailerPackage.Off_Bsnl_Postpaid_Recharge_Comm)
+               }
+             
+             }
+ 
+             if(distributor && distributorPackage){
+               if(distributorPackage.Off_Postpaid_Recharge_Comm_Type == "Percentage"){
+                 if(operatorName == "Jio Postpaid"){
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Jio_Postpaid_Recharge_Comm))/100
+                   
+                 }
+                 else if(operatorName == "Airtel Postpaid"){
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Airtel_Postpaid_Recharge_Comm))/100
+                 }
+                 else if(operatorName == "Vi Postpaid"){
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Vi_Postpaid_Recharge_Comm))/100
+                 }
+                 else if(operatorName == "BSNL Postpaid"){
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Bsnl_Postpaid_Recharge_Comm))/100
+                 }
+   
+               }
+               else{
+                 if(operatorName == "Jio Postpaid"){
+                   distributorCommAmount = parseFloat(distributorPackage.Off_Jio_Postpaid_Recharge_Comm)
+                   
+                 }
+                 else if(operatorName == "Airtel Postpaid"){
+                   distributorCommAmount = parseFloat(distributorPackage.Off_Airtel_Postpaid_Recharge_Comm)
+                 }
+                 else if(operatorName == "Vi Postpaid"){
+                   distributorCommAmount = parseFloat(distributorPackage.Off_Vi_Postpaid_Recharge_Comm)
+                 }
+                 else if(operatorName == "BSNL Postpaid"){
+                   distributorCommAmount = parseFloat(distributorPackage.Off_Bsnl_Postpaid_Recharge_Comm)
+                 }
+              
+                 
+               }
+ 
+             }
+             if(superDistributor && superDistributorPackage){
+               if(superDistributorPackage.Off_Postpaid_Recharge_Comm_Type == "Percentage"){
+                 if(operatorName == "Jio Postpaid"){
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Jio_Postpaid_Recharge_Comm))/100
+                   
+                 }
+                 else if(operatorName == "Airtel Postpaid"){
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Airtel_Postpaid_Recharge_Comm))/100
+                 }
+                 else if(operatorName == "Vi Postpaid"){
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Vi_Postpaid_Recharge_Comm))/100
+                 }
+                 else if(operatorName == "BSNL Postpaid"){
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Bsnl_Postpaid_Recharge_Comm))/100
+                 }
+   
+               }
+               else{
+                 if(operatorName == "Jio Postpaid"){
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Jio_Postpaid_Recharge_Comm)
+                   
+                 }
+                 else if(operatorName == "Airtel Postpaid"){
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Airtel_Postpaid_Recharge_Comm)
+                 }
+                 else if(operatorName == "Vi Postpaid"){
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Vi_Postpaid_Recharge_Comm)
+                 }
+                 else if(operatorName == "BSNL Postpaid"){
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Bsnl_Postpaid_Recharge_Comm)
+                 }
+               
+               }
+ 
+             }
+             if(white_lable && whiteLablePackage){
+               if(whiteLablePackage.Off_Postpaid_Recharge_Comm_Type == "Percentage"){
+                 if(operatorName == "Jio Postpaid"){
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Jio_Postpaid_Recharge_Comm))/100
+                   
+                 }
+                 else if(operatorName == "Airtel Postpaid"){
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Airtel_Postpaid_Recharge_Comm))/100
+                 }
+                 else if(operatorName == "Vi Postpaid"){
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Vi_Postpaid_Recharge_Comm))/100
+                 }
+                 else if(operatorName == "BSNL Postpaid"){
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Bsnl_Postpaid_Recharge_Comm))/100
+                 }
+               
+               }
+               else{
+                 if(operatorName == "Jio Postpaid"){
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Jio_Postpaid_Recharge_Comm)
+                   
+                 }
+                 else if(operatorName == "Airtel Postpaid"){
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Airtel_Postpaid_Recharge_Comm)
+                 }
+                 else if(operatorName == "Vi Postpaid"){
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Vi_Postpaid_Recharge_Comm)
+                 }
+                 else if(operatorName == "BSNL Postpaid"){
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Bsnl_Postpaid_Recharge_Comm)
+                 }
+                 
+               }
+ 
+             }
+ 
+ 
+            retailerFormData.amount = retailerCommAmount;
+            distributorFormData.amount = distributorCommAmount;
+            superDistributorFormData.amount = superDistributorCommAmount;
+            whiteLableFormData.amount = whiteLableCommAmount;
+           //  console.log(retailerCommAmount)
+           //  console.log(distributorCommAmount)
+           //  console.log(superDistributorCommAmount)
+           //  console.log(whiteLableCommAmount)
+             
+       } catch (error) {
+         console.log(error)
+       }
+       return { retailerFormData, distributorFormData, superDistributorFormData, whiteLableFormData,Order_Id,Transaction_Id };
+     }
+    const DTHRechargeComm = async (retailer, distributor, superDistributor, white_lable ,packageDetails,item)=>{
+      const Order_Id = `ORW${Date.now()}`;
+      const Transaction_Id = `TXNW${Date.now()}`;
+      const  retailerFormData = {
+         userId: retailer,
+     amount : "",
+     Transaction_details : `Commission Credit for DTH recharge Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  distributorFormData = {
+         userId: distributor,
+     amount : "",
+     Transaction_details : `Commission Credit for DTH recharge Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  superDistributorFormData = {
+         userId: superDistributor,
+     amount : "",
+     Transaction_details : `Commission Credit for DTH recharge Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  whiteLableFormData = {
+         userId: white_lable,
+     amount : "",
+     Transaction_details : `Commission Credit for DTH recharge Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const retailerPackage = packageDetails?.retailer ? packageDetails?.retailer[0]:  {};
+       const distributorPackage = packageDetails?.distributor ? packageDetails?.distributor[0] : {};
+       const superDistributorPackage = packageDetails?.superDistributor ? packageDetails?.superDistributor[0] : {} ;
+       const whiteLablePackage = packageDetails?.whiteLable ? packageDetails?.whiteLable[0] : {} ;
+ 
+       const operatorName = item.operator_name;
+       const amount = parseFloat(item.amount);
+ 
+       let retailerCommAmount = 0;
+       let distributorCommAmount = 0;
+       let superDistributorCommAmount = 0;
+       let whiteLableCommAmount = 0;
+ 
+ 
+       try {
+             
+             if(retailerPackage.Offline_DTH_Recharge_Commission_Type == "Percentage"){
+               if(operatorName == "Dish TV"){
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Dish_TV_Recharge_Commission))/100
+                 
+               }
+               else if(operatorName == "Tata Sky"){
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Tata_Sky_Recharge_Commission))/100
+               }
+               else if(operatorName == "Videocon"){
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Videocon_Recharge_Commission))/100
+               }
+               else if(operatorName == "Sun Direct"){
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Sun_Direct_Recharge_Commission))/100
+               }
+               else if(operatorName == "Airtel DTH"){
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Airtel_Dth_Recharge_Commission))/100
+               }
+ 
+             }
+             else{
+               if(operatorName == "Dish TV"){
+                 retailerCommAmount = parseFloat(retailerPackage.Off_Dish_TV_Recharge_Commission)
+                 
+               }
+               else if(operatorName == "Tata Sky"){
+                 retailerCommAmount = parseFloat(retailerPackage.Off_Tata_Sky_Recharge_Commission)
+               }
+               else if(operatorName == "Videocon"){
+                 retailerCommAmount = parseFloat(retailerPackage.Off_Videocon_Recharge_Commission)
+               }
+               else if(operatorName == "Sun Direct"){
+                 retailerCommAmount = parseFloat(retailerPackage.Off_Sun_Direct_Recharge_Commission)
+               }
+               else if(operatorName == "Airtel DTH"){
+                 retailerCommAmount = parseFloat(retailerPackage.Off_Airtel_Dth_Recharge_Commission)
+               }
+             
+             }
+ 
+             if(distributor && distributorPackage){
+               if(distributorPackage.Offline_DTH_Recharge_Commission_Type == "Percentage"){
+                 if(operatorName == "Dish TV"){
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Dish_TV_Recharge_Commission))/100
+                   
+                 }
+                 else if(operatorName == "Tata Sky"){
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Tata_Sky_Recharge_Commission))/100
+                 }
+                 else if(operatorName == "Videocon"){
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Videocon_Recharge_Commission))/100
+                 }
+                 else if(operatorName == "Sun Direct"){
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Sun_Direct_Recharge_Commission))/100
+                 }
+                 else if(operatorName == "Airtel DTH"){
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Airtel_Dth_Recharge_Commission))/100
+                 }
+   
+               }
+               else{
+                 if(operatorName == "Dish TV"){
+                   distributorCommAmount = parseFloat(distributorPackage.Off_Dish_TV_Recharge_Commission)
+                   
+                 }
+                 else if(operatorName == "Tata Sky"){
+                   distributorCommAmount = parseFloat(distributorPackage.Off_Tata_Sky_Recharge_Commission)
+                 }
+                 else if(operatorName == "Videocon"){
+                   distributorCommAmount = parseFloat(distributorPackage.Off_Videocon_Recharge_Commission)
+                 }
+                 else if(operatorName == "Sun Direct"){
+                   distributorCommAmount = parseFloat(distributorPackage.Off_Sun_Direct_Recharge_Commission)
+                 }
+                 else if(operatorName == "Airtel DTH"){
+                   distributorCommAmount = parseFloat(distributorPackage.Off_Airtel_Dth_Recharge_Commission)
+                 }
+              
+                 
+               }
+ 
+             }
+             if(superDistributor && superDistributorPackage){
+               if(superDistributorPackage.Offline_DTH_Recharge_Commission_Type == "Percentage"){
+                 if(operatorName == "Dish TV"){
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Dish_TV_Recharge_Commission))/100
+                   
+                 }
+                 else if(operatorName == "Tata Sky"){
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Tata_Sky_Recharge_Commission))/100
+                 }
+                 else if(operatorName == "Videocon"){
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Videocon_Recharge_Commission))/100
+                 }
+                 else if(operatorName == "Sun Direct"){
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Sun_Direct_Recharge_Commission))/100
+                 }
+                 else if(operatorName == "Airtel DTH"){
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Airtel_Dth_Recharge_Commission))/100
+                 }
+   
+               }
+               else{
+                 if(operatorName == "Dish TV"){
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Dish_TV_Recharge_Commission)
+                   
+                 }
+                 else if(operatorName == "Tata Sky"){
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Tata_Sky_Recharge_Commission)
+                 }
+                 else if(operatorName == "Videocon"){
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Videocon_Recharge_Commission)
+                 }
+                 else if(operatorName == "Sun Direct"){
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Sun_Direct_Recharge_Commission)
+                 }
+                 else if(operatorName == "Airtel DTH"){
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Airtel_Dth_Recharge_Commission)
+                 }
+               
+               }
+ 
+             }
+             if(white_lable && whiteLablePackage){
+               if(whiteLablePackage.Offline_DTH_Recharge_Commission_Type == "Percentage"){
+                 if(operatorName == "Dish TV"){
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Dish_TV_Recharge_Commission))/100
+                   
+                 }
+                 else if(operatorName == "Tata Sky"){
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Tata_Sky_Recharge_Commission))/100
+                 }
+                 else if(operatorName == "Videocon"){
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Videocon_Recharge_Commission))/100
+                 }
+                 else if(operatorName == "Sun Direct"){
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Sun_Direct_Recharge_Commission))/100
+                 }
+                 else if(operatorName == "Airtel DTH"){
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Airtel_Dth_Recharge_Commission))/100
+                 }
+               
+               }
+               else{
+                 if(operatorName == "Dish TV"){
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Dish_TV_Recharge_Commission)
+                   
+                 }
+                 else if(operatorName == "Tata Sky"){
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Tata_Sky_Recharge_Commission)
+                 }
+                 else if(operatorName == "Videocon"){
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Videocon_Recharge_Commission)
+                 }
+                 else if(operatorName == "Sun Direct"){
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Sun_Direct_Recharge_Commission)
+                 }
+                 else if(operatorName == "Airtel DTH"){
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Airtel_Dth_Recharge_Commission)
+                 }
+                 
+               }
+ 
+             }
+ 
+ 
+            retailerFormData.amount = retailerCommAmount;
+            distributorFormData.amount = distributorCommAmount;
+            superDistributorFormData.amount = superDistributorCommAmount;
+            whiteLableFormData.amount = whiteLableCommAmount;
+           //  console.log(retailerCommAmount)
+           //  console.log(distributorCommAmount)
+           //  console.log(superDistributorCommAmount)
+           //  console.log(whiteLableCommAmount)
+             
+       } catch (error) {
+         console.log(error)
+       }
+       return { retailerFormData, distributorFormData, superDistributorFormData, whiteLableFormData ,Order_Id,Transaction_Id};
+     }
+    const ElectricityRechargeComm = async (retailer, distributor, superDistributor, white_lable ,packageDetails,item)=>{
+      const Order_Id = `ORW${Date.now()}`;
+      const Transaction_Id = `TXNW${Date.now()}`;
+      const  retailerFormData = {
+         userId: retailer,
+     amount : "",
+     Transaction_details : `Commission Credit for Electricity Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  distributorFormData = {
+         userId: distributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Electricity Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  superDistributorFormData = {
+         userId: superDistributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Electricity Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  whiteLableFormData = {
+         userId: white_lable,
+     amount : "",
+     Transaction_details : `Commission Credit for Electricity Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const retailerPackage = packageDetails?.retailer ? packageDetails?.retailer[0]:  {};
+       const distributorPackage = packageDetails?.distributor ? packageDetails?.distributor[0] : {};
+       const superDistributorPackage = packageDetails?.superDistributor ? packageDetails?.superDistributor[0] : {} ;
+       const whiteLablePackage = packageDetails?.whiteLable ? packageDetails?.whiteLable[0] : {} ;
+ 
+      //  const operatorName = item.operator_name;
+       const amount = parseFloat(item.amount);
+ 
+       let retailerCommAmount = 0;
+       let distributorCommAmount = 0;
+       let superDistributorCommAmount = 0;
+       let whiteLableCommAmount = 0;
+ 
+ 
+       try {
+             
+             if(retailerPackage.Offline_Electricity_Bill_Pay_Commission_Type == "Percentage"){
+               
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Offline_Electricity_Bill_Pay_Commission))/100
+                 
+             }
+             else{
+                 retailerCommAmount = parseFloat(retailerPackage.Offline_Electricity_Bill_Pay_Commission)
+             }
+ 
+             if(distributor && distributorPackage){
+               if(distributorPackage.Offline_Electricity_Bill_Pay_Commission_Type == "Percentage"){
+                 
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Offline_Electricity_Bill_Pay_Commission))/100
+                
+               }
+               else{
+                
+                   distributorCommAmount = parseFloat(distributorPackage.Offline_Electricity_Bill_Pay_Commission)
+                
+               }
+ 
+             }
+             if(superDistributor && superDistributorPackage){
+               if(superDistributorPackage.Offline_Electricity_Bill_Pay_Commission_Type == "Percentage"){
+                 
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Offline_Electricity_Bill_Pay_Commission))/100
+                  
+               }
+               else{
+                
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Offline_Electricity_Bill_Pay_Commission)
+                 
+               }
+ 
+             }
+             if(white_lable && whiteLablePackage){
+               if(whiteLablePackage.Offline_Electricity_Bill_Pay_Commission_Type == "Percentage"){
+                 
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Offline_Electricity_Bill_Pay_Commission))/100
+                 
+               }
+               else{
+                 
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Offline_Electricity_Bill_Pay_Commission)
+                 
+               }
+ 
+             }
+ 
+ 
+            retailerFormData.amount = retailerCommAmount;
+            distributorFormData.amount = distributorCommAmount;
+            superDistributorFormData.amount = superDistributorCommAmount;
+            whiteLableFormData.amount = whiteLableCommAmount;
+           //  console.log(retailerCommAmount)
+           //  console.log(distributorCommAmount)
+           //  console.log(superDistributorCommAmount)
+           //  console.log(whiteLableCommAmount)
+             
+       } catch (error) {
+         console.log(error)
+       }
+       return { retailerFormData, distributorFormData, superDistributorFormData, whiteLableFormData ,Order_Id,Transaction_Id};
+     }
+    const BroadbandRechargeComm = async (retailer, distributor, superDistributor, white_lable ,packageDetails,item)=>{
+      const Order_Id = `ORW${Date.now()}`;
+      const Transaction_Id = `TXNW${Date.now()}`;
+      const  retailerFormData = {
+         userId: retailer,
+     amount : "",
+     Transaction_details : `Commission Credit for Broadband Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  distributorFormData = {
+         userId: distributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Broadband Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  superDistributorFormData = {
+         userId: superDistributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Broadband Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  whiteLableFormData = {
+         userId: white_lable,
+     amount : "",
+     Transaction_details : `Commission Credit for Broadband Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const retailerPackage = packageDetails?.retailer ? packageDetails?.retailer[0]:  {};
+       const distributorPackage = packageDetails?.distributor ? packageDetails?.distributor[0] : {};
+       const superDistributorPackage = packageDetails?.superDistributor ? packageDetails?.superDistributor[0] : {} ;
+       const whiteLablePackage = packageDetails?.whiteLable ? packageDetails?.whiteLable[0] : {} ;
+ 
+      //  const operatorName = item.operator_name;
+       const amount = parseFloat(item.amount);
+ 
+       let retailerCommAmount = 0;
+       let distributorCommAmount = 0;
+       let superDistributorCommAmount = 0;
+       let whiteLableCommAmount = 0;
+ 
+ 
+       try {
+             
+             if(retailerPackage.Offline_Broadband_Bill_Pay_Commission_Type == "Percentage"){
+               
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Offline_Broadband_Bill_Pay_Commission))/100
+                 
+             }
+             else{
+                 retailerCommAmount = parseFloat(retailerPackage.Offline_Broadband_Bill_Pay_Commission)
+             }
+ 
+             if(distributor && distributorPackage){
+               if(distributorPackage.Offline_Broadband_Bill_Pay_Commission_Type == "Percentage"){
+                 
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Offline_Broadband_Bill_Pay_Commission))/100
+                
+               }
+               else{
+                
+                   distributorCommAmount = parseFloat(distributorPackage.Offline_Broadband_Bill_Pay_Commission)
+                
+               }
+ 
+             }
+             if(superDistributor && superDistributorPackage){
+               if(superDistributorPackage.Offline_Broadband_Bill_Pay_Commission_Type == "Percentage"){
+                 
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Offline_Broadband_Bill_Pay_Commission))/100
+                  
+               }
+               else{
+                
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Offline_Broadband_Bill_Pay_Commission)
+                 
+               }
+ 
+             }
+             if(white_lable && whiteLablePackage){
+               if(whiteLablePackage.Offline_Broadband_Bill_Pay_Commission_Type == "Percentage"){
+                 
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Offline_Broadband_Bill_Pay_Commission))/100
+                 
+               }
+               else{
+                 
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Offline_Broadband_Bill_Pay_Commission)
+                 
+               }
+ 
+             }
+ 
+ 
+            retailerFormData.amount = retailerCommAmount;
+            distributorFormData.amount = distributorCommAmount;
+            superDistributorFormData.amount = superDistributorCommAmount;
+            whiteLableFormData.amount = whiteLableCommAmount;
+           //  console.log(retailerCommAmount)
+           //  console.log(distributorCommAmount)
+           //  console.log(superDistributorCommAmount)
+           //  console.log(whiteLableCommAmount)
+             
+       } catch (error) {
+         console.log(error)
+       }
+       return { retailerFormData, distributorFormData, superDistributorFormData, whiteLableFormData ,Order_Id,Transaction_Id};
+     }
+    const LandlineRechargeComm = async (retailer, distributor, superDistributor, white_lable ,packageDetails,item)=>{
+      const Order_Id = `ORW${Date.now()}`;
+      const Transaction_Id = `TXNW${Date.now()}`;
+      const  retailerFormData = {
+         userId: retailer,
+     amount : "",
+     Transaction_details : `Commission Credit for Landline Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  distributorFormData = {
+         userId: distributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Landline Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  superDistributorFormData = {
+         userId: superDistributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Landline Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  whiteLableFormData = {
+         userId: white_lable,
+     amount : "",
+     Transaction_details : `Commission Credit for Landline Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const retailerPackage = packageDetails?.retailer ? packageDetails?.retailer[0]:  {};
+       const distributorPackage = packageDetails?.distributor ? packageDetails?.distributor[0] : {};
+       const superDistributorPackage = packageDetails?.superDistributor ? packageDetails?.superDistributor[0] : {} ;
+       const whiteLablePackage = packageDetails?.whiteLable ? packageDetails?.whiteLable[0] : {} ;
+ 
+      //  const operatorName = item.operator_name;
+       const amount = parseFloat(item.amount);
+ 
+       let retailerCommAmount = 0;
+       let distributorCommAmount = 0;
+       let superDistributorCommAmount = 0;
+       let whiteLableCommAmount = 0;
+ 
+ 
+       try {
+             
+             if(retailerPackage.Offline_Broadband_Bill_Pay_Commission_Type == "Percentage"){
+               
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Offline_Broadband_Bill_Pay_Commission))/100
+                 
+             }
+             else{
+                 retailerCommAmount = parseFloat(retailerPackage.Offline_Broadband_Bill_Pay_Commission)
+             }
+ 
+             if(distributor && distributorPackage){
+               if(distributorPackage.Offline_Broadband_Bill_Pay_Commission_Type == "Percentage"){
+                 
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Offline_Broadband_Bill_Pay_Commission))/100
+                
+               }
+               else{
+                
+                   distributorCommAmount = parseFloat(distributorPackage.Offline_Broadband_Bill_Pay_Commission)
+                
+               }
+ 
+             }
+             if(superDistributor && superDistributorPackage){
+               if(superDistributorPackage.Offline_Broadband_Bill_Pay_Commission_Type == "Percentage"){
+                 
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Offline_Broadband_Bill_Pay_Commission))/100
+                  
+               }
+               else{
+                
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Offline_Broadband_Bill_Pay_Commission)
+                 
+               }
+ 
+             }
+             if(white_lable && whiteLablePackage){
+               if(whiteLablePackage.Offline_Broadband_Bill_Pay_Commission_Type == "Percentage"){
+                 
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Offline_Broadband_Bill_Pay_Commission))/100
+                 
+               }
+               else{
+                 
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Offline_Broadband_Bill_Pay_Commission)
+                 
+               }
+ 
+             }
+ 
+ 
+            retailerFormData.amount = retailerCommAmount;
+            distributorFormData.amount = distributorCommAmount;
+            superDistributorFormData.amount = superDistributorCommAmount;
+            whiteLableFormData.amount = whiteLableCommAmount;
+           //  console.log(retailerCommAmount)
+           //  console.log(distributorCommAmount)
+           //  console.log(superDistributorCommAmount)
+           //  console.log(whiteLableCommAmount)
+             
+       } catch (error) {
+         console.log(error)
+       }
+       return { retailerFormData, distributorFormData, superDistributorFormData, whiteLableFormData ,Order_Id,Transaction_Id};
+     }
+    const InsuranceRechargeComm = async (retailer, distributor, superDistributor, white_lable ,packageDetails,item)=>{
+      const Order_Id = `ORW${Date.now()}`;
+      const Transaction_Id = `TXNW${Date.now()}`;
+      const  retailerFormData = {
+         userId: retailer,
+     amount : "",
+     Transaction_details : `Commission Credit for Insurance Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  distributorFormData = {
+         userId: distributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Insurance Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  superDistributorFormData = {
+         userId: superDistributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Insurance Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  whiteLableFormData = {
+         userId: white_lable,
+     amount : "",
+     Transaction_details : `Commission Credit for Insurance Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const retailerPackage = packageDetails?.retailer ? packageDetails?.retailer[0]:  {};
+       const distributorPackage = packageDetails?.distributor ? packageDetails?.distributor[0] : {};
+       const superDistributorPackage = packageDetails?.superDistributor ? packageDetails?.superDistributor[0] : {} ;
+       const whiteLablePackage = packageDetails?.whiteLable ? packageDetails?.whiteLable[0] : {} ;
+ 
+      //  const operatorName = item.operator_name;
+       const amount = parseFloat(item.amount);
+ 
+       let retailerCommAmount = 0;
+       let distributorCommAmount = 0;
+       let superDistributorCommAmount = 0;
+       let whiteLableCommAmount = 0;
+ 
+ 
+       try {
+             
+             if(retailerPackage.Offline_Insurance_Pay_Commission_Type == "Percentage"){
+               
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Offline_Insurance_Pay_Commission))/100
+                 
+             }
+             else{
+                 retailerCommAmount = parseFloat(retailerPackage.Offline_Insurance_Pay_Commission)
+             }
+ 
+             if(distributor && distributorPackage){
+               if(distributorPackage.Offline_Insurance_Pay_Commission_Type == "Percentage"){
+                 
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Offline_Insurance_Pay_Commission))/100
+                
+               }
+               else{
+                
+                   distributorCommAmount = parseFloat(distributorPackage.Offline_Insurance_Pay_Commission)
+                
+               }
+ 
+             }
+             if(superDistributor && superDistributorPackage){
+               if(superDistributorPackage.Offline_Insurance_Pay_Commission_Type == "Percentage"){
+                 
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Offline_Insurance_Pay_Commission))/100
+                  
+               }
+               else{
+                
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Offline_Insurance_Pay_Commission)
+                 
+               }
+ 
+             }
+             if(white_lable && whiteLablePackage){
+               if(whiteLablePackage.Offline_Insurance_Pay_Commission_Type == "Percentage"){
+                 
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Offline_Insurance_Pay_Commission))/100
+                 
+               }
+               else{
+                 
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Offline_Insurance_Pay_Commission)
+                 
+               }
+ 
+             }
+ 
+ 
+            retailerFormData.amount = retailerCommAmount;
+            distributorFormData.amount = distributorCommAmount;
+            superDistributorFormData.amount = superDistributorCommAmount;
+            whiteLableFormData.amount = whiteLableCommAmount;
+           //  console.log(retailerCommAmount)
+           //  console.log(distributorCommAmount)
+           //  console.log(superDistributorCommAmount)
+           //  console.log(whiteLableCommAmount)
+             
+       } catch (error) {
+         console.log(error)
+       }
+       return { retailerFormData, distributorFormData, superDistributorFormData, whiteLableFormData ,Order_Id,Transaction_Id};
+     }
     const handlesubmit = async (e) => {
       e.preventDefault();
       try {
@@ -520,11 +1428,29 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
             result = await prepaidRechargeComm(retailer, distributor, superDistributor, white_lable ,resultsMap,item)
            console.log(result)
           }
+          else if(item.recharge_Type == "Postpaid"){
+            result = await postpaidRechargeComm(retailer, distributor, superDistributor, white_lable ,resultsMap,item)
+          }
+          else if(item.recharge_Type == "DTH"){
+            result = await DTHRechargeComm(retailer, distributor, superDistributor, white_lable ,resultsMap,item)
+          }
+          else if(item.recharge_Type == "Electricity"){
+            result = await ElectricityRechargeComm(retailer, distributor, superDistributor, white_lable ,resultsMap,item)
+          }
+          else if(item.recharge_Type == "Broadband"){
+            result = await BroadbandRechargeComm(retailer, distributor, superDistributor, white_lable ,resultsMap,item)
+          }
+          else if(item.recharge_Type == "Landline"){
+            result = await LandlineRechargeComm(retailer, distributor, superDistributor, white_lable ,resultsMap,item)
+          }
+          else if(item.recharge_Type == "Insurance"){
+            result = await InsuranceRechargeComm(retailer, distributor, superDistributor, white_lable ,resultsMap,item)
+          }
 
            // Track whether all commissions were processed successfully
       let allProcessesSuccessful = true;
           
-          if(result.retailerFormData.amount){
+          if(result && result.retailerFormData && result.retailerFormData.amount){
             const response = await axios.put(
               "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
               // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
@@ -539,7 +1465,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
               allProcessesSuccessful = false;
             });
           }
-          if(result.distributorFormData.amount){
+          if( result && result.distributorFormData && result.distributorFormData.amount){
             const response = await axios.put(
               "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
               // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
@@ -554,7 +1480,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
               allProcessesSuccessful = false;
             });
           }
-          if(result.superDistributorFormData.amount){
+          if( result && result.superDistributorFormData && result.superDistributorFormData.amount){
             const response = await axios.put(
               "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
               // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
@@ -569,11 +1495,64 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
               allProcessesSuccessful = false;
             });
           }
-          if(result.whiteLableFormData.amount){
+          if( result && result.whiteLableFormData && result.whiteLableFormData.amount){
             const response = await axios.put(
               "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
               // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.whiteLableFormData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            ).catch(() => {
+              allProcessesSuccessful = false;
+            });
+          }
+          if(result){
+            let whiteLabel_Commission = 0 ;
+            let super_Distributor_Commission = 0 ;
+            let distributor_Commission = 0 ;
+            let retailer_Commission = 0;
+            if(result.whiteLableFormData && result.whiteLableFormData.amount){
+              whiteLabel_Commission = result.whiteLableFormData.amount
+            }
+            if(result.superDistributorFormData && result.superDistributorFormData.amount){
+              super_Distributor_Commission = result.superDistributorFormData.amount
+            }
+            if(result.distributorFormData && result.distributorFormData.amount){
+              distributor_Commission = result.distributorFormData.amount
+            }
+            if(result.retailerFormData && result.retailerFormData.amount){
+              retailer_Commission = result.retailerFormData.amount
+            }
+            
+
+
+          
+
+            const commissionFormData = {
+
+              order_id: result.Order_Id,
+              transaction_id : result.Transaction_Id,
+              amount :  item.amount,
+              whiteLabel_id : white_lable ? white_lable : "NA",
+              super_Distributor_id : superDistributor ? superDistributor : "NA",
+              distributor_id : distributor ? distributor : "NA",
+              retailer_id : retailer ? retailer : "NA",
+              whiteLabel_Commission : whiteLabel_Commission ,
+              super_Distributor_Commission : super_Distributor_Commission,
+              distributor_Commission : distributor_Commission,
+              retailer_Commission : retailer_Commission,
+              transaction_type : item.recharge_Type,
+              transaction_details : result.retailerFormData.Transaction_details,
+              status : "Success",
+            }
+            await axios.post(
+              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
+              // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+              commissionFormData,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -971,8 +1950,6 @@ const SAOfflineRechargeHistory = () => {
       const showApiData = filterPagination();
 
       console.log(showApiData);
-      
-
     //   const deactivateUser = async (id) => {
     //     const swalWithBootstrapButtons = Swal.mixin({
     //       customClass: {
