@@ -117,6 +117,8 @@ const applyOfflineForm = (req, res) => {
 
   const orderId = `ORF${Date.now()}`;
 
+  const status = "Pending";
+
   const query = `
         INSERT INTO apply_offline_form (
         order_id,
@@ -132,9 +134,10 @@ const applyOfflineForm = (req, res) => {
             attached_photo,
             attached_sign,
             attached_kyc,
+            status,
             	user_id,
             created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
   db.query(
@@ -153,6 +156,7 @@ const applyOfflineForm = (req, res) => {
       attached_photo,
       attached_sign,
       attached_kyc,
+      status,
       userId,
       createdAt,
     ],
