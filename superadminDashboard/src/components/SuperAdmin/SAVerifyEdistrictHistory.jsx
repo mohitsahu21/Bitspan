@@ -280,6 +280,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [userRelation,setUserRelation] = useState([]);
   const { token } = useSelector((state) => state.user);
  
   const [formData, setFormData] = useState({
@@ -295,14 +296,187 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
     });
   };
 
+  // const handlesubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     setLoading(true);
+  //     const response = await axios.put(
+  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessVerifyEdistrictForm",
+  //       // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+  //       formData,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+  //     console.log(response);
+  //     setLoading(false);
+  //     if (response.data.success) {
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "Mark Success Form Successfully",
+  //       });
+  //       setShowSuccessModel(false);
+  //       setIsRefresh((value) => !value);
+  //     } else {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "An error occurred during the process. Please try again.",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("There was an error submitting the form!", error);
+  //     setLoading(false);
+  //     if (error?.response?.status == 401) {
+  //       // alert("Your token is expired please login again")
+  //       Swal.fire({
+  //                 icon: "error",
+  //                 title: "Your token is expired please login again",
+  //               });
+  //       dispatch(clearUser());
+  //       navigate("/");
+  //     }
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "An error occurred during the process. Please try again.",
+  //     });
+  //   }
+  // };
+
+  const EdistrictCommission = async (retailer, distributor, superDistributor, white_lable ,packageDetails,item)=>{
+    const Order_Id = `ORW${Date.now()}`;
+    const Transaction_Id = `TXNW${Date.now()}`;
+   const  retailerFormData = {
+      userId: retailer,
+  amount : "",
+  Transaction_details : `Commission Credit for Verify Editstrict Application Order Id ${item.order_id}`,
+  status : "Success",
+  Order_Id,
+  Transaction_Id
+    }
+    const  distributorFormData = {
+      userId: distributor,
+  amount : "",
+  Transaction_details : `Commission Credit for Verify Editstrict Application Order Id ${item.order_id}`,
+  status : "Success",
+  Order_Id,
+  Transaction_Id
+    }
+    const  superDistributorFormData = {
+      userId: superDistributor,
+  amount : "",
+  Transaction_details : `Commission Credit for Verify Editstrict Application Order Id ${item.order_id}`,
+  status : "Success",
+  Order_Id,
+  Transaction_Id
+    }
+    const  whiteLableFormData = {
+      userId: white_lable,
+  amount : "",
+  Transaction_details : `Commission Credit for Verify Editstrict Application Order Id ${item.order_id}`,
+  status : "Success",
+  Order_Id,
+  Transaction_Id
+    }
+    const retailerPackage = packageDetails?.retailer ? packageDetails?.retailer[0]:  {};
+    const distributorPackage = packageDetails?.distributor ? packageDetails?.distributor[0] : {};
+    const superDistributorPackage = packageDetails?.superDistributor ? packageDetails?.superDistributor[0] : {} ;
+    const whiteLablePackage = packageDetails?.whiteLable ? packageDetails?.whiteLable[0] : {} ;
+
+    // const application_type = item.application_type;
+    const amount = parseFloat(item.amount);
+
+    let retailerCommAmount = 0;
+    let distributorCommAmount = 0;
+    let superDistributorCommAmount = 0;
+    let whiteLableCommAmount = 0;
+
+
+    try {
+          
+          if(retailerPackage.Offline_Services_Commission_Type == "Percentage"){
+            
+              retailerCommAmount = (amount * parseFloat(retailerPackage.verify_edistrict_Certificate_Commission))/100
+            
+          }
+          else{
+              
+                retailerCommAmount = parseFloat(retailerPackage.verify_edistrict_Certificate_Commission);
+             
+          }
+
+          if(distributor && distributorPackage){
+            if(distributorPackage.Offline_Services_Commission_Type == "Percentage"){
+              
+               
+               
+                  distributorCommAmount = (amount * parseFloat(distributorPackage.verify_edistrict_Certificate_Commission))/100
+              
+             
+            }
+            else{
+              
+                  distributorCommAmount = parseFloat(distributorPackage.verify_edistrict_Certificate_Commission);
+                
+            }
+
+          }
+          if(superDistributor && superDistributorPackage){
+            if(superDistributorPackage.Offline_Services_Commission_Type == "Percentage"){
+             
+                  superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.verify_edistrict_Certificate_Commission))/100
+              
+            }
+            else{
+              
+               
+                
+                  superDistributorCommAmount = parseFloat(superDistributorPackage.verify_edistrict_Certificate_Commission);
+               
+            }
+
+          }
+          if(white_lable && whiteLablePackage){
+            if(whiteLablePackage.Offline_Services_Commission_Type == "Percentage"){
+             
+                
+                
+                  whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.verify_edistrict_Certificate_Commission))/100
+               
+            }
+            else{
+              
+                  whiteLableCommAmount = parseFloat(whiteLablePackage.verify_edistrict_Certificate_Commission);
+              
+            }
+
+          }
+
+
+         retailerFormData.amount = retailerCommAmount;
+         distributorFormData.amount = distributorCommAmount;
+         superDistributorFormData.amount = superDistributorCommAmount;
+         whiteLableFormData.amount = whiteLableCommAmount;
+        //  console.log(retailerCommAmount)
+        //  console.log(distributorCommAmount)
+        //  console.log(superDistributorCommAmount)
+        //  console.log(whiteLableCommAmount)
+          
+    } catch (error) {
+      console.log(error)
+    }
+    return { retailerFormData, distributorFormData, superDistributorFormData, whiteLableFormData,Order_Id,Transaction_Id };
+  }
+
   const handlesubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessVerifyEdistrictForm",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-        formData,
+  
+      const { data } = await axios.get(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${item.user_id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -310,37 +484,276 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
           },
         }
       );
-      console.log(response);
-      setLoading(false);
-      if (response.data.success) {
-        Swal.fire({
-          icon: "success",
-          title: "Mark Success Form Successfully",
+  
+      console.log(data);
+      setUserRelation(data.data);
+  
+      if (data.data) {
+        const { distributor, superDistributor, white_lable } = data.data;
+        const retailer = item.user_id
+        // Create an array to hold promises and a mapping object
+        const promises = [];
+        const resultsMap = {
+          retailer : null,
+          distributor: null,
+          superDistributor: null,
+          whiteLable: null,
+        };
+
+      const retailerPromise = axios
+        .get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          resultsMap.retailer = response.data.data;
         });
-        setShowSuccessModel(false);
-        setIsRefresh((value) => !value);
+        promises.push(retailerPromise);
+  
+        if (distributor) {
+          const distributorPromise = axios
+            .get(
+              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then((response) => {
+              resultsMap.distributor = response.data.data;
+            });
+          promises.push(distributorPromise);
+        }
+  
+        if (superDistributor) {
+          const superDistributorPromise = axios
+            .get(
+              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then((response) => {
+              resultsMap.superDistributor = response.data.data;
+            });
+          promises.push(superDistributorPromise);
+        }
+  
+        if (white_lable) {
+          const whiteLablePromise = axios
+            .get(
+              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then((response) => {
+              resultsMap.whiteLable = response.data.data;
+            });
+          promises.push(whiteLablePromise);
+        }
+  
+        // Wait for all promises to resolve
+        await Promise.all(promises);
+  
+        // Log the results
+        console.log("retailer Package:", resultsMap.retailer);
+        console.log("Distributor Package:", resultsMap.distributor);
+        console.log("Super Distributor Package:", resultsMap.superDistributor);
+        console.log("White Label Package:", resultsMap.whiteLable);
+       
+        let result = {};
+        // Use the results as needed
+          
+            result = await EdistrictCommission(retailer, distributor, superDistributor, white_lable ,resultsMap,item)
+            console.log(result)
+          
+        
+       
+         // Track whether all commissions were processed successfully
+    let allProcessesSuccessful = true;
+        
+        if(result && result.retailerFormData && result.retailerFormData.amount){
+          const response = await axios.put(
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+            // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+            result.retailerFormData,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          ).catch(() => {
+            allProcessesSuccessful = false;
+          });
+        }
+        if( result && result.distributorFormData && result.distributorFormData.amount){
+          const response = await axios.put(
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+            // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+            result.distributorFormData,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          ).catch(() => {
+            allProcessesSuccessful = false;
+          });
+        }
+        if( result && result.superDistributorFormData && result.superDistributorFormData.amount){
+          const response = await axios.put(
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+            // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+            result.superDistributorFormData,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          ).catch(() => {
+            allProcessesSuccessful = false;
+          });
+        }
+        if( result && result.whiteLableFormData && result.whiteLableFormData.amount){
+          const response = await axios.put(
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+            // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+            result.whiteLableFormData,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          ).catch(() => {
+            allProcessesSuccessful = false;
+          });
+        }
+        console.log(result)
+        if(result && result.retailerFormData){
+          let whiteLabel_Commission = 0 ;
+          let super_Distributor_Commission = 0 ;
+          let distributor_Commission = 0 ;
+          let retailer_Commission = 0;
+          if(result.whiteLableFormData && result.whiteLableFormData.amount){
+            whiteLabel_Commission = result.whiteLableFormData.amount
+          }
+          if(result.superDistributorFormData && result.superDistributorFormData.amount){
+            super_Distributor_Commission = result.superDistributorFormData.amount
+          }
+          if(result.distributorFormData && result.distributorFormData.amount){
+            distributor_Commission = result.distributorFormData.amount
+          }
+          if(result.retailerFormData && result.retailerFormData.amount){
+            retailer_Commission = result.retailerFormData.amount
+          }
+          
+
+
+        
+
+          const commissionFormData = {
+
+            order_id: result.Order_Id,
+            transaction_id : result.Transaction_Id,
+            amount :  item.amount,
+            whiteLabel_id : white_lable ? white_lable : "NA",
+            super_Distributor_id : superDistributor ? superDistributor : "NA",
+            distributor_id : distributor ? distributor : "NA",
+            retailer_id : retailer ? retailer : "NA",
+            whiteLabel_Commission : whiteLabel_Commission ,
+            super_Distributor_Commission : super_Distributor_Commission,
+            distributor_Commission : distributor_Commission,
+            retailer_Commission : retailer_Commission,
+            transaction_type : "Verify Edistrict",
+            transaction_details : result.retailerFormData.Transaction_details,
+            status : "Success",
+          }
+          await axios.post(
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
+            // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+            commissionFormData,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          ).catch(() => {
+            allProcessesSuccessful = false;
+          });
+        }
+
+          await axios.put(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessVerifyEdistrictForm",
+                // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+                formData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              ).catch(() => {
+                allProcessesSuccessful = false;
+              });
+        
+         // Show success message if all processes succeeded
+    if (allProcessesSuccessful) {
+      setShowSuccessModel(false);
+      setIsRefresh((value) => !value);
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "All commissions have been processed successfully!",
+      });
+    } else {
+      setShowSuccessModel(false);
+      setIsRefresh((value) => !value);
+      Swal.fire({
+        icon: "warning",
+        title: "Partial Success",
+        text: "Some commissions were not processed. Please check the logs.",
+      });
+    }
+
+
+
+      }
+    } catch (error) {
+      console.error("There was an error submitting the form!", error);
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
+        dispatch(clearUser());
+        navigate("/");
       } else {
         Swal.fire({
           icon: "error",
           title: "An error occurred during the process. Please try again.",
         });
       }
-    } catch (error) {
-      console.error("There was an error submitting the form!", error);
+    } finally {
       setLoading(false);
-      if (error?.response?.status == 401) {
-        // alert("Your token is expired please login again")
-        Swal.fire({
-                  icon: "error",
-                  title: "Your token is expired please login again",
-                });
-        dispatch(clearUser());
-        navigate("/");
-      }
-      Swal.fire({
-        icon: "error",
-        title: "An error occurred during the process. Please try again.",
-      });
     }
   };
   return (
