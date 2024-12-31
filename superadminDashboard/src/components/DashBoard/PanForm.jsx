@@ -54,35 +54,6 @@ const PanForm = () => {
     fetchPackage();
   }, []);
 
-  // console.log("Break comments");
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-
-  //   setFormData((prevFormData) => {
-  //     if (name === "eStampAmount") {
-  //       const parsedValue = parseInt(value, 10);
-  //       const parsedSelectedPrice = parseInt(selectedPrice, 10) || 0;
-
-  //       const total = isNaN(parsedValue)
-  //         ? ""
-  //         : (parsedValue + parsedSelectedPrice).toString();
-
-  //       return {
-  //         ...prevFormData,
-  //         eStampAmount: value, // Update eStampAmount directly from the input
-  //         amount: total, // Update amount based on calculation
-  //       };
-  //     } else {
-  //       // For all other inputs, update normally
-  //       return {
-  //         ...prevFormData,
-  //         [name]: value,
-  //       };
-  //     }
-  //   });
-  // };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -106,26 +77,6 @@ const PanForm = () => {
       }));
     }
   };
-
-  // useEffect(() => {
-  //   if (selectOption && selectedPrice) {
-  //     const total =
-  //       parseInt(eStampAmount, 10) + (parseInt(selectedPrice, 10) || 0);
-  //     const totalAsString = total.toString();
-  //     setTotalAmount(totalAsString);
-  //     setFormData((prevFormData) => ({
-  //       ...prevFormData,
-  //       amount: totalAsString, // Ensuring amount is always updated
-  //     }));
-  //   } else {
-  //     const fallbackValue = selectedPrice || "0";
-  //     setTotalAmount(fallbackValue);
-  //     setFormData((prevFormData) => ({
-  //       ...prevFormData,
-  //       amount: fallbackValue,
-  //     }));
-  //   }
-  // }, [selectedPrice, eStampAmount, selectOption]);
 
   useEffect(() => {
     let calculatedTotal = 0;
@@ -196,9 +147,23 @@ const PanForm = () => {
     return errors;
   };
 
+  useEffect(() => {
+    if (currentUser?.userId) {
+      setFormData((prev) => ({
+        ...prev,
+        userId: currentUser.userId,
+      }));
+    }
+  }, [currentUser]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Submitting with amount:", formData);
+
+    if (!formData.userId) {
+      console.error("User ID is missing");
+      return;
+    }
 
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -262,11 +227,20 @@ const PanForm = () => {
         other: "",
         eStampAmount: "",
         totalAmount: "",
+        amount: "",
         attached_form: null,
         attached_photo: null,
         attached_sign: null,
         attached_kyc: [],
+        userId: currentUser?.userId,
       });
+
+      setEStampAmount("");
+      setTotalAmount("");
+      setSelectedPrice("");
+
+      setPin(["", "", "", ""]);
+      pinRefs.current[0]?.focus();
     } catch (error) {
       // alert("An error occurred. Please try again.");
       console.log(error);
@@ -333,9 +307,10 @@ const PanForm = () => {
     setIsVerifying(false);
     if (isPinValid) {
       setShowPinModal(false);
-      handleSubmit(e);
+      await handleSubmit(e);
     } else {
       setPin(["", "", "", ""]);
+      pinRefs.current[0]?.focus();
     }
   };
 
@@ -733,3 +708,51 @@ const Wrapper = styled.div`
                       </h6>
                     </div> */
 }
+// useEffect(() => {
+//   if (selectOption && selectedPrice) {
+//     const total =
+//       parseInt(eStampAmount, 10) + (parseInt(selectedPrice, 10) || 0);
+//     const totalAsString = total.toString();
+//     setTotalAmount(totalAsString);
+//     setFormData((prevFormData) => ({
+//       ...prevFormData,
+//       amount: totalAsString, // Ensuring amount is always updated
+//     }));
+//   } else {
+//     const fallbackValue = selectedPrice || "0";
+//     setTotalAmount(fallbackValue);
+//     setFormData((prevFormData) => ({
+//       ...prevFormData,
+//       amount: fallbackValue,
+//     }));
+//   }
+// }, [selectedPrice, eStampAmount, selectOption]);
+
+// console.log("Break comments");
+
+// const handleChange = (e) => {
+//   const { name, value } = e.target;
+
+//   setFormData((prevFormData) => {
+//     if (name === "eStampAmount") {
+//       const parsedValue = parseInt(value, 10);
+//       const parsedSelectedPrice = parseInt(selectedPrice, 10) || 0;
+
+//       const total = isNaN(parsedValue)
+//         ? ""
+//         : (parsedValue + parsedSelectedPrice).toString();
+
+//       return {
+//         ...prevFormData,
+//         eStampAmount: value, // Update eStampAmount directly from the input
+//         amount: total, // Update amount based on calculation
+//       };
+//     } else {
+//       // For all other inputs, update normally
+//       return {
+//         ...prevFormData,
+//         [name]: value,
+//       };
+//     }
+//   });
+// };

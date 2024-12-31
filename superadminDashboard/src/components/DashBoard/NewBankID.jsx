@@ -80,9 +80,11 @@ const NewBankID = () => {
     pan_card: currentUser.PanCardNumber,
     business_name: currentUser.BusinessName,
     status: "Pending",
-    amount: "",
+    amount: selectedPrice,
     userId: currentUser.userId,
   });
+
+  console.log(formData);
 
   const [files, setFiles] = useState({
     attached_photo: null,
@@ -104,6 +106,13 @@ const NewBankID = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      amount: selectedPrice,
+    }));
+  }, [selectedPrice]);
+
   const handleDropdownChange = (e) => {
     const selectedOption = e.target.value;
     console.log("Selected Option:", selectedOption);
@@ -113,6 +122,11 @@ const NewBankID = () => {
     setSelectedPrice(optionPrices[selectedOption] || "Price not available");
 
     handleInputChange(e);
+
+    setFormData((prevData) => ({
+      ...prevData,
+      select_bank_service: selectedOption,
+    }));
   };
 
   const handleFileChange = (e) => {
@@ -200,7 +214,11 @@ const NewBankID = () => {
         // aadhar_card: "",
         // pan_card: "",
         // business_name: "",
+        userId: currentUser.userId,
       });
+
+      setPin(["", "", "", ""]);
+      pinRefs.current[0]?.focus();
     }
   };
 
@@ -441,7 +459,8 @@ const NewBankID = () => {
                             className="form-control"
                             id="floatingInputGroup3"
                             name="amount"
-                            value={selectedPrice}
+                            // value={selectedPrice}
+                            value={selectedPrice || ""}
                             onChange={handleInputChange}
                             readOnly
                           />

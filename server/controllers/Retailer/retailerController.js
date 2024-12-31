@@ -1577,9 +1577,10 @@ const getSelectedServices = (req, res) => {
 };
 
 const getAllBranchId = (req, res) => {
-  const selectQuery = `SELECT * FROM apply_offline_form WHERE applicant_select_service = ?`;
+  const { id } = req.params;
+  const selectQuery = `SELECT * FROM apply_offline_form WHERE applicant_select_service = ? AND id = ?`;
 
-  db.query(selectQuery, ["New Bank ID"], (err, result) => {
+  db.query(selectQuery, ["New Bank ID", id], (err, result) => {
     if (err) {
       console.error("Database error:", err);
       return res
@@ -2331,6 +2332,27 @@ const getDthConnectionPlan = (req, res) => {
   });
 };
 
+const getWalletSummary = (req, res) => {
+  const userId = req.params.userId;
+
+  let query = `SELECT * FROM user_wallet WHERE userId = ?`;
+
+  db.query(query, [userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -2369,4 +2391,5 @@ module.exports = {
   getWalletOffline,
   getPackageData,
   getDthConnectionPlan,
+  getWalletSummary,
 };
