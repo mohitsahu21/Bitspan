@@ -77,6 +77,7 @@ const BankHistory = () => {
                                   <th scope="col">Aadhar No.</th>
                                   <th scope="col">Pan No.</th>
                                   <th scope="col">Business</th>
+                                  <th scope="col">Amount</th>
                                   <th scope="col">Photo</th>
                                   <th scope="col">KYC</th>
                                   <th scope="col">Passbook</th>
@@ -103,6 +104,7 @@ const BankHistory = () => {
                                       <td>{data.aadhar_card}</td>
                                       <td>{data.pan_card}</td>
                                       <td>{data.business_name}</td>
+                                      <td>{data.amount}</td>
                                       <td>
                                         <a
                                           href={data.attached_photo}

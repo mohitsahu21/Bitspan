@@ -40,6 +40,7 @@ const {
   getWalletOffline,
   getPackageData,
   getDthConnectionPlan,
+  getWalletSummary,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -165,7 +166,7 @@ router.post(
 );
 
 router.get("/getSelectedServices/:user_id", getSelectedServices);
-router.get("/getAllBranchId", getAllBranchId);
+router.get("/getAllBranchId/:id", getAllBranchId);
 router.get("/getEdistrictData/:user_id", getEdistrictData);
 router.get("/getAllRechargeApi", getAllRechargeApi);
 router.get("/getAllDTHeApi", getAllDTHeApi);
@@ -198,5 +199,6 @@ router.post(
 router.get("/getWalletOffline/:userId", getWalletOffline);
 router.get("/getPackageData/:packageId", getPackageData);
 router.get("/getDthConnectionPlan", getDthConnectionPlan);
+router.get("/getWalletSummary/:userId", getWalletSummary);
 
 module.exports = router;
