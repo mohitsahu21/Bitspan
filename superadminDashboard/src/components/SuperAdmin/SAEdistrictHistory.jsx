@@ -863,7 +863,8 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     order_id: item.order_id,
     note: "",
     status: "Reject",
-    amount : item.amount,
+    amount : item.charge_amount,
+    Transaction_details : `Refund Credit for Edistrict Application Order Id ${item.order_id}`,
     chargeAmount : "",
     refundAmount : "",
     user_id : item.user_id
@@ -887,7 +888,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
       if (name === "chargeAmount") {
         // Calculate refundAmount dynamically
         const chargeAmount = parseFloat(value) || 0; // Handle non-numeric input
-        const refundAmount = Math.max(0, parseFloat(item.amount) - chargeAmount);
+        const refundAmount = Math.max(0, parseFloat(item.charge_amount) - chargeAmount);
         updatedFormData.refundAmount = refundAmount.toFixed(2); // Format to 2 decimal places
       }
 
@@ -985,7 +986,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
                 name="package_name"
                 class="form-control"
                 placeholder="Enter Package Name"
-                value={item.amount}
+                value={item.charge_amount}
                 onChange={handleChange}
                 disabled
                 required
@@ -1393,7 +1394,7 @@ const SAEdistrictHistory = () => {
                                           <th scope="col">
                                             Previous Application
                                           </th>
-                                          <th scope="col">Charge Amount</th>
+                                          {/* <th scope="col">Charge Amount</th> */}
                                           <th scope="col">Amount</th>
                                           <th scope="col">View KYC</th>
                                           <th scope="col">User Id</th>
@@ -1431,11 +1432,11 @@ const SAEdistrictHistory = () => {
                                                 {item.previous_application}
                                               </td>
                                               <td>{item.charge_amount}</td>
-                                              <td>{item.amount}</td>
+                                              {/* <td>{item.amount}</td> */}
                                                
                                               
                                               <td>
-                                                {item.documentUpload
+                                                {item.documentUpload ? item.documentUpload
                                                   ?.split(",")
                                                   ?.map((kycurl, kycindx) => (
                                                     <div key={kycindx}>
@@ -1447,7 +1448,7 @@ const SAEdistrictHistory = () => {
                                                         View KYC {kycindx + 1}
                                                       </a>
                                                     </div>
-                                                  ))}
+                                                  )) : "nill"}
                                               </td>
 
                                               <td>{item.user_id}</td>
@@ -1622,7 +1623,7 @@ const SAEdistrictHistory = () => {
                                           <th scope="col">
                                             Previous Application
                                           </th>
-                                          <th scope="col">Charge Amount</th>
+                                          {/* <th scope="col">Charge Amount</th> */}
                                           <th scope="col">Amount</th>
                                           <th scope="col">View KYC</th>
                                           <th scope="col">User Id</th>
@@ -1660,11 +1661,11 @@ const SAEdistrictHistory = () => {
                                                 {item.previous_application}
                                               </td>
                                               <td>{item.charge_amount}</td>
-                                              <td>{item.amount}</td>
+                                              {/* <td>{item.amount}</td> */}
 
                                               
                                               <td>
-                                                {item.documentUpload
+                                                {item.documentUpload ? item.documentUpload
                                                   ?.split(",")
                                                   ?.map((kycurl, kycindx) => (
                                                     <div key={kycindx}>
@@ -1676,7 +1677,7 @@ const SAEdistrictHistory = () => {
                                                         View KYC {kycindx + 1}
                                                       </a>
                                                     </div>
-                                                  ))}
+                                                  )) : "nill"}
                                               </td>
 
                                               <td>{item.user_id}</td>

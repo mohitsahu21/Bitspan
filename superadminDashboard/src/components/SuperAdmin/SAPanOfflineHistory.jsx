@@ -867,6 +867,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     note: "",
     status: "Reject",
     amount: item.Charge_Amount,
+    Transaction_details : `Refund Credit for PAN Order Id ${item.order_id}`,
     chargeAmount: "",
     refundAmount: "",
     user_id: item.user_id,
@@ -1442,33 +1443,44 @@ const SAPanOfflineHistory = () => {
                                               <td>{item.state}</td>
                                               <td>{item.Change_Request}</td>
                                               <td>
-                                                <a
+                                                {
+                                                  item.attachment_form ?  
+                                                  <a
                                                   href={item.attachment_form}
                                                   target="_blank"
                                                 >
                                                   View Form
                                                 </a>
+                                                  : "nill"
+                                                }
+                                                
                                               </td>
                                               <td>
-                                                <a
-                                                  href={item.attachment_photo}
-                                                  target="_blank"
-                                                >
-                                                  View Photo
-                                                </a>
+                                                {
+                                                item.attachment_photo ?  <a
+                                                href={item.attachment_photo}
+                                                target="_blank"
+                                              >
+                                                View Photo
+                                              </a> : "nill"  
+                                                }
+                                               
                                               </td>
                                               <td>
-                                                <a
+                                                {
+                                                  item.attachment_signature ? <a
                                                   href={
                                                     item.attachment_signature
                                                   }
                                                   target="_blank"
                                                 >
                                                   View Sign
-                                                </a>
+                                                </a> : "nill"
+                                                }
+                                                
                                               </td>
                                               <td>
-                                                {item.documentUpload
+                                                {item.documentUpload ?  item.documentUpload
                                                   ?.split(",")
                                                   ?.map((kycurl, kycindx) => (
                                                     <div key={kycindx}>
@@ -1480,7 +1492,7 @@ const SAPanOfflineHistory = () => {
                                                         View KYC {kycindx + 1}
                                                       </a>
                                                     </div>
-                                                  ))}
+                                                  )) : "nill"}
                                               </td>
                                               <td>{item.user_id}</td>
                                               <td>{item.UserName}</td>
@@ -1708,45 +1720,53 @@ const SAPanOfflineHistory = () => {
                                                 <td>{item.state}</td>
                                                 <td>{item.Change_Request}</td>
                                                 <td>
+                                                {
+                                                  item.attachment_form ?  
                                                   <a
-                                                    href={item.attachment_form}
-                                                    target="_blank"
-                                                  >
-                                                    View Form
-                                                  </a>
+                                                  href={item.attachment_form}
+                                                  target="_blank"
+                                                >
+                                                  View Form
+                                                </a>
+                                                  : "nill"
+                                                }
                                                 </td>
                                                 <td>
-                                                  <a
-                                                    href={item.attachment_photo}
-                                                    target="_blank"
-                                                  >
-                                                    View Photo
-                                                  </a>
+                                                {
+                                                item.attachment_photo ?  <a
+                                                href={item.attachment_photo}
+                                                target="_blank"
+                                              >
+                                                View Photo
+                                              </a> : "nill"  
+                                                }
                                                 </td>
                                                 <td>
-                                                  <a
-                                                    href={
-                                                      item.attachment_signature
-                                                    }
-                                                    target="_blank"
-                                                  >
-                                                    View Sign
-                                                  </a>
+                                                {
+                                                  item.attachment_signature ? <a
+                                                  href={
+                                                    item.attachment_signature
+                                                  }
+                                                  target="_blank"
+                                                >
+                                                  View Sign
+                                                </a> : "nill"
+                                                }
                                                 </td>
                                                 <td>
-                                                  {item.documentUpload
-                                                    ?.split(",")
-                                                    ?.map((kycurl, kycindx) => (
-                                                      <div key={kycindx}>
-                                                        <a
-                                                          href={kycurl}
-                                                          target="_blank"
-                                                          rel="noopener noreferrer"
-                                                        >
-                                                          View KYC {kycindx + 1}
-                                                        </a>
-                                                      </div>
-                                                    ))}
+                                                {item.documentUpload ?  item.documentUpload
+                                                  ?.split(",")
+                                                  ?.map((kycurl, kycindx) => (
+                                                    <div key={kycindx}>
+                                                      <a
+                                                        href={kycurl}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                      >
+                                                        View KYC {kycindx + 1}
+                                                      </a>
+                                                    </div>
+                                                  )) : "nill"}
                                                 </td>
                                                 <td>{item.user_id}</td>
                                                 <td>{item.UserName}</td>

@@ -1450,6 +1450,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     note: "",
     status: "Reject",
     amount : item.amount,
+    Transaction_details : `Refund Credit for ${item.applicant_select_service} Order Id ${item.order_id}`,
     chargeAmount : "",
     refundAmount : "",
     user_id : item.user_id
@@ -1997,31 +1998,43 @@ const SAAllOfflineForm = () => {
                                           <td>{item.other}</td>
                                           <td>{item.eStampAmount}</td>
                                           <td>
-                                            <a
+                                            {
+                                              item.attached_form ? <a
                                               href={item.attached_form}
                                               target="_blank"
                                             >
                                               View Form
-                                            </a>
+                                            </a>: "nill"
+                                            }
+                                            
                                           </td>
                                           <td>
-                                            <a
+                                            {
+                                              item.attached_photo ? <a
                                               href={item.attached_photo}
                                               target="_blank"
                                             >
                                               View Photo
-                                            </a>
+                                            </a> :
+                                            "nill"
+                                            }
+                                            
                                           </td>
                                           <td>
-                                            <a
+                                            {
+                                              item.attached_sign ? 
+                                              <a
                                               href={item.attached_sign}
                                               target="_blank"
                                             >
                                               View Sign
                                             </a>
+                                            : "nill"
+                                            }
+                                           
                                           </td>
                                           <td>
-                                            {item.attached_kyc
+                                            {item.attached_kyc ? item.attached_kyc
                                               ?.split(",")
                                               ?.map((kycurl, kycindx) => (
                                                 <div key={kycindx}>
@@ -2033,7 +2046,7 @@ const SAAllOfflineForm = () => {
                                                     View KYC {kycindx + 1}
                                                   </a>
                                                 </div>
-                                              ))}
+                                              )) : "nill"}
                                           </td>
                                           <td>{item.user_id}</td>
                                           <td>{item.UserName}</td>
@@ -2219,31 +2232,40 @@ const SAAllOfflineForm = () => {
                                           <td>{item.other}</td>
                                           <td>{item.eStampAmount}</td>
                                           <td>
-                                            <a
+                                          {
+                                              item.attached_form ? <a
                                               href={item.attached_form}
                                               target="_blank"
                                             >
                                               View Form
-                                            </a>
+                                            </a>: "nill"
+                                            }
                                           </td>
                                           <td>
-                                            <a
+                                          {
+                                              item.attached_photo ? <a
                                               href={item.attached_photo}
                                               target="_blank"
                                             >
                                               View Photo
-                                            </a>
+                                            </a> :
+                                            "nill"
+                                            }
                                           </td>
                                           <td>
-                                            <a
+                                          {
+                                              item.attached_sign ? 
+                                              <a
                                               href={item.attached_sign}
                                               target="_blank"
                                             >
                                               View Sign
                                             </a>
+                                            : "nill"
+                                            }
                                           </td>
                                           <td>
-                                            {item.attached_kyc
+                                          {item.attached_kyc ? item.attached_kyc
                                               ?.split(",")
                                               ?.map((kycurl, kycindx) => (
                                                 <div key={kycindx}>
@@ -2255,7 +2277,7 @@ const SAAllOfflineForm = () => {
                                                     View KYC {kycindx + 1}
                                                   </a>
                                                 </div>
-                                              ))}
+                                              )) : "nill"}
                                           </td>
                                           <td>{item.user_id}</td>
                                           <td>{item.UserName}</td>

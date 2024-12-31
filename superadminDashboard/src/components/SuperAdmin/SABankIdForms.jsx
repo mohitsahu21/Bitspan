@@ -425,6 +425,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     note: "",
     status: "Reject",
     amount : item.amount,
+    Transaction_details : `Refund Credit for Bank ID Order Id ${item.order_id}`,
     chargeAmount : "",
     refundAmount : "",
     user_id : item.user_id
@@ -992,23 +993,30 @@ View Form
 </a>
 </td> */}
                                                 <td>
-                                                  <a
+                                                  {
+                                                    item.attached_photo ? <a
                                                     href={item.attached_photo}
                                                     target="_blank"
                                                   >
                                                     View Photo
-                                                  </a>
+                                                  </a> : "nill"
+                                                  }
+                                                  
                                                 </td>
                                                 <td>
-                                                  <a
+                                                  {
+                                                    item.attached_sign ? 
+                                                    <a
                                                     href={item.attached_sign}
                                                     target="_blank"
                                                   >
                                                     View Sign
-                                                  </a>
+                                                  </a> : "nill"
+                                                  }
+                                                  
                                                 </td>
                                                 <td>
-                                                  {item.attached_kyc
+                                                  {item.attached_kyc ? item.attached_kyc
                                                     ?.split(",")
                                                     ?.map((kycurl, kycindx) => (
                                                       <div key={kycindx}>
@@ -1020,31 +1028,40 @@ View Form
                                                           View KYC {kycindx + 1}
                                                         </a>
                                                       </div>
-                                                    ))}
+                                                    )) : "nill"}
                                                 </td>
                                                 <td>
-                                                  <a
-                                                    href={item.bank_passbook}
-                                                    target="_blank"
-                                                  >
-                                                    View Passbook
-                                                  </a>
+                                                  {
+                                                   item.bank_passbook ? 
+                                                   <a
+                                                   href={item.bank_passbook}
+                                                   target="_blank"
+                                                 >
+                                                   View Passbook
+                                                 </a> :"nill" 
+                                                  }
+                                                 
+                                                </td>
+                                                <td>{
+                                                 item.shop_photo ? 
+                                                 <a
+                                                 href={item.shop_photo}
+                                                 target="_blank"
+                                               >
+                                                 View Shop Photo
+                                               </a> : "nill" }
+                                                 
                                                 </td>
                                                 <td>
-                                                  <a
-                                                    href={item.shop_photo}
-                                                    target="_blank"
-                                                  >
-                                                    View Shop Photo
-                                                  </a>
-                                                </td>
-                                                <td>
-                                                  <a
+                                                  {
+                                                    item.electric_bill ? <a
                                                     href={item.electric_bill}
                                                     target="_blank"
                                                   >
                                                     View Electricity Bill
-                                                  </a>
+                                                  </a> : "nill"
+                                                  }
+                                                  
                                                 </td>
                                                 <td>{item.user_id}</td>
                                                 <td>{item.UserName}</td>
@@ -1256,59 +1273,71 @@ View Form
 </a>
 </td> */}
                     <td>
-                      <a
-                        href={item.attached_photo}
-                        target="_blank"
-                      >
-                        View Photo
-                      </a>
+                    {
+                                                    item.attached_photo ? <a
+                                                    href={item.attached_photo}
+                                                    target="_blank"
+                                                  >
+                                                    View Photo
+                                                  </a> : "nill"
+                                                  }
                     </td>
                     <td>
-                      <a
-                        href={item.attached_sign}
-                        target="_blank"
-                      >
-                        View Sign
-                      </a>
+                    {
+                                                    item.attached_sign ? 
+                                                    <a
+                                                    href={item.attached_sign}
+                                                    target="_blank"
+                                                  >
+                                                    View Sign
+                                                  </a> : "nill"
+                                                  }
                     </td>
                     <td>
-                      {item.attached_kyc
-                        ?.split(",")
-                        ?.map((kycurl, kycindx) => (
-                          <div key={kycindx}>
-                            <a
-                              href={kycurl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              View KYC {kycindx + 1}
-                            </a>
-                          </div>
-                        ))}
+                    {item.attached_kyc ? item.attached_kyc
+                                                    ?.split(",")
+                                                    ?.map((kycurl, kycindx) => (
+                                                      <div key={kycindx}>
+                                                        <a
+                                                          href={kycurl}
+                                                          target="_blank"
+                                                          rel="noopener noreferrer"
+                                                        >
+                                                          View KYC {kycindx + 1}
+                                                        </a>
+                                                      </div>
+                                                    )) : "nill"}
                     </td>
                     <td>
-                      <a
-                        href={item.bank_passbook}
-                        target="_blank"
-                      >
-                        View Passbook
-                      </a>
+                    {
+                                                   item.bank_passbook ? 
+                                                   <a
+                                                   href={item.bank_passbook}
+                                                   target="_blank"
+                                                 >
+                                                   View Passbook
+                                                 </a> :"nill" 
+                                                  }
                     </td>
                     <td>
-                      <a
-                        href={item.shop_photo}
-                        target="_blank"
-                      >
-                        View Shop Photo
-                      </a>
+                    {
+                                                 item.shop_photo ? 
+                                                 <a
+                                                 href={item.shop_photo}
+                                                 target="_blank"
+                                               >
+                                                 View Shop Photo
+                                               </a> : "nill" }
                     </td>
                     <td>
-                      <a
-                        href={item.electric_bill}
-                        target="_blank"
-                      >
-                        View Electricity Bill
-                      </a>
+                    {
+                                                    item.electric_bill ? <a
+                                                    href={item.electric_bill}
+                                                    target="_blank"
+                                                  >
+                                                    View Electricity Bill
+                                                  </a> : "nill"
+                                                  }
                     </td>
                     <td>{item.user_id}</td>
                     <td>{item.UserName}</td>

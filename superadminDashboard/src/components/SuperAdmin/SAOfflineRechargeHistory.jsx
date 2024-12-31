@@ -1696,6 +1696,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     note : "",
     status : "Reject",
     user_id : item.created_by_userid,
+    Transaction_details : `Refund Credit for ${item.recharge_Type} Recharge Order Id ${item.orderid}`,
     refundAmount : item.amount
 
   });
