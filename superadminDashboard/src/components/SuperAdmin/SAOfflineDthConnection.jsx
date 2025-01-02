@@ -943,6 +943,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     amount : item.amount,
     chargeAmount : "",
     refundAmount : "",
+    Transaction_details : `Refund Credit for DTH Connection Order Id ${item.orderid}`,
     user_id : item.user_id
   });
 

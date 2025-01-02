@@ -1650,7 +1650,7 @@ const SuccessOfflineForm = (req, res) => {
 
 const rejectOfflineForm = (req, res) => {
   try {
-    const { order_id, note, status,user_id,refundAmount } = req.body;
+    const { order_id, note, status,user_id,refundAmount,Transaction_details } = req.body;
 
        // Validate `order_id`: Check for undefined, null, or invalid value
        if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status || !user_id) {
@@ -1672,8 +1672,7 @@ const rejectOfflineForm = (req, res) => {
 
     // const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
     const Transaction_Id = `TXNW${Date.now()}`;
-    const Transaction_Type = "Refund";
-    const Transaction_details = note;
+    const Transaction_Type = "Credit";
     const Transaction_status = "Success"
     const transaction_date = moment()
       .tz("Asia/Kolkata")
@@ -1933,7 +1932,7 @@ const SuccessPANOfflineForm = (req, res) => {
 };
 const rejectPANOfflineForm = (req, res) => {
   try {
-    const { order_id, note, status,user_id,refundAmount  } = req.body;
+    const { order_id, note, status,user_id,refundAmount , Transaction_details  } = req.body;
        // Validate `order_id`: Check for undefined, null, or invalid value
        if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status || !user_id) {
         return res.status(400).json({
@@ -1955,8 +1954,7 @@ const rejectPANOfflineForm = (req, res) => {
           const refundAmountNumber = parseFloat(refundAmount);
 
     const Transaction_Id = `TXNW${Date.now()}`;
-    const Transaction_Type = "Refund";
-    const Transaction_details = note;
+    const Transaction_Type = "Credit";
     const Transaction_status = "Success"
     const transaction_date = moment()
       .tz("Asia/Kolkata")
@@ -2219,7 +2217,7 @@ const SuccessBankIdForm = (req, res) => {
 
 const rejectBankIdForm = (req, res) => {
   try {
-    const { order_id, note, status, user_id,refundAmount } = req.body;
+    const { order_id, note, status, user_id,refundAmount , Transaction_details} = req.body;
 
      // Validate `order_id`: Check for undefined, null, or invalid value
      if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status || !user_id) {
@@ -2243,8 +2241,7 @@ const rejectBankIdForm = (req, res) => {
 
     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
     const Transaction_Id = `TXNW${Date.now()}`;
-    const Transaction_Type = "Refund";
-    const Transaction_details = note;
+    const Transaction_Type = "Credit";
     const Transaction_status = "Success"
     const transaction_date = moment()
       .tz("Asia/Kolkata")
@@ -2503,7 +2500,7 @@ const SuccessEdistrictForm = (req, res) => {
 };
 const rejectEdistrictForm = (req, res) => {
   try {
-    const { order_id, note, status, user_id,refundAmount } = req.body;
+    const { order_id, note, status, user_id,refundAmount , Transaction_details } = req.body;
    
      // Validate `order_id`: Check for undefined, null, or invalid value
      if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status || !user_id) {
@@ -2526,8 +2523,7 @@ const rejectEdistrictForm = (req, res) => {
 
     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
     const Transaction_Id = `TXNW${Date.now()}`;
-    const Transaction_Type = "Refund";
-    const Transaction_details = note;
+    const Transaction_Type = "Credit";
     const Transaction_status = "Success"
     const transaction_date = moment()
       .tz("Asia/Kolkata")
@@ -2792,7 +2788,7 @@ const SuccessVerifyEdistrictForm = (req, res) => {
 };
 const rejectVerifyEdistrictForm = (req, res) => {
   try {
-    const { order_id, note, status, user_id,refundAmount  } = req.body;
+    const { order_id, note, status, user_id,refundAmount, Transaction_details  } = req.body;
 
      // Validate `order_id`: Check for undefined, null, or invalid value
      if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status || !user_id) {
@@ -2814,8 +2810,7 @@ const rejectVerifyEdistrictForm = (req, res) => {
 
     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
     const Transaction_Id = `TXNW${Date.now()}`;
-    const Transaction_Type = "Refund";
-    const Transaction_details = note;
+    const Transaction_Type = "Credit";
     const Transaction_status = "Success"
     const transaction_date = moment()
       .tz("Asia/Kolkata")
@@ -3080,7 +3075,7 @@ const SuccessSambalForm = (req, res) => {
 };
 const rejectSambalForm = (req, res) => {
   try {
-    const { order_id, note, status , user_id,refundAmount } = req.body;
+    const { order_id, note, status , user_id,refundAmount , Transaction_details} = req.body;
 
       // Validate `order_id`: Check for undefined, null, or invalid value
       if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status || !user_id) {
@@ -3102,8 +3097,7 @@ const rejectSambalForm = (req, res) => {
 
     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
     const Transaction_Id = `TXNW${Date.now()}`;
-    const Transaction_Type = "Refund";
-    const Transaction_details = note;
+    const Transaction_Type = "Credit";
     const Transaction_status = "Success"
     const transaction_date = moment()
       .tz("Asia/Kolkata")
@@ -3329,7 +3323,7 @@ const ApproveOfflineRecharge = (req, res) => {
 
 const rejectOfflineRecharge = (req, res) => {
   try {
-    const { order_id, note, status , user_id,refundAmount } = req.body;
+    const { order_id, note, status , user_id,refundAmount , Transaction_details } = req.body;
 
       // Validate `order_id`: Check for undefined, null, or invalid value
       if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status || !user_id) {
@@ -3351,8 +3345,7 @@ const rejectOfflineRecharge = (req, res) => {
 
     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
     const Transaction_Id = `TXNW${Date.now()}`;
-    const Transaction_Type = "Refund";
-    const Transaction_details = note;
+    const Transaction_Type = "Credit";
     const Transaction_status = "Success"
     const transaction_date = moment()
       .tz("Asia/Kolkata")
@@ -3615,7 +3608,7 @@ const SuccessOfflineDTHConnection = (req, res) => {
 
 const rejectOfflineDTHConnection = (req, res) => {
   try {
-    const { order_id, note, status , user_id,refundAmount } = req.body;
+    const { order_id, note, status , user_id,refundAmount , Transaction_details } = req.body;
 
       // Validate `order_id`: Check for undefined, null, or invalid value
       if (!order_id || typeof order_id !== "string" || order_id.trim() === "" || !status || !user_id) {
@@ -3637,8 +3630,7 @@ const rejectOfflineDTHConnection = (req, res) => {
 
     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
     const Transaction_Id = `TXNW${Date.now()}`;
-    const Transaction_Type = "Refund";
-    const Transaction_details = note;
+    const Transaction_Type = "Credit";
     const Transaction_status = "Success"
     const transaction_date = moment()
       .tz("Asia/Kolkata")
@@ -3985,8 +3977,8 @@ const rejectWalletWithdrawRequests = (req, res) => {
     const AmountNumber = parseFloat(amount);
 
     const Transaction_Id = `TXNW${Date.now()}`;
-    const Transaction_Type = "Refund";
-    const Transaction_details = remark;
+    const Transaction_Type = "Credit";
+    const Transaction_details = `Reject wallet withdrawal request and refund money Order Id ${order_id}`;
     const Transaction_status = "Success"
     const transaction_date = moment()
       .tz("Asia/Kolkata")
@@ -4250,8 +4242,8 @@ const ApproveWalletAddMoneyRequests = (req, res) => {
 
 
     const Transaction_Id = `TXNW${Date.now()}`;
-    const Transaction_Type =  "Add wallet balance";
-    const Transaction_details = "Approve Add wallet balance request"
+    const Transaction_Type =  "Credit";
+    const Transaction_details = `Approve Add wallet balance request Order Id ${order_id}`;
     const transaction_date = moment()
       .tz("Asia/Kolkata")
       .format("YYYY-MM-DD HH:mm:ss");

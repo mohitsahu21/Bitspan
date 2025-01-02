@@ -827,6 +827,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     note: "",
     status: "Reject",
     amount : item.amount,
+    Transaction_details : `Refund Credit for Sambal Application Order Id ${item.order_id}`,
     chargeAmount : "",
     refundAmount : "",
     user_id : item.user_id
