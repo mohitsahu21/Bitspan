@@ -345,7 +345,7 @@ const cgonepayRecharge = (req, res) => {
         if (rechargeData.STATUS === "SUCCESS") {
           const newWalletBalance = (currentBalance - amount).toFixed(2);
           const transactionDetails = `Recharge Deduction ${number}`;
-          const transactionId = `TXNC${Date.now()}`;
+          const transactionId = `TXNW${Date.now()}`;
 
           const updateWalletQuery = `
             INSERT INTO user_wallet

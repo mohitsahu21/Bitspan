@@ -40,14 +40,77 @@ const DthRecharge = () => {
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
   const pinRefs = useRef([]);
+  const [selectedOperator, setSelectedOperator] = useState(""); // This State use for Fetch Plan
+  const [plans, setPlans] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRecharge, setIsRecharge] = useState(false);
+  const [loadingPlans, setLoadingPlans] = useState(false);
 
   const operatorOptions = [
-    { name: "Dish TV", value: "DTV" },
-    { name: "Tata Sky", value: "TTV" },
-    { name: "Videocon", value: "VTV" },
-    { name: "Sun Direct", value: "STV" },
-    { name: "Airtel DTH", value: "ATV" },
+    { name: "Dish TV", value: "DTV", OpCode: "25" },
+    { name: "Tata Sky", value: "TTV", OpCode: "28" },
+    { name: "Videocon", value: "VTV", OpCode: "29" },
+    { name: "Sun Direct", value: "STV", OpCode: "27" },
+    { name: "Airtel DTH", value: "ATV", OpCode: "24" },
   ];
+
+  const fetchPlanData = async () => {
+    setIsRecharge(false);
+    setLoadingPlans(true);
+
+    if (!selectedOperator) {
+      alert("Please select both operator and circle!");
+      setLoadingPlans(false);
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/fetch/plan/getDTHPlans?operatorCode=${selectedOperator}`
+      );
+      const data = response.data;
+
+      if (data.ERROR === "0" && data.STATUS === "0") {
+        const plansCategory = "Combo"; // Assuming "Combo" is the category containing plans
+        const plansByLanguage = data.RDATA[plansCategory] || [];
+
+        if (plansByLanguage.length > 0) {
+          // Group plans by language
+          const groupedPlans = plansByLanguage.reduce((acc, languageGroup) => {
+            acc[languageGroup.Language] = {
+              packCount: languageGroup.PackCount,
+              details: languageGroup.Details.map((plan) => ({
+                planName: plan.PlanName,
+                channels: plan.Channels,
+                paidChannels: plan.PaidChannels,
+                hdChannels: plan.HdChannels,
+                lastUpdate: plan.last_update,
+                pricing: plan.PricingList.map((price) => ({
+                  amount: price.Amount,
+                  duration: price.Month,
+                })),
+              })),
+            };
+            return acc;
+          }, {});
+
+          setPlans(groupedPlans);
+          setIsModalOpen(true); // Open modal to display plans
+        } else {
+          alert("No plans available for the selected operator.");
+          setPlans([]);
+        }
+      } else {
+        alert("No plans available or an error occurred!");
+        setPlans([]);
+      }
+    } catch (error) {
+      console.error("An error occurred while fetching plans:", error);
+      alert("Failed to fetch plans. Please try again.");
+    } finally {
+      setLoadingPlans(false);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,6 +147,9 @@ const DthRecharge = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!isRecharge) {
+      return;
+    }
     setLoading(true);
     let success = false;
 
@@ -392,7 +458,235 @@ const DthRecharge = () => {
                                           </div>
                                         </div>
 
-                                        <div class="input-group mb-3">
+                                        {/* ---------Fetch PlanInputs-----*/}
+
+                                        <div className="input-group mb-3">
+                                          <div className="form-floating">
+                                            <select
+                                              className="form-select"
+                                              id="floatingSelectPlanOperator"
+                                              aria-label="Select Operator"
+                                              value={selectedOperator}
+                                              onChange={(e) => {
+                                                const selectedOp =
+                                                  operatorOptions.find(
+                                                    (op) =>
+                                                      op.OpCode ===
+                                                      e.target.value
+                                                  );
+                                                setSelectedOperator(
+                                                  e.target.value
+                                                );
+                                                setFormData((prevFormData) => ({
+                                                  ...prevFormData,
+                                                  operatorName: selectedOp
+                                                    ? selectedOp.name
+                                                    : "",
+                                                }));
+                                              }}
+                                            >
+                                              <option value="">
+                                                Select Operator
+                                              </option>
+                                              {operatorOptions.map((op) => (
+                                                <option
+                                                  key={op.value}
+                                                  value={op.OpCode}
+                                                >
+                                                  {op.name}
+                                                </option>
+                                              ))}
+                                            </select>
+                                            <label htmlFor="floatingSelectPlanOperator">
+                                              Select Plan Operator
+                                            </label>
+                                          </div>
+                                        </div>
+
+                                        <div className="text-start mt-2 mb-3">
+                                          <button
+                                            className="btn btn-none text-light"
+                                            style={{
+                                              backgroundColor: "#6d70ff",
+                                            }}
+                                            onClick={fetchPlanData}
+                                            disabled={loadingPlans}
+                                          >
+                                            {loadingPlans
+                                              ? "Checking Plans..."
+                                              : "Check Plans"}
+                                          </button>
+                                        </div>
+
+                                        {isModalOpen && (
+                                          <div
+                                            className="modal fade show"
+                                            style={{
+                                              display: "block",
+                                              backgroundColor:
+                                                "rgba(0,0,0,0.5)",
+                                            }}
+                                            tabIndex="-1"
+                                          >
+                                            <div className="modal-dialog">
+                                              <div className="modal-content">
+                                                <div className="modal-header">
+                                                  <h5 className="modal-title">
+                                                    Available Plans
+                                                  </h5>
+                                                  <button
+                                                    type="button"
+                                                    className="btn-close"
+                                                    onClick={() => {
+                                                      setIsModalOpen(false);
+                                                      setLoadingPlans(false);
+                                                    }}
+                                                  ></button>
+                                                </div>
+                                                <div className="modal-body">
+                                                  {Object.keys(plans).length >
+                                                  0 ? (
+                                                    Object.entries(plans).map(
+                                                      ([language, group]) => (
+                                                        <div
+                                                          key={language}
+                                                          className="mb-3"
+                                                        >
+                                                          <h6>
+                                                            {language} (Pack
+                                                            Count:{" "}
+                                                            {group.packCount})
+                                                          </h6>
+                                                          <ul className="list-group">
+                                                            {group.details.map(
+                                                              (plan, index) => (
+                                                                <li
+                                                                  key={index}
+                                                                  className="list-group-item"
+                                                                >
+                                                                  <p>
+                                                                    <strong>
+                                                                      Plan Name:
+                                                                    </strong>{" "}
+                                                                    {
+                                                                      plan.planName
+                                                                    }
+                                                                  </p>
+                                                                  <p>
+                                                                    <strong>
+                                                                      Channels:
+                                                                    </strong>{" "}
+                                                                    {
+                                                                      plan.channels
+                                                                    }
+                                                                  </p>
+                                                                  <p>
+                                                                    <strong>
+                                                                      Paid
+                                                                      Channels:
+                                                                    </strong>{" "}
+                                                                    {
+                                                                      plan.paidChannels
+                                                                    }
+                                                                  </p>
+                                                                  <p>
+                                                                    <strong>
+                                                                      HD
+                                                                      Channels:
+                                                                    </strong>{" "}
+                                                                    {
+                                                                      plan.hdChannels
+                                                                    }
+                                                                  </p>
+                                                                  <p>
+                                                                    <strong>
+                                                                      Last
+                                                                      Update:
+                                                                    </strong>{" "}
+                                                                    {
+                                                                      plan.lastUpdate
+                                                                    }
+                                                                  </p>
+                                                                  <strong>
+                                                                    Pricing
+                                                                    Options:
+                                                                  </strong>
+                                                                  <ul>
+                                                                    {plan.pricing.map(
+                                                                      (
+                                                                        price,
+                                                                        priceIndex
+                                                                      ) => (
+                                                                        <li
+                                                                          key={
+                                                                            priceIndex
+                                                                          }
+                                                                          onClick={() => {
+                                                                            setFormData(
+                                                                              (
+                                                                                prevFormData
+                                                                              ) => ({
+                                                                                ...prevFormData,
+                                                                                amount:
+                                                                                  price.amount.replace(
+                                                                                    "₹",
+                                                                                    ""
+                                                                                  ),
+                                                                              })
+                                                                            );
+                                                                            setIsModalOpen(
+                                                                              false
+                                                                            ); // Close modal
+                                                                          }}
+                                                                          style={{
+                                                                            cursor:
+                                                                              "pointer",
+                                                                            marginBottom:
+                                                                              "5px",
+                                                                          }}
+                                                                        >
+                                                                          {
+                                                                            price.amount
+                                                                          }{" "}
+                                                                          for{" "}
+                                                                          {
+                                                                            price.duration
+                                                                          }
+                                                                        </li>
+                                                                      )
+                                                                    )}
+                                                                  </ul>
+                                                                </li>
+                                                              )
+                                                            )}
+                                                          </ul>
+                                                        </div>
+                                                      )
+                                                    )
+                                                  ) : (
+                                                    <p>No plans available.</p>
+                                                  )}
+                                                </div>
+                                                <div className="modal-footer">
+                                                  <button
+                                                    type="button"
+                                                    className="btn btn-secondary"
+                                                    onClick={() => {
+                                                      setIsModalOpen(false);
+                                                      setLoadingPlans(false);
+                                                    }}
+                                                  >
+                                                    Close
+                                                  </button>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        )}
+
+                                        {/* ---------Fetch PlanInputs-----*/}
+
+                                        {/* <div class="input-group mb-3">
                                           <div class="form-floating">
                                             <select
                                               class="form-select"
@@ -417,7 +711,7 @@ const DthRecharge = () => {
                                               Select Operator
                                             </label>
                                           </div>
-                                        </div>
+                                        </div> */}
 
                                         <div class="input-group mb-3">
                                           <div class="form-floating">
@@ -763,3 +1057,203 @@ const Wrapper = styled.div`
 //     setLoading(false); // Stop loading
 //   }
 // };
+// ***************
+// {isModalOpen && (
+//   <div
+//     className="modal fade show"
+//     style={{
+//       display: "block",
+//       backgroundColor:
+//         "rgba(0,0,0,0.5)",
+//     }}
+//     tabIndex="-1"
+//   >
+//     <div className="modal-dialog">
+//       <div className="modal-content">
+//         <div className="modal-header">
+//           <h5 className="modal-title">
+//             Available Plans
+//           </h5>
+//           <button
+//             type="button"
+//             className="btn-close"
+//             onClick={() => {
+//               setIsModalOpen(false);
+//               setLoadingPlans(false);
+//             }}
+//           ></button>
+//         </div>
+//         <div className="modal-body">
+//           {Object.keys(plans).length >
+//           0 ? (
+//             Object.entries(plans).map(
+//               ([language, group]) => (
+//                 <div
+//                   key={language}
+//                   className="mb-3"
+//                 >
+//                   <h6>
+//                     {language} (Pack
+//                     Count:{" "}
+//                     {group.packCount})
+//                   </h6>
+//                   <ul className="list-group">
+//                     {group.details.map(
+//                       (plan, index) => (
+//                         <li
+//                           key={index}
+//                           className="list-group-item"
+//                           onClick={() => {
+//                             setFormData(
+//                               (
+//                                 prevFormData
+//                               ) => ({
+//                                 ...prevFormData,
+//                                 amount:
+//                                   plan
+//                                     .pricing[0]
+//                                     .amount,
+//                               })
+//                             );
+//                             setIsModalOpen(
+//                               false
+//                             );
+//                             setLoadingPlans(
+//                               false
+//                             );
+//                           }}
+//                           style={{
+//                             cursor:
+//                               "pointer",
+//                           }}
+//                         >
+//                           <p>
+//                             <strong>
+//                               Plan Name:
+//                             </strong>{" "}
+//                             {
+//                               plan.planName
+//                             }
+//                           </p>
+//                           <p>
+//                             <strong>
+//                               Channels:
+//                             </strong>{" "}
+//                             {
+//                               plan.channels
+//                             }
+//                           </p>
+//                           <p>
+//                             <strong>
+//                               Paid
+//                               Channels:
+//                             </strong>{" "}
+//                             {
+//                               plan.paidChannels
+//                             }
+//                           </p>
+//                           <p>
+//                             <strong>
+//                               HD
+//                               Channels:
+//                             </strong>{" "}
+//                             {
+//                               plan.hdChannels
+//                             }
+//                           </p>
+//                           <p>
+//                             <strong>
+//                               Last
+//                               Update:
+//                             </strong>{" "}
+//                             {
+//                               plan.lastUpdate
+//                             }
+//                           </p>
+//                           {/* <p>
+//                             <strong>
+//                               Pricing:
+//                             </strong>{" "}
+//                             {plan.pricing
+//                               .map(
+//                                 (
+//                                   price
+//                                 ) =>
+//                                   `${price.amount} for ${price.duration}`
+//                               )
+//                               .join(
+//                                 ", "
+//                               )}
+//                           </p> */}
+//                           <ul>
+//                             {plan.pricing.map(
+//                               (
+//                                 price,
+//                                 priceIndex
+//                               ) => (
+//                                 <li
+//                                   key={
+//                                     priceIndex
+//                                   }
+//                                   onClick={() => {
+//                                     setFormData(
+//                                       (
+//                                         prevFormData
+//                                       ) => ({
+//                                         ...prevFormData,
+//                                         amount:
+//                                           price.amount.replace(
+//                                             "₹",
+//                                             ""
+//                                           ),
+//                                       })
+//                                     );
+//                                     setIsModalOpen(
+//                                       false
+//                                     );
+//                                   }}
+//                                   style={{
+//                                     cursor:
+//                                       "pointer",
+//                                     marginBottom:
+//                                       "5px",
+//                                   }}
+//                                 >
+//                                   {
+//                                     price.amount
+//                                   }{" "}
+//                                   for{" "}
+//                                   {
+//                                     price.duration
+//                                   }
+//                                 </li>
+//                               )
+//                             )}
+//                           </ul>
+//                         </li>
+//                       )
+//                     )}
+//                   </ul>
+//                 </div>
+//               )
+//             )
+//           ) : (
+//             <p>No plans available.</p>
+//           )}
+//         </div>
+//         <div className="modal-footer">
+//           <button
+//             type="button"
+//             className="btn btn-secondary"
+//             onClick={() => {
+//               setIsModalOpen(false);
+//               setLoadingPlans(false);
+//             }}
+//           >
+//             Close
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   </div>
+// )}

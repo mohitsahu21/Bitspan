@@ -267,7 +267,7 @@ const deeperwebRecharge = (req, res) => {
       return res.status(400).json({ error: "Insufficient wallet balance" });
     }
 
-    const orderId = `CGP${Date.now()}`;
+    const orderId = `DEP${Date.now()}`;
 
     // Step 1: Fetch Deeperweb balance
     getDataFromdeeperwebClientApi("/balance", {})
@@ -339,7 +339,7 @@ const deeperwebRecharge = (req, res) => {
         if (rechargeData.status === "Success") {
           const newWalletBalance = (currentBalance - amount).toFixed(2);
           const transactionDetails = `Recharge Deduction ${number}`;
-          const transactionId = `TXNC${Date.now()}`;
+          const transactionId = `TXNW${Date.now()}`;
 
           const updateWalletQuery = `
             INSERT INTO user_wallet

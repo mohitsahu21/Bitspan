@@ -19,13 +19,11 @@ const PostPaidRecharge = () => {
   };
 
   const [formData, setFormData] = useState({
-    // opcode: "",
     operatorName: "",
     number: "",
     amount: "",
     recharge_Type: "Postpaid",
     created_by_userid: currentUser.userId,
-    // orderid: "4654747",
   });
   const [offlineForm, setOfflineForm] = useState({
     mobile_no: "",
@@ -42,14 +40,9 @@ const PostPaidRecharge = () => {
   const pinRefs = useRef([]);
 
   const operatorOptions = [
-    // { name: "Airtel", value: "Airtel" },
-    // { name: "BSNL STV", value: "BSNL STV" },
-    // { name: "BSNL TOPUP", value: "BSNL TOPUP" },
     { name: "Airtel Postpaid", value: "Airtel Postpaid" },
     { name: "BSNL Postpaid", value: "BSNL Postpaid" },
-    // { name: "Jio", value: "Jio" },
     { name: "Jio Postpaid", value: "Jio Postpaid" },
-    // { name: "Vi", value: "Vi" },
     { name: "Vi Postpaid", value: "Vi Postpaid" },
   ];
 
