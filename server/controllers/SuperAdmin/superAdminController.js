@@ -123,6 +123,23 @@ const addPackage = (req, res) => {
       E_PAN_Card_Commission,
       UTI_PAN_Coupon_Commission,
       P_PAN_Card_Commission,
+      whitelabel_joining_price,
+      retailer_joining_price,
+      superDistributor_joining_price,
+      distributor_joining_price,
+      whiteLabel_id_price,
+      whiteLabel_min_id_limit,
+      whiteLabel_max_id_limit,
+      superDistributor_id_price,
+      superDistributor_min_id_limit,
+      superDistributor_max_id_limit,
+      distributor_id_price,
+      distributor_min_id_limit,
+      distributor_max_id_limit,
+      retailer_id_price,
+      retailer_min_id_limit,
+      retailer_max_id_limit
+
     } = req.body;
 
     const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
@@ -169,8 +186,23 @@ const addPackage = (req, res) => {
         Online_Electricity_Bill_Pay_Commission_Type, Online_Electricity_Bill_Pay_Commission,
         Offline_Electricity_Bill_Pay_Commission_Type, Offline_Electricity_Bill_Pay_Commission,
         Online_Insurance_Pay_Commission_Type, Online_Insurance_Pay_Commission, Offline_Insurance_Pay_Commission_Type,
-        Offline_Insurance_Pay_Commission,E_PAN_Card_Price,P_PAN_Card_Price,UTI_PAN_Coupon_Price, PAN_Card_Commission_Type, E_PAN_Card_Commission, UTI_PAN_Coupon_Commission, P_PAN_Card_Commission , created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?, ?, ? ,?, ? , ? , ? , ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ? , ?, ?, ?, ?, ?, ?, ?)`;
+        Offline_Insurance_Pay_Commission,E_PAN_Card_Price,P_PAN_Card_Price,UTI_PAN_Coupon_Price, PAN_Card_Commission_Type, E_PAN_Card_Commission, UTI_PAN_Coupon_Commission, P_PAN_Card_Commission ,  whitelabel_joining_price,
+      retailer_joining_price,
+      superDistributor_joining_price,
+      distributor_joining_price,
+      whiteLabel_id_price,
+      whiteLabel_min_id_limit,
+      whiteLabel_max_id_limit,
+      superDistributor_id_price,
+      superDistributor_min_id_limit,
+      superDistributor_max_id_limit,
+      distributor_id_price,
+      distributor_min_id_limit,
+      distributor_max_id_limit,
+      retailer_id_price,
+      retailer_min_id_limit,
+      retailer_max_id_limit, created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?, ?, ? ,?, ? , ? , ? , ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ? , ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ? , ?, ? , ?, ?, ?, ?, ?, ?, ?)`;
 
     const values = [
       package_name,
@@ -290,6 +322,22 @@ const addPackage = (req, res) => {
       E_PAN_Card_Commission,
       UTI_PAN_Coupon_Commission,
       P_PAN_Card_Commission,
+      whitelabel_joining_price,
+      retailer_joining_price,
+      superDistributor_joining_price,
+      distributor_joining_price,
+      whiteLabel_id_price,
+      whiteLabel_min_id_limit,
+      whiteLabel_max_id_limit,
+      superDistributor_id_price,
+      superDistributor_min_id_limit,
+      superDistributor_max_id_limit,
+      distributor_id_price,
+      distributor_min_id_limit,
+      distributor_max_id_limit,
+      retailer_id_price,
+      retailer_min_id_limit,
+      retailer_max_id_limit,
       createdAt,
     ];
 
@@ -663,6 +711,22 @@ const editPackage = (req, res) => {
       E_PAN_Card_Commission,
       UTI_PAN_Coupon_Commission,
       P_PAN_Card_Commission,
+      whitelabel_joining_price,
+      retailer_joining_price,
+      superDistributor_joining_price,
+      distributor_joining_price,
+      whiteLabel_id_price,
+      whiteLabel_min_id_limit,
+      whiteLabel_max_id_limit,
+      superDistributor_id_price,
+      superDistributor_min_id_limit,
+      superDistributor_max_id_limit,
+      distributor_id_price,
+      distributor_min_id_limit,
+      distributor_max_id_limit,
+      retailer_id_price,
+      retailer_min_id_limit,
+      retailer_max_id_limit,
     } = req.body;
 
     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
@@ -727,7 +791,22 @@ const editPackage = (req, res) => {
         P_PAN_Card_Price = ?,
         UTI_PAN_Coupon_Price = ?, 
         PAN_Card_Commission_Type = ?, E_PAN_Card_Commission = ?, UTI_PAN_Coupon_Commission = ?, 
-        P_PAN_Card_Commission = ?, updated_at = ? 
+        P_PAN_Card_Commission = ?, whitelabel_joining_price = ?,
+      retailer_joining_price = ?,
+      superDistributor_joining_price = ?,
+      distributor_joining_price = ?,
+      whiteLabel_id_price = ?,
+      whiteLabel_min_id_limit = ?,
+      whiteLabel_max_id_limit = ?,
+      superDistributor_id_price = ?,
+      superDistributor_min_id_limit = ?,
+      superDistributor_max_id_limit = ?,
+      distributor_id_price = ?,
+      distributor_min_id_limit = ?,
+      distributor_max_id_limit = ?,
+      retailer_id_price = ?,
+      retailer_min_id_limit = ?,
+      retailer_max_id_limit = ?, updated_at = ? 
       WHERE id = ?`;
 
     const values = [
@@ -848,6 +927,22 @@ const editPackage = (req, res) => {
       E_PAN_Card_Commission,
       UTI_PAN_Coupon_Commission,
       P_PAN_Card_Commission,
+      whitelabel_joining_price,
+      retailer_joining_price,
+      superDistributor_joining_price,
+      distributor_joining_price,
+      whiteLabel_id_price,
+      whiteLabel_min_id_limit,
+      whiteLabel_max_id_limit,
+      superDistributor_id_price,
+      superDistributor_min_id_limit,
+      superDistributor_max_id_limit,
+      distributor_id_price,
+      distributor_min_id_limit,
+      distributor_max_id_limit,
+      retailer_id_price,
+      retailer_min_id_limit,
+      retailer_max_id_limit,
       updatedAt,
       packageId,
     ];
@@ -5163,7 +5258,7 @@ const AddWalletAddMoneyDirect = (req, res) => {
     const AmountNumber = parseFloat(amount);
 
 
-    const Transaction_Type =  "Add wallet balance";
+    const Transaction_Type =  "Credit";
     const transaction_date = moment()
       .tz("Asia/Kolkata")
       .format("YYYY-MM-DD HH:mm:ss");
@@ -5272,7 +5367,7 @@ const WithdrawWalletAddMoneyDirect = (req, res) => {
 
     const AmountNumber = parseFloat(amount);
 
-    const Transaction_Type =  "Withdraw wallet balance";
+    const Transaction_Type =  "Debit";
     const transaction_date = moment()
       .tz("Asia/Kolkata")
       .format("YYYY-MM-DD HH:mm:ss");
@@ -5615,8 +5710,8 @@ const rejectPanCouponRequest = (req, res) => {
 
     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
     const Transaction_Id = `TXNW${Date.now()}`;
-    const Transaction_Type = "Refund";
-    const Transaction_details = note;
+    const Transaction_Type = "Credit";
+    const Transaction_details = `Refund for PAN Coupon request Order Id ${order_id}`;
     const Transaction_status = "Success"
     const transaction_date = moment()
       .tz("Asia/Kolkata")
@@ -6823,6 +6918,141 @@ const getCommissionEntry = (req, res) => {
   }
 };
 
+const getUploadedDocuments = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM pandocument c LEFT JOIN userprofile u  ON c.userId = u.UserId WHERE c.status = 'Pending' ORDER BY id DESC`;
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM pandocument c LEFT JOIN userprofile u  ON c.userId = u.UserId ORDER BY id DESC`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getUploadedDocuments from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getUploadedDocuments" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: 0,
+            message: "No getUploadedDocuments found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getUploadedDocuments fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getUploadedDocuments from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getUploadedDocuments",
+      error: error.message,
+    });
+  }
+};
+
+const EditSuperAdminProfile = (req, res) => {
+  try {
+    const {   userId ,
+      username,
+      ContactNo ,
+      email,
+      PanCardNumber ,
+      AadharNumber,
+      BusinessName ,
+      City ,
+      State ,
+      PinCode } = req.body;
+
+    if (!userId  ) {
+      return res
+        .status(200)
+        .json({ success: false, message: "All fields are required" });
+    }
+
+    
+
+   
+    const Sql = `UPDATE userprofile SET UserName = ? , ContactNo = ? , Email = ? , PanCardNumber	 = ?, AadharNumber = ?, BusinessName = ?, City = ?, State = ?, PinCode = ?  WHERE UserId = ?`;
+    db.query(Sql, [ username,
+      ContactNo ,
+      email,
+      PanCardNumber ,
+      AadharNumber,
+      BusinessName ,
+      City ,
+      State ,
+      PinCode ,userId], (Error, Results) => {
+      if (Error) {
+        console.error("Error Change plan:", Error);
+        return res.status(500).json({success: false, message: "Failed to Change Details" });
+      }
+
+      if (Results.affectedRows === 0) {
+        return res.status(404).json({success: false, message: "user not found" });
+      }
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Change Details successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({ success: false, message: "An unexpected error occurred" });
+  }
+};
+
+const getUserDetails = (req, res) => {
+
+  const { userId } = req.params;
+
+  try {
+    const sql =
+      "SELECT * FROM userprofile WHERE UserId = ?";
+
+    db.query(sql, [userId],(err, result) => {
+      if (err) {
+        console.error("Error fetching user from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error fetching user" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: false,
+            data: [],
+            message: "No user found",
+          });
+        } else {
+          // Remove the password field from each user object
+          const sanitizedResult = result.map(({ password, ...rest }) => rest);
+
+          return res.status(200).json({
+            success: true,
+            data: sanitizedResult,
+            message: "User fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching users from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching users",
+      error: error.message,
+    });
+  }
+};
+
 
 module.exports = {
   addPackage,
@@ -6943,7 +7173,10 @@ module.exports = {
   getUserPackageDetails,
   CreditCommission,
   addCommissionEntry,
-  getCommissionEntry
+  getCommissionEntry,
+  getUploadedDocuments,
+  EditSuperAdminProfile,
+  getUserDetails
 
 
 };
