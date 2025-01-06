@@ -322,7 +322,7 @@ const SAPanTransactionReport = () => {
                                                 <h3>Complaint Raised List</h3>
                                             </div> */}
                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">PAN Transaction History</h4>
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">NSDL PAN Transaction History</h4>
                                                 <p className="mx-lg-5">
                                                     {" "}
                                                     <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
@@ -331,7 +331,7 @@ const SAPanTransactionReport = () => {
                                                         style={{ fontSize: "13px" }}
                                                     >
                                                         {" "}
-                                                        PAN Transaction History
+                                                      NSDL PAN Transaction History
                                                     </span>{" "}
                                                 </p>
                                             </div>
