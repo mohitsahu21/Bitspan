@@ -634,7 +634,7 @@ const getApiRechargeData = (req, res) => {
   const userId = req.params.userId;
   const rechargeType = "Prepaid";
 
-  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ?`;
+  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ? ORDER BY id DESC`;
 
   db.query(query, [rechargeType, userId], (err, result) => {
     if (err) {
@@ -2335,7 +2335,7 @@ const getDthConnectionPlan = (req, res) => {
 const getWalletSummary = (req, res) => {
   const userId = req.params.userId;
 
-  let query = `SELECT * FROM user_wallet WHERE userId = ?`;
+  let query = `SELECT * FROM user_wallet WHERE userId = ? ORDER BY wid  DESC`;
 
   db.query(query, [userId], (err, result) => {
     if (err) {

@@ -5,6 +5,7 @@ import { MdFormatListNumberedRtl } from "react-icons/md";
 import { BiHomeAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
+import { Dropdown, Modal, Spinner } from "react-bootstrap";
 
 const PrepaidRechargeHistory = () => {
   const [allData, setAllData] = useState([]);
@@ -19,6 +20,7 @@ const PrepaidRechargeHistory = () => {
   const userID = currentUser.userId;
 
   const fetchRechargeData = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApiRechargeData/${userID}`
@@ -27,8 +29,15 @@ const PrepaidRechargeHistory = () => {
       console.log(data);
       setAllData(data);
       setFilteredData(data);
+      setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log(
+        error.response.data.status === "Failure"
+          ? error.response.data.message
+          : "No response received from the server"
+      );
+    } finally {
+      setLoading(false);
     }
   };
   console.log(allData);
@@ -94,8 +103,9 @@ const PrepaidRechargeHistory = () => {
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
                       <div className="row d-flex flex-column g-4">
-                        <div className="d-flex flex-column flex-md-row gap-3">
-                          <div className="col-12 col-md-4 col-lg-3">
+                        <div className="d-flex flex-column flex-xl-row gap-3">
+                          {/* <div className="col-12 col-md-4 col-lg-3"> */}
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
                             <input
                               className="form-control"
                               type="search"
@@ -130,46 +140,65 @@ const PrepaidRechargeHistory = () => {
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div className="table-responsive">
-                            <table className="table table-striped">
-                              <thead className="table-dark">
-                                <tr>
-                                  <th scope="col">Date</th>
-                                  <th scope="col">Transaction ID</th>
-                                  <th scope="col">Operator Order ID</th>
-                                  <th scope="col">Operator Name</th>
-                                  <th scope="col">Phone Number</th>
-                                  <th scope="col">Details</th>
-                                  <th scope="col">Amount</th>
-                                  <th scope="col">Debit</th>
-                                  <th scope="col">Earning</th>
-                                  <th scope="col">Status</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {displayData.length > 0 ? (
-                                  displayData.map((item) => (
-                                    <tr key={item.id}>
-                                      <td>{item.created_at}</td>
-                                      <td>{item.transaction_id}</td>
-                                      <td>{item.orderid}</td>
-                                      <td>{item.operator_name}</td>
-                                      <td>{item.mobile_no}</td>
-                                      <td>{item.message}</td>
-                                      <td>{item.amount}</td>
-                                      <td></td>
-                                      <td>{item.dr_amount}</td>
-                                      <td>{item.status}</td>
+                            {loading ? (
+                              <div className="d-flex justify-content-center">
+                                <Spinner animation="border" role="status">
+                                  <span className="visually-hidden ">
+                                    Loading...
+                                  </span>
+                                </Spinner>
+                              </div>
+                            ) : (
+                              <>
+                                <table className="table table-striped">
+                                  <thead className="table-dark">
+                                    <tr>
+                                      <th scope="col">#</th>
+                                      <th scope="col">Date</th>
+                                      <th scope="col">Operator Order ID</th>
+                                      <th scope="col">Transaction ID</th>
+                                      <th scope="col">Provider Name</th>
+                                      <th scope="col">Operator Name</th>
+                                      <th scope="col">Phone Number</th>
+                                      <th scope="col">Details</th>
+                                      <th scope="col">Amount</th>
+                                      {/* <th scope="col">Debit</th> */}
+                                      <th scope="col">Earning</th>
+                                      <th scope="col">Status</th>
                                     </tr>
-                                  ))
-                                ) : (
-                                  <tr>
-                                    <td colSpan="10" className="text-center">
-                                      No results found
-                                    </td>
-                                  </tr>
-                                )}
-                              </tbody>
-                            </table>
+                                  </thead>
+                                  <tbody>
+                                    {displayData.length > 0 ? (
+                                      displayData.map((item, index) => (
+                                        <tr key={`${item.id}-${index}`}>
+                                          <td>{index + 1}</td>
+                                          <td>{item.created_at}</td>
+                                          <td>{item.orderid}</td>
+                                          <td>{item.transaction_id}</td>
+                                          <td>{item.providerName}</td>
+                                          <td>{item.operator_name}</td>
+                                          <td>{item.mobile_no}</td>
+                                          <td>{item.message}</td>
+                                          <td>{item.amount}</td>
+                                          {/* <td></td> */}
+                                          <td>{item.dr_amount}</td>
+                                          <td>{item.status}</td>
+                                        </tr>
+                                      ))
+                                    ) : (
+                                      <tr>
+                                        <td
+                                          colSpan="10"
+                                          className="text-center"
+                                        >
+                                          No results found
+                                        </td>
+                                      </tr>
+                                    )}
+                                  </tbody>
+                                </table>
+                              </>
+                            )}
                           </div>
                           <PaginationContainer>
                             <ReactPaginate
@@ -216,9 +245,11 @@ const Wrapper = styled.div`
   th {
     font-weight: 500;
     font-size: 14px;
+    white-space: nowrap;
   }
   td {
     font-size: 14px;
+    white-space: nowrap;
   }
   @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
