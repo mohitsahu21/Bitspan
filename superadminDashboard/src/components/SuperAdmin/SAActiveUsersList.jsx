@@ -681,31 +681,46 @@ const SAActiveUsersList = () => {
                                             ))}
                                       </td> */}
                                         <td>
-                                          <a
-                                            href={user.AadharFront}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                          >
-                                            View
-                                          </a>
+                                          {
+                                           user.AadharFront ?  <a
+                                           href={user.AadharFront}
+                                           target="_blank"
+                                           rel="noopener noreferrer"
+                                         >
+                                           View
+                                         </a>
+                                         : "Not Available"
+                                          }
+                                         
                                         </td>
                                         <td>
-                                          <a
+                                          {
+                                           user.AadharBack ?
+                                           <a
                                             href={user.AadharBack}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                           >
                                             View
-                                          </a>
+                                          </a> : 
+                                          "Not Available"
+                                          }
+                                          
                                         </td>
                                         <td>
-                                          <a
+                                          {
+                                            user.PanCardFront ?
+                                            <a
                                             href={user.PanCardFront}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                           >
                                             View
                                           </a>
+                                             :
+                                             "Not Available"
+                                          }
+                                         
                                         </td>
                                         <td>{user.Status}</td>
                                         {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
