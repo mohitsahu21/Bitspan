@@ -217,6 +217,7 @@ onChange={(e) => setKeyword(e.target.value)}
                                                                     <th scope="col">User Name</th>
                                                                     <th scope="col">User Role</th>
                                                                     <th scope="col">No Of User Id</th>
+                                                                    <th scope="col">User Id Price</th>
                                                                     <th scope="col">User Id Type</th>
                                                                     <th scope="col">Total Amount</th>
                                                                     <th scope="col">Payment Method</th>
@@ -239,6 +240,7 @@ onChange={(e) => setKeyword(e.target.value)}
                                           {/* <td>{item.userPhone}</td>
                                           <td>{item.userEmail}</td> */}
                                           <td>{item.number_of_userId}</td>
+                                          <td>{item.userId_amount}</td>
                                           <td>{item.userId_type}</td>
                                           <td>{item.total_amount}</td>
                                       
