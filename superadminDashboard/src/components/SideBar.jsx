@@ -1527,13 +1527,18 @@ const SuperAdminData = [
         // cName: "sub-nav",
       },
       {
-        title: "PAN Transaction History",
+        title: "NSDL PAN Transaction History",
         path: "/pan-transaction-report",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
-        title: "PAN Correction History",
+        title: "NSDL PAN Correction History",
         path: "/pan-correction-report",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "UTI PAN Transaction History",
+        path: "/uti-transaction-report",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
 
@@ -1590,51 +1595,51 @@ const SuperAdminData = [
       // },
     ],
   },
-  {
-    title: "UTI 2.0",
-    // path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+  // {
+  //   title: "UTI 2.0",
+  //   // path: "/training-video",
+  //   icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+  //   iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+  //   iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
-    subNav: [
-      {
-        title: "Wallet Full Summary",
-        path: "/wallet-transaction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "UTI Transaction History",
-        path: "/uti-transaction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-    ],
-  },
-  {
-    title: "UTI New",
-    // path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+  //   subNav: [
+  //     {
+  //       title: "Wallet Full Summary",
+  //       path: "/wallet-transaction-report",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //     {
+  //       title: "UTI Transaction History",
+  //       path: "/uti-transaction-report",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: "UTI New",
+  //   // path: "/training-video",
+  //   icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+  //   iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+  //   iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
-    subNav: [
-      {
-        title: "Buy Coupon",
-        path: "/buy-uti-coupon",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Distribute UTI Coupon",
-        path: "/distribute-uti-coupon",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "UTI Coupon History",
-        path: "/uti-coupon-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-    ],
-  },
+  //   subNav: [
+  //     {
+  //       title: "Buy Coupon",
+  //       path: "/buy-uti-coupon",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //     {
+  //       title: "Distribute UTI Coupon",
+  //       path: "/distribute-uti-coupon",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //     {
+  //       title: "UTI Coupon History",
+  //       path: "/uti-coupon-history",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //   ],
+  // },
   // {
   //   title: "PAN Transaction History",
   //   path: "pan-transaction-report",
@@ -1738,11 +1743,11 @@ const SuperAdminData = [
       //   path: "/change-coupon-price",
       //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
       // },
-      {
-        title: "User ID Set Rate",
-        path: "/user-id-set-rate",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
+      // {
+      //   title: "User ID Set Rate",
+      //   path: "/user-id-set-rate",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
       {
         title: "Set DTH Connection Plans",
         path: "/Set-DTH-Connection-Plans",
@@ -1781,6 +1786,11 @@ const SuperAdminData = [
       {
         title: "Fund Transfer Status",
         path: "/fund-transfer-status",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Uploaded Documents",
+        path: "/uploaded-documents",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
