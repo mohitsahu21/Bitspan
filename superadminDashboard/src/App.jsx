@@ -41,7 +41,7 @@
 // }
 
 // export default App;
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
@@ -81,9 +81,11 @@ function App() {
         location.pathname !== "/registration-page" && <Sider />}
 
       <Routes>
-        <Route path="/" element={<LoginBitspan />} />
-        <Route path="/password-reset" element={<ForgotPassword />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/" element={ currentUser  ?  (
+                          <Navigate to="/dashboard" />
+                        ) : (<LoginBitspan />) } />
+        <Route path="/password-reset" element={currentUser ? (<Navigate to="/dashboard" />) :  (<ForgotPassword />)} />
+        {!currentUser && <Route path="*" element={<NotFound />} />} 
       </Routes>
       {user === "Retailer" && <RetailerRoutes />}
       {user === "SuperDistributor" && <SuperDistributorRoutes />}
