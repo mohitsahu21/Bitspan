@@ -41,6 +41,7 @@ const {
   getPackageData,
   getDthConnectionPlan,
   getWalletSummary,
+  buyCoupon,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -200,5 +201,6 @@ router.get("/getWalletOffline/:userId", getWalletOffline);
 router.get("/getPackageData/:packageId", getPackageData);
 router.get("/getDthConnectionPlan", getDthConnectionPlan);
 router.get("/getWalletSummary/:userId", getWalletSummary);
+router.post("/buyCoupon", buyCoupon);
 
 module.exports = router;

@@ -131,6 +131,72 @@ const getDTHPlansINFOCheck = (req, res) => {
     );
 };
 
+const getElectricityPlans = (req, res) => {
+  const { operatorCode, mobile_no } = req.query;
+
+  if (!operatorCode || !mobile_no) {
+    return res
+      .status(400)
+      .json({ error: "Operator code and circle code are required" });
+  }
+
+  // Fetch credentials from environment variables
+  const apiUserId = process.env.PLAN_API_USER_ID;
+  const apiPassword = process.env.PLAN_API_PASSWORD;
+
+  // Define query parameters
+  const params = {
+    apimember_id: apiUserId,
+    api_password: apiPassword,
+    operator_code: operatorCode,
+    bill_number: mobile_no,
+  };
+
+  const endpoint = "/ElectricityBillFetch";
+
+  console.log("Endpoint:", endpoint);
+  console.log("Params:", params);
+
+  fetchFromPlanApi(endpoint, params)
+    .then((data) => res.json(data))
+    .catch((error) =>
+      res.status(500).json({ error: "Failed to fetch mobile plans" })
+    );
+};
+
+const getBillCheckPlans = (req, res) => {
+  const { operatorCode, mobile_no } = req.query;
+
+  if (!operatorCode || !mobile_no) {
+    return res
+      .status(400)
+      .json({ error: "Operator code and circle code are required" });
+  }
+
+  // Fetch credentials from environment variables
+  const apiUserId = process.env.PLAN_API_USER_ID;
+  const apiPassword = process.env.PLAN_API_PASSWORD;
+
+  // Define query parameters
+  const params = {
+    apimember_id: apiUserId,
+    api_password: apiPassword,
+    Accountno: mobile_no,
+    operator_code: operatorCode,
+  };
+
+  const endpoint = "/BillCheck";
+
+  console.log("Endpoint:", endpoint);
+  console.log("Params:", params);
+
+  fetchFromPlanApi(endpoint, params)
+    .then((data) => res.json(data))
+    .catch((error) =>
+      res.status(500).json({ error: "Failed to fetch mobile plans" })
+    );
+};
+
 const getBillInfo = (req, res) => {
   const { accountNo, operatorCode, optional1, optional2, optional3 } =
     req.query;
@@ -175,4 +241,6 @@ module.exports = {
   getBillInfo,
   getDTHPlans,
   getDTHPlansINFOCheck,
+  getElectricityPlans,
+  getBillCheckPlans,
 };

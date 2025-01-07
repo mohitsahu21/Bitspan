@@ -27,6 +27,7 @@ const MobileRecharge = () => {
     operatorName: "",
     number: "",
     amount: "",
+    walletDeductAmt: "",
     recharge_Type: "Prepaid",
     created_by_userid: currentUser.userId,
     // orderid: "4654747",
@@ -42,7 +43,7 @@ const MobileRecharge = () => {
     userId: currentUser.userId,
   });
 
-  console.log(offlineForm);
+  // console.log(offlineForm);
   const [response, setResponse] = useState(null);
   const [responseForm, setResponseForm] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -55,6 +56,8 @@ const MobileRecharge = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRecharge, setIsRecharge] = useState(false);
   const [loadingPlans, setLoadingPlans] = useState(false);
+  const [retailerPackage, setRetailerPackage] = useState([]);
+  const [userRelation, setUserRelation] = useState([]);
 
   const operatorOptions = [
     { name: "Airtel", value: "Airtel" },
@@ -116,6 +119,24 @@ const MobileRecharge = () => {
     { ID: 4, Name: "IDEA", OpCode: "6", Type: "PREPAID" },
     { ID: 5, Name: "RELIANCE JIO", OpCode: "11", Type: "PREPAID" },
   ];
+
+  useEffect(() => {
+    const fetchPackage = async () => {
+      try {
+        const response = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+        );
+
+        const priceData = response.data.data[0];
+        // console.log("Price Data:", priceData);
+        setRetailerPackage(priceData);
+      } catch (error) {
+        console.error("Fetching package data failed:", error);
+      }
+    };
+
+    fetchPackage();
+  }, []);
 
   const fetchPlanData = async () => {
     setIsRecharge(false);
@@ -209,57 +230,57 @@ const MobileRecharge = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
 
-    if (!isRecharge) {
-      return;
-    }
+  //   if (!isRecharge) {
+  //     return;
+  //   }
 
-    setLoading(true);
-    let success = false;
+  //   setLoading(true);
+  //   let success = false;
 
-    for (const api of apiData) {
-      try {
-        const result = await axios.post(api.API_URL, formData);
+  //   for (const api of apiData) {
+  //     try {
+  //       const result = await axios.post(api.API_URL, formData);
 
-        if (result.data && result.data.message === "Recharge successful") {
-          Swal.fire({
-            title: "Done!",
-            text: "Recharge Successful",
-            icon: "success",
-          });
-          setResponse(result.data);
-          success = true;
-          break;
-        } else if (
-          result.data.rechargeData &&
-          result.data.rechargeData.status === "Failure"
-        ) {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Something went wrong with this API!",
-          });
-        }
-      } catch (error) {
-        console.error(
-          "Error in recharge:",
-          error.response ? error.response.data : error.message
-        );
-      }
-    }
+  //       if (result.data && result.data.message === "Recharge successful") {
+  //         Swal.fire({
+  //           title: "Done!",
+  //           text: "Recharge Successful",
+  //           icon: "success",
+  //         });
+  //         setResponse(result.data);
+  //         success = true;
+  //         break;
+  //       } else if (
+  //         result.data.rechargeData &&
+  //         result.data.rechargeData.status === "Failure"
+  //       ) {
+  //         Swal.fire({
+  //           icon: "error",
+  //           title: "Oops...",
+  //           text: "Something went wrong with this API!",
+  //         });
+  //       }
+  //     } catch (error) {
+  //       console.error(
+  //         "Error in recharge:",
+  //         error.response ? error.response.data : error.message
+  //       );
+  //     }
+  //   }
 
-    if (!success) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "All providers are currently unavailable. Please try again later.",
-      });
-    }
+  //   if (!success) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Oops...",
+  //       text: "All providers are currently unavailable. Please try again later.",
+  //     });
+  //   }
 
-    setLoading(false);
-  };
+  //   setLoading(false);
+  // }; Original Handle submit for online recharge
 
   // const handlesubmitForm = async (e) => {
   //   e.preventDefault();
@@ -302,6 +323,713 @@ const MobileRecharge = () => {
   //     setLoading(false);
   //   }
   // };
+
+  const prepaidRechargeComm = async (
+    retailer,
+    distributor,
+    superDistributor,
+    white_lable,
+    packageDetails,
+    item
+  ) => {
+    const Order_Id = `ORW${Date.now()}`;
+    const Transaction_Id = `TXNW${Date.now()}`;
+    const retailerFormData = {
+      userId: currentUser.userId,
+      amount: "",
+      Transaction_details: `Commission Credit for Prepaid recharge`,
+      status: "Success",
+      Order_Id,
+      Transaction_Id,
+    };
+    const distributorFormData = {
+      userId: distributor,
+      amount: "",
+      Transaction_details: `Commission Credit for Prepaid recharge`,
+      status: "Success",
+      Order_Id,
+      Transaction_Id,
+    };
+    const superDistributorFormData = {
+      userId: superDistributor,
+      amount: "",
+      Transaction_details: `Commission Credit for Prepaid recharge`,
+      status: "Success",
+      Order_Id,
+      Transaction_Id,
+    };
+    const whiteLableFormData = {
+      userId: white_lable,
+      amount: "",
+      Transaction_details: `Commission Credit for Prepaid recharge`,
+      status: "Success",
+      Order_Id,
+      Transaction_Id,
+    };
+    const retailerPackage = packageDetails?.retailer
+      ? packageDetails?.retailer[0]
+      : {};
+    const distributorPackage = packageDetails?.distributor
+      ? packageDetails?.distributor[0]
+      : {};
+    const superDistributorPackage = packageDetails?.superDistributor
+      ? packageDetails?.superDistributor[0]
+      : {};
+    const whiteLablePackage = packageDetails?.whiteLable
+      ? packageDetails?.whiteLable[0]
+      : {};
+
+    const operatorName = item.operatorName;
+    const amount = parseFloat(item.amount);
+
+    let retailerCommAmount = 0;
+    let distributorCommAmount = 0;
+    let superDistributorCommAmount = 0;
+    let whiteLableCommAmount = 0;
+
+    try {
+      if (retailerPackage.On_Prepaid_Recharge_Comm_Type == "Percentage") {
+        if (operatorName == "Jio") {
+          retailerCommAmount =
+            (amount *
+              parseFloat(retailerPackage.On_Jio_Prepaid_Recharge_Comm)) /
+            100;
+        } else if (operatorName == "Airtel") {
+          retailerCommAmount =
+            (amount *
+              parseFloat(retailerPackage.On_Airtel_Prepaid_Recharge_Comm)) /
+            100;
+        } else if (operatorName == "Vi") {
+          retailerCommAmount =
+            (amount * parseFloat(retailerPackage.On_Vi_Prepaid_Recharge_Comm)) /
+            100;
+        } else if (operatorName == "BSNL STV") {
+          retailerCommAmount =
+            (amount *
+              parseFloat(retailerPackage.On_Bsnl_Prepaid_Recharge_Comm)) /
+            100;
+        } else if (operatorName == "BSNL TOPUP") {
+          retailerCommAmount =
+            (amount *
+              parseFloat(retailerPackage.On_Bsnl_Prepaid_Recharge_Comm)) /
+            100;
+        }
+      } else {
+        if (operatorName == "Jio") {
+          retailerCommAmount = parseFloat(
+            retailerPackage.On_Jio_Prepaid_Recharge_Comm
+          );
+        } else if (operatorName == "Airtel") {
+          retailerCommAmount = parseFloat(
+            retailerPackage.On_Airtel_Prepaid_Recharge_Comm
+          );
+        } else if (operatorName == "Vi") {
+          retailerCommAmount = parseFloat(
+            retailerPackage.On_Vi_Prepaid_Recharge_Comm
+          );
+        } else if (operatorName == "BSNL STV") {
+          retailerCommAmount = parseFloat(
+            retailerPackage.On_Bsnl_Prepaid_Recharge_Comm
+          );
+        } else if (operatorName == "BSNL TOPUP") {
+          retailerCommAmount = parseFloat(
+            retailerPackage.On_Bsnl_Prepaid_Recharge_Comm
+          );
+        }
+      }
+
+      if (distributor && distributorPackage) {
+        if (distributorPackage.On_Prepaid_Recharge_Comm_Type == "Percentage") {
+          if (operatorName == "Jio") {
+            distributorCommAmount =
+              (amount *
+                parseFloat(distributorPackage.On_Jio_Prepaid_Recharge_Comm)) /
+              100;
+          } else if (operatorName == "Airtel") {
+            distributorCommAmount =
+              (amount *
+                parseFloat(
+                  distributorPackage.On_Airtel_Prepaid_Recharge_Comm
+                )) /
+              100;
+          } else if (operatorName == "Vi") {
+            distributorCommAmount =
+              (amount *
+                parseFloat(distributorPackage.On_Vi_Prepaid_Recharge_Comm)) /
+              100;
+          } else if (operatorName == "BSNL STV") {
+            distributorCommAmount =
+              (amount *
+                parseFloat(distributorPackage.On_Bsnl_Prepaid_Recharge_Comm)) /
+              100;
+          } else if (operatorName == "BSNL TOPUP") {
+            distributorCommAmount =
+              (amount *
+                parseFloat(distributorPackage.On_Bsnl_Prepaid_Recharge_Comm)) /
+              100;
+          }
+        } else {
+          if (operatorName == "Jio") {
+            distributorCommAmount = parseFloat(
+              distributorPackage.On_Jio_Prepaid_Recharge_Comm
+            );
+          } else if (operatorName == "Airtel") {
+            distributorCommAmount = parseFloat(
+              distributorPackage.On_Airtel_Prepaid_Recharge_Comm
+            );
+          } else if (operatorName == "Vi") {
+            distributorCommAmount = parseFloat(
+              distributorPackage.On_Vi_Prepaid_Recharge_Comm
+            );
+          } else if (operatorName == "BSNL STV") {
+            distributorCommAmount = parseFloat(
+              distributorPackage.On_Bsnl_Prepaid_Recharge_Comm
+            );
+          } else if (operatorName == "BSNL TOPUP") {
+            distributorCommAmount = parseFloat(
+              distributorPackage.On_Bsnl_Prepaid_Recharge_Comm
+            );
+          }
+        }
+      }
+      if (superDistributor && superDistributorPackage) {
+        if (
+          superDistributorPackage.On_Prepaid_Recharge_Comm_Type == "Percentage"
+        ) {
+          if (operatorName == "Jio") {
+            superDistributorCommAmount =
+              (amount *
+                parseFloat(
+                  superDistributorPackage.On_Jio_Prepaid_Recharge_Comm
+                )) /
+              100;
+          } else if (operatorName == "Airtel") {
+            superDistributorCommAmount =
+              (amount *
+                parseFloat(
+                  superDistributorPackage.On_Airtel_Prepaid_Recharge_Comm
+                )) /
+              100;
+          } else if (operatorName == "Vi") {
+            superDistributorCommAmount =
+              (amount *
+                parseFloat(
+                  superDistributorPackage.On_Vi_Prepaid_Recharge_Comm
+                )) /
+              100;
+          } else if (operatorName == "BSNL STV") {
+            superDistributorCommAmount =
+              (amount *
+                parseFloat(
+                  superDistributorPackage.On_Bsnl_Prepaid_Recharge_Comm
+                )) /
+              100;
+          } else if (operatorName == "BSNL TOPUP") {
+            superDistributorCommAmount =
+              (amount *
+                parseFloat(
+                  superDistributorPackage.On_Bsnl_Prepaid_Recharge_Comm
+                )) /
+              100;
+          }
+        } else {
+          if (operatorName == "Jio") {
+            superDistributorCommAmount = parseFloat(
+              superDistributorPackage.On_Jio_Prepaid_Recharge_Comm
+            );
+          } else if (operatorName == "Airtel") {
+            superDistributorCommAmount = parseFloat(
+              superDistributorPackage.On_Airtel_Prepaid_Recharge_Comm
+            );
+          } else if (operatorName == "Vi") {
+            superDistributorCommAmount = parseFloat(
+              superDistributorPackage.On_Vi_Prepaid_Recharge_Comm
+            );
+          } else if (operatorName == "BSNL STV") {
+            superDistributorCommAmount = parseFloat(
+              superDistributorPackage.On_Bsnl_Prepaid_Recharge_Comm
+            );
+          } else if (operatorName == "BSNL TOPUP") {
+            superDistributorCommAmount = parseFloat(
+              superDistributorPackage.On_Bsnl_Prepaid_Recharge_Comm
+            );
+          }
+        }
+      }
+      if (white_lable && whiteLablePackage) {
+        if (whiteLablePackage.On_Prepaid_Recharge_Comm_Type == "Percentage") {
+          if (operatorName == "Jio") {
+            whiteLableCommAmount =
+              (amount *
+                parseFloat(whiteLablePackage.On_Jio_Prepaid_Recharge_Comm)) /
+              100;
+          } else if (operatorName == "Airtel") {
+            whiteLableCommAmount =
+              (amount *
+                parseFloat(whiteLablePackage.On_Airtel_Prepaid_Recharge_Comm)) /
+              100;
+          } else if (operatorName == "Vi") {
+            whiteLableCommAmount =
+              (amount *
+                parseFloat(whiteLablePackage.On_Vi_Prepaid_Recharge_Comm)) /
+              100;
+          } else if (operatorName == "BSNL STV") {
+            whiteLableCommAmount =
+              (amount *
+                parseFloat(whiteLablePackage.On_Bsnl_Prepaid_Recharge_Comm)) /
+              100;
+          } else if (operatorName == "BSNL TOPUP") {
+            whiteLableCommAmount =
+              (amount *
+                parseFloat(whiteLablePackage.On_Bsnl_Prepaid_Recharge_Comm)) /
+              100;
+          }
+        } else {
+          if (operatorName == "Jio") {
+            whiteLableCommAmount = parseFloat(
+              whiteLablePackage.On_Jio_Prepaid_Recharge_Comm
+            );
+          } else if (operatorName == "Airtel") {
+            whiteLableCommAmount = parseFloat(
+              whiteLablePackage.On_Airtel_Prepaid_Recharge_Comm
+            );
+          } else if (operatorName == "Vi") {
+            whiteLableCommAmount = parseFloat(
+              whiteLablePackage.On_Vi_Prepaid_Recharge_Comm
+            );
+          } else if (operatorName == "BSNL STV") {
+            whiteLableCommAmount = parseFloat(
+              whiteLablePackage.On_Bsnl_Prepaid_Recharge_Comm
+            );
+          } else if (operatorName == "BSNL TOPUP") {
+            whiteLableCommAmount = parseFloat(
+              whiteLablePackage.On_Bsnl_Prepaid_Recharge_Comm
+            );
+          }
+        }
+      }
+
+      retailerFormData.amount = retailerCommAmount;
+      distributorFormData.amount = distributorCommAmount;
+      superDistributorFormData.amount = superDistributorCommAmount;
+      whiteLableFormData.amount = whiteLableCommAmount;
+      //  console.log(retailerCommAmount)
+      //  console.log(distributorCommAmount)
+      //  console.log(superDistributorCommAmount)
+      //  console.log(whiteLableCommAmount)
+    } catch (error) {
+      console.log(error);
+    }
+    return {
+      retailerFormData,
+      distributorFormData,
+      superDistributorFormData,
+      whiteLableFormData,
+      Order_Id,
+      Transaction_Id,
+    };
+  };
+  const handleSubmit = async (e) => {
+    let result = {};
+    let usersId = {
+      distributorId: "NA",
+      superDistributorId: "NA",
+      whiteLabelId: "NA",
+    };
+    e.preventDefault();
+
+    if (!isRecharge) {
+      return;
+    }
+
+    setLoading(true);
+
+    // Package Find code
+    try {
+      // setLoading(true);
+
+      const { data } = await axios.get(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${currentUser.userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log(data.data);
+      setUserRelation(data.data);
+
+      if (data.data) {
+        const { distributor, superDistributor, white_lable } = data.data;
+        usersId.distributorId = distributor;
+        usersId.superDistributorId = superDistributor;
+        usersId.whiteLabelId = white_lable;
+        const retailer = currentUser.userId;
+        // Create an array to hold promises and a mapping object
+        const promises = [];
+        const resultsMap = {
+          retailer: null,
+          distributor: null,
+          superDistributor: null,
+          whiteLable: null,
+        };
+
+        const retailerPromise = axios
+          .get(
+            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((response) => {
+            resultsMap.retailer = response.data.data;
+          });
+        promises.push(retailerPromise);
+
+        if (distributor) {
+          const distributorPromise = axios
+            .get(
+              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then((response) => {
+              resultsMap.distributor = response.data.data;
+            });
+          promises.push(distributorPromise);
+        }
+
+        if (superDistributor) {
+          const superDistributorPromise = axios
+            .get(
+              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then((response) => {
+              resultsMap.superDistributor = response.data.data;
+            });
+          promises.push(superDistributorPromise);
+        }
+
+        if (white_lable) {
+          const whiteLablePromise = axios
+            .get(
+              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then((response) => {
+              resultsMap.whiteLable = response.data.data;
+            });
+          promises.push(whiteLablePromise);
+        }
+
+        // Wait for all promises to resolve
+        await Promise.all(promises);
+
+        // Log the results
+        console.log("retailer Package:", resultsMap.retailer);
+        console.log("Distributor Package:", resultsMap.distributor);
+        console.log("Super Distributor Package:", resultsMap.superDistributor);
+        console.log("White Label Package:", resultsMap.whiteLable);
+
+        // let result = {};
+        result = await prepaidRechargeComm(
+          retailer,
+          distributor,
+          superDistributor,
+          white_lable,
+          resultsMap,
+          formData
+        );
+        console.log(result);
+        console.log(result.retailerFormData.amount);
+      }
+    } catch (error) {
+      console.error("There was an error submitting the form!", error);
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "An error occurred during the process. Please try again.",
+        });
+      }
+    }
+    // Package Find code
+    let success = false;
+
+    if (
+      result.retailerFormData.amount === null ||
+      result.retailerFormData.amount === undefined ||
+      isNaN(result.retailerFormData.amount)
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong Please try Again!",
+      });
+      return;
+    }
+
+    const commissionAmt = parseFloat(result.retailerFormData.amount).toFixed(2);
+    const rechargeAmt = parseFloat(formData.amount).toFixed(2);
+
+    const walletAmt = rechargeAmt - commissionAmt;
+    console.log(walletAmt);
+
+    // setFormData((prev) => {
+    //   return { ...prev, walletDeductAmt: walletAmt };
+    // });
+
+    // Update formData directly
+    const updatedFormData = {
+      ...formData,
+      walletDeductAmt: walletAmt,
+    };
+
+    // Log updated formData
+    console.log(updatedFormData);
+
+    // const data = {
+    //   operatorName: "Vi",
+    //   number: "9806324244",
+    //   amount: "10",
+    //   walletDeductAmt: "9.1",
+    //   recharge_Type: "Prepaid",
+    //   created_by_userid: currentUser.userId,
+    //   // orderid: "4654747",
+    // };
+
+    for (const api of apiData) {
+      try {
+        const rechargeResult = await axios.post(api.API_URL, updatedFormData);
+
+        if (
+          rechargeResult.data &&
+          rechargeResult.data.message === "Recharge successful"
+        ) {
+          Swal.fire({
+            title: "Done!",
+            text: "Recharge Successful",
+            icon: "success",
+          });
+          success = true;
+          setResponse(rechargeResult.data);
+          console.log(rechargeResult.data);
+          console.log(rechargeResult.data.orderId);
+          console.log(result);
+
+          // Recharge Commission Credit WL SD D
+          let allProcessesSuccessful = true;
+          result.retailerFormData.Transaction_details = `Commission Credit for Prepaid Recharge Coupon Order Id ${rechargeResult.data.orderId}`;
+          result.distributorFormData.Transaction_details = `Commission Credit for Prepaid Recharge Coupon Order Id ${rechargeResult.data.orderId}`;
+          result.superDistributorFormData.Transaction_details = `Commission Credit for Prepaid Recharge Coupon Order Id ${rechargeResult.data.orderId}`;
+          result.whiteLableFormData.Transaction_details = `Commission Credit for Prepaid Recharge Coupon Order Id ${rechargeResult.data.orderId}`;
+          if (
+            result &&
+            result.distributorFormData &&
+            result.distributorFormData.amount
+          ) {
+            const response = await axios
+              .put(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+                // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+                result.distributorFormData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .catch(() => {
+                allProcessesSuccessful = false;
+              });
+          }
+          if (
+            result &&
+            result.superDistributorFormData &&
+            result.superDistributorFormData.amount
+          ) {
+            const response = await axios
+              .put(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+                // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+                result.superDistributorFormData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .catch(() => {
+                allProcessesSuccessful = false;
+              });
+          }
+          if (
+            result &&
+            result.whiteLableFormData &&
+            result.whiteLableFormData.amount
+          ) {
+            const response = await axios
+              .put(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+                // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+                result.whiteLableFormData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .catch(() => {
+                allProcessesSuccessful = false;
+              });
+          }
+
+          if (result) {
+            let whiteLabel_Commission = 0;
+            let super_Distributor_Commission = 0;
+            let distributor_Commission = 0;
+            let retailer_Commission = 0;
+            if (result.whiteLableFormData && result.whiteLableFormData.amount) {
+              whiteLabel_Commission = result.whiteLableFormData.amount;
+            }
+            if (
+              result.superDistributorFormData &&
+              result.superDistributorFormData.amount
+            ) {
+              super_Distributor_Commission =
+                result.superDistributorFormData.amount;
+            }
+            if (
+              result.distributorFormData &&
+              result.distributorFormData.amount
+            ) {
+              distributor_Commission = result.distributorFormData.amount;
+            }
+            if (result.retailerFormData && result.retailerFormData.amount) {
+              retailer_Commission = result.retailerFormData.amount;
+            }
+            console.log(userRelation);
+
+            const commissionFormData = {
+              order_id: result.Order_Id,
+              transaction_id: result.Transaction_Id,
+              amount: updatedFormData.amount,
+              whiteLabel_id: usersId.whiteLabelId ? usersId.whiteLabelId : "NA",
+              super_Distributor_id: usersId.superDistributorId
+                ? usersId.superDistributorId
+                : "NA",
+              distributor_id: usersId.distributorId
+                ? usersId.distributorId
+                : "NA",
+              retailer_id: currentUser.userId ? currentUser.userId : "NA",
+              whiteLabel_Commission: whiteLabel_Commission,
+              super_Distributor_Commission: super_Distributor_Commission,
+              distributor_Commission: distributor_Commission,
+              retailer_Commission: retailer_Commission,
+              transaction_type: updatedFormData.recharge_Type,
+              transaction_details: result.retailerFormData.Transaction_details,
+              status: "Success",
+            };
+            console.log(commissionFormData);
+            await axios
+              .post(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
+                // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+                commissionFormData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .catch(() => {
+                allProcessesSuccessful = false;
+              });
+          }
+          // Recharge Commission Credit WL SD D
+
+          break;
+        } else if (
+          result.data.rechargeData &&
+          result.data.rechargeData.status === "Failure"
+        ) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong with this API!",
+          });
+        }
+
+        console.log(result.data);
+        // console.log(result.data.orderId);
+      } catch (error) {
+        console.error(
+          "Error in recharge:",
+          error.response ? error.response.data : error.message
+        );
+        if (error?.response?.status === 401) {
+          Swal.fire({
+            icon: "error",
+            title: "Your token is expired. Please login again.",
+          });
+          dispatch(clearUser());
+          navigate("/");
+        }
+      } finally {
+        // Clear form data and stop loading
+        setFormData({
+          operatorName: "",
+          number: "",
+          amount: "",
+          walletDeductAmt: "",
+          recharge_Type: "Prepaid",
+          created_by_userid: currentUser.userId,
+        });
+
+        setLoading(false);
+      }
+    }
+
+    if (!success) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "All providers are currently unavailable. Please try again later.",
+      });
+    }
+
+    setLoading(false);
+  };
 
   const handlesubmitForm = async (e) => {
     e.preventDefault();

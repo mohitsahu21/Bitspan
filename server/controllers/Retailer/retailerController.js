@@ -1578,7 +1578,7 @@ const getSelectedServices = (req, res) => {
 
 const getAllBranchId = (req, res) => {
   const { id } = req.params;
-  const selectQuery = `SELECT * FROM apply_offline_form WHERE applicant_select_service = ? AND id = ?`;
+  const selectQuery = `SELECT * FROM apply_offline_form WHERE applicant_select_service = ? AND id = ? ORDER BY id DESC`;
 
   db.query(selectQuery, ["New Bank ID", id], (err, result) => {
     if (err) {
@@ -2353,6 +2353,188 @@ const getWalletSummary = (req, res) => {
   });
 };
 
+const buyCoupon = (req, res) => {
+  const { coupon_Quantity, coupon_Price, total_Amount, coupon_Type, userId } =
+    req.body;
+
+  if (
+    !coupon_Quantity ||
+    !coupon_Price ||
+    !total_Amount ||
+    !coupon_Type ||
+    !userId
+  ) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+
+  if (isNaN(total_Amount) || parseFloat(total_Amount) <= 0) {
+    return res.status(400).json({
+      status: "Failure",
+      step: "Validation",
+      error: "Invalid amount. Amount must be a positive number.",
+    });
+  }
+
+  const orderId = `COU${Date.now()}`;
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const status = "Pending";
+
+  const sql = `
+  INSERT INTO pan_coupon_requests
+  (order_id, coupon_Quantity, coupon_Price, total_Amount, coupon_Type, user_id, status, created_at)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+`;
+
+  const values = [
+    orderId,
+    coupon_Quantity,
+    coupon_Price,
+    total_Amount,
+    coupon_Type,
+    userId,
+    status,
+    createdAt,
+  ];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error inserting recharge record:", err);
+      return res.status(500).json({
+        status: "Failure",
+        step: "Buy Coupan",
+        error: "Failed to process Buy Coupan",
+        details: err.message,
+      });
+    }
+
+    const queryBalance = `
+    SELECT Closing_Balance 
+    FROM user_wallet 
+    WHERE userId = ? 
+    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+    LIMIT 1
+  `;
+
+    db.query(queryBalance, [userId], (err, balanceResult) => {
+      if (err) {
+        console.error("Error fetching wallet balance:", err);
+        return res.status(500).json({
+          status: "Failure",
+          step: "Fetch Wallet Balance",
+          error: "Failed to fetch wallet balance",
+          details: err.message,
+        });
+      }
+
+      if (balanceResult.length === 0) {
+        return res.status(404).json({
+          status: "Failure",
+          step: "Fetch Wallet Balance",
+          message: "No balance found for the user.",
+        });
+      }
+
+      const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+      if (isNaN(currentBalance)) {
+        return res.status(500).json({
+          status: "Failure",
+          step: "Fetch Wallet Balance",
+          error: "Current balance is invalid.",
+        });
+      }
+
+      if (currentBalance < total_Amount) {
+        return res.status(400).json({
+          status: "Failure",
+          step: "Wallet Deduction",
+          message: "Insufficient balance.",
+          currentBalance,
+          requiredAmount: total_Amount,
+        });
+      }
+
+      const newBalance = parseFloat(currentBalance - total_Amount).toFixed(2);
+      if (isNaN(newBalance)) {
+        return res.status(500).json({
+          status: "Failure",
+          step: "Wallet Deduction",
+          error: "New balance calculation is invalid.",
+        });
+      }
+
+      const transactionId = `TXNW${Date.now()}`;
+      const transactionDetails = `Buy Coupan ${coupon_Type}`;
+      const creditAmt = 0;
+
+      const updateWalletQuery = `
+      INSERT INTO user_wallet 
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+      db.query(
+        updateWalletQuery,
+        [
+          userId,
+          createdAt,
+          orderId,
+          transactionId,
+          currentBalance.toFixed(2),
+          newBalance,
+          "Debit",
+          creditAmt,
+          total_Amount,
+          transactionDetails,
+          "Success",
+        ],
+        (err, walletResult) => {
+          if (err) {
+            console.error("Error updating wallet balance:", err);
+            return res.status(500).json({
+              status: "Failure",
+              step: "Update Wallet Balance",
+              error: "Failed to update wallet balance",
+              details: err.message,
+            });
+          }
+
+          return res.status(200).json({
+            status: "Success",
+            message: "Recharge processed and wallet updated successfully.",
+            details: {
+              recharge: {
+                orderId,
+                coupon_Quantity,
+                coupon_Price,
+                total_Amount,
+                coupon_Type,
+              },
+              wallet: {
+                transactionId,
+                newBalance,
+                previousBalance: currentBalance.toFixed(2),
+                deductedAmount: total_Amount,
+              },
+            },
+          });
+        }
+      );
+      // if (err) {
+      //   console.error("Error inserting data:", err.message);
+      //   return res.status(500).json({
+      //     status: "Failure",
+      //     error: `Failed to insert data ${err.message}`,
+      //   });
+      // }
+      // res.status(201).json({
+      //   status: "Success",
+      //   message: "Data inserted successfully.",
+      //   orderId,
+      // });
+    });
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -2392,4 +2574,5 @@ module.exports = {
   getPackageData,
   getDthConnectionPlan,
   getWalletSummary,
+  buyCoupon,
 };

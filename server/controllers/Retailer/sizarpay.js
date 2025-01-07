@@ -277,10 +277,22 @@ const sizarpayRecharge = (req, res) => {
   let responseSent = false;
   const randomOutletID = Math.floor(100000 + Math.random() * 900000).toString();
 
-  const { number, amount, operatorName, recharge_Type, created_by_userid } =
-    req.body;
+  const {
+    number,
+    amount,
+    walletDeductAmt,
+    operatorName,
+    recharge_Type,
+    created_by_userid,
+  } = req.body;
 
-  if (!number || !amount || !operatorName || !recharge_Type) {
+  if (
+    !number ||
+    !amount ||
+    !walletDeductAmt ||
+    !operatorName ||
+    !recharge_Type
+  ) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
@@ -340,12 +352,13 @@ const sizarpayRecharge = (req, res) => {
         }
 
         const insertQuery = `
-          INSERT INTO recharges (mobile_no, amount, operator_name, providerName, recharge_Type, created_by_userid, created_at, orderid) 
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+          INSERT INTO recharges (mobile_no, amount, walletDeductAmt, operator_name, providerName, recharge_Type, created_by_userid, created_at, orderid) 
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
         const values = [
           number,
           amount,
+          walletDeductAmt,
           operatorName,
           providerName,
           recharge_Type,
@@ -420,7 +433,9 @@ const sizarpayRecharge = (req, res) => {
       })
       .then(({ rechargeData, Status }) => {
         if (Status === "Success") {
-          const newWalletBalance = (currentBalance - amount).toFixed(2);
+          const newWalletBalance = (currentBalance - walletDeductAmt).toFixed(
+            2
+          );
 
           const updateWalletQuery = `
             INSERT INTO user_wallet
@@ -443,7 +458,7 @@ const sizarpayRecharge = (req, res) => {
                 newWalletBalance,
                 "Debit",
                 0,
-                amount,
+                walletDeductAmt,
                 transactionDetails,
                 "Success",
               ],

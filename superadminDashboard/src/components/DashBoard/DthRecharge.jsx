@@ -34,6 +34,9 @@ const DthRecharge = () => {
     recharge_Type: "DTH",
     userId: currentUser.userId,
   });
+
+  console.log(offlineForm);
+
   const [response, setResponse] = useState(null);
   const [responseForm, setResponseForm] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -686,33 +689,6 @@ const DthRecharge = () => {
 
                                         {/* ---------Fetch PlanInputs-----*/}
 
-                                        {/* <div class="input-group mb-3">
-                                          <div class="form-floating">
-                                            <select
-                                              class="form-select"
-                                              id="floatingSelectOperator"
-                                              value={formData.operatorName}
-                                              onChange={handleChange}
-                                              name="operatorName"
-                                              aria-label="Select Operator"
-                                            >
-                                              <option value="">
-                                                Select Operator
-                                              </option>
-                                              {operatorOptions.map((item) => (
-                                                <>
-                                                  <option value={item.value}>
-                                                    {item.name}
-                                                  </option>
-                                                </>
-                                              ))}
-                                            </select>
-                                            <label for="floatingSelectOperator">
-                                              Select Operator
-                                            </label>
-                                          </div>
-                                        </div> */}
-
                                         <div class="input-group mb-3">
                                           <div class="form-floating">
                                             <input
@@ -783,7 +759,238 @@ const DthRecharge = () => {
                                             </label>
                                           </div>
                                         </div>
-                                        <div class="input-group mb-3">
+
+                                        {/* ---------Fetch PlanInputs-----*/}
+
+                                        <div className="input-group mb-3">
+                                          <div className="form-floating">
+                                            <select
+                                              className="form-select"
+                                              id="floatingSelectPlanOperator"
+                                              aria-label="Select Operator"
+                                              value={selectedOperator}
+                                              onChange={(e) => {
+                                                const selectedOp =
+                                                  operatorOptions.find(
+                                                    (op) =>
+                                                      op.OpCode ===
+                                                      e.target.value
+                                                  );
+                                                setSelectedOperator(
+                                                  e.target.value
+                                                );
+                                                setOfflineForm(
+                                                  (prevFormData) => ({
+                                                    ...prevFormData,
+                                                    operator_name: selectedOp
+                                                      ? selectedOp.name
+                                                      : "",
+                                                  })
+                                                );
+                                              }}
+                                            >
+                                              <option value="">
+                                                Select Operator
+                                              </option>
+                                              {operatorOptions.map((op) => (
+                                                <option
+                                                  key={op.value}
+                                                  value={op.OpCode}
+                                                >
+                                                  {op.name}
+                                                </option>
+                                              ))}
+                                            </select>
+                                            <label htmlFor="floatingSelectPlanOperator">
+                                              Select Plan Operator
+                                            </label>
+                                          </div>
+                                        </div>
+
+                                        <div className="text-start mt-2 mb-3">
+                                          <button
+                                            className="btn btn-none text-light"
+                                            style={{
+                                              backgroundColor: "#6d70ff",
+                                            }}
+                                            onClick={fetchPlanData}
+                                            disabled={loadingPlans}
+                                          >
+                                            {loadingPlans
+                                              ? "Checking Plans..."
+                                              : "Check Plans"}
+                                          </button>
+                                        </div>
+
+                                        {isModalOpen && (
+                                          <div
+                                            className="modal fade show"
+                                            style={{
+                                              display: "block",
+                                              backgroundColor:
+                                                "rgba(0,0,0,0.5)",
+                                            }}
+                                            tabIndex="-1"
+                                          >
+                                            <div className="modal-dialog">
+                                              <div className="modal-content">
+                                                <div className="modal-header">
+                                                  <h5 className="modal-title">
+                                                    Available Plans
+                                                  </h5>
+                                                  <button
+                                                    type="button"
+                                                    className="btn-close"
+                                                    onClick={() => {
+                                                      setIsModalOpen(false);
+                                                      setLoadingPlans(false);
+                                                    }}
+                                                  ></button>
+                                                </div>
+                                                <div className="modal-body">
+                                                  {Object.keys(plans).length >
+                                                  0 ? (
+                                                    Object.entries(plans).map(
+                                                      ([language, group]) => (
+                                                        <div
+                                                          key={language}
+                                                          className="mb-3"
+                                                        >
+                                                          <h6>
+                                                            {language} (Pack
+                                                            Count:{" "}
+                                                            {group.packCount})
+                                                          </h6>
+                                                          <ul className="list-group">
+                                                            {group.details.map(
+                                                              (plan, index) => (
+                                                                <li
+                                                                  key={index}
+                                                                  className="list-group-item"
+                                                                >
+                                                                  <p>
+                                                                    <strong>
+                                                                      Plan Name:
+                                                                    </strong>{" "}
+                                                                    {
+                                                                      plan.planName
+                                                                    }
+                                                                  </p>
+                                                                  <p>
+                                                                    <strong>
+                                                                      Channels:
+                                                                    </strong>{" "}
+                                                                    {
+                                                                      plan.channels
+                                                                    }
+                                                                  </p>
+                                                                  <p>
+                                                                    <strong>
+                                                                      Paid
+                                                                      Channels:
+                                                                    </strong>{" "}
+                                                                    {
+                                                                      plan.paidChannels
+                                                                    }
+                                                                  </p>
+                                                                  <p>
+                                                                    <strong>
+                                                                      HD
+                                                                      Channels:
+                                                                    </strong>{" "}
+                                                                    {
+                                                                      plan.hdChannels
+                                                                    }
+                                                                  </p>
+                                                                  <p>
+                                                                    <strong>
+                                                                      Last
+                                                                      Update:
+                                                                    </strong>{" "}
+                                                                    {
+                                                                      plan.lastUpdate
+                                                                    }
+                                                                  </p>
+                                                                  <strong>
+                                                                    Pricing
+                                                                    Options:
+                                                                  </strong>
+                                                                  <ul>
+                                                                    {plan.pricing.map(
+                                                                      (
+                                                                        price,
+                                                                        priceIndex
+                                                                      ) => (
+                                                                        <li
+                                                                          key={
+                                                                            priceIndex
+                                                                          }
+                                                                          onClick={() => {
+                                                                            setOfflineForm(
+                                                                              (
+                                                                                prevFormData
+                                                                              ) => ({
+                                                                                ...prevFormData,
+                                                                                amount:
+                                                                                  price.amount.replace(
+                                                                                    "₹",
+                                                                                    ""
+                                                                                  ),
+                                                                              })
+                                                                            );
+                                                                            setIsModalOpen(
+                                                                              false
+                                                                            ); // Close modal
+                                                                          }}
+                                                                          style={{
+                                                                            cursor:
+                                                                              "pointer",
+                                                                            marginBottom:
+                                                                              "5px",
+                                                                          }}
+                                                                        >
+                                                                          {
+                                                                            price.amount
+                                                                          }{" "}
+                                                                          for{" "}
+                                                                          {
+                                                                            price.duration
+                                                                          }
+                                                                        </li>
+                                                                      )
+                                                                    )}
+                                                                  </ul>
+                                                                </li>
+                                                              )
+                                                            )}
+                                                          </ul>
+                                                        </div>
+                                                      )
+                                                    )
+                                                  ) : (
+                                                    <p>No plans available.</p>
+                                                  )}
+                                                </div>
+                                                <div className="modal-footer">
+                                                  <button
+                                                    type="button"
+                                                    className="btn btn-secondary"
+                                                    onClick={() => {
+                                                      setIsModalOpen(false);
+                                                      setLoadingPlans(false);
+                                                    }}
+                                                  >
+                                                    Close
+                                                  </button>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        )}
+
+                                        {/* ---------Fetch PlanInputs-----*/}
+
+                                        {/* <div class="input-group mb-3">
                                           <div class="form-floating">
                                             <select
                                               class="form-select"
@@ -808,30 +1015,8 @@ const DthRecharge = () => {
                                               Select Operator
                                             </label>
                                           </div>
-                                        </div>
-                                        {/* <div class="input-group mb-3">
-                                          <div class="form-floating">
-                                            <input
-                                              type="text"
-                                              class="form-control"
-                                              id="floatingInputGroup1"
-                                              placeholder="Username"
-                                            />
-                                            <label for="floatingInputGroup1">
-                                              Select Circle
-                                            </label>
-                                          </div>
-                                        </div>
-                                        <div className="text-start mt-2 mb-3">
-                                          <button
-                                            className="btn btn-none text-light"
-                                            style={{
-                                              backgroundColor: "#6d70ff",
-                                            }}
-                                          >
-                                            Check Plans
-                                          </button>
                                         </div> */}
+
                                         <div class="input-group mb-3">
                                           <div class="form-floating">
                                             <input
@@ -1257,3 +1442,57 @@ const Wrapper = styled.div`
 //     </div>
 //   </div>
 // )}
+
+{
+  /* <div class="input-group mb-3">
+                                          <div class="form-floating">
+                                            <select
+                                              class="form-select"
+                                              id="floatingSelectOperator"
+                                              value={formData.operatorName}
+                                              onChange={handleChange}
+                                              name="operatorName"
+                                              aria-label="Select Operator"
+                                            >
+                                              <option value="">
+                                                Select Operator
+                                              </option>
+                                              {operatorOptions.map((item) => (
+                                                <>
+                                                  <option value={item.value}>
+                                                    {item.name}
+                                                  </option>
+                                                </>
+                                              ))}
+                                            </select>
+                                            <label for="floatingSelectOperator">
+                                              Select Operator
+                                            </label>
+                                          </div>
+                                        </div> */
+}
+{
+  /* <div class="input-group mb-3">
+                                          <div class="form-floating">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              id="floatingInputGroup1"
+                                              placeholder="Username"
+                                            />
+                                            <label for="floatingInputGroup1">
+                                              Select Circle
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <div className="text-start mt-2 mb-3">
+                                          <button
+                                            className="btn btn-none text-light"
+                                            style={{
+                                              backgroundColor: "#6d70ff",
+                                            }}
+                                          >
+                                            Check Plans
+                                          </button>
+                                        </div> */
+}

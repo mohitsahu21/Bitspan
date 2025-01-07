@@ -217,13 +217,20 @@ const operatorMapping = {
 const cgonepayRecharge = (req, res) => {
   let responseSent = false;
 
-  const { number, amount, operatorName, recharge_Type, created_by_userid } =
-    req.body;
+  const {
+    number,
+    amount,
+    walletDeductAmt,
+    operatorName,
+    recharge_Type,
+    created_by_userid,
+  } = req.body;
 
   // Validate input
   if (
     !number ||
     !amount ||
+    !walletDeductAmt ||
     !operatorName ||
     !recharge_Type ||
     !created_by_userid
@@ -275,12 +282,13 @@ const cgonepayRecharge = (req, res) => {
 
         // Insert recharge details into the database
         const insertQuery = `
-          INSERT INTO recharges (mobile_no, amount, operator_name, providerName, recharge_Type, created_by_userid, created_at, orderid)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+          INSERT INTO recharges (mobile_no, amount, walletDeductAmt, operator_name, providerName, recharge_Type, created_by_userid, created_at, orderid)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
         const values = [
           number,
           amount,
+          walletDeductAmt,
           operatorName,
           providerName,
           recharge_Type,
@@ -343,7 +351,9 @@ const cgonepayRecharge = (req, res) => {
       })
       .then(({ rechargeData, orderId }) => {
         if (rechargeData.STATUS === "SUCCESS") {
-          const newWalletBalance = (currentBalance - amount).toFixed(2);
+          const newWalletBalance = (currentBalance - walletDeductAmt).toFixed(
+            2
+          );
           const transactionDetails = `Recharge Deduction ${number}`;
           const transactionId = `TXNW${Date.now()}`;
 
@@ -365,7 +375,7 @@ const cgonepayRecharge = (req, res) => {
                 newWalletBalance,
                 "Debit",
                 0,
-                amount,
+                walletDeductAmt,
                 transactionDetails,
                 "Success",
               ],

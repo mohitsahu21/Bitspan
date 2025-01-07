@@ -368,10 +368,22 @@ const operatorMapping = {
 const rechargeWithBalanceCheck = (req, res) => {
   const token = process.env.APITokenInstapay;
   const username = process.env.APIUsernameInstapay;
-  const { number, amount, operatorName, recharge_Type, created_by_userid } =
-    req.body;
+  const {
+    number,
+    amount,
+    walletDeductAmt,
+    operatorName,
+    recharge_Type,
+    created_by_userid,
+  } = req.body;
 
-  if (!number || !amount || !operatorName || !recharge_Type) {
+  if (
+    !number ||
+    !amount ||
+    !walletDeductAmt ||
+    !operatorName ||
+    !recharge_Type
+  ) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
@@ -419,10 +431,11 @@ const rechargeWithBalanceCheck = (req, res) => {
         }
 
         const insertQuery =
-          "INSERT INTO recharges (mobile_no, amount, operator_name, providerName, recharge_Type, created_by_userid, created_at, orderid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+          "INSERT INTO recharges (mobile_no, amount, walletDeductAmt, operator_name, providerName, recharge_Type, created_by_userid, created_at, orderid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         const values = [
           number,
           amount,
+          walletDeductAmt,
           operatorName,
           providerName,
           recharge_Type,
@@ -491,7 +504,9 @@ const rechargeWithBalanceCheck = (req, res) => {
         if (rechargeData.status === "Success") {
           const transactionId = `TXNW${Date.now()}`;
           const transactionDetails = `Recharge Deduction ${number}`;
-          const newWalletBalance = (currentBalance - amount).toFixed(2);
+          const newWalletBalance = (currentBalance - walletDeductAmt).toFixed(
+            2
+          );
 
           const updateWalletQuery = `
             INSERT INTO user_wallet
@@ -510,7 +525,7 @@ const rechargeWithBalanceCheck = (req, res) => {
                 newWalletBalance,
                 "Debit",
                 0,
-                amount,
+                walletDeductAmt,
                 transactionDetails,
                 "Success",
               ],

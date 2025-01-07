@@ -10,12 +10,13 @@ const BankHistory = () => {
 
   const [getData, setGetData] = useState([]);
   const [filterData, setFilterData] = useState([]);
+  const userData = currentUser.userId;
 
   useEffect(() => {
     const fetchBankHistory = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllBranchId`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllBranchId/${userData}`
         );
         setGetData(response.data);
         setFilterData(
