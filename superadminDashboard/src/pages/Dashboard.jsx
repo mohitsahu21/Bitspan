@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import HeadBar from "../components/HeadBar";
 import Sider from "../components/SideBar";
@@ -16,9 +16,26 @@ import { MdAddShoppingCart } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { BiHomeAlt } from "react-icons/bi";
 import { BsInfoSquare } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser, fetchWalletBalance } from "../redux/user/userSlice";
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
+  const { currentUser, token } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const { walletBalance } = useSelector((state) => state.user);
+  console.log(walletBalance);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (currentUser?.userId) {
+        dispatch(fetchWalletBalance(currentUser.userId));
+      }
+    }, 5000); // Refresh every 5 seconds
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
+
   return (
     <>
       <Wrapper>
@@ -30,27 +47,35 @@ const Dashboard = () => {
                 {/* <Sider /> */}
               </div>
               <div className="row shadow-none  formdata mt-4">
-                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 ">
-                      {/* <div className="text-center">
+                <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 ">
+                  {/* <div className="text-center">
                         <h3>Change Password</h3>
                       </div> */}
-                       <div className="d-flex justify-content-between align-items-center flex-wrap">
-                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Dashboard</h4>
-                        <h6 className="mx-lg-5"><BiHomeAlt /> &nbsp;  / &nbsp; Dashboard </h6>
-                      </div>
-                    </div>
+                  <div className="d-flex justify-content-between align-items-center flex-wrap">
+                    <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Dashboard</h4>
+                    <h6 className="mx-lg-5">
+                      <BiHomeAlt /> &nbsp; / &nbsp; Dashboard{" "}
+                    </h6>
                   </div>
+                </div>
+              </div>
               <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10 mt-4">
                 <div className="container-fluid">
-                <div className="row d-flex formdata justify-content-center mb-3">
-                       <div className="col-12 boarder bg-white p-2">
-                           <div className="news d-flex align-items-center">
-                            <span className="p-3 bg-info news-icon">
-                           <BsInfoSquare/>  
-                           </span>
-                          <p className="d-flex align-items-center mb-0 ms-2">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio asperiores, autem optio, obcaecati consequatur deleniti soluta eius sequi assumenda, accusantium maxime! Voluptatibus aut corrupti dolores veniam? Eveniet, nemo quod? Inventore.</p>
-                          </div>
-                       </div>
+                  <div className="row d-flex formdata justify-content-center mb-3">
+                    <div className="col-12 boarder bg-white p-2">
+                      <div className="news d-flex align-items-center">
+                        <span className="p-3 bg-info news-icon">
+                          <BsInfoSquare />
+                        </span>
+                        <p className="d-flex align-items-center mb-0 ms-2">
+                          Lorem, ipsum dolor sit amet consectetur adipisicing
+                          elit. Odio asperiores, autem optio, obcaecati
+                          consequatur deleniti soluta eius sequi assumenda,
+                          accusantium maxime! Voluptatibus aut corrupti dolores
+                          veniam? Eveniet, nemo quod? Inventore.
+                        </p>
+                      </div>
+                    </div>
                   </div>
                   <div className="row  d-flex formdata justify-content-center">
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
@@ -252,7 +277,8 @@ const Dashboard = () => {
                           <div></div>
                           <div className="d-flex flex-column cardtext">
                             <p className="mb-0 px-2 my-0 fs-6">Wallet Amount</p>
-                            <h4 className="px-2 my-0">(Rs. 250/-)</h4>{" "}
+                            {/* <h4 className="px-2 my-0">(Rs. 250/-)</h4>{" "} */}
+                            <h4 className="px-2 my-0">{walletBalance}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -305,12 +331,8 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      
-                    </div>
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                     
-                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0"></div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0"></div>
                   </div>
                 </div>
               </div>
@@ -394,15 +416,13 @@ const Wrapper = styled.div`
   a {
     text-decoration: none;
   }
-  @media (min-width: 1025px) and (max-width : 1500px){
+  @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
-     
       padding-left: 15rem;
     }
   }
   @media (min-width: 1500px) {
     .formdata {
-     
       padding-left: 13rem;
     }
   }
@@ -414,11 +434,11 @@ const Wrapper = styled.div`
 
   @keyframes moveLeftToRight {
     0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
   }
 
   .news p {
@@ -428,7 +448,7 @@ const Wrapper = styled.div`
     position: absolute;
     right: 0;
   }
-  .news-icon{
+  .news-icon {
     z-index: 100;
     font-size: large;
   }

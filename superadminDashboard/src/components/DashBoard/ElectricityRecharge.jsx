@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { FaMobileAlt } from "react-icons/fa";
 import { BiHomeAlt } from "react-icons/bi";
@@ -6,6 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../Loading";
 import { useDispatch, useSelector } from "react-redux";
+import { Modal, Button } from "react-bootstrap";
 
 const ElectricityRecharge = () => {
   const dispatch = useDispatch();
@@ -31,11 +32,14 @@ const ElectricityRecharge = () => {
     operator_name: "",
     amount: "",
     recharge_Type: "Electricity",
-    created_by_userid: currentUser.userId,
+    userId: currentUser.userId,
   });
   const [response, setResponse] = useState(null);
   const [responseForm, setResponseForm] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showPinModal, setShowPinModal] = useState(false);
+  const [pin, setPin] = useState(["", "", "", ""]);
+  const pinRefs = useRef([]);
 
   const operatorOptions = [
     {
@@ -136,71 +140,36 @@ const ElectricityRecharge = () => {
     setLoading(false);
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   try {
-  //     const result = await axios.post(
-  //       // "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/recharge-instpy",
-  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/api-recharge",
-  //       formData
-  //     );
-  //     setResponse(result.data); // Update the response state with the received data
-  //     // console.log(result.data.rechargeData.status);
-  //     console.log(result.data);
-  //     if (result.data.rechargeData.status === "Failure") {
-  //       Swal.fire({
-  //         icon: "error",
-  //         title: "Oops...",
-  //         text: "Something went wrong!",
-  //         // footer: '<a href="#">Why do I have this issue?</a>',
-  //       });
-  //     } else if (result.data.rechargeData.status === "Success") {
-  //       Swal.fire({
-  //         title: "Done!",
-  //         text: "Recharge Successfull",
-  //         icon: "success",
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error(
-  //       "Error in recharge:",
-  //       error.response ? error.response.data : error.message
-  //     );
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Oops...",
-  //       text: "Something went wrong!",
-  //       footer: '<a href="#">Why do I have this issue?</a>',
-  //     });
-  //     setResponse(null);
-  //   } finally {
-  //     setLoading(false); // Stop loading
-  //   }
-  // };
-
   const handlesubmitForm = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
+      // Make the API call
       const result = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/offline-recharge",
+        // "http://localhost:7777/api/auth/wallet/offlineRechargeAndUpdateWallet",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/wallet/offlineRechargeAndUpdateWallet",
         offlineForm
       );
-      setResponseForm(result.data); // Update the response state with the received data
-      console.log(result.data);
+
+      setResponseForm(result.data);
+      console.log("API Response:", result.data);
+
       if (result.data.status === "Failure") {
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: "Something went wrong!",
-          // footer: '<a href="#">Why do I have this issue?</a>',
+          text: result.data.error || result.data.message || "Recharge failed!",
         });
       } else if (result.data.status === "Success") {
         Swal.fire({
           title: "Done!",
-          text: "Recharge Successfull",
+          text: `Recharge Successful! Order ID: ${result.data.details.recharge.orderId}`,
           icon: "success",
+        });
+        setOfflineForm({
+          mobile_no: "",
+          operator_name: "",
+          amount: "",
         });
       }
     } catch (error) {
@@ -211,13 +180,70 @@ const ElectricityRecharge = () => {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Something went wrong!",
-        footer: '<a href="#">Why do I have this issue?</a>',
+        text: "Something went wrong! Please try again later.",
       });
       setResponseForm(null);
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
+  };
+
+  // PIN Integration
+  const handlePinChange = (index, value) => {
+    if (/^\d?$/.test(value)) {
+      const newPin = [...pin];
+      newPin[index] = value;
+      setPin(newPin);
+
+      // Move to next input if current is filled, move to previous if deleted
+      if (value !== "" && index < pin.length - 1) {
+        pinRefs.current[index + 1].focus();
+      } else if (value === "" && index > 0) {
+        pinRefs.current[index - 1].focus();
+      }
+    }
+  };
+
+  const handleBackspace = (index) => {
+    if (pin[index] === "" && index > 0) {
+      pinRefs.current[index - 1].focus();
+    }
+  };
+
+  const verifyPin = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        { user_id: currentUser.userId || "", pin: pin.join("") }
+      );
+
+      if (response.data.success) {
+        return true;
+      } else {
+        alert(response.data.message);
+        return false;
+      }
+    } catch (error) {
+      console.error("Error verifying PIN:", error);
+      alert("Error verifying PIN");
+      return false;
+    }
+  };
+
+  const handleModalSubmit = async (e) => {
+    const isPinValid = await verifyPin();
+    if (isPinValid) {
+      setShowPinModal(false);
+      handlesubmitForm(e);
+      setPin(["", "", "", ""]);
+    } else {
+      setPin(["", "", "", ""]);
+    }
+  };
+
+  const openPinModal = (e) => {
+    e.preventDefault();
+    setShowPinModal(true);
   };
 
   return (
@@ -408,7 +434,7 @@ const ElectricityRecharge = () => {
                                       Electricity Recharge 2
                                     </h3>
                                     <div>
-                                      <form onSubmit={handlesubmitForm}>
+                                      <form onSubmit={openPinModal}>
                                         <div class="input-group mb-3">
                                           <span class="input-group-text">
                                             <FaMobileAlt />
@@ -520,6 +546,56 @@ const ElectricityRecharge = () => {
             </div>
           </div>
         )}
+        <Modal
+          show={showPinModal}
+          onHide={() => setShowPinModal(false)}
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="pin-inputs d-flex justify-content-center">
+              {pin.map((digit, index) => (
+                <input
+                  key={index}
+                  ref={(el) => (pinRefs.current[index] = el)}
+                  type="text"
+                  value={digit ? "●" : ""}
+                  maxLength="1"
+                  onChange={(e) => handlePinChange(index, e.target.value)}
+                  onKeyDown={(e) =>
+                    e.key === "Backspace" && handleBackspace(index)
+                  }
+                  className="pin-digit form-control mx-1"
+                  style={{
+                    width: "50px",
+                    textAlign: "center",
+                    fontSize: "1.5rem",
+                    borderRadius: "8px",
+                    border: "1px solid #ced4da",
+                    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                  }}
+                />
+              ))}
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <div className="w-100 d-flex justify-content-center">
+              <Button
+                variant="secondary"
+                onClick={() => setShowPinModal(false)}
+                className="mx-1"
+              >
+                Cancel
+              </Button>
+
+              <Button variant="primary" onClick={handleModalSubmit}>
+                Verify PIN
+              </Button>
+            </div>
+          </Modal.Footer>
+        </Modal>
       </Wrapper>
     </>
   );

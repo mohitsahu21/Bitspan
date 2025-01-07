@@ -3,6 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { BiHomeAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 const CreatePin = () => {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const CreatePin = () => {
     const checkUserAvailable = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:7777/api/auth/log-reg/check-user`,
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/check-user`,
           { params: { user_id: currentUser.userId } }
         );
         console.log("API response:", response.data); // Log API response
@@ -64,14 +65,34 @@ const CreatePin = () => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        `http://localhost:7777/api/auth/log-reg/create-pin`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/create-pin`,
         createPinData
       );
       console.log(response.data);
-      setCreatePinData(response.data);
-      setIsUserAvailable(true);
+      if (response.data.status === "Failure") {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: result.data.message || "PIN failed!",
+        });
+      } else if (response.data.status === "Success") {
+        Swal.fire({
+          title: "Done!",
+          text: `${response.data.message}`,
+          icon: "success",
+        });
+        setCreatePinData(response.data);
+        setIsUserAvailable(true);
+      }
     } catch (error) {
-      console.log(error.response.data.message);
+      const errorMessage =
+        error.response?.data?.message || "Something went wrong!";
+      console.log(errorMessage);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: errorMessage,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -82,13 +103,28 @@ const CreatePin = () => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        `http://localhost:7777/api/auth/log-reg/request-otp`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/request-otp`,
         changePinData
       );
       setOtpSent(true);
-      alert(response.data.message);
+      // alert(response.data.message);
+      console.log(response.data.message);
+      if (response.data.status === "Success") {
+        Swal.fire({
+          title: "Done!",
+          text: `${response.data.message}`,
+          icon: "success",
+        });
+      }
     } catch (error) {
-      alert(error.response.data.message);
+      const errorMessage =
+        error.response?.data?.message || "Something went wrong!";
+      console.log(errorMessage);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: errorMessage,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -96,20 +132,86 @@ const CreatePin = () => {
 
   const handleChangePinSubmit = async (e) => {
     e.preventDefault();
+    if (!changePinData.user_id || !changePinData.otp) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "User ID and OTP are required!",
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
       const response = await axios.post(
-        `http://localhost:7777/api/auth/log-reg/verify-otp`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-otp`,
         { user_id: changePinData.user_id, otp: changePinData.otp }
       );
-      alert(response.data.message);
+      console.log(response.data.message);
+      if (response.data.status === "Failure") {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: response.data.message || "OTP failed!",
+        });
+      } else if (response.data.status === "Success") {
+        Swal.fire({
+          title: "Done!",
+          text: response.data.message,
+          icon: "success",
+        });
+      }
+      setOtpSent(false); // Reset OTP state
+      setChangePinData({ ...changePinData, new_pin: "", otp: "" });
     } catch (error) {
-      alert(error.response.data.message);
-      console.log(error.response.data.message);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error.response?.data?.message || "Something went wrong!",
+      });
+      console.error(error.response?.data?.message);
     } finally {
       setIsLoading(false);
     }
   };
+
+  // const handleChangePinSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+  //   try {
+  //     const response = await axios.post(
+  //       `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-otp`,
+  //       { user_id: changePinData.user_id, otp: changePinData.otp }
+  //     );
+  //     alert(response.data.message);
+  //     console.log(response.data.message);
+  //     if (response.data.status === "Failure") {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Oops...",
+  //         text: result.data.message || "OTP failed!",
+  //       });
+  //     } else if (response.data.status === "Success") {
+  //       Swal.fire({
+  //         title: "Done!",
+  //         text: `${response.data.message}`,
+  //         icon: "success",
+  //       });
+  //     }
+  //     setOtpSent(false); // Reset OTP state to allow entering new PIN
+  //     setChangePinData({ ...changePinData, new_pin: "", otp: "" }); // Clear the PIN and OTP fields
+  //   } catch (error) {
+  //     alert(error.response.data.message);
+  //     console.log(error.response.data.message);
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Oops...",
+  //       text: error.response.data.message,
+  //     });
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
   return (
     <>
       <Wrapper>
@@ -131,7 +233,7 @@ const CreatePin = () => {
                   {/* - */}
                   <div className="container py-5">
                     <h2 className="text-center mb-4">PIN Management</h2>
-                    <div className="row">
+                    <div className="row d-flex justify-content-center align-item-center">
                       {isUserAvailable ? (
                         <div className="col-md-6 mb-4">
                           <div className="card">

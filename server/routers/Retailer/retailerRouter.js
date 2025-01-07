@@ -28,6 +28,19 @@ const {
   getAllDTHeApi,
   getApiPostRechargeData,
   getApiDTHRechargeData,
+  getApiEletricityRechargeData,
+  getApiBroadbrandRechargeData,
+  addSambalForm,
+  addVerifyDistrictForm,
+  getVerifyEdistrict,
+  getSambalHistory,
+  PanDocumentUpload,
+  getPanDocument,
+  walletOffline,
+  getWalletOffline,
+  getPackageData,
+  getDthConnectionPlan,
+  getWalletSummary,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -85,7 +98,7 @@ const panDataStorage = multer.diskStorage({
 const panDataUpload = multer({ storage: panDataStorage });
 router.post(
   "/pan-4.0-form",
-  panDataUpload.fields([
+  upload.fields([
     { name: "documentUpload", maxCount: 10 },
     { name: "attachment_form", maxCount: 10 },
     { name: "attachment_photo", maxCount: 10 },
@@ -113,7 +126,7 @@ router.post(
   complainInsertApi
 );
 
-router.get("/complain-data", complainGetData);
+router.get("/complain-data/:userid", complainGetData);
 
 const profileDataStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -127,7 +140,7 @@ const profileDataStorage = multer.diskStorage({
 const profileDataUpload = multer({ storage: profileDataStorage });
 
 router.put(
-  "/user-profile",
+  "/user-profile/:UserId",
   upload.fields([
     { name: "aadharFront", maxCount: 1 },
     { name: "aadharBack", maxCount: 1 },
@@ -153,11 +166,39 @@ router.post(
 );
 
 router.get("/getSelectedServices/:user_id", getSelectedServices);
-router.get("/getAllBranchId", getAllBranchId);
+router.get("/getAllBranchId/:id", getAllBranchId);
 router.get("/getEdistrictData/:user_id", getEdistrictData);
 router.get("/getAllRechargeApi", getAllRechargeApi);
 router.get("/getAllDTHeApi", getAllDTHeApi);
 router.get("/getApiPostRechargeData/:userId", getApiPostRechargeData);
 router.get("/getApiDTHRechargeData/:userId", getApiDTHRechargeData);
+router.get(
+  "/getApiEletricityRechargeData/:userId",
+  getApiEletricityRechargeData
+);
+router.get(
+  "/getApiBroadbrandRechargeData/:userId",
+  getApiBroadbrandRechargeData
+);
+router.post("/addSambalForm", addSambalForm);
+router.post("/verify-Edistrict", addVerifyDistrictForm);
+router.get("/getVerifyEdistrict/:userId", getVerifyEdistrict);
+router.get("/getSambalHistory/:userId", getSambalHistory);
+
+router.post(
+  "/panDocument",
+  upload.fields([{ name: "podfile", maxCount: 1 }]),
+  PanDocumentUpload
+);
+router.get("/getPanDocument/:userId", getPanDocument);
+router.post(
+  "/add-money-wallet",
+  upload.fields([{ name: "Receiept_Attechment", maxCount: 1 }]),
+  walletOffline
+);
+router.get("/getWalletOffline/:userId", getWalletOffline);
+router.get("/getPackageData/:packageId", getPackageData);
+router.get("/getDthConnectionPlan", getDthConnectionPlan);
+router.get("/getWalletSummary/:userId", getWalletSummary);
 
 module.exports = router;

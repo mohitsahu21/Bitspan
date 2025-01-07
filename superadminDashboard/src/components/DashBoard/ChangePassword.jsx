@@ -40,11 +40,29 @@ const ChangePassword = () => {
       console.log(response.data);
 
       if (response.data.status === "Success") {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title:
+            response.data.message ||
+            "OTP sent to your email. Please verify it.",
+          showConfirmButton: true,
+          // timer: 1500,
+        });
+        setNewPassword("");
+        setOldPassword("");
         setStep(2); // Move to OTP verification step
       }
     } catch (error) {
       console.log(error);
       console.log(error.response?.data?.message);
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: error.response?.data?.message || "An error occurred.",
+        showConfirmButton: true,
+        // timer: 1500,
+      });
 
       setMessage(error.response?.data?.message || "An error occurred.");
     } finally {
@@ -78,11 +96,19 @@ const ChangePassword = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+        setOtp("");
+        setStep(1); // Move to OTP verification step
       }
     } catch (error) {
       console.log(error);
       console.log(error.response?.data?.message);
-
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: error.response?.data?.message || "An error occurred.",
+        showConfirmButton: true,
+        // timer: 1500,
+      });
       setMessage(error.response?.data?.message || "An error occurred.");
     } finally {
       setIsLoading(false);
@@ -199,6 +225,7 @@ const ChangePassword = () => {
                                     class="form-control"
                                     id="floatingInputGroup2"
                                     placeholder="Mobile Number"
+                                    required
                                   />
                                   <label for="floatingInputGroup2">
                                     Enter OTP

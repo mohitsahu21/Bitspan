@@ -11,12 +11,17 @@ import { CiViewList } from "react-icons/ci";
 import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
 import Swal from "sweetalert2";
 import { MdGrid3X3 } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 
 // resolve complaint component start//
 const SAResolveComplaint = ({ complaint, setShowResolveModel, setIsRefresh }) => {
     const [loading, setLoading] = useState(false);
-  
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { token } = useSelector((state) => state.user);
     const [formData, setFormData] = useState({
       complaintId: complaint.id,
       response : "",
@@ -36,9 +41,16 @@ const SAResolveComplaint = ({ complaint, setShowResolveModel, setIsRefresh }) =>
       try {
         setLoading(true);
         const response = await axios.put(
-          // "http://localhost:7777/api/auth/superAdmin/rejectUser",
+          // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectUser",
           "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-          formData
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+  
         );
         console.log(response);
         setLoading(false);
@@ -57,6 +69,15 @@ const SAResolveComplaint = ({ complaint, setShowResolveModel, setIsRefresh }) =>
         }
       } catch (error) {
         console.error("There was an error submitting the form!", error);
+        if (error?.response?.status == 401) {
+          // alert("Your token is expired please login again")
+          Swal.fire({
+                    icon: "error",
+                    title: "Your token is expired please login again",
+                  });
+          dispatch(clearUser());
+          navigate("/");
+        }
         setLoading(false);
         Swal.fire({
           icon: "error",
@@ -134,6 +155,9 @@ const SAResolveComplaint = ({ complaint, setShowResolveModel, setIsRefresh }) =>
 const SAAllComplaintsList = () => {
 
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { token } = useSelector((state) => state.user);
     const [users, setUsers] = useState([]);
     const [keyword, setKeyword] = useState("");
     const complaintsPerPage = 10;
@@ -148,19 +172,35 @@ const SAAllComplaintsList = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/complainGetData"
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/complainGetData",
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+    
           );
           setUsers(data.data);
           setLoading(false);
         } catch (error) {
           console.error("Error fetching data:", error);
+          if (error?.response?.status == 401) {
+            // alert("Your token is expired please login again")
+            Swal.fire({
+                      icon: "error",
+                      title: "Your token is expired please login again",
+                    });
+            dispatch(clearUser());
+            navigate("/");
+          }
           setLoading(false);
         }
       };
 
-      useEffect(() => {
-        fetchComplaints();
-      }, []);
+      // useEffect(() => {
+      //   fetchComplaints();
+      // }, []);
 
       useEffect(() => {
         fetchComplaints();
@@ -169,11 +209,13 @@ const SAAllComplaintsList = () => {
       const filteredItems = users.filter(
         (row) =>{ 
           const matchesKeyword =  (row?.UserName &&
-            row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-          (row?.userID && row.userID.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.ContactNo &&
-              row.ContactNo.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+            row?.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+            (row?.id &&
+              row?.id.toString().toLowerCase().includes(keyword.trim().toLowerCase())) ||
+          (row?.userID && row?.userID.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.ContactNo &&
+              row?.ContactNo.toLowerCase().includes(keyword.trim().toLowerCase())) ||
             (row?.Email &&
-              row.Email.toLowerCase().includes(keyword.trim().toLowerCase()))
+              row?.Email.toLowerCase().includes(keyword.trim().toLowerCase()))
 
               const matchesType = !complaintStatus || complaintStatus === "---Select Complaint Status---" || row.status === complaintStatus;
               return matchesKeyword && matchesType;
@@ -255,6 +297,8 @@ const SAAllComplaintsList = () => {
     //     });
     //   };
 
+    console.log(users)
+    console.log(showApiData);
     
     return (
         <>
@@ -494,10 +538,14 @@ const SAAllComplaintsList = () => {
                                                            
                                                         </table>
 
+                                                        </>
+                                                    )}
+                                                       
+                                                    </div>
                                                         <PaginationContainer>
                                                         <ReactPaginate
-                                                          previousLabel={"previous"}
-                                                          nextLabel={"next"}
+                                                          previousLabel={"Previous"}
+                                                          nextLabel={"Next"}
                                                           breakLabel={"..."}
                                                           pageCount={totalPages}
                                                           marginPagesDisplayed={2}
@@ -507,10 +555,6 @@ const SAAllComplaintsList = () => {
                                                           activeClassName={"active"}
                                                         />
                                                       </PaginationContainer>
-                                                        </>
-                                                    )}
-                                                       
-                                                    </div>
                                                  
                                                 </div>
                                             </div>
@@ -570,6 +614,7 @@ const Wrapper = styled.div`
   }
   td{
    font-size: 14px;
+   white-space: nowrap;
    
   }
   @media (min-width: 1025px) and (max-width : 1500px){
@@ -595,7 +640,7 @@ const PaginationContainer = styled.div`
     justify-content: center;
     padding: 10px;
     list-style: none;
-    border-radius: 5px; 
+    border-radius: 5px;
   }
 
   .pagination li {
@@ -608,23 +653,21 @@ const PaginationContainer = styled.div`
     border: 1px solid #e6ecf1;
     color: #007bff;
     cursor: pointer;
-    /* background-color: #004aad0a; */
     text-decoration: none;
     border-radius: 5px;
     box-shadow: 0px 0px 1px #000;
+    font-size: 14px; /* Default font size */
   }
 
   .pagination li.active a {
     background-color: #004aad;
     color: white;
     border: 1px solid #004aad;
-    border-radius: 5px;
   }
 
   .pagination li.disabled a {
     color: white;
     cursor: not-allowed;
-    border-radius: 5px;
     background-color: #3a4e69;
     border: 1px solid #3a4e69;
   }
@@ -632,7 +675,48 @@ const PaginationContainer = styled.div`
   .pagination li a:hover:not(.active) {
     background-color: #004aad;
     color: white;
-    border-radius: 5px;
-    border: 1px solid #004aad;
+  }
+
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .pagination {
+      padding: 5px;
+      flex-wrap: wrap;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pagination {
+      padding: 5px;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 4px 8px;
+      font-size: 10px;
+    }
+
+    /* Hide the previous and next labels for extra-small screens */
+    .pagination li:first-child a::before {
+      content: "«";
+      margin-right: 5px;
+    }
+
+    .pagination li:last-child a::after {
+      content: "»";
+      margin-left: 5px;
+    }
   }
 `;

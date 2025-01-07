@@ -6,14 +6,19 @@ import ReactPaginate from "react-paginate";
 import { Dropdown,Modal, Spinner } from "react-bootstrap";
 import { CiViewList } from "react-icons/ci";
 import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
-
-
-
+import { IoSearch } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 
 const SAWalletWithdrawSummary = () => {
      
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
   const [keyword, setKeyword] = useState("");
   const complaintsPerPage = 10;
@@ -21,18 +26,34 @@ const SAWalletWithdrawSummary = () => {
   const [isRefresh, setIsRefresh] = useState(false);
   const [fromDate, setFromDate] = useState(""); // From date filter
   const [toDate, setToDate] = useState(""); // To date filter
+  
 
 
   const fetchOfflineForm = async () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "http://localhost:7777/api/auth/superAdmin/getWalletTransactions"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getWalletTransactions" ,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setUsers(data.data);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
     }
   };
@@ -41,9 +62,9 @@ const SAWalletWithdrawSummary = () => {
     fetchOfflineForm();
   }, []);
 
-  useEffect(() => {
-    fetchOfflineForm();
-  }, [isRefresh]);
+  // useEffect(() => {
+  //   fetchOfflineForm();
+  // }, [isRefresh]);
 
   const filteredItems = users.filter(
     (row) =>{ 
@@ -135,6 +156,8 @@ const SAWalletWithdrawSummary = () => {
 
                                                 <div className="col-12 col-md-12 col-lg-12 col-xl-8">
                                                         {/* <label for="fromDate" className="form-label">From</label> */}
+                                                        <div class="input-group flex-nowrap">
+                                                        <span class="input-group-text" id="addon-wrapping"> <IoSearch /></span>
                                                         <input id="fromDate" 
                                                         className="form-control"
                                                          type="search"
@@ -142,6 +165,7 @@ const SAWalletWithdrawSummary = () => {
                                                          value={keyword}
                               onChange={(e) => setKeyword(e.target.value)}
                                                          />
+                                                          </div>
                                                     </div>
                                                     
                                                    
@@ -223,10 +247,13 @@ const SAWalletWithdrawSummary = () => {
                                                             </tbody>
                                                         </table>
                                                         
+                                                        </>
+                                                    )}
+                                                    </div>
                                                         <PaginationContainer>
                                                         <ReactPaginate
-                                                          previousLabel={"previous"}
-                                                          nextLabel={"next"}
+                                                          previousLabel={"Previous"}
+                                                          nextLabel={"Next"}
                                                           breakLabel={"..."}
                                                           pageCount={totalPages}
                                                           marginPagesDisplayed={2}
@@ -236,9 +263,6 @@ const SAWalletWithdrawSummary = () => {
                                                           activeClassName={"active"}
                                                         />
                                                       </PaginationContainer>
-                                                        </>
-                                                    )}
-                                                    </div>
                                                   
                                                 </div>
                                             </div>
@@ -313,7 +337,7 @@ const PaginationContainer = styled.div`
     justify-content: center;
     padding: 10px;
     list-style: none;
-    border-radius: 5px; 
+    border-radius: 5px;
   }
 
   .pagination li {
@@ -326,23 +350,21 @@ const PaginationContainer = styled.div`
     border: 1px solid #e6ecf1;
     color: #007bff;
     cursor: pointer;
-    /* background-color: #004aad0a; */
     text-decoration: none;
     border-radius: 5px;
     box-shadow: 0px 0px 1px #000;
+    font-size: 14px; /* Default font size */
   }
 
   .pagination li.active a {
     background-color: #004aad;
     color: white;
     border: 1px solid #004aad;
-    border-radius: 5px;
   }
 
   .pagination li.disabled a {
     color: white;
     cursor: not-allowed;
-    border-radius: 5px;
     background-color: #3a4e69;
     border: 1px solid #3a4e69;
   }
@@ -350,7 +372,48 @@ const PaginationContainer = styled.div`
   .pagination li a:hover:not(.active) {
     background-color: #004aad;
     color: white;
-    border-radius: 5px;
-    border: 1px solid #004aad;
+  }
+
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .pagination {
+      padding: 5px;
+      flex-wrap: wrap;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pagination {
+      padding: 5px;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 4px 8px;
+      font-size: 10px;
+    }
+
+    /* Hide the previous and next labels for extra-small screens */
+    .pagination li:first-child a::before {
+      content: "«";
+      margin-right: 5px;
+    }
+
+    .pagination li:last-child a::after {
+      content: "»";
+      margin-left: 5px;
+    }
   }
 `;

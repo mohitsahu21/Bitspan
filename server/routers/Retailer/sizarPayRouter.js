@@ -1,6 +1,9 @@
 const express = require("express");
-const { sizarpayBalance, sizarpayRecharge, sizarPayRechargeStatusCheck} = require("../../controllers/Retailer/sizarpay");
-
+const {
+  sizarpayBalance,
+  sizarpayRecharge,
+  sizarPayRechargeStatusCheck,
+} = require("../../controllers/Retailer/sizarpay");
 
 const router = express.Router();
 

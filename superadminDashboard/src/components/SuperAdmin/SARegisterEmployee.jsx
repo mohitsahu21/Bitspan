@@ -14,9 +14,13 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
 
 const SARegisterEmployee = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -63,7 +67,15 @@ const SARegisterEmployee = () => {
     try {
       const res = await axios.post(
         "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/superAdminEmployeeRegiser",
-        formData
+        formData,
+        
+{
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+}
+
       );
       console.log(res);
       // alert("user registered successfully");
@@ -95,6 +107,15 @@ const SARegisterEmployee = () => {
       // navigate("/");
     } catch (error) {
       setLoading(false);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       console.log(error);
       Swal.fire({
         icon: "error",

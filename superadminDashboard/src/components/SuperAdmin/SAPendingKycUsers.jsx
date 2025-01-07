@@ -12,6 +12,9 @@ import { LuTextSelect } from "react-icons/lu";
 import Swal from "sweetalert2";
 import ReactPaginate from "react-paginate";
 import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -19,6 +22,9 @@ import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
 
 const SAApproveUser = ({ user, setShowApproveModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
   const [userRelation,setUserRelation] = useState([]);
 
   const [formData, setFormData] = useState({
@@ -77,7 +83,7 @@ const SAApproveUser = ({ user, setShowApproveModel, setIsRefresh }) => {
     white_lable : "",
     superDistributor : "",
     distributor : "",
-    website_url : ""
+    website_url : user?.White_Label_Website_URL
   });
 
   useEffect(() => {
@@ -175,7 +181,14 @@ const handlePackageSelect = (e) => {
     
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${user.created_By_User_Id}`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${user.created_By_User_Id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
       );
     
       console.log(data)
@@ -184,6 +197,15 @@ const handlePackageSelect = (e) => {
       
     } catch (error) {
       console.error("Error fetching package data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       
     }
   };
@@ -192,7 +214,14 @@ const handlePackageSelect = (e) => {
     setPackagesLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPackage"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPackage",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
       );
       const packageFind = ()=>{
         if(user.role == "Retailer"){
@@ -219,6 +248,15 @@ const handlePackageSelect = (e) => {
       setPackagesLoading(false);
     } catch (error) {
       console.error("Error fetching package data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setPackagesLoading(false);
     }
   };
@@ -236,9 +274,16 @@ const handlePackageSelect = (e) => {
       setLoading(true);
      
       const response = await axios.put(
-        // "http://localhost:7777/api/auth/superAdmin/approveUser",
+        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
-        formDataToSend
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
       );
       console.log(response);
       setLoading(false);
@@ -258,6 +303,15 @@ const handlePackageSelect = (e) => {
       }
     } catch (error) {
       console.error("There was an error submitting the form!", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
       Swal.fire({
         icon: "error",
@@ -497,6 +551,9 @@ const handlePackageSelect = (e) => {
 
 const SARejectUser = ({ user, setShowRejectModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
 
   const [formData, setFormData] = useState({
     UserName: user.UserName,
@@ -519,9 +576,16 @@ const SARejectUser = ({ user, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        // "http://localhost:7777/api/auth/superAdmin/rejectUser",
+        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectUser",
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectUser",
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
       );
       console.log(response);
       setLoading(false);
@@ -540,6 +604,15 @@ const SARejectUser = ({ user, setShowRejectModel, setIsRefresh }) => {
       }
     } catch (error) {
       console.error("There was an error submitting the form!", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
       Swal.fire({
         icon: "error",
@@ -636,6 +709,9 @@ const SAPendingKycUsers = () => {
   const [ShowRejectModel, setShowRejectModel] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
 
   const [keyword, setKeyword] = useState("");
@@ -648,19 +724,35 @@ const SAPendingKycUsers = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingUsers"
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingUsers",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
       );
       setUsers(data.data);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching package data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchPendingUsers();
-  }, []);
+  // useEffect(() => {
+  //   fetchPendingUsers();
+  // }, []);
   useEffect(() => {
     fetchPendingUsers();
   }, [isRefresh]);
@@ -867,7 +959,7 @@ const SAPendingKycUsers = () => {
                                         <td>{user.State}</td>
                                         <td>{user.PinCode}</td>
                                         <td>{user?.created_By_User_Id + " " + user?.created_By_User_Role}</td>
-                                        <td>{user?.created_By_Website}</td>
+                                        <td>{user?.role == "WhiteLabel" ? user?.White_Label_Website_URL :  user?.created_By_Website}</td>
                                       
 
                                         {/* <td>
@@ -886,31 +978,48 @@ const SAPendingKycUsers = () => {
                                             ))}
                                       </td> */}
                                         <td>
-                                          <a
+                                          {
+                                            user.AadharFront ?
+                                            <a
                                             href={user.AadharFront}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                           >
                                             View
-                                          </a>
+                                          </a> 
+                                            :
+                                            "Not Available"
+                                          }
+                                         
                                         </td>
                                         <td>
-                                          <a
+                                          {
+                                            user.AadharBack ? 
+                                            <a
                                             href={user.AadharBack}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                           >
                                             View
                                           </a>
+                                            :
+                                            "Not Available"
+                                          }
+                                         
                                         </td>
                                         <td>
-                                          <a
-                                            href={user.PanCardFront}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                          >
-                                            View
-                                          </a>
+                                          {
+                                           user.PanCardFront ?
+                                           <a
+                                           href={user.PanCardFront}
+                                           target="_blank"
+                                           rel="noopener noreferrer"
+                                         >
+                                           View
+                                         </a> : 
+                                         "Not Available"
+                                          }
+                                         
                                         </td>
                                         <td>{user?.payment_status}</td>
                                         <td>{user.Status}</td>
@@ -961,10 +1070,13 @@ const SAPendingKycUsers = () => {
                                   )}
                                 </tbody>
                               </table>
+                              </>
+                            )}
+                          </div>
                               <PaginationContainer>
                             <ReactPaginate
-                              previousLabel={"previous"}
-                              nextLabel={"next"}
+                              previousLabel={"Previous"}
+                              nextLabel={"Next"}
                               breakLabel={"..."}
                               pageCount={totalPages}
                               marginPagesDisplayed={2}
@@ -974,9 +1086,6 @@ const SAPendingKycUsers = () => {
                               activeClassName={"active"}
                             />
                           </PaginationContainer>
-                              </>
-                            )}
-                          </div>
                           
                         </div>
                       </div>
@@ -1064,6 +1173,7 @@ const Wrapper = styled.div`
   }
   td {
     font-size: 14px;
+    white-space: nowrap;
   }
   @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
@@ -1090,7 +1200,7 @@ const PaginationContainer = styled.div`
     justify-content: center;
     padding: 10px;
     list-style: none;
-    border-radius: 5px; 
+    border-radius: 5px;
   }
 
   .pagination li {
@@ -1103,23 +1213,21 @@ const PaginationContainer = styled.div`
     border: 1px solid #e6ecf1;
     color: #007bff;
     cursor: pointer;
-    /* background-color: #004aad0a; */
     text-decoration: none;
     border-radius: 5px;
     box-shadow: 0px 0px 1px #000;
+    font-size: 14px; /* Default font size */
   }
 
   .pagination li.active a {
     background-color: #004aad;
     color: white;
     border: 1px solid #004aad;
-    border-radius: 5px;
   }
 
   .pagination li.disabled a {
     color: white;
     cursor: not-allowed;
-    border-radius: 5px;
     background-color: #3a4e69;
     border: 1px solid #3a4e69;
   }
@@ -1127,7 +1235,48 @@ const PaginationContainer = styled.div`
   .pagination li a:hover:not(.active) {
     background-color: #004aad;
     color: white;
-    border-radius: 5px;
-    border: 1px solid #004aad;
+  }
+
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .pagination {
+      padding: 5px;
+      flex-wrap: wrap;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pagination {
+      padding: 5px;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 4px 8px;
+      font-size: 10px;
+    }
+
+    /* Hide the previous and next labels for extra-small screens */
+    .pagination li:first-child a::before {
+      content: "«";
+      margin-right: 5px;
+    }
+
+    .pagination li:last-child a::after {
+      content: "»";
+      margin-left: 5px;
+    }
   }
 `;

@@ -4,11 +4,18 @@ import logo from "../../../assets/images/logo.png"
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
+
 
 
 const HomePageSetting = () => {
     const [errors, setErrors] = useState({});
     const homepageBgRef = useRef(null);
+ const navigate = useNavigate();
+ const dispatch = useDispatch();
+ const { token } = useSelector((state) => state.user);
   
     const validateImage = (event, width, height, field,preview,inputRef) => {
         const file = event.target.files[0];
@@ -87,7 +94,7 @@ const HomePageSetting = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "http://localhost:7777/api/auth/superAdmin/getSuperAdminSettings"
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
           );
           setData(data.data);
           setFormData({
@@ -189,9 +196,10 @@ const HomePageSetting = () => {
         console.log(formDataSend)
 
         try {
-            const response = await axios.post("http://localhost:7777/api/auth/superAdmin/UpdateHomePageSetting", formDataSend, {
+            const response = await axios.post("https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateHomePageSetting", formDataSend, {
                 headers: {
                     "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${token}`,
                 },
             });
             setLoading(false);
@@ -212,6 +220,15 @@ const HomePageSetting = () => {
         } catch (error) {
             setLoading(false);
             console.error("Error updating details:", error);
+            if (error?.response?.status == 401) {
+                // alert("Your token is expired please login again")
+                Swal.fire({
+                          icon: "error",
+                          title: "Your token is expired please login again",
+                        });
+                dispatch(clearUser());
+                navigate("/");
+              }
             Swal.fire({
                 icon: "error",
                 title: "Failed to update details. Please try again.",

@@ -10,9 +10,16 @@ import Select from "react-select";
 import axios from "axios"
 import messageSound from "../../assets/sound/sound.mp3";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const SACreatePackages = () => {
   const sound = new Audio(messageSound);
+  
+ const navigate = useNavigate();
+ const dispatch = useDispatch();
+ const { token } = useSelector((state) => state.user);
 
   const [loading, setLoading] = useState(false);
 
@@ -25,6 +32,7 @@ const SACreatePackages = () => {
     package_for: [], // This will store the selected options
     offline_E_PAN_Card_Price : "",
       offline_P_PAN_Card_Price : "",
+      Pan_Find_Price : "" ,
     Google_Play_Price: "",
     Birth_Certificate_Price: "",
     Death_Certificate_Price: "",
@@ -41,6 +49,7 @@ const SACreatePackages = () => {
     non_samagra_income_Certificate_Price : "",
     non_samagra_Domicile_Certificate_Price : "",
     verify_edistrict_Certificate_Price : "",
+    Ayushman_Id_Price : "",
     IRCTC_Agent_ID_Price: "",
     PayNearBy_BankId_Price : "",
     Fino_BankId_Price : "",
@@ -55,6 +64,7 @@ const SACreatePackages = () => {
     Offline_Services_Commission_Type: "",
     offline_E_PAN_Card_Commission : "",
       offline_P_PAN_Card_Commission : "",
+      Pan_Find_Commission : "",
     Google_Play_Commission: "",
     IRCTC_Agent_ID_Commission: "",
     Birth_Certificate_Commission: "",
@@ -116,6 +126,10 @@ const SACreatePackages = () => {
     Off_Videocon_New_DTH_Connection_Commission: "",
     Off_Sun_Direct_New_DTH_Connection_Commission: "",
     Off_Airtel_New_DTH_Connection_Commission: "",
+    Online_Broadband_Bill_Pay_Commission_Type: "",
+    Online_Broadband_Bill_Pay_Commission: "",
+    Offline_Broadband_Bill_Pay_Commission_Type: "",
+    Offline_Broadband_Bill_Pay_Commission: "",
     Online_Electricity_Bill_Pay_Commission_Type: "",
     Online_Electricity_Bill_Pay_Commission: "",
     Offline_Electricity_Bill_Pay_Commission_Type: "",
@@ -131,6 +145,22 @@ const SACreatePackages = () => {
     E_PAN_Card_Commission: "",
     UTI_PAN_Coupon_Commission : "",
     P_PAN_Card_Commission: "",
+    whitelabel_joining_price : "",
+    retailer_joining_price : "",
+    superDistributor_joining_price : "",
+    distributor_joining_price : "",
+    whiteLabel_id_price: "",
+    whiteLabel_min_id_limit: "",
+    whiteLabel_max_id_limit: "",
+    superDistributor_id_price: "",
+    superDistributor_min_id_limit: "",
+    superDistributor_max_id_limit: "",
+    distributor_id_price: "",
+    distributor_min_id_limit: "",
+    distributor_max_id_limit: "",
+    retailer_id_price: "",
+    retailer_min_id_limit: "",
+    retailer_max_id_limit: "",
   });
 
   const handleChange = (e) => {
@@ -159,7 +189,14 @@ const SACreatePackages = () => {
       setLoading(true);
       const response = await axios.post(
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addPackage",
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
       );
       console.log(response);
       setLoading(false);
@@ -173,6 +210,7 @@ const SACreatePackages = () => {
     package_for: [], // This will store the selected options
     offline_E_PAN_Card_Price : "",
       offline_P_PAN_Card_Price : "",
+      Pan_Find_Price : "" ,
     Google_Play_Price: "",
     Birth_Certificate_Price: "",
     Death_Certificate_Price: "",
@@ -189,6 +227,7 @@ const SACreatePackages = () => {
     non_samagra_income_Certificate_Price : "",
     non_samagra_Domicile_Certificate_Price : "",
     verify_edistrict_Certificate_Price : "",
+    Ayushman_Id_Price : "",
     IRCTC_Agent_ID_Price: "",
     PayNearBy_BankId_Price : "",
     Fino_BankId_Price : "",
@@ -203,6 +242,7 @@ const SACreatePackages = () => {
     Offline_Services_Commission_Type: "",
     offline_E_PAN_Card_Commission : "",
       offline_P_PAN_Card_Commission : "",
+      Pan_Find_Commission : "",
     Google_Play_Commission: "",
     IRCTC_Agent_ID_Commission: "",
     Birth_Certificate_Commission: "",
@@ -264,6 +304,10 @@ const SACreatePackages = () => {
     Off_Videocon_New_DTH_Connection_Commission: "",
     Off_Sun_Direct_New_DTH_Connection_Commission: "",
     Off_Airtel_New_DTH_Connection_Commission: "",
+    Online_Broadband_Bill_Pay_Commission_Type: "",
+    Online_Broadband_Bill_Pay_Commission: "",
+    Offline_Broadband_Bill_Pay_Commission_Type: "",
+    Offline_Broadband_Bill_Pay_Commission: "",
     Online_Electricity_Bill_Pay_Commission_Type: "",
     Online_Electricity_Bill_Pay_Commission: "",
     Offline_Electricity_Bill_Pay_Commission_Type: "",
@@ -279,6 +323,23 @@ const SACreatePackages = () => {
     E_PAN_Card_Commission: "",
     UTI_PAN_Coupon_Commission : "",
     P_PAN_Card_Commission: "",
+    whitelabel_joining_price : "",
+    retailer_joining_price : "",
+    superDistributor_joining_price : "",
+    distributor_joining_price : "",
+    whiteLabel_id_price: "",
+    whiteLabel_min_id_limit: "",
+    whiteLabel_max_id_limit: "",
+    superDistributor_id_price: "",
+    superDistributor_min_id_limit: "",
+    superDistributor_max_id_limit: "",
+    distributor_id_price: "",
+    distributor_min_id_limit: "",
+    distributor_max_id_limit: "",
+    retailer_id_price: "",
+    retailer_min_id_limit: "",
+    retailer_max_id_limit: "",
+
         });
       }
       else{
@@ -289,6 +350,15 @@ const SACreatePackages = () => {
       }     
     } catch (error) {
       console.error("There was an error submitting the form!", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
       Swal.fire({
         icon: "error",
@@ -465,6 +535,8 @@ const SACreatePackages = () => {
                             value={formData.offline_E_PAN_Card_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -487,11 +559,35 @@ const SACreatePackages = () => {
                             value={formData.offline_P_PAN_Card_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
                  
 
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Pan Find Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="Pan_Find_Price"
+                            value={formData.Pan_Find_Price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
                           Enter Google Play Price
@@ -510,6 +606,8 @@ const SACreatePackages = () => {
                             value={formData.Google_Play_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -532,6 +630,8 @@ const SACreatePackages = () => {
                             value={formData.Birth_Certificate_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -553,6 +653,8 @@ const SACreatePackages = () => {
                             value={formData.Death_Certificate_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -574,6 +676,8 @@ const SACreatePackages = () => {
                             value={formData.E_Stamp_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -595,6 +699,8 @@ const SACreatePackages = () => {
                             value={formData.ITR_Registration_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -616,6 +722,8 @@ const SACreatePackages = () => {
                             value={formData.GST_Registration_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -637,6 +745,8 @@ const SACreatePackages = () => {
                             value={formData.Sambal_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -658,6 +768,8 @@ const SACreatePackages = () => {
                             value={formData.Udyog_Aadhar_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -704,6 +816,8 @@ const SACreatePackages = () => {
                             value={formData.eKYC_Income_Certificate_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -725,6 +839,8 @@ const SACreatePackages = () => {
                             value={formData.eKYC_Domicile_Certificate_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -746,6 +862,8 @@ const SACreatePackages = () => {
                             value={formData.offlineKYC_Income_Certificate_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -767,6 +885,8 @@ const SACreatePackages = () => {
                             value={formData.offlineKYC_Domicile_Certificate_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -788,6 +908,8 @@ const SACreatePackages = () => {
                             value={formData.non_samagra_income_Certificate_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -809,6 +931,8 @@ const SACreatePackages = () => {
                             value={formData.non_samagra_Domicile_Certificate_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -830,6 +954,8 @@ const SACreatePackages = () => {
                             value={formData.verify_edistrict_Certificate_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -851,6 +977,29 @@ const SACreatePackages = () => {
                       
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
+                          Enter Ayushman ID Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                           
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="Ayushman_Id_Price"
+                            value={formData.Ayushman_Id_Price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
                           Enter IRCTC Agent ID Price
                         </label>
                         <div class="input-group flex-nowrap">
@@ -867,6 +1016,8 @@ const SACreatePackages = () => {
                             value={formData.IRCTC_Agent_ID_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -888,6 +1039,8 @@ const SACreatePackages = () => {
                             value={formData.PayNearBy_BankId_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -909,6 +1062,8 @@ const SACreatePackages = () => {
                             value={formData.Fino_BankId_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -930,6 +1085,8 @@ const SACreatePackages = () => {
                             value={formData.SpiceMoney_BankId_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -951,6 +1108,8 @@ const SACreatePackages = () => {
                             value={formData.Nsdl_BankId_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -972,6 +1131,8 @@ const SACreatePackages = () => {
                             value={formData.Ezeepay_BankId_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -993,6 +1154,8 @@ const SACreatePackages = () => {
                             value={formData.ReligareDigipay_BankId_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1014,6 +1177,8 @@ const SACreatePackages = () => {
                             value={formData.Airtel_BankId_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1035,6 +1200,8 @@ const SACreatePackages = () => {
                             value={formData.payworld_BankId_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1056,6 +1223,8 @@ const SACreatePackages = () => {
                             value={formData.Anypay_BankId_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1077,6 +1246,8 @@ const SACreatePackages = () => {
                             value={formData.Roinet_BankId_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1155,6 +1326,8 @@ const SACreatePackages = () => {
                             value={formData.offline_E_PAN_Card_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1177,10 +1350,35 @@ const SACreatePackages = () => {
                             value={formData.offline_P_PAN_Card_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
 
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Pan Find Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                           
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="Pan_Find_Commission"
+                            value={formData.Pan_Find_Commission}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
                           Enter Google Play Commission
@@ -1199,10 +1397,12 @@ const SACreatePackages = () => {
                             value={formData.Google_Play_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
                           Enter IRCTC Agent ID Commission
                         </label>
@@ -1220,9 +1420,11 @@ const SACreatePackages = () => {
                             value={formData.IRCTC_Agent_ID_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
-                      </div>
+                      </div> */}
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
                           Enter Birth Certificate Commission
@@ -1241,6 +1443,8 @@ const SACreatePackages = () => {
                             value={formData.Birth_Certificate_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1262,6 +1466,8 @@ const SACreatePackages = () => {
                             value={formData.Death_Certificate_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1283,6 +1489,8 @@ const SACreatePackages = () => {
                             value={formData.E_Stamp_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1304,6 +1512,8 @@ const SACreatePackages = () => {
                             value={formData.ITR_Registration_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1325,6 +1535,8 @@ const SACreatePackages = () => {
                             value={formData.GST_Registration_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1346,6 +1558,8 @@ const SACreatePackages = () => {
                             value={formData.Sambal_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1367,6 +1581,8 @@ const SACreatePackages = () => {
                             value={formData.Udyog_Aadhar_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1388,6 +1604,8 @@ const SACreatePackages = () => {
                             value={formData.eKYC_Income_Certificate_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1409,10 +1627,12 @@ const SACreatePackages = () => {
                             value={formData.eKYC_Domicile_Certificate_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
                         Enter offline KYC Income Certificate Commission
                         </label>
@@ -1430,6 +1650,8 @@ const SACreatePackages = () => {
                             value={formData.offlineKYC_Income_Certificate_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1451,6 +1673,8 @@ const SACreatePackages = () => {
                             value={formData.offlineKYC_Domicile_Certificate_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1472,6 +1696,8 @@ const SACreatePackages = () => {
                             value={formData.non_samagra_income_Certificate_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1493,9 +1719,11 @@ const SACreatePackages = () => {
                             value={formData.non_samagra_Domicile_Certificate_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
-                      </div>
+                      </div> */}
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
                         Enter Verify e-district Certificate Commission
@@ -1514,10 +1742,12 @@ const SACreatePackages = () => {
                             value={formData.verify_edistrict_Certificate_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
                           Enter Bank ID Commission
                         </label>
@@ -1535,9 +1765,11 @@ const SACreatePackages = () => {
                             value={formData.Bank_ID_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
-                      </div>
+                      </div> */}
 
                       {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                             <div className="text-center  mb-5 mt-3">
@@ -1595,6 +1827,8 @@ const SACreatePackages = () => {
                             value={formData.Off_Airtel_Prepaid_Recharge_Comm}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1616,6 +1850,8 @@ const SACreatePackages = () => {
                             value={formData.Off_Jio_Prepaid_Recharge_Comm}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1637,6 +1873,8 @@ const SACreatePackages = () => {
                             value={formData.Off_Vi_Prepaid_Recharge_Comm}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1658,6 +1896,8 @@ const SACreatePackages = () => {
                             value={formData.Off_Bsnl_Prepaid_Recharge_Comm}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1717,6 +1957,8 @@ const SACreatePackages = () => {
                             value={formData.Off_Airtel_Postpaid_Recharge_Comm}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1738,6 +1980,8 @@ const SACreatePackages = () => {
                             value={formData.Off_Jio_Postpaid_Recharge_Comm}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1759,6 +2003,8 @@ const SACreatePackages = () => {
                             value={formData.Off_Vi_Postpaid_Recharge_Comm}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1780,6 +2026,8 @@ const SACreatePackages = () => {
                             value={formData.Off_Bsnl_Postpaid_Recharge_Comm}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1839,6 +2087,8 @@ const SACreatePackages = () => {
                             value={formData.On_Airtel_Prepaid_Recharge_Comm}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1860,6 +2110,8 @@ const SACreatePackages = () => {
                             value={formData.On_Jio_Prepaid_Recharge_Comm}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1881,6 +2133,8 @@ const SACreatePackages = () => {
                             value={formData.On_Vi_Prepaid_Recharge_Comm}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1902,6 +2156,8 @@ const SACreatePackages = () => {
                             value={formData.On_Bsnl_Prepaid_Recharge_Comm}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1961,6 +2217,8 @@ const SACreatePackages = () => {
                             value={formData.On_Airtel_Postpaid_Recharge_Comm}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -1982,6 +2240,8 @@ const SACreatePackages = () => {
                             value={formData.On_Jio_Postpaid_Recharge_Comm}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2003,6 +2263,8 @@ const SACreatePackages = () => {
                             value={formData.On_Vi_Postpaid_Recharge_Comm}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2024,6 +2286,8 @@ const SACreatePackages = () => {
                             value={formData.On_Bsnl_Postpaid_Recharge_Comm}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2083,6 +2347,8 @@ const SACreatePackages = () => {
                             value={formData.On_Dish_TV_Recharge_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2104,6 +2370,8 @@ const SACreatePackages = () => {
                             value={formData.On_Tata_Sky_Recharge_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2125,6 +2393,8 @@ const SACreatePackages = () => {
                             value={formData.On_Videocon_Recharge_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2146,6 +2416,8 @@ const SACreatePackages = () => {
                             value={formData.On_Sun_Direct_Recharge_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2167,6 +2439,8 @@ const SACreatePackages = () => {
                             value={formData.On_Airtel_Dth_Recharge_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2226,6 +2500,8 @@ const SACreatePackages = () => {
                             value={formData.Off_Dish_TV_Recharge_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2247,6 +2523,8 @@ const SACreatePackages = () => {
                             value={formData.Off_Tata_Sky_Recharge_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2268,6 +2546,8 @@ const SACreatePackages = () => {
                             value={formData.Off_Videocon_Recharge_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2289,6 +2569,8 @@ const SACreatePackages = () => {
                             value={formData.Off_Sun_Direct_Recharge_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2310,6 +2592,8 @@ const SACreatePackages = () => {
                             value={formData.Off_Airtel_Dth_Recharge_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2369,6 +2653,8 @@ const SACreatePackages = () => {
                             value={formData.On_Dish_TV_New_DTH_Connection_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2390,6 +2676,8 @@ const SACreatePackages = () => {
                             value={formData.On_Tata_Sky_New_DTH_Connection_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2411,6 +2699,8 @@ const SACreatePackages = () => {
                             value={formData.On_Videocon_New_DTH_Connection_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2432,6 +2722,8 @@ const SACreatePackages = () => {
                             value={formData.On_Sun_Direct_New_DTH_Connection_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2453,6 +2745,8 @@ const SACreatePackages = () => {
                             value={formData.On_Airtel_New_DTH_Connection_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2512,6 +2806,8 @@ const SACreatePackages = () => {
                             value={formData.Off_Dish_TV_New_DTH_Connection_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2533,6 +2829,8 @@ const SACreatePackages = () => {
                             value={formData.Off_Tata_Sky_New_DTH_Connection_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2554,6 +2852,8 @@ const SACreatePackages = () => {
                             value={formData.Off_Videocon_New_DTH_Connection_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2575,6 +2875,8 @@ const SACreatePackages = () => {
                             value={formData.Off_Sun_Direct_New_DTH_Connection_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2596,6 +2898,8 @@ const SACreatePackages = () => {
                             value={formData.Off_Airtel_New_DTH_Connection_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2607,6 +2911,162 @@ const SACreatePackages = () => {
                                         </div> */}
                     </div>
 
+                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                      <div className="text-center  my-5">
+                        <h2>Create Online Broadband Bill Pay Commission</h2>
+                      </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" className="form-label">
+                          Select Commission Type
+                        </label>
+                        <div className="input-group flex-nowrap">
+                          <span
+                            className="input-group-text"
+                            id="addon-wrapping"
+                          >
+                            {" "}
+                            <LuTextSelect />
+                          </span>
+                          <select
+                            name="Online_Broadband_Bill_Pay_Commission_Type" value={formData.Online_Broadband_Bill_Pay_Commission_Type} onChange={handleChange}
+                            className="form-select"
+                            aria-label="Default select example"
+                            required
+                          >
+                            <option value="" selected>Select...</option>
+
+                            <option value="Percentage">Percentage (%)</option>
+                            <option value="Rupees">Rupees (&#8377;)</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Online Broadband Bill Pay Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="Online_Broadband_Bill_Pay_Commission"
+                            value={formData.Online_Broadband_Bill_Pay_Commission}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>
+
+                     
+                    </div>
+                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                      <div className="text-center  my-5">
+                        <h2>Create Offline Broadband Bill Pay Commission</h2>
+                      </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" className="form-label">
+                          Select Commission Type
+                        </label>
+                        <div className="input-group flex-nowrap">
+                          <span
+                            className="input-group-text"
+                            id="addon-wrapping"
+                          >
+                            {" "}
+                            <LuTextSelect />
+                          </span>
+                          <select
+                            name="Offline_Broadband_Bill_Pay_Commission_Type" value={formData.Offline_Broadband_Bill_Pay_Commission_Type} onChange={handleChange}
+                            className="form-select"
+                            aria-label="Default select example"
+                            required
+                          >
+                            <option value="" selected>Select...</option>
+
+                            <option value="Percentage">Percentage (%)</option>
+                            <option value="Rupees">Rupees (&#8377;)</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter Offline Broadband Bill Pay Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="Offline_Broadband_Bill_Pay_Commission"
+                            value={formData.Offline_Broadband_Bill_Pay_Commission}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>
+                      {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                            Enter M.P. Madhya Kshetra Vidyut Vitaran - RURAL Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                            Enter M.P. Poorv Kshetra Vidyut Vitaran Company Ltd (RURAL) Commission
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">
+                                                    {" "}
+                                                    <MdNumbers />
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    
+                                                    class="form-control"
+                                                    placeholder="Enter IFSC Code"
+                                                    value={"1000"}
+
+                                                />
+                                            </div>
+                                        </div> */}
+
+                      {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div className="text-center  mb-5 mt-3">
+                                                <button className="btn p-2">Change</button>
+                                            </div>
+                                        </div> */}
+                    </div>
                     <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
                       <div className="text-center  my-5">
                         <h2>Create Online Electricity Bill Pay Commission</h2>
@@ -2656,6 +3116,8 @@ const SACreatePackages = () => {
                             value={formData.Online_Electricity_Bill_Pay_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2773,6 +3235,8 @@ const SACreatePackages = () => {
                             value={formData.Offline_Electricity_Bill_Pay_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2870,6 +3334,8 @@ const SACreatePackages = () => {
                             value={formData.Online_Insurance_Pay_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2929,6 +3395,8 @@ const SACreatePackages = () => {
                             value={formData.Offline_Insurance_Pay_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2964,6 +3432,8 @@ const SACreatePackages = () => {
                             value={formData.E_PAN_Card_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -2986,12 +3456,14 @@ const SACreatePackages = () => {
                             value={formData.P_PAN_Card_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Enter UTI PAN Coupon Price
+                          Enter PAN Coupon Price
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -3007,6 +3479,8 @@ const SACreatePackages = () => {
                             value={formData.UTI_PAN_Coupon_Price}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -3066,6 +3540,8 @@ const SACreatePackages = () => {
                             value={formData.E_PAN_Card_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
@@ -3088,12 +3564,14 @@ const SACreatePackages = () => {
                             value={formData.P_PAN_Card_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
                           />
                         </div>
                       </div>
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Enter UTI PAN Coupon Commission
+                          Enter PAN Coupon Commission
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -3109,6 +3587,437 @@ const SACreatePackages = () => {
                             value={formData.UTI_PAN_Coupon_Commission}
                             onChange={handleChange}
                             required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>
+
+                      {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div className="text-center  mb-5 mt-3">
+                                                <button className="btn p-2">Change</button>
+                                            </div>
+                                        </div> */}
+                    </div>
+                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                      <div className="text-center  my-5">
+                        <h2>Create Joining Price (for White Label)</h2>
+                      </div>
+
+                     
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter White Label Joining Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="whitelabel_joining_price"
+                            value={formData.whitelabel_joining_price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                           
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter Super Distributor Joining Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="superDistributor_joining_price"
+                            value={formData.superDistributor_joining_price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                           
+                           
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter Distributor Joining Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="distributor_joining_price"
+                            value={formData.distributor_joining_price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            
+                           
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter Retailer Joining Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="retailer_joining_price"
+                            value={formData.retailer_joining_price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                          
+                          />
+                        </div>
+                      </div>
+
+                      {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div className="text-center  mb-5 mt-3">
+                                                <button className="btn p-2">Change</button>
+                                            </div>
+                                        </div> */}
+                    </div>
+                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                      <div className="text-center  my-5">
+                        <h2>Create User ID Price (For Create Users)</h2>
+                      </div>
+
+                      <div>
+                      <h4>Set White Label ID Price</h4>
+                    </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter White Label Id Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="whiteLabel_id_price"
+                            value={formData.whiteLabel_id_price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                           
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter White Label Minimum Id limit
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter White Label Minimum Id limit"
+                            name="whiteLabel_min_id_limit"
+                            value={formData.whiteLabel_min_id_limit}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            
+                           
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter White Label Maximum Id limit
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter White Label Maximum Id limit"
+                            name="whiteLabel_max_id_limit"
+                            value={formData.whiteLabel_max_id_limit}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            
+                           
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                      <h4>Set Super Distributor ID Price</h4>
+                    </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter Super Distributor Id Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="superDistributor_id_price"
+                            value={formData.superDistributor_id_price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter Super Distributor Minimum Id limit
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Super Distributor Minimum Id limit"
+                            name="superDistributor_min_id_limit"
+                            value={formData.superDistributor_min_id_limit}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            
+                           
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter Super Distributor Maximum Id limit
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Super Distributor Maximum Id limit"
+                            name="superDistributor_max_id_limit"
+                            value={formData.superDistributor_max_id_limit}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            
+                           
+                          />
+                        </div>
+                      </div>
+
+                      
+                      <div>
+                      <h4>Set Distributor ID Price</h4>
+                    </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter Distributor Id Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="distributor_id_price"
+                            value={formData.distributor_id_price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                          
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter Distributor Minimum Id limit
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Distributor Minimum Id limit"
+                            name="distributor_min_id_limit"
+                            value={formData.distributor_min_id_limit}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                           
+                           
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter Distributor Maximum Id limit
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Distributor Maximum Id limit"
+                            name="distributor_max_id_limit"
+                            value={formData.distributor_max_id_limit}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            
+                           
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                      <h4>Set Retailer ID Price</h4>
+                    </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter Retailer Id Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="retailer_id_price"
+                            value={formData.retailer_id_price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter Retailer Minimum Id limit
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Retailer Minimum Id limit"
+                            name="retailer_min_id_limit"
+                            value={formData.retailer_min_id_limit}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                          
+                           
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Enter Retailer Maximum Id limit
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder=" Enter Retailer Maximum Id limit"
+                            name="retailer_max_id_limit"
+                            value={formData.retailer_max_id_limit}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                           
+                           
                           />
                         </div>
                       </div>

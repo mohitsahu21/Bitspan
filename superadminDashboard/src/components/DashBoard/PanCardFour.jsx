@@ -7,7 +7,7 @@ import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
-import { Modal, Button } from "react-bootstrap";
+import { Button, Modal, Spinner } from "react-bootstrap";
 
 const PanCardFour = () => {
   const dispatch = useDispatch();
@@ -15,6 +15,11 @@ const PanCardFour = () => {
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
   const pinRefs = useRef([]);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [prices, setPrices] = useState({
+    electronicPrice: "",
+    physicalPrice: "",
+  });
   const [formData, setFormData] = useState({
     application_type: "",
     select_title: "",
@@ -31,11 +36,44 @@ const PanCardFour = () => {
     email_id: "",
     pin_code: "",
     state: "",
-    Change_Request: "",
-    Charge_Amount: "",
-    user_id: currentUser.userId,
+    // Change_Request: "",
+    Change_Request: {
+      name: false,
+      father: false,
+      dob: false,
+      mother: false,
+      email: false,
+      mobile: false,
+      gender: false,
+    },
+    amount: "",
+    userId: currentUser.userId,
     status: "Pending",
   });
+
+  useEffect(() => {
+    const fetchPrices = async () => {
+      try {
+        const response = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+        );
+        if (response.data?.data?.length > 0) {
+          const packageData = response.data.data[0];
+          console.log(packageData);
+          console.log(packageData.offline_E_PAN_Card_Price);
+          console.log(packageData.offline_P_PAN_Card_Price);
+          setPrices({
+            electronicPrice: packageData.offline_E_PAN_Card_Price,
+            physicalPrice: packageData.offline_P_PAN_Card_Price,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching package data:", error);
+      }
+    };
+
+    fetchPrices();
+  }, []);
 
   const [files, setFiles] = useState({
     documentUpload: null,
@@ -63,19 +101,58 @@ const PanCardFour = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === "pantype") {
+      const updatedAmount =
+        value === "Electronic"
+          ? prices.electronicPrice
+          : value === "Physical"
+          ? prices.physicalPrice
+          : "";
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+        amount: updatedAmount,
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      Change_Request: {
+        ...prevData.Change_Request,
+        [name]: checked,
+      },
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const filteredChangeRequest = Object.entries(
+      formData.Change_Request
+    ).reduce((acc, [key, value]) => {
+      if (value) {
+        acc[key] = value; // Include only if the value is true
+      }
+      return acc;
+    }, {});
+
     const form = new FormData();
 
     Object.keys(formData).forEach((key) => {
-      form.append(key, formData[key]);
+      // form.append(key, formData[key]);
+      if (key === "Change_Request") {
+        form.append(key, JSON.stringify(filteredChangeRequest));
+      } else {
+        form.append(key, formData[key]);
+      }
     });
 
     if (Array.isArray(files.documentUpload)) {
@@ -100,7 +177,7 @@ const PanCardFour = () => {
     try {
       const response = await axios.post(
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/pan-4.0",
-        "http://localhost:7777/api/auth/retailer/pan-4.0-form",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/pan-4.0-form",
         form,
         {
           headers: {
@@ -129,8 +206,8 @@ const PanCardFour = () => {
         pin_code: "",
         state: "",
         Change_Request: "",
-        Charge_Amount: "",
-        user_id: currentUser.userId,
+        amount: "",
+        userId: currentUser.userId,
         status: "Pending",
       });
       // setFiles({
@@ -176,7 +253,7 @@ const PanCardFour = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") }
       );
 
@@ -194,7 +271,9 @@ const PanCardFour = () => {
   };
 
   const handleModalSubmit = async (e) => {
+    setIsVerifying(true); // Start loading
     const isPinValid = await verifyPin();
+    setIsVerifying(false); // Stop loading
     if (isPinValid) {
       setShowPinModal(false);
       handleSubmit(e);
@@ -279,6 +358,7 @@ const PanCardFour = () => {
                           name="name"
                           value={formData.name}
                           onChange={handleChange}
+                          required
                         />
                       </div>
                       <div className="col-md-6 mb-3">
@@ -291,6 +371,7 @@ const PanCardFour = () => {
                           name="father_name"
                           value={formData.father_name}
                           onChange={handleChange}
+                          required
                         />
                       </div>
                     </div>
@@ -306,6 +387,7 @@ const PanCardFour = () => {
                           name="mother_name"
                           value={formData.mother_name}
                           onChange={handleChange}
+                          required
                         />
                       </div>
                       <div className="col-md-3 mb-3">
@@ -322,8 +404,9 @@ const PanCardFour = () => {
                           onChange={handleChange}
                         >
                           <option value="">Select</option>
-                          <option value="Male">M</option>
-                          <option value="Female">F</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                          <option value="Other">Other</option>
                         </select>
                       </div>
                     </div>
@@ -399,6 +482,9 @@ const PanCardFour = () => {
                           name="mobile_no"
                           value={formData.mobile_no}
                           onChange={handleChange}
+                          maxLength={10}
+                          minLength={10}
+                          required
                         />
                       </div>
                       <div className="col-md-4 mb-3">
@@ -439,7 +525,7 @@ const PanCardFour = () => {
                       </div>
                     </div>
 
-                    <div className="row">
+                    {/* <div className="row">
                       <div className="col-md-12 mb-3">
                         <label htmlFor="changeRequest">
                           Change Request - Name, Father, DOB, etc.
@@ -454,6 +540,53 @@ const PanCardFour = () => {
                           <option value="">SELECT</option>
                           <option value="Enable">Enable</option>
                           <option value="Disable">Disable</option>
+                        </select>
+                      </div>
+                    </div> */}
+
+                    <div className="row">
+                      <div className="col-md-8 mb-3">
+                        <label>Change Request Fields</label>
+                        <div className="d-flex flex-wrap">
+                          {Object.keys(formData.Change_Request).map((field) => (
+                            <div
+                              key={field}
+                              className="form-check form-check-inline"
+                            >
+                              <input
+                                className="form-check-input"
+                                type="checkbox"
+                                id={field}
+                                name={field}
+                                checked={formData.Change_Request[field]}
+                                onChange={handleCheckboxChange}
+                                style={
+                                  field === "name" ? { fontWeight: "bold" } : {}
+                                }
+                              />
+                              <label
+                                className="form-check-label"
+                                htmlFor={field}
+                              >
+                                {field.replace(/_/g, " ").toUpperCase()}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="col-md-4 mb-3">
+                        <label htmlFor="changeRequest">PAN Card Type E/P</label>
+                        <select
+                          className="form-control"
+                          id="changeRequest"
+                          name="pantype"
+                          value={formData.pantype}
+                          onChange={handleChange}
+                        >
+                          <option value="">SELECT</option>
+                          <option value="Electronic">Electronic</option>
+                          <option value="Physical">Physical</option>
                         </select>
                       </div>
                     </div>
@@ -525,8 +658,8 @@ const PanCardFour = () => {
                           className="form-control"
                           id="chargeAmount"
                           placeholder="Enter Charge Amount"
-                          name="Charge_Amount"
-                          value={formData.Charge_Amount}
+                          name="amount"
+                          value={formData.amount}
                           onChange={handleChange}
                         />
                       </div>
@@ -588,8 +721,21 @@ const PanCardFour = () => {
                       >
                         Cancel
                       </Button>
-                      <Button variant="primary" onClick={handleModalSubmit}>
-                        Verify PIN
+                      <Button
+                        variant="primary"
+                        onClick={handleModalSubmit}
+                        disabled={isVerifying}
+                      >
+                        {isVerifying ? "Verifying..." : "Verify PIN"}
+                        {isVerifying && (
+                          <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                        )}
                       </Button>
                     </Modal.Footer>
                   </Modal>

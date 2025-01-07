@@ -1,12 +1,16 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { FaMobileAlt } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { IoMail, IoPerson } from "react-icons/io5";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { MdAlternateEmail } from "react-icons/md";
+import { SlPeople } from "react-icons/sl";
+import { FaIndianRupeeSign } from "react-icons/fa6";
+import Swal from "sweetalert2";
 
 const PanForm = () => {
   const dispatch = useDispatch();
@@ -16,22 +20,83 @@ const PanForm = () => {
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
   const pinRefs = useRef([]);
+  const [prices, setPrices] = useState();
+  const [selectedPrice, setSelectedPrice] = useState("");
+  const [eStampAmount, setEStampAmount] = useState("");
+  const [totalAmount, setTotalAmount] = useState("");
+  const [isVerifying, setIsVerifying] = useState(false);
   const [formData, setFormData] = useState({
     applicant_name: "",
     applicant_father: "",
     applicant_number: "",
+    email: "",
     applicant_select_service: "",
     other: "",
     attached_form: null,
     attached_photo: null,
     attached_sign: null,
     attached_kyc: [],
+    userId: currentUser?.userId,
   });
+
+  useEffect(() => {
+    const fetchPackage = async () => {
+      try {
+        const { data } = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+        );
+        console.log(data.data);
+        setPrices(data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchPackage();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    if (name === "eStampAmount") {
+      let parsedValue = parseInt(value, 10);
+      parsedValue = isNaN(parsedValue) ? 0 : parsedValue; // Default to 0 if not a number
+
+      const parsedSelectedPrice = parseInt(selectedPrice, 10) || 0;
+      const total = parsedValue + parsedSelectedPrice;
+
+      setEStampAmount(value); // Always update the input value to allow changes
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value, // Reflect the input directly
+        amount: total.toString(), // Calculate the total amount
+      }));
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
+    }
   };
+
+  useEffect(() => {
+    let calculatedTotal = 0;
+
+    if (selectOption && selectedPrice) {
+      calculatedTotal =
+        parseInt(eStampAmount, 10) + (parseInt(selectedPrice, 10) || 0);
+    } else {
+      calculatedTotal = parseInt(selectedPrice, 10) || 0;
+    }
+
+    const totalAsString = calculatedTotal.toString();
+
+    setTotalAmount(totalAsString);
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      amount: totalAsString,
+    }));
+  }, [selectedPrice, eStampAmount, selectOption]);
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
@@ -43,8 +108,29 @@ const PanForm = () => {
   };
 
   const handleSelect = (e) => {
-    const selectItem = e.target.value;
-    setSelectOption(selectItem === "E-Stamp");
+    // const selectItem = e.target.value;
+    // setSelectOption(selectItem === "E-Stamp");
+    const serviceName = e.target.value;
+    const priceKeyMapping = {
+      "Birth Certificate": "Birth_Certificate_Price",
+      "Death Certificate": "Death_Certificate_Price",
+      "Pan Find": "Pan_Find_Price", // Assuming a key if it exists
+      "E-Stamp": "E_Stamp_Price",
+      "ITR Registration": "ITR_Registration_Price",
+      "GST Registration": "GST_Registration_Price",
+      "Udyog Aadhar": "Udyog_Aadhar_Price",
+      Sambal: "Sambal_Price",
+    };
+
+    const priceKey = priceKeyMapping[serviceName];
+
+    const price = prices && prices.length > 0 ? prices[0][priceKey] : undefined;
+    console.log(`${priceKey}: ${price}`);
+
+    // const price = prices[serviceName];
+    setSelectedPrice(price || "Price not available");
+    setSelectOption(serviceName === "E-Stamp");
+    setFormData({ ...formData, applicant_select_service: serviceName });
   };
 
   const validateForm = () => {
@@ -56,11 +142,34 @@ const PanForm = () => {
       errors.applicant_number = "Number is required";
     if (!formData.applicant_select_service)
       errors.applicant_select_service = "Service selection is required";
+    if (!formData.amount || formData.amount === "0")
+      errors.amount = "Amount is required and cannot be zero";
     return errors;
   };
 
+  useEffect(() => {
+    if (currentUser?.userId) {
+      setFormData((prev) => ({
+        ...prev,
+        userId: currentUser.userId,
+      }));
+    }
+  }, [currentUser]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Submitting with amount:", formData);
+
+    if (!formData.userId) {
+      console.error("User ID is missing");
+      return;
+    }
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      amount: totalAmount,
+    }));
+
     const formErrors = validateForm();
     if (Object.keys(formErrors).length > 0) {
       setFileError("Please fill all required fields.");
@@ -71,11 +180,14 @@ const PanForm = () => {
     formDataObj.append("applicant_name", formData.applicant_name);
     formDataObj.append("applicant_father", formData.applicant_father);
     formDataObj.append("applicant_number", formData.applicant_number);
+    formDataObj.append("email", formData.email);
     formDataObj.append(
       "applicant_select_service",
       formData.applicant_select_service
     );
     formDataObj.append("other", formData.other);
+    formDataObj.append("eStampAmount", formData.eStampAmount);
+    formDataObj.append("amount", formData.amount);
     if (formData.attached_form)
       formDataObj.append("attached_form", formData.attached_form);
     if (formData.attached_photo)
@@ -85,30 +197,53 @@ const PanForm = () => {
     formData.attached_kyc.forEach((file) => {
       formDataObj.append("attached_kyc", file);
     });
+    formDataObj.append("userId", formData.userId);
 
     try {
       const response = await axios.post(
-        `http://localhost:7777/api/auth/retailer/applyOfflineForm`,
+        // `http://localhost:7777/api/auth/retailer/applyOfflineForm`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/applyOfflineForm`,
         formDataObj,
         {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      alert(response.data.message);
+      // alert(response.data.message);
+      const resData = response.data.message;
+      console.log(response.data.message);
+
+      Swal.fire({
+        title: "Form Sumitted Success",
+        text: `${resData}`,
+        icon: "success",
+      });
 
       setFormData({
         applicant_name: "",
         applicant_father: "",
         applicant_number: "",
+        email: "",
         applicant_select_service: "",
         other: "",
+        eStampAmount: "",
+        totalAmount: "",
+        amount: "",
         attached_form: null,
         attached_photo: null,
         attached_sign: null,
         attached_kyc: [],
+        userId: currentUser?.userId,
       });
+
+      setEStampAmount("");
+      setTotalAmount("");
+      setSelectedPrice("");
+
+      setPin(["", "", "", ""]);
+      pinRefs.current[0]?.focus();
     } catch (error) {
-      alert("An error occurred. Please try again.");
+      // alert("An error occurred. Please try again.");
+      console.log(error);
     }
   };
 
@@ -121,11 +256,6 @@ const PanForm = () => {
     { id: 6, name: "GST Registration" },
     { id: 7, name: "Udyog Aadhar" },
     { id: 8, name: "Sambal" },
-    // { id: 1, name: "Pan Card Form" },
-    // { id: 2, name: "Income" },
-    // { id: 3, name: "Domicile" },
-    // { id: 11, name: "Pan Card Services" },
-    // { id: 12, name: "New Bank ID" },
   ];
 
   // Pin Verification Logic **
@@ -136,7 +266,6 @@ const PanForm = () => {
       newPin[index] = value;
       setPin(newPin);
 
-      // Move to next input if current is filled, move to previous if deleted
       if (value !== "" && index < pin.length - 1) {
         pinRefs.current[index + 1].focus();
       } else if (value === "" && index > 0) {
@@ -154,7 +283,8 @@ const PanForm = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        // `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") }
       );
 
@@ -172,12 +302,15 @@ const PanForm = () => {
   };
 
   const handleModalSubmit = async (e) => {
+    setIsVerifying(true);
     const isPinValid = await verifyPin();
+    setIsVerifying(false);
     if (isPinValid) {
       setShowPinModal(false);
-      handleSubmit(e);
+      await handleSubmit(e);
     } else {
-      setPin(["", "", "", ""]); // Clear the PIN fields on incorrect entry
+      setPin(["", "", "", ""]);
+      pinRefs.current[0]?.focus();
     }
   };
 
@@ -195,16 +328,10 @@ const PanForm = () => {
               <div className="main shadow-none">
                 <div className="row shadow-none">
                   <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                    {/* <div className="d-flex justify-content-between align-items-center flex-wrap">
-                      <h4 className="px-lg-3">Apply Offline</h4>
-                      <h6 className="mx-lg-5">
-                        <BiHomeAlt /> &nbsp;/ &nbsp; Apply Offline
-                      </h6>
-                    </div> */}
                     <div className="col-12 d-flex justify-content-center">
                       <div className="border border-danger rounded shadow-sm mb-3">
                         <h2 className="text-center m-0 px-5 py-3">
-                          Offline Services
+                          Other Services
                         </h2>
                       </div>
                     </div>
@@ -226,6 +353,7 @@ const PanForm = () => {
                             name="applicant_name"
                             value={formData.applicant_name}
                             onChange={handleChange}
+                            required
                           />
                           <label htmlFor="floatingInputGroup1">
                             Applicant Name
@@ -236,7 +364,7 @@ const PanForm = () => {
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="input-group mb-3">
                         <span className="input-group-text">
-                          <IoMail />
+                          <SlPeople />
                         </span>
                         <div className="form-floating">
                           <input
@@ -247,6 +375,7 @@ const PanForm = () => {
                             name="applicant_father"
                             value={formData.applicant_father}
                             onChange={handleChange}
+                            required
                           />
                           <label htmlFor="floatingInputGroup2">
                             Applicant Father Name
@@ -261,16 +390,43 @@ const PanForm = () => {
                         </span>
                         <div className="form-floating">
                           <input
-                            type="text"
+                            type="number"
                             className="form-control"
                             id="floatingInputGroup3"
                             placeholder="Username"
                             name="applicant_number"
                             value={formData.applicant_number}
                             onChange={handleChange}
+                            onInput={(e) => {
+                              if (e.target.value.length > 10)
+                                e.target.value = e.target.value.slice(0, 10);
+                            }}
+                            required
                           />
                           <label htmlFor="floatingInputGroup3">
-                            Applicant Number
+                            Mobile Number
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <div className="input-group">
+                        <span className="input-group-text">
+                          <MdAlternateEmail />
+                        </span>
+                        <div className="form-floating">
+                          <input
+                            type="email"
+                            className="form-control"
+                            id="floatingInputGroup3"
+                            placeholder="UserEmail"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                          />
+                          <label htmlFor="floatingInputGroup3">
+                            User Email
                           </label>
                         </div>
                       </div>
@@ -291,6 +447,7 @@ const PanForm = () => {
                               handleChange(e);
                               handleSelect(e);
                             }}
+                            required
                           >
                             <option value="">Select an option ....</option>
                             {optionsDrop.map((item) => (
@@ -304,28 +461,71 @@ const PanForm = () => {
                       </div>
                     </div>
                     {selectOption && (
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                        <div className="input-group">
-                          <span className="input-group-text">
-                            <FaMobileAlt />
-                          </span>
-                          <div className="form-floating">
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="floatingInputGroup4"
-                              placeholder="Username"
-                              name="other"
-                              value={formData.other}
-                              onChange={handleChange}
-                            />
-                            <label htmlFor="floatingInputGroup4">
-                              E-Stamp Type
-                            </label>
+                      <>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <div className="input-group">
+                            <span className="input-group-text">
+                              <FaMobileAlt />
+                            </span>
+                            <div className="form-floating">
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="floatingInputGroup4"
+                                placeholder="Username"
+                                name="other"
+                                value={formData.other}
+                                onChange={handleChange}
+                              />
+                              <label htmlFor="floatingInputGroup4">
+                                E-Stamp Type
+                              </label>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <div className="input-group">
+                            <span className="input-group-text">
+                              <FaMobileAlt />
+                            </span>
+                            <div className="form-floating">
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="floatingInputGroup4"
+                                placeholder="Username"
+                                name="eStampAmount"
+                                value={eStampAmount}
+                                onChange={handleChange}
+                              />
+                              <label htmlFor="eStampAmountInput">
+                                E-Stamp Amount
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </>
                     )}
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <div className="input-group">
+                        <span className="input-group-text">
+                          <FaIndianRupeeSign />
+                        </span>
+                        <div className="form-floating">
+                          <input
+                            type="number"
+                            className="form-control"
+                            id="floatingInputGroup3"
+                            placeholder="Total Amount"
+                            name="amount"
+                            value={totalAmount || selectedPrice || ""}
+                            onChange={handleChange}
+                            readOnly
+                          />
+                          <label htmlFor="floatingInputGroup3">Amount</label>
+                        </div>
+                      </div>
+                    </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div>
                         <label htmlFor="formFileLg1" className="form-label">
@@ -442,8 +642,21 @@ const PanForm = () => {
                     >
                       Cancel
                     </Button>
-                    <Button variant="primary" onClick={handleModalSubmit}>
-                      Verify PIN
+                    <Button
+                      variant="primary"
+                      onClick={handleModalSubmit}
+                      disabled={isVerifying}
+                    >
+                      {isVerifying ? "Verifying..." : "Verify PIN"}
+                      {isVerifying && (
+                        <Spinner
+                          as="span"
+                          animation="border"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                        />
+                      )}
                     </Button>
                   </Modal.Footer>
                 </Modal>
@@ -487,3 +700,59 @@ const Wrapper = styled.div`
     color: #343a40;
   }
 `;
+{
+  /* <div className="d-flex justify-content-between align-items-center flex-wrap">
+                      <h4 className="px-lg-3">Apply Offline</h4>
+                      <h6 className="mx-lg-5">
+                        <BiHomeAlt /> &nbsp;/ &nbsp; Apply Offline
+                      </h6>
+                    </div> */
+}
+// useEffect(() => {
+//   if (selectOption && selectedPrice) {
+//     const total =
+//       parseInt(eStampAmount, 10) + (parseInt(selectedPrice, 10) || 0);
+//     const totalAsString = total.toString();
+//     setTotalAmount(totalAsString);
+//     setFormData((prevFormData) => ({
+//       ...prevFormData,
+//       amount: totalAsString, // Ensuring amount is always updated
+//     }));
+//   } else {
+//     const fallbackValue = selectedPrice || "0";
+//     setTotalAmount(fallbackValue);
+//     setFormData((prevFormData) => ({
+//       ...prevFormData,
+//       amount: fallbackValue,
+//     }));
+//   }
+// }, [selectedPrice, eStampAmount, selectOption]);
+
+// console.log("Break comments");
+
+// const handleChange = (e) => {
+//   const { name, value } = e.target;
+
+//   setFormData((prevFormData) => {
+//     if (name === "eStampAmount") {
+//       const parsedValue = parseInt(value, 10);
+//       const parsedSelectedPrice = parseInt(selectedPrice, 10) || 0;
+
+//       const total = isNaN(parsedValue)
+//         ? ""
+//         : (parsedValue + parsedSelectedPrice).toString();
+
+//       return {
+//         ...prevFormData,
+//         eStampAmount: value, // Update eStampAmount directly from the input
+//         amount: total, // Update amount based on calculation
+//       };
+//     } else {
+//       // For all other inputs, update normally
+//       return {
+//         ...prevFormData,
+//         [name]: value,
+//       };
+//     }
+//   });
+// };

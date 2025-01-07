@@ -12,12 +12,18 @@ import { CiViewList } from "react-icons/ci";
 import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
 import Swal from "sweetalert2";
 import { MdGrid3X3 } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 
 //  approve model component start//
 const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     const [loading, setLoading] = useState(false);
-  
+ const navigate = useNavigate();
+ const dispatch = useDispatch();
+ const [userRelation,setUserRelation] = useState([]);
+ const { token } = useSelector((state) => state.user);
     const [formData, setFormData] = useState({
       order_id: item.orderid,
       note : "",
@@ -32,37 +38,1585 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     };
     
   
+    // const handlesubmit = async (e) => {
+    //   e.preventDefault();
+    //   try {
+    //     setLoading(true);
+    //     const response = await axios.put(
+    //       "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveOfflineRecharge",
+    //       // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+    //       formData,
+    //       {
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //           Authorization: `Bearer ${token}`,
+    //         },
+    //       }
+    //     );
+    //     console.log(response);
+    //     setLoading(false);
+    //     if (response.data.success) {
+    //       Swal.fire({
+    //         icon: "success",
+    //         title: "Approve Form Successfully",
+    //       });
+    //       setShowApproveModel(false);
+    //       setIsRefresh((value) => !value);
+    //     } else {
+    //       Swal.fire({
+    //         icon: "error",
+    //         title: "An error occurred during the process. Please try again.",
+    //       });
+    //     }
+    //   } catch (error) {
+    //     console.error("There was an error submitting the form!", error);
+    //     if (error?.response?.status == 401) {
+    //       // alert("Your token is expired please login again")
+    //       Swal.fire({
+    //                 icon: "error",
+    //                 title: "Your token is expired please login again",
+    //               });
+    //       dispatch(clearUser());
+    //       navigate("/");
+    //     }
+    //     setLoading(false);
+    //     Swal.fire({
+    //       icon: "error",
+    //       title: "An error occurred during the process. Please try again.",
+    //     });
+    //   }
+    // };
+
+    // const handlesubmit = async (e) => {
+    //   e.preventDefault();
+    //   try {
+    //     setLoading(true);
+
+    //     const { data } = await axios.get(
+    //       `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${item.created_by_userid}`,
+    //       {
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //           Authorization: `Bearer ${token}`,
+    //         },
+    //       }
+  
+    //     );
+    //     console.log(item.created_By_User_Id);
+        
+    //     console.log(data)
+    //     setUserRelation(data.data);
+    //     // const distributor = data.data.distributor
+    //     if(data.data){
+         
+    //       const { distributor, superDistributor, white_lable } = data.data;
+          
+    //        // Create an array to hold promises for all API calls
+    //        const promises = [];
+
+    //        if (distributor) {
+    //         const distributorPromise = axios.get(
+    //           `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+    //           {
+    //             headers: {
+    //               "Content-Type": "application/json",
+    //               Authorization: `Bearer ${token}`,
+    //             },
+    //           }
+    //         );
+            
+    //         promises.push(distributorPromise);
+    //       }
+            
+    //       if (superDistributor) {
+    //         const superDistributorPromise = axios.get(
+    //           `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+    //           {
+    //             headers: {
+    //               "Content-Type": "application/json",
+    //               Authorization: `Bearer ${token}`,
+    //             },
+    //           }
+    //         );
+    //         promises.push(superDistributorPromise);
+    //       }
+             
+    //       if (white_lable) {
+    //         const whiteLablePromise = axios.get(
+    //           `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+    //           {
+    //             headers: {
+    //               "Content-Type": "application/json",
+    //               Authorization: `Bearer ${token}`,
+    //             },
+    //           }
+    //         );
+    //         promises.push(whiteLablePromise);
+    //       }
+    //        // Wait for all API calls to resolve
+    //   const results = await Promise.all(promises);
+
+    //   // Handle each response
+    //   results.forEach((response, index) => {
+    //     console.log(`Response ${index + 1}:`, response.data.data);
+    //   });
+    // }
+        
+        
+    //   } catch (error) {
+    //     console.error("There was an error submitting the form!", error);
+    //     if (error?.response?.status == 401) {
+    //       // alert("Your token is expired please login again")
+    //       Swal.fire({
+    //                 icon: "error",
+    //                 title: "Your token is expired please login again",
+    //               });
+    //       dispatch(clearUser());
+    //       navigate("/");
+    //     }
+    //     setLoading(false);
+    //     Swal.fire({
+    //       icon: "error",
+    //       title: "An error occurred during the process. Please try again.",
+    //     });
+    //   }
+    //   finally {
+    //     setLoading(false);
+    //   }
+    // };
+
+  
+            
+    const prepaidRechargeComm = async (retailer, distributor, superDistributor, white_lable ,packageDetails,item)=>{
+      const Order_Id = `ORW${Date.now()}`;
+      const Transaction_Id = `TXNW${Date.now()}`;
+     const  retailerFormData = {
+        userId: retailer,
+    amount : "",
+    Transaction_details : `Commission Credit for Prepaid recharge Order Id ${item.orderid}`,
+    status : "Success",
+    Order_Id,
+    Transaction_Id
+      }
+      const  distributorFormData = {
+        userId: distributor,
+    amount : "",
+    Transaction_details : `Commission Credit for Prepaid recharge Order Id ${item.orderid}`,
+    status : "Success",
+    Order_Id,
+    Transaction_Id
+      }
+      const  superDistributorFormData = {
+        userId: superDistributor,
+    amount : "",
+    Transaction_details : `Commission Credit for Prepaid recharge Order Id ${item.orderid}`,
+    status : "Success",
+    Order_Id,
+    Transaction_Id
+      }
+      const  whiteLableFormData = {
+        userId: white_lable,
+    amount : "",
+    Transaction_details : `Commission Credit for Prepaid recharge Order Id ${item.orderid}`,
+    status : "Success",
+    Order_Id,
+    Transaction_Id
+      }
+      const retailerPackage = packageDetails?.retailer ? packageDetails?.retailer[0]:  {};
+      const distributorPackage = packageDetails?.distributor ? packageDetails?.distributor[0] : {};
+      const superDistributorPackage = packageDetails?.superDistributor ? packageDetails?.superDistributor[0] : {} ;
+      const whiteLablePackage = packageDetails?.whiteLable ? packageDetails?.whiteLable[0] : {} ;
+
+      const operatorName = item.operator_name;
+      const amount = parseFloat(item.amount);
+
+      let retailerCommAmount = 0;
+      let distributorCommAmount = 0;
+      let superDistributorCommAmount = 0;
+      let whiteLableCommAmount = 0;
+
+
+      try {
+            
+            if(retailerPackage.Off_Prepaid_Recharge_Comm_Type == "Percentage"){
+              if(operatorName == "Jio"){
+                retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Jio_Prepaid_Recharge_Comm))/100
+                
+              }
+              else if(operatorName == "Airtel"){
+                retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Airtel_Prepaid_Recharge_Comm))/100
+              }
+              else if(operatorName == "Vi"){
+                retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Vi_Prepaid_Recharge_Comm))/100
+              }
+              else if(operatorName == "BSNL STV"){
+                retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Bsnl_Prepaid_Recharge_Comm))/100
+              }
+              else if(operatorName == "BSNL TOPUP"){
+                retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Bsnl_Prepaid_Recharge_Comm))/100
+              }
+
+            }
+            else{
+              if(operatorName == "Jio"){
+                retailerCommAmount = parseFloat(retailerPackage.Off_Jio_Prepaid_Recharge_Comm)
+                
+              }
+              else if(operatorName == "Airtel"){
+                retailerCommAmount = parseFloat(retailerPackage.Off_Airtel_Prepaid_Recharge_Comm)
+              }
+              else if(operatorName == "Vi"){
+                retailerCommAmount = parseFloat(retailerPackage.Off_Vi_Prepaid_Recharge_Comm)
+              }
+              else if(operatorName == "BSNL STV"){
+                retailerCommAmount = parseFloat(retailerPackage.Off_Bsnl_Prepaid_Recharge_Comm)
+              }
+              else if(operatorName == "BSNL TOPUP"){
+                retailerCommAmount = parseFloat(retailerPackage.Off_Bsnl_Prepaid_Recharge_Comm)
+              }
+
+              
+            }
+
+            if(distributor && distributorPackage){
+              if(distributorPackage.Off_Prepaid_Recharge_Comm_Type == "Percentage"){
+                if(operatorName == "Jio"){
+                  distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Jio_Prepaid_Recharge_Comm))/100
+                  
+                }
+                else if(operatorName == "Airtel"){
+                  distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Airtel_Prepaid_Recharge_Comm))/100
+                }
+                else if(operatorName == "Vi"){
+                  distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Vi_Prepaid_Recharge_Comm))/100
+                }
+                else if(operatorName == "BSNL STV"){
+                  distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Bsnl_Prepaid_Recharge_Comm))/100
+                }
+                else if(operatorName == "BSNL TOPUP"){
+                  distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Bsnl_Prepaid_Recharge_Comm))/100
+                }
+  
+              }
+              else{
+                if(operatorName == "Jio"){
+                  distributorCommAmount = parseFloat(distributorPackage.Off_Jio_Prepaid_Recharge_Comm)
+                  
+                }
+                else if(operatorName == "Airtel"){
+                  distributorCommAmount = parseFloat(distributorPackage.Off_Airtel_Prepaid_Recharge_Comm)
+                }
+                else if(operatorName == "Vi"){
+                  distributorCommAmount = parseFloat(distributorPackage.Off_Vi_Prepaid_Recharge_Comm)
+                }
+                else if(operatorName == "BSNL STV"){
+                  distributorCommAmount = parseFloat(distributorPackage.Off_Bsnl_Prepaid_Recharge_Comm)
+                }
+                else if(operatorName == "BSNL TOPUP"){
+                  distributorCommAmount = parseFloat(distributorPackage.Off_Bsnl_Prepaid_Recharge_Comm)
+                }
+  
+                
+              }
+
+            }
+            if(superDistributor && superDistributorPackage){
+              if(superDistributorPackage.Off_Prepaid_Recharge_Comm_Type == "Percentage"){
+                if(operatorName == "Jio"){
+                  superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Jio_Prepaid_Recharge_Comm))/100
+                  
+                }
+                else if(operatorName == "Airtel"){
+                  superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Airtel_Prepaid_Recharge_Comm))/100
+                }
+                else if(operatorName == "Vi"){
+                  superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Vi_Prepaid_Recharge_Comm))/100
+                }
+                else if(operatorName == "BSNL STV"){
+                  superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Bsnl_Prepaid_Recharge_Comm))/100
+                }
+                else if(operatorName == "BSNL TOPUP"){
+                  superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Bsnl_Prepaid_Recharge_Comm))/100
+                }
+  
+              }
+              else{
+                if(operatorName == "Jio"){
+                  superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Jio_Prepaid_Recharge_Comm)
+                  
+                }
+                else if(operatorName == "Airtel"){
+                  superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Airtel_Prepaid_Recharge_Comm)
+                }
+                else if(operatorName == "Vi"){
+                  superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Vi_Prepaid_Recharge_Comm)
+                }
+                else if(operatorName == "BSNL STV"){
+                  superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Bsnl_Prepaid_Recharge_Comm)
+                }
+                else if(operatorName == "BSNL TOPUP"){
+                  superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Bsnl_Prepaid_Recharge_Comm)
+                }
+  
+                
+              }
+
+            }
+            if(white_lable && whiteLablePackage){
+              if(whiteLablePackage.Off_Prepaid_Recharge_Comm_Type == "Percentage"){
+                if(operatorName == "Jio"){
+                  whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Jio_Prepaid_Recharge_Comm))/100
+                  
+                }
+                else if(operatorName == "Airtel"){
+                  whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Airtel_Prepaid_Recharge_Comm))/100
+                }
+                else if(operatorName == "Vi"){
+                  whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Vi_Prepaid_Recharge_Comm))/100
+                }
+                else if(operatorName == "BSNL STV"){
+                  whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Bsnl_Prepaid_Recharge_Comm))/100
+                }
+                else if(operatorName == "BSNL TOPUP"){
+                  whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Bsnl_Prepaid_Recharge_Comm))/100
+                }
+  
+              }
+              else{
+                if(operatorName == "Jio"){
+                  whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Jio_Prepaid_Recharge_Comm)
+                  
+                }
+                else if(operatorName == "Airtel"){
+                  whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Airtel_Prepaid_Recharge_Comm)
+                }
+                else if(operatorName == "Vi"){
+                  whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Vi_Prepaid_Recharge_Comm)
+                }
+                else if(operatorName == "BSNL STV"){
+                  whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Bsnl_Prepaid_Recharge_Comm)
+                }
+                else if(operatorName == "BSNL TOPUP"){
+                  whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Bsnl_Prepaid_Recharge_Comm)
+                }
+  
+                
+              }
+
+            }
+
+
+           retailerFormData.amount = retailerCommAmount;
+           distributorFormData.amount = distributorCommAmount;
+           superDistributorFormData.amount = superDistributorCommAmount;
+           whiteLableFormData.amount = whiteLableCommAmount;
+          //  console.log(retailerCommAmount)
+          //  console.log(distributorCommAmount)
+          //  console.log(superDistributorCommAmount)
+          //  console.log(whiteLableCommAmount)
+            
+      } catch (error) {
+        console.log(error)
+      }
+      return { retailerFormData, distributorFormData, superDistributorFormData, whiteLableFormData,Order_Id,Transaction_Id };
+    }
+    const postpaidRechargeComm = async (retailer, distributor, superDistributor, white_lable ,packageDetails,item)=>{
+      const Order_Id = `ORW${Date.now()}`;
+      const Transaction_Id = `TXNW${Date.now()}`;
+      const  retailerFormData = {
+         userId: retailer,
+     amount : "",
+     Transaction_details : `Commission Credit for Postpaid recharge Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  distributorFormData = {
+         userId: distributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Postpaid recharge Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  superDistributorFormData = {
+         userId: superDistributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Postpaid recharge Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  whiteLableFormData = {
+         userId: white_lable,
+     amount : "",
+     Transaction_details : `Commission Credit for Postpaid recharge Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const retailerPackage = packageDetails?.retailer ? packageDetails?.retailer[0]:  {};
+       const distributorPackage = packageDetails?.distributor ? packageDetails?.distributor[0] : {};
+       const superDistributorPackage = packageDetails?.superDistributor ? packageDetails?.superDistributor[0] : {} ;
+       const whiteLablePackage = packageDetails?.whiteLable ? packageDetails?.whiteLable[0] : {} ;
+ 
+       const operatorName = item.operator_name;
+       const amount = parseFloat(item.amount);
+ 
+       let retailerCommAmount = 0;
+       let distributorCommAmount = 0;
+       let superDistributorCommAmount = 0;
+       let whiteLableCommAmount = 0;
+ 
+ 
+       try {
+             
+             if(retailerPackage.Off_Postpaid_Recharge_Comm_Type == "Percentage"){
+               if(operatorName == "Jio Postpaid"){
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Jio_Postpaid_Recharge_Comm))/100
+                 
+               }
+               else if(operatorName == "Airtel Postpaid"){
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Airtel_Postpaid_Recharge_Comm))/100
+               }
+               else if(operatorName == "Vi Postpaid"){
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Vi_Postpaid_Recharge_Comm))/100
+               }
+               else if(operatorName == "BSNL Postpaid"){
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Bsnl_Postpaid_Recharge_Comm))/100
+               }
+ 
+             }
+             else{
+               if(operatorName == "Jio Postpaid"){
+                 retailerCommAmount = parseFloat(retailerPackage.Off_Jio_Postpaid_Recharge_Comm)
+                 
+               }
+               else if(operatorName == "Airtel Postpaid"){
+                 retailerCommAmount = parseFloat(retailerPackage.Off_Airtel_Postpaid_Recharge_Comm)
+               }
+               else if(operatorName == "Vi Postpaid"){
+                 retailerCommAmount = parseFloat(retailerPackage.Off_Vi_Postpaid_Recharge_Comm)
+               }
+               else if(operatorName == "BSNL Postpaid"){
+                 retailerCommAmount = parseFloat(retailerPackage.Off_Bsnl_Postpaid_Recharge_Comm)
+               }
+             
+             }
+ 
+             if(distributor && distributorPackage){
+               if(distributorPackage.Off_Postpaid_Recharge_Comm_Type == "Percentage"){
+                 if(operatorName == "Jio Postpaid"){
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Jio_Postpaid_Recharge_Comm))/100
+                   
+                 }
+                 else if(operatorName == "Airtel Postpaid"){
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Airtel_Postpaid_Recharge_Comm))/100
+                 }
+                 else if(operatorName == "Vi Postpaid"){
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Vi_Postpaid_Recharge_Comm))/100
+                 }
+                 else if(operatorName == "BSNL Postpaid"){
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Bsnl_Postpaid_Recharge_Comm))/100
+                 }
+   
+               }
+               else{
+                 if(operatorName == "Jio Postpaid"){
+                   distributorCommAmount = parseFloat(distributorPackage.Off_Jio_Postpaid_Recharge_Comm)
+                   
+                 }
+                 else if(operatorName == "Airtel Postpaid"){
+                   distributorCommAmount = parseFloat(distributorPackage.Off_Airtel_Postpaid_Recharge_Comm)
+                 }
+                 else if(operatorName == "Vi Postpaid"){
+                   distributorCommAmount = parseFloat(distributorPackage.Off_Vi_Postpaid_Recharge_Comm)
+                 }
+                 else if(operatorName == "BSNL Postpaid"){
+                   distributorCommAmount = parseFloat(distributorPackage.Off_Bsnl_Postpaid_Recharge_Comm)
+                 }
+              
+                 
+               }
+ 
+             }
+             if(superDistributor && superDistributorPackage){
+               if(superDistributorPackage.Off_Postpaid_Recharge_Comm_Type == "Percentage"){
+                 if(operatorName == "Jio Postpaid"){
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Jio_Postpaid_Recharge_Comm))/100
+                   
+                 }
+                 else if(operatorName == "Airtel Postpaid"){
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Airtel_Postpaid_Recharge_Comm))/100
+                 }
+                 else if(operatorName == "Vi Postpaid"){
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Vi_Postpaid_Recharge_Comm))/100
+                 }
+                 else if(operatorName == "BSNL Postpaid"){
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Bsnl_Postpaid_Recharge_Comm))/100
+                 }
+   
+               }
+               else{
+                 if(operatorName == "Jio Postpaid"){
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Jio_Postpaid_Recharge_Comm)
+                   
+                 }
+                 else if(operatorName == "Airtel Postpaid"){
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Airtel_Postpaid_Recharge_Comm)
+                 }
+                 else if(operatorName == "Vi Postpaid"){
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Vi_Postpaid_Recharge_Comm)
+                 }
+                 else if(operatorName == "BSNL Postpaid"){
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Bsnl_Postpaid_Recharge_Comm)
+                 }
+               
+               }
+ 
+             }
+             if(white_lable && whiteLablePackage){
+               if(whiteLablePackage.Off_Postpaid_Recharge_Comm_Type == "Percentage"){
+                 if(operatorName == "Jio Postpaid"){
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Jio_Postpaid_Recharge_Comm))/100
+                   
+                 }
+                 else if(operatorName == "Airtel Postpaid"){
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Airtel_Postpaid_Recharge_Comm))/100
+                 }
+                 else if(operatorName == "Vi Postpaid"){
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Vi_Postpaid_Recharge_Comm))/100
+                 }
+                 else if(operatorName == "BSNL Postpaid"){
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Bsnl_Postpaid_Recharge_Comm))/100
+                 }
+               
+               }
+               else{
+                 if(operatorName == "Jio Postpaid"){
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Jio_Postpaid_Recharge_Comm)
+                   
+                 }
+                 else if(operatorName == "Airtel Postpaid"){
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Airtel_Postpaid_Recharge_Comm)
+                 }
+                 else if(operatorName == "Vi Postpaid"){
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Vi_Postpaid_Recharge_Comm)
+                 }
+                 else if(operatorName == "BSNL Postpaid"){
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Bsnl_Postpaid_Recharge_Comm)
+                 }
+                 
+               }
+ 
+             }
+ 
+ 
+            retailerFormData.amount = retailerCommAmount;
+            distributorFormData.amount = distributorCommAmount;
+            superDistributorFormData.amount = superDistributorCommAmount;
+            whiteLableFormData.amount = whiteLableCommAmount;
+           //  console.log(retailerCommAmount)
+           //  console.log(distributorCommAmount)
+           //  console.log(superDistributorCommAmount)
+           //  console.log(whiteLableCommAmount)
+             
+       } catch (error) {
+         console.log(error)
+       }
+       return { retailerFormData, distributorFormData, superDistributorFormData, whiteLableFormData,Order_Id,Transaction_Id };
+     }
+    const DTHRechargeComm = async (retailer, distributor, superDistributor, white_lable ,packageDetails,item)=>{
+      const Order_Id = `ORW${Date.now()}`;
+      const Transaction_Id = `TXNW${Date.now()}`;
+      const  retailerFormData = {
+         userId: retailer,
+     amount : "",
+     Transaction_details : `Commission Credit for DTH recharge Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  distributorFormData = {
+         userId: distributor,
+     amount : "",
+     Transaction_details : `Commission Credit for DTH recharge Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  superDistributorFormData = {
+         userId: superDistributor,
+     amount : "",
+     Transaction_details : `Commission Credit for DTH recharge Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  whiteLableFormData = {
+         userId: white_lable,
+     amount : "",
+     Transaction_details : `Commission Credit for DTH recharge Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const retailerPackage = packageDetails?.retailer ? packageDetails?.retailer[0]:  {};
+       const distributorPackage = packageDetails?.distributor ? packageDetails?.distributor[0] : {};
+       const superDistributorPackage = packageDetails?.superDistributor ? packageDetails?.superDistributor[0] : {} ;
+       const whiteLablePackage = packageDetails?.whiteLable ? packageDetails?.whiteLable[0] : {} ;
+ 
+       const operatorName = item.operator_name;
+       const amount = parseFloat(item.amount);
+ 
+       let retailerCommAmount = 0;
+       let distributorCommAmount = 0;
+       let superDistributorCommAmount = 0;
+       let whiteLableCommAmount = 0;
+ 
+ 
+       try {
+             
+             if(retailerPackage.Offline_DTH_Recharge_Commission_Type == "Percentage"){
+               if(operatorName == "Dish TV"){
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Dish_TV_Recharge_Commission))/100
+                 
+               }
+               else if(operatorName == "Tata Sky"){
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Tata_Sky_Recharge_Commission))/100
+               }
+               else if(operatorName == "Videocon"){
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Videocon_Recharge_Commission))/100
+               }
+               else if(operatorName == "Sun Direct"){
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Sun_Direct_Recharge_Commission))/100
+               }
+               else if(operatorName == "Airtel DTH"){
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Off_Airtel_Dth_Recharge_Commission))/100
+               }
+ 
+             }
+             else{
+               if(operatorName == "Dish TV"){
+                 retailerCommAmount = parseFloat(retailerPackage.Off_Dish_TV_Recharge_Commission)
+                 
+               }
+               else if(operatorName == "Tata Sky"){
+                 retailerCommAmount = parseFloat(retailerPackage.Off_Tata_Sky_Recharge_Commission)
+               }
+               else if(operatorName == "Videocon"){
+                 retailerCommAmount = parseFloat(retailerPackage.Off_Videocon_Recharge_Commission)
+               }
+               else if(operatorName == "Sun Direct"){
+                 retailerCommAmount = parseFloat(retailerPackage.Off_Sun_Direct_Recharge_Commission)
+               }
+               else if(operatorName == "Airtel DTH"){
+                 retailerCommAmount = parseFloat(retailerPackage.Off_Airtel_Dth_Recharge_Commission)
+               }
+             
+             }
+ 
+             if(distributor && distributorPackage){
+               if(distributorPackage.Offline_DTH_Recharge_Commission_Type == "Percentage"){
+                 if(operatorName == "Dish TV"){
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Dish_TV_Recharge_Commission))/100
+                   
+                 }
+                 else if(operatorName == "Tata Sky"){
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Tata_Sky_Recharge_Commission))/100
+                 }
+                 else if(operatorName == "Videocon"){
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Videocon_Recharge_Commission))/100
+                 }
+                 else if(operatorName == "Sun Direct"){
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Sun_Direct_Recharge_Commission))/100
+                 }
+                 else if(operatorName == "Airtel DTH"){
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Off_Airtel_Dth_Recharge_Commission))/100
+                 }
+   
+               }
+               else{
+                 if(operatorName == "Dish TV"){
+                   distributorCommAmount = parseFloat(distributorPackage.Off_Dish_TV_Recharge_Commission)
+                   
+                 }
+                 else if(operatorName == "Tata Sky"){
+                   distributorCommAmount = parseFloat(distributorPackage.Off_Tata_Sky_Recharge_Commission)
+                 }
+                 else if(operatorName == "Videocon"){
+                   distributorCommAmount = parseFloat(distributorPackage.Off_Videocon_Recharge_Commission)
+                 }
+                 else if(operatorName == "Sun Direct"){
+                   distributorCommAmount = parseFloat(distributorPackage.Off_Sun_Direct_Recharge_Commission)
+                 }
+                 else if(operatorName == "Airtel DTH"){
+                   distributorCommAmount = parseFloat(distributorPackage.Off_Airtel_Dth_Recharge_Commission)
+                 }
+              
+                 
+               }
+ 
+             }
+             if(superDistributor && superDistributorPackage){
+               if(superDistributorPackage.Offline_DTH_Recharge_Commission_Type == "Percentage"){
+                 if(operatorName == "Dish TV"){
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Dish_TV_Recharge_Commission))/100
+                   
+                 }
+                 else if(operatorName == "Tata Sky"){
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Tata_Sky_Recharge_Commission))/100
+                 }
+                 else if(operatorName == "Videocon"){
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Videocon_Recharge_Commission))/100
+                 }
+                 else if(operatorName == "Sun Direct"){
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Sun_Direct_Recharge_Commission))/100
+                 }
+                 else if(operatorName == "Airtel DTH"){
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Off_Airtel_Dth_Recharge_Commission))/100
+                 }
+   
+               }
+               else{
+                 if(operatorName == "Dish TV"){
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Dish_TV_Recharge_Commission)
+                   
+                 }
+                 else if(operatorName == "Tata Sky"){
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Tata_Sky_Recharge_Commission)
+                 }
+                 else if(operatorName == "Videocon"){
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Videocon_Recharge_Commission)
+                 }
+                 else if(operatorName == "Sun Direct"){
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Sun_Direct_Recharge_Commission)
+                 }
+                 else if(operatorName == "Airtel DTH"){
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Off_Airtel_Dth_Recharge_Commission)
+                 }
+               
+               }
+ 
+             }
+             if(white_lable && whiteLablePackage){
+               if(whiteLablePackage.Offline_DTH_Recharge_Commission_Type == "Percentage"){
+                 if(operatorName == "Dish TV"){
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Dish_TV_Recharge_Commission))/100
+                   
+                 }
+                 else if(operatorName == "Tata Sky"){
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Tata_Sky_Recharge_Commission))/100
+                 }
+                 else if(operatorName == "Videocon"){
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Videocon_Recharge_Commission))/100
+                 }
+                 else if(operatorName == "Sun Direct"){
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Sun_Direct_Recharge_Commission))/100
+                 }
+                 else if(operatorName == "Airtel DTH"){
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Off_Airtel_Dth_Recharge_Commission))/100
+                 }
+               
+               }
+               else{
+                 if(operatorName == "Dish TV"){
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Dish_TV_Recharge_Commission)
+                   
+                 }
+                 else if(operatorName == "Tata Sky"){
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Tata_Sky_Recharge_Commission)
+                 }
+                 else if(operatorName == "Videocon"){
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Videocon_Recharge_Commission)
+                 }
+                 else if(operatorName == "Sun Direct"){
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Sun_Direct_Recharge_Commission)
+                 }
+                 else if(operatorName == "Airtel DTH"){
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Off_Airtel_Dth_Recharge_Commission)
+                 }
+                 
+               }
+ 
+             }
+ 
+ 
+            retailerFormData.amount = retailerCommAmount;
+            distributorFormData.amount = distributorCommAmount;
+            superDistributorFormData.amount = superDistributorCommAmount;
+            whiteLableFormData.amount = whiteLableCommAmount;
+           //  console.log(retailerCommAmount)
+           //  console.log(distributorCommAmount)
+           //  console.log(superDistributorCommAmount)
+           //  console.log(whiteLableCommAmount)
+             
+       } catch (error) {
+         console.log(error)
+       }
+       return { retailerFormData, distributorFormData, superDistributorFormData, whiteLableFormData ,Order_Id,Transaction_Id};
+     }
+    const ElectricityRechargeComm = async (retailer, distributor, superDistributor, white_lable ,packageDetails,item)=>{
+      const Order_Id = `ORW${Date.now()}`;
+      const Transaction_Id = `TXNW${Date.now()}`;
+      const  retailerFormData = {
+         userId: retailer,
+     amount : "",
+     Transaction_details : `Commission Credit for Electricity Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  distributorFormData = {
+         userId: distributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Electricity Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  superDistributorFormData = {
+         userId: superDistributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Electricity Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  whiteLableFormData = {
+         userId: white_lable,
+     amount : "",
+     Transaction_details : `Commission Credit for Electricity Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const retailerPackage = packageDetails?.retailer ? packageDetails?.retailer[0]:  {};
+       const distributorPackage = packageDetails?.distributor ? packageDetails?.distributor[0] : {};
+       const superDistributorPackage = packageDetails?.superDistributor ? packageDetails?.superDistributor[0] : {} ;
+       const whiteLablePackage = packageDetails?.whiteLable ? packageDetails?.whiteLable[0] : {} ;
+ 
+      //  const operatorName = item.operator_name;
+       const amount = parseFloat(item.amount);
+ 
+       let retailerCommAmount = 0;
+       let distributorCommAmount = 0;
+       let superDistributorCommAmount = 0;
+       let whiteLableCommAmount = 0;
+ 
+ 
+       try {
+             
+             if(retailerPackage.Offline_Electricity_Bill_Pay_Commission_Type == "Percentage"){
+               
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Offline_Electricity_Bill_Pay_Commission))/100
+                 
+             }
+             else{
+                 retailerCommAmount = parseFloat(retailerPackage.Offline_Electricity_Bill_Pay_Commission)
+             }
+ 
+             if(distributor && distributorPackage){
+               if(distributorPackage.Offline_Electricity_Bill_Pay_Commission_Type == "Percentage"){
+                 
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Offline_Electricity_Bill_Pay_Commission))/100
+                
+               }
+               else{
+                
+                   distributorCommAmount = parseFloat(distributorPackage.Offline_Electricity_Bill_Pay_Commission)
+                
+               }
+ 
+             }
+             if(superDistributor && superDistributorPackage){
+               if(superDistributorPackage.Offline_Electricity_Bill_Pay_Commission_Type == "Percentage"){
+                 
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Offline_Electricity_Bill_Pay_Commission))/100
+                  
+               }
+               else{
+                
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Offline_Electricity_Bill_Pay_Commission)
+                 
+               }
+ 
+             }
+             if(white_lable && whiteLablePackage){
+               if(whiteLablePackage.Offline_Electricity_Bill_Pay_Commission_Type == "Percentage"){
+                 
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Offline_Electricity_Bill_Pay_Commission))/100
+                 
+               }
+               else{
+                 
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Offline_Electricity_Bill_Pay_Commission)
+                 
+               }
+ 
+             }
+ 
+ 
+            retailerFormData.amount = retailerCommAmount;
+            distributorFormData.amount = distributorCommAmount;
+            superDistributorFormData.amount = superDistributorCommAmount;
+            whiteLableFormData.amount = whiteLableCommAmount;
+           //  console.log(retailerCommAmount)
+           //  console.log(distributorCommAmount)
+           //  console.log(superDistributorCommAmount)
+           //  console.log(whiteLableCommAmount)
+             
+       } catch (error) {
+         console.log(error)
+       }
+       return { retailerFormData, distributorFormData, superDistributorFormData, whiteLableFormData ,Order_Id,Transaction_Id};
+     }
+    const BroadbandRechargeComm = async (retailer, distributor, superDistributor, white_lable ,packageDetails,item)=>{
+      const Order_Id = `ORW${Date.now()}`;
+      const Transaction_Id = `TXNW${Date.now()}`;
+      const  retailerFormData = {
+         userId: retailer,
+     amount : "",
+     Transaction_details : `Commission Credit for Broadband Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  distributorFormData = {
+         userId: distributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Broadband Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  superDistributorFormData = {
+         userId: superDistributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Broadband Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  whiteLableFormData = {
+         userId: white_lable,
+     amount : "",
+     Transaction_details : `Commission Credit for Broadband Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const retailerPackage = packageDetails?.retailer ? packageDetails?.retailer[0]:  {};
+       const distributorPackage = packageDetails?.distributor ? packageDetails?.distributor[0] : {};
+       const superDistributorPackage = packageDetails?.superDistributor ? packageDetails?.superDistributor[0] : {} ;
+       const whiteLablePackage = packageDetails?.whiteLable ? packageDetails?.whiteLable[0] : {} ;
+ 
+      //  const operatorName = item.operator_name;
+       const amount = parseFloat(item.amount);
+ 
+       let retailerCommAmount = 0;
+       let distributorCommAmount = 0;
+       let superDistributorCommAmount = 0;
+       let whiteLableCommAmount = 0;
+ 
+ 
+       try {
+             
+             if(retailerPackage.Offline_Broadband_Bill_Pay_Commission_Type == "Percentage"){
+               
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Offline_Broadband_Bill_Pay_Commission))/100
+                 
+             }
+             else{
+                 retailerCommAmount = parseFloat(retailerPackage.Offline_Broadband_Bill_Pay_Commission)
+             }
+ 
+             if(distributor && distributorPackage){
+               if(distributorPackage.Offline_Broadband_Bill_Pay_Commission_Type == "Percentage"){
+                 
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Offline_Broadband_Bill_Pay_Commission))/100
+                
+               }
+               else{
+                
+                   distributorCommAmount = parseFloat(distributorPackage.Offline_Broadband_Bill_Pay_Commission)
+                
+               }
+ 
+             }
+             if(superDistributor && superDistributorPackage){
+               if(superDistributorPackage.Offline_Broadband_Bill_Pay_Commission_Type == "Percentage"){
+                 
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Offline_Broadband_Bill_Pay_Commission))/100
+                  
+               }
+               else{
+                
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Offline_Broadband_Bill_Pay_Commission)
+                 
+               }
+ 
+             }
+             if(white_lable && whiteLablePackage){
+               if(whiteLablePackage.Offline_Broadband_Bill_Pay_Commission_Type == "Percentage"){
+                 
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Offline_Broadband_Bill_Pay_Commission))/100
+                 
+               }
+               else{
+                 
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Offline_Broadband_Bill_Pay_Commission)
+                 
+               }
+ 
+             }
+ 
+ 
+            retailerFormData.amount = retailerCommAmount;
+            distributorFormData.amount = distributorCommAmount;
+            superDistributorFormData.amount = superDistributorCommAmount;
+            whiteLableFormData.amount = whiteLableCommAmount;
+           //  console.log(retailerCommAmount)
+           //  console.log(distributorCommAmount)
+           //  console.log(superDistributorCommAmount)
+           //  console.log(whiteLableCommAmount)
+             
+       } catch (error) {
+         console.log(error)
+       }
+       return { retailerFormData, distributorFormData, superDistributorFormData, whiteLableFormData ,Order_Id,Transaction_Id};
+     }
+    const LandlineRechargeComm = async (retailer, distributor, superDistributor, white_lable ,packageDetails,item)=>{
+      const Order_Id = `ORW${Date.now()}`;
+      const Transaction_Id = `TXNW${Date.now()}`;
+      const  retailerFormData = {
+         userId: retailer,
+     amount : "",
+     Transaction_details : `Commission Credit for Landline Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  distributorFormData = {
+         userId: distributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Landline Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  superDistributorFormData = {
+         userId: superDistributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Landline Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  whiteLableFormData = {
+         userId: white_lable,
+     amount : "",
+     Transaction_details : `Commission Credit for Landline Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const retailerPackage = packageDetails?.retailer ? packageDetails?.retailer[0]:  {};
+       const distributorPackage = packageDetails?.distributor ? packageDetails?.distributor[0] : {};
+       const superDistributorPackage = packageDetails?.superDistributor ? packageDetails?.superDistributor[0] : {} ;
+       const whiteLablePackage = packageDetails?.whiteLable ? packageDetails?.whiteLable[0] : {} ;
+ 
+      //  const operatorName = item.operator_name;
+       const amount = parseFloat(item.amount);
+ 
+       let retailerCommAmount = 0;
+       let distributorCommAmount = 0;
+       let superDistributorCommAmount = 0;
+       let whiteLableCommAmount = 0;
+ 
+ 
+       try {
+             
+             if(retailerPackage.Offline_Broadband_Bill_Pay_Commission_Type == "Percentage"){
+               
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Offline_Broadband_Bill_Pay_Commission))/100
+                 
+             }
+             else{
+                 retailerCommAmount = parseFloat(retailerPackage.Offline_Broadband_Bill_Pay_Commission)
+             }
+ 
+             if(distributor && distributorPackage){
+               if(distributorPackage.Offline_Broadband_Bill_Pay_Commission_Type == "Percentage"){
+                 
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Offline_Broadband_Bill_Pay_Commission))/100
+                
+               }
+               else{
+                
+                   distributorCommAmount = parseFloat(distributorPackage.Offline_Broadband_Bill_Pay_Commission)
+                
+               }
+ 
+             }
+             if(superDistributor && superDistributorPackage){
+               if(superDistributorPackage.Offline_Broadband_Bill_Pay_Commission_Type == "Percentage"){
+                 
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Offline_Broadband_Bill_Pay_Commission))/100
+                  
+               }
+               else{
+                
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Offline_Broadband_Bill_Pay_Commission)
+                 
+               }
+ 
+             }
+             if(white_lable && whiteLablePackage){
+               if(whiteLablePackage.Offline_Broadband_Bill_Pay_Commission_Type == "Percentage"){
+                 
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Offline_Broadband_Bill_Pay_Commission))/100
+                 
+               }
+               else{
+                 
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Offline_Broadband_Bill_Pay_Commission)
+                 
+               }
+ 
+             }
+ 
+ 
+            retailerFormData.amount = retailerCommAmount;
+            distributorFormData.amount = distributorCommAmount;
+            superDistributorFormData.amount = superDistributorCommAmount;
+            whiteLableFormData.amount = whiteLableCommAmount;
+           //  console.log(retailerCommAmount)
+           //  console.log(distributorCommAmount)
+           //  console.log(superDistributorCommAmount)
+           //  console.log(whiteLableCommAmount)
+             
+       } catch (error) {
+         console.log(error)
+       }
+       return { retailerFormData, distributorFormData, superDistributorFormData, whiteLableFormData ,Order_Id,Transaction_Id};
+     }
+    const InsuranceRechargeComm = async (retailer, distributor, superDistributor, white_lable ,packageDetails,item)=>{
+      const Order_Id = `ORW${Date.now()}`;
+      const Transaction_Id = `TXNW${Date.now()}`;
+      const  retailerFormData = {
+         userId: retailer,
+     amount : "",
+     Transaction_details : `Commission Credit for Insurance Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  distributorFormData = {
+         userId: distributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Insurance Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  superDistributorFormData = {
+         userId: superDistributor,
+     amount : "",
+     Transaction_details : `Commission Credit for Insurance Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const  whiteLableFormData = {
+         userId: white_lable,
+     amount : "",
+     Transaction_details : `Commission Credit for Insurance Order Id ${item.orderid}`,
+     status : "Success",
+     Order_Id,
+     Transaction_Id
+       }
+       const retailerPackage = packageDetails?.retailer ? packageDetails?.retailer[0]:  {};
+       const distributorPackage = packageDetails?.distributor ? packageDetails?.distributor[0] : {};
+       const superDistributorPackage = packageDetails?.superDistributor ? packageDetails?.superDistributor[0] : {} ;
+       const whiteLablePackage = packageDetails?.whiteLable ? packageDetails?.whiteLable[0] : {} ;
+ 
+      //  const operatorName = item.operator_name;
+       const amount = parseFloat(item.amount);
+ 
+       let retailerCommAmount = 0;
+       let distributorCommAmount = 0;
+       let superDistributorCommAmount = 0;
+       let whiteLableCommAmount = 0;
+ 
+ 
+       try {
+             
+             if(retailerPackage.Offline_Insurance_Pay_Commission_Type == "Percentage"){
+               
+                 retailerCommAmount = (amount * parseFloat(retailerPackage.Offline_Insurance_Pay_Commission))/100
+                 
+             }
+             else{
+                 retailerCommAmount = parseFloat(retailerPackage.Offline_Insurance_Pay_Commission)
+             }
+ 
+             if(distributor && distributorPackage){
+               if(distributorPackage.Offline_Insurance_Pay_Commission_Type == "Percentage"){
+                 
+                   distributorCommAmount = (amount * parseFloat(distributorPackage.Offline_Insurance_Pay_Commission))/100
+                
+               }
+               else{
+                
+                   distributorCommAmount = parseFloat(distributorPackage.Offline_Insurance_Pay_Commission)
+                
+               }
+ 
+             }
+             if(superDistributor && superDistributorPackage){
+               if(superDistributorPackage.Offline_Insurance_Pay_Commission_Type == "Percentage"){
+                 
+                   superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Offline_Insurance_Pay_Commission))/100
+                  
+               }
+               else{
+                
+                   superDistributorCommAmount = parseFloat(superDistributorPackage.Offline_Insurance_Pay_Commission)
+                 
+               }
+ 
+             }
+             if(white_lable && whiteLablePackage){
+               if(whiteLablePackage.Offline_Insurance_Pay_Commission_Type == "Percentage"){
+                 
+                   whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Offline_Insurance_Pay_Commission))/100
+                 
+               }
+               else{
+                 
+                   whiteLableCommAmount = parseFloat(whiteLablePackage.Offline_Insurance_Pay_Commission)
+                 
+               }
+ 
+             }
+ 
+ 
+            retailerFormData.amount = retailerCommAmount;
+            distributorFormData.amount = distributorCommAmount;
+            superDistributorFormData.amount = superDistributorCommAmount;
+            whiteLableFormData.amount = whiteLableCommAmount;
+           //  console.log(retailerCommAmount)
+           //  console.log(distributorCommAmount)
+           //  console.log(superDistributorCommAmount)
+           //  console.log(whiteLableCommAmount)
+             
+       } catch (error) {
+         console.log(error)
+       }
+       return { retailerFormData, distributorFormData, superDistributorFormData, whiteLableFormData ,Order_Id,Transaction_Id};
+     }
     const handlesubmit = async (e) => {
       e.preventDefault();
       try {
         setLoading(true);
-        const response = await axios.put(
-          "http://localhost:7777/api/auth/superAdmin/ApproveOfflineRecharge",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-          formData
+    
+        const { data } = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${item.created_by_userid}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
-        console.log(response);
-        setLoading(false);
-        if (response.data.success) {
-          Swal.fire({
-            icon: "success",
-            title: "Approve Form Successfully",
+    
+        console.log(item.created_By_User_Id);
+        console.log(data);
+        setUserRelation(data.data);
+    
+        if (data.data) {
+          const { distributor, superDistributor, white_lable } = data.data;
+          const retailer = item.created_by_userid
+          // Create an array to hold promises and a mapping object
+          const promises = [];
+          const resultsMap = {
+            retailer : null,
+            distributor: null,
+            superDistributor: null,
+            whiteLable: null,
+          };
+
+        const retailerPromise = axios
+          .get(
+            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((response) => {
+            resultsMap.retailer = response.data.data;
           });
-          setShowApproveModel(false);
-          setIsRefresh((value) => !value);
+          promises.push(retailerPromise);
+    
+          if (distributor) {
+            const distributorPromise = axios
+              .get(
+                `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .then((response) => {
+                resultsMap.distributor = response.data.data;
+              });
+            promises.push(distributorPromise);
+          }
+    
+          if (superDistributor) {
+            const superDistributorPromise = axios
+              .get(
+                `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .then((response) => {
+                resultsMap.superDistributor = response.data.data;
+              });
+            promises.push(superDistributorPromise);
+          }
+    
+          if (white_lable) {
+            const whiteLablePromise = axios
+              .get(
+                `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .then((response) => {
+                resultsMap.whiteLable = response.data.data;
+              });
+            promises.push(whiteLablePromise);
+          }
+    
+          // Wait for all promises to resolve
+          await Promise.all(promises);
+    
+          // Log the results
+          console.log("retailer Package:", resultsMap.retailer);
+          console.log("Distributor Package:", resultsMap.distributor);
+          console.log("Super Distributor Package:", resultsMap.superDistributor);
+          console.log("White Label Package:", resultsMap.whiteLable);
+         
+          let result = {};
+          // Use the results as needed
+          if(item.recharge_Type == "Prepaid"){
+            result = await prepaidRechargeComm(retailer, distributor, superDistributor, white_lable ,resultsMap,item)
+           console.log(result)
+          }
+          else if(item.recharge_Type == "Postpaid"){
+            result = await postpaidRechargeComm(retailer, distributor, superDistributor, white_lable ,resultsMap,item)
+          }
+          else if(item.recharge_Type == "DTH"){
+            result = await DTHRechargeComm(retailer, distributor, superDistributor, white_lable ,resultsMap,item)
+          }
+          else if(item.recharge_Type == "Electricity"){
+            result = await ElectricityRechargeComm(retailer, distributor, superDistributor, white_lable ,resultsMap,item)
+          }
+          else if(item.recharge_Type == "Broadband"){
+            result = await BroadbandRechargeComm(retailer, distributor, superDistributor, white_lable ,resultsMap,item)
+          }
+          else if(item.recharge_Type == "Landline"){
+            result = await LandlineRechargeComm(retailer, distributor, superDistributor, white_lable ,resultsMap,item)
+          }
+          else if(item.recharge_Type == "Insurance"){
+            result = await InsuranceRechargeComm(retailer, distributor, superDistributor, white_lable ,resultsMap,item)
+          }
+
+           // Track whether all commissions were processed successfully
+      let allProcessesSuccessful = true;
+          
+          if(result && result.retailerFormData && result.retailerFormData.amount){
+            const response = await axios.put(
+              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              result.retailerFormData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            ).catch(() => {
+              allProcessesSuccessful = false;
+            });
+          }
+          if( result && result.distributorFormData && result.distributorFormData.amount){
+            const response = await axios.put(
+              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              result.distributorFormData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            ).catch(() => {
+              allProcessesSuccessful = false;
+            });
+          }
+          if( result && result.superDistributorFormData && result.superDistributorFormData.amount){
+            const response = await axios.put(
+              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              result.superDistributorFormData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            ).catch(() => {
+              allProcessesSuccessful = false;
+            });
+          }
+          if( result && result.whiteLableFormData && result.whiteLableFormData.amount){
+            const response = await axios.put(
+              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              result.whiteLableFormData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            ).catch(() => {
+              allProcessesSuccessful = false;
+            });
+          }
+          if(result){
+            let whiteLabel_Commission = 0 ;
+            let super_Distributor_Commission = 0 ;
+            let distributor_Commission = 0 ;
+            let retailer_Commission = 0;
+            if(result.whiteLableFormData && result.whiteLableFormData.amount){
+              whiteLabel_Commission = result.whiteLableFormData.amount
+            }
+            if(result.superDistributorFormData && result.superDistributorFormData.amount){
+              super_Distributor_Commission = result.superDistributorFormData.amount
+            }
+            if(result.distributorFormData && result.distributorFormData.amount){
+              distributor_Commission = result.distributorFormData.amount
+            }
+            if(result.retailerFormData && result.retailerFormData.amount){
+              retailer_Commission = result.retailerFormData.amount
+            }
+            
+
+
+          
+
+            const commissionFormData = {
+
+              order_id: result.Order_Id,
+              transaction_id : result.Transaction_Id,
+              amount :  item.amount,
+              whiteLabel_id : white_lable ? white_lable : "NA",
+              super_Distributor_id : superDistributor ? superDistributor : "NA",
+              distributor_id : distributor ? distributor : "NA",
+              retailer_id : retailer ? retailer : "NA",
+              whiteLabel_Commission : whiteLabel_Commission ,
+              super_Distributor_Commission : super_Distributor_Commission,
+              distributor_Commission : distributor_Commission,
+              retailer_Commission : retailer_Commission,
+              transaction_type : item.recharge_Type,
+              transaction_details : result.retailerFormData.Transaction_details,
+              status : "Success",
+            }
+            await axios.post(
+              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
+              // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+              commissionFormData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            ).catch(() => {
+              allProcessesSuccessful = false;
+            });
+          }
+
+            await axios.put(
+                  "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveOfflineRecharge",
+                  // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+                  formData,
+                  {
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${token}`,
+                    },
+                  }
+                ).catch(() => {
+                  allProcessesSuccessful = false;
+                });
+          
+           // Show success message if all processes succeeded
+      if (allProcessesSuccessful) {
+        setShowApproveModel(false);
+        setIsRefresh((value) => !value);
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "All commissions have been processed successfully!",
+        });
+      } else {
+        setShowApproveModel(false);
+        setIsRefresh((value) => !value);
+        Swal.fire({
+          icon: "warning",
+          title: "Partial Success",
+          text: "Some commissions were not processed. Please check the logs.",
+        });
+      }
+
+
+
+        }
+      } catch (error) {
+        console.error("There was an error submitting the form!", error);
+        if (error?.response?.status === 401) {
+          Swal.fire({
+            icon: "error",
+            title: "Your token is expired please login again",
+          });
+          dispatch(clearUser());
+          navigate("/");
         } else {
           Swal.fire({
             icon: "error",
             title: "An error occurred during the process. Please try again.",
           });
         }
-      } catch (error) {
-        console.error("There was an error submitting the form!", error);
+      } finally {
         setLoading(false);
-        Swal.fire({
-          icon: "error",
-          title: "An error occurred during the process. Please try again.",
-        });
       }
     };
     return (
@@ -134,11 +1688,17 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
   //  reject model component start//
 const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
-
+ const navigate = useNavigate();
+ const dispatch = useDispatch();
+ const { token } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     order_id: item.orderid,
     note : "",
-    status : "Reject"
+    status : "Reject",
+    user_id : item.created_by_userid,
+    Transaction_details : `Refund Credit for ${item.recharge_Type} Recharge Order Id ${item.orderid}`,
+    refundAmount : item.amount
+
   });
 
   const handleChange = (e) => {
@@ -154,9 +1714,15 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "http://localhost:7777/api/auth/superAdmin/rejectOfflineRecharge",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectOfflineRecharge",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response);
       setLoading(false);
@@ -175,6 +1741,15 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
       }
     } catch (error) {
       console.error("There was an error submitting the form!", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
       Swal.fire({
         icon: "error",
@@ -202,6 +1777,49 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
                   class="form-control"
                   placeholder="Enter Package Name"
                   value={item.orderid}
+                  onChange={handleChange}
+                  disabled
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="mt-3">
+              <label for="name" class="form-label">
+                User Name
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <MdGrid3X3 />
+                </span>
+                <input
+                  type="text"
+                  name="package_name"
+                  class="form-control"
+                  placeholder="Enter UserName"
+                  value={item.UserName}
+                  onChange={handleChange}
+                  disabled
+                  required
+                />
+              </div>
+            </div>
+            <div className="mt-3">
+              <label for="name" class="form-label">
+              Refund Amount
+              </label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  {" "}
+                  <MdGrid3X3 />
+                </span>
+                <input
+                  type="text"
+                  name="package_name"
+                  class="form-control"
+                  placeholder="Enter Amount"
+                  value={item.amount}
                   onChange={handleChange}
                   disabled
                   required
@@ -252,6 +1870,9 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 const SAOfflineRechargeHistory = () => {
 
     const [loading, setLoading] = useState(false);
+ const navigate = useNavigate();
+ const dispatch = useDispatch();
+ const { token } = useSelector((state) => state.user);
     const [users, setUsers] = useState([]);
     const [keyword, setKeyword] = useState("");
     const complaintsPerPage = 10;
@@ -267,19 +1888,34 @@ const SAOfflineRechargeHistory = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "http://localhost:7777/api/auth/superAdmin/getOfflineRecharge"
+            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getOfflineRecharge",
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
           );
           setUsers(data.data);
           setLoading(false);
         } catch (error) {
           console.error("Error fetching data:", error);
+          if (error?.response?.status == 401) {
+            // alert("Your token is expired please login again")
+            Swal.fire({
+                      icon: "error",
+                      title: "Your token is expired please login again",
+                    });
+            dispatch(clearUser());
+            navigate("/");
+          }
           setLoading(false);
         }
       };
 
-      useEffect(() => {
-        fetchOfflineForm();
-      }, []);
+      // useEffect(() => {
+      //   fetchOfflineForm();
+      // }, []);
 
       useEffect(() => {
         fetchOfflineForm();
@@ -291,7 +1927,9 @@ const SAOfflineRechargeHistory = () => {
           (row?.mobile_no && row.mobile_no.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.UserName &&
               row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
             (row?.orderid &&
-              row.orderid.toLowerCase().includes(keyword.trim().toLowerCase()))
+              row.orderid.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+              (row?.created_by_userid &&
+                row.created_by_userid.toLowerCase().includes(keyword.trim().toLowerCase()))
 
               const matchesType = !formStatus || formStatus === "---Select Form Status---" || row.status === formStatus;
               return matchesKeyword && matchesType ;
@@ -313,8 +1951,6 @@ const SAOfflineRechargeHistory = () => {
       const showApiData = filterPagination();
 
       console.log(showApiData);
-      
-
     //   const deactivateUser = async (id) => {
     //     const swalWithBootstrapButtons = Swal.mixin({
     //       customClass: {
@@ -433,7 +2069,7 @@ const SAOfflineRechargeHistory = () => {
                                                         <input id="fromDate" 
                                                         className="form-control"
                                                          type="search"
-                                                         placeholder="Enter Number/Order Id/User Name"
+                                                         placeholder="Enter Number/Order Id/User Name/User Id"
                                                          value={keyword}
                               onChange={(e) => setKeyword(e.target.value)}
                                                          />
@@ -731,10 +2367,14 @@ const SAOfflineRechargeHistory = () => {
                                                            
                                                         </table>
 
+                                                        </>
+                                                    )}
+                                                       
+                                                    </div>
                                                         <PaginationContainer>
                                                         <ReactPaginate
-                                                          previousLabel={"previous"}
-                                                          nextLabel={"next"}
+                                                          previousLabel={"Previous"}
+                                                          nextLabel={"Next"}
                                                           breakLabel={"..."}
                                                           pageCount={totalPages}
                                                           marginPagesDisplayed={2}
@@ -744,10 +2384,6 @@ const SAOfflineRechargeHistory = () => {
                                                           activeClassName={"active"}
                                                         />
                                                       </PaginationContainer>
-                                                        </>
-                                                    )}
-                                                       
-                                                    </div>
                                                  
                                                 </div>
                                             </div>
@@ -852,7 +2488,7 @@ const PaginationContainer = styled.div`
     justify-content: center;
     padding: 10px;
     list-style: none;
-    border-radius: 5px; 
+    border-radius: 5px;
   }
 
   .pagination li {
@@ -865,23 +2501,21 @@ const PaginationContainer = styled.div`
     border: 1px solid #e6ecf1;
     color: #007bff;
     cursor: pointer;
-    /* background-color: #004aad0a; */
     text-decoration: none;
     border-radius: 5px;
     box-shadow: 0px 0px 1px #000;
+    font-size: 14px; /* Default font size */
   }
 
   .pagination li.active a {
     background-color: #004aad;
     color: white;
     border: 1px solid #004aad;
-    border-radius: 5px;
   }
 
   .pagination li.disabled a {
     color: white;
     cursor: not-allowed;
-    border-radius: 5px;
     background-color: #3a4e69;
     border: 1px solid #3a4e69;
   }
@@ -889,7 +2523,48 @@ const PaginationContainer = styled.div`
   .pagination li a:hover:not(.active) {
     background-color: #004aad;
     color: white;
-    border-radius: 5px;
-    border: 1px solid #004aad;
+  }
+
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .pagination {
+      padding: 5px;
+      flex-wrap: wrap;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pagination {
+      padding: 5px;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 4px 8px;
+      font-size: 10px;
+    }
+
+    /* Hide the previous and next labels for extra-small screens */
+    .pagination li:first-child a::before {
+      content: "«";
+      margin-right: 5px;
+    }
+
+    .pagination li:last-child a::after {
+      content: "»";
+      margin-left: 5px;
+    }
   }
 `;

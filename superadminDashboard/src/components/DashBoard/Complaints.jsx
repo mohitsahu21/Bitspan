@@ -6,14 +6,17 @@ import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
 
 const Complaints = () => {
+  const dispatch = useDispatch();
+  const { currentUser, token } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     complainType: "",
     transactionNo: "",
     mobileNo: "",
     remark: "",
-    userID: "1002",
+    userID: currentUser.userId,
   });
   const [complainFile, setComplainFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -46,7 +49,8 @@ const Complaints = () => {
 
     try {
       const res = await axios.post(
-        `http://localhost:7777/api/auth/retailer/complain-query`,
+        // `http://localhost:7777/api/auth/retailer/complain-query`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/complain-query`,
         data,
         {
           headers: {
@@ -151,7 +155,7 @@ const Complaints = () => {
                               name="transactionNo"
                               value={formData.transactionNo}
                               onChange={handleChange}
-                              required
+                              // required
                             />
                             <label for="floatingInputGroup1">
                               Transaction Number
@@ -213,7 +217,7 @@ const Complaints = () => {
                             type="file"
                             name="complainFile"
                             onChange={handleFileChange}
-                            required
+                            // required
                           />
                         </div>
                       </div>

@@ -9,11 +9,18 @@ import { LuTextSelect, LuUserCheck } from "react-icons/lu";
 import { SlLocationPin } from "react-icons/sl";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
+
 
 
 const SACreateWhiteLabel = () => {
   const [loading, setLoading] = useState(false);
-
+  const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
 
     UserName: "",
@@ -28,9 +35,10 @@ const SACreateWhiteLabel = () => {
     PinCode: "",
     Status: "Pending",
     payment_status: "Complete",
-    created_By_User_Id: "SA-ASHI0002",
-    created_By_User_Role: "SuperAdmin",
-    created_By_Website: "www.bitspan.in"
+    White_Label_Website_URL : "",
+    created_By_User_Id: currentUser.userId,
+    created_By_User_Role: currentUser.role,
+    created_By_Website: "Bitspan.com"
   });
 
   // const handleChange = (e) => {
@@ -42,11 +50,22 @@ const SACreateWhiteLabel = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
-    setFormData({
-      ...formData,
-      [name]: name === "PanCardNumber" ? value.toUpperCase() : value,
-    });
+    
+    if (name === "ContactNo" || name === "AadharNumber" || name === "PinCode") {
+      if (/^\d*$/.test(value)) {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+    }
+    else {
+      setFormData({
+        ...formData,
+        [name]: name === "PanCardNumber" ? value.toUpperCase() : value,
+      });
+    }
+   
   };
 
   const handlesubmit = async (e) => {
@@ -55,9 +74,16 @@ const SACreateWhiteLabel = () => {
       setLoading(true);
      
       const response = await axios.post(
-        // "http://localhost:7777/api/auth/superAdmin/approveUser",
+        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
         "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
-        formData
+        formData,
+        {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }        
+
       );
       // console.log(response);
       setLoading(false);
@@ -80,8 +106,9 @@ const SACreateWhiteLabel = () => {
             PinCode: "",
             Status: "Pending",
             payment_status: "Complete",
-            created_By_User_Id: "SA-ASHI0002",
-            created_By_User_Role: "SuperAdmin",
+            White_Label_Website_URL : "",
+            created_By_User_Id: currentUser.userId,
+            created_By_User_Role: currentUser.role,
             created_By_Website: "www.bitspan.in"
 
         })
@@ -95,10 +122,19 @@ const SACreateWhiteLabel = () => {
       }
     } catch (error) {
       console.error("There was an error submitting the form!", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
       setLoading(false);
       Swal.fire({
         icon: "error",
-        title: "An error occurred during the process. Please try again.",
+        title: error.response.data.message || "An error occurred during the process. Please try again.",
       });
     }
   };
@@ -166,7 +202,8 @@ const SACreateWhiteLabel = () => {
                     pattern="[0-9]{10}"
                     title="Mobile number should be 10 digits"
                     maxLength={10}
-                    minLength={10}/>
+                    minLength={10}
+                    required/>
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
@@ -187,6 +224,7 @@ const SACreateWhiteLabel = () => {
                          name="PanCardNumber"
                          value={formData.PanCardNumber}
                          onChange={handleChange}
+                         required
                          style={{ textTransform: 'uppercase' }}
                          pattern="[A-Za-z]{5}[0-9]{4}[A-Za-z]{1}"
   title="PAN card number should be in the format: 5 letters, 4 digits, 1 letter (e.g., ABCDE1234F)"
@@ -220,7 +258,8 @@ const SACreateWhiteLabel = () => {
                         <input type="text" id="name" class="form-control" placeholder="Enter Shop/ Company Name" 
                          name="BusinessName"
                          value={formData.BusinessName}
-                         onChange={handleChange}/>
+                         onChange={handleChange}
+                         required/>
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
@@ -230,7 +269,8 @@ const SACreateWhiteLabel = () => {
                         <input type="text" id="name" class="form-control" placeholder="Enter City" 
                          name="City"
                          value={formData.City}
-                         onChange={handleChange}/>
+                         onChange={handleChange}
+                         required/>
                       </div>
                     </div>
 
@@ -243,6 +283,7 @@ const SACreateWhiteLabel = () => {
                           class="form-select" aria-label="Default select example"
                           name="State"
                           value={formData.State}
+                          required
                           onChange={handleChange}>
                           <option selected value="">Select...</option>
                           <option value="Andhra Pradesh">Andhra Pradesh</option>
@@ -299,6 +340,7 @@ const SACreateWhiteLabel = () => {
                          title="Mobile number should be 6 digits"
                          maxLength={6}
                          minLength={6}
+                         required
                          />
                       </div>
                     </div>
@@ -307,6 +349,18 @@ const SACreateWhiteLabel = () => {
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"> <LuUserCheck /></span>
                         <input type="text" id="name" class="form-control" placeholder="User Type" value={"White Label"} disabled />
+                      </div>
+                    </div>
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <label for="name" class="form-label">Enter White Lable Website</label>
+                      <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping"><PiAddressBook /></span>
+                        <input type="text" id="name" class="form-control" placeholder="Enter White Lable Website" 
+                         name="White_Label_Website_URL"
+                         value={formData.White_Label_Website_URL}
+                         onChange={handleChange}
+                         required/>
+                         
                       </div>
                     </div>
                     {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">

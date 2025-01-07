@@ -187,6 +187,7 @@ const userRegiser = async (req, res) => {
     PinCode,
     Status,
     payment_status,
+    White_Label_Website_URL,
     created_By_User_Id,
     created_By_User_Role,
     created_By_Website,
@@ -264,8 +265,8 @@ const userRegiser = async (req, res) => {
         const password = generatePassword();
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const insertUserQuery = `INSERT INTO userprofile (UserId, password, UserName, role, ContactNo, Email, PanCardNumber, AadharNumber, BusinessName, City, State, PinCode,Status,payment_status,created_By_User_Id,
-created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?)`;
+        const insertUserQuery = `INSERT INTO userprofile (UserId, password, UserName, role, ContactNo, Email, PanCardNumber, AadharNumber, BusinessName, City, State, PinCode,Status,payment_status,White_Label_Website_URL,created_By_User_Id,
+created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?)`;
 
         const insertValues = [
           userId,
@@ -282,6 +283,7 @@ created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?,
           PinCode,
           Status,
           payment_status,
+          White_Label_Website_URL,
           created_By_User_Id,
           created_By_User_Role,
           created_By_Website,

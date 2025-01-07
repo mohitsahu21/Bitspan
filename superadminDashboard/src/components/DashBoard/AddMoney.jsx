@@ -26,10 +26,15 @@ const AddMoney = () => {
                       {/* <div className="text-center">
                         <h3>Add Money To Wallet</h3>
                       </div> */}
-                       <div className="d-flex justify-content-between align-items-center flex-wrap ">
-                                                <h4 className="mx-lg-5  px-lg-5  px-xl-5" >Add Money To Wallet</h4>
-                                                <h6 className=""> <BiHomeAlt /> &nbsp;/ &nbsp; Add Money To Wallet</h6>
-                                            </div>
+                      <div className="d-flex justify-content-between align-items-center flex-wrap ">
+                        <h4 className="mx-lg-5  px-lg-5  px-xl-5">
+                          Add Money To Wallet
+                        </h4>
+                        <h6 className="">
+                          {" "}
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Add Money To Wallet
+                        </h6>
+                      </div>
                     </div>
                   </div>
                   <div className="row justify-content-lg-end justify-content-center pe-lg-4">
@@ -88,10 +93,10 @@ const AddMoney = () => {
                               aria-label="Floating label select example"
                             >
                               <option selected>Select Payment Method</option>
-                              <option value="1">UPI Payment</option>
-                              <option value="2">
+                              <option value="UPI">UPI</option>
+                              {/* <option value="2">
                                 Debit Card/ Credit Card / Netbanking
-                              </option>
+                              </option> */}
                             </select>
                             <label for="floatingSelect">Payment Method</label>
                           </div>
@@ -138,15 +143,13 @@ const Wrapper = styled.div`
     width: 50%;
     margin: auto;
   }
-  @media (min-width: 1025px) and (max-width : 1500px){
+  @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
-     
       padding-left: 15rem;
     }
   }
   @media (min-width: 1500px) {
     .formdata {
-     
       padding-left: 13rem;
     }
   }

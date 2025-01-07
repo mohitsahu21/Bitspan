@@ -13,11 +13,13 @@ const AllPanForm = () => {
   const [loading, setLoading] = useState(false);
   const complaintsPerPage = 10; // Set items per page
   const [currentPage, setCurrentPage] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/retailer/getApplyOfflineForm`
+        // `http://localhost:7777/api/auth/retailer/getApplyOfflineForm`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApplyOfflineForm`
       );
 
       const newResponseData = response.data.filter(
@@ -41,13 +43,29 @@ const AllPanForm = () => {
 
   console.log(formData);
 
-  const filteredData = formData.filter((item) => {
-    if (selectedStatus === "All") {
-      return true;
-    } else {
-      return item.status?.toLowerCase() === selectedStatus.toLowerCase();
-    }
+  const filteredData = formData?.filter((item) => {
+    const matchesSearch =
+      item.applicant_name
+        ?.toLowerCase()
+        ?.includes(searchQuery?.toLowerCase()) ||
+      item.applicant_number
+        ?.toLowerCase()
+        ?.includes(searchQuery?.toLowerCase()) ||
+      item.order_id?.toLowerCase()?.includes(searchQuery?.toLowerCase());
+    const matchesStatus =
+      selectedStatus === "All" ||
+      item.status?.toLowerCase() === selectedStatus?.toLowerCase();
+
+    return matchesSearch && matchesStatus;
   });
+
+  // const filteredData = formData.filter((item) => {
+  //   if (selectedStatus === "All") {
+  //     return true;
+  //   } else {
+  //     return item.status?.toLowerCase() === selectedStatus.toLowerCase();
+  //   }
+  // });
 
   const totalPages = Math.ceil(filteredData.length / complaintsPerPage);
 
@@ -97,7 +115,7 @@ const AllPanForm = () => {
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
                       <div className="row d-flex flex-column g-4">
                         <div className="d-flex flex-column flex-md-row gap-3">
-                          <div className="col-12 col-md-4 col-lg-3">
+                          {/* <div className="col-12 col-md-4 col-lg-3">
                             <label for="fromDate" className="form-label">
                               From
                             </label>
@@ -129,6 +147,18 @@ const AllPanForm = () => {
                             >
                               Search
                             </button>
+                          </div> */}
+                          <div className="col-12 col-md-4 col-lg-3">
+                            <label for="fromDate" className="form-label">
+                              Search
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control responsive-input"
+                              placeholder="Search by Name, Mobile, or Order ID"
+                              value={searchQuery}
+                              onChange={(e) => setSearchQuery(e.target.value)}
+                            />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3 d-flex align-items-end">
                             <DropdownButton
@@ -137,8 +167,8 @@ const AllPanForm = () => {
                               onSelect={(e) => setSelectedStatus(e)}
                             >
                               <Dropdown.Item eventKey="All">All</Dropdown.Item>
-                              <Dropdown.Item eventKey="Approved">
-                                Approved
+                              <Dropdown.Item eventKey="Success">
+                                Success
                               </Dropdown.Item>
                               <Dropdown.Item eventKey="Reject">
                                 Reject
@@ -156,6 +186,8 @@ const AllPanForm = () => {
                               <thead className="table-dark">
                                 <tr>
                                   <th scope="col">Sr.No</th>
+                                  <th scope="col">Date</th>
+                                  <th scope="col">Order ID</th>
                                   <th scope="col">Applicant Name</th>
                                   <th scope="col">Applicant Father Name</th>
                                   <th scope="col">Applicant Number</th>
@@ -179,6 +211,8 @@ const AllPanForm = () => {
                                     {displayData.map((item, index) => (
                                       <tr key={index}>
                                         <th scope="row">{index + 1}</th>
+                                        <td>{item.created_at}</td>
+                                        <td>{item.order_id}</td>
                                         <td>{item.applicant_name}</td>
                                         <td>{item.applicant_father}</td>
                                         <td>{item.applicant_number}</td>
@@ -317,6 +351,9 @@ const Wrapper = styled.div`
     .formdata {
       padding-left: 13rem;
     }
+  }
+  a {
+    text-decoration: none;
   }
 `;
 const PaginationContainer = styled.div`

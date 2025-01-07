@@ -149,6 +149,27 @@ const SAViewPackageModel = ({ packages }) => {
                           />
                         </div>
                       </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                         Pan Find Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="Pan_Find_Price"
+                            value={packages.Pan_Find_Price}
+                         
+                            required
+                          />
+                        </div>
+                      </div>
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
@@ -491,6 +512,27 @@ const SAViewPackageModel = ({ packages }) => {
                       
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
+                        Ayushman ID Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="Ayushman_Id_Price"
+                            value={packages.Ayushman_Id_Price}
+                           
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
                           IRCTC Agent ID Price
                         </label>
                         <div class="input-group flex-nowrap">
@@ -820,6 +862,26 @@ const SAViewPackageModel = ({ packages }) => {
                           />
                         </div>
                       </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                        Pan Find Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="Pan_Find_Commission"
+                            value={packages.Pan_Find_Commission}
+                            
+                          />
+                        </div>
+                      </div>
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
@@ -839,7 +901,7 @@ const SAViewPackageModel = ({ packages }) => {
                         />
                       </div>
                     </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
                         IRCTC Agent ID Commission
                       </label>
@@ -856,7 +918,7 @@ const SAViewPackageModel = ({ packages }) => {
                           value={packages.IRCTC_Agent_ID_Commission}
                         />
                       </div>
-                    </div>
+                    </div> */}
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
                         Birth Certificate Commission
@@ -1029,7 +1091,7 @@ const SAViewPackageModel = ({ packages }) => {
                           />
                         </div>
                       </div>
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
                         Offline KYC Income Certificate Commission
                         </label>
@@ -1110,7 +1172,7 @@ const SAViewPackageModel = ({ packages }) => {
                             required
                           />
                         </div>
-                      </div>
+                      </div> */}
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
                       Verify e-district Certificate Commission
@@ -1131,7 +1193,7 @@ const SAViewPackageModel = ({ packages }) => {
                           />
                         </div>
                       </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
                         Bank ID Commission
                       </label>
@@ -1148,7 +1210,7 @@ const SAViewPackageModel = ({ packages }) => {
                           value={packages.Bank_ID_Commission}
                         />
                       </div>
-                    </div>
+                    </div> */}
 
                     {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                             <div className="text-center  mb-5 mt-3">
@@ -2084,6 +2146,109 @@ const SAViewPackageModel = ({ packages }) => {
                                             </div>
                                         </div> */}
                   </div>
+                  <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                    <div className="text-center  my-5">
+                      <h2>Online Broadband Bill Pay Commission</h2>
+                    </div>
+
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <label for="name" className="form-label">
+                        Select Commission Type
+                      </label>
+                      <div className="input-group flex-nowrap">
+                        <span className="input-group-text" id="addon-wrapping">
+                          {" "}
+                          <LuTextSelect />
+                        </span>
+                        <select
+                          name="Online_Broadband_Bill_Pay_Commission_Type"
+                          
+                          className="form-select"
+                          aria-label="Default select example"
+                          value={packages.Online_Broadband_Bill_Pay_Commission_Type}
+                          disabled
+                        >
+                          <option value="">
+                            Select...
+                          </option>
+
+                          <option value="Percentage">Percentage (%)</option>
+                          <option value="Rupees">Rupees (&#8377;)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <label for="name" class="form-label">
+                        Online Broadband Bill Pay Commission
+                      </label>
+                      <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping">
+                          {" "}
+                          <MdNumbers />
+                        </span>
+                        <input
+                          type="number"
+                          class="form-control"
+                          placeholder="Enter Commission"
+                          name="Online_Broadband_Bill_Pay_Commission"
+                          value={packages.Online_Broadband_Bill_Pay_Commission}
+                         
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                    <div className="text-center  my-5">
+                      <h2>Offline Broadband Bill Pay Commission</h2>
+                    </div>
+
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <label for="name" className="form-label">
+                        Commission Type
+                      </label>
+                      <div className="input-group flex-nowrap">
+                        <span className="input-group-text" id="addon-wrapping">
+                          {" "}
+                          <LuTextSelect />
+                        </span>
+                        <select
+                          name="Offline_Broadband_Bill_Pay_Commission_Type"
+                          value={packages.Offline_Broadband_Bill_Pay_Commission_Type}
+                          className="form-select"
+                          aria-label="Default select example"
+                          disabled
+                        >
+                          <option >
+                            Select...
+                          </option>
+
+                          <option value="Percentage">Percentage (%)</option>
+                          <option value="Rupees">Rupees (&#8377;)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <label for="name" class="form-label">
+                        Offline Broadband Bill Pay Commission
+                      </label>
+                      <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping">
+                          {" "}
+                          <MdNumbers />
+                        </span>
+                        <input
+                          type="number"
+                          class="form-control"
+                          placeholder="Enter Commission"
+                          name="Offline_Broadband_Bill_Pay_Commission"
+                          value={packages.Offline_Broadband_Bill_Pay_Commission}
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
 
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
                     <div className="text-center  my-5">
@@ -2345,7 +2510,7 @@ const SAViewPackageModel = ({ packages }) => {
                       </div>
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          UTI PAN Coupon Price
+                          PAN Coupon Price
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -2423,7 +2588,7 @@ const SAViewPackageModel = ({ packages }) => {
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        UTI PAN Coupon Commission
+                        PAN Coupon Commission
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -2466,6 +2631,435 @@ const SAViewPackageModel = ({ packages }) => {
                                             </div>
                                         </div> */}
                   </div>
+                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                                        <div className="text-center  my-5">
+                                          <h2>Joining Price (for White Label)</h2>
+                                        </div>
+                  
+                                       
+                  
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                          <label for="name" class="form-label">
+                                           White Label Joining Price
+                                          </label>
+                                          <div class="input-group flex-nowrap">
+                                            <span class="input-group-text" id="addon-wrapping">
+                                              {" "}
+                                              <MdNumbers />
+                                            </span>
+                                            <input
+                                              type="number"
+                                              
+                                              class="form-control"
+                                              placeholder="Enter Price"
+                                              name="whitelabel_joining_price"
+                                              value={packages.whitelabel_joining_price}
+                                              
+                                              required
+                                              min={0}
+                                             
+                                            />
+                                          </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                          <label for="name" class="form-label">
+                                        Super Distributor Joining Price
+                                          </label>
+                                          <div class="input-group flex-nowrap">
+                                            <span class="input-group-text" id="addon-wrapping">
+                                              {" "}
+                                              <MdNumbers />
+                                            </span>
+                                            <input
+                                              type="number"
+                                              
+                                              class="form-control"
+                                              placeholder="Enter Price"
+                                              name="superDistributor_joining_price"
+                                              value={packages.superDistributor_joining_price}
+                                              
+                                              required
+                                              min={0}
+                                             
+                                             
+                                            />
+                                          </div>
+                                        </div>
+                                        
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                          <label for="name" class="form-label">
+                                         Distributor Joining Price
+                                          </label>
+                                          <div class="input-group flex-nowrap">
+                                            <span class="input-group-text" id="addon-wrapping">
+                                              {" "}
+                                              <MdNumbers />
+                                            </span>
+                                            <input
+                                              type="number"
+                                              
+                                              class="form-control"
+                                              placeholder="Enter Price"
+                                              name="distributor_joining_price"
+                                              value={packages.distributor_joining_price}
+                                              
+                                              required
+                                              min={0}
+                                              
+                                             
+                                            />
+                                          </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                          <label for="name" class="form-label">
+                                         Retailer Joining Price
+                                          </label>
+                                          <div class="input-group flex-nowrap">
+                                            <span class="input-group-text" id="addon-wrapping">
+                                              {" "}
+                                              <MdNumbers />
+                                            </span>
+                                            <input
+                                              type="number"
+                                              
+                                              class="form-control"
+                                              placeholder="Enter Price"
+                                              name="retailer_joining_price"
+                                              value={packages.retailer_joining_price}
+                                              
+                                              required
+                                              min={0}
+                                            
+                                            />
+                                          </div>
+                                        </div>
+                  
+                                        {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                              <div className="text-center  mb-5 mt-3">
+                                                                  <button className="btn p-2">Change</button>
+                                                              </div>
+                                                          </div> */}
+                                      </div>
+                                      <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                                        <div className="text-center  my-5">
+                                          <h2>User ID Price (For Create Users)</h2>
+                                        </div>
+                  
+                                        <div>
+                                        <h4>White Label ID Price</h4>
+                                      </div>
+                  
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                          <label for="name" class="form-label">
+                                        White Label Id Price
+                                          </label>
+                                          <div class="input-group flex-nowrap">
+                                            <span class="input-group-text" id="addon-wrapping">
+                                              {" "}
+                                              <MdNumbers />
+                                            </span>
+                                            <input
+                                              type="number"
+                                              
+                                              class="form-control"
+                                              placeholder="Enter Price"
+                                              name="whiteLabel_id_price"
+                                              value={packages.whiteLabel_id_price}
+                                              
+                                              required
+                                              min={0}
+                                             
+                                            />
+                                          </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                          <label for="name" class="form-label">
+                                         White Label Minimum Id limit
+                                          </label>
+                                          <div class="input-group flex-nowrap">
+                                            <span class="input-group-text" id="addon-wrapping">
+                                              {" "}
+                                              <MdNumbers />
+                                            </span>
+                                            <input
+                                              type="number"
+                                              
+                                              class="form-control"
+                                              placeholder="Enter White Label Minimum Id limit"
+                                              name="whiteLabel_min_id_limit"
+                                              value={packages.whiteLabel_min_id_limit}
+                                             
+                                              required
+                                              min={0}
+                                              
+                                             
+                                            />
+                                          </div>
+                                        </div>
+                                        
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                          <label for="name" class="form-label">
+                                       White Label Maximum Id limit
+                                          </label>
+                                          <div class="input-group flex-nowrap">
+                                            <span class="input-group-text" id="addon-wrapping">
+                                              {" "}
+                                              <MdNumbers />
+                                            </span>
+                                            <input
+                                              type="number"
+                                              
+                                              class="form-control"
+                                              placeholder="Enter White Label Maximum Id limit"
+                                              name="whiteLabel_max_id_limit"
+                                              value={packages.whiteLabel_max_id_limit}
+                                             
+                                              required
+                                              min={0}
+                                              
+                                             
+                                            />
+                                          </div>
+                                        </div>
+                  
+                                        <div>
+                                        <h4>Super Distributor ID Price</h4>
+                                      </div>
+                  
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                          <label for="name" class="form-label">
+                                         Super Distributor Id Price
+                                          </label>
+                                          <div class="input-group flex-nowrap">
+                                            <span class="input-group-text" id="addon-wrapping">
+                                              {" "}
+                                              <MdNumbers />
+                                            </span>
+                                            <input
+                                              type="number"
+                                              
+                                              class="form-control"
+                                              placeholder="Enter Price"
+                                              name="superDistributor_id_price"
+                                              value={packages.superDistributor_id_price}
+                                              
+                                              required
+                                              min={0}
+                                              
+                                            />
+                                          </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                          <label for="name" class="form-label">
+                                           Super Distributor Minimum Id limit
+                                          </label>
+                                          <div class="input-group flex-nowrap">
+                                            <span class="input-group-text" id="addon-wrapping">
+                                              {" "}
+                                              <MdNumbers />
+                                            </span>
+                                            <input
+                                              type="number"
+                                              
+                                              class="form-control"
+                                              placeholder="Enter Super Distributor Minimum Id limit"
+                                              name="superDistributor_min_id_limit"
+                                              value={packages.superDistributor_min_id_limit}
+                                              
+                                              required
+                                              min={0}
+                                              
+                                             
+                                            />
+                                          </div>
+                                        </div>
+                                        
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                          <label for="name" class="form-label">
+                                         Super Distributor Maximum Id limit
+                                          </label>
+                                          <div class="input-group flex-nowrap">
+                                            <span class="input-group-text" id="addon-wrapping">
+                                              {" "}
+                                              <MdNumbers />
+                                            </span>
+                                            <input
+                                              type="number"
+                                              
+                                              class="form-control"
+                                              placeholder="Enter Super Distributor Maximum Id limit"
+                                              name="superDistributor_max_id_limit"
+                                              value={packages.superDistributor_max_id_limit}
+                                              
+                                              required
+                                              min={0}
+                                              
+                                             
+                                            />
+                                          </div>
+                                        </div>
+                  
+                                        
+                                        <div>
+                                        <h4>Distributor ID Price</h4>
+                                      </div>
+                  
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                          <label for="name" class="form-label">
+                                         Distributor Id Price
+                                          </label>
+                                          <div class="input-group flex-nowrap">
+                                            <span class="input-group-text" id="addon-wrapping">
+                                              {" "}
+                                              <MdNumbers />
+                                            </span>
+                                            <input
+                                              type="number"
+                                              
+                                              class="form-control"
+                                              placeholder="Enter Price"
+                                              name="distributor_id_price"
+                                              value={packages.distributor_id_price}
+                                              
+                                              required
+                                              min={0}
+                                            
+                                            />
+                                          </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                          <label for="name" class="form-label">
+                                         Distributor Minimum Id limit
+                                          </label>
+                                          <div class="input-group flex-nowrap">
+                                            <span class="input-group-text" id="addon-wrapping">
+                                              {" "}
+                                              <MdNumbers />
+                                            </span>
+                                            <input
+                                              type="number"
+                                              
+                                              class="form-control"
+                                              placeholder="Enter Distributor Minimum Id limit"
+                                              name="distributor_min_id_limit"
+                                              value={packages.distributor_min_id_limit}
+                                             
+                                              required
+                                              min={0}
+                                             
+                                             
+                                            />
+                                          </div>
+                                        </div>
+                                        
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                          <label for="name" class="form-label">
+                                       Distributor Maximum Id limit
+                                          </label>
+                                          <div class="input-group flex-nowrap">
+                                            <span class="input-group-text" id="addon-wrapping">
+                                              {" "}
+                                              <MdNumbers />
+                                            </span>
+                                            <input
+                                              type="number"
+                                              
+                                              class="form-control"
+                                              placeholder="Enter Distributor Maximum Id limit"
+                                              name="distributor_max_id_limit"
+                                              value={packages.distributor_max_id_limit}
+                                            
+                                              required
+                                              min={0}
+                                              
+                                             
+                                            />
+                                          </div>
+                                        </div>
+                  
+                                        <div>
+                                        <h4>Retailer ID Price</h4>
+                                      </div>
+                  
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                          <label for="name" class="form-label">
+                                           Retailer Id Price
+                                          </label>
+                                          <div class="input-group flex-nowrap">
+                                            <span class="input-group-text" id="addon-wrapping">
+                                              {" "}
+                                              <MdNumbers />
+                                            </span>
+                                            <input
+                                              type="number"
+                                              
+                                              class="form-control"
+                                              placeholder="Enter Price"
+                                              name="retailer_id_price"
+                                              value={packages.retailer_id_price}
+                                              
+                                              required
+                                              min={0}
+                                              
+                                            />
+                                          </div>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                          <label for="name" class="form-label">
+                                          Retailer Minimum Id limit
+                                          </label>
+                                          <div class="input-group flex-nowrap">
+                                            <span class="input-group-text" id="addon-wrapping">
+                                              {" "}
+                                              <MdNumbers />
+                                            </span>
+                                            <input
+                                              type="number"
+                                              
+                                              class="form-control"
+                                              placeholder="Enter Retailer Minimum Id limit"
+                                              name="retailer_min_id_limit"
+                                              value={packages.retailer_min_id_limit}
+                                             
+                                              required
+                                              min={0}
+                                            
+                                             
+                                            />
+                                          </div>
+                                        </div>
+                                        
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                          <label for="name" class="form-label">
+                                        Retailer Maximum Id limit
+                                          </label>
+                                          <div class="input-group flex-nowrap">
+                                            <span class="input-group-text" id="addon-wrapping">
+                                              {" "}
+                                              <MdNumbers />
+                                            </span>
+                                            <input
+                                              type="number"
+                                              
+                                              class="form-control"
+                                              placeholder=" Enter Retailer Maximum Id limit"
+                                              name="retailer_max_id_limit"
+                                              value={packages.retailer_max_id_limit}
+                                              
+                                              required
+                                              min={0}
+                                             
+                                             
+                                            />
+                                          </div>
+                                        </div>
+                  
+                                        {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                              <div className="text-center  mb-5 mt-3">
+                                                                  <button className="btn p-2">Change</button>
+                                                              </div>
+                                                          </div> */}
+                                      </div>
                   <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     {/* <div className="text-center  m-5">
                       <button className="btn p-2">Submit</button>
