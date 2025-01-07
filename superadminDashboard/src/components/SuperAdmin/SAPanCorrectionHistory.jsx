@@ -126,7 +126,7 @@ const SAPanCorrectionHistory = () => {
                                                 <h3>Complaint Raised List</h3>
                                             </div> */}
                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">PAN Correction History</h4>
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">NSDL PAN Correction History</h4>
                                                 <p className="mx-lg-5">
                                                     {" "}
                                                     <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
@@ -135,7 +135,7 @@ const SAPanCorrectionHistory = () => {
                                                         style={{ fontSize: "13px" }}
                                                     >
                                                         {" "}
-                                                        PAN Correction History
+                                                       NSDL PAN Correction History
                                                     </span>{" "}
                                                 </p>
                                             </div>

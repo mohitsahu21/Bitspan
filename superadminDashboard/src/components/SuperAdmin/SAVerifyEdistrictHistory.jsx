@@ -1341,6 +1341,8 @@ const SAVerifyEdistrictHistory = () => {
                                   <th scope="col">DOB</th> */}
                                       <th scope="col">Mobile Number</th>
                                       <th scope="col">RS Number</th>
+                                      <th scope="col">District</th>
+                                      <th scope="col">Tehsil/Block</th>
                                       <th scope="col">User Id</th>
                                       <th scope="col">User Name</th>
                                       <th scope="col">User Mobile</th>
@@ -1362,6 +1364,8 @@ const SAVerifyEdistrictHistory = () => {
                                           <td>{item.name}</td>
                                           <td>{item.mobileNo}</td>
                                           <td>{item.rsNumber}</td>
+                                          <td>{item.district}</td>
+                                          <td>{item.tehsil}</td>
                                           <td>{item.user_id}</td>
                                           <td>{item.UserName}</td>
                                           <td>{item.ContactNo}</td>
@@ -1518,6 +1522,8 @@ const SAVerifyEdistrictHistory = () => {
                                   <th scope="col">DOB</th> */}
                                       <th scope="col">Mobile Number</th>
                                       <th scope="col">RS Number</th>
+                                      <th scope="col">District</th>
+                                      <th scope="col">Tehsil/Block</th>
                                       <th scope="col">User Id</th>
                                       <th scope="col">User Name</th>
                                       <th scope="col">User Mobile</th>
@@ -1539,6 +1545,8 @@ const SAVerifyEdistrictHistory = () => {
                                           <td>{item.name}</td>
                                           <td>{item.mobileNo}</td>
                                           <td>{item.rsNumber}</td>
+                                          <td>{item.district}</td>
+                                          <td>{item.tehsil}</td>
                                           <td>{item.user_id}</td>
                                           <td>{item.UserName}</td>
                                           <td>{item.ContactNo}</td>

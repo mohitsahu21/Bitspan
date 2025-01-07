@@ -7,6 +7,7 @@ import styled from "styled-components";
 
 import AadharLinkingStatus from "../components/DashBoard/AadharLinkingStatus";
 import TrainingVideo from "../components/DashBoard/TrainingVideo";
+import NotFound from "../components/NotFound.jsx";
 // Lazy imports
 const SuperAdminDashboard = lazy(() => import("../pages/SuperAdminDashboard"));
 const SAProfile = lazy(() => import("../components/SuperAdmin/SAProfile"));
@@ -71,6 +72,7 @@ const SAPanCouponRequests = lazy(() => import("../components/SuperAdmin/SAPanCou
 const SAUserRelation = lazy(() => import("../components/SuperAdmin/SAUserRelation.jsx"));
 const SAPanCorrectionHistory = lazy(() => import("../components/SuperAdmin/SAPanCorrectionHistory.jsx"));
 const SASetDTHPlans = lazy(() => import("../components/SuperAdmin/SASetDTHPlans.jsx"));
+const SAPanUploadedDocsList = lazy(()=> import("../components/SuperAdmin/SAPanUploadedDocsList.jsx"));
 
 
 const SuperAdminRoutes = () => {
@@ -198,7 +200,7 @@ const SuperAdminRoutes = () => {
         />
         {/* <Route path="/download-certificate" element={<WLDownloadCertificate />} /> */}
         {/* <Route path="/change-coupon-price" element={<SAChangeIdSetRate />} /> */}
-        <Route path="/user-id-set-rate" element={<SASetWhiteLabelIdPrice />} />
+        {/* <Route path="/user-id-set-rate" element={<SASetWhiteLabelIdPrice />} /> */}
         <Route path="/change-nsdl-price" element={<SAChangeNSDLPrice />} />
         <Route path="/change-uti-price" element={<SAChangeUTIPanPrice />} />
         <Route
@@ -248,6 +250,11 @@ const SuperAdminRoutes = () => {
           path="/user-relation-data"
           element={<SAUserRelation />}
         />
+        <Route
+          path="/uploaded-documents"
+          element={<SAPanUploadedDocsList />}
+        />
+         {/* <Route path="*" element={<NotFound />} /> */}
 
         {/* <Route path="/download-certificate-print" element={<Certificate user="WHITE LABEL" name="Aashish Kumar"
         address="Jabalpur, BIHAR - 482001"
