@@ -7053,6 +7053,93 @@ const getUserDetails = (req, res) => {
   }
 };
 
+const getSpecificUserTransactions = (req, res) => {
+
+  const { userId } = req.params;
+
+  try {
+   
+      const sql = `SELECT ur.*, t.* FROM user_relations AS ur INNER JOIN offline_recharge AS t ON ur.UserId = t. created_by_userid WHERE ur.superDistributor	= ? AND ur.userType = 'Retailer'`;
+    db.query(sql, [userId],(err, result) => {
+      if (err) {
+        console.error("Error fetching user from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error fetching data" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: false,
+            data: [],
+            message: "No Data found",
+          });
+        } else {
+          // Remove the password field from each user object
+          const sanitizedResult = result.map(({ password, ...rest }) => rest);
+
+          return res.status(200).json({
+            success: true,
+            data: sanitizedResult,
+            message: "Data fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching data from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching data",
+      error: error.message,
+    });
+  }
+};
+
+const getWalletBalance = (req, res) => {
+
+  const { userId } = req.params;
+
+  try {
+   
+      const sql = `SELECT Closing_Balance FROM user_wallet WHERE userId = ? ORDER BY wid DESC LIMIT 1`;
+    db.query(sql, [userId],(err, result) => {
+      if (err) {
+        console.error("Error fetching data from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error fetching data" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: false,
+            data: [],
+            message: "No Data found",
+          });
+        } else {
+          
+
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "Data fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching data from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching data",
+      error: error.message,
+    });
+  }
+};
+
+
+
 
 module.exports = {
   addPackage,
@@ -7176,7 +7263,9 @@ module.exports = {
   getCommissionEntry,
   getUploadedDocuments,
   EditSuperAdminProfile,
-  getUserDetails
+  getUserDetails,
+  getSpecificUserTransactions,
+  getWalletBalance
 
 
 };

@@ -82,6 +82,46 @@ const SAAddWalletMoneyDirect = () => {
     }
   };
 
+  const fetchUsersBalance = async () => {
+    // setLoading(true);
+    try {
+      const { data } = await axios.get(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getWalletBalance/${formData.userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if(data.success){
+        setFormData({
+          ...formData,
+          availableBalance: data.data[0].Closing_Balance
+        });
+      
+      }
+      else{
+        setFormData({
+          ...formData,
+          availableBalance: "Not Found"
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
+      setLoading(false);
+    }
+  };
+
   // useEffect(() => {
   //   fetchActiveUsers();
   // }, []);
@@ -89,6 +129,9 @@ const SAAddWalletMoneyDirect = () => {
   useEffect(() => {
     fetchActiveUsers();
   }, [isRefresh]);
+  useEffect(() => {
+    fetchUsersBalance();
+  }, [selectedOption]);
 
 
 //   const options = [
@@ -110,7 +153,8 @@ const SAAddWalletMoneyDirect = () => {
     userId: "", // This will store the selected options
     amount : "",
     Transaction_details : "",
-    status : "Success"
+    status : "Success",
+    availableBalance : ""
   
   });
 
@@ -290,6 +334,20 @@ const SAAddWalletMoneyDirect = () => {
                            value={selectedOption?.ContactNo}
                           
                           disabled/>
+                      </div>
+                    </div>
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <label for="name" class="form-label">Available Balance</label>
+                      <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping">  <FaIndianRupeeSign /></span>
+                        <input type="text"  class="form-control"   name="amount"
+                          value={formData.availableBalance}
+                          // onChange={handleChange}
+                          disabled
+                          placeholder=""
+                          pattern="^\d+(\.\d+)?$" 
+                          title="Price should be digits Only"
+                    required/>
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
