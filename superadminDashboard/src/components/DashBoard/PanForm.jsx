@@ -255,7 +255,7 @@ const PanForm = () => {
     { id: 5, name: "ITR Registration" },
     { id: 6, name: "GST Registration" },
     { id: 7, name: "Udyog Aadhar" },
-    { id: 8, name: "Sambal" },
+    // { id: 8, name: "Sambal" },
   ];
 
   // Pin Verification Logic **

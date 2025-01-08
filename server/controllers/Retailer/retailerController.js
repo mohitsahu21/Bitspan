@@ -2500,7 +2500,8 @@ const buyCoupon = (req, res) => {
 
           return res.status(200).json({
             status: "Success",
-            message: "Recharge processed and wallet updated successfully.",
+            message:
+              "Coupon purchase processed and wallet updated successfully.",
             details: {
               recharge: {
                 orderId,
@@ -2519,19 +2520,28 @@ const buyCoupon = (req, res) => {
           });
         }
       );
-      // if (err) {
-      //   console.error("Error inserting data:", err.message);
-      //   return res.status(500).json({
-      //     status: "Failure",
-      //     error: `Failed to insert data ${err.message}`,
-      //   });
-      // }
-      // res.status(201).json({
-      //   status: "Success",
-      //   message: "Data inserted successfully.",
-      //   orderId,
-      // });
     });
+  });
+};
+
+const getCoupon = (req, res) => {
+  const userId = req.params.userId;
+
+  let query = `SELECT * FROM pan_coupon_requests WHERE user_id = ? ORDER BY id  DESC`;
+
+  db.query(query, [userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
   });
 };
 
@@ -2575,4 +2585,5 @@ module.exports = {
   getDthConnectionPlan,
   getWalletSummary,
   buyCoupon,
+  getCoupon,
 };

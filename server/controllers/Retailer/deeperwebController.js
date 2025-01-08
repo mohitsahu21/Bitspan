@@ -225,12 +225,19 @@ const operatorMapping = {
 
 const deeperwebRecharge = (req, res) => {
   let responseSent = false;
-  const { number, amount, operatorName, recharge_Type, created_by_userid } =
-    req.body;
+  const {
+    number,
+    amount,
+    walletDeductAmt,
+    operatorName,
+    recharge_Type,
+    created_by_userid,
+  } = req.body;
 
   if (
     !number ||
     !amount ||
+    !walletDeductAmt ||
     !operatorName ||
     !recharge_Type ||
     !created_by_userid
@@ -279,10 +286,11 @@ const deeperwebRecharge = (req, res) => {
       .then(() => {
         // Step 2: Insert initial row to generate orderid
         const insertQuery =
-          "INSERT INTO recharges (mobile_no, amount, operator_name, providerName, recharge_Type, created_by_userid, created_at, orderid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+          "INSERT INTO recharges (mobile_no, amount, walletDeductAmt, operator_name, providerName, recharge_Type, created_by_userid, created_at, orderid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         const values = [
           number,
           amount,
+          walletDeductAmt,
           operatorName,
           providerName,
           recharge_Type,
@@ -337,7 +345,9 @@ const deeperwebRecharge = (req, res) => {
       })
       .then(({ rechargeData, orderId }) => {
         if (rechargeData.status === "Success") {
-          const newWalletBalance = (currentBalance - amount).toFixed(2);
+          const newWalletBalance = (currentBalance - walletDeductAmt).toFixed(
+            2
+          );
           const transactionDetails = `Recharge Deduction ${number}`;
           const transactionId = `TXNW${Date.now()}`;
 
@@ -359,7 +369,7 @@ const deeperwebRecharge = (req, res) => {
                 newWalletBalance,
                 "Debit",
                 0,
-                amount,
+                walletDeductAmt,
                 transactionDetails,
                 "Success",
               ],

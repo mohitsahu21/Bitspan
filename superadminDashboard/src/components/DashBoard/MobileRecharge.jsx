@@ -629,6 +629,7 @@ const MobileRecharge = () => {
       Transaction_Id,
     };
   };
+
   const handleSubmit = async (e) => {
     let result = {};
     let usersId = {
@@ -825,6 +826,7 @@ const MobileRecharge = () => {
     // };
 
     for (const api of apiData) {
+      setLoading(true);
       try {
         const rechargeResult = await axios.post(api.API_URL, updatedFormData);
 
@@ -1016,6 +1018,9 @@ const MobileRecharge = () => {
           created_by_userid: currentUser.userId,
         });
 
+        setSelectedCircle("");
+        setSelectedOperator("");
+
         setLoading(false);
       }
     }
@@ -1144,7 +1149,7 @@ const MobileRecharge = () => {
     <>
       <Wrapper>
         {/* <HeadBar /> */}
-        {/* {loading ? (
+        {loading ? (
           <div
             style={{
               display: "flex",
@@ -1155,64 +1160,64 @@ const MobileRecharge = () => {
           >
             <Loading />
           </div>
-        ) : ( */}
-        <div className="main">
-          <div className="container-fluid">
-            <div className="row flex-wrap justify-content-center">
-              <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none">
-                {/* <Sider /> */}
-              </div>
-              <div
-                className="col-xxl-12 col-xl-12 col-lg-12 col-md-12  col-sm-12  col-11
+        ) : (
+          <div className="main">
+            <div className="container-fluid">
+              <div className="row flex-wrap justify-content-center">
+                <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none">
+                  {/* <Sider /> */}
+                </div>
+                <div
+                  className="col-xxl-12 col-xl-12 col-lg-12 col-md-12  col-sm-12  col-11
                              mt-5 formdata"
-              >
-                <div className="main shadow-none">
-                  <div className="row shadow-none mb-5">
-                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                      <div className="d-flex justify-content-between align-items-center flex-wrap">
-                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Prepaid Recharge
-                        </h4>
-                        <h6 className="mx-lg-5">
-                          {" "}
-                          <BiHomeAlt /> &nbsp; / &nbsp; Prepaid Recharge
-                        </h6>
+                >
+                  <div className="main shadow-none">
+                    <div className="row shadow-none mb-5">
+                      <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div className="d-flex justify-content-between align-items-center flex-wrap">
+                          <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
+                            Prepaid Recharge
+                          </h4>
+                          <h6 className="mx-lg-5">
+                            {" "}
+                            <BiHomeAlt /> &nbsp; / &nbsp; Prepaid Recharge
+                          </h6>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="circle-nav">
-                    <button
-                      className={`circle-btn ${
-                        activeTab === "tab1" ? "active" : ""
-                      }`}
-                      onClick={() => handleTabClick("tab1")}
-                    >
-                      Provider 1
-                    </button>
-                    <button
-                      className={`circle-btn ${
-                        activeTab === "tab2" ? "active" : ""
-                      }`}
-                      onClick={() => handleTabClick("tab2")}
-                    >
-                      Provider 2
-                    </button>
-                  </div>
-                  <div className="tab-content">
-                    <div
-                      className={`tab-pane ${
-                        activeTab === "tab1" ? "active" : ""
-                      }`}
-                    >
-                      <div className="container">
-                        <div className="row justify-content-center">
-                          <div className="col-md-8 col-lg-6 col-xl-6">
-                            <div className="card bg-body-tertiary shadow">
-                              <div className="p-4">
-                                <div className="text-center">
-                                  <h3 className="mb-4">Prepaid Recharge</h3>
-                                  <div>
-                                    {/* {loading ? (
+                    <div className="circle-nav">
+                      <button
+                        className={`circle-btn ${
+                          activeTab === "tab1" ? "active" : ""
+                        }`}
+                        onClick={() => handleTabClick("tab1")}
+                      >
+                        Provider 1
+                      </button>
+                      <button
+                        className={`circle-btn ${
+                          activeTab === "tab2" ? "active" : ""
+                        }`}
+                        onClick={() => handleTabClick("tab2")}
+                      >
+                        Provider 2
+                      </button>
+                    </div>
+                    <div className="tab-content">
+                      <div
+                        className={`tab-pane ${
+                          activeTab === "tab1" ? "active" : ""
+                        }`}
+                      >
+                        <div className="container">
+                          <div className="row justify-content-center">
+                            <div className="col-md-8 col-lg-6 col-xl-6">
+                              <div className="card bg-body-tertiary shadow">
+                                <div className="p-4">
+                                  <div className="text-center">
+                                    <h3 className="mb-4">Prepaid Recharge</h3>
+                                    <div>
+                                      {/* {loading ? (
                                       <div
                                         style={{
                                           display: "flex",
@@ -1225,247 +1230,256 @@ const MobileRecharge = () => {
                                       </div>
                                     ) : ( */}
 
-                                    <form onSubmit={handleSubmit}>
-                                      <div class="input-group mb-3">
-                                        <span class="input-group-text">
-                                          <FaMobileAlt />
-                                        </span>
-                                        <div class="form-floating">
-                                          <input
-                                            type="text"
-                                            class="form-control"
-                                            id="floatingInputGroup1"
-                                            placeholder="Username"
-                                            value={formData.number}
-                                            onChange={handleChange}
-                                            name="number"
-                                            autoComplete="off"
-                                          />
-                                          <label for="floatingInputGroup1">
-                                            Mobile Number
-                                          </label>
+                                      <form onSubmit={handleSubmit}>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text">
+                                            <FaMobileAlt />
+                                          </span>
+                                          <div class="form-floating">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              id="floatingInputGroup1"
+                                              placeholder="Username"
+                                              value={formData.number}
+                                              onChange={handleChange}
+                                              name="number"
+                                              autoComplete="off"
+                                            />
+                                            <label for="floatingInputGroup1">
+                                              Mobile Number
+                                            </label>
+                                          </div>
                                         </div>
-                                      </div>
 
-                                      {/* ---------Fetch Plan Inputs------ */}
+                                        {/* ---------Fetch Plan Inputs------ */}
 
-                                      <div className="input-group mb-3">
-                                        <div className="form-floating">
-                                          <select
-                                            className="form-select"
-                                            id="floatingSelectPlanOperator"
-                                            aria-label="Select Operator"
-                                            value={selectedOperator}
-                                            onChange={(e) => {
-                                              const selectedOp =
-                                                unifiedOperatorList.find(
-                                                  (op) =>
-                                                    op.OpCode === e.target.value
+                                        <div className="input-group mb-3">
+                                          <div className="form-floating">
+                                            <select
+                                              className="form-select"
+                                              id="floatingSelectPlanOperator"
+                                              aria-label="Select Operator"
+                                              value={selectedOperator}
+                                              onChange={(e) => {
+                                                const selectedOp =
+                                                  unifiedOperatorList.find(
+                                                    (op) =>
+                                                      op.OpCode ===
+                                                      e.target.value
+                                                  );
+                                                setSelectedOperator(
+                                                  e.target.value
                                                 );
-                                              setSelectedOperator(
-                                                e.target.value
-                                              );
-                                              setFormData((prevFormData) => ({
-                                                ...prevFormData,
-                                                operatorName: selectedOp
-                                                  ? selectedOp.name
-                                                  : "",
-                                              }));
-                                            }}
-                                          >
-                                            <option value="">
-                                              Select Operator
-                                            </option>
-                                            {unifiedOperatorList.map((op) => (
-                                              <option
-                                                key={op.value}
-                                                value={op.OpCode}
-                                              >
-                                                {op.name}
+                                                setFormData((prevFormData) => ({
+                                                  ...prevFormData,
+                                                  operatorName: selectedOp
+                                                    ? selectedOp.name
+                                                    : "",
+                                                }));
+                                              }}
+                                            >
+                                              <option value="">
+                                                Select Operator
                                               </option>
-                                            ))}
-                                          </select>
-                                          <label htmlFor="floatingSelectPlanOperator">
-                                            Select Plan Operator
-                                          </label>
-                                        </div>
-                                      </div>
-
-                                      <div class="input-group mb-3">
-                                        <div class="form-floating">
-                                          <select
-                                            class="form-select"
-                                            id="floatingSelectOperator"
-                                            aria-label="Select Operator"
-                                            value={selectedCircle}
-                                            onChange={(e) =>
-                                              setSelectedCircle(e.target.value)
-                                            }
-                                          >
-                                            <option value="">
-                                              Select Operator
-                                            </option>
-                                            {operatorCircle.map((opitem) => (
-                                              <>
+                                              {unifiedOperatorList.map((op) => (
                                                 <option
-                                                  key={opitem.ID}
-                                                  value={opitem.CircleCode}
+                                                  key={op.value}
+                                                  value={op.OpCode}
                                                 >
-                                                  {opitem.Name}
+                                                  {op.name}
                                                 </option>
-                                              </>
-                                            ))}
-                                          </select>
-                                          <label for="floatingSelectOperator">
-                                            Select Operator Circle
-                                          </label>
+                                              ))}
+                                            </select>
+                                            <label htmlFor="floatingSelectPlanOperator">
+                                              Select Plan Operator
+                                            </label>
+                                          </div>
                                         </div>
-                                      </div>
 
-                                      <div className="text-start mt-2 mb-3">
-                                        <button
-                                          className="btn btn-none text-light"
-                                          style={{
-                                            backgroundColor: "#6d70ff",
-                                          }}
-                                          onClick={fetchPlanData}
-                                          disabled={loadingPlans}
-                                        >
-                                          {loadingPlans
-                                            ? "Checking Plans..."
-                                            : "Check Plans"}
-                                        </button>
-                                      </div>
+                                        <div class="input-group mb-3">
+                                          <div class="form-floating">
+                                            <select
+                                              class="form-select"
+                                              id="floatingSelectOperator"
+                                              aria-label="Select Operator"
+                                              value={selectedCircle}
+                                              onChange={(e) =>
+                                                setSelectedCircle(
+                                                  e.target.value
+                                                )
+                                              }
+                                            >
+                                              <option value="">
+                                                Select Operator
+                                              </option>
+                                              {operatorCircle.map((opitem) => (
+                                                <>
+                                                  <option
+                                                    key={opitem.ID}
+                                                    value={opitem.CircleCode}
+                                                  >
+                                                    {opitem.Name}
+                                                  </option>
+                                                </>
+                                              ))}
+                                            </select>
+                                            <label for="floatingSelectOperator">
+                                              Select Operator Circle
+                                            </label>
+                                          </div>
+                                        </div>
 
-                                      {isModalOpen && (
-                                        <div
-                                          className="modal fade show"
-                                          style={{
-                                            display: "block",
-                                            backgroundColor: "rgba(0,0,0,0.5)",
-                                          }}
-                                          tabIndex="-1"
-                                        >
-                                          <div className="modal-dialog">
-                                            <div className="modal-content">
-                                              <div className="modal-header">
-                                                <h5 className="modal-title">
-                                                  Available Plans
-                                                </h5>
-                                                <button
-                                                  type="button"
-                                                  className="btn-close"
-                                                  onClick={() => {
-                                                    setIsModalOpen(false);
-                                                    setLoadingPlans(false);
-                                                  }}
-                                                ></button>
-                                              </div>
-                                              <div className="modal-body">
-                                                {plans.length > 0 ? (
-                                                  <ul className="list-group">
-                                                    {plans.map(
-                                                      (plan, index) => (
-                                                        <li
-                                                          key={index}
-                                                          className="list-group-item"
-                                                          onClick={() => {
-                                                            setFormData(
-                                                              (
-                                                                prevFormData
-                                                              ) => ({
-                                                                ...prevFormData,
-                                                                amount: plan.rs,
-                                                              })
-                                                            );
-                                                            setIsModalOpen(
-                                                              false
-                                                            );
-                                                            setLoadingPlans(
-                                                              false
-                                                            );
-                                                          }}
-                                                          style={{
-                                                            cursor: "pointer",
-                                                          }}
-                                                        >
-                                                          <p>
-                                                            <strong>
-                                                              Price:
-                                                            </strong>{" "}
-                                                            ₹{plan.rs}
-                                                          </p>
-                                                          <p>
-                                                            <strong>
-                                                              Validity:
-                                                            </strong>{" "}
-                                                            {plan.validity}
-                                                          </p>
-                                                          <p>
-                                                            <strong>
-                                                              Description:
-                                                            </strong>{" "}
-                                                            {plan.desc}
-                                                          </p>
-                                                        </li>
-                                                      )
-                                                    )}
-                                                  </ul>
-                                                ) : (
-                                                  <p>No plans available.</p>
-                                                )}
-                                              </div>
-                                              <div className="modal-footer">
-                                                <button
-                                                  type="button"
-                                                  className="btn btn-secondary"
-                                                  onClick={() => {
-                                                    setIsModalOpen(false);
-                                                    setLoadingPlans(false);
-                                                  }}
-                                                >
-                                                  Close
-                                                </button>
+                                        <div className="text-start mt-2 mb-3">
+                                          <button
+                                            className="btn btn-none text-light"
+                                            style={{
+                                              backgroundColor: "#6d70ff",
+                                            }}
+                                            onClick={fetchPlanData}
+                                            disabled={loadingPlans}
+                                          >
+                                            {loadingPlans
+                                              ? "Checking Plans..."
+                                              : "Check Plans"}
+                                          </button>
+                                        </div>
+
+                                        {isModalOpen && (
+                                          <div
+                                            className="modal fade show"
+                                            style={{
+                                              display: "block",
+                                              backgroundColor:
+                                                "rgba(0,0,0,0.5)",
+                                            }}
+                                            tabIndex="-1"
+                                          >
+                                            <div className="modal-dialog">
+                                              <div className="modal-content">
+                                                <div className="modal-header">
+                                                  <h5 className="modal-title">
+                                                    Available Plans
+                                                  </h5>
+                                                  <button
+                                                    type="button"
+                                                    className="btn-close"
+                                                    onClick={() => {
+                                                      setIsModalOpen(false);
+                                                      setLoadingPlans(false);
+                                                    }}
+                                                  ></button>
+                                                </div>
+                                                <div className="modal-body">
+                                                  {plans.length > 0 ? (
+                                                    <ul className="list-group">
+                                                      {plans.map(
+                                                        (plan, index) => (
+                                                          <li
+                                                            key={index}
+                                                            className="list-group-item"
+                                                            onClick={() => {
+                                                              setFormData(
+                                                                (
+                                                                  prevFormData
+                                                                ) => ({
+                                                                  ...prevFormData,
+                                                                  amount:
+                                                                    plan.rs,
+                                                                })
+                                                              );
+                                                              setIsModalOpen(
+                                                                false
+                                                              );
+                                                              setLoadingPlans(
+                                                                false
+                                                              );
+                                                            }}
+                                                            style={{
+                                                              cursor: "pointer",
+                                                            }}
+                                                          >
+                                                            <p>
+                                                              <strong>
+                                                                Price:
+                                                              </strong>{" "}
+                                                              ₹{plan.rs}
+                                                            </p>
+                                                            <p>
+                                                              <strong>
+                                                                Validity:
+                                                              </strong>{" "}
+                                                              {plan.validity}
+                                                            </p>
+                                                            <p>
+                                                              <strong>
+                                                                Description:
+                                                              </strong>{" "}
+                                                              {plan.desc}
+                                                            </p>
+                                                          </li>
+                                                        )
+                                                      )}
+                                                    </ul>
+                                                  ) : (
+                                                    <p>No plans available.</p>
+                                                  )}
+                                                </div>
+                                                <div className="modal-footer">
+                                                  <button
+                                                    type="button"
+                                                    className="btn btn-secondary"
+                                                    onClick={() => {
+                                                      setIsModalOpen(false);
+                                                      setLoadingPlans(false);
+                                                    }}
+                                                  >
+                                                    Close
+                                                  </button>
+                                                </div>
                                               </div>
                                             </div>
                                           </div>
+                                        )}
+
+                                        {/* ------Fetch Plan Inputs--------- */}
+
+                                        <div class="input-group mb-3">
+                                          <div class="form-floating">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              id="floatingInputGroup1"
+                                              placeholder="Username"
+                                              value={formData.amount}
+                                              onChange={handleChange}
+                                              name="amount"
+                                              autoComplete="off"
+                                            />
+                                            <label for="floatingInputGroup1">
+                                              Amount
+                                            </label>
+                                          </div>
                                         </div>
-                                      )}
 
-                                      {/* ------Fetch Plan Inputs--------- */}
-
-                                      <div class="input-group mb-3">
-                                        <div class="form-floating">
-                                          <input
-                                            type="text"
-                                            class="form-control"
-                                            id="floatingInputGroup1"
-                                            placeholder="Username"
-                                            value={formData.amount}
-                                            onChange={handleChange}
-                                            name="amount"
-                                            autoComplete="off"
-                                          />
-                                          <label for="floatingInputGroup1">
-                                            Amount
-                                          </label>
+                                        <div className="text-start mt-2 mb-3">
+                                          <button
+                                            className="btn btn-none text-light"
+                                            style={{
+                                              backgroundColor: "#6d70ff",
+                                            }}
+                                            type="submit"
+                                            onClick={() => setIsRecharge(true)}
+                                            disabled={loading}
+                                          >
+                                            {loading
+                                              ? "Recharge Now..."
+                                              : "Recharge Now"}
+                                          </button>
                                         </div>
-                                      </div>
-
-                                      <div className="text-start mt-2 mb-3">
-                                        <button
-                                          className="btn btn-none text-light"
-                                          style={{
-                                            backgroundColor: "#6d70ff",
-                                          }}
-                                          type="submit"
-                                          onClick={() => setIsRecharge(true)}
-                                        >
-                                          Recharge Now
-                                        </button>
-                                      </div>
-                                    </form>
-                                    {/*  )} */}
+                                      </form>
+                                      {/*  )} */}
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -1473,231 +1487,235 @@ const MobileRecharge = () => {
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      className={`tab-pane ${
-                        activeTab === "tab2" ? "active" : ""
-                      }`}
-                    >
-                      <div className="container">
-                        <div className="row justify-content-center">
-                          <div className="col-md-8 col-lg-6 col-xl-6">
-                            <div className="card bg-body-tertiary shadow">
-                              <div className="p-4">
-                                <div className="text-center">
-                                  <h3 className="mb-4">Prepaid Recharge 2</h3>
-                                  <div>
-                                    <form onSubmit={openPinModal}>
-                                      <div class="input-group mb-3">
-                                        <span class="input-group-text">
-                                          <FaMobileAlt />
-                                        </span>
-                                        <div class="form-floating">
-                                          <input
-                                            type="text"
-                                            class="form-control"
-                                            id="floatingInputGroup1"
-                                            placeholder="Username"
-                                            value={offlineForm.mobile_no}
-                                            onChange={handleChangeForm}
-                                            name="mobile_no"
-                                          />
-                                          <label for="floatingInputGroup1">
-                                            Mobile Number
-                                          </label>
+                      <div
+                        className={`tab-pane ${
+                          activeTab === "tab2" ? "active" : ""
+                        }`}
+                      >
+                        <div className="container">
+                          <div className="row justify-content-center">
+                            <div className="col-md-8 col-lg-6 col-xl-6">
+                              <div className="card bg-body-tertiary shadow">
+                                <div className="p-4">
+                                  <div className="text-center">
+                                    <h3 className="mb-4">Prepaid Recharge 2</h3>
+                                    <div>
+                                      <form onSubmit={openPinModal}>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text">
+                                            <FaMobileAlt />
+                                          </span>
+                                          <div class="form-floating">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              id="floatingInputGroup1"
+                                              placeholder="Username"
+                                              value={offlineForm.mobile_no}
+                                              onChange={handleChangeForm}
+                                              name="mobile_no"
+                                            />
+                                            <label for="floatingInputGroup1">
+                                              Mobile Number
+                                            </label>
+                                          </div>
                                         </div>
-                                      </div>
 
-                                      {/* ---------Fetch Plan Inputs------ */}
+                                        {/* ---------Fetch Plan Inputs------ */}
 
-                                      <div className="input-group mb-3">
-                                        <div className="form-floating">
-                                          <select
-                                            className="form-select"
-                                            id="floatingSelectPlanOperator"
-                                            aria-label="Select Operator"
-                                            value={selectedOperator}
-                                            onChange={(e) => {
-                                              const selectedOp =
-                                                unifiedOperatorList.find(
-                                                  (op) =>
-                                                    op.OpCode === e.target.value
+                                        <div className="input-group mb-3">
+                                          <div className="form-floating">
+                                            <select
+                                              className="form-select"
+                                              id="floatingSelectPlanOperator"
+                                              aria-label="Select Operator"
+                                              value={selectedOperator}
+                                              onChange={(e) => {
+                                                const selectedOp =
+                                                  unifiedOperatorList.find(
+                                                    (op) =>
+                                                      op.OpCode ===
+                                                      e.target.value
+                                                  );
+                                                setSelectedOperator(
+                                                  e.target.value
                                                 );
-                                              setSelectedOperator(
-                                                e.target.value
-                                              );
-                                              setOfflineForm(
-                                                (prevFormData) => ({
-                                                  ...prevFormData,
-                                                  operator_name: selectedOp
-                                                    ? selectedOp.name
-                                                    : "",
-                                                })
-                                              );
-                                            }}
-                                          >
-                                            <option value="">
-                                              Select Operator
-                                            </option>
-                                            {unifiedOperatorList.map((op) => (
-                                              <option
-                                                key={op.value}
-                                                value={op.OpCode}
-                                              >
-                                                {op.name}
+                                                setOfflineForm(
+                                                  (prevFormData) => ({
+                                                    ...prevFormData,
+                                                    operator_name: selectedOp
+                                                      ? selectedOp.name
+                                                      : "",
+                                                  })
+                                                );
+                                              }}
+                                            >
+                                              <option value="">
+                                                Select Operator
                                               </option>
-                                            ))}
-                                          </select>
-                                          <label htmlFor="floatingSelectPlanOperator">
-                                            Select Plan Operator
-                                          </label>
-                                        </div>
-                                      </div>
-
-                                      <div class="input-group mb-3">
-                                        <div class="form-floating">
-                                          <select
-                                            class="form-select"
-                                            id="floatingSelectOperator"
-                                            aria-label="Select Operator"
-                                            value={selectedCircle}
-                                            onChange={(e) =>
-                                              setSelectedCircle(e.target.value)
-                                            }
-                                          >
-                                            <option value="">
-                                              Select Operator
-                                            </option>
-                                            {operatorCircle.map((opitem) => (
-                                              <>
+                                              {unifiedOperatorList.map((op) => (
                                                 <option
-                                                  key={opitem.ID}
-                                                  value={opitem.CircleCode}
+                                                  key={op.value}
+                                                  value={op.OpCode}
                                                 >
-                                                  {opitem.Name}
+                                                  {op.name}
                                                 </option>
-                                              </>
-                                            ))}
-                                          </select>
-                                          <label for="floatingSelectOperator">
-                                            Select Operator Circle
-                                          </label>
+                                              ))}
+                                            </select>
+                                            <label htmlFor="floatingSelectPlanOperator">
+                                              Select Plan Operator
+                                            </label>
+                                          </div>
                                         </div>
-                                      </div>
 
-                                      <div className="text-start mt-2 mb-3">
-                                        <button
-                                          className="btn btn-none text-light"
-                                          style={{
-                                            backgroundColor: "#6d70ff",
-                                          }}
-                                          onClick={fetchPlanData}
-                                          disabled={loadingPlans}
-                                        >
-                                          {loadingPlans
-                                            ? "Checking Plans..."
-                                            : "Check Plans"}
-                                        </button>
-                                      </div>
+                                        <div class="input-group mb-3">
+                                          <div class="form-floating">
+                                            <select
+                                              class="form-select"
+                                              id="floatingSelectOperator"
+                                              aria-label="Select Operator"
+                                              value={selectedCircle}
+                                              onChange={(e) =>
+                                                setSelectedCircle(
+                                                  e.target.value
+                                                )
+                                              }
+                                            >
+                                              <option value="">
+                                                Select Operator
+                                              </option>
+                                              {operatorCircle.map((opitem) => (
+                                                <>
+                                                  <option
+                                                    key={opitem.ID}
+                                                    value={opitem.CircleCode}
+                                                  >
+                                                    {opitem.Name}
+                                                  </option>
+                                                </>
+                                              ))}
+                                            </select>
+                                            <label for="floatingSelectOperator">
+                                              Select Operator Circle
+                                            </label>
+                                          </div>
+                                        </div>
 
-                                      {isModalOpen && (
-                                        <div
-                                          className="modal fade show"
-                                          style={{
-                                            display: "block",
-                                            backgroundColor: "rgba(0,0,0,0.5)",
-                                          }}
-                                          tabIndex="-1"
-                                        >
-                                          <div className="modal-dialog">
-                                            <div className="modal-content">
-                                              <div className="modal-header">
-                                                <h5 className="modal-title">
-                                                  Available Plans
-                                                </h5>
-                                                <button
-                                                  type="button"
-                                                  className="btn-close"
-                                                  onClick={() => {
-                                                    setIsModalOpen(false);
-                                                    setLoadingPlans(false);
-                                                  }}
-                                                ></button>
-                                              </div>
-                                              <div className="modal-body">
-                                                {plans.length > 0 ? (
-                                                  <ul className="list-group">
-                                                    {plans.map(
-                                                      (plan, index) => (
-                                                        <li
-                                                          key={index}
-                                                          className="list-group-item"
-                                                          onClick={() => {
-                                                            setOfflineForm(
-                                                              (
-                                                                prevFormData
-                                                              ) => ({
-                                                                ...prevFormData,
-                                                                amount: plan.rs,
-                                                              })
-                                                            );
-                                                            setIsModalOpen(
-                                                              false
-                                                            );
-                                                            setLoadingPlans(
-                                                              false
-                                                            );
-                                                          }}
-                                                          style={{
-                                                            cursor: "pointer",
-                                                          }}
-                                                        >
-                                                          <p>
-                                                            <strong>
-                                                              Price:
-                                                            </strong>{" "}
-                                                            ₹{plan.rs}
-                                                          </p>
-                                                          <p>
-                                                            <strong>
-                                                              Validity:
-                                                            </strong>{" "}
-                                                            {plan.validity}
-                                                          </p>
-                                                          <p>
-                                                            <strong>
-                                                              Description:
-                                                            </strong>{" "}
-                                                            {plan.desc}
-                                                          </p>
-                                                        </li>
-                                                      )
-                                                    )}
-                                                  </ul>
-                                                ) : (
-                                                  <p>No plans available.</p>
-                                                )}
-                                              </div>
-                                              <div className="modal-footer">
-                                                <button
-                                                  type="button"
-                                                  className="btn btn-secondary"
-                                                  onClick={() => {
-                                                    setIsModalOpen(false);
-                                                    setLoadingPlans(false);
-                                                  }}
-                                                >
-                                                  Close
-                                                </button>
+                                        <div className="text-start mt-2 mb-3">
+                                          <button
+                                            className="btn btn-none text-light"
+                                            style={{
+                                              backgroundColor: "#6d70ff",
+                                            }}
+                                            onClick={fetchPlanData}
+                                            disabled={loadingPlans}
+                                          >
+                                            {loadingPlans
+                                              ? "Checking Plans..."
+                                              : "Check Plans"}
+                                          </button>
+                                        </div>
+
+                                        {isModalOpen && (
+                                          <div
+                                            className="modal fade show"
+                                            style={{
+                                              display: "block",
+                                              backgroundColor:
+                                                "rgba(0,0,0,0.5)",
+                                            }}
+                                            tabIndex="-1"
+                                          >
+                                            <div className="modal-dialog">
+                                              <div className="modal-content">
+                                                <div className="modal-header">
+                                                  <h5 className="modal-title">
+                                                    Available Plans
+                                                  </h5>
+                                                  <button
+                                                    type="button"
+                                                    className="btn-close"
+                                                    onClick={() => {
+                                                      setIsModalOpen(false);
+                                                      setLoadingPlans(false);
+                                                    }}
+                                                  ></button>
+                                                </div>
+                                                <div className="modal-body">
+                                                  {plans.length > 0 ? (
+                                                    <ul className="list-group">
+                                                      {plans.map(
+                                                        (plan, index) => (
+                                                          <li
+                                                            key={index}
+                                                            className="list-group-item"
+                                                            onClick={() => {
+                                                              setOfflineForm(
+                                                                (
+                                                                  prevFormData
+                                                                ) => ({
+                                                                  ...prevFormData,
+                                                                  amount:
+                                                                    plan.rs,
+                                                                })
+                                                              );
+                                                              setIsModalOpen(
+                                                                false
+                                                              );
+                                                              setLoadingPlans(
+                                                                false
+                                                              );
+                                                            }}
+                                                            style={{
+                                                              cursor: "pointer",
+                                                            }}
+                                                          >
+                                                            <p>
+                                                              <strong>
+                                                                Price:
+                                                              </strong>{" "}
+                                                              ₹{plan.rs}
+                                                            </p>
+                                                            <p>
+                                                              <strong>
+                                                                Validity:
+                                                              </strong>{" "}
+                                                              {plan.validity}
+                                                            </p>
+                                                            <p>
+                                                              <strong>
+                                                                Description:
+                                                              </strong>{" "}
+                                                              {plan.desc}
+                                                            </p>
+                                                          </li>
+                                                        )
+                                                      )}
+                                                    </ul>
+                                                  ) : (
+                                                    <p>No plans available.</p>
+                                                  )}
+                                                </div>
+                                                <div className="modal-footer">
+                                                  <button
+                                                    type="button"
+                                                    className="btn btn-secondary"
+                                                    onClick={() => {
+                                                      setIsModalOpen(false);
+                                                      setLoadingPlans(false);
+                                                    }}
+                                                  >
+                                                    Close
+                                                  </button>
+                                                </div>
                                               </div>
                                             </div>
                                           </div>
-                                        </div>
-                                      )}
+                                        )}
 
-                                      {/* ------Fetch Plan Inputs--------- */}
+                                        {/* ------Fetch Plan Inputs--------- */}
 
-                                      {/* <div class="input-group mb-3">
+                                        {/* <div class="input-group mb-3">
                                         <div class="form-floating">
                                           <select
                                             class="form-select"
@@ -1723,34 +1741,35 @@ const MobileRecharge = () => {
                                           </label>
                                         </div>
                                       </div> */}
-                                      <div class="input-group mb-3">
-                                        <div class="form-floating">
-                                          <input
-                                            type="text"
-                                            class="form-control"
-                                            id="floatingInputGroup1"
-                                            placeholder="Username"
-                                            value={offlineForm.amount}
-                                            onChange={handleChangeForm}
-                                            name="amount"
-                                          />
-                                          <label for="floatingInputGroup1">
-                                            Amount
-                                          </label>
+                                        <div class="input-group mb-3">
+                                          <div class="form-floating">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              id="floatingInputGroup1"
+                                              placeholder="Username"
+                                              value={offlineForm.amount}
+                                              onChange={handleChangeForm}
+                                              name="amount"
+                                            />
+                                            <label for="floatingInputGroup1">
+                                              Amount
+                                            </label>
+                                          </div>
                                         </div>
-                                      </div>
-                                      <div className="text-start mt-2 mb-3">
-                                        <button
-                                          className="btn btn-none text-light"
-                                          type="submit"
-                                          style={{
-                                            backgroundColor: "#6d70ff",
-                                          }}
-                                        >
-                                          Recharge Now
-                                        </button>
-                                      </div>
-                                    </form>
+                                        <div className="text-start mt-2 mb-3">
+                                          <button
+                                            className="btn btn-none text-light"
+                                            type="submit"
+                                            style={{
+                                              backgroundColor: "#6d70ff",
+                                            }}
+                                          >
+                                            Recharge Now
+                                          </button>
+                                        </div>
+                                      </form>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -1764,8 +1783,7 @@ const MobileRecharge = () => {
               </div>
             </div>
           </div>
-        </div>
-        {/*  )} */}
+        )}
         <Modal
           show={showPinModal}
           onHide={() => setShowPinModal(false)}

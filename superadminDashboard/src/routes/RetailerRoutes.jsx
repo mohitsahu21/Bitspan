@@ -251,6 +251,7 @@ const VerifyDistrictHistory = lazy(() =>
 const SambalHistory = lazy(() =>
   import("../components/DashBoard/SambalHistory")
 );
+const CoupanForm = lazy(() => import("../components/DashBoard/CoupanForm"));
 
 const RetailerRoutes = () => {
   const { currentUser, token } = useSelector((state) => state.user);
@@ -1013,6 +1014,17 @@ const RetailerRoutes = () => {
                   <Navigate to="/update-profile" />
                 ) : (
                   <SambalHistory />
+                )
+              }
+            />
+
+            <Route
+              path="/buy-coupon"
+              element={
+                userStatus === "Pending" || userStatus === "Deactive" ? (
+                  <Navigate to="/update-profile" />
+                ) : (
+                  <CoupanForm />
                 )
               }
             />
