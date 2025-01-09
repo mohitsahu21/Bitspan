@@ -198,7 +198,8 @@ const SAAddWalletMoneyDirect = () => {
           userId: "", // This will store the selected options
           amount : "",
           Transaction_details : "",
-          status : "Success"
+          status : "Success",
+          availableBalance : ""
 
         })
         setSelectedOption(null)
