@@ -33,7 +33,7 @@ const MobileRecharge = () => {
     // orderid: "4654747",
   });
 
-  console.log(formData);
+  // console.log(formData);
 
   const [offlineForm, setOfflineForm] = useState({
     mobile_no: "",
@@ -43,12 +43,14 @@ const MobileRecharge = () => {
     userId: currentUser.userId,
   });
 
-  // console.log(offlineForm);
+  console.log(offlineForm);
   const [response, setResponse] = useState(null);
   const [responseForm, setResponseForm] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
+  const [showOnlinePinModal, setShowOnlinePinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
+  const [onlinePin, setOnlinePin] = useState(["", "", "", ""]); //Online pin
   const pinRefs = useRef([]);
   const [selectedOperator, setSelectedOperator] = useState(""); // This State use for Fetch Plan
   const [selectedCircle, setSelectedCircle] = useState(""); // This State use for Fetch Plan
@@ -138,6 +140,63 @@ const MobileRecharge = () => {
     fetchPackage();
   }, []);
 
+  // const fetchPlanData = async () => {
+  //   setIsRecharge(false);
+  //   setLoadingPlans(true);
+  //   if (!selectedOperator || !selectedCircle) {
+  //     alert("Please select both operator and circle!");
+  //     return;
+  //   }
+
+  //   try {
+  //     const response = await axios.get(
+  //       `https://bitspan.vimubds5.a2hosted.com/api/auth/fetch/plan/getMobilePlans?operatorCode=${selectedOperator}&circleCode=${selectedCircle}`
+  //     );
+  //     const data = response.data;
+
+  //     if (data.ERROR === "0" && data.STATUS === "0") {
+  //       // Define plan type based on selected operator
+  //       let planCategory = "";
+  //       switch (data.Operator) {
+  //         case "RELIANCE JIO":
+  //           planCategory = "Polular Plans ";
+  //           break;
+  //         case "Airtel":
+  //           planCategory = "Data";
+  //           break;
+  //         case "IDEA":
+  //           planCategory = "Unlimited ";
+  //           break;
+  //         case "BSNL TOPUP":
+  //         case "BSNL SPECIAL":
+  //           planCategory = "Unlimited Plans";
+  //           break;
+  //         default:
+  //           alert("Unsupported operator!");
+  //           return;
+  //       }
+
+  //       // Extract plans
+  //       const plans = data.RDATA[planCategory] || [];
+  //       if (plans.length > 0) {
+  //         setPlans(plans);
+  //         setIsModalOpen(true); // Open modal to display plans
+  //       } else {
+  //         alert("No plans available for the selected operator and circle.");
+  //         setPlans([]);
+  //       }
+  //     } else {
+  //       alert("No plans available or an error occurred!");
+  //       setPlans([]);
+  //     }
+  //   } catch (error) {
+  //     console.error("An error occurred while fetching plans:", error);
+  //     alert("Failed to fetch plans. Please try again.");
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
   const fetchPlanData = async () => {
     setIsRecharge(false);
     setLoadingPlans(true);
@@ -153,31 +212,17 @@ const MobileRecharge = () => {
       const data = response.data;
 
       if (data.ERROR === "0" && data.STATUS === "0") {
-        // Define plan type based on selected operator
-        let planCategory = "";
-        switch (data.Operator) {
-          case "RELIANCE JIO":
-            planCategory = "Polular Plans ";
-            break;
-          case "Airtel":
-            planCategory = "Data";
-            break;
-          case "IDEA":
-            planCategory = "Unlimited ";
-            break;
-          case "BSNL TOPUP":
-          case "BSNL SPECIAL":
-            planCategory = "Unlimited Plans";
-            break;
-          default:
-            alert("Unsupported operator!");
-            return;
-        }
+        // Extract available categories from the response
+        const availableCategories = Object.keys(data.RDATA || {});
 
-        // Extract plans
-        const plans = data.RDATA[planCategory] || [];
-        if (plans.length > 0) {
-          setPlans(plans);
+        // Collect plans from all categories dynamically
+        const allPlans = availableCategories.reduce((acc, category) => {
+          const plans = data.RDATA[category] || [];
+          return [...acc, { category, plans }];
+        }, []);
+
+        if (allPlans.length > 0) {
+          setPlans(allPlans); // Store all plans with their categories
           setIsModalOpen(true); // Open modal to display plans
         } else {
           alert("No plans available for the selected operator and circle.");
@@ -191,9 +236,52 @@ const MobileRecharge = () => {
       console.error("An error occurred while fetching plans:", error);
       alert("Failed to fetch plans. Please try again.");
     } finally {
-      setIsLoading(false);
+      setLoadingPlans(false);
     }
   };
+
+  // const fetchPlanData = async () => {
+  //   setIsRecharge(false);
+  //   setLoadingPlans(true);
+  //   if (!selectedOperator || !selectedCircle) {
+  //     alert("Please select both operator and circle!");
+  //     return;
+  //   }
+
+  //   try {
+  //     const response = await axios.get(
+  //       `https://bitspan.vimubds5.a2hosted.com/api/auth/fetch/plan/getMobilePlans?operatorCode=${selectedOperator}&circleCode=${selectedCircle}`
+  //     );
+  //     const data = response.data;
+
+  //     if (data.ERROR === "0" && data.STATUS === "0") {
+  //       // Extract available categories from the response
+  //       const availableCategories = Object.keys(data.RDATA || {});
+
+  //       // Collect plans from all categories dynamically
+  //       const allPlans = availableCategories.reduce((acc, category) => {
+  //         const plans = data.RDATA[category] || [];
+  //         return [...acc, ...plans];
+  //       }, []);
+
+  //       if (allPlans.length > 0) {
+  //         setPlans(allPlans);
+  //         setIsModalOpen(true); // Open modal to display plans
+  //       } else {
+  //         alert("No plans available for the selected operator and circle.");
+  //         setPlans([]);
+  //       }
+  //     } else {
+  //       alert("No plans available or an error occurred!");
+  //       setPlans([]);
+  //     }
+  //   } catch (error) {
+  //     console.error("An error occurred while fetching plans:", error);
+  //     alert("Failed to fetch plans. Please try again.");
+  //   } finally {
+  //     setLoadingPlans(false);
+  //   }
+  // };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -1078,11 +1166,13 @@ const MobileRecharge = () => {
         title: "Oops...",
         text: "Something went wrong! Please try again later.",
       });
-      setResponseForm(null);
+      // setResponseForm(null);
     } finally {
       setLoading(false);
     }
   };
+
+  console.log(responseForm);
 
   // PIN Integration
   const handlePinChange = (index, value) => {
@@ -1093,6 +1183,22 @@ const MobileRecharge = () => {
 
       // Move to next input if current is filled, move to previous if deleted
       if (value !== "" && index < pin.length - 1) {
+        pinRefs.current[index + 1].focus();
+      } else if (value === "" && index > 0) {
+        pinRefs.current[index - 1].focus();
+      }
+    }
+  };
+
+  // Onlined PIN Integration
+  const handleOnlinePinChange = (index, value) => {
+    if (/^\d?$/.test(value)) {
+      const newPin = [...onlinePin];
+      newPin[index] = value;
+      setOnlinePin(newPin);
+  
+      // Move to next input if current is filled, move to previous if deleted
+      if (value !== "" && index < onlinePin.length - 1) {
         pinRefs.current[index + 1].focus();
       } else if (value === "" && index > 0) {
         pinRefs.current[index - 1].focus();
@@ -1113,6 +1219,9 @@ const MobileRecharge = () => {
         { user_id: currentUser.userId || "", pin: pin.join("") }
       );
 
+      console.log(response.data);
+      
+
       if (response.data.success) {
         return true;
       } else {
@@ -1126,6 +1235,27 @@ const MobileRecharge = () => {
     }
   };
 
+  // Onlined PIN Integration
+const verifyOnlinePin = async () => {
+  try {
+    const response = await axios.post(
+      `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+      { user_id: currentUser.userId || "", pin: onlinePin.join("") }
+    );
+    if (response.data.success) {
+      return true;
+    } else {
+      alert(response.data.message);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error verifying PIN:", error);
+    alert("Error verifying PIN");
+    return false;
+  }
+};
+
+
   const handleModalSubmit = async (e) => {
     setIsVerifying(true);
     const isPinValid = await verifyPin();
@@ -1133,16 +1263,38 @@ const MobileRecharge = () => {
     if (isPinValid) {
       setShowPinModal(false);
       handlesubmitForm(e);
-      // handleSubmit(e);
       setPin(["", "", "", ""]);
     } else {
       setPin(["", "", "", ""]);
     }
   };
 
+  // Onlined PIN Integration
+  const handleOnlineModalSubmit = async (e) => {
+    setIsVerifying(true);
+    const isPinValid = await verifyOnlinePin();
+    setIsVerifying(false);
+    if (isPinValid) {
+      setShowOnlinePinModal(false);
+      handleSubmit(e); // Online form submit
+      setOnlinePin(["", "", "", ""]); // Reset the online PIN
+    } else {
+      setOnlinePin(["", "", "", ""]);
+    }
+  };
+
   const openPinModal = (e) => {
     e.preventDefault();
     setShowPinModal(true);
+    console.log("Offlined PIN Integration");
+    
+  };
+
+  const openOnlinePinModal = (e) => {
+    e.preventDefault();
+    setShowOnlinePinModal(true);
+    console.log("Online PIN");
+    
   };
 
   return (
@@ -1230,7 +1382,7 @@ const MobileRecharge = () => {
                                       </div>
                                     ) : ( */}
 
-                                      <form onSubmit={handleSubmit}>
+                                      <form onSubmit={openOnlinePinModal}>
                                         <div class="input-group mb-3">
                                           <span class="input-group-text">
                                             <FaMobileAlt />
@@ -1345,7 +1497,7 @@ const MobileRecharge = () => {
                                           </button>
                                         </div>
 
-                                        {isModalOpen && (
+                                        {/* {isModalOpen && (
                                           <div
                                             className="modal fade show"
                                             style={{
@@ -1421,6 +1573,132 @@ const MobileRecharge = () => {
                                                         )
                                                       )}
                                                     </ul>
+                                                  ) : (
+                                                    <p>No plans available.</p>
+                                                  )}
+                                                </div>
+                                                <div className="modal-footer">
+                                                  <button
+                                                    type="button"
+                                                    className="btn btn-secondary"
+                                                    onClick={() => {
+                                                      setIsModalOpen(false);
+                                                      setLoadingPlans(false);
+                                                    }}
+                                                  >
+                                                    Close
+                                                  </button>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        )} */}
+
+                                        {isModalOpen && (
+                                          <div
+                                            className="modal fade show"
+                                            style={{
+                                              display: "block",
+                                              backgroundColor:
+                                                "rgba(0,0,0,0.5)",
+                                            }}
+                                            tabIndex="-1"
+                                          >
+                                            <div className="modal-dialog">
+                                              <div className="modal-content">
+                                                <div className="modal-header">
+                                                  <h5 className="modal-title">
+                                                    Available Plans
+                                                  </h5>
+                                                  <button
+                                                    type="button"
+                                                    className="btn-close"
+                                                    onClick={() => {
+                                                      setIsModalOpen(false);
+                                                      setLoadingPlans(false);
+                                                    }}
+                                                  ></button>
+                                                </div>
+                                                <div className="modal-body">
+                                                  {plans.length > 0 ? (
+                                                    <div>
+                                                      {plans.map(
+                                                        (
+                                                          categoryData,
+                                                          categoryIndex
+                                                        ) => (
+                                                          <div
+                                                            key={categoryIndex}
+                                                          >
+                                                            <h6>
+                                                              {
+                                                                categoryData.category
+                                                              }
+                                                            </h6>{" "}
+                                                            {/* Display category name */}
+                                                            <ul className="list-group">
+                                                              {categoryData.plans.map(
+                                                                (
+                                                                  plan,
+                                                                  planIndex
+                                                                ) => (
+                                                                  <li
+                                                                    key={
+                                                                      planIndex
+                                                                    }
+                                                                    className="list-group-item"
+                                                                    onClick={() => {
+                                                                      setFormData(
+                                                                        (
+                                                                          prevFormData
+                                                                        ) => ({
+                                                                          ...prevFormData,
+                                                                          amount:
+                                                                            plan.rs,
+                                                                        })
+                                                                      );
+                                                                      setIsModalOpen(
+                                                                        false
+                                                                      );
+                                                                      setLoadingPlans(
+                                                                        false
+                                                                      );
+                                                                    }}
+                                                                    style={{
+                                                                      cursor:
+                                                                        "pointer",
+                                                                    }}
+                                                                  >
+                                                                    <p>
+                                                                      <strong>
+                                                                        Price:
+                                                                      </strong>{" "}
+                                                                      ₹{plan.rs}
+                                                                    </p>
+                                                                    <p>
+                                                                      <strong>
+                                                                        Validity:
+                                                                      </strong>{" "}
+                                                                      {
+                                                                        plan.validity
+                                                                      }
+                                                                    </p>
+                                                                    <p>
+                                                                      <strong>
+                                                                        Description:
+                                                                      </strong>{" "}
+                                                                      {
+                                                                        plan.desc
+                                                                      }
+                                                                    </p>
+                                                                  </li>
+                                                                )
+                                                              )}
+                                                            </ul>
+                                                          </div>
+                                                        )
+                                                      )}
+                                                    </div>
                                                   ) : (
                                                     <p>No plans available.</p>
                                                   )}
@@ -1616,7 +1894,7 @@ const MobileRecharge = () => {
                                           </button>
                                         </div>
 
-                                        {isModalOpen && (
+                                        {/* {isModalOpen && (
                                           <div
                                             className="modal fade show"
                                             style={{
@@ -1711,36 +1989,136 @@ const MobileRecharge = () => {
                                               </div>
                                             </div>
                                           </div>
+                                        )} */}
+
+                                        {isModalOpen && (
+                                          <div
+                                            className="modal fade show"
+                                            style={{
+                                              display: "block",
+                                              backgroundColor:
+                                                "rgba(0,0,0,0.5)",
+                                            }}
+                                            tabIndex="-1"
+                                          >
+                                            <div className="modal-dialog">
+                                              <div className="modal-content">
+                                                <div className="modal-header">
+                                                  <h5 className="modal-title">
+                                                    Available Plans
+                                                  </h5>
+                                                  <button
+                                                    type="button"
+                                                    className="btn-close"
+                                                    onClick={() => {
+                                                      setIsModalOpen(false);
+                                                      setLoadingPlans(false);
+                                                    }}
+                                                  ></button>
+                                                </div>
+                                                <div className="modal-body">
+                                                  {plans.length > 0 ? (
+                                                    <div>
+                                                      {plans.map(
+                                                        (
+                                                          categoryData,
+                                                          categoryIndex
+                                                        ) => (
+                                                          <div
+                                                            key={categoryIndex}
+                                                          >
+                                                            <h6>
+                                                              {
+                                                                categoryData.category
+                                                              }
+                                                            </h6>{" "}
+                                                            {/* Display category name */}
+                                                            <ul className="list-group">
+                                                              {categoryData.plans.map(
+                                                                (
+                                                                  plan,
+                                                                  planIndex
+                                                                ) => (
+                                                                  <li
+                                                                    key={
+                                                                      planIndex
+                                                                    }
+                                                                    className="list-group-item"
+                                                                    onClick={() => {
+                                                                      setFormData(
+                                                                        (
+                                                                          prevFormData
+                                                                        ) => ({
+                                                                          ...prevFormData,
+                                                                          amount:
+                                                                            plan.rs,
+                                                                        })
+                                                                      );
+                                                                      setIsModalOpen(
+                                                                        false
+                                                                      );
+                                                                      setLoadingPlans(
+                                                                        false
+                                                                      );
+                                                                    }}
+                                                                    style={{
+                                                                      cursor:
+                                                                        "pointer",
+                                                                    }}
+                                                                  >
+                                                                    <p>
+                                                                      <strong>
+                                                                        Price:
+                                                                      </strong>{" "}
+                                                                      ₹{plan.rs}
+                                                                    </p>
+                                                                    <p>
+                                                                      <strong>
+                                                                        Validity:
+                                                                      </strong>{" "}
+                                                                      {
+                                                                        plan.validity
+                                                                      }
+                                                                    </p>
+                                                                    <p>
+                                                                      <strong>
+                                                                        Description:
+                                                                      </strong>{" "}
+                                                                      {
+                                                                        plan.desc
+                                                                      }
+                                                                    </p>
+                                                                  </li>
+                                                                )
+                                                              )}
+                                                            </ul>
+                                                          </div>
+                                                        )
+                                                      )}
+                                                    </div>
+                                                  ) : (
+                                                    <p>No plans available.</p>
+                                                  )}
+                                                </div>
+                                                <div className="modal-footer">
+                                                  <button
+                                                    type="button"
+                                                    className="btn btn-secondary"
+                                                    onClick={() => {
+                                                      setIsModalOpen(false);
+                                                      setLoadingPlans(false);
+                                                    }}
+                                                  >
+                                                    Close
+                                                  </button>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
                                         )}
 
                                         {/* ------Fetch Plan Inputs--------- */}
 
-                                        {/* <div class="input-group mb-3">
-                                        <div class="form-floating">
-                                          <select
-                                            class="form-select"
-                                            id="floatingSelectOperator"
-                                            value={offlineForm.operator_name}
-                                            onChange={handleChangeForm}
-                                            name="operator_name"
-                                            aria-label="Select Operator"
-                                          >
-                                            <option value="">
-                                              Select Operator
-                                            </option>
-                                            {operatorOptions.map((item) => (
-                                              <>
-                                                <option value={item.value}>
-                                                  {item.name}
-                                                </option>
-                                              </>
-                                            ))}
-                                          </select>
-                                          <label for="floatingInputGroup1">
-                                            Select Operator
-                                          </label>
-                                        </div>
-                                      </div> */}
                                         <div class="input-group mb-3">
                                           <div class="form-floating">
                                             <input
@@ -1831,6 +2209,69 @@ const MobileRecharge = () => {
               <Button
                 variant="primary"
                 onClick={handleModalSubmit}
+                disabled={isVerifying}
+              >
+                {isVerifying ? "Verifying..." : "Verify PIN"}
+                {isVerifying && (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                )}
+              </Button>
+            </div>
+          </Modal.Footer>
+        </Modal>
+        <Modal
+          show={showOnlinePinModal}
+          onHide={() => setShowOnlinePinModal(false)}
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="pin-inputs d-flex justify-content-center">
+              {onlinePin.map((digit, index) => (
+                <input
+                  key={index}
+                  ref={(el) => (pinRefs.current[index] = el)}
+                  type="text"
+                  value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
+                  maxLength="1"
+                  onChange={(e) => handleOnlinePinChange(index, e.target.value)}
+                  onKeyDown={(e) =>
+                    e.key === "Backspace" && handleBackspace(index)
+                  }
+                  className="pin-digit form-control mx-1"
+                  style={{
+                    width: "50px",
+                    textAlign: "center",
+                    fontSize: "1.5rem",
+                    borderRadius: "8px",
+                    border: "1px solid #ced4da",
+                    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                  }}
+                />
+              ))}
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <div className="w-100 d-flex justify-content-center">
+              <Button
+                variant="secondary"
+                onClick={() => setShowOnlinePinModal(false)}
+                className="mx-1"
+              >
+                Cancel
+              </Button>
+
+              <Button
+                variant="primary"
+                onClick={handleOnlineModalSubmit}
                 disabled={isVerifying}
               >
                 {isVerifying ? "Verifying..." : "Verify PIN"}
@@ -2122,6 +2563,35 @@ const Wrapper = styled.div`
                                           </select>
                                           <label for="floatingSelectOperator">
                                             Select Plan Operator
+                                          </label>
+                                        </div>
+                                      </div> */
+}
+
+{
+  /* <div class="input-group mb-3">
+                                        <div class="form-floating">
+                                          <select
+                                            class="form-select"
+                                            id="floatingSelectOperator"
+                                            value={offlineForm.operator_name}
+                                            onChange={handleChangeForm}
+                                            name="operator_name"
+                                            aria-label="Select Operator"
+                                          >
+                                            <option value="">
+                                              Select Operator
+                                            </option>
+                                            {operatorOptions.map((item) => (
+                                              <>
+                                                <option value={item.value}>
+                                                  {item.name}
+                                                </option>
+                                              </>
+                                            ))}
+                                          </select>
+                                          <label for="floatingInputGroup1">
+                                            Select Operator
                                           </label>
                                         </div>
                                       </div> */
