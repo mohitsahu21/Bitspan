@@ -6,7 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../Loading";
 import { useDispatch, useSelector } from "react-redux";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
 import { clearUser } from "../../redux/user/userSlice";
 
 const PostPaidRecharge = () => {
@@ -15,7 +15,7 @@ const PostPaidRecharge = () => {
   const { currentUser, token } = useSelector((state) => state.user);
   const [activeTab, setActiveTab] = useState("tab1");
   const [getdata, setGetData] = useState([]);
-    const [apiData, setApiData] = useState([]);
+  const [apiData, setApiData] = useState([]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -40,10 +40,13 @@ const PostPaidRecharge = () => {
   const [responseForm, setResponseForm] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
+  const [showOnlinePinModal, setShowOnlinePinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
+  const [onlinePin, setOnlinePin] = useState(["", "", "", ""]); //Online pin
+  const [isVerifying, setIsVerifying] = useState(false);
   const pinRefs = useRef([]);
-   
-    const [userRelation, setUserRelation] = useState([]);
+
+  const [userRelation, setUserRelation] = useState([]);
 
   const operatorOptions = [
     { name: "Airtel Postpaid", value: "Airtel Postpaid" },
@@ -207,7 +210,7 @@ const PostPaidRecharge = () => {
           retailerCommAmount = parseFloat(
             retailerPackage.On_Bsnl_Prepaid_Recharge_Comm
           );
-        } 
+        }
       }
 
       if (distributor && distributorPackage) {
@@ -252,7 +255,7 @@ const PostPaidRecharge = () => {
             distributorCommAmount = parseFloat(
               distributorPackage.On_Bsnl_Prepaid_Recharge_Comm
             );
-          } 
+          }
         }
       }
       if (superDistributor && superDistributorPackage) {
@@ -287,7 +290,7 @@ const PostPaidRecharge = () => {
                   superDistributorPackage.On_Bsnl_Prepaid_Recharge_Comm
                 )) /
               100;
-          } 
+          }
         } else {
           if (operatorName == "Jio Postpaid") {
             superDistributorCommAmount = parseFloat(
@@ -374,7 +377,6 @@ const PostPaidRecharge = () => {
   };
 
   const handleSubmit = async (e) => {
-
     let result = {};
     let usersId = {
       distributorId: "NA",
@@ -383,10 +385,9 @@ const PostPaidRecharge = () => {
     };
     e.preventDefault();
     setLoading(true);
-   
 
-     // Package Find code
-     try {
+    // Package Find code
+    try {
       // setLoading(true);
 
       const { data } = await axios.get(
@@ -523,7 +524,6 @@ const PostPaidRecharge = () => {
     // Package Find code
     let success = false;
 
-
     if (
       result.retailerFormData.amount === null ||
       result.retailerFormData.amount === undefined ||
@@ -571,7 +571,10 @@ const PostPaidRecharge = () => {
       try {
         const rechargeResult = await axios.post(api.API_URL, updatedFormData);
 
-        if (rechargeResult.data && rechargeResult.data.message === "Recharge successful") {
+        if (
+          rechargeResult.data &&
+          rechargeResult.data.message === "Recharge successful"
+        ) {
           Swal.fire({
             title: "Done!",
             text: "Recharge Successful",
@@ -582,141 +585,141 @@ const PostPaidRecharge = () => {
           console.log(rechargeResult.data);
           console.log(rechargeResult.data.orderId);
           console.log(result);
-           // Recharge Commission Credit WL SD D
-           let allProcessesSuccessful = true;
-           result.retailerFormData.Transaction_details = `Commission Credit for Postpaid Recharge Order Id ${rechargeResult.data.orderId}`;
-           result.distributorFormData.Transaction_details = `Commission Credit for Postpaid Recharge Order Id ${rechargeResult.data.orderId}`;
-           result.superDistributorFormData.Transaction_details = `Commission Credit for Postpaid Recharge Order Id ${rechargeResult.data.orderId}`;
-           result.whiteLableFormData.Transaction_details = `Commission Credit for Postpaid Recharge Order Id ${rechargeResult.data.orderId}`;
-           if (
-             result &&
-             result.distributorFormData &&
-             result.distributorFormData.amount
-           ) {
-             const response = await axios
-               .put(
-                 "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-                 // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
-                 result.distributorFormData,
-                 {
-                   headers: {
-                     "Content-Type": "application/json",
-                     Authorization: `Bearer ${token}`,
-                   },
-                 }
-               )
-               .catch(() => {
-                 allProcessesSuccessful = false;
-               });
-           }
-           if (
-             result &&
-             result.superDistributorFormData &&
-             result.superDistributorFormData.amount
-           ) {
-             const response = await axios
-               .put(
-                 "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-                 // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
-                 result.superDistributorFormData,
-                 {
-                   headers: {
-                     "Content-Type": "application/json",
-                     Authorization: `Bearer ${token}`,
-                   },
-                 }
-               )
-               .catch(() => {
-                 allProcessesSuccessful = false;
-               });
-           }
-           if (
-             result &&
-             result.whiteLableFormData &&
-             result.whiteLableFormData.amount
-           ) {
-             const response = await axios
-               .put(
-                 "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-                 // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
-                 result.whiteLableFormData,
-                 {
-                   headers: {
-                     "Content-Type": "application/json",
-                     Authorization: `Bearer ${token}`,
-                   },
-                 }
-               )
-               .catch(() => {
-                 allProcessesSuccessful = false;
-               });
-           }
- 
-           if (result) {
-             let whiteLabel_Commission = 0;
-             let super_Distributor_Commission = 0;
-             let distributor_Commission = 0;
-             let retailer_Commission = 0;
-             if (result.whiteLableFormData && result.whiteLableFormData.amount) {
-               whiteLabel_Commission = result.whiteLableFormData.amount;
-             }
-             if (
-               result.superDistributorFormData &&
-               result.superDistributorFormData.amount
-             ) {
-               super_Distributor_Commission =
-                 result.superDistributorFormData.amount;
-             }
-             if (
-               result.distributorFormData &&
-               result.distributorFormData.amount
-             ) {
-               distributor_Commission = result.distributorFormData.amount;
-             }
-             if (result.retailerFormData && result.retailerFormData.amount) {
-               retailer_Commission = result.retailerFormData.amount;
-             }
-             console.log(userRelation);
- 
-             const commissionFormData = {
-               order_id: result.Order_Id,
-               transaction_id: result.Transaction_Id,
-               amount: updatedFormData.amount,
-               whiteLabel_id: usersId.whiteLabelId ? usersId.whiteLabelId : "NA",
-               super_Distributor_id: usersId.superDistributorId
-                 ? usersId.superDistributorId
-                 : "NA",
-               distributor_id: usersId.distributorId
-                 ? usersId.distributorId
-                 : "NA",
-               retailer_id: currentUser.userId ? currentUser.userId : "NA",
-               whiteLabel_Commission: whiteLabel_Commission,
-               super_Distributor_Commission: super_Distributor_Commission,
-               distributor_Commission: distributor_Commission,
-               retailer_Commission: retailer_Commission,
-               transaction_type: updatedFormData.recharge_Type,
-               transaction_details: result.retailerFormData.Transaction_details,
-               status: "Success",
-             };
-             console.log(commissionFormData);
-             await axios
-               .post(
-                 "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
-                 // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-                 commissionFormData,
-                 {
-                   headers: {
-                     "Content-Type": "application/json",
-                     Authorization: `Bearer ${token}`,
-                   },
-                 }
-               )
-               .catch(() => {
-                 allProcessesSuccessful = false;
-               });
-           }
-           // Recharge Commission Credit WL SD D
-            break;
+          // Recharge Commission Credit WL SD D
+          let allProcessesSuccessful = true;
+          result.retailerFormData.Transaction_details = `Commission Credit for Postpaid Recharge Order Id ${rechargeResult.data.orderId}`;
+          result.distributorFormData.Transaction_details = `Commission Credit for Postpaid Recharge Order Id ${rechargeResult.data.orderId}`;
+          result.superDistributorFormData.Transaction_details = `Commission Credit for Postpaid Recharge Order Id ${rechargeResult.data.orderId}`;
+          result.whiteLableFormData.Transaction_details = `Commission Credit for Postpaid Recharge Order Id ${rechargeResult.data.orderId}`;
+          if (
+            result &&
+            result.distributorFormData &&
+            result.distributorFormData.amount
+          ) {
+            const response = await axios
+              .put(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+                // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+                result.distributorFormData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .catch(() => {
+                allProcessesSuccessful = false;
+              });
+          }
+          if (
+            result &&
+            result.superDistributorFormData &&
+            result.superDistributorFormData.amount
+          ) {
+            const response = await axios
+              .put(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+                // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+                result.superDistributorFormData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .catch(() => {
+                allProcessesSuccessful = false;
+              });
+          }
+          if (
+            result &&
+            result.whiteLableFormData &&
+            result.whiteLableFormData.amount
+          ) {
+            const response = await axios
+              .put(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+                // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+                result.whiteLableFormData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .catch(() => {
+                allProcessesSuccessful = false;
+              });
+          }
+
+          if (result) {
+            let whiteLabel_Commission = 0;
+            let super_Distributor_Commission = 0;
+            let distributor_Commission = 0;
+            let retailer_Commission = 0;
+            if (result.whiteLableFormData && result.whiteLableFormData.amount) {
+              whiteLabel_Commission = result.whiteLableFormData.amount;
+            }
+            if (
+              result.superDistributorFormData &&
+              result.superDistributorFormData.amount
+            ) {
+              super_Distributor_Commission =
+                result.superDistributorFormData.amount;
+            }
+            if (
+              result.distributorFormData &&
+              result.distributorFormData.amount
+            ) {
+              distributor_Commission = result.distributorFormData.amount;
+            }
+            if (result.retailerFormData && result.retailerFormData.amount) {
+              retailer_Commission = result.retailerFormData.amount;
+            }
+            console.log(userRelation);
+
+            const commissionFormData = {
+              order_id: result.Order_Id,
+              transaction_id: result.Transaction_Id,
+              amount: updatedFormData.amount,
+              whiteLabel_id: usersId.whiteLabelId ? usersId.whiteLabelId : "NA",
+              super_Distributor_id: usersId.superDistributorId
+                ? usersId.superDistributorId
+                : "NA",
+              distributor_id: usersId.distributorId
+                ? usersId.distributorId
+                : "NA",
+              retailer_id: currentUser.userId ? currentUser.userId : "NA",
+              whiteLabel_Commission: whiteLabel_Commission,
+              super_Distributor_Commission: super_Distributor_Commission,
+              distributor_Commission: distributor_Commission,
+              retailer_Commission: retailer_Commission,
+              transaction_type: updatedFormData.recharge_Type,
+              transaction_details: result.retailerFormData.Transaction_details,
+              status: "Success",
+            };
+            console.log(commissionFormData);
+            await axios
+              .post(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
+                // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+                commissionFormData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .catch(() => {
+                allProcessesSuccessful = false;
+              });
+          }
+          // Recharge Commission Credit WL SD D
+          break;
         } else if (
           rechargeResult.data.rechargeData &&
           rechargeResult.data.rechargeData.status === "Failure"
@@ -729,19 +732,18 @@ const PostPaidRecharge = () => {
         }
       } catch (error) {
         console.error(
-                  "Error in recharge:",
-                  error.response ? error.response.data : error.message
-                );
-                if (error?.response?.status === 401) {
-                  Swal.fire({
-                    icon: "error",
-                    title: "Your token is expired. Please login again.",
-                  });
-                  dispatch(clearUser());
-                  navigate("/");
-                }
-      }
-      finally {
+          "Error in recharge:",
+          error.response ? error.response.data : error.message
+        );
+        if (error?.response?.status === 401) {
+          Swal.fire({
+            icon: "error",
+            title: "Your token is expired. Please login again.",
+          });
+          dispatch(clearUser());
+          navigate("/");
+        }
+      } finally {
         // Clear form data and stop loading
         setFormData({
           operatorName: "",
@@ -751,9 +753,6 @@ const PostPaidRecharge = () => {
           recharge_Type: "Postpaid",
           created_by_userid: currentUser.userId,
         });
-
-        
-     
 
         setLoading(false);
       }
@@ -912,6 +911,22 @@ const PostPaidRecharge = () => {
     }
   };
 
+  // Onlined PIN Integration
+  const handleOnlinePinChange = (index, value) => {
+    if (/^\d?$/.test(value)) {
+      const newPin = [...onlinePin];
+      newPin[index] = value;
+      setOnlinePin(newPin);
+
+      // Move to next input if current is filled, move to previous if deleted
+      if (value !== "" && index < onlinePin.length - 1) {
+        pinRefs.current[index + 1].focus();
+      } else if (value === "" && index > 0) {
+        pinRefs.current[index - 1].focus();
+      }
+    }
+  };
+
   const handleBackspace = (index) => {
     if (pin[index] === "" && index > 0) {
       pinRefs.current[index - 1].focus();
@@ -921,7 +936,7 @@ const PostPaidRecharge = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") }
       );
 
@@ -938,8 +953,30 @@ const PostPaidRecharge = () => {
     }
   };
 
+  // Onlined PIN Integration
+  const verifyOnlinePin = async () => {
+    try {
+      const response = await axios.post(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        { user_id: currentUser.userId || "", pin: onlinePin.join("") }
+      );
+      if (response.data.success) {
+        return true;
+      } else {
+        alert(response.data.message);
+        return false;
+      }
+    } catch (error) {
+      console.error("Error verifying PIN:", error);
+      alert("Error verifying PIN");
+      return false;
+    }
+  };
+
   const handleModalSubmit = async (e) => {
+    setIsVerifying(true);
     const isPinValid = await verifyPin();
+    setIsVerifying(false);
     if (isPinValid) {
       setShowPinModal(false);
       handlesubmitForm(e);
@@ -949,9 +986,28 @@ const PostPaidRecharge = () => {
     }
   };
 
+  // Onlined PIN Integration
+  const handleOnlineModalSubmit = async (e) => {
+    setIsVerifying(true);
+    const isPinValid = await verifyOnlinePin();
+    setIsVerifying(false);
+    if (isPinValid) {
+      setShowOnlinePinModal(false);
+      handleSubmit(e); // Online form submit
+      setOnlinePin(["", "", "", ""]); // Reset the online PIN
+    } else {
+      setOnlinePin(["", "", "", ""]);
+    }
+  };
+
   const openPinModal = (e) => {
     e.preventDefault();
     setShowPinModal(true);
+  };
+
+  const openOnlinePinModal = (e) => {
+    e.preventDefault();
+    setShowOnlinePinModal(true);
   };
 
   return (
@@ -1038,7 +1094,7 @@ const PostPaidRecharge = () => {
                                         <Loading />
                                       </div>
                                     ) : ( */}
-                                      <form onSubmit={handleSubmit}>
+                                      <form onSubmit={openOnlinePinModal}>
                                         <div class="input-group mb-3">
                                           <span class="input-group-text">
                                             <FaMobileAlt />
@@ -1253,8 +1309,71 @@ const PostPaidRecharge = () => {
           </div>
         )}
         <Modal
-          show={showPinModal}
-          onHide={() => setShowPinModal(false)}
+               show={showPinModal}
+               onHide={() => setShowPinModal(false)}
+               centered
+             >
+               <Modal.Header closeButton>
+                 <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+               </Modal.Header>
+               <Modal.Body>
+                 <div className="pin-inputs d-flex justify-content-center">
+                   {pin.map((digit, index) => (
+                     <input
+                       key={index}
+                       ref={(el) => (pinRefs.current[index] = el)}
+                       type="text"
+                       value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
+                       maxLength="1"
+                       onChange={(e) => handlePinChange(index, e.target.value)}
+                       onKeyDown={(e) =>
+                         e.key === "Backspace" && handleBackspace(index)
+                       }
+                       className="pin-digit form-control mx-1"
+                       style={{
+                         width: "50px",
+                         textAlign: "center",
+                         fontSize: "1.5rem",
+                         borderRadius: "8px",
+                         border: "1px solid #ced4da",
+                         boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                       }}
+                     />
+                   ))}
+                 </div>
+               </Modal.Body>
+               <Modal.Footer>
+                 <div className="w-100 d-flex justify-content-center">
+                   <Button
+                     variant="secondary"
+                     onClick={() => setShowPinModal(false)}
+                     className="mx-1"
+                   >
+                     Cancel
+                   </Button>
+     
+                   <Button
+                     variant="primary"
+                     onClick={handleModalSubmit}
+                     disabled={isVerifying}
+                   >
+                     {isVerifying ? "Verifying..." : "Verify PIN"}
+                     {isVerifying && (
+                       <Spinner
+                         as="span"
+                         animation="border"
+                         size="sm"
+                         role="status"
+                         aria-hidden="true"
+                       />
+                     )}
+                   </Button>
+                 </div>
+               </Modal.Footer>
+             </Modal>
+        <Modal
+          show={showOnlinePinModal}
+          onHide={() => setShowOnlinePinModal(false)}
           centered
         >
           <Modal.Header closeButton>
@@ -1262,14 +1381,14 @@ const PostPaidRecharge = () => {
           </Modal.Header>
           <Modal.Body>
             <div className="pin-inputs d-flex justify-content-center">
-              {pin.map((digit, index) => (
+              {onlinePin.map((digit, index) => (
                 <input
                   key={index}
                   ref={(el) => (pinRefs.current[index] = el)}
                   type="text"
                   value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
                   maxLength="1"
-                  onChange={(e) => handlePinChange(index, e.target.value)}
+                  onChange={(e) => handleOnlinePinChange(index, e.target.value)}
                   onKeyDown={(e) =>
                     e.key === "Backspace" && handleBackspace(index)
                   }
@@ -1290,14 +1409,27 @@ const PostPaidRecharge = () => {
             <div className="w-100 d-flex justify-content-center">
               <Button
                 variant="secondary"
-                onClick={() => setShowPinModal(false)}
+                onClick={() => setShowOnlinePinModal(false)}
                 className="mx-1"
               >
                 Cancel
               </Button>
 
-              <Button variant="primary" onClick={handleModalSubmit}>
-                Verify PIN
+              <Button
+                variant="primary"
+                onClick={handleOnlineModalSubmit}
+                disabled={isVerifying}
+              >
+                {isVerifying ? "Verifying..." : "Verify PIN"}
+                {isVerifying && (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                )}
               </Button>
             </div>
           </Modal.Footer>
