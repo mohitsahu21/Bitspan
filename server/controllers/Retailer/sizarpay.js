@@ -432,7 +432,13 @@ const sizarpayRecharge = (req, res) => {
         });
       })
       .then(({ rechargeData, Status }) => {
-        if (Status === "Success") {
+        if (Status === "Success" || Status === "Pending") {
+          let rechargeMessage = "Recharge in process";
+          if(Status === "Success"){
+            rechargeMessage = "Recharge successful"
+          } else if(Status === "Pending"){
+            rechargeMessage = "Recharge in process";
+          }
           const newWalletBalance = (currentBalance - walletDeductAmt).toFixed(
             2
           );
@@ -471,7 +477,8 @@ const sizarpayRecharge = (req, res) => {
                   });
                 } else {
                   resolve({
-                    message: "Recharge successful",
+                    // message: "Recharge successful",
+                    message: rechargeMessage,
                     rechargeData,
                     wallet: {
                       previousBalance: currentBalance.toFixed(2),

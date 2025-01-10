@@ -501,7 +501,13 @@ const rechargeWithBalanceCheck = (req, res) => {
         });
       })
       .then(({ rechargeData, orderId, newBalance }) => {
-        if (rechargeData.status === "Success") {
+        if (rechargeData.status === "Success" || rechargeData.status === "Pending") {
+          let rechargeMessage = "Recharge in process";
+          if(rechargeData.STATUS === "Success"){
+            rechargeMessage = "Recharge successful"
+          } else if(rechargeData.STATUS === "Pending"){
+            rechargeMessage = "Recharge in process";
+          }
           const transactionId = `TXNW${Date.now()}`;
           const transactionDetails = `Recharge Deduction ${number}`;
           const newWalletBalance = (currentBalance - walletDeductAmt).toFixed(
@@ -538,7 +544,8 @@ const rechargeWithBalanceCheck = (req, res) => {
                   });
                 } else {
                   resolve({
-                    message: "Recharge successful",
+                    // message: "Recharge successful",
+                    message: rechargeMessage,
                     rechargeData,
                     wallet: {
                       previousBalance: currentBalance.toFixed(2),

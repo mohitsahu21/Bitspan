@@ -344,7 +344,14 @@ const deeperwebRecharge = (req, res) => {
         });
       })
       .then(({ rechargeData, orderId }) => {
-        if (rechargeData.status === "Success") {
+        // if (rechargeData.status === "Success") {
+          if (rechargeData.status === "Success" || rechargeData.status === "Pending") {
+            let rechargeMessage = "Recharge in process";
+            if(rechargeData.STATUS === "Success"){
+              rechargeMessage = "Recharge successful"
+            } else if(rechargeData.STATUS === "Pending"){
+              rechargeMessage = "Recharge in process";
+            }
           const newWalletBalance = (currentBalance - walletDeductAmt).toFixed(
             2
           );
@@ -376,7 +383,8 @@ const deeperwebRecharge = (req, res) => {
               (err) => {
                 if (err) return reject(err);
                 resolve({
-                  message: "Recharge successful",
+                  // message: "Recharge successful",
+                  message: rechargeMessage,
                   rechargeData,
                   wallet: {
                     previousBalance: currentBalance,
