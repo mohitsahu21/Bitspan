@@ -570,7 +570,7 @@ const PostPaidRecharge = () => {
       setLoading(true);
       try {
         const rechargeResult = await axios.post(api.API_URL, updatedFormData);
-        console.log(rechargeResult.data);
+
         if (
           rechargeResult.data &&
           rechargeResult.data.message === "Recharge successful"
@@ -581,8 +581,6 @@ const PostPaidRecharge = () => {
             icon: "success",
           });
           setResponse(rechargeResult.data);
-          console.log(rechargeResult.data);
-          
           success = true;
           console.log(rechargeResult.data);
           console.log(rechargeResult.data.orderId);
