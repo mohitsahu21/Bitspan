@@ -313,12 +313,28 @@ const rechargeMobile = (req, res) => {
     WHERE orderid = ?
   `;
 
-        const status =
-          rechargeData.STATUS === 1
-            ? "Success"
-            : rechargeData.STATUS === 0
-            ? "Failure"
-            : "Pending";
+        // const status =
+        //   rechargeData.STATUS === 1
+        //     ? "Success"
+        //     : rechargeData.STATUS === 0
+        //     ? "Failure"
+        //     : "Pending";
+
+        const getStatus = () => {
+          switch (rechargeData?.STATUS) {
+            case 1:
+              return "Success";
+            case 2:
+              return "Processing";
+            case 3:
+              return "Failed";
+            default:
+              return "Unknown Status";
+          }
+        };
+        
+        const status = getStatus();
+        
 
         const updateValues = [
           rechargeData.opcode || "",
@@ -356,7 +372,13 @@ const rechargeMobile = (req, res) => {
       })
       .then(({ rechargeData, orderId, newBalance }) => {
         console.log("Recharge Data: ", rechargeData);
-        if (rechargeData.STATUS === 1) {
+        if (rechargeData.STATUS == 1 || rechargeData.STATUS == 2) {
+          let rechargeMessage = "Recharge in process";
+          if(rechargeData.STATUS == 1){
+            rechargeMessage = "Recharge successful"
+          } else if(rechargeData.STATUS == 2){
+            rechargeMessage = "Recharge in process";
+          }
           const transactionId = `TXNW${Date.now()}`;
           const transactionDetails = `Recharge Deduction ${number}`;
           const newWalletBalance = (newBalance - walletDeductAmt).toFixed(2);
@@ -393,7 +415,8 @@ const rechargeMobile = (req, res) => {
                 } else {
                   console.log("Wallet Update Success: ", walletResult);
                   resolve({
-                    message: "Recharge successful",
+                    // message: "Recharge successful",
+                    message: rechargeMessage,
                     rechargeData,
                     wallet: {
                       previousBalance: currentBalance.toFixed(2),
