@@ -125,15 +125,15 @@ const operatorMapping = {
     code: "374",
     category: "Electricity",
   },
-  "M.P. Paschim Kshetra Vidyut Vitaran": {
+  "M.P. Paschim Kshetra Vidyut Vitaran Company Ltd": {
     code: "342",
     category: "Electricity",
   },
-  "M.P. Poorv Kshetra Vidyut Vitaran - RURAL": {
+  "M.P. Poorv Kshetra Vidyut Vitaran Company Ltd (RURAL)": {
     code: "341",
     category: "Electricity",
   },
-  "M.P. Poorv Kshetra Vidyut Vitaran - URBAN": {
+  "M.P. Poorv Kshetra Vidyut Vitaran Company Ltd (URBAN)": {
     code: "378",
     category: "Electricity",
   },
@@ -276,7 +276,9 @@ const operatorMapping = {
 const sizarpayRecharge = (req, res) => {
   let responseSent = false;
   const randomOutletID = Math.floor(100000 + Math.random() * 900000).toString();
-
+  const GEOCode = "21.1466,79.0888";
+  const Pincode = "482002";
+  const CustomerNumber = "9926054551";
   const {
     number,
     amount,
@@ -388,6 +390,9 @@ const sizarpayRecharge = (req, res) => {
           SPKey: operatorDetails.code,
           ApiRequestID: orderId,
           Format: "1",
+          GEOCode : GEOCode,
+          Pincode : Pincode,
+          CustomerNumber : CustomerNumber
         }).then((rechargeData) => {
           return { rechargeData, orderId, id };
         });
