@@ -6,7 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../Loading";
 import { useDispatch, useSelector } from "react-redux";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
 
 const ElectricityRecharge = () => {
   const dispatch = useDispatch();
@@ -38,8 +38,11 @@ const ElectricityRecharge = () => {
   const [responseForm, setResponseForm] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
+  const [showOnlinePinModal, setShowOnlinePinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
+  const [onlinePin, setOnlinePin] = useState(["", "", "", ""]); //Online pin
   const pinRefs = useRef([]);
+  const [isVerifying, setIsVerifying] = useState(false);
 
   const operatorOptions = [
     {
@@ -204,6 +207,22 @@ const ElectricityRecharge = () => {
     }
   };
 
+      // Onlined PIN Integration
+      const handleOnlinePinChange = (index, value) => {
+        if (/^\d?$/.test(value)) {
+          const newPin = [...onlinePin];
+          newPin[index] = value;
+          setOnlinePin(newPin);
+      
+          // Move to next input if current is filled, move to previous if deleted
+          if (value !== "" && index < onlinePin.length - 1) {
+            pinRefs.current[index + 1].focus();
+          } else if (value === "" && index > 0) {
+            pinRefs.current[index - 1].focus();
+          }
+        }
+      };
+
   const handleBackspace = (index) => {
     if (pin[index] === "" && index > 0) {
       pinRefs.current[index - 1].focus();
@@ -230,20 +249,63 @@ const ElectricityRecharge = () => {
     }
   };
 
-  const handleModalSubmit = async (e) => {
-    const isPinValid = await verifyPin();
-    if (isPinValid) {
-      setShowPinModal(false);
-      handlesubmitForm(e);
-      setPin(["", "", "", ""]);
+      // Onlined PIN Integration
+const verifyOnlinePin = async () => {
+  try {
+    const response = await axios.post(
+      `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+      { user_id: currentUser.userId || "", pin: onlinePin.join("") }
+    );
+    if (response.data.success) {
+      return true;
     } else {
-      setPin(["", "", "", ""]);
+      alert(response.data.message);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error verifying PIN:", error);
+    alert("Error verifying PIN");
+    return false;
+  }
+};
+
+const handleModalSubmit = async (e) => {
+  setIsVerifying(true);
+  const isPinValid = await verifyPin();
+  setIsVerifying(false);
+  if (isPinValid) {
+    setShowPinModal(false);
+    handlesubmitForm(e);
+    setPin(["", "", "", ""]);
+  } else {
+    setPin(["", "", "", ""]);
+  }
+};
+
+  // Onlined PIN Integration
+  const handleOnlineModalSubmit = async (e) => {
+    setIsVerifying(true);
+    const isPinValid = await verifyOnlinePin();
+    setIsVerifying(false);
+    if (isPinValid) {
+      setShowOnlinePinModal(false);
+      handleSubmit(e); // Online form submit
+      setOnlinePin(["", "", "", ""]); // Reset the online PIN
+    } else {
+      setOnlinePin(["", "", "", ""]);
     }
   };
 
   const openPinModal = (e) => {
     e.preventDefault();
     setShowPinModal(true);
+  };
+
+  const openOnlinePinModal = (e) => {
+    e.preventDefault();
+    setShowOnlinePinModal(true);
+    console.log("Online PIN");
+    
   };
 
   return (
@@ -332,7 +394,7 @@ const ElectricityRecharge = () => {
                                         <Loading />
                                       </div>
                                     ) : ( */}
-                                      <form onSubmit={handleSubmit}>
+                                      <form onSubmit={openOnlinePinModal}>
                                         <div class="input-group mb-3">
                                           <span class="input-group-text">
                                             <FaMobileAlt />
@@ -546,56 +608,132 @@ const ElectricityRecharge = () => {
             </div>
           </div>
         )}
-        <Modal
-          show={showPinModal}
-          onHide={() => setShowPinModal(false)}
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Enter 4-Digit PIN</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="pin-inputs d-flex justify-content-center">
-              {pin.map((digit, index) => (
-                <input
-                  key={index}
-                  ref={(el) => (pinRefs.current[index] = el)}
-                  type="text"
-                  value={digit ? "●" : ""}
-                  maxLength="1"
-                  onChange={(e) => handlePinChange(index, e.target.value)}
-                  onKeyDown={(e) =>
-                    e.key === "Backspace" && handleBackspace(index)
-                  }
-                  className="pin-digit form-control mx-1"
-                  style={{
-                    width: "50px",
-                    textAlign: "center",
-                    fontSize: "1.5rem",
-                    borderRadius: "8px",
-                    border: "1px solid #ced4da",
-                    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
-                  }}
-                />
-              ))}
-            </div>
-          </Modal.Body>
-          <Modal.Footer>
-            <div className="w-100 d-flex justify-content-center">
-              <Button
-                variant="secondary"
-                onClick={() => setShowPinModal(false)}
-                className="mx-1"
-              >
-                Cancel
-              </Button>
-
-              <Button variant="primary" onClick={handleModalSubmit}>
-                Verify PIN
-              </Button>
-            </div>
-          </Modal.Footer>
-        </Modal>
+           <Modal
+                 show={showPinModal}
+                 onHide={() => setShowPinModal(false)}
+                 centered
+               >
+                 <Modal.Header closeButton>
+                   <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+                 </Modal.Header>
+                 <Modal.Body>
+                   <div className="pin-inputs d-flex justify-content-center">
+                     {pin.map((digit, index) => (
+                       <input
+                         key={index}
+                         ref={(el) => (pinRefs.current[index] = el)}
+                         type="text"
+                         value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
+                         maxLength="1"
+                         onChange={(e) => handlePinChange(index, e.target.value)}
+                         onKeyDown={(e) =>
+                           e.key === "Backspace" && handleBackspace(index)
+                         }
+                         className="pin-digit form-control mx-1"
+                         style={{
+                           width: "50px",
+                           textAlign: "center",
+                           fontSize: "1.5rem",
+                           borderRadius: "8px",
+                           border: "1px solid #ced4da",
+                           boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                         }}
+                       />
+                     ))}
+                   </div>
+                 </Modal.Body>
+                 <Modal.Footer>
+                   <div className="w-100 d-flex justify-content-center">
+                     <Button
+                       variant="secondary"
+                       onClick={() => setShowPinModal(false)}
+                       className="mx-1"
+                     >
+                       Cancel
+                     </Button>
+       
+                     <Button
+                       variant="primary"
+                       onClick={handleModalSubmit}
+                       disabled={isVerifying}
+                     >
+                       {isVerifying ? "Verifying..." : "Verify PIN"}
+                       {isVerifying && (
+                         <Spinner
+                           as="span"
+                           animation="border"
+                           size="sm"
+                           role="status"
+                           aria-hidden="true"
+                         />
+                       )}
+                     </Button>
+                   </div>
+                 </Modal.Footer>
+               </Modal>
+                <Modal
+                  show={showOnlinePinModal}
+                  onHide={() => setShowOnlinePinModal(false)}
+                  centered
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <div className="pin-inputs d-flex justify-content-center">
+                      {onlinePin.map((digit, index) => (
+                        <input
+                          key={index}
+                          ref={(el) => (pinRefs.current[index] = el)}
+                          type="text"
+                          value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
+                          maxLength="1"
+                          onChange={(e) => handleOnlinePinChange(index, e.target.value)}
+                          onKeyDown={(e) =>
+                            e.key === "Backspace" && handleBackspace(index)
+                          }
+                          className="pin-digit form-control mx-1"
+                          style={{
+                            width: "50px",
+                            textAlign: "center",
+                            fontSize: "1.5rem",
+                            borderRadius: "8px",
+                            border: "1px solid #ced4da",
+                            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <div className="w-100 d-flex justify-content-center">
+                      <Button
+                        variant="secondary"
+                        onClick={() => setShowOnlinePinModal(false)}
+                        className="mx-1"
+                      >
+                        Cancel
+                      </Button>
+        
+                      <Button
+                        variant="primary"
+                        onClick={handleOnlineModalSubmit}
+                        disabled={isVerifying}
+                      >
+                        {isVerifying ? "Verifying..." : "Verify PIN"}
+                        {isVerifying && (
+                          <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </Button>
+                    </div>
+                  </Modal.Footer>
+                </Modal>
       </Wrapper>
     </>
   );
