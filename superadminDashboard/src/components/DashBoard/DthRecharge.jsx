@@ -671,7 +671,7 @@ const DthRecharge = () => {
       try {
         const rechargeResult = await axios.post(api.API_URL, updatedFormData);
 
-        if (result.data && result.data.message === "Recharge successful") {
+        if (rechargeResult.data && rechargeResult.data.message === "Recharge successful") {
           Swal.fire({
             title: "Done!",
             text: "Recharge Successful",
@@ -817,7 +817,69 @@ const DthRecharge = () => {
           }
           // Recharge Commission Credit WL SD D
           break;
-        } else if (
+        }
+        else if (rechargeResult.data &&
+          rechargeResult.data.message === "Recharge in process"){
+            success = true;
+            Swal.fire({
+              icon: "info",
+              title: "Recharge in process",
+              text: "Recharge in process please wait it will take Sometime!",
+            });
+            let allProcessesSuccessful = true;
+            result.retailerFormData.Transaction_details = `Commission Credit for DTH Recharge Order Id ${rechargeResult.data.orderId}`;
+            
+            if (result) {
+              let whiteLabel_Commission = 0;
+              let super_Distributor_Commission = 0;
+              let distributor_Commission = 0;
+              let retailer_Commission = 0;
+              if (result.retailerFormData && result.retailerFormData.amount) {
+                retailer_Commission = result.retailerFormData.amount;
+              }
+              console.log(userRelation);
+  
+              const commissionFormData = {
+                order_id: result.Order_Id,
+                transaction_id: result.Transaction_Id,
+                amount: updatedFormData.amount,
+                whiteLabel_id: usersId.whiteLabelId ? usersId.whiteLabelId : "NA",
+                super_Distributor_id: usersId.superDistributorId
+                  ? usersId.superDistributorId
+                  : "NA",
+                distributor_id: usersId.distributorId
+                  ? usersId.distributorId
+                  : "NA",
+                retailer_id: currentUser.userId ? currentUser.userId : "NA",
+                whiteLabel_Commission: whiteLabel_Commission,
+                super_Distributor_Commission: super_Distributor_Commission,
+                distributor_Commission: distributor_Commission,
+                retailer_Commission: retailer_Commission,
+                transaction_type: updatedFormData.recharge_Type,
+                transaction_details: result.retailerFormData.Transaction_details,
+                status: "Success",
+              };
+              console.log(commissionFormData);
+              await axios
+                .post(
+                  "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
+                  // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+                  commissionFormData,
+                  {
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${token}`,
+                    },
+                  }
+                )
+                .catch(() => {
+                  allProcessesSuccessful = false;
+                });
+            }
+            // Recharge Commission Credit WL SD D
+            break;
+          }
+         else if (
           rechargeResult.data.rechargeData &&
           rechargeResult.data.rechargeData.status === "Failure"
         ) {
