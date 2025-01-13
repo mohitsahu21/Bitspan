@@ -695,7 +695,8 @@ const dthRechargeWithBalanceCheck = (req, res) => {
     })
     .then(({ orderid, id }) => {
       return getDataFromClientApi("/v3/dth_connection/api", token, username, {
-        opcode: operatorMappingDTH[operatorName].code,
+        // opcode: operatorMappingDTH[operatorName].code,
+        opcode: opcode,
         number: number,
         amount: amount,
         plan_id: plan_id,
