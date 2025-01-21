@@ -43,6 +43,7 @@ const {
   getWalletSummary,
   buyCoupon,
   getCoupon,
+  getAddMoneyToWalletOnline,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -199,6 +200,7 @@ router.post(
   walletOffline
 );
 router.get("/getWalletOffline/:userId", getWalletOffline);
+router.get("/getAddMoneyToWalletOnline/:userId", getAddMoneyToWalletOnline);
 router.get("/getPackageData/:packageId", getPackageData);
 router.get("/getDthConnectionPlan", getDthConnectionPlan);
 router.get("/getWalletSummary/:userId", getWalletSummary);

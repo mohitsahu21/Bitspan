@@ -1578,7 +1578,7 @@ const getSelectedServices = (req, res) => {
 
 const getAllBranchId = (req, res) => {
   const { id } = req.params;
-  const selectQuery = `SELECT * FROM apply_offline_form WHERE applicant_select_service = ? AND id = ? ORDER BY id DESC`;
+  const selectQuery = `SELECT * FROM apply_offline_form WHERE applicant_select_service = ? AND user_id = ? ORDER BY id DESC`;
 
   db.query(selectQuery, ["New Bank ID", id], (err, result) => {
     if (err) {
@@ -2280,7 +2280,27 @@ const walletOffline = (req, res) => {
 const getWalletOffline = (req, res) => {
   const userId = req.params.userId;
 
-  let query = `SELECT * FROM user_wallet_add_money_request WHERE user_id = ?`;
+  let query = `SELECT * FROM user_wallet_add_money_request WHERE user_id = ? AND Payment_Mode != "Online" ORDER BY id DESC`;
+
+  db.query(query, [userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+const getAddMoneyToWalletOnline = (req, res) => {
+  const userId = req.params.userId;
+
+  let query = `SELECT * FROM user_wallet_add_money_request WHERE user_id = ? AND Payment_Mode = "Online" ORDER BY id DESC`;
 
   db.query(query, [userId], (err, result) => {
     if (err) {
@@ -2586,4 +2606,5 @@ module.exports = {
   getWalletSummary,
   buyCoupon,
   getCoupon,
+  getAddMoneyToWalletOnline
 };
