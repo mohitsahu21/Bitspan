@@ -148,9 +148,9 @@ const AddWalletOfflineSummary = () => {
                                 <tr>
                                   <th scope="col">Date</th>
                                   <th scope="col">Order ID</th>
-                                  <th scope="col">User ID</th>
+                                  {/* <th scope="col">User ID</th>
                                   <th scope="col">User Type</th>
-                                  <th scope="col">Full Name</th>
+                                  <th scope="col">Full Name</th> */}
                                   <th scope="col">Amount</th>
                                   <th scope="col">Payment Mode</th>
                                   <th scope="col">Transaction Reference</th>
@@ -166,9 +166,9 @@ const AddWalletOfflineSummary = () => {
                                     <tr key={item.id}>
                                       <td>{item.created_at}</td>
                                       <td>{item.order_id}</td>
-                                      <td>{item.user_id}</td>
+                                      {/* <td>{item.user_id}</td>
                                       <td>{item.userRole}</td>
-                                      <td>{item.userName}</td>
+                                      <td>{item.userName}</td> */}
                                       <td>{item.amount}</td>
                                       <td>{item.Payment_Mode}</td>
                                       <td>{item.Transaction_Reference}</td>

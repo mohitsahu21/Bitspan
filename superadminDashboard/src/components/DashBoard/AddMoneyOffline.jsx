@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { FaRupeeSign } from "react-icons/fa";
 import { TbTransactionRupee } from "react-icons/tb";
@@ -21,18 +21,60 @@ const AddMoneyOffline = () => {
   });
   const [receiptAttachment, setReceiptAttachment] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const fileInputRef = useRef(null); // Ref for file input
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    // setFormData({ ...formData, [name]: value });
+    if (name === "amount") {
+      if (/^\d*$/.test(value)) {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
+  // const handleFileChange = (e) => {
+  //   setReceiptAttachment(e.target.files[0]);
+  // };
+  const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
   const handleFileChange = (e) => {
-    setReceiptAttachment(e.target.files[0]);
+    const file = e.target.files[0];
+  
+    if (file) {
+      if (file.size > MAX_FILE_SIZE) {
+        Swal.fire({
+          title: "File Too Large",
+          text: "The uploaded file exceeds the 2 MB size limit. Please select a smaller file.",
+          icon: "error",
+        });
+        // Clear the file input
+        if (fileInputRef.current) {
+          fileInputRef.current.value = null;
+        }
+        return;
+      }
+      setReceiptAttachment(e.target.files[0]);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (formData.amount < 100) {
+      Swal.fire({
+        title: "Error",
+        text: "Minimum amount is 100",
+        icon: "error",
+      });
+      return;
+    }
     setIsLoading(true);
     try {
       const data = new FormData();
@@ -60,17 +102,27 @@ const AddMoneyOffline = () => {
         icon: "success",
       });
       setFormData({
+        user_id: currentUser.userId,
         amount: "",
+        userName: currentUser.username,
+        userPhone: currentUser.ContactNo,
+        userEmail: currentUser.email,
+        userRole: currentUser.role,
         Payment_Mode: "",
         Transaction_Reference: "",
       });
+      setReceiptAttachment(null);
+         // Reset file input
+         if (fileInputRef.current) {
+          fileInputRef.current.value = null;
+        }
     } catch (error) {
       console.error("Error submitting form:", error.response.data);
       alert("Failed to submit form. Please try again.");
       Swal.fire({
         title: "Error",
         text:
-          error.response?.data || "Failed to submit form. Please try again.",
+          error?.response?.data || "Failed to submit form. Please try again.",
         icon: "error",
       });
     } finally {
@@ -123,7 +175,9 @@ const AddMoneyOffline = () => {
                                 onChange={handleChange}
                                 required
                               >
-                                <option selected>Choose Bank</option>
+                                <option selected value="">
+                                  Choose Bank
+                                </option>
                                 <option value="UPI ID">UPI ID</option>
                                 <option value="QR Code">QR Code</option>
                               </select>
@@ -190,6 +244,7 @@ const AddMoneyOffline = () => {
                                 onChange={handleFileChange}
                                 accept="image/*"
                                 required
+                                ref={fileInputRef} // Attach ref to file input
                               />
                             </div>
                           </div>
