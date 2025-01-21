@@ -345,13 +345,14 @@ const webhook = (req, res) => {
   
       if (response.data.status === 'Success') {
         const txnStatus = response.data.result.txnStatus;
+        const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
         const amount = parseFloat(response.data.result.amount).toFixed(2); // Ensure amount is a valid number
         const utr = response.data.result.utr;
        
         if (dbData.status === 'Pending') {
           // Update the order status to 'Success'
           await new Promise((resolve, reject) => {
-            db.query('UPDATE user_wallet_add_money_request SET status = ? , pg_Txn_Id = ? WHERE order_id = ?', ['Success',utr, clientTxnId], (err) => {
+            db.query('UPDATE user_wallet_add_money_request SET status = ? , pg_Txn_Id = ? , process_date = ? WHERE order_id = ?', ['Success',utr,createdAt, clientTxnId], (err) => {
               if (err) reject(err);
               resolve();
             });
