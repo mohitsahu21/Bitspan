@@ -44,6 +44,7 @@ const {
   buyCoupon,
   getCoupon,
   getAddMoneyToWalletOnline,
+  update_bankidForm,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -206,5 +207,12 @@ router.get("/getDthConnectionPlan", getDthConnectionPlan);
 router.get("/getWalletSummary/:userId", getWalletSummary);
 router.post("/buyCoupon", buyCoupon);
 router.get("/getCoupon/:userId", getCoupon);
+router.put("/update_bankidForm", upload.fields([
+  { name: "attached_photo", maxCount: 1 },
+  { name: "attached_kyc", maxCount: 10 },
+  { name: "bank_passbook", maxCount: 1 },
+  { name: "shop_photo", maxCount: 1 },
+  { name: "electric_bill", maxCount: 1 },
+]), update_bankidForm);
 
 module.exports = router;

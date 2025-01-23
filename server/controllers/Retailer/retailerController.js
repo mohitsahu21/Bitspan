@@ -569,6 +569,128 @@ const bankidForm = (req, res) => {
   );
 };
 
+const update_bankidForm = (req, res) => {
+  const {
+    applicant_name,
+    applicant_father,
+    applicant_mother,
+    applicant_number,
+    email,
+    applicant_select_service,
+    select_bank_service,
+    aadhar_card,
+    pan_card,
+    business_name,
+    status,
+    amount,
+    userId,
+    previous_attached_photo,
+    previous_attached_kyc,
+    previous_bank_passbook,
+    previous_shop_photo,
+    previous_electric_bill,
+    id
+  } = req.body;
+
+  // console.log(req.files.attached_photo)
+  // console.log(req.files.attached_kyc)
+  // console.log(req.files.bank_passbook)
+  // console.log(req.files.shop_photo)
+  // console.log(req.files.electric_bill)
+  const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+  const domain = "http://localhost:7777";
+  const attached_photo = req.files.attached_photo
+    ? `${domain}/uploads/${req.files.attached_photo[0].filename}`
+    : previous_attached_photo;
+
+  const attached_kyc = req.files.attached_kyc
+    ? req.files.attached_kyc
+        .map((file) => `${domain}/uploads/${file.filename}`)
+        .join(",")
+    : previous_attached_kyc;
+  const bank_passbook = req.files.bank_passbook
+    ? `${domain}/uploads/${req.files.bank_passbook[0].filename}`
+    : previous_bank_passbook;
+  const shop_photo = req.files.shop_photo
+    ? `${domain}/uploads/${req.files.shop_photo[0].filename}`
+    : previous_shop_photo;
+  const electric_bill = req.files.electric_bill
+    ? `${domain}/uploads/${req.files.electric_bill[0].filename}`
+    : previous_electric_bill;
+
+  const orderId = `BNK${Date.now()}`;
+  // const orderId = `BNK${createdAt}`;
+
+  const query = `
+        UPDATE apply_offline_form SET
+        order_id  = ?,
+            applicant_name = ?,
+    applicant_father = ?,
+    applicant_mother = ?,
+    applicant_number = ?,
+    email = ?,
+    applicant_select_service = ?,
+    select_bank_service = ?,
+    aadhar_card = ?,
+    pan_card = ?,
+    business_name = ?,
+    attached_photo = ?,
+    attached_kyc = ?,
+    bank_passbook = ?,
+    shop_photo = ?,
+    electric_bill = ?,
+    status = ?,
+    amount = ?,
+    user_id = ?,
+    updated_at = ? WHERE id = ?`;
+
+  db.query(
+    query,
+    [
+      orderId,
+      applicant_name,
+      applicant_father,
+      applicant_mother,
+      applicant_number,
+      email,
+      applicant_select_service,
+      select_bank_service,
+      aadhar_card,
+      pan_card,
+      business_name,
+      attached_photo,
+      attached_kyc,
+      bank_passbook,
+      shop_photo,
+      electric_bill,
+      "Pending",
+      amount,
+      userId,
+      updatedAt,
+      id
+    ],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting data into MySQL:", err);
+        res.status(500).json({ error: "Database error" });
+        return;
+      }
+
+      if (result.affectedRows === 0) {
+        res.status(404).json({ error: "Form not found" });
+        return;
+      }
+
+            return res.status(200).json({
+              status: "Success",
+              message: "Update Form Successfully",
+            });
+          }
+        );
+      };
+   
+
 const offlineRecharge = (req, res) => {
   const { mobile_no, operator_name, amount, recharge_Type, created_by_userid } =
     req.body;
@@ -1558,10 +1680,28 @@ const eDistrictFormData = (req, res) => {
   });
 };
 
+// const getSelectedServices = (req, res) => {
+//   const applicationId = req.params.user_id;
+
+//   const query = `SELECT select_bank_service, status FROM apply_offline_form WHERE user_id = ?`;
+//   db.query(query, [applicationId], (err, results) => {
+//     if (err) {
+//       console.error("Error fetching selected services:", err);
+//       res.status(500).json({ error: "Database error" });
+//     } else {
+//       const selectedServices = results.map((row) => ({
+//         service: row.select_bank_service,
+//         status: row.status,
+//       }));
+//       res.status(200).json({ selectedServices });
+//     }
+//   });
+// };
+
 const getSelectedServices = (req, res) => {
   const applicationId = req.params.user_id;
 
-  const query = `SELECT select_bank_service, status FROM apply_offline_form WHERE user_id = ?`;
+  const query = `SELECT select_bank_service, status FROM apply_offline_form WHERE user_id = ? AND applicant_select_service = "New Bank ID" AND status != "Reject"`;
   db.query(query, [applicationId], (err, results) => {
     if (err) {
       console.error("Error fetching selected services:", err);
@@ -2606,5 +2746,6 @@ module.exports = {
   getWalletSummary,
   buyCoupon,
   getCoupon,
-  getAddMoneyToWalletOnline
+  getAddMoneyToWalletOnline,
+  update_bankidForm
 };
