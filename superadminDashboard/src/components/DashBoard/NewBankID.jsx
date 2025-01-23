@@ -17,6 +17,13 @@ const NewBankID = () => {
   const [selectedPrice, setSelectedPrice] = useState(null);
   // console.log(selectedPrice);
   const [isVerifying, setIsVerifying] = useState(false);
+  console.log(selectedPrice);
+  
+ const attached_photo_ref = useRef(null);
+ const attached_Kyc_ref = useRef(null);
+ const bank_passbook_ref = useRef(null);
+ const shop_photo_ref = useRef(null);
+ const Electricity_bill_ref = useRef(null);
 
   const optionsDrop = [
     { id: 1, name: "Airtel" },
@@ -129,15 +136,68 @@ const NewBankID = () => {
     }));
   };
 
-  const handleFileChange = (e) => {
-    const { name, files: selectedFiles } = e.target;
-    if (name === "attached_kyc") {
-      setFiles({ ...files, [name]: [...selectedFiles] });
-    } else {
-      setFiles({ ...files, [name]: selectedFiles[0] });
-    }
-  };
+  // const handleFileChange = (e) => {
 
+
+  //   const { name, files: selectedFiles } = e.target;
+  //   if (name === "attached_kyc") {
+  //     setFiles({ ...files, [name]: [...selectedFiles] });
+  //   } else {
+  //     setFiles({ ...files, [name]: selectedFiles[0] });
+  //   }
+  // };
+
+  const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
+
+const handleFileChange = (e) => {
+  const { name, files: selectedFiles } = e.target;
+
+  // For multiple files (e.g., "attached_kyc")
+  if (name === "attached_kyc") {
+    const validFiles = [];
+    for (const file of selectedFiles) {
+      if (file.size > MAX_FILE_SIZE) {
+        Swal.fire({
+          title: "File Too Large",
+          text: `The file "${file.name}" exceeds the 2 MB size limit. Please select smaller files.`,
+          icon: "error",
+        });
+        // Clear the file input
+        e.target.value = null;
+        return;
+      } else {
+        validFiles.push(file);
+      }
+    }
+
+    // Only set files that are within the size limit
+    setFiles((prevFiles) => ({
+      ...prevFiles,
+      [name]: validFiles,
+    }));
+  } else {
+    // For single file input
+    const file = selectedFiles[0];
+    if (file) {
+      if (file.size > MAX_FILE_SIZE) {
+        Swal.fire({
+          title: "File Too Large",
+          text: `The file "${file.name}" exceeds the 2 MB size limit. Please select a smaller file.`,
+          icon: "error",
+        });
+
+        // Clear the file input
+        e.target.value = null;
+        return;
+      }
+
+      setFiles((prevFiles) => ({
+        ...prevFiles,
+        [name]: file,
+      }));
+    }
+  }
+};
   const handlePinChange = (index, value) => {
     if (/^\d?$/.test(value)) {
       const newPin = [...pin];
@@ -158,6 +218,42 @@ const NewBankID = () => {
       pinRefs.current[index - 1].focus();
     }
   };
+
+  const getServices = async () => {
+    try {
+      const response = await axios.get(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getSelectedServices/${currentUser.userId}`
+      );
+      console.log(response.data);
+      setSelectedOptions(response.data.selectedServices);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const clearFileInput = ()=>{
+    if (attached_photo_ref.current) {
+      attached_photo_ref.current.value = null;
+    }
+    if (attached_Kyc_ref.current) {
+      attached_Kyc_ref.current.value = null;
+    }
+    if (bank_passbook_ref.current) {
+      bank_passbook_ref.current.value = null;
+    }
+    if (shop_photo_ref.current) {
+      shop_photo_ref.current.value = null;
+    }
+    if (Electricity_bill_ref.current) {
+      Electricity_bill_ref.current.value = null;
+    }
+   
+  }
+
+  useEffect(() => {
+   
+    getServices();
+  }, [currentUser.userId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -186,12 +282,47 @@ const NewBankID = () => {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
       // alert(response.data.message);
-      Swal.fire({
-        title: "Form Submitted Successfully",
-        text: response.data.message,
-        icon: "success",
-      });
-      dispatch(toggleRefresh());
+      if(response.data.status == "Success"){
+        Swal.fire({
+          title: "Form Submitted Successfully",
+          text: response.data.message,
+          icon: "success",
+        });
+        setFormData({
+          applicant_name: currentUser.username,
+          applicant_father: "",
+          applicant_mother: "",
+          applicant_number: currentUser.ContactNo,
+          email: currentUser.email,
+          applicant_select_service: "New Bank ID",
+          select_bank_service: "",
+          aadhar_card: currentUser.AadharNumber,
+    pan_card: currentUser.PanCardNumber,
+    business_name: currentUser.BusinessName,
+    status: "Pending",
+    amount: selectedPrice,
+          userId: currentUser.userId,
+        });
+        setFiles({
+          attached_photo: null,
+    attached_kyc: [],
+    bank_passbook: null,
+    shop_photo: null,
+    electric_bill: null,
+        })
+        getServices();
+        setSelectedPrice(null)
+        clearFileInput();
+        dispatch(toggleRefresh());
+      }
+      else{
+        Swal.fire({
+          title: "Error",
+          text: response?.data?.message || "Something went wrong!",
+          icon: "error",
+        });
+      }
+      
     } catch (error) {
       console.error("Error submitting form:", error);
       // alert("Error submitting form");
@@ -203,19 +334,19 @@ const NewBankID = () => {
     } finally {
       setIsLoading(false);
 
-      setFormData({
-        // applicant_name: "",
-        applicant_father: "",
-        applicant_mother: "",
-        // applicant_number: "",
-        // email: "",
-        applicant_select_service: "",
-        select_bank_service: "",
-        // aadhar_card: "",
-        // pan_card: "",
-        // business_name: "",
-        userId: currentUser.userId,
-      });
+      // setFormData({
+      //   // applicant_name: "",
+      //   applicant_father: "",
+      //   applicant_mother: "",
+      //   // applicant_number: "",
+      //   // email: "",
+      //   applicant_select_service: "",
+      //   select_bank_service: "",
+      //   // aadhar_card: "",
+      //   // pan_card: "",
+      //   // business_name: "",
+      //   userId: currentUser.userId,
+      // });
 
       setPin(["", "", "", ""]);
       pinRefs.current[0]?.focus();
@@ -242,7 +373,90 @@ const NewBankID = () => {
     }
   };
 
+  const validateForm = () => {
+    const requiredFields = [
+      "applicant_name",
+      "applicant_father",
+      "applicant_mother",
+      "applicant_number",
+      "email",
+      "applicant_select_service",
+      "select_bank_service",
+      "aadhar_card",
+      "pan_card",
+      "business_name",
+      "amount",
+    ];
+  
+    // Check if all required fields in formData are filled
+    for (const field of requiredFields) {
+      if (!formData[field] || formData[field].trim() === "") {
+        Swal.fire({
+          title: "Validation Error",
+          text: `Please fill in the ${field.replace(/_/g, " ")} field.`,
+          icon: "error",
+        });
+        return false;
+      }
+    }
+   
+   
+    // Check if files are uploaded
+    if (!files.attached_photo) {
+      Swal.fire({
+        title: "Validation Error",
+        text: "Please upload the attached photo.",
+        icon: "error",
+      });
+      return false;
+    }
+    if (files.attached_kyc.length === 0) {
+      Swal.fire({
+        title: "Validation Error",
+        text: "Please upload the attached KYC documents.",
+        icon: "error",
+      });
+      return false;
+    }
+    if (!files.bank_passbook) {
+      Swal.fire({
+        title: "Validation Error",
+        text: "Please upload the bank passbook.",
+        icon: "error",
+      });
+      return false;
+    }
+    if (!files.shop_photo) {
+      Swal.fire({
+        title: "Validation Error",
+        text: "Please upload the shop photo.",
+        icon: "error",
+      });
+      return false;
+    }
+    if (!files.electric_bill) {
+      Swal.fire({
+        title: "Validation Error",
+        text: "Please upload the electricity bill.",
+        icon: "error",
+      });
+      return false;
+    }
+    if(!formData.userId){
+      Swal.fire({
+        title: "Validation Error",
+        text: "Something went wrong! Please Try again",
+        icon: "error",
+      });
+      return false;
+    }
+  
+    return true; // Validation passed
+  };
+
+  
   const handleModalSubmit = async (e) => {
+   
     setIsVerifying(true);
     const isPinValid = await verifyPin();
     setIsVerifying(false);
@@ -255,24 +469,17 @@ const NewBankID = () => {
   };
 
   const openPinModal = (e) => {
+ 
     e.preventDefault();
+
+        // Validate the form
+  if (!validateForm()) {
+    return; // Stop the submission if validation fails
+  }
     setShowPinModal(true);
   };
 
-  useEffect(() => {
-    const getServices = async () => {
-      try {
-        const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getSelectedServices/${currentUser.userId}`
-        );
-        console.log(response.data);
-        setSelectedOptions(response.data.selectedServices);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getServices();
-  }, [currentUser.userId]);
+  
 
   return (
     <Wrapper>
@@ -419,6 +626,11 @@ const NewBankID = () => {
                               const isDisabled =
                                 selectedServices &&
                                 selectedServices.status !== "Reject";
+                                console.log(isDisabled);
+                                
+                              // const isDisabled =
+                              //   selectedServices &&
+                              //   (selectedServices.status == "Success" || selectedServices.status == "Pending" || selectedServices.status == "Mark Edit"  || selectedServices.status == "Under Process")
                               return (
                                 <option
                                   key={item.id}
@@ -544,63 +756,69 @@ const NewBankID = () => {
                           id="formFileLg1"
                           name="attached_photo"
                           onChange={handleFileChange}
+                          ref={attached_photo_ref}
                         />
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div>
-                        <label htmlFor="formFileLg1" className="form-label">
+                        <label htmlFor="attached_kyc" className="form-label">
                           Attached KYC (Multiple Files)
                         </label>
                         <input
                           type="file"
                           className="form-control form-control-lg"
-                          id="formFileLg1"
+                          id="attached_kyc"
                           name="attached_kyc"
                           multiple
                           onChange={handleFileChange}
+                          ref={attached_Kyc_ref}
                         />
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div>
-                        <label htmlFor="formFileLg1" className="form-label">
+                        <label htmlFor="bank_passbook" className="form-label">
                           Bank Passbook
                         </label>
                         <input
                           type="file"
                           className="form-control form-control-lg"
-                          id="formFileLg1"
+                          id="bank_passbook"
                           name="bank_passbook"
                           onChange={handleFileChange}
+                          ref={bank_passbook_ref}
                         />
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div>
-                        <label htmlFor="formFileLg1" className="form-label">
+                        <label htmlFor="shop_photo" className="form-label">
                           Shop Photo
                         </label>
                         <input
                           type="file"
                           className="form-control form-control-lg"
-                          id="formFileLg1"
+                          id="shop_photo"
                           name="shop_photo"
                           onChange={handleFileChange}
+                          ref={shop_photo_ref}
                         />
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div>
-                        <label htmlFor="formFileLg1" className="form-label">
-                          Electric Bill
+                        <label htmlFor="electric_bill" className="form-label">
+                          Electricity Bill
                         </label>
                         <input
                           type="file"
                           className="form-control form-control-lg"
-                          id="formFileLg1"
+                          id="electric_bill"
                           name="electric_bill"
                           onChange={handleFileChange}
+                          ref={Electricity_bill_ref}
+
                         />
                       </div>
                     </div>
