@@ -396,9 +396,12 @@ created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ? 
 //     PinCode,
 //     Status,
 //     payment_status,
+//     White_Label_Website_URL,
 //     created_By_User_Id,
 //     created_By_User_Role,
-//     created_By_Website
+//     created_By_Website,
+//     userId_type, // Added to capture type for updating user IDs
+//     number_of_userId, // Added to capture the number of user IDs
 //   } = req.body;
 
 //   if (
@@ -418,9 +421,11 @@ created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ? 
 //     !created_By_User_Role ||
 //     !created_By_Website
 //   ) {
-//     return res
-//       .status(400)
-//       .json({ status: "Failure", error: "All fields are required" , message : "All fields are required"});
+//     return res.status(400).json({
+//       status: "Failure",
+//       error: "All fields are required",
+//       message: "All fields are required",
+//     });
 //   }
 
 //   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
@@ -436,7 +441,6 @@ created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ? 
 //   const rolePrefix = rolePrefixes[role];
 
 //   try {
-//     // Start a transaction to ensure atomicity
 //     db.beginTransaction(async (transactionErr) => {
 //       if (transactionErr) {
 //         console.error("Error starting transaction:", transactionErr);
@@ -472,8 +476,8 @@ created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ? 
 //         const password = generatePassword();
 //         const hashedPassword = await bcrypt.hash(password, 10);
 
-//         const insertUserQuery = `INSERT INTO userprofile (UserId, password, UserName, role, ContactNo, Email, PanCardNumber, AadharNumber, BusinessName, City, State, PinCode,Status,payment_status,created_By_User_Id,
-// created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?)`;
+//         const insertUserQuery = `INSERT INTO userprofile (UserId, password, UserName, role, ContactNo, Email, PanCardNumber, AadharNumber, BusinessName, City, State, PinCode,Status,payment_status,White_Label_Website_URL,created_By_User_Id,
+// created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?)`;
 
 //         const insertValues = [
 //           userId,
@@ -490,6 +494,7 @@ created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ? 
 //           PinCode,
 //           Status,
 //           payment_status,
+//           White_Label_Website_URL,
 //           created_By_User_Id,
 //           created_By_User_Role,
 //           created_By_Website,
@@ -506,24 +511,108 @@ created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ? 
 //             });
 //           }
 
-//           // Commit the transaction
-//           db.commit((commitErr) => {
-//             if (commitErr) {
+//           // Update user profile with additional user IDs after
+//           const updateQuery = `
+//           UPDATE userprofile
+//           SET
+//             remaining_whitelable_id = CASE WHEN ? = 'whiteLabel' THEN remaining_whitelable_id - 1 ELSE remaining_whitelable_id END,
+//             remaining_superDistributor_id = CASE WHEN ? = 'superDistributor' THEN remaining_superDistributor_id - 1 ELSE remaining_superDistributor_id END,
+//             remaining_distributor_id = CASE WHEN ? = 'distributor' THEN remaining_distributor_id - 1 ELSE remaining_distributor_id END,
+//             remaining_retailer_id = CASE WHEN ? = 'retailer' THEN remaining_retailer_id - 1 ELSE remaining_retailer_id END
+//           WHERE userId = ?
+//         `;
+
+//           const updateParams = [
+//             userId_type,
+//             number_of_userId,
+//             userId_type,
+//             number_of_userId,
+//             userId_type,
+//             number_of_userId,
+//             userId_type,
+//             number_of_userId,
+//             userId,
+//           ];
+
+//           db.query(updateQuery, updateParams, (updateErr, updateResult) => {
+//             if (updateErr) {
 //               return db.rollback(() => {
-//                 console.error("Error committing transaction:", commitErr);
-//                 return res.status(500).json({
-//                   status: "Failure",
-//                   message: "Internal server error",
-//                 });
+//                 console.error("Error updating user profile:", updateErr);
+//                 return res
+//                   .status(500)
+//                   .json({ message: "Failed to update user profile." });
 //               });
 //             }
 
-//             // Respond with success
-//             res.json({
-//               message: "User registered successfully",
-//               status: "Success",
-//               userId,
-//               password,
+//             // Log the new credentials and send email
+//             const logQuery = `INSERT INTO user_credentials (userId, password, created_at) VALUES (?, ?, ?)`;
+//             const logValues = [userId, password, createdAt];
+
+//             db.query(logQuery, logValues, (logErr, logResult) => {
+//               if (logErr) {
+//                 return db.rollback(() => {
+//                   console.error("Error logging credentials:", logErr);
+//                   return res.status(500).json({
+//                     status: "Failure",
+//                     message: "Internal server error",
+//                   });
+//                 });
+//               }
+
+//               // Commit transaction and send email
+//               db.commit((commitErr) => {
+//                 if (commitErr) {
+//                   return db.rollback(() => {
+//                     console.error("Error committing transaction:", commitErr);
+//                     return res.status(500).json({
+//                       status: "Failure",
+//                       message: "Internal server error",
+//                     });
+//                   });
+//                 }
+
+//                 const transporter = nodemailer.createTransport({
+//                   service: "gmail",
+//                   auth: {
+//                     user: process.env.EMAILSENDER,
+//                     pass: process.env.EMAILPASSWORD,
+//                   },
+//                 });
+
+//                 const mailOptions = {
+//                   from: process.env.EMAILSENDER,
+//                   to: Email,
+//                   subject: "Your Account Details",
+//                   html: `
+//                   <p>Hello ${UserName},</p>
+//                   <p>Your account has been successfully created.</p>
+//                   <p>User ID: <span style="color: #333333; font-weight: bold;">${userId}</span></p>
+//                   <p>Password: <span style="color: #333333; font-weight: bold;">${password}</span></p>
+//                   <p>Please keep this information secure.</p>
+//                   <p>Please log in using this ID and password, and complete the KYC process to activate your account.</p>
+//                   <br>
+//                   <p>Regards,<br>Bitspan.com</p>
+//                 `,
+//                 };
+
+//                 transporter.sendMail(mailOptions, (emailErr, info) => {
+//                   if (emailErr) {
+//                     console.error("Error sending email:", emailErr);
+//                     return res.status(500).json({
+//                       status: "Failure",
+//                       message: "Internal server error",
+//                     });
+//                   }
+
+//                   // Respond with success
+//                   res.json({
+//                     message: "User registered successfully, email sent",
+//                     status: "Success",
+//                     userId,
+//                     password,
+//                   });
+//                 });
+//               });
 //             });
 //           });
 //         });

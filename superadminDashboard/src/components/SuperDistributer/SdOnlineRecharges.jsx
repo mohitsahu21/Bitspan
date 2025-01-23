@@ -1,32 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
-import { useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import { Dropdown, Modal, Spinner } from "react-bootstrap";
+import { CiViewList } from "react-icons/ci";
+import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
+import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
-const SdFundTransferStatus = () => {
-  // const [transactions, setTransactions] = useState([]); // Default to an empty array
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(0); // For Pagination
-
+const SdOnlineRecharges = () => {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { token } = useSelector((state) => state.user);
+  const [rechargeType, setRechargeType] = useState("");
+  const [users, setUsers] = useState([]);
+  const [keyword, setKeyword] = useState("");
   const complaintsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(0);
+  const [isRefresh, setIsRefresh] = useState(false);
   const [fromDate, setFromDate] = useState(""); // From date filter
   const [toDate, setToDate] = useState(""); // To date filter
-  const [keyword, setKeyword] = useState("");
-  const userId = useSelector((state) => state.user.currentUser?.userId);
-  const [apiData, setApiData] = useState([]);
-  const [status, setStatus] = useState("");
 
-  // Fetch data from API
-  const fetchData = async () => {
-    setLoading(true); // Start loading
+  // Fetch userId and token from Redux store
+  const userId = useSelector((state) => state.user.currentUser?.userId);
+
+  const maskSensitiveInfo = (value, maskLength, revealLength) => {
+    const maskedValue = "*".repeat(maskLength);
+    const revealedValue = value.slice(-revealLength);
+    return maskedValue + revealedValue;
+  };
+
+  const fetchOfflineForm = async () => {
+    setLoading(true);
     try {
-      const response = await axios.get(
-        `http://localhost:7777/api/auth/superDistributor/getWalletToWalletTransfer/${userId}`,
+      const { data } = await axios.get(
+        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getOnlineRecharge",
+        `http://localhost:7777/api/auth/superDistributor/getSdOnlineRecharges/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -34,60 +47,58 @@ const SdFundTransferStatus = () => {
           },
         }
       );
-
-      setApiData(response.data.data);
-      console.log(response.data.data);
+      setUsers(data.data);
+      setLoading(false);
     } catch (error) {
-      console.error("Error fetching data", error);
-
-      if (error?.response?.status === 401) {
-        // Handle expired token
+      console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
         Swal.fire({
           icon: "error",
-          title: "Your token is expired. Please login again.",
+          title: "Your token is expired please login again",
         });
         dispatch(clearUser());
         navigate("/");
-      } else {
-        // Handle other errors gracefully
-        setApiData([]);
-        Swal.fire({
-          icon: "error",
-          title: "Failed to fetch data. Please try again later.",
-        });
       }
-    } finally {
-      setLoading(false); // End loading state
+      setLoading(false);
     }
   };
 
-  // Effect to fetch data whenever the currentPage changes
   useEffect(() => {
-    fetchData();
+    fetchOfflineForm();
   }, []);
 
-  const filteredItems = apiData.filter((row) => {
-    // const searchKeyword = keyword.trim().toLowerCase();
+  // useEffect(() => {
+  //   fetchOfflineForm();
+  // }, [isRefresh]);
+
+  const filteredItems = users.filter((row) => {
     const matchesKeyword =
-      // (row?.userId &&
-      //   row.userId.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      // (row?.UserName &&
-      // row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.order_id &&
-        row.order_id.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.created_by_userid &&
+        row.created_by_userid
+          .toLowerCase()
+          .includes(keyword.trim().toLowerCase())) ||
+      (row?.UserName &&
+        row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.orderid &&
+        row.orderid.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      // (row?.mobile_no &&
+      //   row.mobile_no.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.operator_name &&
+        row.operator_name
+          .toLowerCase()
+          .includes(keyword.trim().toLowerCase())) ||
       (row?.transaction_id &&
         row.transaction_id
           .toLowerCase()
-          .includes(keyword.trim().toLowerCase()));
-    // (row?.name &&
-    //   row.name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-    // (row?.mobile &&
-    //   row.mobile.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-    // (row?.email &&
-    //   row.email.toLowerCase().includes(keyword.trim().toLowerCase()));
+          .includes(keyword.trim().toLowerCase())) ||
+      (row?.providerName &&
+        row.providerName.toLowerCase().includes(keyword.trim().toLowerCase()));
 
     const matchesType =
-      !status || status === "---Select---" || row.status === status;
+      !rechargeType ||
+      rechargeType === "---Select---" ||
+      row.recharge_Type === rechargeType;
     // return matchesKeyword && matchesType ;
     const matchesDate =
       (!fromDate ||
@@ -127,30 +138,34 @@ const SdFundTransferStatus = () => {
               </div>
               <div
                 className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
-                           mt-5 formdata"
+                             mt-5 formdata"
               >
                 <div className="main shadow-none">
                   <div className="row shadow-none">
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                       {/* <div className="text-center">
-                                              <h3>Wallet Transaction Report</h3>
-                                          </div> */}
+                                                <h3>Wallet Transaction Report</h3>
+                                            </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Wallet TO Wallet Transfer History
+                          Online Recharge History
                         </h4>
-                        <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; Wallet TO Wallet Transfer
-                          History
-                        </h6>
+                        <p className="mx-lg-5">
+                          {" "}
+                          <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
+                          <span
+                            className="text-body-secondary"
+                            style={{ fontSize: "13px" }}
+                          >
+                            {" "}
+                            Online Recharge History
+                          </span>{" "}
+                        </p>
                       </div>
                     </div>
                   </div>
-                  <div className="row justify-content-xl-end justify-content-center pe-lg-4">
-                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded p-5 m-4">
-                      <div className="text-center">
-                        <h5>All Wallet Transfer Request Status</h5>
-                      </div>
+                  <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
+                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
                       <div className="row d-flex flex-column g-4">
                         <div className="d-flex flex-column flex-md-row gap-3">
                           <div className="col-12 col-md-4 col-lg-3">
@@ -179,21 +194,26 @@ const SdFundTransferStatus = () => {
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
                             <label for="toDate" className="form-label">
-                              Select Status
+                              Select Type
                             </label>
                             <select
                               className="form-select"
                               aria-label="Default select example"
-                              value={status}
-                              onChange={(e) => setStatus(e.target.value)}
+                              value={rechargeType}
+                              onChange={(e) => setRechargeType(e.target.value)}
                             >
                               <option selected>---Select---</option>
-                              <option value="Success">Success</option>
-                              <option value="Pending">Pending</option>
-                              {/* <option value="Reject">Reject</option> */}
+                              <option value="Prepaid">Prepaid</option>
+                              <option value="Postpaid">Postpaid</option>
+                              <option value="DTH">DTH</option>
+                              <option value="Broadband">Broadband</option>
+                              <option value="Electricity">Electricity</option>
+                              <option value="Insurance">Insurance</option>
+                              <option value="Landline">Landline</option>
                             </select>
                           </div>
                         </div>
+
                         <div className="d-flex flex-column flex-xl-row gap-3">
                           <div className="col-12 col-md-12 col-lg-12 col-xl-8">
                             {/* <label for="fromDate" className="form-label">From</label> */}
@@ -201,60 +221,83 @@ const SdFundTransferStatus = () => {
                               id="fromDate"
                               className="form-control"
                               type="search"
-                              placeholder="search By Order Id Or Txn Id"
+                              placeholder="Enter Order Id/Txn ID/Operator/User Id"
                               value={keyword}
                               onChange={(e) => setKeyword(e.target.value)}
                             />
                           </div>
 
                           {/* <div className="d-flex align-items-end">
-        <button type="button" className="btn btn-primary button">Search</button>
-    </div> */}
+                                                        <button type="button" className="btn btn-primary button">Search</button>
+                                                    </div> */}
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                          <div className="table-responsive">
+                          <div class="table-responsive">
                             {loading ? (
                               <div className="d-flex justify-content-center">
                                 <Spinner animation="border" role="status">
-                                  <span className="visually-hidden">
+                                  <span className="visually-hidden ">
                                     Loading...
                                   </span>
                                 </Spinner>
                               </div>
                             ) : (
                               <>
-                                <table className="table table-striped">
+                                <table class="table table-striped">
                                   <thead className="table-dark">
                                     <tr>
-                                      <th scope="col">S.No.</th>
+                                      <th scope="col">#</th>
                                       <th scope="col">Date</th>
-                                      <th scope="col">Receiver ID</th>
-                                      <th scope="col">Receiver Name</th>
+                                      <th scope="col">Order Id</th>
+                                      <th scope="col">Transaction Id</th>
+                                      <th scope="col">recharge_Type</th>
+                                      <th scope="col">OP Id</th>
+                                      <th scope="col">Number</th>
                                       <th scope="col">Amount</th>
-                                      <th scope="col">Order ID</th>
-                                      <th scope="col">Transaction ID</th>
+                                      <th scope="col">Operator Name</th>
+                                      <th scope="col">Message</th>
+                                      <th scope="col">API Provider Name</th>
+                                      <th scope="col">User Id</th>
+                                      {/* <th scope="col">User Name</th> */}
+                                      {/* <th scope="col">User Role</th> */}
+                                      {/* <th scope="col">User Contact</th> */}
                                       <th scope="col">Status</th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     {showApiData && showApiData.length > 0 ? (
-                                      showApiData.map((item, index) => (
+                                      showApiData?.map((item, index) => (
                                         <tr key={index}>
-                                          <td>{item.id}</td>
+                                          <th scope="row">{index + 1}</th>
                                           <td>{item.created_at}</td>
-                                          <td>{item.receiver_id}</td>
-                                          <td>{item.receiver_name}</td>
-                                          <td>{item.amount}</td>
-                                          <td>{item.order_id}</td>
+                                          <td>{item.orderid}</td>
                                           <td>{item.transaction_id}</td>
+                                          <td>{item.recharge_Type}</td>
+                                          <td>{item.opid}</td>
+                                          {/* <td>{item.mobile_no}</td> */}
+                                          <td>
+                                            {maskSensitiveInfo(
+                                              item.mobile_no,
+                                              6,
+                                              4
+                                            )}
+                                          </td>
+                                          <td>{item.amount}</td>
+
+                                          <td>{item.operator_name}</td>
+                                          <td>{item.message}</td>
+                                          <td>{item.providerName}</td>
+                                          <td>{item.created_by_userid}</td>
+                                          {/* <td>{item.UserName}</td> */}
+                                          {/* <td>{item.ContactNo}</td> */}
                                           <td>{item.status}</td>
                                         </tr>
                                       ))
                                     ) : (
                                       <tr>
-                                        <td colSpan="10">No data available</td>{" "}
-                                        {/* Updated colSpan */}
+                                        <td colSpan="13">No data available</td>{" "}
+                                        {/* Updated colSpan to match table columns */}
                                       </tr>
                                     )}
                                   </tbody>
@@ -262,7 +305,6 @@ const SdFundTransferStatus = () => {
                               </>
                             )}
                           </div>
-                          {/* Pagination */}
                           <PaginationContainer>
                             <ReactPaginate
                               previousLabel={"Previous"}
@@ -290,7 +332,7 @@ const SdFundTransferStatus = () => {
   );
 };
 
-export default SdFundTransferStatus;
+export default SdOnlineRecharges;
 
 const Wrapper = styled.div`
   .main {
@@ -312,19 +354,10 @@ const Wrapper = styled.div`
   th {
     font-weight: 500;
     font-size: 14px;
-    white-space: nowrap;
   }
   td {
     font-size: 14px;
-  }
-  .pagination {
-    display: flex;
-    list-style-type: none;
-    padding: 0;
-  }
-  .pagination .active {
-    font-weight: bold;
-    color: #6d70ff;
+    white-space: nowrap;
   }
   @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
@@ -335,6 +368,9 @@ const Wrapper = styled.div`
     .formdata {
       padding-left: 13rem;
     }
+  }
+  .custom-dropdown-toggle::after {
+    display: none !important;
   }
 `;
 

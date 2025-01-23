@@ -57,6 +57,9 @@ const SuperAdminRoutes = lazy(() => import("./routes/SuperAdminRoutes"));
 const RetailerRoutes = lazy(() => import("./routes/RetailerRoutes"));
 const Distributor = lazy(() => import("./routes/Distributor"));
 const WhiteLabelRoutes = lazy(() => import("./routes/WhiteLabelRoutes"));
+const SuperDistributorRoutes = lazy(() =>
+  import("./routes/SuperDistributorRoutes")
+);
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -69,31 +72,43 @@ function App() {
   }, [currentUser?.role]);
   return (
     <>
-    <Wrapper>
-    <Suspense fallback={<div className="loading-container">
-      <Spinner animation="border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </Spinner>
-    </div>}>
-      { currentUser && location.pathname !== "/" &&
-        location.pathname !== "/password-reset" &&
-        location.pathname !== "/download-certificate-print" &&
-        location.pathname !== "/registration-page" && <Sider />}
+      <Wrapper>
+        <Suspense
+          fallback={
+            <div className="loading-container">
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            </div>
+          }
+        >
+          {currentUser &&
+            location.pathname !== "/" &&
+            location.pathname !== "/password-reset" &&
+            location.pathname !== "/download-certificate-print" &&
+            location.pathname !== "/registration-page" && <Sider />}
 
-      <Routes>
-        <Route path="/" element={ currentUser  ?  (
-                          <Navigate to="/dashboard" />
-                        ) : (<LoginBitspan />) } />
-        <Route path="/password-reset" element={currentUser ? (<Navigate to="/dashboard" />) :  (<ForgotPassword />)} />
-        {!currentUser && <Route path="*" element={<NotFound />} />} 
-      </Routes>
-      {user === "Retailer" && <RetailerRoutes />}
-      {user === "SuperDistributor" && <SuperDistributorRoutes />}
-      {user === "Distributor" && <Distributor />}
-      {user === "WhiteLabel" && <WhiteLabelRoutes />}
-      {user === "SuperAdmin" && <SuperAdminRoutes />}
-          
-      </Suspense>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                currentUser ? <Navigate to="/dashboard" /> : <LoginBitspan />
+              }
+            />
+            <Route
+              path="/password-reset"
+              element={
+                currentUser ? <Navigate to="/dashboard" /> : <ForgotPassword />
+              }
+            />
+            {!currentUser && <Route path="*" element={<NotFound />} />}
+          </Routes>
+          {user === "Retailer" && <RetailerRoutes />}
+          {user === "SuperDistributor" && <SuperDistributorRoutes />}
+          {user === "Distributor" && <Distributor />}
+          {user === "WhiteLabel" && <WhiteLabelRoutes />}
+          {user === "SuperAdmin" && <SuperAdminRoutes />}
+        </Suspense>
       </Wrapper>
     </>
   );
@@ -102,17 +117,21 @@ function App() {
 export default App;
 
 const Wrapper = styled.div`
-.loading-container {
-  position: fixed; /* Sticks to the viewport */
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center; /* Horizontally centers the content */
-  align-items: center; /* Vertically centers the content */
-  background-color: rgba(255, 255, 255, 0.8); /* Optional: Add a semi-transparent background */
-  z-index: 9999; /* Ensures it stays above other content */
-}
-
-`
+  .loading-container {
+    position: fixed; /* Sticks to the viewport */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center; /* Horizontally centers the content */
+    align-items: center; /* Vertically centers the content */
+    background-color: rgba(
+      255,
+      255,
+      255,
+      0.8
+    ); /* Optional: Add a semi-transparent background */
+    z-index: 9999; /* Ensures it stays above other content */
+  }
+`;

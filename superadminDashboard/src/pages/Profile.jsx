@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FaUser } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa6";
@@ -9,35 +9,137 @@ import { BiSolidContact } from "react-icons/bi";
 import { FaRegBuilding } from "react-icons/fa";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { BiHomeAlt } from "react-icons/bi";
-import { useDispatch, useSelector } from "react-redux";
+
 import axios from "axios";
+import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+// import { clearUser } from "../../redux/user/userSlice";
+import { clearUser } from "../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
   const [aadharFront, setAadharFront] = useState(null);
   const [aadharBack, setAadharBack] = useState(null);
   const [panCardFront, setPanCardFront] = useState(null);
+  const [profileImage, setprofileImage] = useState(null);
+  const [status, setStatus] = useState(null);
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
-    if (name === "aadharFront") setAadharFront(files[0]);
-    if (name === "aadharBack") setAadharBack(files[0]);
-    if (name === "panCardFront") setPanCardFront(files[0]);
+    console.log(`File input changed - Name: ${name}, Files:`, files);
+
+    if (name === "aadharFront") {
+      setAadharFront(files[0]);
+      console.log("Updated aadharFront:", files[0]);
+      Swal.fire(
+        "File Selected",
+        "Aadhar Front file selected successfully!",
+        "success"
+      );
+    }
+    if (name === "aadharBack") {
+      setAadharBack(files[0]);
+      console.log("Updated aadharBack:", files[0]);
+      Swal.fire(
+        "File Selected",
+        "Aadhar Back file selected successfully!",
+        "success"
+      );
+    }
+    if (name === "panCardFront") {
+      setPanCardFront(files[0]);
+      console.log("Updated panCardFront:", files[0]);
+      Swal.fire(
+        "File Selected",
+        "Pan Card Front file selected successfully!",
+        "success"
+      );
+    }
+    if (name === "profileImage") {
+      setprofileImage(files[0]);
+      console.log("Updated profileImage:", files[0]);
+      Swal.fire(
+        "File Selected",
+        "Profile Image file selected successfully!",
+        "success"
+      );
+    }
   };
+
+  const fetchUserData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        `http://localhost:7777/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("User Details:", response.data?.data);
+      const userStatus = response.data?.data?.Status; // API response se status fetch kar rahe hain
+      setStatus(userStatus); // Status ko state mein set karenge
+      console.log(userStatus);
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Session Expired",
+          text: "Your session has expired. Please log in again.",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong! Please try again later.",
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Form submission started");
 
     const formData = new FormData();
-    formData.append("aadharFront", aadharFront);
-    formData.append("aadharBack", aadharBack);
-    formData.append("panCardFront", panCardFront);
+    if (aadharFront) {
+      formData.append("aadharFront", aadharFront);
+      console.log("Added aadharFront to formData:", aadharFront);
+    }
+    if (aadharBack) {
+      formData.append("aadharBack", aadharBack);
+      console.log("Added aadharBack to formData:", aadharBack);
+    }
+    if (panCardFront) {
+      formData.append("panCardFront", panCardFront);
+      console.log("Added panCardFront to formData:", panCardFront);
+    }
+    if (profileImage) {
+      formData.append("profileImage", profileImage);
+      console.log("Added profileImage to formData:", profileImage);
+    }
+
+    console.log("Final FormData object before submission:", formData);
 
     try {
       const response = await axios.put(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/user-profile/${currentUser?.userId}`,
+        `http://localhost:7777/api/auth/superDistributor/user-profile/${currentUser?.userId}`,
         formData,
         {
           headers: {
@@ -46,11 +148,19 @@ const Profile = () => {
         }
       );
 
-      console.log(response.data.message || "Upload successful!");
-    } catch (error) {
-      console.log(
-        error.response?.data?.error || "An error occurred. Please try again."
+      console.log("API response received:", response.data);
+      Swal.fire(
+        "Success",
+        response.data.message || "Upload successful!",
+        "success"
       );
+    } catch (error) {
+      console.log("Error occurred during API call");
+      console.error("Full error object:", error);
+      const errorMessage =
+        error.response?.data?.error || "An error occurred. Please try again.";
+      console.log(errorMessage);
+      Swal.fire("Error", errorMessage, "error");
     }
   };
 
@@ -289,17 +399,41 @@ const Profile = () => {
                             />
                           </div>
                         </div>
+
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label>Profile Image</label>
+                          <div className="input-group">
+                            <input
+                              class="form-control"
+                              type="file"
+                              id="formFile"
+                              name="profileImage"
+                              accept="image/*"
+                              onChange={handleFileChange}
+                            />
+                          </div>
+                        </div>
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div className="text-start m-3">
-                            <button
-                              className="btn p-2"
-                              type="submit"
-                              disabled={isLoading}
-                            >
-                              {isLoading
-                                ? "KYC Verification..."
-                                : "KYC Verification"}
-                            </button>
+                            {status === "Active" ? (
+                              <button
+                                className="btn p-2  btn-primary"
+                                type="button"
+                                disabled
+                              >
+                                KYC Verified
+                              </button>
+                            ) : (
+                              <button
+                                className="btn p-2"
+                                type="submit"
+                                disabled={isLoading || status === "Pending"}
+                              >
+                                {isLoading
+                                  ? "KYC Verification..."
+                                  : "KYC Verification"}
+                              </button>
+                            )}
                           </div>
                         </div>
                       </>

@@ -25,7 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
-const SAAddWalletMoneyDirect = () => {
+const SdWalletToWalletTransfer = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -36,6 +36,24 @@ const SAAddWalletMoneyDirect = () => {
   const [users, setUsers] = useState([]);
   const [options, setOptions] = useState([]); // Store options for Select
   const [selectedOption, setSelectedOption] = useState(null); // Store selected option
+  const [walletBalance, setWalletBalance] = useState("");
+
+  const userId = useSelector((state) => state.user.currentUser?.userId);
+  const username = useSelector((state) => state.user.currentUser?.username);
+
+  const [inputAmount, setInputAmount] = useState(""); // User input amount
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+
+    // Check if input amount is greater than wallet amount
+    if (parseFloat(value) > walletBalance) {
+      alert("Entered amount is greater than wallet amount!");
+      setInputAmount(""); // Reset the input field
+    } else {
+      setInputAmount(value); // Set the input field
+    }
+  };
 
   const customStyles = {
     option: (provided, state) => ({
@@ -51,7 +69,8 @@ const SAAddWalletMoneyDirect = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
+        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
+        `http://localhost:7777/api/auth/superDistributor/getActiveUsers/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -84,13 +103,103 @@ const SAAddWalletMoneyDirect = () => {
     }
   };
 
+  const fetchUsersBalance = async () => {
+    // setLoading(true);
+    try {
+      const { data } = await axios.get(
+        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getWalletBalance/${formData.userId}`,
+        `http://localhost:7777/api/auth/superDistributor/getWalletBalance/${formData.userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (data.success) {
+        setFormData({
+          ...formData,
+          // availableBalance: data.data[0].Closing_Balance,
+          availableBalance: data.data,
+        });
+        console.log(data);
+      } else {
+        setFormData({
+          ...formData,
+          availableBalance: 0,
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        setFormData({
+          ...formData,
+          availableBalance: 0,
+        });
+      }
+      setLoading(false);
+    }
+  };
+
+  // Fetch  current User Wallet Balance
+  const fetchWalletBalance = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:7777/api/auth/superDistributor/getWalletBalance/${userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data.success) {
+        setWalletBalance(response.data.data); // Set the fetched wallet balance
+      } else {
+        setWalletBalance(0); // Default to 0 if no data found
+      }
+    } catch (error) {
+      console.error("Error fetching wallet balance:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        setWalletBalance(0); // Default to 0 if no data found
+      }
+    }
+  };
+  console.log(walletBalance);
+
   // useEffect(() => {
   //   fetchActiveUsers();
   // }, []);
 
   useEffect(() => {
+    if (userId) {
+      fetchWalletBalance();
+      console.log(userId);
+    }
+  }, [userId]);
+
+  useEffect(() => {
     fetchActiveUsers();
   }, [isRefresh]);
+  useEffect(() => {
+    fetchUsersBalance();
+  }, [selectedOption]);
 
   //   const options = [
   //     { value: "package_WhiteLabel", label: "White Label" },
@@ -108,36 +217,46 @@ const SAAddWalletMoneyDirect = () => {
 
   const [formData, setFormData] = useState({
     userId: "", // This will store the selected options
+    sender_name: "",
+    receiver_name: "",
     amount: "",
     Transaction_details: "",
     status: "Success",
+    availableBalance: "",
   });
-
-  // const handleChange = (e) => {
-  //   setFormData({
-  //     ...formData,
-  //     [e.target.name]: e.target.value,
-  //   });
-  // };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
+    if (name == "amount") {
+      if (parseFloat(value) > walletBalance) {
+        alert("Entered amount is greater than wallet amount!");
+        return; // Reset the input field
+      }
+    }
     setFormData({
       ...formData,
       [name]: value,
     });
   };
 
-  const handlesubmit = async (e) => {
+  const handleSubmit = async (e) => {
+    const updatedFormData = {
+      ...formData,
+      senderId: userId,
+      sender_name: username,
+      receiverId: formData.userId,
+      receiver_name: selectedOption?.UserName,
+      transactionDetails: formData.Transaction_details,
+      amount: formData.amount,
+    };
+
     e.preventDefault();
     try {
       setButtonLoading(true);
 
-      const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/AddWalletAddMoneyDirect",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
-        formData,
+      const response = await axios.post(
+        `http://localhost:7777/api/auth/superDistributor/walletToWalletTransfer`,
+        updatedFormData,
         {
           headers: {
             "Content-Type": "application/json",
@@ -145,17 +264,19 @@ const SAAddWalletMoneyDirect = () => {
           },
         }
       );
-      // console.log(response);
+
       setButtonLoading(false);
       if (response.data.success) {
         setFormData({
-          userId: "", // This will store the selected options
+          userId: "", // Reset userId
           amount: "",
           Transaction_details: "",
           status: "Success",
+          availableBalance: "", // Update available balance
         });
         setSelectedOption(null);
-        setIsRefresh((item) => !item);
+        setIsRefresh((prev) => !prev);
+        fetchWalletBalance();
         Swal.fire({
           icon: "success",
           title: response.data.message,
@@ -172,10 +293,9 @@ const SAAddWalletMoneyDirect = () => {
       console.error("There was an error submitting the form!", error);
       setButtonLoading(false);
       if (error?.response?.status == 401) {
-        // alert("Your token is expired please login again")
         Swal.fire({
           icon: "error",
-          title: "Your token is expired please login again",
+          title: "Your token is expired, please login again",
         });
         dispatch(clearUser());
         navigate("/");
@@ -186,6 +306,7 @@ const SAAddWalletMoneyDirect = () => {
       });
     }
   };
+
   console.log(formData);
   console.log(selectedOption);
 
@@ -207,7 +328,7 @@ const SAAddWalletMoneyDirect = () => {
                         <h3>Raise Complaint</h3>
                       </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
-                        <h4 className="px-lg-3">Add wallet Money Direct</h4>
+                        <h4 className="px-lg-3"> Wallet to Wallet Transfer</h4>
                         <p className="mx-lg-5">
                           {" "}
                           <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
@@ -216,13 +337,13 @@ const SAAddWalletMoneyDirect = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Add wallet Money Direct
+                            Wallet to Wallet Transfer
                           </span>{" "}
                         </p>
                       </div>
                     </div>
                   </div>
-                  <form onSubmit={handlesubmit}>
+                  <form onSubmit={handleSubmit}>
                     <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3 pb-3">
                       {loading ? (
                         <div className="d-flex justify-content-center">
@@ -234,8 +355,8 @@ const SAAddWalletMoneyDirect = () => {
                         <>
                           <div className="text-center">
                             <h5>
-                              Enter All Correct Details For Add wallet Money
-                              Direct
+                              Enter All Correct Details For Wallet To Wallet
+                              Money Transfer
                             </h5>
                           </div>
                           <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
@@ -344,7 +465,7 @@ const SAAddWalletMoneyDirect = () => {
                           </div>
                           <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                             <label for="name" class="form-label">
-                              Enter Amount
+                              Selected User Available Balance
                             </label>
                             <div class="input-group flex-nowrap">
                               <span
@@ -358,11 +479,78 @@ const SAAddWalletMoneyDirect = () => {
                                 type="text"
                                 class="form-control"
                                 name="amount"
+                                value={formData.availableBalance}
+                                // onChange={handleChange}
+                                disabled
+                                placeholder=""
+                                pattern="^\d+(\.\d+)?$"
+                                title="Price should be digits Only"
+                                required
+                              />
+                            </div>
+                          </div>
+
+                          {console.log(
+                            "Available Balance:",
+                            formData.availableBalance
+                          )}
+
+                          <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                            <label
+                              htmlFor="walletBalance"
+                              className="form-label"
+                            >
+                              Your Wallet Balance
+                            </label>
+                            <div className="input-group flex-nowrap">
+                              <span
+                                className="input-group-text"
+                                id="addon-wrapping"
+                              >
+                                <FaRupeeSign />
+                              </span>
+                              <input
+                                type="text"
+                                id="walletBalance"
+                                className="form-control"
+                                placeholder="Wallet Balance"
+                                value={walletBalance || "0"}
+                                disabled
+                              />
+                            </div>
+                          </div>
+
+                          <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                            <label for="name" class="form-label">
+                              Enter Amount
+                            </label>
+                            <div class="input-group flex-nowrap">
+                              <span
+                                class="input-group-text"
+                                id="addon-wrapping"
+                              >
+                                {" "}
+                                <FaIndianRupeeSign />
+                              </span>
+                              {/* <input
+                                type="text"
+                                class="form-control"
+                                name="amount"
                                 value={formData.amount}
                                 onChange={handleChange}
                                 placeholder="Enter Amount"
                                 pattern="^\d+(\.\d+)?$"
                                 title="Price should be digits Only"
+                                required
+                              /> */}
+
+                              <input
+                                type="number"
+                                name="amount"
+                                placeholder="Enter amount"
+                                className="form-control"
+                                value={formData.amount}
+                                onChange={handleChange}
                                 required
                               />
                             </div>
@@ -396,10 +584,14 @@ const SAAddWalletMoneyDirect = () => {
                             <div className="text-start mb-3">
                               <button
                                 type="submit"
-                                className="btn p-2"
+                                className={`btn p-2 ${
+                                  buttonLoading
+                                    ? "btn-secondary"
+                                    : "btn-primary"
+                                }`}
                                 disabled={buttonLoading}
                               >
-                                {buttonLoading ? "Loading..." : "Submit"}
+                                {buttonLoading ? "Processing..." : "Submit"}
                               </button>
                             </div>
                           </div>
@@ -417,7 +609,7 @@ const SAAddWalletMoneyDirect = () => {
   );
 };
 
-export default SAAddWalletMoneyDirect;
+export default SdWalletToWalletTransfer;
 
 const Wrapper = styled.div`
   .main {

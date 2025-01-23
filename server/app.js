@@ -7,6 +7,8 @@ const expressFileUpload = require("express-fileupload");
 const fs = require("fs");
 // Testing upload file end
 const retailerRouter = require("./routers/Retailer/retailerRouter");
+const superDistributorRouter = require("./routers/SuperDistributor/superDistributorRouter");
+
 const instpayRouter = require("./routers/Retailer/instpayRouter");
 const ezytmRouter = require("./routers/Retailer/ezytmRouter");
 const sizarPayRouter = require("./routers/Retailer/sizarPayRouter");
@@ -36,6 +38,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/auth/retailer", retailerRouter);
+app.use("/api/auth/superDistributor", superDistributorRouter);
 app.use("/api/auth/log-reg", loginRouter);
 app.use("/api/auth/pay", paymentRouter);
 app.use("/api/auth/wallet", walletRouter);

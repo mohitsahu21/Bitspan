@@ -1,48 +1,44 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { MdOutlineFormatListNumbered } from "react-icons/md";
-import { FaMobileAlt, FaRupeeSign } from "react-icons/fa";
-import { LuTextSelect } from "react-icons/lu";
+import { MdDelete, MdOutlineFormatListNumbered } from "react-icons/md";
+import { FaEdit, FaMobileAlt, FaRupeeSign } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
-import axios from "axios";
-import ReactPaginate from "react-paginate";
-import { Dropdown, Modal, Spinner } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { CiViewList } from "react-icons/ci";
-import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
+import { Dropdown, Modal, Spinner } from "react-bootstrap";
+import axios from "axios";
+import { LuTextSelect } from "react-icons/lu";
 import Swal from "sweetalert2";
+import ReactPaginate from "react-paginate";
+import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
-const SdActiveUsersList = () => {
+const SdPendingKycUsers = () => {
+  const [ShowApproveModel, setShowApproveModel] = useState(false);
+  const [ShowRejectModel, setShowRejectModel] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.user);
-  const [isRefresh, setIsRefresh] = useState(false);
-  const [ShowChangeUserinfoModel, setShowChangeUserinfoModel] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
   const [users, setUsers] = useState([]);
+
   const [keyword, setKeyword] = useState("");
   const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
+  const [isRefresh, setIsRefresh] = useState(false);
   const [userType, setUserType] = useState(""); // For user type filter
 
   const userId = useSelector((state) => state.user.currentUser?.userId);
 
-  const maskSensitiveInfo = (value, maskLength, revealLength) => {
-    const maskedValue = "*".repeat(maskLength);
-    const revealedValue = value.slice(-revealLength);
-    return maskedValue + revealedValue;
-  };
-
-  const fetchActiveUsers = async () => {
+  const fetchPendingUsers = async () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getActiveUsers",
-        `http://localhost:7777/api/auth/superDistributor/getActiveUsers/${userId}`,
+        `http://localhost:7777/api/auth/superDistributor/getPendingKycUsers/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -53,7 +49,7 @@ const SdActiveUsersList = () => {
       setUsers(data.data);
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error fetching package data:", error);
       if (error?.response?.status == 401) {
         // alert("Your token is expired please login again")
         Swal.fire({
@@ -67,9 +63,21 @@ const SdActiveUsersList = () => {
     }
   };
 
+  // useEffect(() => {
+  //   fetchPendingUsers();
+  // }, []);
   useEffect(() => {
-    fetchActiveUsers();
+    fetchPendingUsers();
   }, [isRefresh]);
+
+  console.log(users);
+
+  // const filteredItems = users.filter(
+  //   (row) =>
+  //     (row?.UserName &&
+  //       row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+  //     (row?.UserId && row.UserId.toLowerCase().includes(keyword.trim().toLowerCase()))
+  // );
 
   const filteredItems = users.filter((row) => {
     const matchesKeyword =
@@ -77,10 +85,6 @@ const SdActiveUsersList = () => {
         row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
       (row?.UserId &&
         row.UserId.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.package_name &&
-        row.package_name
-          .toLowerCase()
-          .includes(keyword.trim().toLowerCase())) ||
       (row?.ContactNo &&
         row.ContactNo.toLowerCase().includes(keyword.trim().toLowerCase())) ||
       (row?.Email &&
@@ -107,8 +111,6 @@ const SdActiveUsersList = () => {
 
   const showApiData = filterPagination();
 
-  console.log(users);
-
   return (
     <>
       <Wrapper>
@@ -130,7 +132,7 @@ const SdActiveUsersList = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Active Users
+                          Pending KYC Users
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -140,7 +142,7 @@ const SdActiveUsersList = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Active Users
+                            Pending KYC Users
                           </span>{" "}
                         </p>
                       </div>
@@ -149,6 +151,25 @@ const SdActiveUsersList = () => {
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
                       <div className="row d-flex flex-column g-4">
+                        {/* <div className="d-flex flex-column flex-md-row gap-3">
+                                                    <div className="col-12 col-md-4 col-lg-3">
+                                                        <label for="fromDate" className="form-label">From</label>
+                                                        <input id="fromDate" className="form-control" type="date" />
+                                                    </div>
+                                                    <div className="col-12 col-md-6 col-lg-6">
+                                                        <label for="toDate" className="form-label">To</label>
+
+                                                        <input id="toDate" className="form-control " type="search"
+                                                         placeholder="Search User"
+                                                         value={keyword}
+                              onChange={(e) => setKeyword(e.target.value)} />
+                                                    </div>
+                                                    <div className="d-flex align-items-end">
+                                                        <button type="button" className="btn btn-primary button">Search</button>
+                                                    </div>
+
+                                                </div> */}
+
                         <div className="d-flex flex-column flex-xl-row gap-3">
                           <div className="col-12 col-md-12 col-lg-12 col-xl-8">
                             {/* <label for="fromDate" className="form-label">From</label> */}
@@ -208,17 +229,28 @@ const SdActiveUsersList = () => {
                                       <th scope="col">Role</th>
                                       <th scope="col">Email</th>
                                       <th scope="col">Mobile</th>
-                                      <th scope="col">Package Id</th>
-                                      <th scope="col">Package Name</th>
                                       {/* <th scope="col">Address</th> */}
-                                      {/* <th scope="col">PAN No</th>
-                                      <th scope="col">AAdhaar No</th> */}
+                                      <th scope="col">PAN No</th>
+                                      <th scope="col">AAdhaar No</th>
                                       <th scope="col">Business Name</th>
                                       <th scope="col">City</th>
                                       <th scope="col">State</th>
                                       <th scope="col">Pincode</th>
 
-                                      {/* <th scope="col">Status</th> */}
+                                      {/* <th scope="col">P-Coupon <br/>Price</th>
+                                                                      <th scope="col">E-Coupon <br/>Price</th> */}
+
+                                      <th scope="col">Created By</th>
+                                      <th scope="col">Website Name</th>
+
+                                      <th scope="col">Aadhar Front</th>
+                                      <th scope="col">Aadhar Back</th>
+                                      <th scope="col">Pan Card Front</th>
+                                      {/* <th scope="col">View KYC</th> */}
+                                      <th scope="col">Payment Status</th>
+                                      <th scope="col">Status</th>
+                                      <th scope="col">Note</th>
+                                      <th scope="col">Action</th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -233,24 +265,122 @@ const SdActiveUsersList = () => {
                                           <td>{user.UserName}</td>
                                           <td>{user.role}</td>
                                           <td>{user.Email}</td>
-                                          <td>
-                                            {maskSensitiveInfo(
-                                              user.ContactNo,
-                                              6,
-                                              4
-                                            )}
-                                          </td>
-                                          <td>{user.package_Id}</td>
-                                          {/* <td>{user.package_name}</td>
+                                          <td>{user.ContactNo}</td>
                                           <td>{user.PanCardNumber}</td>
-                                          <td>{user.AadharNumber}</td> */}
+                                          <td>{user.AadharNumber}</td>
                                           <td>{user.BusinessName}</td>
                                           <td>{user.City}</td>
 
                                           <td>{user.State}</td>
                                           <td>{user.PinCode}</td>
+                                          <td>
+                                            {user?.created_By_User_Id +
+                                              " " +
+                                              user?.created_By_User_Role}
+                                          </td>
+                                          <td>
+                                            {user?.role == "WhiteLabel"
+                                              ? user?.White_Label_Website_URL
+                                              : user?.created_By_Website}
+                                          </td>
 
+                                          {/* <td>
+                                        {item.attached_kyc
+                                            .split(",")
+                                            .map((kycurl, kycindx) => (
+                                              <div key={kycindx}>
+                                                <a
+                                                  href={kycurl}
+                                                  target="_blank"
+                                                  rel="noopener noreferrer"
+                                                >
+                                                  View KYC {kycindx + 1}
+                                                </a>
+                                              </div>
+                                            ))}
+                                      </td> */}
+                                          <td>
+                                            {user.AadharFront ? (
+                                              <a
+                                                href={user.AadharFront}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                              >
+                                                View
+                                              </a>
+                                            ) : (
+                                              "Not Available"
+                                            )}
+                                          </td>
+                                          <td>
+                                            {user.AadharBack ? (
+                                              <a
+                                                href={user.AadharBack}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                              >
+                                                View
+                                              </a>
+                                            ) : (
+                                              "Not Available"
+                                            )}
+                                          </td>
+                                          <td>
+                                            {user.PanCardFront ? (
+                                              <a
+                                                href={user.PanCardFront}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                              >
+                                                View
+                                              </a>
+                                            ) : (
+                                              "Not Available"
+                                            )}
+                                          </td>
+                                          <td>{user?.payment_status}</td>
                                           <td>{user.Status}</td>
+                                          {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
+                                          <td>{user?.Note}</td>
+                                          <td>
+                                            <Dropdown>
+                                              <Dropdown.Toggle
+                                                variant="success"
+                                                // id={`dropdown-${user.id}`}
+                                                as="span"
+                                                style={{
+                                                  border: "none",
+                                                  background: "none",
+                                                  cursor: "pointer",
+                                                }}
+                                                className="custom-dropdown-toggle"
+                                              >
+                                                <PiDotsThreeOutlineVerticalBold />
+                                              </Dropdown.Toggle>
+                                              <Dropdown.Menu>
+                                                <Dropdown.Item
+                                                  onClick={() => {
+                                                    setSelectedUser(user);
+                                                    setShowApproveModel(true);
+                                                  }}
+                                                >
+                                                  <span className="">
+                                                    {" "}
+                                                    <CiViewList />
+                                                  </span>{" "}
+                                                  Approve User
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                  onClick={() => {
+                                                    setSelectedUser(user);
+                                                    setShowRejectModel(true);
+                                                  }}
+                                                >
+                                                  <CiViewList /> Reject User
+                                                </Dropdown.Item>
+                                              </Dropdown.Menu>
+                                            </Dropdown>
+                                          </td>
                                         </tr>
                                       ))
                                     ) : (
@@ -286,38 +416,66 @@ const SdActiveUsersList = () => {
             </div>
           </div>
         </div>
-        {/* Change user info Model  start*/}
+
+        {/* Approve user Model  start*/}
 
         <Modal
           // size="lg"
-          show={ShowChangeUserinfoModel}
+          show={ShowApproveModel}
           //   fullscreen={true}
-          onHide={() => setShowChangeUserinfoModel(false)}
+          onHide={() => setShowApproveModel(false)}
           aria-labelledby="packageDetail-modal-sizes-title-lg"
         >
           <Modal.Header closeButton>
             <Modal.Title id="packageDetail-modal-sizes-title-lg">
-              Change User Info
+              Approve User
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {selectedUser && (
-              <SAChangeUserInfo
+              <SAApproveUser
                 user={selectedUser}
-                setShowChangeUserinfoModel={setShowChangeUserinfoModel}
+                setShowApproveModel={setShowApproveModel}
                 setIsRefresh={setIsRefresh}
               />
             )}
           </Modal.Body>
         </Modal>
 
-        {/*  Change user info Model  end*/}
+        {/*  Approve user Model  end*/}
+
+        {/* Reject user Model  start*/}
+
+        <Modal
+          // size="lg"
+          show={ShowRejectModel}
+          //   fullscreen={true}
+          onHide={() => setShowRejectModel(false)}
+          aria-labelledby="packageDetail-modal-sizes-title-lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="packageDetail-modal-sizes-title-lg">
+              Reject User
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {selectedUser && (
+              <SARejectUser
+                user={selectedUser}
+                setShowRejectModel={setShowRejectModel}
+                setIsRefresh={setIsRefresh}
+              />
+            )}
+          </Modal.Body>
+        </Modal>
+
+        {/*  Reject user Model  end*/}
       </Wrapper>
     </>
   );
 };
 
-export default SdActiveUsersList;
+export default SdPendingKycUsers;
 
 const Wrapper = styled.div`
   .main {
@@ -354,6 +512,9 @@ const Wrapper = styled.div`
     .formdata {
       padding-left: 13rem;
     }
+  }
+  a {
+    text-decoration: none;
   }
   .custom-dropdown-toggle::after {
     display: none !important;
