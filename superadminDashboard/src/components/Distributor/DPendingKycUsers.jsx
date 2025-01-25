@@ -1,39 +1,44 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { MdOutlineFormatListNumbered } from "react-icons/md";
-import { FaMobileAlt } from "react-icons/fa";
+import { MdDelete, MdOutlineFormatListNumbered } from "react-icons/md";
+import { FaEdit, FaMobileAlt, FaRupeeSign } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
-import axios from "axios";
-import ReactPaginate from "react-paginate";
-import { Dropdown, Spinner } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { CiViewList } from "react-icons/ci";
-import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
+import { Dropdown, Modal, Spinner } from "react-bootstrap";
+import axios from "axios";
+import { LuTextSelect } from "react-icons/lu";
 import Swal from "sweetalert2";
+import ReactPaginate from "react-paginate";
+import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
-const DAllUsersJoinedList = () => {
+const DPendingKycUsers = () => {
+  const [ShowApproveModel, setShowApproveModel] = useState(false);
+  const [ShowRejectModel, setShowRejectModel] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
+
   const [keyword, setKeyword] = useState("");
-  const [complaintsPerPage, setComplaintsPerPage] = useState(10);
+  const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
+  const [isRefresh, setIsRefresh] = useState(false);
   const [userType, setUserType] = useState(""); // For user type filter
-  const [status, setStatus] = useState(""); // For status filter
 
   const userId = useSelector((state) => state.user.currentUser?.userId);
 
-  const fetchAllUsers = async () => {
+  const fetchPendingUsers = async () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getSuperDistributorUsersData/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getPendingKycUsers/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -44,7 +49,7 @@ const DAllUsersJoinedList = () => {
       setUsers(data.data);
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error fetching package data:", error);
       if (error?.response?.status == 401) {
         // alert("Your token is expired please login again")
         Swal.fire({
@@ -58,9 +63,21 @@ const DAllUsersJoinedList = () => {
     }
   };
 
+  // useEffect(() => {
+  //   fetchPendingUsers();
+  // }, []);
   useEffect(() => {
-    fetchAllUsers();
-  }, []);
+    fetchPendingUsers();
+  }, [isRefresh]);
+
+  console.log(users);
+
+  // const filteredItems = users.filter(
+  //   (row) =>
+  //     (row?.UserName &&
+  //       row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+  //     (row?.UserId && row.UserId.toLowerCase().includes(keyword.trim().toLowerCase()))
+  // );
 
   const filteredItems = users.filter((row) => {
     const matchesKeyword =
@@ -68,10 +85,6 @@ const DAllUsersJoinedList = () => {
         row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
       (row?.UserId &&
         row.UserId.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.package_name &&
-        row.package_name
-          .toLowerCase()
-          .includes(keyword.trim().toLowerCase())) ||
       (row?.ContactNo &&
         row.ContactNo.toLowerCase().includes(keyword.trim().toLowerCase())) ||
       (row?.Email &&
@@ -81,10 +94,7 @@ const DAllUsersJoinedList = () => {
       !userType ||
       userType === "---Select User Type---" ||
       row.role === userType;
-    const matchesStatus =
-      !status || status === "---Select Status---" || row.Status === status;
-
-    return matchesKeyword && matchesUserType && matchesStatus;
+    return matchesKeyword && matchesUserType;
   });
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
@@ -100,8 +110,6 @@ const DAllUsersJoinedList = () => {
   };
 
   const showApiData = filterPagination();
-
-  console.log(users);
 
   return (
     <>
@@ -123,7 +131,9 @@ const DAllUsersJoinedList = () => {
                                                 <h3>Wallet Transaction Report</h3>
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
-                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">All Users</h4>
+                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
+                          Pending KYC Users
+                        </h4>
                         <p className="mx-lg-5">
                           {" "}
                           <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
@@ -132,7 +142,7 @@ const DAllUsersJoinedList = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            All Users
+                            Pending KYC Users
                           </span>{" "}
                         </p>
                       </div>
@@ -140,21 +150,39 @@ const DAllUsersJoinedList = () => {
                   </div>
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
-                      <div className="form-container d-flex flex-column gap-3">
-                        <div className="d-flex flex-wrap gap-3">
-                          <div className=" col-12 col-md-12 col-lg-12">
-                            {/* <label for="toDate" className="form-label fw-bold">To</label> */}
+                      <div className="row d-flex flex-column g-4">
+                        {/* <div className="d-flex flex-column flex-md-row gap-3">
+                                                    <div className="col-12 col-md-4 col-lg-3">
+                                                        <label for="fromDate" className="form-label">From</label>
+                                                        <input id="fromDate" className="form-control" type="date" />
+                                                    </div>
+                                                    <div className="col-12 col-md-6 col-lg-6">
+                                                        <label for="toDate" className="form-label">To</label>
+
+                                                        <input id="toDate" className="form-control " type="search"
+                                                         placeholder="Search User"
+                                                         value={keyword}
+                              onChange={(e) => setKeyword(e.target.value)} />
+                                                    </div>
+                                                    <div className="d-flex align-items-end">
+                                                        <button type="button" className="btn btn-primary button">Search</button>
+                                                    </div>
+
+                                                </div> */}
+
+                        <div className="d-flex flex-column flex-xl-row gap-3">
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                            {/* <label for="fromDate" className="form-label">From</label> */}
                             <input
-                              id="toDate"
-                              className="form-control "
+                              id="fromDate"
+                              className="form-control"
                               type="search"
                               placeholder="Enter User Name/User Id/Mobile/Email Id"
                               value={keyword}
                               onChange={(e) => setKeyword(e.target.value)}
                             />
                           </div>
-
-                          <div className="field-group col-11 col-md-4 col-lg-2">
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-3">
                             {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
                             <select
                               className="form-select"
@@ -171,57 +199,10 @@ const DAllUsersJoinedList = () => {
                               <option value="WhiteLabel">White Label</option> */}
                             </select>
                           </div>
-                          <div className="field-group col-11 col-md-4 col-lg-2">
-                            {/* <label for="toDate" className="form-label fw-bold">PAN Type</label> */}
-                            <select
-                              className="form-select"
-                              aria-label="Default select example"
-                              value={status}
-                              onChange={(e) => setStatus(e.target.value)}
-                            >
-                              <option selected>---Select Status---</option>
-                              <option value="Active">Active</option>
-                              <option value="Deactive">Deactive</option>
-                              <option value="Pending">Pending</option>
-                            </select>
-                          </div>
-                          <div className="field-group  col-11 col-md-4 col-lg-2 ">
-                            {/* <label for="toDate" className="form-label fw-bold">Status</label> */}
-                            <select
-                              className="form-select"
-                              aria-label="Default select example"
-                              value={complaintsPerPage}
-                              onChange={(e) =>
-                                setComplaintsPerPage(e.target.value)
-                              }
-                            >
-                              {/* <option selected>--Row Per Page---</option> */}
-                              <option value="10">10</option>
-                              <option value="25">25</option>
-                              <option value="50">50</option>
-                              <option value="100">100</option>
-                            </select>
-                          </div>
-
-                          {/* <div className=" col-11 col-md-4 col-lg-2">
+                          {/* <div className="d-flex align-items-end">
                                                         <button type="button" className="btn btn-primary button">Search</button>
                                                     </div> */}
                         </div>
-
-                        {/* <div className="d-flex flex-column flex-md-row gap-3">
-                                                    <div className="col-12 col-md-4 col-lg-3">
-                                                        <label for="fromDate" className="form-label">From</label>
-                                                        <input id="fromDate" className="form-control" type="date" />
-                                                    </div>
-                                                    <div className="col-12 col-md-4 col-lg-3">
-                                                        <label for="toDate" className="form-label">To</label>
-                                                        <input id="toDate" className="form-control " type="date" />
-                                                    </div>
-                                                    <div className="d-flex align-items-end">
-                                                        <button type="button" className="btn btn-primary button">Search</button>
-                                                    </div>
-
-                                                </div> */}
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
@@ -248,8 +229,6 @@ const DAllUsersJoinedList = () => {
                                       <th scope="col">Role</th>
                                       <th scope="col">Email</th>
                                       <th scope="col">Mobile</th>
-                                      <th scope="col">Package Id</th>
-                                      <th scope="col">Package Name</th>
                                       {/* <th scope="col">Address</th> */}
                                       <th scope="col">PAN No</th>
                                       <th scope="col">AAdhaar No</th>
@@ -264,14 +243,14 @@ const DAllUsersJoinedList = () => {
                                       <th scope="col">Created By</th>
                                       <th scope="col">Website Name</th>
 
-                                      <th scope="col">Payment Status</th>
-                                      {/* <th scope="col">Aadhar Front</th>
-                                    <th scope="col">Aadhar Back</th>
-                                    <th scope="col">Pan Card Front</th> */}
+                                      <th scope="col">Aadhar Front</th>
+                                      <th scope="col">Aadhar Back</th>
+                                      <th scope="col">Pan Card Front</th>
                                       {/* <th scope="col">View KYC</th> */}
+                                      <th scope="col">Payment Status</th>
                                       <th scope="col">Status</th>
-                                      {/* <th scope="col">Note</th> */}
-                                      {/* <th scope="col">Action</th> */}
+                                      <th scope="col">Note</th>
+                                      <th scope="col">Action</th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -287,8 +266,6 @@ const DAllUsersJoinedList = () => {
                                           <td>{user.role}</td>
                                           <td>{user.Email}</td>
                                           <td>{user.ContactNo}</td>
-                                          <td>{user.package_Id}</td>
-                                          <td>{user.package_name}</td>
                                           <td>{user.PanCardNumber}</td>
                                           <td>{user.AadharNumber}</td>
                                           <td>{user.BusinessName}</td>
@@ -306,7 +283,6 @@ const DAllUsersJoinedList = () => {
                                               ? user?.White_Label_Website_URL
                                               : user?.created_By_Website}
                                           </td>
-                                          <td>{user?.payment_status}</td>
 
                                           {/* <td>
                                         {item.attached_kyc
@@ -323,67 +299,88 @@ const DAllUsersJoinedList = () => {
                                               </div>
                                             ))}
                                       </td> */}
-                                          {/* <td>
-                                          <a
-                                            href={user.AadharFront}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                          >
-                                            View
-                                          </a>
-                                        </td>
-                                        <td>
-                                          <a
-                                            href={user.AadharBack}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                          >
-                                            View
-                                          </a>
-                                        </td>
-                                        <td>
-                                          <a
-                                            href={user.PanCardFront}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                          >
-                                            View
-                                          </a>
-                                        </td> */}
+                                          <td>
+                                            {user.AadharFront ? (
+                                              <a
+                                                href={user.AadharFront}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                              >
+                                                View
+                                              </a>
+                                            ) : (
+                                              "Not Available"
+                                            )}
+                                          </td>
+                                          <td>
+                                            {user.AadharBack ? (
+                                              <a
+                                                href={user.AadharBack}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                              >
+                                                View
+                                              </a>
+                                            ) : (
+                                              "Not Available"
+                                            )}
+                                          </td>
+                                          <td>
+                                            {user.PanCardFront ? (
+                                              <a
+                                                href={user.PanCardFront}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                              >
+                                                View
+                                              </a>
+                                            ) : (
+                                              "Not Available"
+                                            )}
+                                          </td>
+                                          <td>{user?.payment_status}</td>
                                           <td>{user.Status}</td>
                                           {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
-                                          {/* <td>{user?.Note}</td> */}
-                                          {/* <td>
-                                          <Dropdown>
-                                            <Dropdown.Toggle
-                                              variant="success"
-                                              // id={`dropdown-${user.id}`}
-                                              as="span" style={{ border: 'none', background: 'none', cursor: 'pointer' }}
-                                              className="custom-dropdown-toggle"
-                                            >
-                                             <PiDotsThreeOutlineVerticalBold />
-                                            </Dropdown.Toggle>
-                                            <Dropdown.Menu>
-                                              { user.Status === "Active" && 
-                                                <Dropdown.Item
-                                                onClick={() => {
-                                                  // setSelectedUser(user);
-                                                  // setShowApproveModel(true);
-                                                  deactivateUser(user.UserId)
+                                          <td>{user?.Note}</td>
+                                          <td>
+                                            <Dropdown>
+                                              <Dropdown.Toggle
+                                                variant="success"
+                                                // id={`dropdown-${user.id}`}
+                                                as="span"
+                                                style={{
+                                                  border: "none",
+                                                  background: "none",
+                                                  cursor: "pointer",
                                                 }}
+                                                className="custom-dropdown-toggle"
                                               >
-                                                <span className="">
-                                                  {" "}
-                                                  <CiViewList />
-                                                </span>{" "}
-                                                Deactivate User
-                                              </Dropdown.Item>
-                                              }
-                                            
-                                         
-                                            </Dropdown.Menu>
-                                          </Dropdown>
-                                        </td> */}
+                                                <PiDotsThreeOutlineVerticalBold />
+                                              </Dropdown.Toggle>
+                                              <Dropdown.Menu>
+                                                <Dropdown.Item
+                                                  onClick={() => {
+                                                    setSelectedUser(user);
+                                                    setShowApproveModel(true);
+                                                  }}
+                                                >
+                                                  <span className="">
+                                                    {" "}
+                                                    <CiViewList />
+                                                  </span>{" "}
+                                                  Approve User
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                  onClick={() => {
+                                                    setSelectedUser(user);
+                                                    setShowRejectModel(true);
+                                                  }}
+                                                >
+                                                  <CiViewList /> Reject User
+                                                </Dropdown.Item>
+                                              </Dropdown.Menu>
+                                            </Dropdown>
+                                          </td>
                                         </tr>
                                       ))
                                     ) : (
@@ -419,12 +416,66 @@ const DAllUsersJoinedList = () => {
             </div>
           </div>
         </div>
+
+        {/* Approve user Model  start*/}
+
+        <Modal
+          // size="lg"
+          show={ShowApproveModel}
+          //   fullscreen={true}
+          onHide={() => setShowApproveModel(false)}
+          aria-labelledby="packageDetail-modal-sizes-title-lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="packageDetail-modal-sizes-title-lg">
+              Approve User
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {selectedUser && (
+              <SAApproveUser
+                user={selectedUser}
+                setShowApproveModel={setShowApproveModel}
+                setIsRefresh={setIsRefresh}
+              />
+            )}
+          </Modal.Body>
+        </Modal>
+
+        {/*  Approve user Model  end*/}
+
+        {/* Reject user Model  start*/}
+
+        <Modal
+          // size="lg"
+          show={ShowRejectModel}
+          //   fullscreen={true}
+          onHide={() => setShowRejectModel(false)}
+          aria-labelledby="packageDetail-modal-sizes-title-lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="packageDetail-modal-sizes-title-lg">
+              Reject User
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {selectedUser && (
+              <SARejectUser
+                user={selectedUser}
+                setShowRejectModel={setShowRejectModel}
+                setIsRefresh={setIsRefresh}
+              />
+            )}
+          </Modal.Body>
+        </Modal>
+
+        {/*  Reject user Model  end*/}
       </Wrapper>
     </>
   );
 };
 
-export default DAllUsersJoinedList;
+export default DPendingKycUsers;
 
 const Wrapper = styled.div`
   .main {
@@ -440,13 +491,8 @@ const Wrapper = styled.div`
     border-color: #5356fa;
   }
   .form-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  .field-group {
-    display: flex;
-    flex-direction: column;
+    width: 50%;
+    margin: auto;
   }
   th {
     font-weight: 500;
@@ -469,22 +515,6 @@ const Wrapper = styled.div`
   }
   a {
     text-decoration: none;
-  }
-  @media (max-width: 768px) {
-    .field-group {
-      flex: 1 1 100%;
-    }
-  }
-  @media (min-width: 769px) and (max-width: 1200px) {
-    .field-group {
-      flex: 1 1 45%;
-    }
-  }
-
-  @media (min-width: 1201px) {
-    .field-group {
-      width: 30%;
-    }
   }
   .custom-dropdown-toggle::after {
     display: none !important;

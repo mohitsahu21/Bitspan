@@ -1,32 +1,40 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import styled from "styled-components";
+import { MdFormatListNumberedRtl } from "react-icons/md";
+import { BiHomeAlt } from "react-icons/bi";
 import ReactPaginate from "react-paginate";
-import { Dropdown, Modal, Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 
-const DFundTransferStatus = () => {
-  // const [transactions, setTransactions] = useState([]); // Default to an empty array
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(0); // For Pagination
-
-  const { token } = useSelector((state) => state.user);
+const DWalletWithdrawReport = () => {
+  const dispatch = useDispatch();
+  const { currentUser, token } = useSelector((state) => state.user);
+  const [apiData, setApiData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [keyword, setKeyword] = useState("");
   const complaintsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(0);
   const [fromDate, setFromDate] = useState(""); // From date filter
   const [toDate, setToDate] = useState(""); // To date filter
-  const [keyword, setKeyword] = useState("");
-  const userId = useSelector((state) => state.user.currentUser?.userId);
-  const [apiData, setApiData] = useState([]);
+  const [PaymentMode, setPaymentMode] = useState("");
   const [status, setStatus] = useState("");
+  const [users, setUsers] = useState([]);
+  // const userData = currentUser.userId;
+  // Fetch userId and token from Redux store
+  const userId = useSelector((state) => state.user.currentUser?.userId);
 
-  // Fetch data from API
+  const maskSensitiveInfo = (value, maskLength, revealLength) => {
+    const maskedValue = "*".repeat(maskLength);
+    const revealedValue = value.slice(-revealLength);
+    return maskedValue + revealedValue;
+  };
+
   const fetchData = async () => {
-    setLoading(true); // Start loading
+    setLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getWalletToWalletTransfer/${userId}`,
+        // `http://localhost:7777/api/auth/retailer/pan-4.0/${userData}`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getWalletWithdrawHistory/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -34,51 +42,46 @@ const DFundTransferStatus = () => {
           },
         }
       );
-
       setApiData(response.data.data);
       console.log(response.data.data);
     } catch (error) {
       console.error("Error fetching data", error);
-
+      // Check for token expiration (401 error)
       if (error?.response?.status === 401) {
-        // Handle expired token
         Swal.fire({
           icon: "error",
           title: "Your token is expired. Please login again.",
         });
-        dispatch(clearUser());
-        navigate("/");
+        dispatch(clearUser()); // Clear user session
+        navigate("/"); // Redirect to login page
       } else {
-        // Handle other errors gracefully
-        setApiData([]);
+        // Handle other errors (optional)
         Swal.fire({
           icon: "error",
-          title: "Failed to fetch data. Please try again later.",
+          title: "Error!",
+          text: "An error occurred while fetching data.",
         });
       }
     } finally {
-      setLoading(false); // End loading state
+      setLoading(false); // Stop loading
     }
   };
 
-  // Effect to fetch data whenever the currentPage changes
   useEffect(() => {
     fetchData();
   }, []);
 
   const filteredItems = apiData.filter((row) => {
-    // const searchKeyword = keyword.trim().toLowerCase();
     const matchesKeyword =
       // (row?.userId &&
       //   row.userId.toLowerCase().includes(keyword.trim().toLowerCase())) ||
       // (row?.UserName &&
       // row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.order_id &&
-        row.order_id.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.transaction_id &&
-        row.transaction_id
-          .toLowerCase()
-          .includes(keyword.trim().toLowerCase()));
+      row?.order_id &&
+      row.order_id.toLowerCase().includes(keyword.trim().toLowerCase());
+    //   ||
+    // (row?.txid &&
+    //   row.txid.toLowerCase().includes(keyword.trim().toLowerCase()));
     // (row?.name &&
     //   row.name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
     // (row?.mobile &&
@@ -120,37 +123,34 @@ const DFundTransferStatus = () => {
     <>
       <Wrapper>
         <div className="main">
-          <div className="container-fluid">
-            <div className="row flex-wrap justify-content-center ">
+          <div className="container-fluid ">
+            <div className="row flex-wrap justify-content-lg-center justify-content-center">
               <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
                 {/* <Sider /> */}
               </div>
               <div
                 className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
-                           mt-5 formdata"
+                             mt-5 formdata"
               >
-                <div className="main shadow-none">
-                  <div className="row shadow-none">
-                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div className="main shadow-none ">
+                  <div className="row shadow-none ">
+                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       {/* <div className="text-center">
-                                              <h3>Wallet Transaction Report</h3>
-                                          </div> */}
+                                                <h3>PAN Transaction Report</h3>
+                                            </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Wallet TO Wallet Transfer History
+                          Wallet Withdraw History
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; Wallet TO Wallet Transfer
-                          History
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Wallet Withdraw History
                         </h6>
                       </div>
                     </div>
                   </div>
-                  <div className="row justify-content-xl-end justify-content-center pe-lg-4">
-                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded p-5 m-4">
-                      <div className="text-center">
-                        <h5>All Wallet Transfer Request Status</h5>
-                      </div>
+
+                  <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
+                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow bg-body-tertiary rounded  p-5 m-4">
                       <div className="row d-flex flex-column g-4">
                         <div className="d-flex flex-column flex-md-row gap-3">
                           <div className="col-12 col-md-4 col-lg-3">
@@ -188,11 +188,15 @@ const DFundTransferStatus = () => {
                               onChange={(e) => setStatus(e.target.value)}
                             >
                               <option selected>---Select---</option>
-                              <option value="Success">Success</option>
+                              <option value="Approve">Approve</option>
                               <option value="Pending">Pending</option>
-                              {/* <option value="Reject">Reject</option> */}
+                              <option value="Reject">Reject</option>
                             </select>
                           </div>
+
+                          {/* <div className="d-flex align-items-end">
+                                                        <button type="button" className="btn btn-primary button">Search</button>
+                                                    </div> */}
                         </div>
                         <div className="d-flex flex-column flex-xl-row gap-3">
                           <div className="col-12 col-md-12 col-lg-12 col-xl-8">
@@ -201,7 +205,7 @@ const DFundTransferStatus = () => {
                               id="fromDate"
                               className="form-control"
                               type="search"
-                              placeholder="search By Order Id Or Txn Id"
+                              placeholder="search By Order Id "
                               value={keyword}
                               onChange={(e) => setKeyword(e.target.value)}
                             />
@@ -213,60 +217,80 @@ const DFundTransferStatus = () => {
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                          <div className="table-responsive">
+                          <div class="table-responsive">
                             {loading ? (
-                              <div className="d-flex justify-content-center">
-                                <Spinner animation="border" role="status">
-                                  <span className="visually-hidden">
-                                    Loading...
-                                  </span>
-                                </Spinner>
-                              </div>
+                              <p>Loading...</p>
                             ) : (
-                              <>
-                                <table className="table table-striped">
-                                  <thead className="table-dark">
-                                    <tr>
-                                      <th scope="col">S.No.</th>
-                                      <th scope="col">Date</th>
-                                      <th scope="col">Receiver ID</th>
-                                      <th scope="col">Receiver Name</th>
-                                      <th scope="col">Amount</th>
-                                      <th scope="col">Order ID</th>
-                                      <th scope="col">Transaction ID</th>
-                                      <th scope="col">Status</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {showApiData && showApiData.length > 0 ? (
-                                      showApiData.map((item, index) => (
-                                        <tr key={index}>
-                                          <td>{item.id}</td>
-                                          <td>{item.created_at}</td>
-                                          <td>{item.receiver_id}</td>
-                                          <td>{item.receiver_name}</td>
-                                          <td>{item.amount}</td>
-                                          <td>{item.order_id}</td>
-                                          <td>{item.transaction_id}</td>
-                                          <td>{item.status}</td>
-                                        </tr>
-                                      ))
-                                    ) : (
-                                      <tr>
-                                        <td colSpan="10">No data available</td>{" "}
-                                        {/* Updated colSpan */}
+                              <table className="table table-striped">
+                                <thead className="table-dark">
+                                  <tr>
+                                    {/* <th scope="col">#</th> */}
+                                    <th scope="col">S.No.</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Order ID</th>
+                                    <th scope="col">Bank Holder Name</th>
+                                    <th scope="col">Bank Name</th>
+                                    <th scope="col">IFSC Code</th>
+                                    <th scope="col">Bank Account Number</th>
+
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Withdraw Reason</th>
+                                    <th scope="col">Remark</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Process Date</th>
+                                    <th scope="col">UTR/Txn No.</th>
+                                    <th scope="col">Transaction Type</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {showApiData && showApiData.length > 0 ? (
+                                    showApiData.map((item, index) => (
+                                      <tr key={index}>
+                                        {/* <td>{index + 1}</td> */}
+
+                                        <td>{item.id}</td>
+                                        <td>{item.created_at}</td>
+                                        <td>{item.order_id}</td>
+                                        <td>{item.bankholder_name}</td>
+                                        <td>{item.bank_name}</td>
+                                        <td>{item.IFSC_code}</td>
+                                        <td>{item.bankaccount_number}</td>
+                                        <td>{item.amount}</td>
+                                        <td>{item.withdrawReason}</td>
+
+                                        <td>{item.remark}</td>
+                                        <td
+                                          style={{
+                                            color:
+                                              item.status === "Pending"
+                                                ? "#FFC107"
+                                                : item.status === "Reject"
+                                                ? "#DC3545"
+                                                : item.status === "Success"
+                                                ? "#28A745"
+                                                : "black",
+                                          }}
+                                        >
+                                          {item.status}
+                                        </td>
+                                        <td>{item.process_date}</td>
+                                        <td>{item.transaction_Id}</td>
+                                        <td>{item.Transactoion_Type}</td>
                                       </tr>
-                                    )}
-                                  </tbody>
-                                </table>
-                              </>
+                                    ))
+                                  ) : (
+                                    <tr>
+                                      <td colSpan="20">No data available</td>
+                                    </tr>
+                                  )}
+                                </tbody>
+                              </table>
                             )}
                           </div>
-                          {/* Pagination */}
                           <PaginationContainer>
                             <ReactPaginate
-                              previousLabel={"Previous"}
-                              nextLabel={"Next"}
+                              previousLabel={"previous"}
+                              nextLabel={"next"}
                               breakLabel={"..."}
                               pageCount={totalPages}
                               marginPagesDisplayed={2}
@@ -290,20 +314,16 @@ const DFundTransferStatus = () => {
   );
 };
 
-export default DFundTransferStatus;
+export default DWalletWithdrawReport;
 
 const Wrapper = styled.div`
   .main {
     height: 100%;
     width: 100%;
   }
-  .button {
+  button {
+    color: #fff;
     background: #6d70ff;
-    border-color: #6d70ff;
-  }
-  .button:hover {
-    background: #5356fa;
-    border-color: #5356fa;
   }
   .form-container {
     width: 50%;
@@ -312,19 +332,9 @@ const Wrapper = styled.div`
   th {
     font-weight: 500;
     font-size: 14px;
-    white-space: nowrap;
   }
   td {
     font-size: 14px;
-  }
-  .pagination {
-    display: flex;
-    list-style-type: none;
-    padding: 0;
-  }
-  .pagination .active {
-    font-weight: bold;
-    color: #6d70ff;
   }
   @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
@@ -357,21 +367,23 @@ const PaginationContainer = styled.div`
     border: 1px solid #e6ecf1;
     color: #007bff;
     cursor: pointer;
+    /* background-color: #004aad0a; */
     text-decoration: none;
     border-radius: 5px;
     box-shadow: 0px 0px 1px #000;
-    font-size: 14px; /* Default font size */
   }
 
   .pagination li.active a {
     background-color: #004aad;
     color: white;
     border: 1px solid #004aad;
+    border-radius: 5px;
   }
 
   .pagination li.disabled a {
     color: white;
     cursor: not-allowed;
+    border-radius: 5px;
     background-color: #3a4e69;
     border: 1px solid #3a4e69;
   }
@@ -379,6 +391,8 @@ const PaginationContainer = styled.div`
   .pagination li a:hover:not(.active) {
     background-color: #004aad;
     color: white;
+    border-radius: 5px;
+    border: 1px solid #004aad;
   }
 
   /* Responsive adjustments for smaller screens */

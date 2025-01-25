@@ -1,231 +1,407 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import {
-  MdCurrencyRupee,
-  MdEmail,
-  MdOutlineFormatListNumbered,
-} from "react-icons/md";
-import {
-  FaAddressCard,
-  FaMobileAlt,
-  FaRupeeSign,
-  FaUser,
-} from "react-icons/fa";
-import { RiMarkPenLine } from "react-icons/ri";
+import axios from "axios";
+import { FaAddressCard, FaUser } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
 import { BiHomeAlt } from "react-icons/bi";
-import { PiAddressBook } from "react-icons/pi";
-import { LuTextSelect, LuUserCheck } from "react-icons/lu";
-import { SlLocationPin } from "react-icons/sl";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom"; // Import useParams for fetching bid from URL
+import Swal from "sweetalert2";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const DBankAccountVerify = () => {
+  // const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { currentUser, token } = useSelector((state) => state.user);
+  const [formData, setFormData] = useState({
+    bankholder_name: "",
+    bankaccount_number: "",
+    IFSC_code: "",
+    bank_name: "",
+  });
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false); // To track if OTP has been sent
+  const [error, setError] = useState(""); // To hold validation error messages
+  const [timer, setTimer] = useState(0); // Timer state
+  const [loading, setLoading] = useState(false); // State for loading effect
+
+  const { bid } = useParams(); // Fetch bid from URL params
+
+  // Function to fetch bank account details using bid
+  const fetchBankDetails = async (bid) => {
+    console.log("Fetching bank details for bid:", bid); // Log bid before request
+    try {
+      const response = await axios.get(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getBankAccountDetails/${bid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Add token to the request header
+          },
+        }
+      );
+      console.log("Response from API:", response.data); // Log API response
+
+      if (response.data.success) {
+        console.log("Bank details found:", response.data.data);
+        setFormData(response.data.data); // Set the form with fetched data
+      } else {
+        console.warn("Bank account not found");
+        alert("Bank account not found");
+      }
+    } catch (error) {
+      console.error("Error fetching bank details:", error);
+      if (error?.response?.status === 401) {
+        // Token expired handling
+        Swal.fire({
+          icon: "error",
+          title: "Session Expired",
+          text: "Your session has expired. Please log in again.",
+        });
+
+        dispatch(clearUser()); // Clear user session (ensure `clearUser` is defined in your Redux actions)
+        navigate("/"); // Redirect to login page
+      } else {
+        alert("Failed to fetch bank details");
+      }
+    }
+  };
+
+  // Fetch bank details when bid is available
+  useEffect(() => {
+    console.log("useEffect triggered with bid:", bid); // Log when useEffect is triggered
+    if (bid) {
+      fetchBankDetails(bid);
+    }
+  }, [bid]);
+
+  // useEffect(() => {
+  //   let interval;
+  //   if (timer > 0) {
+  //     interval = setInterval(() => {
+  //       setTimer((prevTimer) => prevTimer - 1);
+  //     }, 1000);
+  //   } else if (timer === 0 && otpSent) {
+  //     setOtpSent(false); // Re-enable the button after timer ends
+  //   }
+  //   return () => clearInterval(interval); // Cleanup interval on unmount
+  // }, [timer, otpSent]);
+
+  useEffect(() => {
+    let interval;
+    if (timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    }
+
+    // Cleanup interval when timer reaches 0 or on component unmount
+    return () => clearInterval(interval);
+  }, [timer]);
+
+  const UserId = useSelector((state) => state.user.currentUser?.userId);
+  // Function to handle OTP request
+  const handleGetOtp = async () => {
+    setLoading(true); // Start loading
+
+    try {
+      const response = await axios.post(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/changeBankStatus",
+        { UserId, bid }
+      );
+
+      console.log(response);
+
+      if (response.data.status == "Success") {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "OTP sent successfully!",
+          confirmButtonText: "Okay",
+        });
+        setOtpSent(true); // Change button text to "Resend OTP"
+        setTimer(30); // Start 30-second timer
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: "Failed to send OTP",
+          confirmButtonText: "Okay",
+        });
+      }
+    } catch (error) {
+      console.error("Error sending OTP:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Error sending OTP. Please try again later.",
+        confirmButtonText: "Okay",
+      });
+    }
+    setLoading(false); // Stop loading after the request completes
+  };
+
+  console.log(otp);
+
+  const SubmitBankOtp = async () => {
+    // Check if OTP is empty
+    if (!otp) {
+      Swal.fire({
+        icon: "warning",
+        title: "Oops...",
+        text: "Please Enter OTP",
+      });
+      return; // Stop the function execution if OTP is not provided
+    }
+
+    try {
+      const response = await axios.post(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/verifyOtpAndChangeBankStatus",
+        { UserId, otp }
+      );
+      if (response.data.status === "Success") {
+        Swal.fire({
+          icon: "success",
+          title: "OTP Submitted Successfully!",
+          text: "Your OTP has been verified and status updated.",
+          willClose: () => {
+            // Navigate to another page once SweetAlert closes
+            window.location.href = "/bank-account-setup"; // Replace '/success' with your desired route
+          },
+        });
+        setOtpSent(true); // OTP has been sent
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Failed to Submit OTP",
+          text:
+            `${response.data.message}` ||
+            "An error occurred while submitting the OTP. Please try again.",
+        });
+      }
+    } catch (error) {
+      console.error("Error submit OTP:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text:
+          `${error.response.data.message}` ||
+          "An error occurred while submitting the OTP. Please try again.",
+      });
+    }
+  };
+
   return (
-    <>
-      <Wrapper>
-        {/* <HeadBar /> */}
-        <div className="main">
-          <div className="container-fluid">
-            <div className="row flex-wrap justify-content-center ">
-              <div className="col-xxl-3 col-xl-5 col-lg-5 col-md-5 me-md-5 p-0 pe-md-5 d-none">
-                {/* <Sider /> */}
-              </div>
-              <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11 mt-5 formdata">
-                <div className="main shadow-none ">
-                  <div className="row shadow-none ">
-                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      {/* <div className="text-start">
-                        <h3>Raise Complaint</h3>
-                      </div> */}
-                      <div className="d-flex justify-content-between align-items-center flex-wrap">
-                        <h4 className="px-lg-3">Bank Details</h4>
-                        <p className="mx-lg-5">
-                          {" "}
-                          <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
-                          <span
-                            className="text-body-secondary"
-                            style={{ fontSize: "13px" }}
-                          >
-                            {" "}
-                            Bank Details
-                          </span>{" "}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
-                    <div className="text-center">
-                      <h5>Add New Bank Account</h5>
-                    </div>
-                    {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <div className="form-floating">
-                        <select
-                          className="form-select"
-                          id="floatingSelect"
-                          aria-label="Floating label select example"
+    <Wrapper>
+      <div className="main">
+        <div className="container-fluid">
+          <div className="row flex-wrap justify-content-center">
+            <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11 mt-5 formdata">
+              <div className="main shadow-none">
+                <div className="row shadow-none">
+                  <div className="col-12">
+                    <div className="d-flex justify-content-between align-items-center flex-wrap">
+                      <h4 className="px-lg-3">Bank Details</h4>
+                      <p className="mx-lg-5">
+                        <BiHomeAlt /> &nbsp;/ &nbsp;
+                        <span
+                          className="text-body-secondary"
+                          style={{ fontSize: "13px" }}
                         >
-                          <option selected>Select complaint type</option>
-                          <option value="1">Coupon Issue</option>
-                          <option value="2">UTI PAN Debit</option>
-                          <option value="3">UTI PAN Refund</option>
-                          <option value="3">Nsdl Refund</option>
-                          <option value="3">Recharge Refund</option>
-                          <option value="3">Account Support</option>
-                          <option value="3">Report a Bug</option>
-                          <option value="3">Feature Support</option>
-                          <option value="3">API Support</option>
-                          <option value="3">Others</option>
-                        </select>
-                        <label for="floatingSelect">Complaint Type</label>
-                      </div>
-                    </div> */}
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Bank Holder Name
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <FaUser />
+                          Bank Details
                         </span>
-                        <input
-                          type="text"
-                          id="name"
-                          class="form-control"
-                          placeholder="Enter Name"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Bank Account Number/ UPI ID
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <FaAddressCard />
-                        </span>
-                        <input
-                          type="text"
-                          id="name"
-                          class="form-control"
-                          placeholder="Enter Bank Account Number/ UPI ID"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        IFSC Code
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdEmail />
-                        </span>
-                        <input
-                          type="text"
-                          id="name"
-                          class="form-control"
-                          placeholder="Enter IFSC Code"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Bank Name
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          <FaAddressCard />
-                        </span>
-                        <input
-                          type="text"
-                          id="name"
-                          class="form-control"
-                          placeholder="Enter Bank Name"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        OTP
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          <FaAddressCard />
-                        </span>
-                        <input
-                          type="text"
-                          id="name"
-                          class="form-control"
-                          placeholder="Enter OTP"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      <div className="text-start mb-3">
-                        <button className="btn p-2">Submit</button>
-                      </div>
+                      </p>
                     </div>
                   </div>
-                  <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
-                    <div className="text-center">
-                      <h5>All Your Listed Bank Account</h5>
+                </div>
+
+                <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
+                  <div className="text-center">
+                    <h5>Verify Bank Account</h5>
+                  </div>
+
+                  {/* Bank Holder Name */}
+                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <label htmlFor="bankholder_name" className="form-label">
+                      Bank Holder Name
+                    </label>
+                    <div className="input-group flex-nowrap">
+                      <span className="input-group-text" id="addon-wrapping">
+                        <FaUser />
+                      </span>
+                      <input
+                        type="text"
+                        id="bankholder_name"
+                        className="form-control"
+                        value={formData.bankholder_name}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            bankholder_name: e.target.value,
+                          })
+                        }
+                        placeholder="Enter Name"
+                        disabled={true}
+                      />
                     </div>
+                  </div>
 
-                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      <div class="table-responsive">
-                        <table class="table table-striped">
-                          <thead className="table-dark">
-                            <tr>
-                              <th scope="col">#</th>
-                              <th scope="col">A/c Holder Name</th>
-                              <th scope="col">Bank Account Number</th>
+                  {/* Bank Account Number */}
+                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <label htmlFor="bankaccount_number" className="form-label">
+                      Bank Account Number/ UPI ID
+                    </label>
+                    <div className="input-group flex-nowrap">
+                      <span className="input-group-text" id="addon-wrapping">
+                        <FaAddressCard />
+                      </span>
+                      <input
+                        type="text"
+                        id="bankaccount_number"
+                        className="form-control"
+                        value={formData.bankaccount_number}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            bankaccount_number: e.target.value,
+                          })
+                        }
+                        placeholder="Enter Bank Account Number/ UPI ID"
+                        disabled={true}
+                      />
+                    </div>
+                  </div>
 
-                              <th scope="col">IFSC Code</th>
-                              <th scope="col">Bank Name</th>
-                              <th scope="col">Status</th>
-                              <th scope="col"></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <th scope="row">1</th>
-                              <td>Mohit Sahu</td>
-                              <td>898989898989</td>
-                              <td>sbin0001503</td>
-                              <td>sbi</td>
-                              <td>PENDING</td>
-                              <td>
-                                <button className="btn btn-primary btn-sm">
-                                  Verify
-                                </button>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div className="float-end">
-                        <nav aria-label="Page navigation example">
-                          <ul className="pagination">
-                            <li className="page-item">
-                              <a className="page-link" href="#">
-                                Previous
-                              </a>
-                            </li>
-                            <li className="page-item">
-                              <a className="page-link" href="#">
-                                1
-                              </a>
-                            </li>
+                  {/* IFSC Code */}
+                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <label htmlFor="IFSC_code" className="form-label">
+                      IFSC Code
+                    </label>
+                    <div className="input-group flex-nowrap">
+                      <span className="input-group-text" id="addon-wrapping">
+                        <MdEmail />
+                      </span>
+                      <input
+                        type="text"
+                        id="IFSC_code"
+                        className="form-control"
+                        value={formData.IFSC_code}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            IFSC_code: e.target.value,
+                          })
+                        }
+                        placeholder="Enter IFSC Code"
+                        disabled={true}
+                      />
+                    </div>
+                  </div>
 
-                            <li className="page-item">
-                              <a className="page-link" href="#">
-                                Next
-                              </a>
-                            </li>
-                          </ul>
-                        </nav>
-                      </div>
+                  {/* Bank Name */}
+                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <label htmlFor="bank_name" className="form-label">
+                      Bank Name
+                    </label>
+                    <div className="input-group flex-nowrap">
+                      <span className="input-group-text" id="addon-wrapping">
+                        <FaAddressCard />
+                      </span>
+                      <input
+                        type="text"
+                        id="bank_name"
+                        className="form-control"
+                        value={formData.bank_name}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            bank_name: e.target.value,
+                          })
+                        }
+                        placeholder="Enter Bank Name"
+                        disabled={true}
+                      />
+                    </div>
+                  </div>
+
+                  {/* OTP Field with Get OTP Button */}
+                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    {/* <label htmlFor="otp" className="form-label">
+                      OTP
+                    </label> */}
+                    {/* <button
+                      className="btn btn-primary"
+                      onClick={handleGetOtp}
+                      disabled={timer > 0 || loading} // Disable button when loading or timer is active
+                    >
+                      {loading ? (
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span> // Show spinner when loading
+                      ) : otpSent ? (
+                        timer > 0 ? (
+                          `Resend OTP (${timer}s)`
+                        ) : (
+                          "Resend OTP"
+                        )
+                      ) : (
+                        "Get OTP"
+                      )}
+                    </button> */}
+
+                    <button
+                      className="btn btn-primary"
+                      onClick={handleGetOtp}
+                      disabled={timer > 0 || loading} // Disable button when loading or timer is active
+                    >
+                      {loading ? (
+                        <>
+                          <span
+                            className="spinner-border spinner-border-sm"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                          {" Loading..."}
+                        </>
+                      ) : otpSent ? (
+                        timer > 0 ? (
+                          `Resend OTP (${timer}s)`
+                        ) : (
+                          "Resend OTP"
+                        )
+                      ) : (
+                        "Get OTP"
+                      )}
+                    </button>
+
+                    <div className="input-group flex-nowrap mt-2">
+                      <span className="input-group-text" id="addon-wrapping">
+                        <FaAddressCard />
+                      </span>
+                      <input
+                        type="text"
+                        id="otp"
+                        className="form-control"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                        placeholder="Enter OTP"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                    <div className="text-start mb-3">
+                      <button
+                        className="btn p-2"
+                        onClick={SubmitBankOtp}
+                        disabled={!otpSent} // Disable the button if OTP has not been sent
+                      >
+                        Submit
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -233,8 +409,8 @@ const DBankAccountVerify = () => {
             </div>
           </div>
         </div>
-      </Wrapper>
-    </>
+      </div>
+    </Wrapper>
   );
 };
 
@@ -268,12 +444,12 @@ const Wrapper = styled.div`
   }
   @media (max-width: 576px) {
     .responsive-label {
-      font-size: 0.5rem; /* Adjust as needed */
+      font-size: 0.5rem;
     }
   }
   @media (max-width: 768px) {
     .responsive-label {
-      font-size: 1rem; /* Adjust as needed */
+      font-size: 1rem;
     }
   }
 `;

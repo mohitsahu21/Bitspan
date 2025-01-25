@@ -6,17 +6,17 @@ import ReactPaginate from "react-paginate";
 import { Dropdown, Modal, Spinner } from "react-bootstrap";
 import { CiViewList } from "react-icons/ci";
 import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
-import { IoSearch } from "react-icons/io5";
-import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
-const DWalletTransactionReport = () => {
-  const dispatch = useDispatch();
-  const { currentUser, token } = useSelector((state) => state.user);
+const DOnlineRecharges = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
+  const [rechargeType, setRechargeType] = useState("");
   const [users, setUsers] = useState([]);
   const [keyword, setKeyword] = useState("");
   const complaintsPerPage = 10;
@@ -24,15 +24,22 @@ const DWalletTransactionReport = () => {
   const [isRefresh, setIsRefresh] = useState(false);
   const [fromDate, setFromDate] = useState(""); // From date filter
   const [toDate, setToDate] = useState(""); // To date filter
-  const [filteredItems, setFilteredItems] = useState([]);
-  const userId = currentUser?.userId;
+
+  // Fetch userId and token from Redux store
+  const userId = useSelector((state) => state.user.currentUser?.userId);
+
+  const maskSensitiveInfo = (value, maskLength, revealLength) => {
+    const maskedValue = "*".repeat(maskLength);
+    const revealedValue = value.slice(-revealLength);
+    return maskedValue + revealedValue;
+  };
 
   const fetchOfflineForm = async () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getWalletSummary/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletSummary/${userId}`
+        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getOnlineRecharge",
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getSdOnlineRecharges/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -65,49 +72,44 @@ const DWalletTransactionReport = () => {
   //   fetchOfflineForm();
   // }, [isRefresh]);
 
-  useEffect(() => {
-    // Update filtered items when filters change
-    applyFilters();
-  }, [keyword, fromDate, toDate, users]);
+  const filteredItems = users.filter((row) => {
+    const matchesKeyword =
+      (row?.created_by_userid &&
+        row.created_by_userid
+          .toLowerCase()
+          .includes(keyword.trim().toLowerCase())) ||
+      (row?.UserName &&
+        row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.orderid &&
+        row.orderid.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      // (row?.mobile_no &&
+      //   row.mobile_no.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.operator_name &&
+        row.operator_name
+          .toLowerCase()
+          .includes(keyword.trim().toLowerCase())) ||
+      (row?.transaction_id &&
+        row.transaction_id
+          .toLowerCase()
+          .includes(keyword.trim().toLowerCase())) ||
+      (row?.providerName &&
+        row.providerName.toLowerCase().includes(keyword.trim().toLowerCase()));
 
-  const applyFilters = () => {
-    const filtered = users.filter((row) => {
-      const searchKeyword = keyword.trim().toLowerCase();
-      const matchesKeyword =
-        (row?.Transaction_Id &&
-          row.Transaction_Id.toLowerCase().includes(searchKeyword)) ||
-        (row?.Order_Id && row.Order_Id.toLowerCase().includes(searchKeyword));
-
-      const matchesDate =
-        (!fromDate || new Date(row.transaction_date) >= new Date(fromDate)) &&
-        (!toDate || new Date(row.transaction_date) <= new Date(toDate));
-
-      return matchesKeyword && matchesDate;
-    });
-
-    setFilteredItems(filtered);
-    setCurrentPage(0); // Reset pagination on filter change
-  };
-
-  // const filteredItems = users.filter((row) => {
-  //   const matchesKeyword =
-  //     (row?.Transaction_Id &&
-  //       row.Transaction_Id.toLowerCase().includes(
-  //         keyword.trim().toLowerCase()
-  //       )) ||
-  //     (row?.Order_Id &&
-  //       row.Order_Id.toLowerCase().includes(keyword.trim().toLowerCase()));
-
-  //   const matchesDate =
-  //     (!fromDate ||
-  //       new Date(row.transaction_date).toISOString().split("T")[0] >=
-  //         new Date(fromDate).toISOString().split("T")[0]) &&
-  //     (!toDate ||
-  //       new Date(row.transaction_date).toISOString().split("T")[0] <=
-  //         new Date(toDate).toISOString().split("T")[0]);
-  //   console.log(matchesKeyword);
-  //   return matchesKeyword && matchesDate;
-  // });
+    const matchesType =
+      !rechargeType ||
+      rechargeType === "---Select---" ||
+      row.recharge_Type === rechargeType;
+    // return matchesKeyword && matchesType ;
+    const matchesDate =
+      (!fromDate ||
+        new Date(row.created_at).toISOString().split("T")[0] >=
+          new Date(fromDate).toISOString().split("T")[0]) &&
+      (!toDate ||
+        new Date(row.created_at).toISOString().split("T")[0] <=
+          new Date(toDate).toISOString().split("T")[0]);
+    console.log(matchesKeyword);
+    return matchesKeyword && matchesDate && matchesType;
+  });
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
@@ -146,11 +148,19 @@ const DWalletTransactionReport = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Wallet Transaction Report
+                          Online Recharge History
                         </h4>
-                        <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; Wallet Transaction Report
-                        </h6>
+                        <p className="mx-lg-5">
+                          {" "}
+                          <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
+                          <span
+                            className="text-body-secondary"
+                            style={{ fontSize: "13px" }}
+                          >
+                            {" "}
+                            Online Recharge History
+                          </span>{" "}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -176,20 +186,31 @@ const DWalletTransactionReport = () => {
                             </label>
                             <input
                               id="toDate"
-                              className="form-control"
+                              className="form-control "
                               type="date"
                               value={toDate}
                               onChange={(e) => setToDate(e.target.value)}
                             />
                           </div>
-                          <div className="d-flex align-items-end">
-                            <button
-                              type="button"
-                              className="btn btn-primary button"
-                              onClick={applyFilters}
+                          <div className="col-12 col-md-4 col-lg-3">
+                            <label for="toDate" className="form-label">
+                              Select Type
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              value={rechargeType}
+                              onChange={(e) => setRechargeType(e.target.value)}
                             >
-                              Search
-                            </button>
+                              <option selected>---Select---</option>
+                              <option value="Prepaid">Prepaid</option>
+                              <option value="Postpaid">Postpaid</option>
+                              <option value="DTH">DTH</option>
+                              <option value="Broadband">Broadband</option>
+                              <option value="Electricity">Electricity</option>
+                              <option value="Insurance">Insurance</option>
+                              <option value="Landline">Landline</option>
+                            </select>
                           </div>
                         </div>
 
@@ -200,48 +221,47 @@ const DWalletTransactionReport = () => {
                               id="fromDate"
                               className="form-control"
                               type="search"
-                              placeholder="search By Order Id Or Txn Id"
+                              placeholder="Enter Order Id/Txn ID/Operator/User Id"
                               value={keyword}
                               onChange={(e) => setKeyword(e.target.value)}
                             />
                           </div>
 
                           {/* <div className="d-flex align-items-end">
-        <button type="button" className="btn btn-primary button">Search</button>
-    </div> */}
+                                                        <button type="button" className="btn btn-primary button">Search</button>
+                                                    </div> */}
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                          <div className="table-responsive">
+                          <div class="table-responsive">
                             {loading ? (
                               <div className="d-flex justify-content-center">
                                 <Spinner animation="border" role="status">
-                                  <span className="visually-hidden">
+                                  <span className="visually-hidden ">
                                     Loading...
                                   </span>
                                 </Spinner>
                               </div>
                             ) : (
                               <>
-                                <table className="table table-striped">
+                                <table class="table table-striped">
                                   <thead className="table-dark">
                                     <tr>
                                       <th scope="col">#</th>
                                       <th scope="col">Date</th>
                                       <th scope="col">Order Id</th>
                                       <th scope="col">Transaction Id</th>
-                                      <th scope="col">Credit Amount</th>
-                                      <th scope="col">Debit Amount</th>
-                                      <th scope="col">
-                                        Opening <br /> Balance
-                                      </th>
-                                      <th scope="col">
-                                        Closing <br /> Balance
-                                      </th>
-                                      <th scope="col">
-                                        Transaction <br /> Type
-                                      </th>
-                                      <th scope="col">Transaction Details</th>
+                                      <th scope="col">recharge_Type</th>
+                                      <th scope="col">OP Id</th>
+                                      <th scope="col">Number</th>
+                                      <th scope="col">Amount</th>
+                                      <th scope="col">Operator Name</th>
+                                      <th scope="col">Message</th>
+                                      <th scope="col">API Provider Name</th>
+                                      <th scope="col">User Id</th>
+                                      {/* <th scope="col">User Name</th> */}
+                                      {/* <th scope="col">User Role</th> */}
+                                      {/* <th scope="col">User Contact</th> */}
                                       <th scope="col">Status</th>
                                     </tr>
                                   </thead>
@@ -250,23 +270,34 @@ const DWalletTransactionReport = () => {
                                       showApiData?.map((item, index) => (
                                         <tr key={index}>
                                           <th scope="row">{index + 1}</th>
-                                          <td>{item.transaction_date}</td>
-                                          <td>{item.Order_Id}</td>
-                                          <td>{item.Transaction_Id}</td>
-                                          <td>{item.credit_amount}</td>{" "}
-                                          <td>{item.debit_amount}</td>{" "}
-                                          {/* Added 'Amount' field */}
-                                          <td>{item.Opening_Balance}</td>
-                                          <td>{item.Closing_Balance}</td>
-                                          <td>{item.Transaction_Type}</td>
-                                          <td>{item.Transaction_details}</td>
+                                          <td>{item.created_at}</td>
+                                          <td>{item.orderid}</td>
+                                          <td>{item.transaction_id}</td>
+                                          <td>{item.recharge_Type}</td>
+                                          <td>{item.opid}</td>
+                                          {/* <td>{item.mobile_no}</td> */}
+                                          <td>
+                                            {maskSensitiveInfo(
+                                              item.mobile_no,
+                                              6,
+                                              4
+                                            )}
+                                          </td>
+                                          <td>{item.amount}</td>
+
+                                          <td>{item.operator_name}</td>
+                                          <td>{item.message}</td>
+                                          <td>{item.providerName}</td>
+                                          <td>{item.created_by_userid}</td>
+                                          {/* <td>{item.UserName}</td> */}
+                                          {/* <td>{item.ContactNo}</td> */}
                                           <td>{item.status}</td>
                                         </tr>
                                       ))
                                     ) : (
                                       <tr>
-                                        <td colSpan="10">No data available</td>{" "}
-                                        {/* Updated colSpan */}
+                                        <td colSpan="13">No data available</td>{" "}
+                                        {/* Updated colSpan to match table columns */}
                                       </tr>
                                     )}
                                   </tbody>
@@ -301,7 +332,7 @@ const DWalletTransactionReport = () => {
   );
 };
 
-export default DWalletTransactionReport;
+export default DOnlineRecharges;
 
 const Wrapper = styled.div`
   .main {
@@ -326,6 +357,7 @@ const Wrapper = styled.div`
   }
   td {
     font-size: 14px;
+    white-space: nowrap;
   }
   @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
@@ -336,6 +368,9 @@ const Wrapper = styled.div`
     .formdata {
       padding-left: 13rem;
     }
+  }
+  .custom-dropdown-toggle::after {
+    display: none !important;
   }
 `;
 

@@ -1,44 +1,44 @@
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { MdFormatListNumberedRtl } from "react-icons/md";
 import { BiHomeAlt } from "react-icons/bi";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
-import React, { useState, useEffect } from "react";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const DPanTransactionReport = () => {
+const DPanFourHistory = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const { token } = useSelector((state) => state.user);
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [keyword, setKeyword] = useState("");
   const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
-  const [fromDate, setFromDate] = useState(""); // Missing initialization
-  const [toDate, setToDate] = useState(""); // Missing initialization
-  const [PaymentMode, setPaymentMode] = useState("---Select---"); // Missing initialization
-  const [status, setStatus] = useState("---Select---"); // Missing initialization
+  const [fromDate, setFromDate] = useState(""); // From date filter
+  const [toDate, setToDate] = useState(""); // To date filter
+  const [PaymentMode, setPaymentMode] = useState("");
 
   // const userData = currentUser.userId;
   // Fetch userId and token from Redux store
   const userId = useSelector((state) => state.user.currentUser?.userId);
 
-  // const maskSensitiveInfo = (value, maskLength, revealLength) => {
-  //   const maskedValue = "*".repeat(maskLength);
-  //   const revealedValue = value.slice(-revealLength);
-  //   return maskedValue + revealedValue;
-  // };
+  const maskSensitiveInfo = (value, maskLength, revealLength) => {
+    const maskedValue = "*".repeat(maskLength);
+    const revealedValue = value.slice(-revealLength);
+    return maskedValue + revealedValue;
+  };
 
   const fetchData = async () => {
     setLoading(true);
     try {
       const response = await axios.get(
         // `http://localhost:7777/api/auth/retailer/pan-4.0/${userData}`
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getOnlinePan/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getOfflinePan/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -78,14 +78,26 @@ const DPanTransactionReport = () => {
 
   const filteredItems = apiData.filter((row) => {
     const matchesKeyword =
-      (row?.name &&
-        row.name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.orderid && row.orderid.includes(keyword.trim())) ||
-      (row?.txid && row.txid.includes(keyword.trim()));
+      // (row?.userId &&
+      //   row.userId.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      // (row?.UserName &&
+      //   row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.order_id &&
+        row.order_id.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.txid &&
+        row.txid.toLowerCase().includes(keyword.trim().toLowerCase()));
+    // (row?.name &&
+    //   row.name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+    // (row?.mobile &&
+    //   row.mobile.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+    // (row?.email &&
+    //   row.email.toLowerCase().includes(keyword.trim().toLowerCase()));
 
     const matchesType =
-      !status || status === "---Select---" || row.status === status;
-
+      !PaymentMode ||
+      PaymentMode === "---Select---" ||
+      row.status === PaymentMode;
+    // return matchesKeyword && matchesType ;
     const matchesDate =
       (!fromDate ||
         new Date(row.created_at).toISOString().split("T")[0] >=
@@ -93,16 +105,16 @@ const DPanTransactionReport = () => {
       (!toDate ||
         new Date(row.created_at).toISOString().split("T")[0] <=
           new Date(toDate).toISOString().split("T")[0]);
-
-    return matchesKeyword && matchesDate && matchesType; // Return combined conditions
+    console.log(matchesKeyword);
+    return matchesKeyword && matchesDate && matchesType;
   });
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
+
   const filterPagination = () => {
     const startIndex = currentPage * complaintsPerPage;
     const endIndex = startIndex + complaintsPerPage;
-    return filteredItems.slice(startIndex, endIndex); // Fix: avoid ?. on filterPagination
+    return filteredItems?.slice(startIndex, endIndex);
   };
 
   const handlePageChange = ({ selected }) => {
@@ -110,6 +122,7 @@ const DPanTransactionReport = () => {
   };
 
   const showApiData = filterPagination();
+
   console.log(showApiData);
 
   return (
@@ -145,37 +158,6 @@ const DPanTransactionReport = () => {
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow bg-body-tertiary rounded  p-5 m-4">
                       <div className="row d-flex flex-column g-4">
-                        {/* <div className="d-flex flex-column flex-md-row gap-3">
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="fromDate" className="form-label">
-                              From
-                            </label>
-                            <input
-                              id="fromDate"
-                              className="form-control"
-                              type="date"
-                            />
-                          </div>
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="toDate" className="form-label">
-                              To
-                            </label>
-                            <input
-                              id="toDate"
-                              className="form-control "
-                              type="date"
-                            />
-                          </div>
-                          <div className="d-flex align-items-end">
-                            <button
-                              type="button"
-                              className="btn btn-primary button"
-                            >
-                              Search
-                            </button>
-                          </div>
-                        </div> */}
-
                         <div className="d-flex flex-column flex-md-row gap-3">
                           <div className="col-12 col-md-4 col-lg-3">
                             <label for="fromDate" className="form-label">
@@ -201,27 +183,26 @@ const DPanTransactionReport = () => {
                               onChange={(e) => setToDate(e.target.value)}
                             />
                           </div>
-                          {/* <div className="col-12 col-md-4 col-lg-3">
+                          <div className="col-12 col-md-4 col-lg-3">
                             <label for="toDate" className="form-label">
                               Select Status
                             </label>
                             <select
                               className="form-select"
                               aria-label="Default select example"
-                              value={status}
-                              onChange={(e) => setStatus(e.target.value)}
+                              value={PaymentMode}
+                              onChange={(e) => setPaymentMode(e.target.value)}
                             >
                               <option selected>---Select---</option>
                               <option value="Success">Success</option>
                               <option value="Failed">Failed</option>
                             </select>
-                          </div> */}
+                          </div>
 
                           {/* <div className="d-flex align-items-end">
                                                         <button type="button" className="btn btn-primary button">Search</button>
                                                     </div> */}
                         </div>
-
                         <div className="d-flex flex-column flex-xl-row gap-3">
                           <div className="col-12 col-md-12 col-lg-12 col-xl-8">
                             {/* <label for="fromDate" className="form-label">From</label> */}
@@ -229,7 +210,7 @@ const DPanTransactionReport = () => {
                               id="fromDate"
                               className="form-control"
                               type="search"
-                              placeholder="search By Order Id Or Txn Id"
+                              placeholder="search By Order Id "
                               value={keyword}
                               onChange={(e) => setKeyword(e.target.value)}
                             />
@@ -249,45 +230,109 @@ const DPanTransactionReport = () => {
                                 <thead className="table-dark">
                                   <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Application Mode</th>
-                                    <th scope="col">Select Type</th>
-                                    {/* <th scope="col">Name</th>
-                                    <th scope="col">Date of Birth</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Order Id</th>
+                                    <th scope="col">
+                                      Application <br /> Type
+                                    </th>
+                                    {/* <th scope="col">Category</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Father Name</th>
+                                    <th scope="col">Mother Name</th>
+                                    <th scope="col">
+                                      Date of <br />
+                                      Birth
+                                    </th>
                                     <th scope="col">Gender</th>
-                                    <th scope="col">Mobile</th>
-                                    <th scope="col">Email</th> */}
-                                    <th scope="col">Physical PAN</th>
-                                    <th scope="col">Wallet Deduction Amount</th>
-                                    <th scope="col">Transaction ID</th>
-                                    <th scope="col">Status</th>
-                                    {/* <th scope="col">OP ID</th>
-                                    <th scope="col">Message</th> */}
-                                    {/* <th scope="col">URL</th>
-                                    <th scope="col">Number</th> */}
+                                    <th scope="col">Office Address</th>
+                                    <th scope="col">Aadhar Details</th> */}
+                                    <th scope="col">Mobile No</th>
+                                    {/* <th scope="col">Email</th>
+                                    <th scope="col">Pincode</th>
+                                    <th scope="col">State</th> */}
+                                    <th scope="col">Change Request</th>
+                                    {/* <th scope="col">KYC </th>
+                                    <th scope="col">Form </th>
+                                    <th scope="col">Signature</th>
+                                    <th scope="col">Photo</th> */}
                                     <th scope="col">Amount</th>
-                                    <th scope="col">Order ID</th>
-                                    {/* <th scope="col">Provider Name</th> */}
-                                    <th scope="col">User ID</th>
-                                    <th scope="col">Created At</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Message</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   {showApiData && showApiData.length > 0 ? (
                                     showApiData.map((item, index) => (
                                       <tr key={index}>
-                                        <td>{index + 1}</td>
-                                        <td>{item.id}</td>
-                                        <td>{item.applicationMode}</td>
-                                        <td>{item.selectType}</td>
-                                        {/* <td>{item.name}</td>
+                                        <td>{index + 1}</td>{" "}
+                                        <td>{item.created_at}</td>
+                                        <td>{item.order_id}</td>
+                                        <td>{item.application_type}</td>
+                                        {/* <td>{item.select_title}</td>
+                                        <td>{item.name}</td>
+                                        <td>{item.father_name}</td>
+                                        <td>{item.mother_name}</td>
                                         <td>{item.dob}</td>
                                         <td>{item.gender}</td>
-                                        <td>{item.mobile}</td>
-                                        <td>{item.email}</td> */}
-                                        <td>{item.physicalPan}</td>
-                                        <td>{item.walletDeductAmt}</td>
-                                        <td>{item.txid}</td>
+                                        <td>{item.office_address}</td>
+                                        <td>{item.aadhar_details}</td> */}
+                                        {/* <td>{item.mobile_no}</td> */}
+                                        <td>
+                                          {maskSensitiveInfo(
+                                            item.mobile_no,
+                                            6,
+                                            4
+                                          )}
+                                        </td>
+                                        {/* <td>{item.email_id}</td>
+                                        <td>{item.pin_code}</td>
+                                        <td>{item.state}</td> */}
+                                        <td>{item.Change_Request}</td>
+                                        {/* <td>
+                                          {item.documentUpload
+                                            ? item.documentUpload
+                                                .split(",")
+                                                .map((kycurl, kycindx) => (
+                                                  <div key={kycindx}>
+                                                    <a
+                                                      href={kycurl}
+                                                      target="_blank"
+                                                      rel="noopener noreferrer"
+                                                    >
+                                                      View {kycindx + 1}
+                                                    </a>
+                                                  </div>
+                                                ))
+                                            : "No KYC available"}
+                                        </td>
+                                        <td>
+                                          {" "}
+                                          <a
+                                            href={item.attachment_form}
+                                            target="_blank"
+                                          >
+                                            View
+                                          </a>
+                                        </td>
+                                        <td>
+                                          {" "}
+                                          <a
+                                            href={item.attachment_signature}
+                                            target="_blank"
+                                          >
+                                            View
+                                          </a>
+                                        </td>
+                                        <td>
+                                          {" "}
+                                          <a
+                                            href={item.attachment_photo}
+                                            target="_blank"
+                                          >
+                                            View
+                                          </a>
+                                        </td> */}
+                                        <td>{item.Charge_Amount}</td>
                                         <td
                                           style={{
                                             color:
@@ -302,35 +347,19 @@ const DPanTransactionReport = () => {
                                         >
                                           {item.status}
                                         </td>
-                                        {/* <td>{item.opid}</td>
-                                        <td>{item.message}</td> */}
-                                        {/* <td>
-                                          <a
-                                            href={item.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                          >
-                                            View
-                                          </a>
-                                        </td>
-                                        <td>{item.number}</td> */}
-                                        <td>{item.amount}</td>
-                                        <td>{item.orderid}</td>
-                                        {/* <td>{item.providerName}</td> */}
-                                        <td>{item.userId}</td>
-                                        <td>{item.created_at}</td>
+                                        <td>{item.note}</td>
                                       </tr>
                                     ))
                                   ) : (
                                     <tr>
-                                      <td colSpan="22">No data available</td>
+                                      <td colSpan="13">No data available</td>{" "}
+                                      {/* Updated colSpan to match table columns */}
                                     </tr>
                                   )}
                                 </tbody>
                               </table>
                             )}
                           </div>
-
                           <PaginationContainer>
                             <ReactPaginate
                               previousLabel={"previous"}
@@ -358,7 +387,7 @@ const DPanTransactionReport = () => {
   );
 };
 
-export default DPanTransactionReport;
+export default DPanFourHistory;
 
 const Wrapper = styled.div`
   .main {

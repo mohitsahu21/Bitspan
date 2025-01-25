@@ -5,9 +5,15 @@ import { Dropdown, DropdownButton } from "react-bootstrap";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-const DAllOfflineForm = () => {
-  const [formData, setFormData] = useState([]);
+const DEdistrict = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { currentUser, token } = useSelector((state) => state.user);
+  const userData = currentUser.userId;
+  // console.log(userData);
+  const [formData, setFormData] = useState();
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All");
@@ -15,15 +21,21 @@ const DAllOfflineForm = () => {
   const complaintsPerPage = 10; // Set items per page
   const [currentPage, setCurrentPage] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
+  const [keyword, setKeyword] = useState("");
+
+  // Fetch userId and token from Redux store
   const userId = useSelector((state) => state.user.currentUser?.userId);
-  const { token } = useSelector((state) => state.user);
+
+  const maskSensitiveInfo = (value, maskLength, revealLength) => {
+    const maskedValue = "*".repeat(maskLength);
+    const revealedValue = value.slice(-revealLength);
+    return maskedValue + revealedValue;
+  };
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getApplyOfflineFormById/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApplyOfflineForm`
-
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getEDistrictHistory/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -31,72 +43,90 @@ const DAllOfflineForm = () => {
           },
         }
       );
-      const newResponseData = response.data.filter(
-        (item) => item.applicant_select_service !== "New Bank ID"
-      );
-
-      setFormData(newResponseData);
-      console.log(newResponseData);
+      setFormData(response.data.data);
+      console.log("Fetched Data:", response.data); // Add this line to check the response
+      setLoading(false);
     } catch (error) {
       console.log(error);
-      // Check if the error is due to token expiration (401)
+
       if (error?.response?.status === 401) {
+        // Handle token expiration
         Swal.fire({
           icon: "error",
-          title: "Your token is expired. Please login again.",
+          title: "Session Expired",
+          text: "Your session has expired. Please log in again.",
         });
         dispatch(clearUser()); // Clear user session
-        navigate("/"); // Redirect to login page
+        navigate("/"); // Redirect to the login page
       } else {
-        // Handle other errors (optional)
+        // Handle other errors
         Swal.fire({
           icon: "error",
-          title: "Error!",
-          text: "An error occurred while fetching data.",
+          title: "Error Fetching Data",
+          text: "An error occurred while fetching the data. Please try again later.",
         });
       }
+    } finally {
+      setLoading(false); // End loading
     }
   };
 
   useEffect(() => {
     fetchData();
-  }, [fromDate, toDate]);
+    // setCurrentPage(0);
+  }, [userId, token]);
 
-  const handleSearch = () => {
-    fetchData();
-  };
+  const filteredData =
+    formData?.length > 0
+      ? formData.filter((row) => {
+          const matchesSearch =
+            row.name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
+            // item.mobile_no
+            //   ?.toLowerCase()
+            //   ?.includes(searchQuery?.toLowerCase()) ||
+            row.order_id?.toLowerCase()?.includes(searchQuery?.toLowerCase());
+          const matchesStatus =
+            selectedStatus === "All" ||
+            row.status?.toLowerCase() === selectedStatus?.toLowerCase();
 
-  console.log(formData);
+          const matchesKeyword =
+            // (row?.userId &&
+            //   row.userId.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+            // (row?.UserName &&
+            // row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+            row?.order_id &&
+            row.order_id.toLowerCase().includes(keyword.trim().toLowerCase());
+          //   ||
+          // (row?.txid &&
+          //   row.txid.toLowerCase().includes(keyword.trim().toLowerCase()));
+          // (row?.name &&
+          //   row.name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+          // (row?.mobile &&
+          //   row.mobile.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+          // (row?.email &&
+          //   row.email.toLowerCase().includes(keyword.trim().toLowerCase()));
 
-  const filteredData = formData?.filter((item) => {
-    const createdAtDate = item.created_at ? new Date(item.created_at) : null;
-    const fromDateObj = fromDate ? new Date(fromDate) : null;
-    const toDateObj = toDate ? new Date(toDate) : null;
+          const matchesDate =
+            (!fromDate ||
+              new Date(row.created_at).toISOString().split("T")[0] >=
+                new Date(fromDate).toISOString().split("T")[0]) &&
+            (!toDate ||
+              new Date(row.created_at).toISOString().split("T")[0] <=
+                new Date(toDate).toISOString().split("T")[0]);
+          console.log(matchesKeyword);
 
-    const matchesSearch =
-      item.applicant_name
-        ?.toLowerCase()
-        ?.includes(searchQuery?.toLowerCase()) ||
-      item.applicant_number
-        ?.toLowerCase()
-        ?.includes(searchQuery?.toLowerCase()) ||
-      item.order_id?.toLowerCase()?.includes(searchQuery?.toLowerCase());
-    const matchesStatus =
-      selectedStatus === "All" ||
-      item.status?.toLowerCase() === selectedStatus?.toLowerCase();
-    const matchesDate =
-      (!fromDateObj || (createdAtDate && createdAtDate >= fromDateObj)) &&
-      (!toDateObj || (createdAtDate && createdAtDate <= toDateObj));
+          return (
+            matchesSearch && matchesStatus && matchesDate && matchesKeyword
+          );
+        })
+      : []; // Ensure it's an empty array if formData is empty or not loaded yet
 
-    return matchesSearch && matchesStatus && matchesDate;
-  });
-
-  const totalPages = Math.ceil(filteredData.length / complaintsPerPage);
+  const totalPages = Math.ceil(filteredData?.length / complaintsPerPage);
 
   const paginateData = () => {
     const startIndex = currentPage * complaintsPerPage;
     const endIndex = startIndex + complaintsPerPage;
-    return filteredData.slice(startIndex, endIndex);
+    return filteredData?.slice(startIndex, endIndex);
   };
 
   const handlePageChange = ({ selected }) => {
@@ -126,10 +156,10 @@ const DAllOfflineForm = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          View All Offline History
+                          E-District History
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; View All Offline History{" "}
+                          <BiHomeAlt /> &nbsp;/ &nbsp; E-District History{" "}
                         </h6>
                       </div>
                     </div>
@@ -145,14 +175,14 @@ const DAllOfflineForm = () => {
                             </label>
                             <input
                               type="text"
-                              className="form-control responsive-input"
-                              // placeholder="Search by Name, Mobile, or Order ID"
-                              placeholder="Search by  Order ID"
+                              className="form-control "
+                              placeholder="Search by Name or Order ID"
                               value={searchQuery}
                               onChange={(e) => setSearchQuery(e.target.value)}
                             />
                           </div>
-                          <div className="col-12 col-md-4 col-lg-3 d-flex align-items-end">
+
+                          {/* <div className="col-12 col-md-4 col-lg-3 d-flex align-items-end">
                             <DropdownButton
                               id="dropdown-basic-button"
                               title={selectedStatus}
@@ -165,14 +195,12 @@ const DAllOfflineForm = () => {
                               <Dropdown.Item eventKey="Reject">
                                 Reject
                               </Dropdown.Item>
-                              <Dropdown.Item eventKey="Pending">
-                                Pending
+                              <Dropdown.Item eventKey="Under Process">
+                                Under Process
                               </Dropdown.Item>
                             </DropdownButton>
-                          </div>
-                        </div>
+                          </div> */}
 
-                        <div className="d-flex flex-column flex-md-row gap-3">
                           <div className="col-12 col-md-4 col-lg-3">
                             <label for="fromDate" className="form-label">
                               From
@@ -197,120 +225,108 @@ const DAllOfflineForm = () => {
                               onChange={(e) => setToDate(e.target.value)}
                             />
                           </div>
-
-                          {/* <div className="d-flex align-items-end">
-                                                        <button type="button" className="btn btn-primary button">Search</button>
-                                                    </div> */}
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                          <div class="table-responsive">
-                            <table class="table table-striped">
-                              <thead className="table-dark">
-                                <tr>
-                                  <th scope="col">Sr.No</th>
-                                  <th scope="col">Date</th>
-                                  <th scope="col">Order ID</th>
-                                  {/* <th scope="col">Applicant Name</th>
-                                  <th scope="col">Applicant Father Name</th>
-                                  <th scope="col">Applicant Number</th> */}
-                                  <th scope="col">Service</th>
-                                  <th scope="col">other</th>
-                                  {/* <th scope="col">View Form</th>
-                                  <th scope="col">View Photo</th>
-                                  <th scope="col">View Signature</th>
-                                  <th scope="col">View KYC</th> */}
-                                  <th scope="col">Status</th>
-                                  <th scope="col">Note</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {loading ? (
-                                  <>
-                                    <p>Loading...</p>
-                                  </>
-                                ) : (
-                                  <>
-                                    {displayData.map((item, index) => (
+                          <div className="table-responsive">
+                            {loading ? (
+                              <div className="d-flex justify-content-center">
+                                <Spinner animation="border" role="status">
+                                  <span className="visually-hidden">
+                                    Loading...
+                                  </span>
+                                </Spinner>
+                              </div>
+                            ) : (
+                              <table className="table table-striped">
+                                <thead className="table-dark">
+                                  <tr>
+                                    <th scope="col">Sr.No</th>
+                                    <th scope="col">Order ID</th>
+                                    <th scope="col">Applicant Type</th>
+                                    {/* <th scope="col">Applicant Name</th>
+                                    <th scope="col">Applicant Father Name</th>
+                                    <th scope="col">Mobile Number</th>
+                                    <th scope="col">DOB</th>
+                                    <th scope="col">Gender</th>
+                                    <th scope="col">Cast</th>
+                                    <th scope="col">Aadhar No</th>
+                                    <th scope="col">Samagra ID</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col">State</th> */}
+                                    <th scope="col">Prev Application</th>
+                                    <th scope="col">Annual inc</th>
+                                    <th scope="col">View Document</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Note</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {displayData && displayData.length > 0 ? (
+                                    displayData.map((item, index) => (
                                       <tr key={index}>
                                         <th scope="row">{index + 1}</th>
-                                        <td>{item.created_at}</td>
                                         <td>{item.order_id}</td>
-                                        {/* <td>{item.applicant_name}</td>
-                                        <td>{item.applicant_father}</td>
-                                        <td>{item.applicant_number}</td> */}
-                                        <td>{item.applicant_select_service}</td>
-                                        <td>{item.other}</td>
-                                        {/* <td>
-                                          <a
-                                            href={item.attached_form}
-                                            target="_blank"
-                                          >
-                                            View Form
-                                          </a>
-                                        </td>
+                                        <td>{item.application_type}</td>
+                                        {/* <td>{item.name}</td>
+                                        <td>{item.father_husband_name}</td>
                                         <td>
-                                          <a
-                                            href={item.attached_photo}
-                                            target="_blank"
-                                          >
-                                            View Photo
-                                          </a>
+                                          {maskSensitiveInfo(
+                                            item.mobile_no,
+                                            6,
+                                            4
+                                          )}
                                         </td>
+                                        <td>{item.dob}</td>
+                                        <td>{item.gender}</td>
+                                        <td>{item.cast}</td>
                                         <td>
-                                          <a
-                                            href={item.attached_sign}
-                                            target="_blank"
-                                          >
-                                            View Sign
-                                          </a>
+                                          {maskSensitiveInfo(
+                                            item.aadhar_no,
+                                            8,
+                                            4
+                                          )}
                                         </td>
+                                        <td>{item.samagar_member_id}</td>
+                                        <td>{item.address}</td>
+                                        <td>{item.state}</td> */}
+                                        <td>{item.previous_application}</td>
+                                        <td>{item.annual_income}</td>
                                         <td>
-                                          {item?.attached_kyc
+                                          {item?.documentUpload
                                             ?.split(",")
-                                            ?.map((kycurl, kycindx) => (
+                                            .map((kycurl, kycindx) => (
                                               <div key={kycindx}>
                                                 <a
                                                   href={kycurl}
                                                   target="_blank"
                                                   rel="noopener noreferrer"
                                                 >
-                                                  View KYC {kycindx + 1}
+                                                  View {kycindx + 1}
                                                 </a>
                                               </div>
                                             ))}
-                                        </td> */}
+                                        </td>
+                                        <td>{item.charge_amount}</td>
+                                        <td>{item.created_at}</td>
                                         <td>{item.status}</td>
                                         <td>{item.note}</td>
                                       </tr>
-                                    ))}
-                                  </>
-                                )}
-                              </tbody>
-                            </table>
+                                    ))
+                                  ) : (
+                                    <tr>
+                                      <td colSpan="20" className="text-start">
+                                        No data available
+                                      </td>
+                                    </tr>
+                                  )}
+                                </tbody>
+                              </table>
+                            )}
                           </div>
-                          {/* <div className="float-end">
-                            <nav aria-label="Page navigation example">
-                              <ul className="pagination">
-                                <li className="page-item">
-                                  <a className="page-link" href="#">
-                                    Previous
-                                  </a>
-                                </li>
-                                <li className="page-item">
-                                  <a className="page-link" href="#">
-                                    1
-                                  </a>
-                                </li>
 
-                                <li className="page-item">
-                                  <a className="page-link" href="#">
-                                    Next
-                                  </a>
-                                </li>
-                              </ul>
-                            </nav>
-                          </div> */}
                           <PaginationContainer>
                             <ReactPaginate
                               previousLabel={"Previous"}
@@ -338,7 +354,7 @@ const DAllOfflineForm = () => {
   );
 };
 
-export default DAllOfflineForm;
+export default DEdistrict;
 
 const Wrapper = styled.div`
   .main {
@@ -353,12 +369,17 @@ const Wrapper = styled.div`
     width: 50%;
     margin: auto;
   }
+  table {
+    overflow-x: scroll;
+  }
   th {
     font-weight: 500;
     font-size: 14px;
+    white-space: nowrap;
   }
   td {
     font-size: 14px;
+    white-space: nowrap;
   }
   @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
@@ -370,8 +391,14 @@ const Wrapper = styled.div`
       padding-left: 13rem;
     }
   }
+  a {
+    text-decoration: none;
+  }
+  .responsive-input {
+    padding: 10px;
+    width: 100%; /* Ensures full width within the grid */
+  }
 `;
-
 const PaginationContainer = styled.div`
   .pagination {
     display: flex;
