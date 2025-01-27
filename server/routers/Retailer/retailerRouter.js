@@ -45,6 +45,8 @@ const {
   getCoupon,
   getAddMoneyToWalletOnline,
   update_bankidForm,
+  update_applyOfflineForm,
+  EditSambalForm,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -185,6 +187,7 @@ router.get(
   getApiBroadbrandRechargeData
 );
 router.post("/addSambalForm", addSambalForm);
+router.put("/EditSambalForm", EditSambalForm);
 router.post("/verify-Edistrict", addVerifyDistrictForm);
 router.get("/getVerifyEdistrict/:userId", getVerifyEdistrict);
 router.get("/getSambalHistory/:userId", getSambalHistory);
@@ -214,5 +217,17 @@ router.put("/update_bankidForm", upload.fields([
   { name: "shop_photo", maxCount: 1 },
   { name: "electric_bill", maxCount: 1 },
 ]), update_bankidForm);
+
+router.put(
+  "/update_applyOfflineForm",
+  upload.fields([
+    { name: "attached_form", maxCount: 1 },
+    { name: "attached_photo", maxCount: 1 },
+    { name: "attached_sign", maxCount: 1 },
+    { name: "attached_kyc", maxCount: 10 },
+  ]),
+  update_applyOfflineForm
+);
+
 
 module.exports = router;
