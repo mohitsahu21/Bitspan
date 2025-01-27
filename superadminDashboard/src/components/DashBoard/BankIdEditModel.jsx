@@ -353,6 +353,7 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
         clearFileInput();
         setShowMarkEditModel(false);
         setIsRefresh((value) => !value);
+        
         // dispatch(toggleRefresh());
 
       } else {
