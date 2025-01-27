@@ -285,7 +285,7 @@ const handleFileChange = (e) => {
       if(response.data.status == "Success"){
         Swal.fire({
           title: "Form Submitted Successfully",
-          text: response.data.message,
+          text: response?.data?.message,
           icon: "success",
         });
         setFormData({
@@ -328,7 +328,7 @@ const handleFileChange = (e) => {
       // alert("Error submitting form");
       Swal.fire({
         title: "Error",
-        text: error.response?.data?.message || "Something went wrong!",
+        text: error?.response?.data?.message || "Something went wrong!",
         icon: "error",
       });
     } finally {
@@ -363,12 +363,20 @@ const handleFileChange = (e) => {
       if (response.data.success) {
         return true;
       } else {
-        alert(response.data.message);
+        Swal.fire({
+                  title: "Error verifying PIN",
+                  text: response?.data?.message || "Something went wrong! Please Try again",
+                  icon: "error",
+                });
         return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
-      alert("Error verifying PIN");
+      Swal.fire({
+                    title: "Error verifying PIN",
+                    text: error?.response?.data?.message || "Something went wrong! Please Try again",
+                    icon: "error",
+                  });
       return false;
     }
   };
@@ -462,9 +470,11 @@ const handleFileChange = (e) => {
     setIsVerifying(false);
     if (isPinValid) {
       setShowPinModal(false);
+      setPin(["", "", "", ""]);
       handleSubmit(e);
     } else {
       setPin(["", "", "", ""]); // Clear the PIN fields on incorrect entry
+      // pinRefs.current[0]?.focus();
     }
   };
 
