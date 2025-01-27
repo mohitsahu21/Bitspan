@@ -147,6 +147,9 @@ const SdBankAccountSetup = lazy(() =>
 const SdFundTransferStatus = lazy(() =>
   import("../components/SuperDistributer/SdFundTransferStatus")
 );
+const SdCreatePin = lazy(() =>
+  import("../components/SuperDistributer/SdCreatePin")
+);
 const Certificate = lazy(() =>
   import("../components/SuperDistributer/Certificate")
 );
@@ -676,6 +679,16 @@ const SuperDistributorRoutes = () => {
           }
         />
         <Route
+          path="/generate-pin"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdCreatePin />
+            )
+          }
+        />
+        <Route
           path="/download-certificate-print"
           element={
             userStatus === "Pending" || userStatus === "Deactive" ? (
@@ -683,10 +696,10 @@ const SuperDistributorRoutes = () => {
             ) : (
               <Certificate
                 user="SUPER DISTRIBUTOR"
-                name={currentUser.username}
-                address={`${currentUser.City}, ${currentUser.State}, ${currentUser.PinCode}`}
+                name={currentUser?.username}
+                address={`${currentUser?.City}, ${currentUser?.State}, ${currentUser?.PinCode}`}
                 date="02-Jul-2024"
-                id={currentUser.userId}
+                id={currentUser?.userId}
               />
             )
           }

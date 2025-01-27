@@ -1526,6 +1526,11 @@ const SuperDisData = [
         path: "/bank-account-setup",
         icon: <AiFillBank color="#fe662b" />,
       },
+      {
+        title: "Create Pin",
+        path: "/generate-pin",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
     ],
   },
 ];

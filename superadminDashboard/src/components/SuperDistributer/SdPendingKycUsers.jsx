@@ -38,7 +38,7 @@ const SdPendingKycUsers = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/auth/superDistributor/getPendingKycUsers/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getPendingKycUsers/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

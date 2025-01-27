@@ -96,7 +96,7 @@ const SuperDistributerDashboard = () => {
     try {
       const { data } = await axios.get(
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
-        `http://localhost:7777/api/auth/superDistributor/getSuperDistributorUsersData/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getSuperDistributorUsersData/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -130,7 +130,7 @@ const SuperDistributerDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/auth/superDistributor/getUserNotification/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getUserNotification/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -171,7 +171,7 @@ const SuperDistributerDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/auth/superDistributor/getAllMonthCommission/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getAllMonthCommission/${userId}`,
 
         {
           headers: {
@@ -222,7 +222,7 @@ const SuperDistributerDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/auth/superDistributor/getTodaysCommission/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getTodaysCommission/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -303,6 +303,21 @@ const SuperDistributerDashboard = () => {
                             <div
                               className="news d-flex align-items-center"
                               key={index}
+                              ref={(el) => {
+                                if (el) {
+                                  const textWidth =
+                                    el.querySelector("p").offsetWidth; // Get notification width
+                                  const containerWidth = el.offsetWidth; // Get container width
+                                  const speed = Math.max(
+                                    (textWidth / containerWidth) * 20,
+                                    10
+                                  ); // Dynamic speed calculation
+                                  el.querySelector("p").style.setProperty(
+                                    "--dynamic-duration",
+                                    `${speed}s`
+                                  );
+                                }
+                              }}
                             >
                               <span className="p-3 bg-info news-icon">
                                 <BsInfoSquare />
@@ -551,7 +566,8 @@ const Wrapper = styled.div`
   .news p {
     display: inline-block;
     white-space: nowrap;
-    animation: moveLeftToRight 30s linear infinite;
+    // animation: moveLeftToRight 30s linear infinite;
+    animation: moveLeftToRight var(--dynamic-duration, 10s) linear infinite;
     position: absolute;
     right: 0;
   }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import {
   MdCurrencyRupee,
@@ -19,7 +19,7 @@ import { SlLocationPin } from "react-icons/sl";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Select from "react-select";
-import { Spinner } from "react-bootstrap";
+import { Modal, Spinner, Button } from "react-bootstrap";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../redux/user/userSlice";
@@ -42,6 +42,11 @@ const SdWalletToWalletTransfer = () => {
   const username = useSelector((state) => state.user.currentUser?.username);
 
   const [inputAmount, setInputAmount] = useState(""); // User input amount
+
+  const [showPinModal, setShowPinModal] = useState(false);
+  const [pin, setPin] = useState(["", "", "", ""]);
+  const pinRefs = useRef([]);
+  const [isVerifying, setIsVerifying] = useState(false);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -70,7 +75,7 @@ const SdWalletToWalletTransfer = () => {
     try {
       const { data } = await axios.get(
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
-        `http://localhost:7777/api/auth/superDistributor/getActiveUsers/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getActiveUsers/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -108,7 +113,7 @@ const SdWalletToWalletTransfer = () => {
     try {
       const { data } = await axios.get(
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getWalletBalance/${formData.userId}`,
-        `http://localhost:7777/api/auth/superDistributor/getWalletBalance/${formData.userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletBalance/${formData.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -153,7 +158,7 @@ const SdWalletToWalletTransfer = () => {
   const fetchWalletBalance = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/superDistributor/getWalletBalance/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletBalance/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -255,7 +260,7 @@ const SdWalletToWalletTransfer = () => {
       setButtonLoading(true);
 
       const response = await axios.post(
-        `http://localhost:7777/api/auth/superDistributor/walletToWalletTransfer`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/walletToWalletTransfer`,
         updatedFormData,
         {
           headers: {
@@ -281,6 +286,8 @@ const SdWalletToWalletTransfer = () => {
           icon: "success",
           title: response.data.message,
         });
+        setPin(["", "", "", ""]);
+        pinRefs.current[0]?.focus();
       } else {
         Swal.fire({
           icon: "error",
@@ -309,6 +316,79 @@ const SdWalletToWalletTransfer = () => {
 
   console.log(formData);
   console.log(selectedOption);
+
+  const handlePinChange = (index, value) => {
+    if (/^\d?$/.test(value)) {
+      const newPin = [...pin];
+      newPin[index] = value;
+      setPin(newPin);
+
+      if (value !== "" && index < pin.length - 1) {
+        pinRefs.current[index + 1].focus();
+      } else if (value === "" && index > 0) {
+        pinRefs.current[index - 1].focus();
+      }
+    }
+  };
+
+  const handleBackspace = (index) => {
+    if (pin[index] === "" && index > 0) {
+      pinRefs.current[index - 1].focus();
+    }
+  };
+
+  const verifyPin = async () => {
+    try {
+      const response = await axios.post(
+        // http://localhost:7777/api/auth/log-reg/verify-pin,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        { user_id: userId || "", pin: pin.join("") }
+      );
+
+      if (response.data.success) {
+        return true;
+      } else {
+        // alert(response.data.message);
+        Swal.fire({
+          title: "Error verifying PIN",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
+          icon: "error",
+        });
+        return false;
+      }
+    } catch (error) {
+      console.error("Error verifying PIN:", error);
+
+      Swal.fire({
+        title: "Error verifying PIN",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
+        icon: "error",
+      });
+      return false;
+    }
+  };
+
+  const handleModalSubmit = async (e) => {
+    setIsVerifying(true);
+    const isPinValid = await verifyPin();
+    setIsVerifying(false);
+    if (isPinValid) {
+      setShowPinModal(false);
+      setPin(["", "", "", ""]);
+      await handleSubmit(e);
+    } else {
+      setPin(["", "", "", ""]);
+      pinRefs.current[0]?.focus();
+    }
+  };
+
+  const openPinModal = (e) => {
+    e.preventDefault();
+    setShowPinModal(true);
+  };
 
   return (
     <>
@@ -343,7 +423,7 @@ const SdWalletToWalletTransfer = () => {
                       </div>
                     </div>
                   </div>
-                  <form onSubmit={handleSubmit}>
+                  <form onSubmit={openPinModal}>
                     <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3 pb-3">
                       {loading ? (
                         <div className="d-flex justify-content-center">
@@ -599,6 +679,68 @@ const SdWalletToWalletTransfer = () => {
                       )}
                     </div>
                   </form>
+
+                  <Modal
+                    show={showPinModal}
+                    onHide={() => setShowPinModal(false)}
+                    centered
+                  >
+                    <Modal.Header closeButton>
+                      <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <div className="pin-inputs d-flex justify-content-center">
+                        {pin.map((digit, index) => (
+                          <input
+                            key={index}
+                            ref={(el) => (pinRefs.current[index] = el)}
+                            type="text"
+                            value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
+                            maxLength="1"
+                            onChange={(e) =>
+                              handlePinChange(index, e.target.value)
+                            }
+                            onKeyDown={(e) =>
+                              e.key === "Backspace" && handleBackspace(index)
+                            }
+                            className="pin-digit form-control mx-1"
+                            style={{
+                              width: "50px",
+                              textAlign: "center",
+                              fontSize: "1.5rem",
+                              borderRadius: "8px",
+                              border: "1px solid #ced4da",
+                              boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Button
+                        variant="secondary"
+                        onClick={() => setShowPinModal(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        variant="primary"
+                        onClick={handleModalSubmit}
+                        disabled={isVerifying}
+                      >
+                        {isVerifying ? "Verifying..." : "Verify PIN"}
+                        {isVerifying && (
+                          <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
                 </div>
               </div>
             </div>

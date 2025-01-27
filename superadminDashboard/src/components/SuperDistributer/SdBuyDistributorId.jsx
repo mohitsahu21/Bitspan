@@ -46,7 +46,7 @@ const SdBuyDistributorId = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:7777/api/auth/superDistributor/getPackageData/${package_Id}`,
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getPackageData/${package_Id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -96,7 +96,7 @@ const SdBuyDistributorId = () => {
   const fetchWalletBalance = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/superDistributor/getWalletBalance/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletBalance/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -136,7 +136,7 @@ const SdBuyDistributorId = () => {
   const fetchNoOfIds = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/superDistributor/getRemainingIds/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getRemainingIds/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -258,7 +258,7 @@ const SdBuyDistributorId = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:7777/api/auth/superDistributor/buyId",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/buyId",
         payload
       );
 

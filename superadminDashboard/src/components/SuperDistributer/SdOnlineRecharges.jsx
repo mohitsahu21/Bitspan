@@ -39,7 +39,7 @@ const SdOnlineRecharges = () => {
     try {
       const { data } = await axios.get(
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getOnlineRecharge",
-        `http://localhost:7777/api/auth/superDistributor/getSdOnlineRecharges/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getSdOnlineRecharges/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

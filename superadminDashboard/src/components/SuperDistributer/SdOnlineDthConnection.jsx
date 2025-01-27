@@ -38,7 +38,7 @@ const SdOnlineDthConnection = () => {
     try {
       const { data } = await axios.get(
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getOnlineDthConnection",
-        `http://localhost:7777/api/auth/superDistributor/getOnlineDTHConnection/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getOnlineDTHConnection/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

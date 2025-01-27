@@ -45,7 +45,7 @@ const SdOfflineRechargeHistory = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/auth/superDistributor/getSpecificUserTransactions/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getSpecificUserTransactions/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

@@ -21,7 +21,7 @@ const SdAllOfflineForm = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/superDistributor/getApplyOfflineFormById/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getApplyOfflineFormById/${userId}`,
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApplyOfflineForm`
 
         {

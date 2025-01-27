@@ -33,7 +33,7 @@ const SdBankAccountVerify = () => {
     console.log("Fetching bank details for bid:", bid); // Log bid before request
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/superDistributor/getBankAccountDetails/${bid}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getBankAccountDetails/${bid}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -107,7 +107,7 @@ const SdBankAccountVerify = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:7777/api/auth/superDistributor/changeBankStatus",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/changeBankStatus",
         { UserId, bid }
       );
 
@@ -144,30 +144,6 @@ const SdBankAccountVerify = () => {
 
   console.log(otp);
 
-  // const SubmitBankOtp = async () => {
-  //   // Check if OTP is empty
-  //   if (!otp) {
-  //     alert("Please Enter OTP");
-  //     return; // Stop the function execution if OTP is not provided
-  //   }
-
-  //   try {
-  //     const response = await axios.post(
-  //       "http://localhost:7777/api/auth/superDistributor/verifyOtpAndChangeBankStatus",
-  //       { UserId, otp }
-  //     );
-  //     if (response.data.status == "Success") {
-  //       alert("OTP Submited successfully!");
-  //       setOtpSent(true); // OTP has been sent
-  //     } else {
-  //       alert("Failed to Submit OTP");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error submit OTP:", error);
-  //     alert("Please submit OTP");
-  //   }
-  // };
-
   const SubmitBankOtp = async () => {
     // Check if OTP is empty
     if (!otp) {
@@ -181,7 +157,7 @@ const SdBankAccountVerify = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:7777/api/auth/superDistributor/verifyOtpAndChangeBankStatus",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/verifyOtpAndChangeBankStatus",
         { UserId, otp }
       );
       if (response.data.status === "Success") {

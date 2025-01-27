@@ -47,7 +47,7 @@ const SdBankAccountSetup = () => {
   const fetchBankAccounts = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/superDistributor/getBankDetails/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getBankDetails/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -113,7 +113,7 @@ const SdBankAccountSetup = () => {
     // Proceed with the form submission if validation is passed
     axios
       .post(
-        `http://localhost:7777/api/auth/superDistributor/addBankDetails/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/addBankDetails/${userId}`,
         {
           userId: userId, // Ensure userId is passed to the backend
           bankholder_name: bankData.holderName,
@@ -186,7 +186,7 @@ const SdBankAccountSetup = () => {
     if (confirm.isConfirmed) {
       try {
         const response = await axios.delete(
-          `http://localhost:7777/api/auth/superDistributor/deleteBankDetails/${bid}`,
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/deleteBankDetails/${bid}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -236,22 +236,6 @@ const SdBankAccountSetup = () => {
       }
     }
   };
-
-  // const fetchBankDetails = async (bid) => {
-  //   try {
-  //     const response = await axios.get(
-  //       `http://localhost:7777/api/auth/superDistributor/getBankAccountDetails/${bid}`
-  //     );
-  //     if (response.data.success) {
-  //       setFormData(response.data.data);
-  //     } else {
-  //       alert("Bank account not found");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching bank details:", error);
-  //     alert("Failed to fetch bank details");
-  //   }
-  // };
 
   return (
     <Wrapper>
