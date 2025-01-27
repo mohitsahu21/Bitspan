@@ -5,6 +5,8 @@ const {
   getBillInfo,
   getDTHPlans,
   getDTHPlansINFOCheck,
+  getElectricityPlans,
+  getBillCheckPlans,
 } = require("../../controllers/Retailer/planController");
 
 const router = express.Router();
@@ -15,5 +17,7 @@ router.get("/getMobilePlans", getMobilePlans);
 router.get("/getBillInfo", getBillInfo);
 router.get("/getDTHPlans", getDTHPlans);
 router.get("/getDTHPlansINFOCheck", getDTHPlansINFOCheck);
+router.get("/getElectricityPlans", getElectricityPlans);
+router.get("/getBillCheckPlans", getBillCheckPlans);
 
 module.exports = router;

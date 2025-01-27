@@ -61,7 +61,20 @@ const SambalForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    if(name === "samagraId" || name === "familyId" || name === "mobileNumber"){
+      
+      if (/^\d*$/.test(value)) {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+    }
+    else{
+      setFormData({ ...formData, [name]: value });
+    }
+    
+
   };
 
   const handleSubmit = async (e) => {
@@ -74,37 +87,49 @@ const SambalForm = () => {
         `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/addSambalForm`,
         formData
       );
-      // alert("Form Submitted");
-      Swal.fire({
-        title: "Form Submitted Successfully",
-        text: response.data.message,
-        icon: "success",
-      });
-    } catch (error) {
+       if(response.data.status == "Success"){
+              Swal.fire({
+                title: "Form Submitted Successfully",
+                text: response?.data?.message,
+                icon: "success",
+              });
+              setFormData({
+                samagraId: "",
+                familyId: "",
+                applicantType: "",
+                education: "",
+                occupation: "",
+                smsNotification: "",
+                incomeTaxPayer: "",
+                landOwnership: "",
+                govtService: "",
+                mobileNumber: "",
+                amount: prices[0]?.Sambal_Price,
+                userId: currentUser?.userId,
+              });
+     
+    }
+     else{
+            Swal.fire({
+              title: "Error",
+              text: response?.data?.message || "Something went wrong!",
+              icon: "error",
+            });
+          }}
+           catch (error) {
       console.log(error);
       Swal.fire({
         title: "Error",
-        text: error.response?.data?.message || "Something went wrong!",
+        text: error?.response?.data?.message || "Something went wrong!",
         icon: "error",
       });
     } finally {
       setLoading(false);
+      setPin(["", "", "", ""]);
+      pinRefs.current[0]?.focus();
     }
 
-    setFormData({
-      samagraId: "",
-      familyId: "",
-      applicantType: "",
-      education: "",
-      occupation: "",
-      smsNotification: "",
-      incomeTaxPayer: "",
-      landOwnership: "",
-      govtService: "",
-      mobileNumber: "",
-      // amount: "",
-      user_id: "",
-    });
+  
   };
 
   const handlePinChange = (index, value) => {
@@ -139,13 +164,21 @@ const SambalForm = () => {
       if (response.data.success) {
         return true;
       } else {
-        alert(response.data.message);
-        return false;
+        Swal.fire({
+                         title: "Error verifying PIN",
+                         text: response?.data?.message || "Something went wrong! Please Try again",
+                         icon: "error",
+                       });
+               return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
-      alert("Error verifying PIN");
-      return false;
+            Swal.fire({
+                          title: "Error verifying PIN",
+                          text: error?.response?.data?.message || "Something went wrong! Please Try again",
+                          icon: "error",
+                        });
+            return false;
     }
   };
 
@@ -155,6 +188,7 @@ const SambalForm = () => {
     setIsVerifying(false);
     if (isPinValid) {
       setShowPinModal(false);
+      setPin(["", "", "", ""]);
       handleSubmit(e);
     } else {
       setPin(["", "", "", ""]); // Clear the PIN fields on incorrect entry
@@ -200,6 +234,8 @@ const SambalForm = () => {
                             value={formData.samagraId}
                             onChange={handleChange}
                             required
+                            maxLength={9}
+                            // minLength={10}
                           />
                         </div>
                         <div className="col-md-6">
@@ -211,6 +247,8 @@ const SambalForm = () => {
                             value={formData.familyId}
                             onChange={handleChange}
                             required
+                            maxLength={9}
+                            // minLength={10}
                           />
                         </div>
                       </div>
@@ -426,6 +464,7 @@ const SambalForm = () => {
                                 value="Yes"
                                 checked={formData.smsNotification === "Yes"}
                                 onChange={handleChange}
+                                required
                               />
                               <label className="form-check-label">Yes</label>
                             </div>
@@ -516,6 +555,8 @@ const SambalForm = () => {
                             value={formData.amount}
                             onChange={handleChange}
                             required
+                            disabled
+                            readOnly
                           />
                         </div>
                       </div>

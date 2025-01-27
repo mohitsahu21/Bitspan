@@ -5,6 +5,10 @@ import { MdFormatListNumberedRtl } from "react-icons/md";
 import { BiHomeAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
+import { Dropdown, Modal, Spinner } from "react-bootstrap";
+import { CiViewList } from "react-icons/ci";
+import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
+import SambalFormEditModel from "./SambalFormEditModel";
 
 const SambalHistory = () => {
   const [allData, setAllData] = useState([]);
@@ -15,6 +19,10 @@ const SambalHistory = () => {
   const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
   const [dataLoading, setDataLoading] = useState(false);
+   const [isRefresh, setIsRefresh] = useState(false);
+    const [selectedItem, setSelectedItem] = useState("");
+     const [showMarkEditModel, setShowMarkEditModel] = useState(false);
+      const [formStatus, setFormStatus] = useState(""); // For user type filter
 
   const userID = currentUser.userId;
 
@@ -27,7 +35,7 @@ const SambalHistory = () => {
       const data = response.data.data;
       console.log(data);
       setAllData(data);
-      setFilteredData(data);
+      // setFilteredData(data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -36,29 +44,46 @@ const SambalHistory = () => {
   };
   console.log(allData);
 
-  useEffect(() => {
-    const filtered = allData.filter((item) => {
-      const searchValue = filterValue.toLowerCase();
-      const orderID = item.order_id ? item.order_id.toLowerCase() : "";
-      const mobileNO = item.mobile_number
-        ? item.mobile_number.toLowerCase()
-        : "";
+  
+    const filteredItems = allData.filter((row) => {
+      // const searchValue = filterValue.toLowerCase();
+      // const orderID = item.order_id ? item.order_id.toLowerCase() : "";
+      // const mobileNO = item.mobile_number
+      //   ? item.mobile_number.toLowerCase()
+      //   : "";
 
-      return orderID.includes(searchValue) || mobileNO.includes(searchValue);
+      // return orderID.includes(searchValue) || mobileNO.includes(searchValue);
+
+      const matchesKeyword = (row?.samagra_id &&
+        row.samagra_id.toLowerCase().includes(filterValue.trim().toLowerCase())) ||
+      (row?.mobile_number &&
+        row.mobile_number
+          .toLowerCase()
+          .includes(filterValue.trim().toLowerCase())) ||
+      (row?.family_id &&
+        row.family_id.toLowerCase().includes(filterValue.trim().toLowerCase())) ||
+      (row?.order_id &&
+        row.order_id.toLowerCase().includes(filterValue.trim().toLowerCase()));
+
+    const matchesType =
+      !formStatus ||
+      formStatus === "---Select Form Status---" ||
+      row.status === formStatus;
+    return matchesKeyword && matchesType;
     });
-    setFilteredData(filtered);
-  }, [filterValue, allData]);
+    // setFilteredData(filteredItems);
+  
 
   useEffect(() => {
     fetchRechargeData();
-  }, []);
+  }, [isRefresh]);
 
-  const totalPages = Math.ceil(filteredData.length / complaintsPerPage);
+  const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
   const paginateData = () => {
     const startIndex = currentPage * complaintsPerPage;
     const endIndex = startIndex + complaintsPerPage;
-    return filteredData.slice(startIndex, endIndex);
+    return filteredItems.slice(startIndex, endIndex);
   };
 
   const handlePageChange = ({ selected }) => {
@@ -71,9 +96,7 @@ const SambalHistory = () => {
       <Wrapper>
         <div className="main">
           <div className="container-fluid">
-            {dataLoading ? (
-              <div className="loader">Loading data, please wait...</div>
-            ) : (
+          
               <div className="row flex-wrap justify-content-lg-center justify-content-center ">
                 <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
                   {/* <Sider /> */}
@@ -90,11 +113,10 @@ const SambalHistory = () => {
                                             </div> */}
                         <div className="d-flex justify-content-between align-items-center flex-wrap">
                           <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                            Verify E-District History
+                            Sambal History
                           </h4>
                           <h6 className="mx-lg-5">
-                            <BiHomeAlt /> &nbsp;/ &nbsp; Verify E-District
-                            History
+                            <BiHomeAlt /> &nbsp;/ &nbsp; Sambal History
                           </h6>
                         </div>
                       </div>
@@ -104,12 +126,13 @@ const SambalHistory = () => {
                       <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
                         <div className="row d-flex flex-column g-4">
                           <div className="d-flex flex-column flex-md-row gap-3">
-                            <div className="col-12 col-md-4 col-lg-3">
+                            {/* <div className="col-12 col-md-4 col-lg-3"> */}
+                            <div className="col-12 col-md-12 col-lg-12 col-xl-8">
                               <input
                                 className="form-control"
                                 type="search"
                                 id="floatingInputGroup1"
-                                placeholder="Search by Mob No - Ord ID"
+                                placeholder="Enter Samagra Id/Family Id/Mobile/Order Id"
                                 value={filterValue}
                                 onChange={(e) => {
                                   setFilterValue(e.target.value);
@@ -125,10 +148,40 @@ const SambalHistory = () => {
                                 }}
                               />
                             </div>
+                            <div className="col-12 col-md-12 col-lg-12 col-xl-3">
+                                {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
+                                <select
+                                  className="form-select"
+                                  aria-label="Default select example"
+                                  value={formStatus}
+                                  onChange={(e) =>
+                                    setFormStatus(e.target.value)
+                                  }
+                                >
+                                  <option selected>
+                                    ---Select Form Status---
+                                  </option>
+                                  <option value="Pending">Pending</option>
+                                  <option value="Under Process">Under Process</option>
+                              <option value="Success">Success</option>
+                              <option value="Mark Edit">Mark Edit</option>
+                              <option value="Reject">Reject</option>
+                                </select>
+                              </div>
                           </div>
 
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="table-responsive">
+                                {dataLoading ? (
+                                                                <div className="d-flex justify-content-center">
+                                                                  <Spinner animation="border" role="status">
+                                                                    <span className="visually-hidden ">
+                                                                      Loading...
+                                                                    </span>
+                                                                  </Spinner>
+                                                                </div>
+                                                              ) : (
+                                                                <>
                               <table class="table table-striped">
                                 <thead className="table-dark">
                                   <tr>
@@ -145,6 +198,7 @@ const SambalHistory = () => {
                                     <th scope="col">Govt Service</th>
                                     <th scope="col">Mobile Number</th>
                                     <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -164,6 +218,42 @@ const SambalHistory = () => {
                                         <td>{item.govt_service}</td>
                                         <td>{item.mobile_number}</td>
                                         <td>{item.status}</td>
+                                        <td>
+                                                {(item.status === "Pending" || item.status === "Mark Edit") && (
+                                                  <Dropdown>
+                                                    <Dropdown.Toggle
+                                                      variant="success"
+                                                      // id={`dropdown-${user.id}`}
+                                                      as="span"
+                                                      style={{
+                                                        border: "none",
+                                                        background: "none",
+                                                        cursor: "pointer",
+                                                      }}
+                                                      className="custom-dropdown-toggle"
+                                                    >
+                                                      <PiDotsThreeOutlineVerticalBold />
+                                                    </Dropdown.Toggle>
+                                                    <Dropdown.Menu>
+                                                      
+                                                      <Dropdown.Item
+                                                        onClick={() => {
+                                                          // setSelectedUser(user);
+                                                          setShowMarkEditModel(true);
+                                                          setSelectedItem(item);
+                                                          //   deactivateUser(user.UserId)
+                                                        }}
+                                                      >
+                                                        <span className="">
+                                                          {" "}
+                                                          <CiViewList />
+                                                        </span>{" "}
+                                                      Edit
+                                                      </Dropdown.Item>
+                                                    </Dropdown.Menu>
+                                                  </Dropdown>
+                                                )}
+                                              </td>
                                       </tr>
                                     ))
                                   ) : (
@@ -175,6 +265,8 @@ const SambalHistory = () => {
                                   )}
                                 </tbody>
                               </table>
+                              </>
+                                )}
                             </div>
                             <PaginationContainer>
                               <ReactPaginate
@@ -196,9 +288,36 @@ const SambalHistory = () => {
                   </div>
                 </div>
               </div>
-            )}
+           
           </div>
         </div>
+                      {/* Mark Edit Model  start*/}
+        
+                      <Modal
+                  // size="lg"
+                  // centered
+                  show={showMarkEditModel}
+                    fullscreen={true}
+                  onHide={() => setShowMarkEditModel(false)}
+                  aria-labelledby="packageDetail-modal-sizes-title-lg"
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title id="packageDetail-modal-sizes-title-lg">
+                      Edit Sambal Form
+                    </Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    {selectedItem && (
+                      <SambalFormEditModel
+                        item={selectedItem}
+                        setShowMarkEditModel={setShowMarkEditModel}
+                        setIsRefresh={setIsRefresh}
+                      />
+                    )}
+                  </Modal.Body>
+                </Modal>
+        
+                {/*  Mark Edit Model  end*/}
       </Wrapper>
     </>
   );
@@ -225,6 +344,7 @@ const Wrapper = styled.div`
   }
   td {
     font-size: 14px;
+    white-space: nowrap;
   }
   @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
@@ -235,6 +355,9 @@ const Wrapper = styled.div`
     .formdata {
       padding-left: 13rem;
     }
+  }
+  .custom-dropdown-toggle::after {
+    display: none !important;
   }
 `;
 const PaginationContainer = styled.div`

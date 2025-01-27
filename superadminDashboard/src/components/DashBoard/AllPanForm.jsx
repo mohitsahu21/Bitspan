@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { BiHomeAlt } from "react-icons/bi";
 import styled from "styled-components";
-import { Dropdown, DropdownButton } from "react-bootstrap";
+import { Dropdown, DropdownButton,Modal, Spinner } from "react-bootstrap";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
+import { CiViewList } from "react-icons/ci";
+import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
+import PanFormEditModel from "./PanFormEditModel";
 
 const AllPanForm = () => {
   const [formData, setFormData] = useState([]);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("All");
+  const [selectedStatus, setSelectedStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const complaintsPerPage = 10; // Set items per page
   const [currentPage, setCurrentPage] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
+    const [selectedItem, setSelectedItem] = useState("");
+    const [showMarkEditModel, setShowMarkEditModel] = useState(false);
+      const [isRefresh, setIsRefresh] = useState(false);
 
   const fetchData = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(
         // `http://localhost:7777/api/auth/retailer/getApplyOfflineForm`
@@ -25,17 +32,19 @@ const AllPanForm = () => {
       const newResponseData = response.data.filter(
         (item) => item.applicant_select_service !== "New Bank ID"
       );
+      setLoading(false)
 
       setFormData(newResponseData);
       console.log(newResponseData);
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
   useEffect(() => {
     fetchData();
-  }, [fromDate, toDate]);
+  }, [fromDate, toDate,isRefresh]);
 
   const handleSearch = () => {
     fetchData();
@@ -47,14 +56,14 @@ const AllPanForm = () => {
     const matchesSearch =
       item.applicant_name
         ?.toLowerCase()
-        ?.includes(searchQuery?.toLowerCase()) ||
+        ?.includes(searchQuery?.trim()?.toLowerCase()) ||
       item.applicant_number
         ?.toLowerCase()
-        ?.includes(searchQuery?.toLowerCase()) ||
-      item.order_id?.toLowerCase()?.includes(searchQuery?.toLowerCase());
-    const matchesStatus =
-      selectedStatus === "All" ||
-      item.status?.toLowerCase() === selectedStatus?.toLowerCase();
+        ?.includes(searchQuery?.trim()?.toLowerCase()) ||
+      item.order_id?.toLowerCase()?.includes(searchQuery?.trim()?.toLowerCase());
+    const matchesStatus = !selectedStatus || 
+      selectedStatus === "---Select Form Status---" ||
+      item?.status?.toLowerCase() === selectedStatus?.toLowerCase();
 
     return matchesSearch && matchesStatus;
   });
@@ -148,10 +157,11 @@ const AllPanForm = () => {
                               Search
                             </button>
                           </div> */}
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="fromDate" className="form-label">
+                          {/* <div className="col-12 col-md-4 col-lg-3"> */}
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                            {/* <label for="fromDate" className="form-label">
                               Search
-                            </label>
+                            </label> */}
                             <input
                               type="text"
                               className="form-control responsive-input"
@@ -160,7 +170,28 @@ const AllPanForm = () => {
                               onChange={(e) => setSearchQuery(e.target.value)}
                             />
                           </div>
-                          <div className="col-12 col-md-4 col-lg-3 d-flex align-items-end">
+                               <div className="col-12 col-md-12 col-lg-12 col-xl-3">
+
+
+                                {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
+                                <select
+                                  className="form-select"
+                                  aria-label="Default select example"
+                                  value={selectedStatus}
+                                  onChange={(e) => setSelectedStatus(e.target.value)}
+
+                                >
+                                  <option selected>---Select Form Status---</option>
+                                  <option value="Pending">Pending</option>
+                                  <option value="Under Process">Under Process</option>
+                              <option value="Success">Success</option>
+                              <option value="Mark Edit">Mark Edit</option>
+                              <option value="Reject">Reject</option>
+
+                                </select>
+
+                              </div>
+                          {/* <div className="col-12 col-md-4 col-lg-3 d-flex align-items-end">
                             <DropdownButton
                               id="dropdown-basic-button"
                               title={selectedStatus}
@@ -177,11 +208,21 @@ const AllPanForm = () => {
                                 Pending
                               </Dropdown.Item>
                             </DropdownButton>
-                          </div>
+                          </div> */}
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
+                             {loading ? (
+                                                                                          <div className="d-flex justify-content-center">
+                                                                                            <Spinner animation="border" role="status">
+                                                                                              <span className="visually-hidden ">Loading...</span>
+                                                                                            </Spinner>
+                                                                                          </div>
+                                                                                        )
+                                                                                          :
+                                                                                          (
+                                                                                            <>
                             <table class="table table-striped">
                               <thead className="table-dark">
                                 <tr>
@@ -190,6 +231,7 @@ const AllPanForm = () => {
                                   <th scope="col">Order ID</th>
                                   <th scope="col">Applicant Name</th>
                                   <th scope="col">Applicant Father Name</th>
+                                  <th scope="col">Applicant Email</th>
                                   <th scope="col">Applicant Number</th>
                                   <th scope="col">Service</th>
                                   <th scope="col">other</th>
@@ -199,22 +241,18 @@ const AllPanForm = () => {
                                   <th scope="col">View KYC</th>
                                   <th scope="col">Status</th>
                                   <th scope="col">Note</th>
+                                  <th scope="col">Action</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                {loading ? (
-                                  <>
-                                    <p>Loading...</p>
-                                  </>
-                                ) : (
-                                  <>
-                                    {displayData.map((item, index) => (
+                                    {displayData?.length > 0  ? (displayData.map((item, index) => (
                                       <tr key={index}>
                                         <th scope="row">{index + 1}</th>
                                         <td>{item.created_at}</td>
                                         <td>{item.order_id}</td>
                                         <td>{item.applicant_name}</td>
                                         <td>{item.applicant_father}</td>
+                                        <td>{item.email}</td>
                                         <td>{item.applicant_number}</td>
                                         <td>{item.applicant_select_service}</td>
                                         <td>{item.other}</td>
@@ -259,12 +297,54 @@ const AllPanForm = () => {
                                         </td>
                                         <td>{item.status}</td>
                                         <td>{item.note}</td>
+                                        <td>
+                                          {(item.status === "Pending" ||
+                                            item.status === "Mark Edit") && (
+                                            <Dropdown>
+                                              <Dropdown.Toggle
+                                                variant="success"
+                                                // id={`dropdown-${user.id}`}
+                                                as="span"
+                                                style={{
+                                                  border: "none",
+                                                  background: "none",
+                                                  cursor: "pointer",
+                                                }}
+                                                className="custom-dropdown-toggle"
+                                              >
+                                                <PiDotsThreeOutlineVerticalBold />
+                                              </Dropdown.Toggle>
+                                              <Dropdown.Menu>
+                                                <Dropdown.Item
+                                                  onClick={() => {
+                                                    // setSelectedUser(user);
+                                                    setShowMarkEditModel(true);
+                                                    setSelectedItem(item);
+                                                    //   deactivateUser(user.UserId)
+                                                  }}
+                                                >
+                                                  <span className="">
+                                                    {" "}
+                                                    <CiViewList />
+                                                  </span>{" "}
+                                                  Edit
+                                                </Dropdown.Item>
+                                              </Dropdown.Menu>
+                                            </Dropdown>
+                                          )}
+                                        </td>
                                       </tr>
-                                    ))}
-                                  </>
-                                )}
+                                    ))
+                                  ) : (
+                                    <tr>
+                                      <td colSpan="19">No data available</td>{" "}
+                                      {/* Updated colSpan to match table columns */}
+                                    </tr>
+                                  )}
                               </tbody>
                             </table>
+                            </>
+                                  )}
                           </div>
                           {/* <div className="float-end">
                             <nav aria-label="Page navigation example">
@@ -310,6 +390,33 @@ const AllPanForm = () => {
             </div>
           </div>
         </div>
+
+         {/* Mark Edit Model  start*/}
+        
+                <Modal
+                  // size="lg"
+                  show={showMarkEditModel}
+                    fullscreen={true}
+                  onHide={() => setShowMarkEditModel(false)}
+                  aria-labelledby="packageDetail-modal-sizes-title-lg"
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title id="packageDetail-modal-sizes-title-lg">
+                      Edit Form
+                    </Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    {selectedItem && (
+                      <PanFormEditModel
+                        item={selectedItem}
+                        setShowMarkEditModel={setShowMarkEditModel}
+                        setIsRefresh={setIsRefresh}
+                      />
+                    )}
+                  </Modal.Body>
+                </Modal>
+        
+                {/*  Mark Edit Model  end*/}
       </Wrapper>
     </>
   );
@@ -354,6 +461,9 @@ const Wrapper = styled.div`
   }
   a {
     text-decoration: none;
+  }
+  .custom-dropdown-toggle::after {
+    display: none !important;
   }
 `;
 const PaginationContainer = styled.div`

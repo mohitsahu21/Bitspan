@@ -6,14 +6,16 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../Loading";
 import { useDispatch, useSelector } from "react-redux";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const ElectricityRecharge = () => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
   const [activeTab, setActiveTab] = useState("tab1");
   const [apiData, setApiData] = useState([]);
-
+  const navigate = useNavigate();
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
@@ -23,6 +25,7 @@ const ElectricityRecharge = () => {
     operatorName: "",
     number: "",
     amount: "",
+    walletDeductAmt: "",
     recharge_Type: "Electricity",
     created_by_userid: currentUser.userId,
     // orderid: "4654747",
@@ -38,8 +41,12 @@ const ElectricityRecharge = () => {
   const [responseForm, setResponseForm] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
+  const [showOnlinePinModal, setShowOnlinePinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
+  const [onlinePin, setOnlinePin] = useState(["", "", "", ""]); //Online pin
   const pinRefs = useRef([]);
+  const [userRelation, setUserRelation] = useState([]);
+  const [isVerifying, setIsVerifying] = useState(false);
 
   const operatorOptions = [
     {
@@ -57,6 +64,14 @@ const ElectricityRecharge = () => {
     {
       name: "M.P. Poorv Kshetra Vidyut Vitaran Company Ltd (RURAL)",
       value: "M.P. Poorv Kshetra Vidyut Vitaran Company Ltd (RURAL)",
+    },
+    {
+      name: "M.P. Poorv Kshetra Vidyut Vitaran Company Ltd (URBAN)",
+      value: "M.P. Poorv Kshetra Vidyut Vitaran Company Ltd (URBAN)",
+    },
+    {
+      name: "M.P. Poorva Kshetra Vidyut Vitaran Co. Ltd Jabalpur - NGB Billing System",
+      value: "M.P. Poorva Kshetra Vidyut Vitaran Co. Ltd Jabalpur - NGB Billing System",
     },
   ];
 
@@ -93,27 +108,543 @@ const ElectricityRecharge = () => {
     });
   };
 
+  const ElectricityRechargeComm = async (
+    retailer,
+    distributor,
+    superDistributor,
+    white_lable,
+    packageDetails,
+    item
+  ) => {
+    const Order_Id = `ORW${Date.now()}`;
+    const Transaction_Id = `TXNW${Date.now()}`;
+    const retailerFormData = {
+      userId: currentUser.userId,
+      amount: "",
+      Transaction_details: `Commission Credit for Electricity`,
+      status: "Success",
+      Order_Id,
+      Transaction_Id,
+    };
+    const distributorFormData = {
+      userId: distributor,
+      amount: "",
+      Transaction_details: `Commission Credit for Electricity`,
+      status: "Success",
+      Order_Id,
+      Transaction_Id,
+    };
+    const superDistributorFormData = {
+      userId: superDistributor,
+      amount: "",
+      Transaction_details: `Commission Credit for Electricity`,
+      status: "Success",
+      Order_Id,
+      Transaction_Id,
+    };
+    const whiteLableFormData = {
+      userId: white_lable,
+      amount: "",
+      Transaction_details: `Commission Credit for Electricity`,
+      status: "Success",
+      Order_Id,
+      Transaction_Id,
+    };
+    const retailerPackage = packageDetails?.retailer
+      ? packageDetails?.retailer[0]
+      : {};
+    const distributorPackage = packageDetails?.distributor
+      ? packageDetails?.distributor[0]
+      : {};
+    const superDistributorPackage = packageDetails?.superDistributor
+      ? packageDetails?.superDistributor[0]
+      : {};
+    const whiteLablePackage = packageDetails?.whiteLable
+      ? packageDetails?.whiteLable[0]
+      : {};
+
+    const operatorName = item.operatorName;
+    const amount = parseFloat(item.amount);
+
+    let retailerCommAmount = 0;
+    let distributorCommAmount = 0;
+    let superDistributorCommAmount = 0;
+    let whiteLableCommAmount = 0;
+
+    try {
+      if(retailerPackage.Online_Electricity_Bill_Pay_Commission_Type == "Percentage"){
+               
+        retailerCommAmount = (amount * parseFloat(retailerPackage.Online_Electricity_Bill_Pay_Commission))/100
+        
+    }
+    else{
+        retailerCommAmount = parseFloat(retailerPackage.Online_Electricity_Bill_Pay_Commission)
+    }
+
+    if(distributor && distributorPackage){
+      if(distributorPackage.Online_Electricity_Bill_Pay_Commission_Type == "Percentage"){
+        
+          distributorCommAmount = (amount * parseFloat(distributorPackage.Online_Electricity_Bill_Pay_Commission))/100
+       
+      }
+      else{
+       
+          distributorCommAmount = parseFloat(distributorPackage.Online_Electricity_Bill_Pay_Commission)
+       
+      }
+
+    }
+    if(superDistributor && superDistributorPackage){
+      if(superDistributorPackage.Online_Electricity_Bill_Pay_Commission_Type == "Percentage"){
+        
+          superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Online_Electricity_Bill_Pay_Commission))/100
+         
+      }
+      else{
+       
+          superDistributorCommAmount = parseFloat(superDistributorPackage.Online_Electricity_Bill_Pay_Commission)
+        
+      }
+
+    }
+    if(white_lable && whiteLablePackage){
+      if(whiteLablePackage.Online_Electricity_Bill_Pay_Commission_Type == "Percentage"){
+        
+          whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Online_Electricity_Bill_Pay_Commission))/100
+        
+      }
+      else{
+        
+          whiteLableCommAmount = parseFloat(whiteLablePackage.Online_Electricity_Bill_Pay_Commission)
+        
+      }
+
+    }
+
+      retailerFormData.amount = retailerCommAmount;
+      distributorFormData.amount = distributorCommAmount;
+      superDistributorFormData.amount = superDistributorCommAmount;
+      whiteLableFormData.amount = whiteLableCommAmount;
+      //  console.log(retailerCommAmount)
+      //  console.log(distributorCommAmount)
+      //  console.log(superDistributorCommAmount)
+      //  console.log(whiteLableCommAmount)
+    } catch (error) {
+      console.log(error);
+    }
+    return {
+      retailerFormData,
+      distributorFormData,
+      superDistributorFormData,
+      whiteLableFormData,
+      Order_Id,
+      Transaction_Id,
+    };
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    let success = false;
+    let result = {};
+    let usersId = {
+      distributorId: "NA",
+      superDistributorId: "NA",
+      whiteLabelId: "NA",
+    };
+    
+      // Package Find code
+      try {
+        // setLoading(true);
+  
+        const { data } = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${currentUser.userId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        console.log(data.data);
+        setUserRelation(data.data);
+  
+        if (data.data) {
+          const { distributor, superDistributor, white_lable } = data.data;
+          usersId.distributorId = distributor;
+          usersId.superDistributorId = superDistributor;
+          usersId.whiteLabelId = white_lable;
+          const retailer = currentUser.userId;
+          // Create an array to hold promises and a mapping object
+          const promises = [];
+          const resultsMap = {
+            retailer: null,
+            distributor: null,
+            superDistributor: null,
+            whiteLable: null,
+          };
+  
+          const retailerPromise = axios
+            .get(
+              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then((response) => {
+              resultsMap.retailer = response.data.data;
+            });
+          promises.push(retailerPromise);
+  
+          if (distributor) {
+            const distributorPromise = axios
+              .get(
+                `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .then((response) => {
+                resultsMap.distributor = response.data.data;
+              });
+            promises.push(distributorPromise);
+          }
+  
+          if (superDistributor) {
+            const superDistributorPromise = axios
+              .get(
+                `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .then((response) => {
+                resultsMap.superDistributor = response.data.data;
+              });
+            promises.push(superDistributorPromise);
+          }
+  
+          if (white_lable) {
+            const whiteLablePromise = axios
+              .get(
+                `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .then((response) => {
+                resultsMap.whiteLable = response.data.data;
+              });
+            promises.push(whiteLablePromise);
+          }
+  
+          // Wait for all promises to resolve
+          await Promise.all(promises);
+  
+          // Log the results
+          console.log("retailer Package:", resultsMap.retailer);
+          console.log("Distributor Package:", resultsMap.distributor);
+          console.log("Super Distributor Package:", resultsMap.superDistributor);
+          console.log("White Label Package:", resultsMap.whiteLable);
+  
+          // let result = {};
+          result = await ElectricityRechargeComm(
+            retailer,
+            distributor,
+            superDistributor,
+            white_lable,
+            resultsMap,
+            formData
+          );
+          console.log(result);
+          console.log(result.retailerFormData.amount);
+        }
+      } catch (error) {
+        console.error("There was an error submitting the form!", error);
+        if (error?.response?.status === 401) {
+          Swal.fire({
+            icon: "error",
+            title: "Your token is expired please login again",
+          });
+          dispatch(clearUser());
+          navigate("/");
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "An error occurred during the process. Please try again.",
+          });
+        }
+      }
+      // Package Find code
+      let success = false;
+  
+      if (
+        result.retailerFormData.amount === null ||
+        result.retailerFormData.amount === undefined ||
+        isNaN(result.retailerFormData.amount)
+      ) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong Please try Again!",
+        });
+        return;
+      }
+  
+      const commissionAmt = parseFloat(result.retailerFormData.amount).toFixed(2);
+      const rechargeAmt = parseFloat(formData.amount).toFixed(2);
+  
+      const walletAmt = rechargeAmt - commissionAmt;
+      console.log(walletAmt);
+  
+      // setFormData((prev) => {
+      //   return { ...prev, walletDeductAmt: walletAmt };
+      // });
+  
+      // Update formData directly
+      const updatedFormData = {
+        ...formData,
+        walletDeductAmt: walletAmt,
+      };
+  
+      // Log updated formData
+      console.log(updatedFormData);
+  
+      // const data = {
+      //   operatorName: "Vi",
+      //   number: "9806324244",
+      //   amount: "10",
+      //   walletDeductAmt: "9.1",
+      //   recharge_Type: "Prepaid",
+      //   created_by_userid: currentUser.userId,
+      //   // orderid: "4654747",
+      // };
+  
 
     for (const api of apiData) {
+      setLoading(true);
       try {
-        const result = await axios.post(api.API_URL, formData);
+        const rechargeResult = await axios.post(api.API_URL, updatedFormData);
 
-        if (result.data && result.data.message === "Recharge successful") {
+        if (rechargeResult.data && rechargeResult.data.message === "Recharge successful") {
           Swal.fire({
             title: "Done!",
             text: "Recharge Successful",
             icon: "success",
           });
-          setResponse(result.data);
+          setResponse(rechargeResult.data);
           success = true;
+          // Recharge Commission Credit WL SD D
+          let allProcessesSuccessful = true;
+          result.retailerFormData.Transaction_details = `Commission Credit for Electricity Order Id ${rechargeResult.data.orderId}`;
+          result.distributorFormData.Transaction_details = `Commission Credit for Electricity Order Id ${rechargeResult.data.orderId}`;
+          result.superDistributorFormData.Transaction_details = `Commission Credit for Electricity Order Id ${rechargeResult.data.orderId}`;
+          result.whiteLableFormData.Transaction_details = `Commission Credit for Electricity Order Id ${rechargeResult.data.orderId}`;
+          if (
+            result &&
+            result.distributorFormData &&
+            result.distributorFormData.amount
+          ) {
+            const response = await axios
+              .put(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+                // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+                result.distributorFormData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .catch(() => {
+                allProcessesSuccessful = false;
+              });
+          }
+          if (
+            result &&
+            result.superDistributorFormData &&
+            result.superDistributorFormData.amount
+          ) {
+            const response = await axios
+              .put(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+                // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+                result.superDistributorFormData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .catch(() => {
+                allProcessesSuccessful = false;
+              });
+          }
+          if (
+            result &&
+            result.whiteLableFormData &&
+            result.whiteLableFormData.amount
+          ) {
+            const response = await axios
+              .put(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+                // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+                result.whiteLableFormData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .catch(() => {
+                allProcessesSuccessful = false;
+              });
+          }
+
+          if (result) {
+            let whiteLabel_Commission = 0;
+            let super_Distributor_Commission = 0;
+            let distributor_Commission = 0;
+            let retailer_Commission = 0;
+            if (result.whiteLableFormData && result.whiteLableFormData.amount) {
+              whiteLabel_Commission = result.whiteLableFormData.amount;
+            }
+            if (
+              result.superDistributorFormData &&
+              result.superDistributorFormData.amount
+            ) {
+              super_Distributor_Commission =
+                result.superDistributorFormData.amount;
+            }
+            if (
+              result.distributorFormData &&
+              result.distributorFormData.amount
+            ) {
+              distributor_Commission = result.distributorFormData.amount;
+            }
+            if (result.retailerFormData && result.retailerFormData.amount) {
+              retailer_Commission = result.retailerFormData.amount;
+            }
+            console.log(userRelation);
+
+            const commissionFormData = {
+              order_id: result.Order_Id,
+              transaction_id: result.Transaction_Id,
+              amount: updatedFormData.amount,
+              whiteLabel_id: usersId.whiteLabelId ? usersId.whiteLabelId : "NA",
+              super_Distributor_id: usersId.superDistributorId
+                ? usersId.superDistributorId
+                : "NA",
+              distributor_id: usersId.distributorId
+                ? usersId.distributorId
+                : "NA",
+              retailer_id: currentUser.userId ? currentUser.userId : "NA",
+              whiteLabel_Commission: whiteLabel_Commission,
+              super_Distributor_Commission: super_Distributor_Commission,
+              distributor_Commission: distributor_Commission,
+              retailer_Commission: retailer_Commission,
+              transaction_type: updatedFormData.recharge_Type,
+              transaction_details: result.retailerFormData.Transaction_details,
+              status: "Success",
+            };
+            console.log(commissionFormData);
+            await axios
+              .post(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
+                // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+                commissionFormData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .catch(() => {
+                allProcessesSuccessful = false;
+              });
+          }
+          // Recharge Commission Credit WL SD D
           break;
-        } else if (
-          result.data.rechargeData &&
-          result.data.rechargeData.status === "Failure"
+        }
+        else if (rechargeResult.data &&
+          rechargeResult.data.message === "Recharge in process"){
+            success = true;
+            Swal.fire({
+              icon: "info",
+              title: "Recharge in process",
+              text: "Recharge in process please wait it will take Sometime!",
+            });
+            let allProcessesSuccessful = true;
+            result.retailerFormData.Transaction_details = `Commission Credit for Electricity Order Id ${rechargeResult.data.orderId}`;
+            
+            if (result) {
+              let whiteLabel_Commission = 0;
+              let super_Distributor_Commission = 0;
+              let distributor_Commission = 0;
+              let retailer_Commission = 0;
+              if (result.retailerFormData && result.retailerFormData.amount) {
+                retailer_Commission = result.retailerFormData.amount;
+              }
+              console.log(userRelation);
+  
+              const commissionFormData = {
+                order_id: result.Order_Id,
+                transaction_id: result.Transaction_Id,
+                amount: updatedFormData.amount,
+                whiteLabel_id: usersId.whiteLabelId ? usersId.whiteLabelId : "NA",
+                super_Distributor_id: usersId.superDistributorId
+                  ? usersId.superDistributorId
+                  : "NA",
+                distributor_id: usersId.distributorId
+                  ? usersId.distributorId
+                  : "NA",
+                retailer_id: currentUser.userId ? currentUser.userId : "NA",
+                whiteLabel_Commission: whiteLabel_Commission,
+                super_Distributor_Commission: super_Distributor_Commission,
+                distributor_Commission: distributor_Commission,
+                retailer_Commission: retailer_Commission,
+                transaction_type: updatedFormData.recharge_Type,
+                transaction_details: result.retailerFormData.Transaction_details,
+                status: "Success",
+              };
+              console.log(commissionFormData);
+              await axios
+                .post(
+                  "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
+                  // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+                  commissionFormData,
+                  {
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${token}`,
+                    },
+                  }
+                )
+                .catch(() => {
+                  allProcessesSuccessful = false;
+                });
+            }
+            // Recharge Commission Credit WL SD D
+            break;
+          } else if (
+            rechargeResult.data.rechargeData &&
+            rechargeResult.data.rechargeData.status === "Failure"
         ) {
           Swal.fire({
             icon: "error",
@@ -123,9 +654,30 @@ const ElectricityRecharge = () => {
         }
       } catch (error) {
         console.error(
-          "Error in recharge:",
-          error.response ? error.response.data : error.message
-        );
+                         "Error in recharge:",
+                         error.response ? error.response.data : error.message
+                       );
+                       if (error?.response?.status === 401) {
+                         Swal.fire({
+                           icon: "error",
+                           title: "Your token is expired. Please login again.",
+                         });
+                         dispatch(clearUser());
+                         navigate("/");
+                       }
+      }
+      finally {
+        // Clear form data and stop loading
+        setFormData({
+          operatorName: "",
+          number: "",
+          amount: "",
+          walletDeductAmt: "",
+          recharge_Type: "Electricity",
+          created_by_userid: currentUser.userId,
+        });
+
+        setLoading(false);
       }
     }
 
@@ -204,6 +756,22 @@ const ElectricityRecharge = () => {
     }
   };
 
+      // Onlined PIN Integration
+      const handleOnlinePinChange = (index, value) => {
+        if (/^\d?$/.test(value)) {
+          const newPin = [...onlinePin];
+          newPin[index] = value;
+          setOnlinePin(newPin);
+      
+          // Move to next input if current is filled, move to previous if deleted
+          if (value !== "" && index < onlinePin.length - 1) {
+            pinRefs.current[index + 1].focus();
+          } else if (value === "" && index > 0) {
+            pinRefs.current[index - 1].focus();
+          }
+        }
+      };
+
   const handleBackspace = (index) => {
     if (pin[index] === "" && index > 0) {
       pinRefs.current[index - 1].focus();
@@ -230,20 +798,63 @@ const ElectricityRecharge = () => {
     }
   };
 
-  const handleModalSubmit = async (e) => {
-    const isPinValid = await verifyPin();
-    if (isPinValid) {
-      setShowPinModal(false);
-      handlesubmitForm(e);
-      setPin(["", "", "", ""]);
+      // Onlined PIN Integration
+const verifyOnlinePin = async () => {
+  try {
+    const response = await axios.post(
+      `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+      { user_id: currentUser.userId || "", pin: onlinePin.join("") }
+    );
+    if (response.data.success) {
+      return true;
     } else {
-      setPin(["", "", "", ""]);
+      alert(response.data.message);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error verifying PIN:", error);
+    alert("Error verifying PIN");
+    return false;
+  }
+};
+
+const handleModalSubmit = async (e) => {
+  setIsVerifying(true);
+  const isPinValid = await verifyPin();
+  setIsVerifying(false);
+  if (isPinValid) {
+    setShowPinModal(false);
+    handlesubmitForm(e);
+    setPin(["", "", "", ""]);
+  } else {
+    setPin(["", "", "", ""]);
+  }
+};
+
+  // Onlined PIN Integration
+  const handleOnlineModalSubmit = async (e) => {
+    setIsVerifying(true);
+    const isPinValid = await verifyOnlinePin();
+    setIsVerifying(false);
+    if (isPinValid) {
+      setShowOnlinePinModal(false);
+      handleSubmit(e); // Online form submit
+      setOnlinePin(["", "", "", ""]); // Reset the online PIN
+    } else {
+      setOnlinePin(["", "", "", ""]);
     }
   };
 
   const openPinModal = (e) => {
     e.preventDefault();
     setShowPinModal(true);
+  };
+
+  const openOnlinePinModal = (e) => {
+    e.preventDefault();
+    setShowOnlinePinModal(true);
+    console.log("Online PIN");
+    
   };
 
   return (
@@ -332,7 +943,7 @@ const ElectricityRecharge = () => {
                                         <Loading />
                                       </div>
                                     ) : ( */}
-                                      <form onSubmit={handleSubmit}>
+                                      <form onSubmit={openOnlinePinModal}>
                                         <div class="input-group mb-3">
                                           <span class="input-group-text">
                                             <FaMobileAlt />
@@ -546,56 +1157,132 @@ const ElectricityRecharge = () => {
             </div>
           </div>
         )}
-        <Modal
-          show={showPinModal}
-          onHide={() => setShowPinModal(false)}
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Enter 4-Digit PIN</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="pin-inputs d-flex justify-content-center">
-              {pin.map((digit, index) => (
-                <input
-                  key={index}
-                  ref={(el) => (pinRefs.current[index] = el)}
-                  type="text"
-                  value={digit ? "●" : ""}
-                  maxLength="1"
-                  onChange={(e) => handlePinChange(index, e.target.value)}
-                  onKeyDown={(e) =>
-                    e.key === "Backspace" && handleBackspace(index)
-                  }
-                  className="pin-digit form-control mx-1"
-                  style={{
-                    width: "50px",
-                    textAlign: "center",
-                    fontSize: "1.5rem",
-                    borderRadius: "8px",
-                    border: "1px solid #ced4da",
-                    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
-                  }}
-                />
-              ))}
-            </div>
-          </Modal.Body>
-          <Modal.Footer>
-            <div className="w-100 d-flex justify-content-center">
-              <Button
-                variant="secondary"
-                onClick={() => setShowPinModal(false)}
-                className="mx-1"
-              >
-                Cancel
-              </Button>
-
-              <Button variant="primary" onClick={handleModalSubmit}>
-                Verify PIN
-              </Button>
-            </div>
-          </Modal.Footer>
-        </Modal>
+           <Modal
+                 show={showPinModal}
+                 onHide={() => setShowPinModal(false)}
+                 centered
+               >
+                 <Modal.Header closeButton>
+                   <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+                 </Modal.Header>
+                 <Modal.Body>
+                   <div className="pin-inputs d-flex justify-content-center">
+                     {pin.map((digit, index) => (
+                       <input
+                         key={index}
+                         ref={(el) => (pinRefs.current[index] = el)}
+                         type="text"
+                         value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
+                         maxLength="1"
+                         onChange={(e) => handlePinChange(index, e.target.value)}
+                         onKeyDown={(e) =>
+                           e.key === "Backspace" && handleBackspace(index)
+                         }
+                         className="pin-digit form-control mx-1"
+                         style={{
+                           width: "50px",
+                           textAlign: "center",
+                           fontSize: "1.5rem",
+                           borderRadius: "8px",
+                           border: "1px solid #ced4da",
+                           boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                         }}
+                       />
+                     ))}
+                   </div>
+                 </Modal.Body>
+                 <Modal.Footer>
+                   <div className="w-100 d-flex justify-content-center">
+                     <Button
+                       variant="secondary"
+                       onClick={() => setShowPinModal(false)}
+                       className="mx-1"
+                     >
+                       Cancel
+                     </Button>
+       
+                     <Button
+                       variant="primary"
+                       onClick={handleModalSubmit}
+                       disabled={isVerifying}
+                     >
+                       {isVerifying ? "Verifying..." : "Verify PIN"}
+                       {isVerifying && (
+                         <Spinner
+                           as="span"
+                           animation="border"
+                           size="sm"
+                           role="status"
+                           aria-hidden="true"
+                         />
+                       )}
+                     </Button>
+                   </div>
+                 </Modal.Footer>
+               </Modal>
+                <Modal
+                  show={showOnlinePinModal}
+                  onHide={() => setShowOnlinePinModal(false)}
+                  centered
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <div className="pin-inputs d-flex justify-content-center">
+                      {onlinePin.map((digit, index) => (
+                        <input
+                          key={index}
+                          ref={(el) => (pinRefs.current[index] = el)}
+                          type="text"
+                          value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
+                          maxLength="1"
+                          onChange={(e) => handleOnlinePinChange(index, e.target.value)}
+                          onKeyDown={(e) =>
+                            e.key === "Backspace" && handleBackspace(index)
+                          }
+                          className="pin-digit form-control mx-1"
+                          style={{
+                            width: "50px",
+                            textAlign: "center",
+                            fontSize: "1.5rem",
+                            borderRadius: "8px",
+                            border: "1px solid #ced4da",
+                            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <div className="w-100 d-flex justify-content-center">
+                      <Button
+                        variant="secondary"
+                        onClick={() => setShowOnlinePinModal(false)}
+                        className="mx-1"
+                      >
+                        Cancel
+                      </Button>
+        
+                      <Button
+                        variant="primary"
+                        onClick={handleOnlineModalSubmit}
+                        disabled={isVerifying}
+                      >
+                        {isVerifying ? "Verifying..." : "Verify PIN"}
+                        {isVerifying && (
+                          <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </Button>
+                    </div>
+                  </Modal.Footer>
+                </Modal>
       </Wrapper>
     </>
   );

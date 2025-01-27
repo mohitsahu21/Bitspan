@@ -718,7 +718,7 @@ const RetailerSidebarData = [
       },
       {
         title: "Buy Coupon",
-        path: "/buy-uti-coupon",
+        path: "/buy-coupon",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
@@ -1513,7 +1513,6 @@ const SuperAdminData = [
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
-     
       {
         title: "View Recharge History",
         path: "/online-recharge-history",
@@ -1541,7 +1540,6 @@ const SuperAdminData = [
         path: "/uti-transaction-report",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
-
     ],
   },
   {
@@ -1549,7 +1547,7 @@ const SuperAdminData = [
     path: "/website-setting",
     icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
   },
- 
+
   {
     title: "PAN Coupon Requests",
     path: "/pan-coupon-requests",

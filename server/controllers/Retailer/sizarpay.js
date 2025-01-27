@@ -125,15 +125,15 @@ const operatorMapping = {
     code: "374",
     category: "Electricity",
   },
-  "M.P. Paschim Kshetra Vidyut Vitaran": {
+  "M.P. Paschim Kshetra Vidyut Vitaran Company Ltd": {
     code: "342",
     category: "Electricity",
   },
-  "M.P. Poorv Kshetra Vidyut Vitaran - RURAL": {
+  "M.P. Poorv Kshetra Vidyut Vitaran Company Ltd (RURAL)": {
     code: "341",
     category: "Electricity",
   },
-  "M.P. Poorv Kshetra Vidyut Vitaran - URBAN": {
+  "M.P. Poorv Kshetra Vidyut Vitaran Company Ltd (URBAN)": {
     code: "378",
     category: "Electricity",
   },
@@ -276,11 +276,25 @@ const operatorMapping = {
 const sizarpayRecharge = (req, res) => {
   let responseSent = false;
   const randomOutletID = Math.floor(100000 + Math.random() * 900000).toString();
+  const GEOCode = "21.1466,79.0888";
+  const Pincode = "482002";
+  const CustomerNumber = "9926054551";
+  const {
+    number,
+    amount,
+    walletDeductAmt,
+    operatorName,
+    recharge_Type,
+    created_by_userid,
+  } = req.body;
 
-  const { number, amount, operatorName, recharge_Type, created_by_userid } =
-    req.body;
-
-  if (!number || !amount || !operatorName || !recharge_Type) {
+  if (
+    !number ||
+    !amount ||
+    !walletDeductAmt ||
+    !operatorName ||
+    !recharge_Type
+  ) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
@@ -340,12 +354,13 @@ const sizarpayRecharge = (req, res) => {
         }
 
         const insertQuery = `
-          INSERT INTO recharges (mobile_no, amount, operator_name, providerName, recharge_Type, created_by_userid, created_at, orderid) 
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+          INSERT INTO recharges (mobile_no, amount, walletDeductAmt, operator_name, providerName, recharge_Type, created_by_userid, created_at, orderid) 
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
         const values = [
           number,
           amount,
+          walletDeductAmt,
           operatorName,
           providerName,
           recharge_Type,
@@ -375,6 +390,9 @@ const sizarpayRecharge = (req, res) => {
           SPKey: operatorDetails.code,
           ApiRequestID: orderId,
           Format: "1",
+          GEOCode : GEOCode,
+          Pincode : Pincode,
+          CustomerNumber : CustomerNumber
         }).then((rechargeData) => {
           return { rechargeData, orderId, id };
         });
@@ -419,8 +437,16 @@ const sizarpayRecharge = (req, res) => {
         });
       })
       .then(({ rechargeData, Status }) => {
-        if (Status === "Success") {
-          const newWalletBalance = (currentBalance - amount).toFixed(2);
+        if (Status === "Success" || Status === "Pending") {
+          let rechargeMessage = "Recharge in process";
+          if(Status === "Success"){
+            rechargeMessage = "Recharge successful"
+          } else if(Status === "Pending"){
+            rechargeMessage = "Recharge in process";
+          }
+          const newWalletBalance = (currentBalance - walletDeductAmt).toFixed(
+            2
+          );
 
           const updateWalletQuery = `
             INSERT INTO user_wallet
@@ -443,7 +469,7 @@ const sizarpayRecharge = (req, res) => {
                 newWalletBalance,
                 "Debit",
                 0,
-                amount,
+                walletDeductAmt,
                 transactionDetails,
                 "Success",
               ],
@@ -456,7 +482,8 @@ const sizarpayRecharge = (req, res) => {
                   });
                 } else {
                   resolve({
-                    message: "Recharge successful",
+                    // message: "Recharge successful",
+                    message: rechargeMessage,
                     rechargeData,
                     wallet: {
                       previousBalance: currentBalance.toFixed(2),

@@ -57,6 +57,7 @@ const SuperAdminRoutes = lazy(() => import("./routes/SuperAdminRoutes"));
 const RetailerRoutes = lazy(() => import("./routes/RetailerRoutes"));
 const Distributor = lazy(() => import("./routes/Distributor"));
 const WhiteLabelRoutes = lazy(() => import("./routes/WhiteLabelRoutes"));
+const SuperDistributorRoutes = lazy(() => import("./routes/SuperDistributorRoutes"));
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);

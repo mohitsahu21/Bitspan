@@ -81,6 +81,212 @@ const fs = require("fs");
 //     }
 //   );
 // };
+// const applyOfflineForm = (req, res) => {
+//   const {
+//     applicant_name,
+//     applicant_father,
+//     applicant_number,
+//     email,
+//     applicant_select_service,
+//     other,
+//     eStampAmount,
+//     amount,
+//     userId,
+//   } = req.body;
+
+//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+//   const domain = "http://localhost:7777";
+//   const attached_form = req.files.attached_form
+//     ? `${domain}/uploads/${req.files.attached_form[0].filename}`
+//     : null;
+//   const attached_photo = req.files.attached_photo
+//     ? `${domain}/uploads/${req.files.attached_photo[0].filename}`
+//     : null;
+//   const attached_sign = req.files.attached_sign
+//     ? `${domain}/uploads/${req.files.attached_sign[0].filename}`
+//     : null;
+//   // const attached_kyc = req.files.attached_kyc
+//   //   ? `${domain}/uploads/${req.files.attached_kyc[0].filename}`
+//   //   : null;
+//   const attached_kyc = req.files.attached_kyc
+//     ? req.files.attached_kyc
+//         .map((file) => `${domain}/uploads/${file.filename}`)
+//         .join(",")
+//     : null;
+
+//   const orderId = `ORF${Date.now()}`;
+
+//   const status = "Pending";
+
+//   const query = `
+//         INSERT INTO apply_offline_form (
+//         order_id,
+//             applicant_name,
+//             applicant_father,
+//             applicant_number,
+//                 email,
+//             applicant_select_service,
+//             other,
+//                 eStampAmount,
+//     amount,
+//             attached_form,
+//             attached_photo,
+//             attached_sign,
+//             attached_kyc,
+//             status,
+//             	user_id,
+//             created_at
+//         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+//     `;
+
+//   db.query(
+//     query,
+//     [
+//       orderId,
+//       applicant_name,
+//       applicant_father,
+//       applicant_number,
+//       email,
+//       applicant_select_service,
+//       other,
+//       eStampAmount,
+//       amount,
+//       attached_form,
+//       attached_photo,
+//       attached_sign,
+//       attached_kyc,
+//       status,
+//       userId,
+//       createdAt,
+//     ],
+//     (err, result) => {
+//       if (err) {
+//         console.error("Error inserting data into MySQL:", err);
+//         res.status(500).json({ error: "Database error" });
+//         return;
+//       }
+
+//       const queryBalance = `
+//       SELECT Closing_Balance 
+//       FROM user_wallet 
+//       WHERE userId = ? 
+//       ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+//       LIMIT 1
+//     `;
+
+//       db.query(queryBalance, [userId], (err, balanceResult) => {
+//         if (err) {
+//           console.error("Error fetching wallet balance:", err);
+//           return res.status(500).json({
+//             status: "Failure",
+//             step: "Fetch Wallet Balance",
+//             error: "Failed to fetch wallet balance",
+//             details: err.message,
+//           });
+//         }
+
+//         if (balanceResult.length === 0) {
+//           return res.status(404).json({
+//             status: "Failure",
+//             step: "Fetch Wallet Balance",
+//             message: "No balance found for the user.",
+//           });
+//         }
+
+//         const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+//         if (isNaN(currentBalance)) {
+//           return res.status(500).json({
+//             status: "Failure",
+//             step: "Fetch Wallet Balance",
+//             error: "Current balance is invalid.",
+//           });
+//         }
+
+//         if (currentBalance < amount) {
+//           return res.status(400).json({
+//             status: "Failure",
+//             step: "Wallet Deduction",
+//             message: "Insufficient balance.",
+//             currentBalance,
+//             requiredAmount: amount,
+//           });
+//         }
+
+//         const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+//         if (isNaN(newBalance)) {
+//           return res.status(500).json({
+//             status: "Failure",
+//             step: "Wallet Deduction",
+//             error: "New balance calculation is invalid.",
+//           });
+//         }
+
+//         const transactionId = `TXNW${Date.now()}`;
+//         const transactionDetails = `Services Deduction ${applicant_number}`;
+//         const creditAmt = 0;
+
+//         const updateWalletQuery = `
+//         INSERT INTO user_wallet 
+//         (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+//         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+//       `;
+
+//         db.query(
+//           updateWalletQuery,
+//           [
+//             userId,
+//             createdAt,
+//             orderId,
+//             transactionId,
+//             currentBalance.toFixed(2),
+//             newBalance,
+//             "Debit",
+//             creditAmt,
+//             amount,
+//             transactionDetails,
+//             "Success",
+//           ],
+//           (err, walletResult) => {
+//             if (err) {
+//               console.error("Error updating wallet balance:", err);
+//               return res.status(500).json({
+//                 status: "Failure",
+//                 step: "Update Wallet Balance",
+//                 error: "Failed to update wallet balance",
+//                 details: err.message,
+//               });
+//             }
+
+//             return res.status(200).json({
+//               status: "Success",
+//               message:
+//                 "Other Services processed and wallet updated successfully.",
+//               details: {
+//                 offlineServices: {
+//                   orderId,
+//                   applicant_name,
+//                   applicant_father,
+//                   applicant_number,
+//                   email,
+//                   applicant_select_service,
+//                   amount,
+//                 },
+//                 wallet: {
+//                   transactionId,
+//                   newBalance,
+//                   previousBalance: currentBalance.toFixed(2),
+//                   deductedAmount: amount,
+//                 },
+//               },
+//             });
+//           }
+//         );
+//       });
+//     }
+//   );
+// };
+
 const applyOfflineForm = (req, res) => {
   const {
     applicant_name,
@@ -106,9 +312,6 @@ const applyOfflineForm = (req, res) => {
   const attached_sign = req.files.attached_sign
     ? `${domain}/uploads/${req.files.attached_sign[0].filename}`
     : null;
-  // const attached_kyc = req.files.attached_kyc
-  //   ? `${domain}/uploads/${req.files.attached_kyc[0].filename}`
-  //   : null;
   const attached_kyc = req.files.attached_kyc
     ? req.files.attached_kyc
         .map((file) => `${domain}/uploads/${file.filename}`)
@@ -116,148 +319,155 @@ const applyOfflineForm = (req, res) => {
     : null;
 
   const orderId = `ORF${Date.now()}`;
-
   const status = "Pending";
 
-  const query = `
-        INSERT INTO apply_offline_form (
-        order_id,
+  const queryBalance = `
+    SELECT Closing_Balance 
+    FROM user_wallet 
+    WHERE userId = ? 
+    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+    LIMIT 1
+  `;
+
+  // Step 1: Check Wallet Balance
+  db.query(queryBalance, [userId], (err, balanceResult) => {
+    if (err) {
+      console.error("Error fetching wallet balance:", err);
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Failed to fetch wallet balance",
+        details: err.message,
+      });
+    }
+
+    if (balanceResult.length === 0) {
+      return res.status(404).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        message: "No balance found for the user.",
+      });
+    }
+
+    const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+    if (isNaN(currentBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Current balance is invalid.",
+      });
+    }
+
+    if (currentBalance < amount) {
+      return res.status(400).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        message: "Insufficient balance.",
+        currentBalance,
+        requiredAmount: amount,
+      });
+    }
+
+    // Step 2: Update Wallet
+    const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+
+    if (isNaN(newBalance)) {
+                return res.status(500).json({
+                  status: "Failure",
+                  step: "Wallet Deduction",
+                  error: "New balance calculation is invalid.",
+                });
+              }
+    const transactionId = `TXNW${Date.now()}`;
+    const transactionDetails = `Services Deduction ${applicant_number}`;
+    const creditAmt = 0;
+
+    const updateWalletQuery = `
+      INSERT INTO user_wallet 
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+      updateWalletQuery,
+      [
+        userId,
+        createdAt,
+        orderId,
+        transactionId,
+        currentBalance.toFixed(2),
+        newBalance,
+        "Debit",
+        creditAmt,
+        amount,
+        transactionDetails,
+        "Success",
+      ],
+      (err, walletResult) => {
+        if (err) {
+          console.error("Error updating wallet balance:", err);
+          return res.status(500).json({
+            status: "Failure",
+            step: "Update Wallet Balance",
+            error: "Failed to update wallet balance",
+            details: err.message,
+          });
+        }
+
+        // Step 3: Insert into apply_offline_form
+        const query = `
+          INSERT INTO apply_offline_form (
+            order_id,
             applicant_name,
             applicant_father,
             applicant_number,
-                email,
+            email,
             applicant_select_service,
             other,
-                eStampAmount,
-    amount,
+            eStampAmount,
+            amount,
             attached_form,
             attached_photo,
             attached_sign,
             attached_kyc,
             status,
-            	user_id,
+            user_id,
             created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-
-  db.query(
-    query,
-    [
-      orderId,
-      applicant_name,
-      applicant_father,
-      applicant_number,
-      email,
-      applicant_select_service,
-      other,
-      eStampAmount,
-      amount,
-      attached_form,
-      attached_photo,
-      attached_sign,
-      attached_kyc,
-      status,
-      userId,
-      createdAt,
-    ],
-    (err, result) => {
-      if (err) {
-        console.error("Error inserting data into MySQL:", err);
-        res.status(500).json({ error: "Database error" });
-        return;
-      }
-
-      const queryBalance = `
-      SELECT Closing_Balance 
-      FROM user_wallet 
-      WHERE userId = ? 
-      ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
-      LIMIT 1
-    `;
-
-      db.query(queryBalance, [userId], (err, balanceResult) => {
-        if (err) {
-          console.error("Error fetching wallet balance:", err);
-          return res.status(500).json({
-            status: "Failure",
-            step: "Fetch Wallet Balance",
-            error: "Failed to fetch wallet balance",
-            details: err.message,
-          });
-        }
-
-        if (balanceResult.length === 0) {
-          return res.status(404).json({
-            status: "Failure",
-            step: "Fetch Wallet Balance",
-            message: "No balance found for the user.",
-          });
-        }
-
-        const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
-        if (isNaN(currentBalance)) {
-          return res.status(500).json({
-            status: "Failure",
-            step: "Fetch Wallet Balance",
-            error: "Current balance is invalid.",
-          });
-        }
-
-        if (currentBalance < amount) {
-          return res.status(400).json({
-            status: "Failure",
-            step: "Wallet Deduction",
-            message: "Insufficient balance.",
-            currentBalance,
-            requiredAmount: amount,
-          });
-        }
-
-        const newBalance = parseFloat(currentBalance - amount).toFixed(2);
-        if (isNaN(newBalance)) {
-          return res.status(500).json({
-            status: "Failure",
-            step: "Wallet Deduction",
-            error: "New balance calculation is invalid.",
-          });
-        }
-
-        const transactionId = `TXNW${Date.now()}`;
-        const transactionDetails = `Services Deduction ${applicant_number}`;
-        const creditAmt = 0;
-
-        const updateWalletQuery = `
-        INSERT INTO user_wallet 
-        (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `;
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
 
         db.query(
-          updateWalletQuery,
+          query,
           [
+            orderId,
+            applicant_name,
+            applicant_father,
+            applicant_number,
+            email,
+            applicant_select_service,
+            other,
+            eStampAmount,
+            amount,
+            attached_form,
+            attached_photo,
+            attached_sign,
+            attached_kyc,
+            status,
             userId,
             createdAt,
-            orderId,
-            transactionId,
-            currentBalance.toFixed(2),
-            newBalance,
-            "Debit",
-            creditAmt,
-            amount,
-            transactionDetails,
-            "Success",
           ],
-          (err, walletResult) => {
+          (err, result) => {
             if (err) {
-              console.error("Error updating wallet balance:", err);
+              console.error("Error inserting data into apply_offline_form:", err);
               return res.status(500).json({
                 status: "Failure",
-                step: "Update Wallet Balance",
-                error: "Failed to update wallet balance",
+                step: "Insert Apply Offline Form",
+                error: "Failed to insert data into apply_offline_form",
                 details: err.message,
               });
             }
 
+            // Success Response
             return res.status(200).json({
               status: "Success",
               message:
@@ -282,10 +492,115 @@ const applyOfflineForm = (req, res) => {
             });
           }
         );
-      });
-    }
-  );
+      }
+    );
+  });
 };
+
+
+const update_applyOfflineForm = (req, res) => {
+  const {
+    applicant_name,
+    applicant_father,
+    applicant_number,
+    email,
+    applicant_select_service,
+    other,
+    eStampAmount,
+    amount,
+    userId,
+    order_id,
+    previous_attached_photo,
+    previous_attached_kyc,
+    previous_attached_form,
+    previous_attached_sign,
+  } = req.body;
+
+  const updated_at = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+  const domain = "http://localhost:7777";
+  const attached_form = req.files.attached_form
+    ? `${domain}/uploads/${req.files.attached_form[0].filename}`
+    : previous_attached_form;
+  const attached_photo = req.files.attached_photo
+    ? `${domain}/uploads/${req.files.attached_photo[0].filename}`
+    : previous_attached_photo;
+  const attached_sign = req.files.attached_sign
+    ? `${domain}/uploads/${req.files.attached_sign[0].filename}`
+    : previous_attached_sign;
+  // const attached_kyc = req.files.attached_kyc
+  //   ? `${domain}/uploads/${req.files.attached_kyc[0].filename}`
+  //   : null;
+  const attached_kyc = req.files.attached_kyc
+    ? req.files.attached_kyc
+        .map((file) => `${domain}/uploads/${file.filename}`)
+        .join(",")
+    : previous_attached_kyc;
+
+  // const orderId = `ORF${Date.now()}`;
+
+  const status = "Pending";
+
+  const query = `
+         UPDATE apply_offline_form SET
+            applicant_name = ?,
+            applicant_father = ?,
+            applicant_number = ?,
+                email = ?,
+            applicant_select_service = ?,
+            other = ?,
+                eStampAmount = ?,
+    amount = ?,
+            attached_form = ?,
+            attached_photo = ?,
+            attached_sign = ?,
+            attached_kyc = ?,
+            status = ?,
+            	user_id = ?,
+            updated_at = ? WHERE order_id = ?`;
+
+  db.query(
+    query,
+    [
+      applicant_name,
+      applicant_father,
+      applicant_number,
+      email,
+      applicant_select_service,
+      other,
+      eStampAmount,
+      amount,
+      attached_form,
+      attached_photo,
+      attached_sign,
+      attached_kyc,
+      status,
+      userId,
+      updated_at,
+      order_id
+    ],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting data into MySQL:", err);
+        res.status(500).json({ error: "Database error" });
+        return;
+      }
+      
+      if (result.affectedRows === 0) {
+        res.status(404).json({ error: "Form not found" });
+        return;
+      }
+      
+
+            return res.status(200).json({
+              status: "Success",
+              message:
+                "Update Form Successfully",
+              
+              });
+            }
+          );
+        };
 
 const getApplyOfflineFormByid = (req, res) => {
   const id = req.params.id; // Extracting the id from the request parameters
@@ -353,6 +668,224 @@ const updateApplyOfflineForm = (req, res) => {
   });
 };
 
+// const bankidForm = (req, res) => {
+//   const {
+//     applicant_name,
+//     applicant_father,
+//     applicant_mother,
+//     applicant_number,
+//     email,
+//     applicant_select_service,
+//     select_bank_service,
+//     aadhar_card,
+//     pan_card,
+//     business_name,
+//     status,
+//     amount,
+//     userId,
+//   } = req.body;
+
+//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+//   const domain = "http://localhost:7777";
+//   const attached_photo = req.files.attached_photo
+//     ? `${domain}/uploads/${req.files.attached_photo[0].filename}`
+//     : null;
+
+//   const attached_kyc = req.files.attached_kyc
+//     ? req.files.attached_kyc
+//         .map((file) => `${domain}/uploads/${file.filename}`)
+//         .join(",")
+//     : null;
+//   const bank_passbook = req.files.bank_passbook
+//     ? `${domain}/uploads/${req.files.bank_passbook[0].filename}`
+//     : null;
+//   const shop_photo = req.files.shop_photo
+//     ? `${domain}/uploads/${req.files.shop_photo[0].filename}`
+//     : null;
+//   const electric_bill = req.files.electric_bill
+//     ? `${domain}/uploads/${req.files.electric_bill[0].filename}`
+//     : null;
+
+//   const orderId = `BNK${Date.now()}`;
+//   // const orderId = `BNK${createdAt}`;
+
+//   const query = `
+//         INSERT INTO apply_offline_form (
+//         order_id,
+//             applicant_name,
+//     applicant_father,
+//     applicant_mother,
+//     applicant_number,
+//     email,
+//     applicant_select_service,
+//     select_bank_service,
+//     aadhar_card,
+//     pan_card,
+//     business_name,
+//     attached_photo,
+//     attached_kyc,
+//     bank_passbook,
+//     shop_photo,
+//     electric_bill,
+//     status,
+//     amount,
+//     user_id,
+//     created_at
+//         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+//     `;
+
+//   db.query(
+//     query,
+//     [
+//       orderId,
+//       applicant_name,
+//       applicant_father,
+//       applicant_mother,
+//       applicant_number,
+//       email,
+//       applicant_select_service,
+//       select_bank_service,
+//       aadhar_card,
+//       pan_card,
+//       business_name,
+//       attached_photo,
+//       attached_kyc,
+//       bank_passbook,
+//       shop_photo,
+//       electric_bill,
+//       "Pending",
+//       amount,
+//       userId,
+//       createdAt,
+//     ],
+//     (err, result) => {
+//       if (err) {
+//         console.error("Error inserting data into MySQL:", err);
+//         res.status(500).json({ error: "Database error" });
+//         return;
+//       }
+
+//       const queryBalance = `
+//         SELECT Closing_Balance 
+//         FROM user_wallet 
+//         WHERE userId = ? 
+//         ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+//         LIMIT 1
+//       `;
+
+//       db.query(queryBalance, [userId], (err, balanceResult) => {
+//         if (err) {
+//           console.error("Error fetching wallet balance:", err);
+//           return res.status(500).json({
+//             status: "Failure",
+//             step: "Fetch Wallet Balance",
+//             error: "Failed to fetch wallet balance",
+//             details: err.message,
+//           });
+//         }
+
+//         if (balanceResult.length === 0) {
+//           return res.status(404).json({
+//             status: "Failure",
+//             step: "Fetch Wallet Balance",
+//             message: "No balance found for the user.",
+//           });
+//         }
+
+//         const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+//         if (isNaN(currentBalance)) {
+//           return res.status(500).json({
+//             status: "Failure",
+//             step: "Fetch Wallet Balance",
+//             error: "Current balance is invalid.",
+//           });
+//         }
+
+//         if (currentBalance < amount) {
+//           return res.status(400).json({
+//             status: "Failure",
+//             step: "Wallet Deduction",
+//             message: "Insufficient balance.",
+//             currentBalance,
+//             requiredAmount: amount,
+//           });
+//         }
+
+//         const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+//         if (isNaN(newBalance)) {
+//           return res.status(500).json({
+//             status: "Failure",
+//             step: "Wallet Deduction",
+//             error: "New balance calculation is invalid.",
+//           });
+//         }
+
+//         const transactionId = `TXNW${Date.now()}`;
+//         const transactionDetails = `Recharge Deduction ${applicant_number}`;
+
+//         const updateWalletQuery = `
+//           INSERT INTO user_wallet 
+//           (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
+//           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+//         `;
+
+//         db.query(
+//           updateWalletQuery,
+//           [
+//             userId,
+//             createdAt,
+//             orderId,
+//             transactionId,
+//             currentBalance.toFixed(2),
+//             newBalance,
+//             "Debit",
+//             amount,
+//             transactionDetails,
+//             "Success",
+//           ],
+//           (err, walletResult) => {
+//             if (err) {
+//               console.error("Error updating wallet balance:", err);
+//               return res.status(500).json({
+//                 status: "Failure",
+//                 step: "Update Wallet Balance",
+//                 error: "Failed to update wallet balance",
+//                 details: err.message,
+//               });
+//             }
+
+//             return res.status(200).json({
+//               status: "Success",
+//               message: "Bank ID processed and wallet updated successfully.",
+//               details: {
+//                 bankid: {
+//                   orderId,
+//                   applicant_name,
+//                   applicant_number,
+//                   email,
+//                   applicant_select_service,
+//                   select_bank_service,
+//                   business_name,
+//                   createdAt,
+//                 },
+//                 wallet: {
+//                   transactionId,
+//                   newBalance,
+//                   previousBalance: currentBalance.toFixed(2),
+//                   deductedAmount: amount,
+//                 },
+//               },
+//             });
+//           }
+//         );
+//       });
+//     }
+//   );
+// };
+
+
+// first check the wallet then update wallet balance then insert transaction.
 const bankidForm = (req, res) => {
   const {
     applicant_name,
@@ -393,153 +926,159 @@ const bankidForm = (req, res) => {
     : null;
 
   const orderId = `BNK${Date.now()}`;
-  // const orderId = `BNK${createdAt}`;
 
-  const query = `
-        INSERT INTO apply_offline_form (
-        order_id,
-            applicant_name,
-    applicant_father,
-    applicant_mother,
-    applicant_number,
-    email,
-    applicant_select_service,
-    select_bank_service,
-    aadhar_card,
-    pan_card,
-    business_name,
-    attached_photo,
-    attached_kyc,
-    bank_passbook,
-    shop_photo,
-    electric_bill,
-    status,
-    amount,
-    user_id,
-    created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+  // Step 1: Check Wallet Balance
+  const queryBalance = `
+    SELECT Closing_Balance 
+    FROM user_wallet 
+    WHERE userId = ? 
+    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+    LIMIT 1
+  `;
 
-  db.query(
-    query,
-    [
-      orderId,
-      applicant_name,
-      applicant_father,
-      applicant_mother,
-      applicant_number,
-      email,
-      applicant_select_service,
-      select_bank_service,
-      aadhar_card,
-      pan_card,
-      business_name,
-      attached_photo,
-      attached_kyc,
-      bank_passbook,
-      shop_photo,
-      electric_bill,
-      "Pending",
-      amount,
-      userId,
-      createdAt,
-    ],
-    (err, result) => {
-      if (err) {
-        console.error("Error inserting data into MySQL:", err);
-        res.status(500).json({ error: "Database error" });
-        return;
-      }
+  db.query(queryBalance, [userId], (err, balanceResult) => {
+    if (err) {
+      console.error("Error fetching wallet balance:", err);
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Failed to fetch wallet balance",
+        details: err.message,
+      });
+    }
 
-      const queryBalance = `
-        SELECT Closing_Balance 
-        FROM user_wallet 
-        WHERE userId = ? 
-        ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
-        LIMIT 1
-      `;
+    if (balanceResult.length === 0) {
+      return res.status(404).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        message: "No balance found for the user.",
+      });
+    }
 
-      db.query(queryBalance, [userId], (err, balanceResult) => {
-        if (err) {
-          console.error("Error fetching wallet balance:", err);
-          return res.status(500).json({
-            status: "Failure",
-            step: "Fetch Wallet Balance",
-            error: "Failed to fetch wallet balance",
-            details: err.message,
-          });
-        }
+    const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+    if (isNaN(currentBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Current balance is invalid.",
+      });
+    }
 
-        if (balanceResult.length === 0) {
-          return res.status(404).json({
-            status: "Failure",
-            step: "Fetch Wallet Balance",
-            message: "No balance found for the user.",
-          });
-        }
+    if (currentBalance < amount) {
+      return res.status(400).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        message: "Insufficient balance.",
+        currentBalance,
+        requiredAmount: amount,
+      });
+    }
 
-        const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
-        if (isNaN(currentBalance)) {
-          return res.status(500).json({
-            status: "Failure",
-            step: "Fetch Wallet Balance",
-            error: "Current balance is invalid.",
-          });
-        }
-
-        if (currentBalance < amount) {
-          return res.status(400).json({
-            status: "Failure",
-            step: "Wallet Deduction",
-            message: "Insufficient balance.",
-            currentBalance,
-            requiredAmount: amount,
-          });
-        }
-
-        const newBalance = parseFloat(currentBalance - amount).toFixed(2);
-        if (isNaN(newBalance)) {
+    // Step 2: Update Wallet
+    const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+            if (isNaN(newBalance)) {
           return res.status(500).json({
             status: "Failure",
             step: "Wallet Deduction",
             error: "New balance calculation is invalid.",
           });
         }
+    const transactionId = `TXNW${Date.now()}`;
+    const transactionDetails = `Purchase ${select_bank_service} Bank ID Form Deduction Order id ${orderId}`;
 
-        const transactionId = `TXNW${Date.now()}`;
-        const transactionDetails = `Recharge Deduction ${applicant_number}`;
+    const updateWalletQuery = `
+      INSERT INTO user_wallet 
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
 
-        const updateWalletQuery = `
-          INSERT INTO user_wallet 
-          (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    db.query(
+      updateWalletQuery,
+      [
+        userId,
+        createdAt,
+        orderId,
+        transactionId,
+        currentBalance.toFixed(2),
+        newBalance,
+        "Debit",
+        amount,
+        transactionDetails,
+        "Success",
+      ],
+      (err, walletResult) => {
+        if (err) {
+          console.error("Error updating wallet balance:", err);
+          return res.status(500).json({
+            status: "Failure",
+            step: "Update Wallet Balance",
+            error: "Failed to update wallet balance",
+            details: err.message,
+          });
+        }
+
+        // Step 3: Insert into apply_offline_form
+        const query = `
+          INSERT INTO apply_offline_form (
+            order_id,
+            applicant_name,
+            applicant_father,
+            applicant_mother,
+            applicant_number,
+            email,
+            applicant_select_service,
+            select_bank_service,
+            aadhar_card,
+            pan_card,
+            business_name,
+            attached_photo,
+            attached_kyc,
+            bank_passbook,
+            shop_photo,
+            electric_bill,
+            status,
+            amount,
+            user_id,
+            created_at
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         db.query(
-          updateWalletQuery,
+          query,
           [
+            orderId,
+            applicant_name,
+            applicant_father,
+            applicant_mother,
+            applicant_number,
+            email,
+            applicant_select_service,
+            select_bank_service,
+            aadhar_card,
+            pan_card,
+            business_name,
+            attached_photo,
+            attached_kyc,
+            bank_passbook,
+            shop_photo,
+            electric_bill,
+            "Pending",
+            amount,
             userId,
             createdAt,
-            orderId,
-            transactionId,
-            currentBalance.toFixed(2),
-            newBalance,
-            "Debit",
-            amount,
-            transactionDetails,
-            "Success",
           ],
-          (err, walletResult) => {
+          (err, result) => {
             if (err) {
-              console.error("Error updating wallet balance:", err);
+              console.error("Error inserting data into MySQL:", err);
               return res.status(500).json({
                 status: "Failure",
-                step: "Update Wallet Balance",
-                error: "Failed to update wallet balance",
+                step: "Insert Form Data",
+                error: "Database error",
                 details: err.message,
               });
             }
 
+            // Success Response
             return res.status(200).json({
               status: "Success",
               message: "Bank ID processed and wallet updated successfully.",
@@ -564,10 +1103,130 @@ const bankidForm = (req, res) => {
             });
           }
         );
-      });
-    }
-  );
+      }
+    );
+  });
 };
+
+const update_bankidForm = (req, res) => {
+  const {
+    applicant_name,
+    applicant_father,
+    applicant_mother,
+    applicant_number,
+    email,
+    applicant_select_service,
+    select_bank_service,
+    aadhar_card,
+    pan_card,
+    business_name,
+    status,
+    amount,
+    userId,
+    previous_attached_photo,
+    previous_attached_kyc,
+    previous_bank_passbook,
+    previous_shop_photo,
+    previous_electric_bill,
+    id
+  } = req.body;
+
+  // console.log(req.files.attached_photo)
+  // console.log(req.files.attached_kyc)
+  // console.log(req.files.bank_passbook)
+  // console.log(req.files.shop_photo)
+  // console.log(req.files.electric_bill)
+  const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+  const domain = "http://localhost:7777";
+  const attached_photo = req.files.attached_photo
+    ? `${domain}/uploads/${req.files.attached_photo[0].filename}`
+    : previous_attached_photo;
+
+  const attached_kyc = req.files.attached_kyc
+    ? req.files.attached_kyc
+        .map((file) => `${domain}/uploads/${file.filename}`)
+        .join(",")
+    : previous_attached_kyc;
+  const bank_passbook = req.files.bank_passbook
+    ? `${domain}/uploads/${req.files.bank_passbook[0].filename}`
+    : previous_bank_passbook;
+  const shop_photo = req.files.shop_photo
+    ? `${domain}/uploads/${req.files.shop_photo[0].filename}`
+    : previous_shop_photo;
+  const electric_bill = req.files.electric_bill
+    ? `${domain}/uploads/${req.files.electric_bill[0].filename}`
+    : previous_electric_bill;
+
+  // const orderId = `BNK${Date.now()}`;
+  // const orderId = `BNK${createdAt}`;
+
+  const query = `
+        UPDATE apply_offline_form SET
+            applicant_name = ?,
+    applicant_father = ?,
+    applicant_mother = ?,
+    applicant_number = ?,
+    email = ?,
+    applicant_select_service = ?,
+    select_bank_service = ?,
+    aadhar_card = ?,
+    pan_card = ?,
+    business_name = ?,
+    attached_photo = ?,
+    attached_kyc = ?,
+    bank_passbook = ?,
+    shop_photo = ?,
+    electric_bill = ?,
+    status = ?,
+    amount = ?,
+    user_id = ?,
+    updated_at = ? WHERE id = ?`;
+
+  db.query(
+    query,
+    [
+      applicant_name,
+      applicant_father,
+      applicant_mother,
+      applicant_number,
+      email,
+      applicant_select_service,
+      select_bank_service,
+      aadhar_card,
+      pan_card,
+      business_name,
+      attached_photo,
+      attached_kyc,
+      bank_passbook,
+      shop_photo,
+      electric_bill,
+      "Pending",
+      amount,
+      userId,
+      updatedAt,
+      id
+    ],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting data into MySQL:", err);
+        res.status(500).json({ error: "Database error" });
+        return;
+      }
+
+      if (result.affectedRows === 0) {
+        res.status(404).json({ error: "Form not found" });
+        return;
+      }
+
+            return res.status(200).json({
+              status: "Success",
+              message: "Update Form Successfully",
+            });
+          }
+        );
+      };
+   
 
 const offlineRecharge = (req, res) => {
   const { mobile_no, operator_name, amount, recharge_Type, created_by_userid } =
@@ -1558,10 +2217,28 @@ const eDistrictFormData = (req, res) => {
   });
 };
 
+// const getSelectedServices = (req, res) => {
+//   const applicationId = req.params.user_id;
+
+//   const query = `SELECT select_bank_service, status FROM apply_offline_form WHERE user_id = ?`;
+//   db.query(query, [applicationId], (err, results) => {
+//     if (err) {
+//       console.error("Error fetching selected services:", err);
+//       res.status(500).json({ error: "Database error" });
+//     } else {
+//       const selectedServices = results.map((row) => ({
+//         service: row.select_bank_service,
+//         status: row.status,
+//       }));
+//       res.status(200).json({ selectedServices });
+//     }
+//   });
+// };
+
 const getSelectedServices = (req, res) => {
   const applicationId = req.params.user_id;
 
-  const query = `SELECT select_bank_service, status FROM apply_offline_form WHERE user_id = ?`;
+  const query = `SELECT select_bank_service, status FROM apply_offline_form WHERE user_id = ? AND applicant_select_service = "New Bank ID" AND status != "Reject"`;
   db.query(query, [applicationId], (err, results) => {
     if (err) {
       console.error("Error fetching selected services:", err);
@@ -1578,7 +2255,7 @@ const getSelectedServices = (req, res) => {
 
 const getAllBranchId = (req, res) => {
   const { id } = req.params;
-  const selectQuery = `SELECT * FROM apply_offline_form WHERE applicant_select_service = ? AND id = ?`;
+  const selectQuery = `SELECT * FROM apply_offline_form WHERE applicant_select_service = ? AND user_id = ? ORDER BY id DESC`;
 
   db.query(selectQuery, ["New Bank ID", id], (err, result) => {
     if (err) {
@@ -1733,6 +2410,178 @@ const getApiBroadbrandRechargeData = (req, res) => {
   });
 };
 
+// const addSambalForm = (req, res) => {
+//   const {
+//     samagraId,
+//     familyId,
+//     applicantType,
+//     education,
+//     occupation,
+//     smsNotification,
+//     incomeTaxPayer,
+//     landOwnership,
+//     govtService,
+//     mobileNumber,
+//     amount,
+//     userId,
+//   } = req.body;
+
+//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+//   const orderId = `ORDS${Date.now()}`;
+
+//   const sql = `
+//   INSERT INTO SambalForm (
+//     order_id, samagra_id, family_id, applicant_type, education, occupation,
+//     sms_notification, income_tax_payer, land_ownership, govt_service, mobile_number, amount, user_id, status, created_at
+//   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+// `;
+
+//   const values = [
+//     orderId,
+//     samagraId,
+//     familyId,
+//     applicantType,
+//     education,
+//     occupation,
+//     smsNotification,
+//     incomeTaxPayer,
+//     landOwnership,
+//     govtService,
+//     mobileNumber,
+//     amount,
+//     userId,
+//     "Pending",
+//     createdAt,
+//   ];
+
+//   db.query(sql, values, (err, result) => {
+//     if (err) {
+//       console.error("Error inserting data:", err);
+//       return res
+//         .status(500)
+//         .json({ status: "Failure", error: "Database error" });
+//     }
+//     const queryBalance = `
+//     SELECT Closing_Balance 
+//     FROM user_wallet 
+//     WHERE userId = ? 
+//     ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+//     LIMIT 1
+//   `;
+
+//     db.query(queryBalance, [userId], (err, balanceResult) => {
+//       if (err) {
+//         console.error("Error fetching wallet balance:", err);
+//         return res.status(500).json({
+//           status: "Failure",
+//           step: "Fetch Wallet Balance",
+//           error: "Failed to fetch wallet balance",
+//           details: err.message,
+//         });
+//       }
+
+//       if (balanceResult.length === 0) {
+//         return res.status(404).json({
+//           status: "Failure",
+//           step: "Fetch Wallet Balance",
+//           message: "No balance found for the user.",
+//         });
+//       }
+
+//       const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+//       if (isNaN(currentBalance)) {
+//         return res.status(500).json({
+//           status: "Failure",
+//           step: "Fetch Wallet Balance",
+//           error: "Current balance is invalid.",
+//         });
+//       }
+
+//       if (currentBalance < amount) {
+//         return res.status(400).json({
+//           status: "Failure",
+//           step: "Wallet Deduction",
+//           message: "Insufficient balance.",
+//           currentBalance,
+//           requiredAmount: amount,
+//         });
+//       }
+
+//       const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+//       if (isNaN(newBalance)) {
+//         return res.status(500).json({
+//           status: "Failure",
+//           step: "Wallet Deduction",
+//           error: "New balance calculation is invalid.",
+//         });
+//       }
+
+//       const transactionId = `TXNW${Date.now()}`;
+//       const transactionDetails = `Sambal Deduction ${mobileNumber}`;
+
+//       const updateWalletQuery = `
+//       INSERT INTO user_wallet 
+//       (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
+//       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+//     `;
+
+//       db.query(
+//         updateWalletQuery,
+//         [
+//           userId,
+//           createdAt,
+//           orderId,
+//           transactionId,
+//           currentBalance.toFixed(2),
+//           newBalance,
+//           "Debit",
+//           amount,
+//           transactionDetails,
+//           "Success",
+//         ],
+//         (err, walletResult) => {
+//           if (err) {
+//             console.error("Error updating wallet balance:", err);
+//             return res.status(500).json({
+//               status: "Failure",
+//               step: "Update Wallet Balance",
+//               error: "Failed to update wallet balance",
+//               details: err.message,
+//             });
+//           }
+
+//           return res.status(200).json({
+//             status: "Success",
+//             message: "Sambal Form processed and wallet updated successfully.",
+//             details: {
+//               dthConnection: {
+//                 orderId,
+//                 samagraId,
+//                 familyId,
+//                 applicantType,
+//                 education,
+//                 occupation,
+//                 smsNotification,
+//                 incomeTaxPayer,
+//                 landOwnership,
+//                 govtService,
+//                 mobileNumber,
+//                 createdAt,
+//               },
+//               wallet: {
+//                 transactionId,
+//                 newBalance,
+//                 previousBalance: currentBalance.toFixed(2),
+//                 deductedAmount: amount,
+//               },
+//             },
+//           });
+//         }
+//       );
+//     });
+//   });
+// };
+
 const addSambalForm = (req, res) => {
   const {
     samagraId,
@@ -1751,40 +2600,11 @@ const addSambalForm = (req, res) => {
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const orderId = `ORDS${Date.now()}`;
+  const transactionId = `TXNW${Date.now()}`;
+  const transactionDetails = `Sambal Form Deduction Order Id ${orderId}`;
 
-  const sql = `
-  INSERT INTO SambalForm (
-    order_id, samagra_id, family_id, applicant_type, education, occupation,
-    sms_notification, income_tax_payer, land_ownership, govt_service, mobile_number, amount, user_id, status, created_at
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-`;
-
-  const values = [
-    orderId,
-    samagraId,
-    familyId,
-    applicantType,
-    education,
-    occupation,
-    smsNotification,
-    incomeTaxPayer,
-    landOwnership,
-    govtService,
-    mobileNumber,
-    amount,
-    userId,
-    "Pending",
-    createdAt,
-  ];
-
-  db.query(sql, values, (err, result) => {
-    if (err) {
-      console.error("Error inserting data:", err);
-      return res
-        .status(500)
-        .json({ status: "Failure", error: "Database error" });
-    }
-    const queryBalance = `
+  // Step 1: Check the current balance
+  const queryBalance = `
     SELECT Closing_Balance 
     FROM user_wallet 
     WHERE userId = ? 
@@ -1792,90 +2612,126 @@ const addSambalForm = (req, res) => {
     LIMIT 1
   `;
 
-    db.query(queryBalance, [userId], (err, balanceResult) => {
-      if (err) {
-        console.error("Error fetching wallet balance:", err);
-        return res.status(500).json({
-          status: "Failure",
-          step: "Fetch Wallet Balance",
-          error: "Failed to fetch wallet balance",
-          details: err.message,
-        });
-      }
+  db.query(queryBalance, [userId], (err, balanceResult) => {
+    if (err) {
+      console.error("Error fetching wallet balance:", err);
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Failed to fetch wallet balance",
+        details: err.message,
+      });
+    }
 
-      if (balanceResult.length === 0) {
-        return res.status(404).json({
-          status: "Failure",
-          step: "Fetch Wallet Balance",
-          message: "No balance found for the user.",
-        });
-      }
+    if (balanceResult.length === 0) {
+      return res.status(404).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        message: "No balance found for the user.",
+      });
+    }
 
-      const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
-      if (isNaN(currentBalance)) {
-        return res.status(500).json({
-          status: "Failure",
-          step: "Fetch Wallet Balance",
-          error: "Current balance is invalid.",
-        });
-      }
+    const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+    if (isNaN(currentBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Current balance is invalid.",
+      });
+    }
 
-      if (currentBalance < amount) {
-        return res.status(400).json({
-          status: "Failure",
-          step: "Wallet Deduction",
-          message: "Insufficient balance.",
-          currentBalance,
-          requiredAmount: amount,
-        });
-      }
+    if (currentBalance < amount) {
+      return res.status(400).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        message: "Insufficient balance.",
+        currentBalance,
+        requiredAmount: amount,
+      });
+    }
 
-      const newBalance = parseFloat(currentBalance - amount).toFixed(2);
-      if (isNaN(newBalance)) {
-        return res.status(500).json({
-          status: "Failure",
-          step: "Wallet Deduction",
-          error: "New balance calculation is invalid.",
-        });
-      }
+    const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+    if (isNaN(newBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        error: "New balance calculation is invalid.",
+      });
+    }
 
-      const transactionId = `TXNW${Date.now()}`;
-      const transactionDetails = `Sambal Deduction ${mobileNumber}`;
-
-      const updateWalletQuery = `
+    // Step 2: Update the wallet table
+    const updateWalletQuery = `
       INSERT INTO user_wallet 
       (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-      db.query(
-        updateWalletQuery,
-        [
-          userId,
-          createdAt,
+    db.query(
+      updateWalletQuery,
+      [
+        userId,
+        createdAt,
+        orderId,
+        transactionId,
+        currentBalance.toFixed(2),
+        newBalance,
+        "Debit",
+        amount,
+        transactionDetails,
+        "Success",
+      ],
+      (err, walletResult) => {
+        if (err) {
+          console.error("Error updating wallet balance:", err);
+          return res.status(500).json({
+            status: "Failure",
+            step: "Update Wallet Balance",
+            error: "Failed to update wallet balance",
+            details: err.message,
+          });
+        }
+
+        // Step 3: Insert into SambalForm table
+        const sambalFormQuery = `
+          INSERT INTO SambalForm (
+            order_id, samagra_id, family_id, applicant_type, education, occupation,
+            sms_notification, income_tax_payer, land_ownership, govt_service, mobile_number, amount, user_id, status, created_at
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        const sambalFormValues = [
           orderId,
-          transactionId,
-          currentBalance.toFixed(2),
-          newBalance,
-          "Debit",
+          samagraId,
+          familyId,
+          applicantType,
+          education,
+          occupation,
+          smsNotification,
+          incomeTaxPayer,
+          landOwnership,
+          govtService,
+          mobileNumber,
           amount,
-          transactionDetails,
-          "Success",
-        ],
-        (err, walletResult) => {
+          userId,
+          "Pending",
+          createdAt,
+        ];
+
+        db.query(sambalFormQuery, sambalFormValues, (err, result) => {
           if (err) {
-            console.error("Error updating wallet balance:", err);
+            console.error("Error inserting data into SambalForm:", err);
             return res.status(500).json({
               status: "Failure",
-              step: "Update Wallet Balance",
-              error: "Failed to update wallet balance",
+              step: "Insert SambalForm",
+              error: "Failed to insert into SambalForm",
               details: err.message,
             });
           }
 
+          // Step 4: Return success response
           return res.status(200).json({
             status: "Success",
-            message: "Sambal Form processed and wallet updated successfully.",
+            message: "Wallet updated and Sambal Form processed successfully.",
             details: {
               dthConnection: {
                 orderId,
@@ -1899,11 +2755,73 @@ const addSambalForm = (req, res) => {
               },
             },
           });
-        }
-      );
-    });
+        });
+      }
+    );
   });
 };
+
+const EditSambalForm = (req, res) => {
+  const {
+    order_id,
+    samagraId,
+    familyId,
+    applicantType,
+    education,
+    occupation,
+    smsNotification,
+    incomeTaxPayer,
+    landOwnership,
+    govtService,
+    mobileNumber,
+    userId,
+  } = req.body;
+
+  const updated_at = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  // const orderId = `ORDS${Date.now()}`;
+
+  const sql = `
+  UPDATE sambalform SET
+     samagra_id = ?, family_id = ?, applicant_type = ?, education = ?, occupation = ?,
+    sms_notification = ?, income_tax_payer = ?, land_ownership = ?, govt_service = ?, mobile_number = ?, user_id = ?, status = ? , updated_at = ? WHERE order_id = ?`;
+
+  const values = [
+    samagraId,
+    familyId,
+    applicantType,
+    education,
+    occupation,
+    smsNotification,
+    incomeTaxPayer,
+    landOwnership,
+    govtService,
+    mobileNumber,
+    userId,
+    "Pending",
+    updated_at,
+    order_id
+  ];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error inserting data:", err);
+      return res
+        .status(500)
+        .json({ status: "Failure", error: "Database error" });
+    }
+    if (result.affectedRows === 0) {
+      res.status(404).json({status: "Failure", error: "Form not found" ,message : "Form not found" });
+      return;
+    }
+    
+    return res.status(200).json({
+      status: "Success",
+      message: "Update Form Successfully",
+    });
+  }
+);
+};
+         
 
 // const addVerifyDistrictForm = (req, res) => {
 //   const { applicationType, name, mobileNo, rsNumber, user_id } = req.body;
@@ -2280,7 +3198,27 @@ const walletOffline = (req, res) => {
 const getWalletOffline = (req, res) => {
   const userId = req.params.userId;
 
-  let query = `SELECT * FROM user_wallet_add_money_request WHERE user_id = ?`;
+  let query = `SELECT * FROM user_wallet_add_money_request WHERE user_id = ? AND Payment_Mode != "Online" ORDER BY id DESC`;
+
+  db.query(query, [userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+const getAddMoneyToWalletOnline = (req, res) => {
+  const userId = req.params.userId;
+
+  let query = `SELECT * FROM user_wallet_add_money_request WHERE user_id = ? AND Payment_Mode = "Online" ORDER BY id DESC`;
 
   db.query(query, [userId], (err, result) => {
     if (err) {
@@ -2353,6 +3291,198 @@ const getWalletSummary = (req, res) => {
   });
 };
 
+const buyCoupon = (req, res) => {
+  const { coupon_Quantity, coupon_Price, total_Amount, coupon_Type, userId } =
+    req.body;
+
+  if (
+    !coupon_Quantity ||
+    !coupon_Price ||
+    !total_Amount ||
+    !coupon_Type ||
+    !userId
+  ) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+
+  if (isNaN(total_Amount) || parseFloat(total_Amount) <= 0) {
+    return res.status(400).json({
+      status: "Failure",
+      step: "Validation",
+      error: "Invalid amount. Amount must be a positive number.",
+    });
+  }
+
+  const orderId = `COU${Date.now()}`;
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const status = "Pending";
+
+  const sql = `
+  INSERT INTO pan_coupon_requests
+  (order_id, coupon_Quantity, coupon_Price, total_Amount, coupon_Type, user_id, status, created_at)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+`;
+
+  const values = [
+    orderId,
+    coupon_Quantity,
+    coupon_Price,
+    total_Amount,
+    coupon_Type,
+    userId,
+    status,
+    createdAt,
+  ];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error inserting recharge record:", err);
+      return res.status(500).json({
+        status: "Failure",
+        step: "Buy Coupan",
+        error: "Failed to process Buy Coupan",
+        details: err.message,
+      });
+    }
+
+    const queryBalance = `
+    SELECT Closing_Balance 
+    FROM user_wallet 
+    WHERE userId = ? 
+    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+    LIMIT 1
+  `;
+
+    db.query(queryBalance, [userId], (err, balanceResult) => {
+      if (err) {
+        console.error("Error fetching wallet balance:", err);
+        return res.status(500).json({
+          status: "Failure",
+          step: "Fetch Wallet Balance",
+          error: "Failed to fetch wallet balance",
+          details: err.message,
+        });
+      }
+
+      if (balanceResult.length === 0) {
+        return res.status(404).json({
+          status: "Failure",
+          step: "Fetch Wallet Balance",
+          message: "No balance found for the user.",
+        });
+      }
+
+      const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+      if (isNaN(currentBalance)) {
+        return res.status(500).json({
+          status: "Failure",
+          step: "Fetch Wallet Balance",
+          error: "Current balance is invalid.",
+        });
+      }
+
+      if (currentBalance < total_Amount) {
+        return res.status(400).json({
+          status: "Failure",
+          step: "Wallet Deduction",
+          message: "Insufficient balance.",
+          currentBalance,
+          requiredAmount: total_Amount,
+        });
+      }
+
+      const newBalance = parseFloat(currentBalance - total_Amount).toFixed(2);
+      if (isNaN(newBalance)) {
+        return res.status(500).json({
+          status: "Failure",
+          step: "Wallet Deduction",
+          error: "New balance calculation is invalid.",
+        });
+      }
+
+      const transactionId = `TXNW${Date.now()}`;
+      const transactionDetails = `Buy Coupan ${coupon_Type}`;
+      const creditAmt = 0;
+
+      const updateWalletQuery = `
+      INSERT INTO user_wallet 
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+      db.query(
+        updateWalletQuery,
+        [
+          userId,
+          createdAt,
+          orderId,
+          transactionId,
+          currentBalance.toFixed(2),
+          newBalance,
+          "Debit",
+          creditAmt,
+          total_Amount,
+          transactionDetails,
+          "Success",
+        ],
+        (err, walletResult) => {
+          if (err) {
+            console.error("Error updating wallet balance:", err);
+            return res.status(500).json({
+              status: "Failure",
+              step: "Update Wallet Balance",
+              error: "Failed to update wallet balance",
+              details: err.message,
+            });
+          }
+
+          return res.status(200).json({
+            status: "Success",
+            message:
+              "Coupon purchase processed and wallet updated successfully.",
+            details: {
+              recharge: {
+                orderId,
+                coupon_Quantity,
+                coupon_Price,
+                total_Amount,
+                coupon_Type,
+              },
+              wallet: {
+                transactionId,
+                newBalance,
+                previousBalance: currentBalance.toFixed(2),
+                deductedAmount: total_Amount,
+              },
+            },
+          });
+        }
+      );
+    });
+  });
+};
+
+const getCoupon = (req, res) => {
+  const userId = req.params.userId;
+
+  let query = `SELECT * FROM pan_coupon_requests WHERE user_id = ? ORDER BY id  DESC`;
+
+  db.query(query, [userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -2392,4 +3522,10 @@ module.exports = {
   getPackageData,
   getDthConnectionPlan,
   getWalletSummary,
+  buyCoupon,
+  getCoupon,
+  getAddMoneyToWalletOnline,
+  update_bankidForm,
+  update_applyOfflineForm,
+  EditSambalForm
 };

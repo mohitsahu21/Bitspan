@@ -184,10 +184,22 @@ const operatorMapping = {
 // };
 
 const rechargeMobile = (req, res) => {
-  const { number, amount, operatorName, recharge_Type, created_by_userid } =
-    req.body;
+  const {
+    number,
+    amount,
+    walletDeductAmt,
+    operatorName,
+    recharge_Type,
+    created_by_userid,
+  } = req.body;
 
-  if (!number || !amount || !operatorName || !recharge_Type) {
+  if (
+    !number ||
+    !amount ||
+    !walletDeductAmt ||
+    !operatorName ||
+    !recharge_Type
+  ) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
@@ -235,10 +247,11 @@ const rechargeMobile = (req, res) => {
         }
 
         const insertQuery =
-          "INSERT INTO recharges (mobile_no, amount, operator_name, providerName, recharge_Type, created_by_userid, created_at, orderid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+          "INSERT INTO recharges (mobile_no, amount, walletDeductAmt, operator_name, providerName, recharge_Type, created_by_userid, created_at, orderid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         const values = [
           number,
           amount,
+          walletDeductAmt,
           operatorName,
           providerName,
           recharge_Type,
@@ -300,12 +313,28 @@ const rechargeMobile = (req, res) => {
     WHERE orderid = ?
   `;
 
-        const status =
-          rechargeData.STATUS === 1
-            ? "Success"
-            : rechargeData.STATUS === 0
-            ? "Failure"
-            : "Pending";
+        // const status =
+        //   rechargeData.STATUS === 1
+        //     ? "Success"
+        //     : rechargeData.STATUS === 0
+        //     ? "Failure"
+        //     : "Pending";
+
+        const getStatus = () => {
+          switch (rechargeData?.STATUS) {
+            case 1:
+              return "Success";
+            case 2:
+              return "Processing";
+            case 3:
+              return "Failed";
+            default:
+              return "Unknown Status";
+          }
+        };
+        
+        const status = getStatus();
+        
 
         const updateValues = [
           rechargeData.opcode || "",
@@ -343,10 +372,16 @@ const rechargeMobile = (req, res) => {
       })
       .then(({ rechargeData, orderId, newBalance }) => {
         console.log("Recharge Data: ", rechargeData);
-        if (rechargeData.STATUS === 1) {
+        if (rechargeData.STATUS == 1 || rechargeData.STATUS == 2) {
+          let rechargeMessage = "Recharge in process";
+          if(rechargeData.STATUS == 1){
+            rechargeMessage = "Recharge successful"
+          } else if(rechargeData.STATUS == 2){
+            rechargeMessage = "Recharge in process";
+          }
           const transactionId = `TXNW${Date.now()}`;
           const transactionDetails = `Recharge Deduction ${number}`;
-          const newWalletBalance = (newBalance - amount).toFixed(2);
+          const newWalletBalance = (newBalance - walletDeductAmt).toFixed(2);
 
           const updateWalletQuery = `
             INSERT INTO user_wallet
@@ -365,7 +400,7 @@ const rechargeMobile = (req, res) => {
                 newWalletBalance,
                 "Debit",
                 0,
-                amount,
+                walletDeductAmt,
                 transactionDetails,
                 "Success",
               ],
@@ -380,7 +415,8 @@ const rechargeMobile = (req, res) => {
                 } else {
                   console.log("Wallet Update Success: ", walletResult);
                   resolve({
-                    message: "Recharge successful",
+                    // message: "Recharge successful",
+                    message: rechargeMessage,
                     rechargeData,
                     wallet: {
                       previousBalance: currentBalance.toFixed(2),

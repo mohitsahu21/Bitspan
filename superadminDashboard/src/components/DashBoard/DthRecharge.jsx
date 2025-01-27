@@ -6,14 +6,16 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../Loading";
 import { useDispatch, useSelector } from "react-redux";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const DthRecharge = () => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
   const [activeTab, setActiveTab] = useState("tab1");
   const [apiData, setApiData] = useState([]);
-
+  const navigate = useNavigate();
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
@@ -23,6 +25,7 @@ const DthRecharge = () => {
     operatorName: "",
     number: "",
     amount: "",
+    walletDeductAmt: "",
     recharge_Type: "DTH",
     created_by_userid: currentUser.userId,
     // orderid: "4654747",
@@ -34,18 +37,25 @@ const DthRecharge = () => {
     recharge_Type: "DTH",
     userId: currentUser.userId,
   });
+
+  console.log(formData);
+
   const [response, setResponse] = useState(null);
   const [responseForm, setResponseForm] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
+  const [showOnlinePinModal, setShowOnlinePinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
+  const [onlinePin, setOnlinePin] = useState(["", "", "", ""]); //Online pin
   const pinRefs = useRef([]);
   const [selectedOperator, setSelectedOperator] = useState(""); // This State use for Fetch Plan
   const [plans, setPlans] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRecharge, setIsRecharge] = useState(false);
   const [loadingPlans, setLoadingPlans] = useState(false);
-
+  const [userRelation, setUserRelation] = useState([]);
+  const [isVerifying, setIsVerifying] = useState(false);
+  
   const operatorOptions = [
     { name: "Dish TV", value: "DTV", OpCode: "25" },
     { name: "Tata Sky", value: "TTV", OpCode: "28" },
@@ -145,30 +155,733 @@ const DthRecharge = () => {
     });
   };
 
+  const DthRechargeComm = async (
+    retailer,
+    distributor,
+    superDistributor,
+    white_lable,
+    packageDetails,
+    item
+  ) => {
+    const Order_Id = `ORW${Date.now()}`;
+    const Transaction_Id = `TXNW${Date.now()}`;
+    const retailerFormData = {
+      userId: currentUser.userId,
+      amount: "",
+      Transaction_details: `Commission Credit for DTH recharge`,
+      status: "Success",
+      Order_Id,
+      Transaction_Id,
+    };
+    const distributorFormData = {
+      userId: distributor,
+      amount: "",
+      Transaction_details: `Commission Credit for DTH recharge`,
+      status: "Success",
+      Order_Id,
+      Transaction_Id,
+    };
+    const superDistributorFormData = {
+      userId: superDistributor,
+      amount: "",
+      Transaction_details: `Commission Credit for DTH recharge`,
+      status: "Success",
+      Order_Id,
+      Transaction_Id,
+    };
+    const whiteLableFormData = {
+      userId: white_lable,
+      amount: "",
+      Transaction_details: `Commission Credit for DTH recharge`,
+      status: "Success",
+      Order_Id,
+      Transaction_Id,
+    };
+    const retailerPackage = packageDetails?.retailer
+      ? packageDetails?.retailer[0]
+      : {};
+    const distributorPackage = packageDetails?.distributor
+      ? packageDetails?.distributor[0]
+      : {};
+    const superDistributorPackage = packageDetails?.superDistributor
+      ? packageDetails?.superDistributor[0]
+      : {};
+    const whiteLablePackage = packageDetails?.whiteLable
+      ? packageDetails?.whiteLable[0]
+      : {};
+
+    const operatorName = item.operatorName;
+    const amount = parseFloat(item.amount);
+
+    let retailerCommAmount = 0;
+    let distributorCommAmount = 0;
+    let superDistributorCommAmount = 0;
+    let whiteLableCommAmount = 0;
+
+    try {
+      if (retailerPackage.Online_DTH_Recharge_Commission_Type == "Percentage") {
+        if (operatorName == "Dish TV") {
+          retailerCommAmount =
+            (amount *
+              parseFloat(retailerPackage.On_Dish_TV_Recharge_Commission)) /
+            100;
+        } else if (operatorName == "Tata Sky") {
+          retailerCommAmount =
+            (amount *
+              parseFloat(retailerPackage.On_Tata_Sky_Recharge_Commission)) /
+            100;
+        } else if (operatorName == "Videocon") {
+          retailerCommAmount =
+            (amount * parseFloat(retailerPackage.On_Videocon_Recharge_Commission)) /
+            100;
+        } else if (operatorName == "Sun Direct") {
+          retailerCommAmount =
+            (amount *
+              parseFloat(retailerPackage.On_Sun_Direct_Recharge_Commission)) /
+            100;
+        }
+        else if (operatorName == "Airtel DTH") {
+          retailerCommAmount =
+            (amount *
+              parseFloat(retailerPackage.On_Airtel_Dth_Recharge_Commission)) /
+            100;
+        }
+      } else {
+        if (operatorName == "Dish TV") {
+          retailerCommAmount = parseFloat(
+            retailerPackage.On_Dish_TV_Recharge_Commission
+          );
+        } else if (operatorName == "Tata Sky") {
+          retailerCommAmount = parseFloat(
+            retailerPackage.On_Tata_Sky_Recharge_Commission
+          );
+        } else if (operatorName == "Videocon") {
+          retailerCommAmount = parseFloat(
+            retailerPackage.On_Videocon_Recharge_Commission
+          );
+        } else if (operatorName == "Sun Direct") {
+          retailerCommAmount = parseFloat(
+            retailerPackage.On_Sun_Direct_Recharge_Commission
+          );
+        }
+        else if (operatorName == "Airtel DTH") {
+          retailerCommAmount = parseFloat(
+            retailerPackage.On_Airtel_Dth_Recharge_Commission
+          );
+        }
+        
+      }
+
+      if (distributor && distributorPackage) {
+        if (distributorPackage.Online_DTH_Recharge_Commission_Type == "Percentage") {
+          if (operatorName == "Dish TV") {
+            distributorCommAmount =
+              (amount *
+                parseFloat(distributorPackage.On_Dish_TV_Recharge_Commission)) /
+              100;
+          } else if (operatorName == "Tata Sky") {
+            distributorCommAmount =
+              (amount *
+                parseFloat(
+                  distributorPackage.On_Tata_Sky_Recharge_Commission
+                )) /
+              100;
+          } else if (operatorName == "Videocon") {
+            distributorCommAmount =
+              (amount *
+                parseFloat(distributorPackage.On_Videocon_Recharge_Commission)) /
+              100;
+          } else if (operatorName == "Sun Direct") {
+            distributorCommAmount =
+              (amount *
+                parseFloat(distributorPackage.On_Sun_Direct_Recharge_Commission)) /
+              100;
+          }
+          else if (operatorName == "Airtel DTH") {
+            distributorCommAmount =
+              (amount *
+                parseFloat(distributorPackage.On_Airtel_Dth_Recharge_Commission)) /
+              100;
+          }
+        } else {
+          if (operatorName == "Dish TV") {
+            distributorCommAmount = parseFloat(
+              distributorPackage.On_Dish_TV_Recharge_Commission
+            );
+          } else if (operatorName == "Tata Sky") {
+            distributorCommAmount = parseFloat(
+              distributorPackage.On_Tata_Sky_Recharge_Commission
+            );
+          } else if (operatorName == "Videocon") {
+            distributorCommAmount = parseFloat(
+              distributorPackage.On_Videocon_Recharge_Commission
+            );
+          } else if (operatorName == "Sun Direct") {
+            distributorCommAmount = parseFloat(
+              distributorPackage.On_Sun_Direct_Recharge_Commission
+            );
+          }
+          else if (operatorName == "Airtel DTH") {
+            distributorCommAmount = parseFloat(
+              distributorPackage.On_Airtel_Dth_Recharge_Commission
+            );
+          }
+        }
+      }
+      if (superDistributor && superDistributorPackage) {
+        if (
+          superDistributorPackage.Online_DTH_Recharge_Commission_Type == "Percentage"
+        ) {
+          if (operatorName == "Dish TV") {
+            superDistributorCommAmount =
+              (amount *
+                parseFloat(
+                  superDistributorPackage.On_Dish_TV_Recharge_Commission
+                )) /
+              100;
+          } else if (operatorName == "Tata Sky") {
+            superDistributorCommAmount =
+              (amount *
+                parseFloat(
+                  superDistributorPackage.On_Tata_Sky_Recharge_Commission
+                )) /
+              100;
+          } else if (operatorName == "Videocon") {
+            superDistributorCommAmount =
+              (amount *
+                parseFloat(
+                  superDistributorPackage.On_Videocon_Recharge_Commission
+                )) /
+              100;
+          } else if (operatorName == "Sun Direct") {
+            superDistributorCommAmount =
+              (amount *
+                parseFloat(
+                  superDistributorPackage.On_Sun_Direct_Recharge_Commission
+                )) /
+              100;
+          }
+          else if (operatorName == "Airtel DTH") {
+            superDistributorCommAmount =
+              (amount *
+                parseFloat(
+                  superDistributorPackage.On_Airtel_Dth_Recharge_Commission
+                )) /
+              100;
+          }
+        } else {
+          if (operatorName == "Dish TV") {
+            superDistributorCommAmount = parseFloat(
+              superDistributorPackage.On_Dish_TV_Recharge_Commission
+            );
+          } else if (operatorName == "Tata Sky") {
+            superDistributorCommAmount = parseFloat(
+              superDistributorPackage.On_Tata_Sky_Recharge_Commission
+            );
+          } else if (operatorName == "Videocon") {
+            superDistributorCommAmount = parseFloat(
+              superDistributorPackage.On_Videocon_Recharge_Commission
+            );
+          } else if (operatorName == "Sun Direct") {
+            superDistributorCommAmount = parseFloat(
+              superDistributorPackage.On_Sun_Direct_Recharge_Commission
+            );
+          }
+          else if (operatorName == "Airtel DTH") {
+            superDistributorCommAmount = parseFloat(
+              superDistributorPackage.On_Airtel_Dth_Recharge_Commission
+            );
+          }
+        }
+      }
+      if (white_lable && whiteLablePackage) {
+        if (whiteLablePackage.Online_DTH_Recharge_Commission_Type == "Percentage") {
+          if (operatorName == "Dish TV") {
+            whiteLableCommAmount =
+              (amount *
+                parseFloat(whiteLablePackage.On_Dish_TV_Recharge_Commission)) /
+              100;
+          } else if (operatorName == "Tata Sky") {
+            whiteLableCommAmount =
+              (amount *
+                parseFloat(whiteLablePackage.On_Tata_Sky_Recharge_Commission)) /
+              100;
+          } else if (operatorName == "Videocon") {
+            whiteLableCommAmount =
+              (amount *
+                parseFloat(whiteLablePackage.On_Videocon_Recharge_Commission)) /
+              100;
+          } else if (operatorName == "Sun Direct") {
+            whiteLableCommAmount =
+              (amount *
+                parseFloat(whiteLablePackage.On_Sun_Direct_Recharge_Commission)) /
+              100;
+          }
+          else if (operatorName == "Airtel DTH") {
+            whiteLableCommAmount =
+              (amount *
+                parseFloat(whiteLablePackage.On_Airtel_Dth_Recharge_Commission)) /
+              100;
+          }
+        } else {
+          if (operatorName == "Dish TV") {
+            whiteLableCommAmount = parseFloat(
+              whiteLablePackage.On_Dish_TV_Recharge_Commission
+            );
+          } else if (operatorName == "Tata Sky") {
+            whiteLableCommAmount = parseFloat(
+              whiteLablePackage.On_Tata_Sky_Recharge_Commission
+            );
+          } else if (operatorName == "Videocon") {
+            whiteLableCommAmount = parseFloat(
+              whiteLablePackage.On_Videocon_Recharge_Commission
+            );
+          } else if (operatorName == "Sun Direct") {
+            whiteLableCommAmount = parseFloat(
+              whiteLablePackage.On_Sun_Direct_Recharge_Commission
+            );
+          }
+          else if (operatorName == "Airtel DTH") {
+            whiteLableCommAmount = parseFloat(
+              whiteLablePackage.On_Airtel_Dth_Recharge_Commission
+            );
+          }
+        }
+      }
+
+      retailerFormData.amount = retailerCommAmount;
+      distributorFormData.amount = distributorCommAmount;
+      superDistributorFormData.amount = superDistributorCommAmount;
+      whiteLableFormData.amount = whiteLableCommAmount;
+      //  console.log(retailerCommAmount)
+      //  console.log(distributorCommAmount)
+      //  console.log(superDistributorCommAmount)
+      //  console.log(whiteLableCommAmount)
+    } catch (error) {
+      console.log(error);
+    }
+    return {
+      retailerFormData,
+      distributorFormData,
+      superDistributorFormData,
+      whiteLableFormData,
+      Order_Id,
+      Transaction_Id,
+    };
+  };
+
   const handleSubmit = async (e) => {
+    
     e.preventDefault();
+    let result = {};
+    let usersId = {
+      distributorId: "NA",
+      superDistributorId: "NA",
+      whiteLabelId: "NA",
+    };
+    
     if (!isRecharge) {
       return;
     }
     setLoading(true);
-    let success = false;
+
+      // Package Find code
+      try {
+        // setLoading(true);
+  
+        const { data } = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${currentUser.userId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        console.log(data.data);
+        setUserRelation(data.data);
+  
+        if (data.data) {
+          const { distributor, superDistributor, white_lable } = data.data;
+          usersId.distributorId = distributor;
+          usersId.superDistributorId = superDistributor;
+          usersId.whiteLabelId = white_lable;
+          const retailer = currentUser.userId;
+          // Create an array to hold promises and a mapping object
+          const promises = [];
+          const resultsMap = {
+            retailer: null,
+            distributor: null,
+            superDistributor: null,
+            whiteLable: null,
+          };
+  
+          const retailerPromise = axios
+            .get(
+              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then((response) => {
+              resultsMap.retailer = response.data.data;
+            });
+          promises.push(retailerPromise);
+  
+          if (distributor) {
+            const distributorPromise = axios
+              .get(
+                `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .then((response) => {
+                resultsMap.distributor = response.data.data;
+              });
+            promises.push(distributorPromise);
+          }
+  
+          if (superDistributor) {
+            const superDistributorPromise = axios
+              .get(
+                `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .then((response) => {
+                resultsMap.superDistributor = response.data.data;
+              });
+            promises.push(superDistributorPromise);
+          }
+  
+          if (white_lable) {
+            const whiteLablePromise = axios
+              .get(
+                `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .then((response) => {
+                resultsMap.whiteLable = response.data.data;
+              });
+            promises.push(whiteLablePromise);
+          }
+  
+          // Wait for all promises to resolve
+          await Promise.all(promises);
+  
+          // Log the results
+          console.log("retailer Package:", resultsMap.retailer);
+          console.log("Distributor Package:", resultsMap.distributor);
+          console.log("Super Distributor Package:", resultsMap.superDistributor);
+          console.log("White Label Package:", resultsMap.whiteLable);
+  
+          // let result = {};
+          result = await DthRechargeComm(
+            retailer,
+            distributor,
+            superDistributor,
+            white_lable,
+            resultsMap,
+            formData
+          );
+          console.log(result);
+          console.log(result.retailerFormData.amount);
+        }
+      } catch (error) {
+        console.error("There was an error submitting the form!", error);
+        if (error?.response?.status === 401) {
+          Swal.fire({
+            icon: "error",
+            title: "Your token is expired please login again",
+          });
+          dispatch(clearUser());
+          navigate("/");
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "An error occurred during the process. Please try again.",
+          });
+        }
+      }
+      // Package Find code
+      let success = false;
+  
+      if (
+        result.retailerFormData.amount === null ||
+        result.retailerFormData.amount === undefined ||
+        isNaN(result.retailerFormData.amount)
+      ) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong Please try Again!",
+        });
+        return;
+      }
+  
+      const commissionAmt = parseFloat(result.retailerFormData.amount).toFixed(2);
+      const rechargeAmt = parseFloat(formData.amount).toFixed(2);
+  
+      const walletAmt = rechargeAmt - commissionAmt;
+      console.log(walletAmt);
+  
+      // setFormData((prev) => {
+      //   return { ...prev, walletDeductAmt: walletAmt };
+      // });
+  
+      // Update formData directly
+      const updatedFormData = {
+        ...formData,
+        walletDeductAmt: walletAmt,
+      };
+  
+      // Log updated formData
+      console.log(updatedFormData);
+  
+      // const data = {
+      //   operatorName: "Vi",
+      //   number: "9806324244",
+      //   amount: "10",
+      //   walletDeductAmt: "9.1",
+      //   recharge_Type: "Prepaid",
+      //   created_by_userid: currentUser.userId,
+      //   // orderid: "4654747",
+      // };
+  
 
     for (const api of apiData) {
+      setLoading(true);
       try {
-        const result = await axios.post(api.API_URL, formData);
+        const rechargeResult = await axios.post(api.API_URL, updatedFormData);
 
-        if (result.data && result.data.message === "Recharge successful") {
+        if (rechargeResult.data && rechargeResult.data.message === "Recharge successful") {
           Swal.fire({
             title: "Done!",
             text: "Recharge Successful",
             icon: "success",
           });
-          setResponse(result.data);
+          setResponse(rechargeResult.data);
           success = true;
+          console.log(rechargeResult.data);
+          console.log(rechargeResult.data.orderId);
+         
+          // Recharge Commission Credit WL SD D
+          let allProcessesSuccessful = true;
+          result.retailerFormData.Transaction_details = `Commission Credit for DTH Recharge Order Id ${rechargeResult.data.orderId}`;
+          result.distributorFormData.Transaction_details = `Commission Credit for DTH Recharge Order Id ${rechargeResult.data.orderId}`;
+          result.superDistributorFormData.Transaction_details = `Commission Credit for DTH Recharge Order Id ${rechargeResult.data.orderId}`;
+          result.whiteLableFormData.Transaction_details = `Commission Credit for DTH Recharge Order Id ${rechargeResult.data.orderId}`;
+          if (
+            result &&
+            result.distributorFormData &&
+            result.distributorFormData.amount
+          ) {
+            const response = await axios
+              .put(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+                // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+                result.distributorFormData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .catch(() => {
+                allProcessesSuccessful = false;
+              });
+          }
+          if (
+            result &&
+            result.superDistributorFormData &&
+            result.superDistributorFormData.amount
+          ) {
+            const response = await axios
+              .put(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+                // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+                result.superDistributorFormData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .catch(() => {
+                allProcessesSuccessful = false;
+              });
+          }
+          if (
+            result &&
+            result.whiteLableFormData &&
+            result.whiteLableFormData.amount
+          ) {
+            const response = await axios
+              .put(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+                // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+                result.whiteLableFormData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .catch(() => {
+                allProcessesSuccessful = false;
+              });
+          }
+
+          if (result) {
+            let whiteLabel_Commission = 0;
+            let super_Distributor_Commission = 0;
+            let distributor_Commission = 0;
+            let retailer_Commission = 0;
+            if (result.whiteLableFormData && result.whiteLableFormData.amount) {
+              whiteLabel_Commission = result.whiteLableFormData.amount;
+            }
+            if (
+              result.superDistributorFormData &&
+              result.superDistributorFormData.amount
+            ) {
+              super_Distributor_Commission =
+                result.superDistributorFormData.amount;
+            }
+            if (
+              result.distributorFormData &&
+              result.distributorFormData.amount
+            ) {
+              distributor_Commission = result.distributorFormData.amount;
+            }
+            if (result.retailerFormData && result.retailerFormData.amount) {
+              retailer_Commission = result.retailerFormData.amount;
+            }
+            console.log(userRelation);
+
+            const commissionFormData = {
+              order_id: result.Order_Id,
+              transaction_id: result.Transaction_Id,
+              amount: updatedFormData.amount,
+              whiteLabel_id: usersId.whiteLabelId ? usersId.whiteLabelId : "NA",
+              super_Distributor_id: usersId.superDistributorId
+                ? usersId.superDistributorId
+                : "NA",
+              distributor_id: usersId.distributorId
+                ? usersId.distributorId
+                : "NA",
+              retailer_id: currentUser.userId ? currentUser.userId : "NA",
+              whiteLabel_Commission: whiteLabel_Commission,
+              super_Distributor_Commission: super_Distributor_Commission,
+              distributor_Commission: distributor_Commission,
+              retailer_Commission: retailer_Commission,
+              transaction_type: updatedFormData.recharge_Type,
+              transaction_details: result.retailerFormData.Transaction_details,
+              status: "Success",
+            };
+            console.log(commissionFormData);
+            await axios
+              .post(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
+                // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+                commissionFormData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .catch(() => {
+                allProcessesSuccessful = false;
+              });
+          }
+          // Recharge Commission Credit WL SD D
           break;
-        } else if (
-          result.data.rechargeData &&
-          result.data.rechargeData.status === "Failure"
+        }
+        else if (rechargeResult.data &&
+          rechargeResult.data.message === "Recharge in process"){
+            success = true;
+            Swal.fire({
+              icon: "info",
+              title: "Recharge in process",
+              text: "Recharge in process please wait it will take Sometime!",
+            });
+            let allProcessesSuccessful = true;
+            result.retailerFormData.Transaction_details = `Commission Credit for DTH Recharge Order Id ${rechargeResult.data.orderId}`;
+            
+            if (result) {
+              let whiteLabel_Commission = 0;
+              let super_Distributor_Commission = 0;
+              let distributor_Commission = 0;
+              let retailer_Commission = 0;
+              if (result.retailerFormData && result.retailerFormData.amount) {
+                retailer_Commission = result.retailerFormData.amount;
+              }
+              console.log(userRelation);
+  
+              const commissionFormData = {
+                order_id: result.Order_Id,
+                transaction_id: result.Transaction_Id,
+                amount: updatedFormData.amount,
+                whiteLabel_id: usersId.whiteLabelId ? usersId.whiteLabelId : "NA",
+                super_Distributor_id: usersId.superDistributorId
+                  ? usersId.superDistributorId
+                  : "NA",
+                distributor_id: usersId.distributorId
+                  ? usersId.distributorId
+                  : "NA",
+                retailer_id: currentUser.userId ? currentUser.userId : "NA",
+                whiteLabel_Commission: whiteLabel_Commission,
+                super_Distributor_Commission: super_Distributor_Commission,
+                distributor_Commission: distributor_Commission,
+                retailer_Commission: retailer_Commission,
+                transaction_type: updatedFormData.recharge_Type,
+                transaction_details: result.retailerFormData.Transaction_details,
+                status: "Success",
+              };
+              console.log(commissionFormData);
+              await axios
+                .post(
+                  "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
+                  // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+                  commissionFormData,
+                  {
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${token}`,
+                    },
+                  }
+                )
+                .catch(() => {
+                  allProcessesSuccessful = false;
+                });
+            }
+            // Recharge Commission Credit WL SD D
+            break;
+          }
+         else if (
+          rechargeResult.data.rechargeData &&
+          rechargeResult.data.rechargeData.status === "Failure"
         ) {
           Swal.fire({
             icon: "error",
@@ -178,9 +891,30 @@ const DthRecharge = () => {
         }
       } catch (error) {
         console.error(
-          "Error in recharge:",
-          error.response ? error.response.data : error.message
-        );
+                  "Error in recharge:",
+                  error.response ? error.response.data : error.message
+                );
+                if (error?.response?.status === 401) {
+                  Swal.fire({
+                    icon: "error",
+                    title: "Your token is expired. Please login again.",
+                  });
+                  dispatch(clearUser());
+                  navigate("/");
+                }
+      }
+      finally {
+        // Clear form data and stop loading
+        setFormData({
+          operatorName: "",
+          number: "",
+          amount: "",
+          walletDeductAmt: "",
+          recharge_Type: "DTH",
+          created_by_userid: currentUser.userId,
+        });
+
+        setLoading(false);
       }
     }
 
@@ -323,6 +1057,22 @@ const DthRecharge = () => {
     }
   };
 
+    // Onlined PIN Integration
+    const handleOnlinePinChange = (index, value) => {
+      if (/^\d?$/.test(value)) {
+        const newPin = [...onlinePin];
+        newPin[index] = value;
+        setOnlinePin(newPin);
+    
+        // Move to next input if current is filled, move to previous if deleted
+        if (value !== "" && index < onlinePin.length - 1) {
+          pinRefs.current[index + 1].focus();
+        } else if (value === "" && index > 0) {
+          pinRefs.current[index - 1].focus();
+        }
+      }
+    };
+
   const handleBackspace = (index) => {
     if (pin[index] === "" && index > 0) {
       pinRefs.current[index - 1].focus();
@@ -349,20 +1099,63 @@ const DthRecharge = () => {
     }
   };
 
-  const handleModalSubmit = async (e) => {
-    const isPinValid = await verifyPin();
-    if (isPinValid) {
-      setShowPinModal(false);
-      handlesubmitForm(e);
-      setPin(["", "", "", ""]);
+    // Onlined PIN Integration
+const verifyOnlinePin = async () => {
+  try {
+    const response = await axios.post(
+      `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+      { user_id: currentUser.userId || "", pin: onlinePin.join("") }
+    );
+    if (response.data.success) {
+      return true;
     } else {
-      setPin(["", "", "", ""]);
+      alert(response.data.message);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error verifying PIN:", error);
+    alert("Error verifying PIN");
+    return false;
+  }
+};
+
+const handleModalSubmit = async (e) => {
+  setIsVerifying(true);
+  const isPinValid = await verifyPin();
+  setIsVerifying(false);
+  if (isPinValid) {
+    setShowPinModal(false);
+    handlesubmitForm(e);
+    setPin(["", "", "", ""]);
+  } else {
+    setPin(["", "", "", ""]);
+  }
+};
+
+  // Onlined PIN Integration
+  const handleOnlineModalSubmit = async (e) => {
+    setIsVerifying(true);
+    const isPinValid = await verifyOnlinePin();
+    setIsVerifying(false);
+    if (isPinValid) {
+      setShowOnlinePinModal(false);
+      handleSubmit(e); // Online form submit
+      setOnlinePin(["", "", "", ""]); // Reset the online PIN
+    } else {
+      setOnlinePin(["", "", "", ""]);
     }
   };
 
   const openPinModal = (e) => {
     e.preventDefault();
     setShowPinModal(true);
+  };
+
+  const openOnlinePinModal = (e) => {
+    e.preventDefault();
+    setShowOnlinePinModal(true);
+    console.log("Online PIN");
+    
   };
 
   return (
@@ -436,7 +1229,8 @@ const DthRecharge = () => {
                                   <div className="text-center">
                                     <h3 className="mb-4">DTH Recharge</h3>
                                     <div>
-                                      <form onSubmit={handleSubmit}>
+                                      {/* <form onSubmit={handleSubmit}> */}
+                                      <form onSubmit={openOnlinePinModal}>
                                         <div class="input-group mb-3">
                                           <span class="input-group-text">
                                             <FaMobileAlt />
@@ -686,33 +1480,6 @@ const DthRecharge = () => {
 
                                         {/* ---------Fetch PlanInputs-----*/}
 
-                                        {/* <div class="input-group mb-3">
-                                          <div class="form-floating">
-                                            <select
-                                              class="form-select"
-                                              id="floatingSelectOperator"
-                                              value={formData.operatorName}
-                                              onChange={handleChange}
-                                              name="operatorName"
-                                              aria-label="Select Operator"
-                                            >
-                                              <option value="">
-                                                Select Operator
-                                              </option>
-                                              {operatorOptions.map((item) => (
-                                                <>
-                                                  <option value={item.value}>
-                                                    {item.name}
-                                                  </option>
-                                                </>
-                                              ))}
-                                            </select>
-                                            <label for="floatingSelectOperator">
-                                              Select Operator
-                                            </label>
-                                          </div>
-                                        </div> */}
-
                                         <div class="input-group mb-3">
                                           <div class="form-floating">
                                             <input
@@ -737,8 +1504,12 @@ const DthRecharge = () => {
                                               backgroundColor: "#6d70ff",
                                             }}
                                             type="submit"
+                                            onClick={() => setIsRecharge(true)}
+                                            disabled={loading}
                                           >
-                                            Recharge Now
+                                            {loading
+                                              ? "Recharge Now..."
+                                              : "Recharge Now"}
                                           </button>
                                         </div>
                                       </form>
@@ -783,7 +1554,238 @@ const DthRecharge = () => {
                                             </label>
                                           </div>
                                         </div>
-                                        <div class="input-group mb-3">
+
+                                        {/* ---------Fetch PlanInputs-----*/}
+
+                                        <div className="input-group mb-3">
+                                          <div className="form-floating">
+                                            <select
+                                              className="form-select"
+                                              id="floatingSelectPlanOperator"
+                                              aria-label="Select Operator"
+                                              value={selectedOperator}
+                                              onChange={(e) => {
+                                                const selectedOp =
+                                                  operatorOptions.find(
+                                                    (op) =>
+                                                      op.OpCode ===
+                                                      e.target.value
+                                                  );
+                                                setSelectedOperator(
+                                                  e.target.value
+                                                );
+                                                setOfflineForm(
+                                                  (prevFormData) => ({
+                                                    ...prevFormData,
+                                                    operator_name: selectedOp
+                                                      ? selectedOp.name
+                                                      : "",
+                                                  })
+                                                );
+                                              }}
+                                            >
+                                              <option value="">
+                                                Select Operator
+                                              </option>
+                                              {operatorOptions.map((op) => (
+                                                <option
+                                                  key={op.value}
+                                                  value={op.OpCode}
+                                                >
+                                                  {op.name}
+                                                </option>
+                                              ))}
+                                            </select>
+                                            <label htmlFor="floatingSelectPlanOperator">
+                                              Select Plan Operator
+                                            </label>
+                                          </div>
+                                        </div>
+
+                                        <div className="text-start mt-2 mb-3">
+                                          <button
+                                            className="btn btn-none text-light"
+                                            style={{
+                                              backgroundColor: "#6d70ff",
+                                            }}
+                                            onClick={fetchPlanData}
+                                            disabled={loadingPlans}
+                                          >
+                                            {loadingPlans
+                                              ? "Checking Plans..."
+                                              : "Check Plans"}
+                                          </button>
+                                        </div>
+
+                                        {isModalOpen && (
+                                          <div
+                                            className="modal fade show"
+                                            style={{
+                                              display: "block",
+                                              backgroundColor:
+                                                "rgba(0,0,0,0.5)",
+                                            }}
+                                            tabIndex="-1"
+                                          >
+                                            <div className="modal-dialog">
+                                              <div className="modal-content">
+                                                <div className="modal-header">
+                                                  <h5 className="modal-title">
+                                                    Available Plans
+                                                  </h5>
+                                                  <button
+                                                    type="button"
+                                                    className="btn-close"
+                                                    onClick={() => {
+                                                      setIsModalOpen(false);
+                                                      setLoadingPlans(false);
+                                                    }}
+                                                  ></button>
+                                                </div>
+                                                <div className="modal-body">
+                                                  {Object.keys(plans).length >
+                                                  0 ? (
+                                                    Object.entries(plans).map(
+                                                      ([language, group]) => (
+                                                        <div
+                                                          key={language}
+                                                          className="mb-3"
+                                                        >
+                                                          <h6>
+                                                            {language} (Pack
+                                                            Count:{" "}
+                                                            {group.packCount})
+                                                          </h6>
+                                                          <ul className="list-group">
+                                                            {group.details.map(
+                                                              (plan, index) => (
+                                                                <li
+                                                                  key={index}
+                                                                  className="list-group-item"
+                                                                >
+                                                                  <p>
+                                                                    <strong>
+                                                                      Plan Name:
+                                                                    </strong>{" "}
+                                                                    {
+                                                                      plan.planName
+                                                                    }
+                                                                  </p>
+                                                                  <p>
+                                                                    <strong>
+                                                                      Channels:
+                                                                    </strong>{" "}
+                                                                    {
+                                                                      plan.channels
+                                                                    }
+                                                                  </p>
+                                                                  <p>
+                                                                    <strong>
+                                                                      Paid
+                                                                      Channels:
+                                                                    </strong>{" "}
+                                                                    {
+                                                                      plan.paidChannels
+                                                                    }
+                                                                  </p>
+                                                                  <p>
+                                                                    <strong>
+                                                                      HD
+                                                                      Channels:
+                                                                    </strong>{" "}
+                                                                    {
+                                                                      plan.hdChannels
+                                                                    }
+                                                                  </p>
+                                                                  <p>
+                                                                    <strong>
+                                                                      Last
+                                                                      Update:
+                                                                    </strong>{" "}
+                                                                    {
+                                                                      plan.lastUpdate
+                                                                    }
+                                                                  </p>
+                                                                  <strong>
+                                                                    Pricing
+                                                                    Options:
+                                                                  </strong>
+                                                                  <ul>
+                                                                    {plan.pricing.map(
+                                                                      (
+                                                                        price,
+                                                                        priceIndex
+                                                                      ) => (
+                                                                        <li
+                                                                          key={
+                                                                            priceIndex
+                                                                          }
+                                                                          onClick={() => {
+                                                                            setOfflineForm(
+                                                                              (
+                                                                                prevFormData
+                                                                              ) => ({
+                                                                                ...prevFormData,
+                                                                                amount:
+                                                                                  price.amount.replace(
+                                                                                    "₹",
+                                                                                    ""
+                                                                                  ),
+                                                                              })
+                                                                            );
+                                                                            setIsModalOpen(
+                                                                              false
+                                                                            ); // Close modal
+                                                                          }}
+                                                                          style={{
+                                                                            cursor:
+                                                                              "pointer",
+                                                                            marginBottom:
+                                                                              "5px",
+                                                                          }}
+                                                                        >
+                                                                          {
+                                                                            price.amount
+                                                                          }{" "}
+                                                                          for{" "}
+                                                                          {
+                                                                            price.duration
+                                                                          }
+                                                                        </li>
+                                                                      )
+                                                                    )}
+                                                                  </ul>
+                                                                </li>
+                                                              )
+                                                            )}
+                                                          </ul>
+                                                        </div>
+                                                      )
+                                                    )
+                                                  ) : (
+                                                    <p>No plans available.</p>
+                                                  )}
+                                                </div>
+                                                <div className="modal-footer">
+                                                  <button
+                                                    type="button"
+                                                    className="btn btn-secondary"
+                                                    onClick={() => {
+                                                      setIsModalOpen(false);
+                                                      setLoadingPlans(false);
+                                                    }}
+                                                  >
+                                                    Close
+                                                  </button>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        )}
+
+                                        {/* ---------Fetch PlanInputs-----*/}
+
+                                        {/* <div class="input-group mb-3">
                                           <div class="form-floating">
                                             <select
                                               class="form-select"
@@ -808,30 +1810,8 @@ const DthRecharge = () => {
                                               Select Operator
                                             </label>
                                           </div>
-                                        </div>
-                                        {/* <div class="input-group mb-3">
-                                          <div class="form-floating">
-                                            <input
-                                              type="text"
-                                              class="form-control"
-                                              id="floatingInputGroup1"
-                                              placeholder="Username"
-                                            />
-                                            <label for="floatingInputGroup1">
-                                              Select Circle
-                                            </label>
-                                          </div>
-                                        </div>
-                                        <div className="text-start mt-2 mb-3">
-                                          <button
-                                            className="btn btn-none text-light"
-                                            style={{
-                                              backgroundColor: "#6d70ff",
-                                            }}
-                                          >
-                                            Check Plans
-                                          </button>
                                         </div> */}
+
                                         <div class="input-group mb-3">
                                           <div class="form-floating">
                                             <input
@@ -875,9 +1855,72 @@ const DthRecharge = () => {
             </div>
           </div>
         )}
+           <Modal
+                 show={showPinModal}
+                 onHide={() => setShowPinModal(false)}
+                 centered
+               >
+                 <Modal.Header closeButton>
+                   <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+                 </Modal.Header>
+                 <Modal.Body>
+                   <div className="pin-inputs d-flex justify-content-center">
+                     {pin.map((digit, index) => (
+                       <input
+                         key={index}
+                         ref={(el) => (pinRefs.current[index] = el)}
+                         type="text"
+                         value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
+                         maxLength="1"
+                         onChange={(e) => handlePinChange(index, e.target.value)}
+                         onKeyDown={(e) =>
+                           e.key === "Backspace" && handleBackspace(index)
+                         }
+                         className="pin-digit form-control mx-1"
+                         style={{
+                           width: "50px",
+                           textAlign: "center",
+                           fontSize: "1.5rem",
+                           borderRadius: "8px",
+                           border: "1px solid #ced4da",
+                           boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                         }}
+                       />
+                     ))}
+                   </div>
+                 </Modal.Body>
+                 <Modal.Footer>
+                   <div className="w-100 d-flex justify-content-center">
+                     <Button
+                       variant="secondary"
+                       onClick={() => setShowPinModal(false)}
+                       className="mx-1"
+                     >
+                       Cancel
+                     </Button>
+       
+                     <Button
+                       variant="primary"
+                       onClick={handleModalSubmit}
+                       disabled={isVerifying}
+                     >
+                       {isVerifying ? "Verifying..." : "Verify PIN"}
+                       {isVerifying && (
+                         <Spinner
+                           as="span"
+                           animation="border"
+                           size="sm"
+                           role="status"
+                           aria-hidden="true"
+                         />
+                       )}
+                     </Button>
+                   </div>
+                 </Modal.Footer>
+               </Modal>
         <Modal
-          show={showPinModal}
-          onHide={() => setShowPinModal(false)}
+          show={showOnlinePinModal}
+          onHide={() => setShowOnlinePinModal(false)}
           centered
         >
           <Modal.Header closeButton>
@@ -885,14 +1928,14 @@ const DthRecharge = () => {
           </Modal.Header>
           <Modal.Body>
             <div className="pin-inputs d-flex justify-content-center">
-              {pin.map((digit, index) => (
+              {onlinePin.map((digit, index) => (
                 <input
                   key={index}
                   ref={(el) => (pinRefs.current[index] = el)}
                   type="text"
-                  value={digit ? "●" : ""}
+                  value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
                   maxLength="1"
-                  onChange={(e) => handlePinChange(index, e.target.value)}
+                  onChange={(e) => handleOnlinePinChange(index, e.target.value)}
                   onKeyDown={(e) =>
                     e.key === "Backspace" && handleBackspace(index)
                   }
@@ -913,14 +1956,27 @@ const DthRecharge = () => {
             <div className="w-100 d-flex justify-content-center">
               <Button
                 variant="secondary"
-                onClick={() => setShowPinModal(false)}
+                onClick={() => setShowOnlinePinModal(false)}
                 className="mx-1"
               >
                 Cancel
               </Button>
 
-              <Button variant="primary" onClick={handleModalSubmit}>
-                Verify PIN
+              <Button
+                variant="primary"
+                onClick={handleOnlineModalSubmit}
+                disabled={isVerifying}
+              >
+                {isVerifying ? "Verifying..." : "Verify PIN"}
+                {isVerifying && (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                )}
               </Button>
             </div>
           </Modal.Footer>
@@ -1257,3 +2313,57 @@ const Wrapper = styled.div`
 //     </div>
 //   </div>
 // )}
+
+{
+  /* <div class="input-group mb-3">
+                                          <div class="form-floating">
+                                            <select
+                                              class="form-select"
+                                              id="floatingSelectOperator"
+                                              value={formData.operatorName}
+                                              onChange={handleChange}
+                                              name="operatorName"
+                                              aria-label="Select Operator"
+                                            >
+                                              <option value="">
+                                                Select Operator
+                                              </option>
+                                              {operatorOptions.map((item) => (
+                                                <>
+                                                  <option value={item.value}>
+                                                    {item.name}
+                                                  </option>
+                                                </>
+                                              ))}
+                                            </select>
+                                            <label for="floatingSelectOperator">
+                                              Select Operator
+                                            </label>
+                                          </div>
+                                        </div> */
+}
+{
+  /* <div class="input-group mb-3">
+                                          <div class="form-floating">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              id="floatingInputGroup1"
+                                              placeholder="Username"
+                                            />
+                                            <label for="floatingInputGroup1">
+                                              Select Circle
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <div className="text-start mt-2 mb-3">
+                                          <button
+                                            className="btn btn-none text-light"
+                                            style={{
+                                              backgroundColor: "#6d70ff",
+                                            }}
+                                          >
+                                            Check Plans
+                                          </button>
+                                        </div> */
+}

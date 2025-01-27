@@ -15,6 +15,7 @@ import Swal from "sweetalert2";
 const PanForm = () => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
+  const [isLoading, setIsLoading] = useState(false);
   const [fileError, setFileError] = useState("");
   const [selectOption, setSelectOption] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
@@ -25,12 +26,17 @@ const PanForm = () => {
   const [eStampAmount, setEStampAmount] = useState("");
   const [totalAmount, setTotalAmount] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
+  const attachFormRef = useRef(null)
+  const attachPhotoRef = useRef(null)
+  const attachSignRef = useRef(null)
+  const attachKycRef = useRef(null)
   const [formData, setFormData] = useState({
     applicant_name: "",
     applicant_father: "",
     applicant_number: "",
     email: "",
     applicant_select_service: "",
+    eStampAmount: "",
     other: "",
     attached_form: null,
     attached_photo: null,
@@ -58,19 +64,32 @@ const PanForm = () => {
     const { name, value } = e.target;
 
     if (name === "eStampAmount") {
-      let parsedValue = parseInt(value, 10);
-      parsedValue = isNaN(parsedValue) ? 0 : parsedValue; // Default to 0 if not a number
-
-      const parsedSelectedPrice = parseInt(selectedPrice, 10) || 0;
-      const total = parsedValue + parsedSelectedPrice;
-
-      setEStampAmount(value); // Always update the input value to allow changes
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: value, // Reflect the input directly
-        amount: total.toString(), // Calculate the total amount
-      }));
-    } else {
+      if(/^\d*$/.test(value)){
+        let parsedValue = parseInt(value, 10);
+        parsedValue = isNaN(parsedValue) ? 0 : parsedValue; // Default to 0 if not a number
+  
+        const parsedSelectedPrice = parseInt(selectedPrice, 10) || 0;
+        const total = parsedValue + parsedSelectedPrice;
+  
+        setEStampAmount(value); // Always update the input value to allow changes
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          [name]: value, // Reflect the input directly
+          amount: total.toString(), // Calculate the total amount
+        }));
+      }
+   
+    }
+    else if(name === "applicant_number"){
+      
+      if (/^\d*$/.test(value)) {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+    }
+     else {
       setFormData((prevFormData) => ({
         ...prevFormData,
         [name]: value,
@@ -156,8 +175,26 @@ const PanForm = () => {
     }
   }, [currentUser]);
 
+  const clearFileInput = ()=>{
+    if (attachFormRef.current) {
+      attachFormRef.current.value = null;
+    }
+    if (attachPhotoRef.current) {
+      attachPhotoRef.current.value = null;
+    }
+    if (attachSignRef.current) {
+      attachSignRef.current.value = null;
+    }
+    if (attachKycRef.current) {
+      attachKycRef.current.value = null;
+    }
+   
+   
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     console.log("Submitting with amount:", formData);
 
     if (!formData.userId) {
@@ -209,41 +246,59 @@ const PanForm = () => {
         }
       );
       // alert(response.data.message);
-      const resData = response.data.message;
-      console.log(response.data.message);
-
-      Swal.fire({
-        title: "Form Sumitted Success",
-        text: `${resData}`,
-        icon: "success",
-      });
-
-      setFormData({
-        applicant_name: "",
-        applicant_father: "",
-        applicant_number: "",
-        email: "",
-        applicant_select_service: "",
-        other: "",
-        eStampAmount: "",
-        totalAmount: "",
-        amount: "",
-        attached_form: null,
-        attached_photo: null,
-        attached_sign: null,
-        attached_kyc: [],
-        userId: currentUser?.userId,
-      });
-
-      setEStampAmount("");
-      setTotalAmount("");
-      setSelectedPrice("");
-
-      setPin(["", "", "", ""]);
-      pinRefs.current[0]?.focus();
+      console.log(response);
+      const resData = response?.data?.message;
+      setIsLoading(false);
+      if(response.data.status == "Success"){
+        Swal.fire({
+          title: "Form Sumitted Success",
+          text: `${resData}` ||  "Other Services processed and wallet updated successfully.",
+          icon: "success",
+        });
+  
+        setFormData({
+          applicant_name: "",
+          applicant_father: "",
+          applicant_number: "",
+          email: "",
+          applicant_select_service: "",
+          other: "",
+          eStampAmount: "",
+          totalAmount: "",
+          amount: "",
+          attached_form: null,
+          attached_photo: null,
+          attached_sign: null,
+          attached_kyc: [],
+          userId: currentUser?.userId,
+        });
+  
+        setEStampAmount("");
+        setTotalAmount("");
+        setSelectedPrice("");
+        clearFileInput();
+  
+        setPin(["", "", "", ""]);
+        pinRefs.current[0]?.focus();
+      }
+      else{
+        Swal.fire({
+          title: "Something went wrong!",
+          text: response?.data?.message || "Something went wrong! Please Try again",
+          icon: "error",
+        });
+      }
+     
+      
     } catch (error) {
       // alert("An error occurred. Please try again.");
       console.log(error);
+      setIsLoading(false);
+      Swal.fire({
+        title: "Something went wrong!",
+        text: error?.response?.data?.message || "Something went wrong! Please Try again",
+        icon: "error",
+      });
     }
   };
 
@@ -255,7 +310,7 @@ const PanForm = () => {
     { id: 5, name: "ITR Registration" },
     { id: 6, name: "GST Registration" },
     { id: 7, name: "Udyog Aadhar" },
-    { id: 8, name: "Sambal" },
+    // { id: 8, name: "Sambal" },
   ];
 
   // Pin Verification Logic **
@@ -291,14 +346,25 @@ const PanForm = () => {
       if (response.data.success) {
         return true;
       } else {
-        alert(response.data.message);
+        // alert(response.data.message);
+        Swal.fire({
+          title: "Error verifying PIN",
+          text: response?.data?.message || "Something went wrong! Please Try again",
+          icon: "error",
+        });
         return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
-      alert("Error verifying PIN");
+      
+      Swal.fire({
+              title: "Error verifying PIN",
+              text: error?.response?.data?.message || "Something went wrong! Please Try again",
+              icon: "error",
+            });
       return false;
     }
+   
   };
 
   const handleModalSubmit = async (e) => {
@@ -307,6 +373,7 @@ const PanForm = () => {
     setIsVerifying(false);
     if (isPinValid) {
       setShowPinModal(false);
+      setPin(["", "", "", ""]);
       await handleSubmit(e);
     } else {
       setPin(["", "", "", ""]);
@@ -390,10 +457,13 @@ const PanForm = () => {
                         </span>
                         <div className="form-floating">
                           <input
-                            type="number"
+                            type="text"
                             className="form-control"
                             id="floatingInputGroup3"
-                            placeholder="Username"
+                            pattern="[0-9]{10}"
+                    title="Mobile number should be 10 digits"
+                    maxLength={10}
+                    minLength={10}
                             name="applicant_number"
                             value={formData.applicant_number}
                             onChange={handleChange}
@@ -476,6 +546,7 @@ const PanForm = () => {
                                 name="other"
                                 value={formData.other}
                                 onChange={handleChange}
+                                required
                               />
                               <label htmlFor="floatingInputGroup4">
                                 E-Stamp Type
@@ -497,6 +568,7 @@ const PanForm = () => {
                                 name="eStampAmount"
                                 value={eStampAmount}
                                 onChange={handleChange}
+                                required
                               />
                               <label htmlFor="eStampAmountInput">
                                 E-Stamp Amount
@@ -521,6 +593,7 @@ const PanForm = () => {
                             value={totalAmount || selectedPrice || ""}
                             onChange={handleChange}
                             readOnly
+                            required
                           />
                           <label htmlFor="floatingInputGroup3">Amount</label>
                         </div>
@@ -538,6 +611,7 @@ const PanForm = () => {
                           name="attached_form"
                           accept="application/pdf"
                           onChange={handleFileChange}
+                          ref={attachFormRef}
                         />
                         {fileError && (
                           <p className="text-danger fs-6">{fileError}</p>
@@ -556,6 +630,7 @@ const PanForm = () => {
                           accept=".jpg,.jpeg,.png"
                           name="attached_photo"
                           onChange={handleFileChange}
+                          ref={attachPhotoRef}
                         />
                       </div>
                     </div>
@@ -571,6 +646,7 @@ const PanForm = () => {
                           name="attached_sign"
                           accept=".jpg,.jpeg,.png"
                           onChange={handleFileChange}
+                          ref={attachSignRef}
                         />
                       </div>
                     </div>
@@ -587,13 +663,14 @@ const PanForm = () => {
                           multiple
                           accept=".jpg,.jpeg,.png"
                           onChange={handleFileChange}
+                          ref={attachKycRef}
                         />
                       </div>
                     </div>
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="text-start mb-3">
-                        <button className="btn p-2" type="submit">
-                          Submit
+                        <button className="btn p-2" type="submit"  disabled={isLoading}>
+                        {isLoading ? "Submit..." : "Submit"}
                         </button>
                       </div>
                     </div>
