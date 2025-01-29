@@ -296,9 +296,10 @@ const applyOfflineForm = (req, res) => {
     applicant_select_service,
     other,
     eStampAmount,
-    amount,
     userId,
   } = req.body;
+  let { amount } = req.body;
+
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
@@ -358,6 +359,17 @@ const applyOfflineForm = (req, res) => {
       });
     }
 
+      // Validate `Amount`: Check for undefined, null, or invalid number
+      if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+        return res.status(500).json({
+          success: false,
+          status: "Failure",
+          error: "Invalid or missing amount",
+        });
+      }
+  
+      amount = parseFloat(parseFloat(amount).toFixed(2)); // Ensures it's a number with two decimal places
+
     if (currentBalance < amount) {
       return res.status(400).json({
         status: "Failure",
@@ -371,15 +383,9 @@ const applyOfflineForm = (req, res) => {
     // Step 2: Update Wallet
     const newBalance = parseFloat(currentBalance - amount).toFixed(2);
 
-    if (isNaN(newBalance)) {
-                return res.status(500).json({
-                  status: "Failure",
-                  step: "Wallet Deduction",
-                  error: "New balance calculation is invalid.",
-                });
-              }
+
     const transactionId = `TXNW${Date.now()}`;
-    const transactionDetails = `Services Deduction ${applicant_number}`;
+    const transactionDetails = `${applicant_select_service} Services Deduction Order Id ${orderId}`;
     const creditAmt = 0;
 
     const updateWalletQuery = `
@@ -899,9 +905,9 @@ const bankidForm = (req, res) => {
     pan_card,
     business_name,
     status,
-    amount,
     userId,
   } = req.body;
+  let { amount } = req.body;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
@@ -964,6 +970,16 @@ const bankidForm = (req, res) => {
       });
     }
 
+      // Validate `Amount`: Check for undefined, null, or invalid number
+      if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+        return res.status(500).json({
+          success: false,
+          status: "Failure",
+          error: "Invalid or missing amount",
+        });
+      }
+  
+      amount = parseFloat(parseFloat(amount).toFixed(2)); // Ensures it's a number with two decimal places
     if (currentBalance < amount) {
       return res.status(400).json({
         status: "Failure",
@@ -976,20 +992,15 @@ const bankidForm = (req, res) => {
 
     // Step 2: Update Wallet
     const newBalance = parseFloat(currentBalance - amount).toFixed(2);
-            if (isNaN(newBalance)) {
-          return res.status(500).json({
-            status: "Failure",
-            step: "Wallet Deduction",
-            error: "New balance calculation is invalid.",
-          });
-        }
+      
     const transactionId = `TXNW${Date.now()}`;
     const transactionDetails = `Purchase ${select_bank_service} Bank ID Form Deduction Order id ${orderId}`;
+    const creditAmt = 0;
 
     const updateWalletQuery = `
       INSERT INTO user_wallet 
-      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount,debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)
     `;
 
     db.query(
@@ -1002,6 +1013,7 @@ const bankidForm = (req, res) => {
         currentBalance.toFixed(2),
         newBalance,
         "Debit",
+        creditAmt,
         amount,
         transactionDetails,
         "Success",
@@ -2031,6 +2043,195 @@ const profileUserKyc = (req, res) => {
 //   });
 // };
 
+// const eDistrictFormData = (req, res) => {
+//   const {
+//     application_type,
+//     samagar,
+//     gender,
+//     name,
+//     father_husband_name,
+//     dob,
+//     address,
+//     mobile_no,
+//     cast,
+//     aadhar_no,
+//     samagar_member_id,
+//     state,
+//     annual_income,
+//     previous_application,
+//     // charge_amount,
+//     amount,
+//     // user_id,
+//     userId,
+//     status,
+//   } = req.body;
+
+//   // console.log(req.body);
+
+//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+//   const domain = "http://localhost:7777";
+
+//   // Handling multiple file uploads
+//   const documentUpload = req.files
+//     ? req.files.map((file) => `${domain}/uploads/${file.filename}`).join(",")
+//     : null;
+
+//   const orderId = `EDST${Date.now()}`;
+
+//   const sql = `INSERT INTO \`e-district-application\` (
+//       order_id, application_type, samagar, gender, name, father_husband_name, dob, address,
+//       mobile_no, cast, aadhar_no, samagar_member_id, state, annual_income,
+//       previous_application, documentUpload, charge_amount, user_id, status, created_at
+//     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+//   const values = [
+//     orderId,
+//     application_type,
+//     samagar,
+//     gender,
+//     name,
+//     father_husband_name,
+//     dob,
+//     address,
+//     mobile_no,
+//     cast,
+//     aadhar_no,
+//     samagar_member_id,
+//     state,
+//     annual_income,
+//     previous_application,
+//     documentUpload,
+//     amount,
+//     userId,
+//     status,
+//     createdAt,
+//   ];
+
+//   db.query(sql, values, (err, result) => {
+//     if (err) {
+//       console.error("Database error:", err);
+//       return res.status(500).json({ error: err.message });
+//     }
+
+//     const queryBalance = `
+//     SELECT Closing_Balance 
+//     FROM user_wallet 
+//     WHERE userId = ? 
+//     ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+//     LIMIT 1
+//   `;
+
+//     db.query(queryBalance, [userId], (err, balanceResult) => {
+//       if (err) {
+//         console.error("Error fetching wallet balance:", err);
+//         return res.status(500).json({
+//           status: "Failure",
+//           step: "Fetch Wallet Balance",
+//           error: "Failed to fetch wallet balance",
+//           details: err.message,
+//         });
+//       }
+
+//       if (balanceResult.length === 0) {
+//         return res.status(404).json({
+//           status: "Failure",
+//           step: "Fetch Wallet Balance",
+//           message: "No balance found for the user.",
+//         });
+//       }
+
+//       const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+//       if (isNaN(currentBalance)) {
+//         return res.status(500).json({
+//           status: "Failure",
+//           step: "Fetch Wallet Balance",
+//           error: "Current balance is invalid.",
+//         });
+//       }
+
+//       if (currentBalance < amount) {
+//         return res.status(400).json({
+//           status: "Failure",
+//           step: "Wallet Deduction",
+//           message: "Insufficient balance.",
+//           currentBalance,
+//           requiredAmount: amount,
+//         });
+//       }
+
+//       const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+//       if (isNaN(newBalance)) {
+//         return res.status(500).json({
+//           status: "Failure",
+//           step: "Wallet Deduction",
+//           error: "New balance calculation is invalid.",
+//         });
+//       }
+
+//       const transactionId = `TXNW${Date.now()}`;
+//       const transactionDetails = `Services Deduction ${mobile_no}`;
+
+//       const updateWalletQuery = `
+//     INSERT INTO user_wallet 
+//     (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
+//     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+//   `;
+
+//       db.query(
+//         updateWalletQuery,
+//         [
+//           userId,
+//           createdAt,
+//           orderId,
+//           transactionId,
+//           currentBalance.toFixed(2),
+//           newBalance,
+//           "Debit",
+//           amount,
+//           transactionDetails,
+//           "Success",
+//         ],
+//         (err, walletResult) => {
+//           if (err) {
+//             console.error("Error updating wallet balance:", err);
+//             return res.status(500).json({
+//               status: "Failure",
+//               step: "Update Wallet Balance",
+//               error: "Failed to update wallet balance",
+//               details: err.message,
+//             });
+//           }
+
+//           return res.status(200).json({
+//             status: "Success",
+//             message: "E - District processed and wallet updated successfully.",
+//             details: {
+//               offlineServices: {
+//                 orderId,
+//                 application_type,
+//                 samagar,
+//                 name,
+//                 mobile_no,
+//                 amount,
+//                 status,
+//               },
+//               wallet: {
+//                 transactionId,
+//                 newBalance,
+//                 previousBalance: currentBalance.toFixed(2),
+//                 deductedAmount: amount,
+//               },
+//             },
+//           });
+//         }
+//       );
+//     });
+//   });
+// };
+
+
+// first check the current balance then insert the data
+
 const eDistrictFormData = (req, res) => {
   const {
     application_type,
@@ -2047,61 +2248,27 @@ const eDistrictFormData = (req, res) => {
     state,
     annual_income,
     previous_application,
-    // charge_amount,
-    amount,
-    // user_id,
     userId,
     status,
   } = req.body;
 
-  // console.log(req.body);
+  let { amount } = req.body;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const domain = "http://localhost:7777";
 
-  // Handling multiple file uploads
+  // Handle multiple file uploads
   const documentUpload = req.files
     ? req.files.map((file) => `${domain}/uploads/${file.filename}`).join(",")
     : null;
 
   const orderId = `EDST${Date.now()}`;
+  const transactionId = `TXNW${Date.now()}`;
+  const transactionDetails = `E-District Services Deduction Order Id ${orderId}`;
+  const creditAmt = 0;
 
-  const sql = `INSERT INTO \`e-district-application\` (
-      order_id, application_type, samagar, gender, name, father_husband_name, dob, address,
-      mobile_no, cast, aadhar_no, samagar_member_id, state, annual_income,
-      previous_application, documentUpload, charge_amount, user_id, status, created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-  const values = [
-    orderId,
-    application_type,
-    samagar,
-    gender,
-    name,
-    father_husband_name,
-    dob,
-    address,
-    mobile_no,
-    cast,
-    aadhar_no,
-    samagar_member_id,
-    state,
-    annual_income,
-    previous_application,
-    documentUpload,
-    amount,
-    userId,
-    status,
-    createdAt,
-  ];
-
-  db.query(sql, values, (err, result) => {
-    if (err) {
-      console.error("Database error:", err);
-      return res.status(500).json({ error: err.message });
-    }
-
-    const queryBalance = `
+  // Step 1: Fetch user wallet balance
+  const queryBalance = `
     SELECT Closing_Balance 
     FROM user_wallet 
     WHERE userId = ? 
@@ -2109,90 +2276,136 @@ const eDistrictFormData = (req, res) => {
     LIMIT 1
   `;
 
-    db.query(queryBalance, [userId], (err, balanceResult) => {
-      if (err) {
-        console.error("Error fetching wallet balance:", err);
-        return res.status(500).json({
-          status: "Failure",
-          step: "Fetch Wallet Balance",
-          error: "Failed to fetch wallet balance",
-          details: err.message,
-        });
-      }
+  db.query(queryBalance, [userId], (err, balanceResult) => {
+    if (err) {
+      console.error("Error fetching wallet balance:", err);
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Failed to fetch wallet balance",
+        details: err.message,
+      });
+    }
 
-      if (balanceResult.length === 0) {
-        return res.status(404).json({
-          status: "Failure",
-          step: "Fetch Wallet Balance",
-          message: "No balance found for the user.",
-        });
-      }
+    if (balanceResult.length === 0) {
+      return res.status(404).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        message: "No balance found for the user.",
+      });
+    }
 
-      const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
-      if (isNaN(currentBalance)) {
-        return res.status(500).json({
-          status: "Failure",
-          step: "Fetch Wallet Balance",
-          error: "Current balance is invalid.",
-        });
-      }
+    const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+    if (isNaN(currentBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Current balance is invalid.",
+      });
+    }
 
-      if (currentBalance < amount) {
-        return res.status(400).json({
-          status: "Failure",
-          step: "Wallet Deduction",
-          message: "Insufficient balance.",
-          currentBalance,
-          requiredAmount: amount,
-        });
-      }
+               // Validate `Amount`: Check for undefined, null, or invalid number
+               if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+                return res.status(500).json({
+                  success: false,
+                  status: "Failure",
+                  error: "Invalid or missing amount",
+                });
+              }
+          
+              amount = parseFloat(parseFloat(amount).toFixed(2)); // Ensures it's a number with two decimal places
 
-      const newBalance = parseFloat(currentBalance - amount).toFixed(2);
-      if (isNaN(newBalance)) {
-        return res.status(500).json({
-          status: "Failure",
-          step: "Wallet Deduction",
-          error: "New balance calculation is invalid.",
-        });
-      }
+    if (currentBalance < amount) {
+      return res.status(400).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        message: "Insufficient balance.",
+        currentBalance,
+        requiredAmount: amount,
+      });
+    }
 
-      const transactionId = `TXNW${Date.now()}`;
-      const transactionDetails = `Services Deduction ${mobile_no}`;
+    // Step 2: Deduct amount from user wallet
+    const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+    
+    const updateWalletQuery = `
+      INSERT INTO user_wallet 
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type,credit_amount, debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)
+    `;
 
-      const updateWalletQuery = `
-    INSERT INTO user_wallet 
-    (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `;
+    db.query(
+      updateWalletQuery,
+      [
+        userId,
+        createdAt,
+        orderId,
+        transactionId,
+        currentBalance.toFixed(2),
+        newBalance,
+        "Debit",
+        creditAmt,
+        amount,
+        transactionDetails,
+        "Success",
+      ],
+      (err, walletResult) => {
+        if (err) {
+          console.error("Error updating wallet balance:", err);
+          return res.status(500).json({
+            status: "Failure",
+            step: "Update Wallet Balance",
+            error: "Failed to update wallet balance",
+            details: err.message,
+          });
+        }
 
-      db.query(
-        updateWalletQuery,
-        [
-          userId,
-          createdAt,
+        // Step 3: Insert data into e-district-application table
+        const insertEDistrictQuery = `
+          INSERT INTO \`e-district-application\` (
+            order_id, application_type, samagar, gender, name, father_husband_name, dob, address,
+            mobile_no, cast, aadhar_no, samagar_member_id, state, annual_income,
+            previous_application, documentUpload, charge_amount, user_id, status, created_at
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        const values = [
           orderId,
-          transactionId,
-          currentBalance.toFixed(2),
-          newBalance,
-          "Debit",
+          application_type,
+          samagar,
+          gender,
+          name,
+          father_husband_name,
+          dob,
+          address,
+          mobile_no,
+          cast,
+          aadhar_no,
+          samagar_member_id,
+          state,
+          annual_income,
+          previous_application,
+          documentUpload,
           amount,
-          transactionDetails,
-          "Success",
-        ],
-        (err, walletResult) => {
+          userId,
+          status,
+          createdAt,
+        ];
+
+        db.query(insertEDistrictQuery, values, (err, result) => {
           if (err) {
-            console.error("Error updating wallet balance:", err);
+            console.error("Error inserting e-district application:", err);
             return res.status(500).json({
               status: "Failure",
-              step: "Update Wallet Balance",
-              error: "Failed to update wallet balance",
+              step: "Insert e-District Application",
+              error: "Failed to insert e-district application data",
               details: err.message,
             });
           }
 
           return res.status(200).json({
             status: "Success",
-            message: "E - District processed and wallet updated successfully.",
+            message: "E-District processed and wallet updated successfully.",
             details: {
               offlineServices: {
                 orderId,
@@ -2211,11 +2424,92 @@ const eDistrictFormData = (req, res) => {
               },
             },
           });
-        }
-      );
-    });
+        });
+      }
+    );
   });
 };
+
+
+const UpdateeDistrictFormData = (req, res) => {
+  const {
+    order_id,
+    gender,
+    name,
+    father_husband_name,
+    dob,
+    address,
+    mobile_no,
+    cast,
+    aadhar_no,
+    samagar_member_id,
+    state,
+    annual_income,
+    previous_application,
+    // charge_amount,
+    // user_id,
+    userId,
+    status,
+    previous_documentUpload
+  } = req.body;
+
+  // console.log(req.body);
+
+  const updated_at = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const domain = "http://localhost:7777";
+
+  // Handling multiple file uploads
+  const documentUpload = req.files.documentUpload
+    ? req.files.map((file) => `${domain}/uploads/${file.filename}`).join(",")
+    : previous_documentUpload;
+
+  // const orderId = `EDST${Date.now()}`;
+
+  const sql = `UPDATE \`e-district-application\` SET gender  = ?, name  = ?, father_husband_name  = ?, dob  = ?, address  = ?,
+      mobile_no  = ?, cast  = ?, aadhar_no  = ?, samagar_member_id  = ?, state  = ?, annual_income  = ?,
+      previous_application  = ?, documentUpload  = ?, user_id  = ?, status  = ? , updated_at  = ? WHERE order_id = ?
+    `;
+
+  const values = [
+    
+    
+    gender,
+    name,
+    father_husband_name,
+    dob,
+    address,
+    mobile_no,
+    cast,
+    aadhar_no,
+    samagar_member_id,
+    state,
+    annual_income,
+    previous_application,
+    documentUpload,
+    userId,
+    status,
+    updated_at,
+    order_id,
+  ];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: err.message });
+    }
+    if (result.affectedRows === 0) {
+      res.status(404).json({ error: "Form not found" });
+      return;
+    }
+   
+    return res.status(200).json({
+      status: "Success",
+      message: "Update Form Successfully",
+    });
+  }
+);
+};
+
 
 // const getSelectedServices = (req, res) => {
 //   const applicationId = req.params.user_id;
@@ -2594,14 +2888,16 @@ const addSambalForm = (req, res) => {
     landOwnership,
     govtService,
     mobileNumber,
-    amount,
     userId,
   } = req.body;
+
+let { amount } = req.body;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const orderId = `ORDS${Date.now()}`;
   const transactionId = `TXNW${Date.now()}`;
   const transactionDetails = `Sambal Form Deduction Order Id ${orderId}`;
+  const creditAmt = 0;
 
   // Step 1: Check the current balance
   const queryBalance = `
@@ -2640,6 +2936,17 @@ const addSambalForm = (req, res) => {
       });
     }
 
+        // Validate `Amount`: Check for undefined, null, or invalid number
+        if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+          return res.status(500).json({
+            success: false,
+            status: "Failure",
+            error: "Invalid or missing amount",
+          });
+        }
+    
+        amount = parseFloat(parseFloat(amount).toFixed(2)); // Ensures it's a number with two decimal places
+
     if (currentBalance < amount) {
       return res.status(400).json({
         status: "Failure",
@@ -2651,19 +2958,12 @@ const addSambalForm = (req, res) => {
     }
 
     const newBalance = parseFloat(currentBalance - amount).toFixed(2);
-    if (isNaN(newBalance)) {
-      return res.status(500).json({
-        status: "Failure",
-        step: "Wallet Deduction",
-        error: "New balance calculation is invalid.",
-      });
-    }
 
     // Step 2: Update the wallet table
     const updateWalletQuery = `
       INSERT INTO user_wallet 
-      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount,debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)
     `;
 
     db.query(
@@ -2676,6 +2976,7 @@ const addSambalForm = (req, res) => {
         currentBalance.toFixed(2),
         newBalance,
         "Debit",
+        creditAmt,
         amount,
         transactionDetails,
         "Success",
@@ -3007,6 +3308,66 @@ const addVerifyDistrictForm = (req, res) => {
     });
   });
 };
+const UpdateVerifyDistrictForm = (req, res) => {
+  const {
+    order_id,
+    name,
+    mobileNo,
+    rsNumber,
+    district,
+    tehsil,
+    userId,
+  } = req.body;
+
+  // console.log("Request Body:", req.body);
+
+  if ( !name || !mobileNo || !userId || !order_id) {
+    return res.status(400).json({
+      status: "Failure",
+      error: "Missing required fields.",
+    });
+  }
+
+  const updated_at = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  // const orderId = `VED${Date.now()}`;
+
+  const sql = `
+    UPDATE verifyedistrict SET
+      name = ? , mobileNo = ?, rsNumber = ?, district = ?, tehsil = ?, user_id = ?, status = ?, updated_at = ? WHERE order_id = ?`;
+
+  const values = [
+
+    name,
+    mobileNo,
+    rsNumber,
+    district,
+    tehsil,
+    userId,
+    "Pending",
+    updated_at,
+    order_id
+  ];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error inserting data:", err);
+      return res
+        .status(500)
+        .json({ status: "Failure", error: "Database error" });
+    }
+    if (result.affectedRows === 0) {
+      res.status(404).json({status: "Failure", error: "Form not found" ,message : "Form not found" });
+      return;
+    }
+    
+    return res.status(200).json({
+      status: "Success",
+      message: "Update Form Successfully",
+    });
+  }
+);
+};
+   
 
 const getVerifyEdistrict = (req, res) => {
   const userId = req.params.userId;
@@ -3527,5 +3888,7 @@ module.exports = {
   getAddMoneyToWalletOnline,
   update_bankidForm,
   update_applyOfflineForm,
-  EditSambalForm
+  EditSambalForm,
+  UpdateeDistrictFormData,
+  UpdateVerifyDistrictForm
 };

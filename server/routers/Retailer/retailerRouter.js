@@ -47,6 +47,8 @@ const {
   update_bankidForm,
   update_applyOfflineForm,
   EditSambalForm,
+  UpdateeDistrictFormData,
+  UpdateVerifyDistrictForm,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -170,6 +172,11 @@ router.post(
   upload.array("documentUpload", 10),
   eDistrictFormData
 );
+router.put(
+  "/UpdateeDistrictFormData",
+  upload.array("documentUpload", 10),
+  UpdateeDistrictFormData
+);
 
 router.get("/getSelectedServices/:user_id", getSelectedServices);
 router.get("/getAllBranchId/:id", getAllBranchId);
@@ -189,6 +196,7 @@ router.get(
 router.post("/addSambalForm", addSambalForm);
 router.put("/EditSambalForm", EditSambalForm);
 router.post("/verify-Edistrict", addVerifyDistrictForm);
+router.put("/UpdateVerifyDistrictForm", UpdateVerifyDistrictForm);
 router.get("/getVerifyEdistrict/:userId", getVerifyEdistrict);
 router.get("/getSambalHistory/:userId", getSambalHistory);
 
