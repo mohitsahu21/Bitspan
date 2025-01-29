@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { BiHomeAlt } from "react-icons/bi";
 import styled from "styled-components";
-import { Dropdown, DropdownButton } from "react-bootstrap";
+import { Dropdown, DropdownButton, Modal, Spinner } from "react-bootstrap";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
+import { CiViewList } from "react-icons/ci";
+import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
+import EdistrictEditModel from "./EdistrictEditModel";
 
 const Edistrict = () => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
   const userData = currentUser.userId;
   // console.log(userData);
-  const [formData, setFormData] = useState();
+  const [formData, setFormData] = useState([]);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All");
@@ -19,8 +22,12 @@ const Edistrict = () => {
   const complaintsPerPage = 10; // Set items per page
   const [currentPage, setCurrentPage] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [isRefresh, setIsRefresh] = useState(false);
+  const [selectedItem, setSelectedItem] = useState("");
+  const [showMarkEditModel, setShowMarkEditModel] = useState(false);
+  const [formStatus, setFormStatus] = useState(""); // For user type filter
   const fetchData = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getEdistrictData/${userData}`
@@ -37,18 +44,30 @@ const Edistrict = () => {
   useEffect(() => {
     fetchData();
     // setCurrentPage(0);
-  }, []);
+  }, [isRefresh]);
 
   const filteredData = formData?.filter((item) => {
     const matchesSearch =
-      item.name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
-      item.mobile_no?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
-      item.order_id?.toLowerCase()?.includes(searchQuery?.toLowerCase());
-    const matchesStatus =
-      selectedStatus === "All" ||
-      item.status?.toLowerCase() === selectedStatus?.toLowerCase();
+      item.name?.toLowerCase()?.includes(searchQuery?.trim().toLowerCase()) ||
+      item.mobile_no
+        ?.toLowerCase()
+        ?.includes(searchQuery?.trim().toLowerCase()) ||
+      item.order_id
+        ?.toLowerCase()
+        ?.includes(searchQuery?.trim().toLowerCase()) ||
+      item.aadhar_no
+        ?.toLowerCase()
+        ?.includes(searchQuery?.trim().toLowerCase()) ||
+      item.samagar_member_id
+        ?.toLowerCase()
+        ?.includes(searchQuery?.trim().toLowerCase());
 
-    return matchesSearch && matchesStatus;
+    const matchesType =
+      !formStatus ||
+      formStatus === "---Select Form Status---" ||
+      item.status === formStatus;
+
+    return matchesSearch && matchesType;
   });
 
   // const filteredData = formData?.filter((item) => {
@@ -106,7 +125,7 @@ const Edistrict = () => {
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
                       <div className="row d-flex flex-column g-4">
-                        <div className="d-flex flex-column flex-md-row gap-3">
+                        <div className="d-flex flex-column flex-xl-row gap-3">
                           {/* <div className="col-12 col-md-4 col-lg-3">
                             <label for="fromDate" className="form-label">
                               From
@@ -132,14 +151,15 @@ const Edistrict = () => {
                             />
                           </div> */}
 
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="fromDate" className="form-label">
+                          {/* <div className="col-12 col-md-4 col-lg-3"> */}
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                            {/* <label for="fromDate" className="form-label">
                               Search
-                            </label>
+                            </label> */}
                             <input
                               type="text"
-                              className="form-control responsive-input"
-                              placeholder="Search by Name, Mobile, or Order ID"
+                              className="form-control"
+                              placeholder="Search by Name, Mobile, Order id , samagra id , aadhar no."
                               value={searchQuery}
                               onChange={(e) => setSearchQuery(e.target.value)}
                             />
@@ -153,7 +173,26 @@ const Edistrict = () => {
                               Search
                             </button>
                           </div> */}
-                          <div className="col-12 col-md-4 col-lg-3 d-flex align-items-end">
+
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-3">
+                            {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              value={formStatus}
+                              onChange={(e) => setFormStatus(e.target.value)}
+                            >
+                              <option selected>---Select Form Status---</option>
+                              <option value="Pending">Pending</option>
+                              <option value="Under Process">
+                                Under Process
+                              </option>
+                              <option value="Success">Success</option>
+                              <option value="Mark Edit">Mark Edit</option>
+                              <option value="Reject">Reject</option>
+                            </select>
+                          </div>
+                          {/* <div className="col-12 col-md-4 col-lg-3 d-flex align-items-end">
                             <DropdownButton
                               id="dropdown-basic-button"
                               title={selectedStatus}
@@ -170,85 +209,135 @@ const Edistrict = () => {
                                 Pending
                               </Dropdown.Item>
                             </DropdownButton>
-                          </div>
+                          </div> */}
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
-                            <table class="table table-striped">
-                              <thead className="table-dark">
-                                <tr>
-                                  <th scope="col">Sr.No</th>
-                                  <th scope="col">Order ID</th>
-                                  <th scope="col">Applicant Type</th>
-                                  <th scope="col">Applicant Name</th>
-                                  <th scope="col">Applicant Father Name</th>
-                                  <th scope="col">Mobile Number</th>
-                                  <th scope="col">DOB</th>
-                                  <th scope="col">Gender</th>
-                                  <th scope="col">Cast</th>
-                                  <th scope="col">Aadhar No</th>
-                                  <th scope="col">Samagra ID</th>
-                                  <th scope="col">Address</th>
-                                  <th scope="col">State</th>
-                                  <th scope="col">Prev Application</th>
-                                  <th scope="col">Annual inc</th>
-                                  <th scope="col">View Document</th>
-                                  <th scope="col">Charge Amt</th>
-                                  <th scope="col">Date</th>
-                                  <th scope="col">Status</th>
-                                  <th scope="col">Note</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {loading ? (
-                                  <>
-                                    <p>Loading...</p>
-                                  </>
-                                ) : (
-                                  <>
-                                    {displayData?.map((item, index) => (
-                                      <tr key={index}>
-                                        <th scope="row">{index + 1}</th>
-                                        <td>{item.order_id}</td>
-                                        <td>{item.application_type}</td>
-                                        <td>{item.name}</td>
-                                        <td>{item.father_husband_name}</td>
-                                        <td>{item.mobile_no}</td>
-                                        <td>{item.dob}</td>
-                                        <td>{item.gender}</td>
-                                        <td>{item.cast}</td>
-                                        <td>{item.aadhar_no}</td>
-                                        <td>{item.samagar_member_id}</td>
-                                        <td>{item.address}</td>
-                                        <td>{item.state}</td>
-                                        <td>{item.previous_application}</td>
-                                        <td>{item.annual_income}</td>
-                                        <td>
-                                          {item?.documentUpload
-                                            ?.split(",")
-                                            ?.map((kycurl, kycindx) => (
-                                              <div key={kycindx}>
-                                                <a
-                                                  href={kycurl}
-                                                  target="_blank"
-                                                  rel="noopener noreferrer"
-                                                >
-                                                  View {kycindx + 1}
-                                                </a>
-                                              </div>
-                                            ))}
-                                        </td>
-                                        <td>{item.charge_amount}</td>
-                                        <td>{item.created_at}</td>
-                                        <td>{item.status}</td>
-                                        <td>{item.note}</td>
-                                      </tr>
-                                    ))}
-                                  </>
-                                )}
-                              </tbody>
-                            </table>
+                            {loading ? (
+                              <div className="d-flex justify-content-center">
+                                <Spinner animation="border" role="status">
+                                  <span className="visually-hidden ">
+                                    Loading...
+                                  </span>
+                                </Spinner>
+                              </div>
+                            ) : (
+                              <>
+                                <table class="table table-striped">
+                                  <thead className="table-dark">
+                                    <tr>
+                                      <th scope="col">Sr.No</th>
+                                      <th scope="col">Order ID</th>
+                                      <th scope="col">Applicant For</th>
+                                      <th scope="col">Applicant Type</th>
+                                      <th scope="col">Applicant Name</th>
+                                      <th scope="col">Applicant Father Name</th>
+                                      <th scope="col">Mobile Number</th>
+                                      <th scope="col">DOB</th>
+                                      <th scope="col">Gender</th>
+                                      <th scope="col">Cast</th>
+                                      <th scope="col">Aadhar No</th>
+                                      <th scope="col">Samagra ID</th>
+                                      <th scope="col">Address</th>
+                                      <th scope="col">State</th>
+                                      <th scope="col">Prev Application</th>
+                                      <th scope="col">Annual inc</th>
+                                      <th scope="col">View Document</th>
+                                      <th scope="col">Charge Amt</th>
+                                      <th scope="col">Date</th>
+                                      <th scope="col">Note</th>
+                                      <th scope="col">Status</th>
+                                      <th scope="col">Action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                        {displayData.length > 0 ? ( displayData?.map((item, index) => (
+                                          <tr key={index}>
+                                            <th scope="row">{index + 1}</th>
+                                            <td>{item.order_id}</td>
+                                            <td>{item.application_type}</td>
+                                            <td>{item.samagar}</td>
+                                            <td>{item.name}</td>
+                                            <td>{item.father_husband_name}</td>
+                                            <td>{item.mobile_no}</td>
+                                            <td>{item.dob}</td>
+                                            <td>{item.gender}</td>
+                                            <td>{item.cast}</td>
+                                            <td>{item.aadhar_no}</td>
+                                            <td>{item.samagar_member_id}</td>
+                                            <td>{item.address}</td>
+                                            <td>{item.state}</td>
+                                            <td>{item.previous_application}</td>
+                                            <td>{item.annual_income}</td>
+                                            <td>
+                                              {item?.documentUpload
+                                                ?.split(",")
+                                                ?.map((kycurl, kycindx) => (
+                                                  <div key={kycindx}>
+                                                    <a
+                                                      href={kycurl}
+                                                      target="_blank"
+                                                      rel="noopener noreferrer"
+                                                    >
+                                                      View {kycindx + 1}
+                                                    </a>
+                                                  </div>
+                                                ))}
+                                            </td>
+                                            <td>{item.charge_amount}</td>
+                                            <td>{item.created_at}</td>
+                                            <td>{item.note}</td>
+                                            <td>{item.status}</td>
+                                             <td>
+                                                                                            {(item.status === "Pending" || item.status === "Mark Edit") && (
+                                                                                              <Dropdown>
+                                                                                                <Dropdown.Toggle
+                                                                                                  variant="success"
+                                                                                                  // id={`dropdown-${user.id}`}
+                                                                                                  as="span"
+                                                                                                  style={{
+                                                                                                    border: "none",
+                                                                                                    background: "none",
+                                                                                                    cursor: "pointer",
+                                                                                                  }}
+                                                                                                  className="custom-dropdown-toggle"
+                                                                                                >
+                                                                                                  <PiDotsThreeOutlineVerticalBold />
+                                                                                                </Dropdown.Toggle>
+                                                                                                <Dropdown.Menu>
+                                                                                                  
+                                                                                                  <Dropdown.Item
+                                                                                                    onClick={() => {
+                                                                                                      // setSelectedUser(user);
+                                                                                                      setShowMarkEditModel(true);
+                                                                                                      setSelectedItem(item);
+                                                                                                      //   deactivateUser(user.UserId)
+                                                                                                    }}
+                                                                                                  >
+                                                                                                    <span className="">
+                                                                                                      {" "}
+                                                                                                      <CiViewList />
+                                                                                                    </span>{" "}
+                                                                                                  Edit
+                                                                                                  </Dropdown.Item>
+                                                                                                </Dropdown.Menu>
+                                                                                              </Dropdown>
+                                                                                            )}
+                                                                                          </td>
+                                          </tr>
+                                         ))
+                                        ) : (
+                                          <tr>
+                                            <td colSpan="10" className="text-center">
+                                              No results found
+                                            </td>
+                                          </tr>
+                                        )}
+                                  </tbody>
+                                </table>
+                              </>
+                            )}
                           </div>
                           <PaginationContainer>
                             <ReactPaginate
@@ -272,6 +361,33 @@ const Edistrict = () => {
             </div>
           </div>
         </div>
+                    {/* Mark Edit Model  start*/}
+        
+                    <Modal
+                  // size="lg"
+                  // centered
+                  show={showMarkEditModel}
+                    fullscreen={true}
+                  onHide={() => setShowMarkEditModel(false)}
+                  aria-labelledby="packageDetail-modal-sizes-title-lg"
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title id="packageDetail-modal-sizes-title-lg">
+                      Edit E-District Form
+                    </Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    {selectedItem && (
+                      <EdistrictEditModel
+                        item={selectedItem}
+                        setShowMarkEditModel={setShowMarkEditModel}
+                        setIsRefresh={setIsRefresh}
+                      />
+                    )}
+                  </Modal.Body>
+                </Modal>
+        
+                {/*  Mark Edit Model  end*/}
       </Wrapper>
     </>
   );
@@ -320,6 +436,9 @@ const Wrapper = styled.div`
   .responsive-input {
     padding: 10px;
     width: 100%; /* Ensures full width within the grid */
+  }
+  .custom-dropdown-toggle::after {
+    display: none !important;
   }
 `;
 const PaginationContainer = styled.div`
