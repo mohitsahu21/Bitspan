@@ -60,6 +60,9 @@ const WhiteLabelRoutes = lazy(() => import("./routes/WhiteLabelRoutes"));
 const SuperDistributorRoutes = lazy(() =>
   import("./routes/SuperDistributorRoutes")
 );
+const SuperAdminEmployeeRoutes = lazy(() =>
+  import("./routes/SuperAdminEmployeeRoutes")
+);
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -108,6 +111,7 @@ function App() {
           {user === "Distributor" && <Distributor />}
           {user === "WhiteLabel" && <WhiteLabelRoutes />}
           {user === "SuperAdmin" && <SuperAdminRoutes />}
+          {user === "SuperAdmin_Employee" && <SuperAdminEmployeeRoutes />}
         </Suspense>
       </Wrapper>
     </>

@@ -2122,6 +2122,80 @@ const SuperAdminData = [
     ],
   },
 ];
+
+const SuperAdminEmployeeData = [
+  {
+    title: "Dashboard",
+    path: "/dashboard",
+    icon: <AiIcons.AiFillHome color="#fe662b" />,
+    // iconClosed: <RiIcons.RiArrowDownSFill />,
+    // iconOpened: <RiIcons.RiArrowUpSFill />,
+  },
+  {
+    title: "View Offline Recharge Request",
+    path: "/Offline-Recharge-history",
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    // cName: "sub-nav",
+  },
+  {
+    title: "View Offline DTH Connection Request",
+    path: "/Offline-dth-connection",
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    // cName: "sub-nav",
+  },
+
+  {
+    title: "View Offline Forms",
+    path: "/view-all-offline-history",
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    // cName: "sub-nav",
+  },
+  {
+    title: "View PAN Offline Forms",
+    path: "/Pan-offline-history",
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    // cName: "sub-nav",
+  },
+  {
+    title: "View Bank Id Forms",
+    path: "/Bank-Id-history",
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    // cName: "sub-nav",
+  },
+  {
+    title: "View E-district Forms",
+    path: "/E-district-history",
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    // cName: "sub-nav",
+  },
+  {
+    title: "View Verify E-district Forms Requests",
+    path: "/verify-E-district-form-history",
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    // cName: "sub-nav",
+  },
+  {
+    title: "View Sambal Forms",
+    path: "/sambal-form-history",
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    // cName: "sub-nav",
+  },
+  {
+    title: "PAN Coupon Requests",
+    path: "/pan-coupon-requests",
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  },
+  {
+    title: "Change Password",
+    path: "/change-password",
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  },
+  {
+    title: "All Complaint List",
+    path: "/complaint-raised-list",
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  },
+];
 const WhiteLabelData = [
   {
     title: "Dashboard",
@@ -2876,7 +2950,7 @@ const Sider = () => {
 
   const userId = useSelector((state) => state.user.currentUser?.userId);
 
-  console.log(profileImage);
+  // console.log(profileImage);
   useEffect(() => {
     // Call the API to get the profile image
     const fetchProfileImage = async () => {
@@ -3064,6 +3138,17 @@ const Sider = () => {
                     })}
                   {user == "SuperAdmin" &&
                     SuperAdminData.map((item, index) => {
+                      return (
+                        <SubMenu
+                          item={item}
+                          key={index}
+                          activeDropdown={activeDropdown}
+                          handleDropdownClick={handleDropdownClick}
+                        />
+                      );
+                    })}
+                  {user == "SuperAdmin_Employee" &&
+                    SuperAdminEmployeeData.map((item, index) => {
                       return (
                         <SubMenu
                           item={item}
