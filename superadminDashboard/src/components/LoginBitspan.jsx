@@ -292,6 +292,42 @@ const LoginBitspan = () => {
           });
           // navigate("/dashboard");
         }
+        else if(response.data.message === "User is Invalid"){
+          console.error("Login error:", response.data.message);
+          Swal.fire({
+            icon: "error",
+            title: "Login Failed",
+            text: "Something went wrong!",
+          });
+        }
+        else if(response.data.message === "User is Deactivate"){
+          console.error("Login error:", response.data.message);
+          Swal.fire({
+            icon: "error",
+            title: "User Deactivate",
+            text: "Please Contact Admin",
+          });
+        }
+        else if(response.data.message === "User Payment is Pending"){
+          console.error("Login error:", response.data.message);
+          Swal.fire({
+            icon: "error",
+            title: "User Payment Pending",
+            text: "Please Make Payment First",
+          });
+        }
+        else if(response.data.message === "User KYC is Pending"){
+          console.error("Login error:", response.data.message);
+          const user = response.data.user;
+          const token = response.data.token;
+          dispatch(setUser({ user, token }));
+          Swal.fire({
+            icon: "error",
+            title: "User KYC Pending",
+            text: "Please Submit KYC to use Services",
+          });
+          navigate("/update-profile")
+        }
       } else {
         Swal.fire({
           icon: "error",
