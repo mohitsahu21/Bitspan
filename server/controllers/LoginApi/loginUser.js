@@ -935,6 +935,116 @@ const sendOtpEmail = async (email, otp) => {
   }
 };
 
+// const loginUserWithOTP = async (req, res) => {
+//   const { UserId, password } = req.body;
+
+//   if (!UserId || !password) {
+//     return res.status(400).json({
+//       status: "Failure",
+//       message: "User ID and password are required",
+//     });
+//   }
+
+//   try {
+//     const getUserQuery = `SELECT * FROM userprofile WHERE UserId = ?`;
+
+//     db.query(getUserQuery, [UserId], async (err, results) => {
+//       if (err) {
+//         console.error("Database error:", err);
+//         return res
+//           .status(500)
+//           .json({ status: "Failure", message: "Internal server error" });
+//       }
+
+//       if (results.length === 0) {
+//         return res
+//           .status(404)
+//           .json({ status: "Failure", message: "User not found" });
+//       }
+
+//       const user = results[0];
+
+//       // Check password
+//       const isPasswordMatch = await bcrypt.compare(password, user.password);
+//       if (!isPasswordMatch) {
+//         return res
+//           .status(401)
+//           .json({ status: "Failure", message: "Invalid password" });
+//       }
+
+//       // Check if user role requires OTP (only "superadmin" or "retailer" need OTP)
+//       if (user.role === "superadmin" || user.role === "retailer") {
+//         const otp = crypto.randomInt(100000, 999999).toString();
+
+//         const otpHash = await bcrypt.hash(otp, 10);
+
+//         otpStore.set(user.UserId, {
+//           otpHash,
+//           expiresAt: Date.now() + 5 * 60 * 1000, // OTP expires in 5 minutes
+//         });
+
+//         try {
+//           await sendOtpEmail(user.Email, otp);
+//         } catch (emailError) {
+//           console.error("Error sending email:", emailError);
+//           return res
+//             .status(500)
+//             .json({ status: "Failure", message: "Failed to send OTP email" });
+//         }
+
+//         return res.status(200).json({
+//           status: "Success",
+//           message: "OTP sent to your registered email",
+//         });
+//       } else {
+//         // For roles like "whitelabel", "superdistributer", and "distributer", log in directly
+//         const payload = {
+//           userId: user.UserId,
+//           role: user.role,
+//           email: user.Email,
+//           username: user.UserName,
+//           Status: user.Status,
+//           ContactNo: user.ContactNo,
+//           PanCardNumber: user.PanCardNumber,
+//           AadharNumber: user.AadharNumber,
+//           BusinessName: user.BusinessName,
+//           City: user.City,
+//           State: user.State,
+//           PinCode: user.PinCode,
+//           package_Id: user.package_Id,
+//         };
+
+//         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "6h" });
+
+//         return res.json({
+//           status: "Success",
+//           message: "Login successful",
+//           token,
+//           user: {
+//             userId: user.UserId,
+//             role: user.role,
+//             email: user.Email,
+//             username: user.UserName,
+//             Status: user.Status,
+//             ContactNo: user.ContactNo,
+//             PanCardNumber: user.PanCardNumber,
+//             AadharNumber: user.AadharNumber,
+//             BusinessName: user.BusinessName,
+//             City: user.City,
+//             State: user.State,
+//             PinCode: user.PinCode,
+//             package_Id: user.package_Id,
+//           },
+//         });
+//       }
+//     });
+//   } catch (error) {
+//     console.error("Error processing login request:", error);
+//     return res
+//       .status(500)
+//       .json({ status: "Failure", message: "Internal server error" });
+//   }
+// };
 const loginUserWithOTP = async (req, res) => {
   const { UserId, password } = req.body;
 
@@ -971,9 +1081,111 @@ const loginUserWithOTP = async (req, res) => {
           .status(401)
           .json({ status: "Failure", message: "Invalid password" });
       }
+      if(!user.role || !user.Status){
+        return res.status(401).json({ status: "Failure", message: "User is Invalid" });
+      }
 
-      // Check if user role requires OTP (only "superadmin" or "retailer" need OTP)
-      if (user.role === "superadmin" || user.role === "retailer") {
+      const payload = {
+                  userId: user.UserId,
+                  role: user.role,
+                  email: user.Email,
+                  username: user.UserName,
+                  Status: user.Status,
+                  ContactNo: user.ContactNo,
+                    PanCardNumber: user.PanCardNumber,
+                    AadharNumber: user.AadharNumber,
+                    BusinessName: user.BusinessName,
+                    City: user.City,
+                    State: user.State,
+                    PinCode: user.PinCode,
+                    package_Id: user.package_Id,
+                    Note: user.Note
+                };
+        
+                const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "6h" });
+        
+                // return res.json({
+                //   status: "Success",
+                //   message: "Login successful",
+                //   token,
+                //   user: {
+                //     userId: user.UserId,
+                //     role: user.role,
+                //     email: user.Email,
+                //     username: user.UserName,
+                //     Status: user.Status,
+                //     ContactNo: user.ContactNo,
+                //     PanCardNumber: user.PanCardNumber,
+                //     AadharNumber: user.AadharNumber,
+                //     BusinessName: user.BusinessName,
+                //     City: user.City,
+                //     State: user.State,
+                //     PinCode: user.PinCode,
+                //     package_Id: user.package_Id,
+                //     Note: user.Note
+                //   },
+                // });
+
+     
+      if (user.role === "SuperDistributor" || user.role === "Retailer" ||  user.role === "SuperAdmin_Employee" || user.role === "Distributor" || user.role === "WhiteLabel" ) {
+        
+        if(user.Status == "Deactive"){
+          return res.status(200).json({ status: "Success", message: "User is Deactivate" });
+        }
+      }
+
+      if (user.role === "SuperDistributor" || user.role === "Retailer" ||  user.role === "Distributor" || user.role === "WhiteLabel" ) {
+        
+        if(user.payment_status == "Pending"){
+          // return res.status(200).json({ status: "Success", message: "User Payment is Pending" });
+          return res.status(200).json({
+            status: "Success",
+            message: "User Payment is Pending",
+            token,
+            user: {
+              userId: user.UserId,
+              role: user.role,
+              email: user.Email,
+              username: user.UserName,
+              Status: user.Status,
+              ContactNo: user.ContactNo,
+              PanCardNumber: user.PanCardNumber,
+              AadharNumber: user.AadharNumber,
+              BusinessName: user.BusinessName,
+              City: user.City,
+              State: user.State,
+              PinCode: user.PinCode,
+              package_Id: user.package_Id,
+              Note: user.Note
+            },
+          });
+        }
+        if(user.Status == "Pending"){
+          // return res.status(200).json({ status: "Success", message: "User KYC is Pending" });
+          return res.status(200).json({
+            status: "Success",
+            message: "User KYC is Pending",
+            token,
+            user: {
+              userId: user.UserId,
+              role: user.role,
+              email: user.Email,
+              username: user.UserName,
+              Status: user.Status,
+              ContactNo: user.ContactNo,
+              PanCardNumber: user.PanCardNumber,
+              AadharNumber: user.AadharNumber,
+              BusinessName: user.BusinessName,
+              City: user.City,
+              State: user.State,
+              PinCode: user.PinCode,
+              package_Id: user.package_Id,
+              Note: user.Note
+            },
+          });
+        }
+      }
+
         const otp = crypto.randomInt(100000, 999999).toString();
 
         const otpHash = await bcrypt.hash(otp, 10);
@@ -996,47 +1208,7 @@ const loginUserWithOTP = async (req, res) => {
           status: "Success",
           message: "OTP sent to your registered email",
         });
-      } else {
-        // For roles like "whitelabel", "superdistributer", and "distributer", log in directly
-        const payload = {
-          userId: user.UserId,
-          role: user.role,
-          email: user.Email,
-          username: user.UserName,
-          Status: user.Status,
-          ContactNo: user.ContactNo,
-          PanCardNumber: user.PanCardNumber,
-          AadharNumber: user.AadharNumber,
-          BusinessName: user.BusinessName,
-          City: user.City,
-          State: user.State,
-          PinCode: user.PinCode,
-          package_Id: user.package_Id,
-        };
-
-        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "6h" });
-
-        return res.json({
-          status: "Success",
-          message: "Login successful",
-          token,
-          user: {
-            userId: user.UserId,
-            role: user.role,
-            email: user.Email,
-            username: user.UserName,
-            Status: user.Status,
-            ContactNo: user.ContactNo,
-            PanCardNumber: user.PanCardNumber,
-            AadharNumber: user.AadharNumber,
-            BusinessName: user.BusinessName,
-            City: user.City,
-            State: user.State,
-            PinCode: user.PinCode,
-            package_Id: user.package_Id,
-          },
-        });
-      }
+      
     });
   } catch (error) {
     console.error("Error processing login request:", error);

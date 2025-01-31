@@ -26,7 +26,6 @@ const VerifyEdistrict = () => {
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
   const pinRefs = useRef([]);
-
   useEffect(() => {
     const fetchPackage = async () => {
       try {
@@ -65,7 +64,19 @@ const VerifyEdistrict = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+    if(name === "mobileNo"){
+      
+      if (/^\d*$/.test(value)) {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+    }
+    else{
+      setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+    }
+   
   };
 
   // const handleSubmit = async (e) => {
@@ -118,30 +129,42 @@ const VerifyEdistrict = () => {
         formData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      Swal.fire({
-        title: "Form Submitted Successfully",
-        text: response.data.message,
-        icon: "success",
-      });
-      setFormData({
-        applicationType: "",
-        name: "",
-        mobileNo: "",
-        rsNumber: "",
-        district: "",
-        tehsil: "",
-        amount: prices[0]?.verify_edistrict_Certificate_Price || "",
-        user_id: currentUser.userId,
-      });
+      if(response.data.status == "Success"){
+        Swal.fire({
+          title: "Form Submitted Successfully",
+          text: response?.data?.message,
+          icon: "success",
+        });
+        setFormData({
+          applicationType: "",
+          name: "",
+          mobileNo: "",
+          rsNumber: "",
+          district: "",
+          tehsil: "",
+          amount: prices[0]?.verify_edistrict_Certificate_Price || "",
+          userId: currentUser.userId,
+        });
+      }
+      else{
+         Swal.fire({
+                      title: "Error",
+                      text: response?.data?.message || "Something went wrong!",
+                      icon: "error",
+                    });
+      }
+      
     } catch (error) {
       Swal.fire({
         title: "Error",
-        text: error.response?.data?.message || "Something went wrong!",
+        text: error?.response?.data?.message || "Something went wrong!",
         icon: "error",
       });
       console.error("Error submitting form:", error);
     } finally {
       setLoading(false);
+      setPin(["", "", "", ""]);
+      pinRefs.current[0]?.focus();
     }
   };
 
@@ -177,12 +200,20 @@ const VerifyEdistrict = () => {
       if (response.data.success) {
         return true;
       } else {
-        alert(response.data.message);
-        return false;
+         Swal.fire({
+                                 title: "Error verifying PIN",
+                                 text: response?.data?.message || "Something went wrong! Please Try again",
+                                 icon: "error",
+                               });
+                       return false
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
-      alert("Error verifying PIN");
+       Swal.fire({
+                                title: "Error verifying PIN",
+                                text: error?.response?.data?.message || "Something went wrong! Please Try again",
+                                icon: "error",
+                              });
       return false;
     }
   };
@@ -193,6 +224,7 @@ const VerifyEdistrict = () => {
     setIsVerifying(false); // Stop loading
     if (isPinValid) {
       setShowPinModal(false);
+      setPin(["", "", "", ""]);
       handleSubmit(e);
     } else {
       setPin(["", "", "", ""]);
@@ -267,6 +299,8 @@ const VerifyEdistrict = () => {
                           value={formData.mobileNo}
                           onChange={handleChange}
                           required
+                          maxLength={10}
+                          minLength={10}
                         />
                       </div>
                       <div className="col-md-6">
@@ -321,8 +355,8 @@ const VerifyEdistrict = () => {
                     </div>
                     <div className="row">
                       <div className="col-md-12 m-3 d-flex justify-content-center">
-                        <button type="submit" className="btn btn-primary">
-                          Submit
+                        <button type="submit" className="btn btn-primary" disabled={loading}>
+                        {loading ? "Submitting..." : "Submit"}
                         </button>
                       </div>
                     </div>

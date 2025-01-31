@@ -15,19 +15,27 @@ const PanCardFour = () => {
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
   const pinRefs = useRef([]);
+  const documentUploadRef = useRef(null)
+  const attachment_formRef = useRef(null)
+  const attachment_photoRef = useRef(null)
+  const attachment_signatureRef = useRef(null)
   const [isVerifying, setIsVerifying] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [prices, setPrices] = useState({
     electronicPrice: "",
     physicalPrice: "",
   });
   const [formData, setFormData] = useState({
+
     application_type: "",
+    applicant_type: "",
     select_title: "",
     name: "",
     father_name: "",
     mother_name: "",
     dob: "",
     gender: "",
+    pantype: "",
     office_address: "",
     aadhar_details: "",
     Address_Communication_OfficeResident: "",
@@ -39,9 +47,9 @@ const PanCardFour = () => {
     // Change_Request: "",
     Change_Request: {
       name: false,
-      father: false,
+      father_Name: false,
       dob: false,
-      mother: false,
+      mother_Name: false,
       email: false,
       mobile: false,
       gender: false,
@@ -75,6 +83,8 @@ const PanCardFour = () => {
     fetchPrices();
   }, []);
 
+
+
   const [files, setFiles] = useState({
     documentUpload: null,
     attachment_form: null,
@@ -84,8 +94,48 @@ const PanCardFour = () => {
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "application/pdf"];
+    const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+    const maxFiles = 6;
+
+    if (files.length > maxFiles) {
+      Swal.fire({
+        icon: "error",
+        title: "Limit Exceeded",
+        text: `You can upload a maximum of ${maxFiles} files.`,
+      });
+      e.target.value = ""; // Reset the input field
+      return;
+    }
+
+    for (let file of files) {
+      if (!allowedTypes.includes(file.type)) {
+        Swal.fire({
+          icon: "error",
+          title: "Invalid File Type",
+          text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG, and PDF are allowed.`,
+        });
+        e.target.value = "";
+        return;
+      }
+
+      if (file.size > maxSize) {
+        Swal.fire({
+          icon: "error",
+          title: "File Too Large",
+          text: `File ${file.name} exceeds the 5MB limit.`,
+        });
+        e.target.value = "";
+        return;
+      }
+    }
 
     if (files.length > 0) {
+      if (files.length > 6) {
+        alert("You can upload a maximum of 6 files.");
+        e.target.value = ""; // Reset the input field
+        return;
+      }
       setFiles((prevFiles) => ({
         ...prevFiles,
         [name]: files.length > 1 ? Array.from(files) : files[0], // Keep it as an array if multiple, else take single file
@@ -106,14 +156,24 @@ const PanCardFour = () => {
         value === "Electronic"
           ? prices.electronicPrice
           : value === "Physical"
-          ? prices.physicalPrice
-          : "";
+            ? prices.physicalPrice
+            : "";
       setFormData((prevData) => ({
         ...prevData,
         [name]: value,
         amount: updatedAmount,
       }));
-    } else {
+    }
+    else if (name === "mobile_no" || name === "pin_code" || name === "aadhar_details") {
+
+      if (/^\d*$/.test(value)) {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+    }
+    else {
       setFormData((prevData) => ({
         ...prevData,
         [name]: value,
@@ -132,9 +192,28 @@ const PanCardFour = () => {
     }));
   };
 
+
+
+  const clearFileInput = () => {
+    if (documentUploadRef.current) {
+      documentUploadRef.current.value = null;
+    }
+    if (attachment_formRef.current) {
+      attachment_formRef.current.value = null;
+    }
+    if (attachment_photoRef.current) {
+      attachment_photoRef.current.value = null;
+    }
+    if (attachment_signatureRef.current) {
+      attachment_signatureRef.current.value = null;
+    }
+
+
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
     const filteredChangeRequest = Object.entries(
       formData.Change_Request
     ).reduce((acc, [key, value]) => {
@@ -143,6 +222,13 @@ const PanCardFour = () => {
       }
       return acc;
     }, {});
+
+    if (formData.application_type == "Correction") {
+      if (Object.keys(filteredChangeRequest).length === 0) {
+        alert("Please select at least one change request");
+        return;
+      }
+    }
 
     const form = new FormData();
 
@@ -159,6 +245,8 @@ const PanCardFour = () => {
       files.documentUpload.forEach((file) => {
         form.append("documentUpload", file);
       });
+    }else{
+      form.append("documentUpload", files.documentUpload);
     }
 
     // Add single files, check for existence first
@@ -187,16 +275,26 @@ const PanCardFour = () => {
       );
       console.log(response.data);
       // alert("Form submitted successfully");
-      Swal.fire("Form Submitted Successfully!");
+      setIsLoading(false);
+       if(response.data.status == "Success"){
+              Swal.fire({
+                title: "Form Submitted Successfully",
+                text: response?.data?.message,
+                icon: "success",
+              });
+      
+      clearFileInput();
       // Reset form data and file inputs after successful submission
       setFormData({
         application_type: "",
+        applicant_type: "",
         select_title: "",
         name: "",
         father_name: "",
         mother_name: "",
         dob: "",
         gender: "",
+        pantype: "",
         office_address: "",
         aadhar_details: "",
         Address_Communication_OfficeResident: "",
@@ -205,7 +303,15 @@ const PanCardFour = () => {
         email_id: "",
         pin_code: "",
         state: "",
-        Change_Request: "",
+        Change_Request: {
+          name: false,
+          father_Name: false,
+          dob: false,
+          mother_Name: false,
+          email: false,
+          mobile: false,
+          gender: false,
+        },
         amount: "",
         userId: currentUser.userId,
         status: "Pending",
@@ -222,8 +328,25 @@ const PanCardFour = () => {
       // document.getElementById("attachment_form").value = "";
       // document.getElementById("attachment_photo").value = "";
       // document.getElementById("attachment_signature").value = "";
+    }
+     else{
+            Swal.fire({
+              title: "Error",
+              text: response?.data?.message || "Something went wrong!",
+              icon: "error",
+            });
+          }
     } catch (error) {
       console.error("Error submitting form:", error);
+       Swal.fire({
+              title: "Error",
+              text: error?.response?.data?.message || "Something went wrong!",
+              icon: "error",
+            });
+    } finally {
+      setIsLoading(false);
+      setPin(["", "", "", ""]);
+      pinRefs.current[0]?.focus();
     }
   };
 
@@ -260,12 +383,20 @@ const PanCardFour = () => {
       if (response.data.success) {
         return true;
       } else {
-        alert(response.data.message);
+        Swal.fire({
+          title: "Error verifying PIN",
+          text: response?.data?.message || "Something went wrong! Please Try again",
+          icon: "error",
+        });
         return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
-      alert("Error verifying PIN");
+      Swal.fire({
+        title: "Error verifying PIN",
+        text: error?.response?.data?.message || "Something went wrong! Please Try again",
+        icon: "error",
+      });
       return false;
     }
   };
@@ -276,6 +407,7 @@ const PanCardFour = () => {
     setIsVerifying(false); // Stop loading
     if (isPinValid) {
       setShowPinModal(false);
+      setPin(["", "", "", ""]);
       handleSubmit(e);
     } else {
       setPin(["", "", "", ""]); // Clear the PIN fields on incorrect entry
@@ -322,13 +454,34 @@ const PanCardFour = () => {
                           name="application_type"
                           value={formData.application_type}
                           onChange={handleChange}
+                          required
+                        >
+                          <option value="" disabled>
+                            Select an option
+                          </option>
+                          <option value="New">New</option>
+
+                          <option value="Correction">Correction</option>
+                        </select>
+                      </div>
+                      <div className="col-md-6 mb-3">
+                        <label htmlFor="applicant_type">
+                          Application Type
+                        </label>
+                        <select
+                          className="form-control"
+                          id="applicant_type"
+                          name="applicant_type"
+                          value={formData.applicant_type}
+                          onChange={handleChange}
+                          required
                         >
                           <option value="" disabled>
                             Select an option
                           </option>
                           <option value="Minor">Minor</option>
                           <option value="Major">Major</option>
-                          <option value="Correction">Correction</option>
+
                         </select>
                       </div>
                       <div className="col-md-6 mb-3">
@@ -339,7 +492,11 @@ const PanCardFour = () => {
                           name="select_title"
                           value={formData.select_title}
                           onChange={handleChange}
+                          required
                         >
+                          <option value="" disabled>
+                            Select an option
+                          </option>
                           <option value="KUMARI">KUMARI</option>
                           <option value="SHRI">SHRI</option>
                           <option value="SMT">SMT</option>
@@ -392,7 +549,12 @@ const PanCardFour = () => {
                       </div>
                       <div className="col-md-3 mb-3">
                         <label htmlFor="dob">Date of Birth</label>
-                        <input type="date" className="form-control" id="dob" />
+                        <input type="date" className="form-control" id="dob"
+                          name="dob"
+                          onChange={handleChange}
+                          required
+                          value={formData.dob}
+                        />
                       </div>
                       <div className="col-md-3 mb-3">
                         <label htmlFor="gender">Gender</label>
@@ -402,6 +564,7 @@ const PanCardFour = () => {
                           name="gender"
                           value={formData.gender}
                           onChange={handleChange}
+                          required
                         >
                           <option value="">Select</option>
                           <option value="Male">Male</option>
@@ -422,20 +585,24 @@ const PanCardFour = () => {
                           name="office_address"
                           value={formData.office_address}
                           onChange={handleChange}
+                          required
                         />
                       </div>
                       <div className="col-md-6 mb-3">
                         <label htmlFor="aadhaarDetails">
-                          Aadhar Details Resident Address
+                          Aadhar Number
                         </label>
                         <input
                           type="text"
                           className="form-control"
                           id="aadhaarDetails"
-                          placeholder="Enter Aadhar Details"
+                          placeholder="Enter Aadhar Number"
                           name="aadhar_details"
                           value={formData.aadhar_details}
                           onChange={handleChange}
+                          minLength={12}
+                          maxLength={12}
+                          required
                         />
                       </div>
                     </div>
@@ -453,6 +620,7 @@ const PanCardFour = () => {
                           name="Address_Communication_OfficeResident"
                           value={formData.Address_Communication_OfficeResident}
                           onChange={handleChange}
+                          required
                         />
                       </div>
                       <div className="col-md-6 mb-3">
@@ -497,6 +665,7 @@ const PanCardFour = () => {
                           name="email_id"
                           value={formData.email_id}
                           onChange={handleChange}
+                          required
                         />
                       </div>
                       <div className="col-md-2 mb-3">
@@ -509,6 +678,9 @@ const PanCardFour = () => {
                           name="pin_code"
                           value={formData.pin_code}
                           onChange={handleChange}
+                          maxLength={6}
+                          minLength={6}
+                          required
                         />
                       </div>
                       <div className="col-md-2 mb-3">
@@ -521,6 +693,7 @@ const PanCardFour = () => {
                           name="state"
                           value={formData.state}
                           onChange={handleChange}
+                          required
                         />
                       </div>
                     </div>
@@ -563,6 +736,8 @@ const PanCardFour = () => {
                                 style={
                                   field === "name" ? { fontWeight: "bold" } : {}
                                 }
+                                // required={formData.application_type == "Correction"}
+                                disabled={formData.application_type == "New"}
                               />
                               <label
                                 className="form-check-label"
@@ -583,8 +758,9 @@ const PanCardFour = () => {
                           name="pantype"
                           value={formData.pantype}
                           onChange={handleChange}
+                          required
                         >
-                          <option value="">SELECT</option>
+                          <option selected value="">SELECT</option>
                           <option value="Electronic">Electronic</option>
                           <option value="Physical">Physical</option>
                         </select>
@@ -603,6 +779,9 @@ const PanCardFour = () => {
                           multiple
                           className="form-control"
                           id="documentUpload"
+                          required
+                          accept=".jpeg, .jpg, .png, .pdf" // Restricts file types
+                          ref={documentUploadRef}
                         />
                       </div>
                     </div>
@@ -616,6 +795,9 @@ const PanCardFour = () => {
                           onChange={handleFileChange}
                           className="form-control"
                           id="documentUpload"
+                          required
+                          accept=".jpeg, .jpg, .png, .pdf" // Restricts file types
+                          ref={attachment_formRef}
                         />
                       </div>
                     </div>
@@ -629,6 +811,9 @@ const PanCardFour = () => {
                           onChange={handleFileChange}
                           className="form-control"
                           id="documentUpload"
+                          required
+                          accept=".jpeg, .jpg, .png, .pdf" // Restricts file types
+                          ref={attachment_photoRef}
                         />
                       </div>
                     </div>
@@ -644,6 +829,9 @@ const PanCardFour = () => {
                           onChange={handleFileChange}
                           className="form-control"
                           id="documentUpload"
+                          required
+                          accept=".jpeg, .jpg, .png, .pdf" // Restricts file types
+                          ref={attachment_signatureRef}
                         />
                       </div>
                     </div>
@@ -657,17 +845,20 @@ const PanCardFour = () => {
                           type="text"
                           className="form-control"
                           id="chargeAmount"
-                          placeholder="Enter Charge Amount"
+                          placeholder="Charge Amount"
                           name="amount"
                           value={formData.amount}
                           onChange={handleChange}
+                          required
+                          disabled
                         />
                       </div>
-                      <div className="col-md-6 d-flex align-items-end">
-                        <button type="submit" className="btn btn-primary w-100">
-                          Submit
-                        </button>
-                      </div>
+
+                    </div>
+                    <div className="text-center my-3">
+                      <button type="submit" className="btn btn-primary  mb-4" disabled={isLoading}>
+                        {isLoading ? "Submit..." : "Submit"}
+                      </button>
                     </div>
 
                     {/* <div className="row mt-2">

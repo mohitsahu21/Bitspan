@@ -45,7 +45,7 @@ const SambalHistory = () => {
   console.log(allData);
 
   
-    const filteredItems = allData.filter((row) => {
+    const filteredItems = allData?.filter((row) => {
       // const searchValue = filterValue.toLowerCase();
       // const orderID = item.order_id ? item.order_id.toLowerCase() : "";
       // const mobileNO = item.mobile_number
@@ -125,7 +125,7 @@ const SambalHistory = () => {
                     <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                       <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
                         <div className="row d-flex flex-column g-4">
-                          <div className="d-flex flex-column flex-md-row gap-3">
+                          <div className="d-flex flex-column flex-xl-row gap-3">
                             {/* <div className="col-12 col-md-4 col-lg-3"> */}
                             <div className="col-12 col-md-12 col-lg-12 col-xl-8">
                               <input
@@ -197,6 +197,7 @@ const SambalHistory = () => {
                                     <th scope="col">Land Ownership</th>
                                     <th scope="col">Govt Service</th>
                                     <th scope="col">Mobile Number</th>
+                                    <th scope="col">Note</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Action</th>
                                   </tr>
@@ -217,6 +218,7 @@ const SambalHistory = () => {
                                         <td>{item.land_ownership}</td>
                                         <td>{item.govt_service}</td>
                                         <td>{item.mobile_number}</td>
+                                        <td>{item.note}</td>
                                         <td>{item.status}</td>
                                         <td>
                                                 {(item.status === "Pending" || item.status === "Mark Edit") && (

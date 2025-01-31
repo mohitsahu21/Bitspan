@@ -37,6 +37,7 @@ const EdistrictForm = () => {
   const [files, setFiles] = useState([]);
   const [message, setMessage] = useState("");
   const [prices, setPrices] = useState([]);
+  const kycRef = useRef(null)
 
   useEffect(() => {
     const fetchPackage = async () => {
@@ -68,39 +69,50 @@ const EdistrictForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    setFormData((prevFormData) => {
-      const newFormData = { ...prevFormData, [name]: value };
-
-      if (name === "application_type" || name === "samagar") {
-        let priceKey = "";
-        if (newFormData.application_type === "income") {
-          if (newFormData.samagar === "ekyc") {
-            priceKey = "eKYC_Income_Certificate_Price";
-          } else if (newFormData.samagar === "non-ekyc") {
-            priceKey = "offlineKYC_Income_Certificate_Price";
-          } else if (newFormData.samagar === "non") {
-            priceKey = "non_samagra_income_Certificate_Price";
-          }
-        } else if (newFormData.application_type === "domicile") {
-          if (newFormData.samagar === "ekyc") {
-            priceKey = "eKYC_Domicile_Certificate_Price";
-          } else if (newFormData.samagar === "non-ekyc") {
-            priceKey = "offlineKYC_Domicile_Certificate_Price";
-          } else if (newFormData.samagar === "non") {
-            priceKey = "non_samagra_Domicile_Certificate_Price";
-          }
-        }
-        // Set the price if priceKey has been determined and is available in prices array
-        if (priceKey && prices.length > 0 && prices[0][priceKey]) {
-          newFormData.amount = prices[0][priceKey];
-        } else {
-          newFormData.amount = "";
-        }
+    if(name === "mobile_no" || name === "aadhar_no" || name === "samagar_member_id" || name === "annual_income"){
+      
+      if (/^\d*$/.test(value)) {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
       }
-
-      return newFormData;
-    });
+    }
+    else{
+      setFormData((prevFormData) => {
+        const newFormData = { ...prevFormData, [name]: value };
+  
+        if (name === "application_type" || name === "samagar") {
+          let priceKey = "";
+          if (newFormData.application_type === "income") {
+            if (newFormData.samagar === "ekyc") {
+              priceKey = "eKYC_Income_Certificate_Price";
+            } else if (newFormData.samagar === "non-ekyc") {
+              priceKey = "offlineKYC_Income_Certificate_Price";
+            } else if (newFormData.samagar === "non") {
+              priceKey = "non_samagra_income_Certificate_Price";
+            }
+          } else if (newFormData.application_type === "domicile") {
+            if (newFormData.samagar === "ekyc") {
+              priceKey = "eKYC_Domicile_Certificate_Price";
+            } else if (newFormData.samagar === "non-ekyc") {
+              priceKey = "offlineKYC_Domicile_Certificate_Price";
+            } else if (newFormData.samagar === "non") {
+              priceKey = "non_samagra_Domicile_Certificate_Price";
+            }
+          }
+          // Set the price if priceKey has been determined and is available in prices array
+          if (priceKey && prices.length > 0 && prices[0][priceKey]) {
+            newFormData.amount = prices[0][priceKey];
+          } else {
+            newFormData.amount = "";
+          }
+        }
+  
+        return newFormData;
+      });
+    }
+  
   };
 
   const handleFileChange = (e) => {
@@ -127,9 +139,8 @@ const EdistrictForm = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      setMessage(response.data.message);
-      console.log(response.data.message);
-      const resData = response.data.message;
+      if(response?.data?.status == "Success"){
+      const resData = response?.data?.message;
       Swal.fire({
         title: "Form Sumitted Success",
         text: `${resData}`,
@@ -151,12 +162,28 @@ const EdistrictForm = () => {
         annual_income: "",
         previous_application: "",
         amount: "",
-        userId: "",
-        status: "",
+        userId: currentUser.userId,
+        status: "Pending",
       });
+      if(kycRef.current){
+        kycRef.current.value = null
+      }
+    }
+     else{
+                Swal.fire({
+                  title: "Error",
+                  text: response?.data?.message || "Something went wrong!",
+                  icon: "error",
+                });
+              }
     } catch (error) {
       setMessage("Error submitting form");
       console.error("Error:", error);
+       Swal.fire({
+              title: "Error",
+              text: error?.response?.data?.message || "Something went wrong!",
+              icon: "error",
+            });
     } finally {
       setIsLoading(false);
     }
@@ -194,13 +221,21 @@ const EdistrictForm = () => {
       if (response.data.success) {
         return true;
       } else {
-        alert(response.data.message);
-        return false;
+         Swal.fire({
+                                 title: "Error verifying PIN",
+                                 text: response?.data?.message || "Something went wrong! Please Try again",
+                                 icon: "error",
+                               });
+                       return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
-      alert("Error verifying PIN");
-      return false;
+      Swal.fire({
+                               title: "Error verifying PIN",
+                               text: error?.response?.data?.message || "Something went wrong! Please Try again",
+                               icon: "error",
+                             });
+                 return false;
     }
   };
 
@@ -210,6 +245,7 @@ const EdistrictForm = () => {
     setIsVerifying(false); // Stop loading
     if (isPinValid) {
       setShowPinModal(false);
+      setPin(["", "", "", ""]);
       handleSubmit(e);
     } else {
       setPin(["", "", "", ""]);
@@ -233,7 +269,7 @@ const EdistrictForm = () => {
                     <h2 className="text-center m-0 px-5 py-3">E District</h2>
                   </div>
                 </div>
-                <form onSubmit={openPinModal}>
+                <form onSubmit={openPinModal} className="shadow p-3 mb-5 bg-body-tertiary rounded">
                   <div className="row mb-3">
                     <div className="col-md-6 mb-3">
                       <label>Select Application</label>
@@ -250,12 +286,13 @@ const EdistrictForm = () => {
                       </select>
                     </div>
                     <div className="col-md-6 mb-3">
-                      <label>Samagar</label>
+                      <label>Samagra</label>
                       <select
                         name="samagar"
                         className="form-select"
                         value={formData.samagar}
                         onChange={handleChange}
+                        required
                       >
                         <option value="">--Select Option--</option>
                         <option value="ekyc">Ekyc</option>
@@ -265,7 +302,7 @@ const EdistrictForm = () => {
                           ""
                         )}
                         {prices[0]?.offline_kyc_eDistrict === "Yes" ? (
-                          <option value="non">Non</option>
+                          <option value="non">Non Samagra</option>
                         ) : (
                           ""
                         )}
@@ -310,6 +347,7 @@ const EdistrictForm = () => {
                         name="father_husband_name"
                         value={formData.father_husband_name}
                         onChange={handleChange}
+                        required
                       />
                     </div>
                     <div className="col-md-6 mb-3">
@@ -320,6 +358,7 @@ const EdistrictForm = () => {
                         name="dob"
                         value={formData.dob}
                         onChange={handleChange}
+                        required
                       />
                     </div>
                   </div>
@@ -334,6 +373,7 @@ const EdistrictForm = () => {
                         name="address"
                         value={formData.address}
                         onChange={handleChange}
+                        required
                       />
                     </div>
                   </div>
@@ -347,6 +387,9 @@ const EdistrictForm = () => {
                         name="mobile_no"
                         value={formData.mobile_no}
                         onChange={handleChange}
+                        required
+                        maxLength={10}
+                        minLength={10}
                       />
                     </div>
                     <div className="col-md-6 mb-3">
@@ -378,6 +421,8 @@ const EdistrictForm = () => {
                         value={formData.aadhar_no}
                         onChange={handleChange}
                         required
+                        maxLength={12}
+                        minLength={12}
                       />
                     </div>
                     <div className="col-md-6 mb-3">
@@ -386,9 +431,12 @@ const EdistrictForm = () => {
                         type="text"
                         className="form-control"
                         name="samagar_member_id"
+                        maxLength={9}
+                        
                         value={formData.samagar_member_id}
                         onChange={handleChange}
-                        required
+                        required={formData.samagar == "ekyc" || formData.samagar == "non-ekyc"}
+                        disabled={formData.samagar == "non"}
                       />
                     </div>
                   </div>
@@ -412,6 +460,8 @@ const EdistrictForm = () => {
                         className="form-control"
                         multiple
                         onChange={handleFileChange}
+                        required
+                        ref={kycRef}
                       />
                     </div>
                   </div>
@@ -434,13 +484,14 @@ const EdistrictForm = () => {
                     <div className="col-md-4 mb-3">
                       <label>Annual Income</label>
                       <input
-                        type="number"
+                        type="text"
                         className="form-control"
                         name="annual_income"
                         value={formData.annual_income}
                         onChange={handleChange}
                         required
                         disabled={formData.application_type === "domicile"}
+                        
                       />
                     </div>
                     <div className="col-md-4 mb-3">
