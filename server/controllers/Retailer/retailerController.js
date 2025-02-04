@@ -1879,6 +1879,120 @@ const panFromData = (req, res) => {
   });
 };
 
+const UpdatePanFromData = (req, res) => {
+  const {
+    application_type,
+    applicant_type,
+    select_title,
+    name,
+    father_name,
+    mother_name,
+    dob,
+    gender,
+    office_address,
+    aadhar_details,
+    Address_Communication_OfficeResident,
+    alternative_communication_Address,
+    mobile_no,
+    email_id,
+    pin_code,
+    state,
+    Change_Request,
+    status,
+    note,
+    previous_documentUpload,
+    previous_attachment_form,
+    previous_attachment_photo,
+    previous_attachment_signature,
+    order_id
+  } = req.body;
+
+
+  const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const domain = "http://localhost:7777";
+
+  // Handle file uploads
+  const documentUpload =
+    req.files && req.files.documentUpload
+      ? req.files.documentUpload.map((file) => `${domain}/uploads/${file.filename}`).join(",")
+      : previous_documentUpload;
+
+  const attachment_form =
+    req.files && req.files.attachment_form
+      ? `${domain}/uploads/${req.files.attachment_form[0].filename}`
+      : previous_attachment_form;
+
+  const attachment_photo =
+    req.files && req.files.attachment_photo
+      ? `${domain}/uploads/${req.files.attachment_photo[0].filename}`
+      : previous_attachment_photo;
+
+  const attachment_signature =
+    req.files && req.files.attachment_signature
+      ? `${domain}/uploads/${req.files.attachment_signature[0].filename}`
+      : previous_attachment_signature;
+
+  // const orderId = `PANZ${Date.now()}`;
+
+  
+        const insertFormQuery = `
+          UPDATE pan_offline SET 
+            application_type = ?,applicant_type = ?, select_title = ?, name = ?, father_name = ?, mother_name = ?, dob = ?, gender = ?, office_address = ?, 
+            aadhar_details = ?, Address_Communication_OfficeResident = ?, alternative_communication_Address = ?, mobile_no = ?, email_id = ?, 
+            pin_code = ?, state = ?, Change_Request = ?, documentUpload = ?, attachment_form = ?, attachment_signature = ?, 
+            attachment_photo = ?, status = ?, note = ?, updated_at = ?  WHERE order_id = ?`;
+
+        const formValues = [
+          
+          application_type,
+          applicant_type,
+          select_title,
+          name,
+          father_name,
+          mother_name,
+          dob,
+          gender,
+          office_address,
+          aadhar_details,
+          Address_Communication_OfficeResident,
+          alternative_communication_Address,
+          mobile_no,
+          email_id,
+          pin_code,
+          state,
+          Change_Request,
+          documentUpload,
+          attachment_form,
+          attachment_signature,
+          attachment_photo,
+          status,
+          note,
+          updatedAt,
+          order_id
+
+        ];
+
+        db.query(insertFormQuery, formValues, (err, result) => {
+          if (err) {
+            console.error("Error inserting form data:", err);
+            return res.status(500).json({
+              status: "Failure",
+              error: "Failed to insert form data",
+            });
+          }
+
+          if (result.affectedRows === 0) {
+            res.status(404).json({ error: "Form not found" });
+            return;
+          }
+    
+                return res.status(200).json({
+                  status: "Success",
+                  message: "Update Form Successfully",
+                });
+              }
+            );
+          };
 
 const nsdlTransactionNewRequest = (req, res) => {
   const query = `SELECT * FROM nsdlpan ORDER BY id DESC`;
@@ -2834,7 +2948,7 @@ const getApiPostRechargeData = (req, res) => {
   const userId = req.params.userId;
   const rechargeType = "Postpaid";
 
-  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ?`;
+  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ? ORDER BY id DESC`;
 
   db.query(query, [rechargeType, userId], (err, result) => {
     if (err) {
@@ -2856,9 +2970,30 @@ const getApiDTHRechargeData = (req, res) => {
   const userId = req.params.userId;
   const rechargeType = "DTH";
 
-  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ?`;
+  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ? ORDER BY id DESC`;
 
   db.query(query, [rechargeType, userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
+const getDTHConnectionData = (req, res) => {
+  const userId = req.params.userId;
+
+  let query = `SELECT * FROM dth_connection WHERE user_id = ? ORDER BY id DESC`;
+
+  db.query(query, [userId], (err, result) => {
     if (err) {
       console.error("Database error:", err);
       return res.status(400).json({ status: "Failure", error: err.message });
@@ -2878,7 +3013,7 @@ const getApiEletricityRechargeData = (req, res) => {
   const userId = req.params.userId;
   const rechargeType = "Electricity";
 
-  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ?`;
+  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ? ORDER BY id DESC`;
 
   db.query(query, [rechargeType, userId], (err, result) => {
     if (err) {
@@ -2900,7 +3035,7 @@ const getApiBroadbrandRechargeData = (req, res) => {
   const userId = req.params.userId;
   const rechargeType = "Broadband";
 
-  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ?`;
+  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ? ORDER BY id DESC`;
 
   db.query(query, [rechargeType, userId], (err, result) => {
     if (err) {
@@ -4263,5 +4398,7 @@ module.exports = {
   update_applyOfflineForm,
   EditSambalForm,
   UpdateeDistrictFormData,
-  UpdateVerifyDistrictForm
+  UpdateVerifyDistrictForm,
+  UpdatePanFromData,
+  getDTHConnectionData
 };

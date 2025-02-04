@@ -49,6 +49,8 @@ const {
   EditSambalForm,
   UpdateeDistrictFormData,
   UpdateVerifyDistrictForm,
+  UpdatePanFromData,
+  getDTHConnectionData,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -236,6 +238,18 @@ router.put(
   ]),
   update_applyOfflineForm
 );
+
+router.put(
+  "/UpdatePanFromData",
+  upload.fields([
+    { name: "documentUpload", maxCount: 10 },
+    { name: "attachment_form", maxCount: 10 },
+    { name: "attachment_photo", maxCount: 10 },
+    { name: "attachment_signature", maxCount: 10 },
+  ]),
+  UpdatePanFromData
+);
+router.get("/getDTHConnectionData/:userId", getDTHConnectionData);
 
 
 module.exports = router;
