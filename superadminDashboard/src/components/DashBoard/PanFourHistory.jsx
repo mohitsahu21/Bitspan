@@ -5,6 +5,10 @@ import { MdFormatListNumberedRtl } from "react-icons/md";
 import { BiHomeAlt } from "react-icons/bi";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
+import { Dropdown, Modal, Spinner } from "react-bootstrap";
+import { CiViewList } from "react-icons/ci";
+import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
+import PanCardFourEditModel from "./PanCardFourEditModel";
 
 const PanFourHistory = () => {
   const dispatch = useDispatch();
@@ -14,6 +18,10 @@ const PanFourHistory = () => {
   const [keyword, setKeyword] = useState("");
   const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
+  const [isRefresh, setIsRefresh] = useState(false);
+  const [selectedItem, setSelectedItem] = useState("");
+  const [showMarkEditModel, setShowMarkEditModel] = useState(false);
+  const [formStatus, setFormStatus] = useState(""); // For user type filter
 
   const userData = currentUser.userId;
 
@@ -35,14 +43,33 @@ const PanFourHistory = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [isRefresh]);
 
   const filteredItems = apiData.filter(
-    (row) =>
-      (row?.name &&
-        row.name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.orderid && row.orderid.includes(keyword.trim()))
-  );
+    (row) => {
+
+      const matchesKeyword =
+        (row?.name &&
+          row.name
+            .toLowerCase()
+            .includes(keyword.trim().toLowerCase())) ||
+        (row?.order_id &&
+          row.order_id
+            .toLowerCase()
+            .includes(keyword.trim().toLowerCase())) ||
+        (row?.mobile_no &&
+          row.mobile_no.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+        (row?.email_id &&
+          row.email_id.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+        (row?.aadhar_details &&
+          row.aadhar_details.toLowerCase().includes(keyword.trim().toLowerCase()));
+
+      const matchesType =
+        !formStatus ||
+        formStatus === "---Select Form Status---" ||
+        row.status === formStatus;
+      return matchesKeyword && matchesType;
+    });
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
@@ -64,9 +91,9 @@ const PanFourHistory = () => {
         <div className="main">
           <div className="container-fluid ">
             <div className="row flex-wrap justify-content-lg-center justify-content-center">
-              <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
-                {/* <Sider /> */}
-              </div>
+              {/* <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
+                <Sider />
+              </div> */}
               <div
                 className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
                              mt-5 formdata"
@@ -91,19 +118,39 @@ const PanFourHistory = () => {
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow bg-body-tertiary rounded  p-5 m-4">
                       <div className="row d-flex flex-column g-4">
-                        <div className="d-flex flex-column flex-md-row gap-3">
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="fromDate" className="form-label">
+                        <div className="d-flex flex-column flex-xl-row gap-3">
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                            {/* <label for="fromDate" className="form-label">
                               Search Name & Order ID
-                            </label>
+                            </label> */}
                             <input
                               id="fromDate"
                               className="form-control"
-                              type="text"
-                              placeholder="Search"
+                              type="search"
+                              placeholder="Search by Name, Mobile no , Aadhar no, Email , Order Id"
                               value={keyword}
                               onChange={(e) => setKeyword(e.target.value)}
                             />
+                          </div>
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-3">
+                            {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              value={formStatus}
+                              onChange={(e) =>
+                                setFormStatus(e.target.value)
+                              }
+                            >
+                              <option selected>
+                                ---Select Form Status---
+                              </option>
+                              <option value="Pending">Pending</option>
+                              <option value="Under Process">Under Process</option>
+                              <option value="Success">Success</option>
+                              <option value="Mark Edit">Mark Edit</option>
+                              <option value="Reject">Reject</option>
+                            </select>
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
                             {/* <label for="toDate" className="form-label">
@@ -143,15 +190,25 @@ const PanFourHistory = () => {
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
                             {loading ? (
-                              <p>Loading...</p>
+                              <div className="d-flex justify-content-center">
+                                <Spinner animation="border" role="status">
+                                  <span className="visually-hidden ">
+                                    Loading...
+                                  </span>
+                                </Spinner>
+                              </div>
                             ) : (
                               <table class="table table-striped">
                                 <thead className="table-dark">
                                   <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Date</th>
+                                    <th scope="col">Order Id</th>
                                     <th scope="col">
                                       Application <br /> Type
+                                    </th>
+                                    <th scope="col">
+                                      Applicant<br /> Type
                                     </th>
                                     <th scope="col">Category</th>
                                     <th scope="col">Name</th>
@@ -176,6 +233,7 @@ const PanFourHistory = () => {
                                     <th scope="col">Amount</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Message</th>
+                                    <th scope="col">Action</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -184,7 +242,9 @@ const PanFourHistory = () => {
                                       <tr key={index}>
                                         <td>{index + 1}</td>{" "}
                                         <td>{item.created_at}</td>
+                                        <td>{item.order_id}</td>
                                         <td>{item.application_type}</td>
+                                        <td>{item.applicant_type}</td>
                                         <td>{item.select_title}</td>
                                         <td>{item.name}</td>
                                         <td>{item.father_name}</td>
@@ -197,22 +257,41 @@ const PanFourHistory = () => {
                                         <td>{item.email_id}</td>
                                         <td>{item.pin_code}</td>
                                         <td>{item.state}</td>
-                                        <td>{item.Change_Request}</td>
+                                        {/* <td>{item.Change_Request}</td> */}
+                                        <td>
+                                          {(() => {
+                                            let parsedChangeRequest = {};
+
+                                            try {
+                                              parsedChangeRequest = JSON.parse(item.Change_Request); // Parse JSON string
+                                            } catch (error) {
+                                              console.error("Invalid JSON format:", error);
+                                              return "No Changes";
+                                            }
+
+                                            // Get keys where value is true
+                                            const trueKeys = Object.keys(parsedChangeRequest).filter(
+                                              (key) => parsedChangeRequest[key]
+                                            );
+
+                                            return trueKeys.length > 0 ? trueKeys.join(", ").replace(/_/g, " ").toUpperCase() : "No Changes";
+                                          })()}
+                                        </td>
                                         <td>
                                           {item.documentUpload
                                             ? item.documentUpload
-                                                .split(",")
-                                                .map((kycurl, kycindx) => (
-                                                  <div key={kycindx}>
-                                                    <a
-                                                      href={kycurl}
-                                                      target="_blank"
-                                                      rel="noopener noreferrer"
-                                                    >
-                                                      View {kycindx + 1}
-                                                    </a>
-                                                  </div>
-                                                ))
+                                              .split(",")
+                                              .map((kycurl, kycindx) => (
+                                                <div key={kycindx}>
+                                                  <a
+                                                    href={kycurl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                  >
+                                                    View {kycindx + 1}
+                                                  </a>
+                                                </div>
+                                              ))
                                             : "No KYC available"}
                                         </td>
                                         <td>
@@ -249,15 +328,51 @@ const PanFourHistory = () => {
                                               item.status === "Pending"
                                                 ? "#FFC107"
                                                 : item.status === "Reject"
-                                                ? "#DC3545"
-                                                : item.status === "Success"
-                                                ? "#28A745"
-                                                : "black",
+                                                  ? "#DC3545"
+                                                  : item.status === "Success"
+                                                    ? "#28A745"
+                                                    : "black",
                                           }}
                                         >
                                           {item.status}
                                         </td>
                                         <td>{item.note}</td>
+                                        <td>
+                                          {(item.status === "Pending" || item.status === "Mark Edit") && (
+                                            <Dropdown>
+                                              <Dropdown.Toggle
+                                                variant="success"
+                                                // id={`dropdown-${user.id}`}
+                                                as="span"
+                                                style={{
+                                                  border: "none",
+                                                  background: "none",
+                                                  cursor: "pointer",
+                                                }}
+                                                className="custom-dropdown-toggle"
+                                              >
+                                                <PiDotsThreeOutlineVerticalBold />
+                                              </Dropdown.Toggle>
+                                              <Dropdown.Menu>
+
+                                                <Dropdown.Item
+                                                  onClick={() => {
+                                                    // setSelectedUser(user);
+                                                    setShowMarkEditModel(true);
+                                                    setSelectedItem(item);
+                                                    //   deactivateUser(user.UserId)
+                                                  }}
+                                                >
+                                                  <span className="">
+                                                    {" "}
+                                                    <CiViewList />
+                                                  </span>{" "}
+                                                  Edit
+                                                </Dropdown.Item>
+                                              </Dropdown.Menu>
+                                            </Dropdown>
+                                          )}
+                                        </td>
                                       </tr>
                                     ))
                                   ) : (
@@ -292,6 +407,33 @@ const PanFourHistory = () => {
             </div>
           </div>
         </div>
+        {/* Mark Edit Model  start*/}
+
+        <Modal
+          // size="lg"
+          // centered
+          show={showMarkEditModel}
+          fullscreen={true}
+          onHide={() => setShowMarkEditModel(false)}
+          aria-labelledby="packageDetail-modal-sizes-title-lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="packageDetail-modal-sizes-title-lg">
+              Edit Form
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {selectedItem && (
+              <PanCardFourEditModel
+                item={selectedItem}
+                setShowMarkEditModel={setShowMarkEditModel}
+                setIsRefresh={setIsRefresh}
+              />
+            )}
+          </Modal.Body>
+        </Modal>
+
+        {/*  Mark Edit Model  end*/}
       </Wrapper>
     </>
   );
@@ -318,6 +460,7 @@ const Wrapper = styled.div`
   }
   td {
     font-size: 14px;
+    white-space: nowrap;
   }
   @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
@@ -328,6 +471,9 @@ const Wrapper = styled.div`
     .formdata {
       padding-left: 13rem;
     }
+  }
+  .custom-dropdown-toggle::after {
+    display: none !important;
   }
 `;
 
