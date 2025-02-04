@@ -1233,7 +1233,7 @@ const webhook = (req, res) => {
     const {
         UserName, role, ContactNo, Email, PanCardNumber, AadharNumber, BusinessName,
         City, State, PinCode, Status, amount, payment_status, White_Label_Website_URL,
-        created_By_User_Id,source, created_By_User_Role, created_By_Website,
+        created_By_User_Id,source, created_By_User_Role, created_By_Website,paymentMode
     } = req.body;
 
     if (!UserName || !role || !ContactNo || !Email || !PanCardNumber || !AadharNumber ||
@@ -1282,9 +1282,9 @@ const webhook = (req, res) => {
                 const password = generatePassword();
                 const hashedPassword = await bcrypt.hash(password, 10);
 
-                const insertUserQuery = `INSERT INTO userprofile (UserId, password, UserName, role, ContactNo, Email, PanCardNumber, AadharNumber, BusinessName, City, State, PinCode, Status, payment_status, White_Label_Website_URL, created_By_User_Id, created_By_User_Role, created_By_Website,amount,source, CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+                const insertUserQuery = `INSERT INTO userprofile (UserId, password, UserName, role, ContactNo, Email, PanCardNumber, AadharNumber, BusinessName, City, State, PinCode, Status, payment_status, White_Label_Website_URL, created_By_User_Id, created_By_User_Role, created_By_Website,amount,source,paymentMode, CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)`;
 
-                db.query(insertUserQuery, [userId, hashedPassword, UserName, role, ContactNo, Email, PanCardNumber, AadharNumber, BusinessName, City, State, PinCode, Status, payment_status, White_Label_Website_URL, created_By_User_Id, created_By_User_Role, created_By_Website,amount,source, createdAt], (insertErr) => {
+                db.query(insertUserQuery, [userId, hashedPassword, UserName, role, ContactNo, Email, PanCardNumber, AadharNumber, BusinessName, City, State, PinCode, Status, payment_status, White_Label_Website_URL, created_By_User_Id, created_By_User_Role, created_By_Website,amount,source,paymentMode, createdAt], (insertErr) => {
                     if (insertErr) {
                         console.error("Error inserting user:", insertErr);
                         return res.status(500).json({ status: "Failure", message: "Internal server error" });
@@ -1366,6 +1366,8 @@ const  userRegiserOnlinePGVerify = async (req, res) => {
   const website = req.query.website;
   const key = process.env.UPIWF_KEY;
 
+  console.log(clientTxnId)
+
   try {
     // Fetch transaction details from the database
     const [dbData] = await new Promise((resolve, reject) => {
@@ -1383,7 +1385,7 @@ const  userRegiserOnlinePGVerify = async (req, res) => {
     }
 
     // Check the order status from the external API
-    const postData = new URLSearchParams({ user_token: key, order_id: dbData.orderId });
+    const postData = new URLSearchParams({ user_token: key, order_id: dbData.UserId });
     const response = await axios.post('https://upi.wf/api/check-order-status', postData.toString(), {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     });
@@ -1396,7 +1398,7 @@ const  userRegiserOnlinePGVerify = async (req, res) => {
       if (dbData.payment_status === 'Pending') {
         // Update the order status to 'Success'
         await new Promise((resolve, reject) => {
-          db.query('UPDATE userprofile SET payment_status = ? WHERE orderId = ?', ['Success', clientTxnId], (err) => {
+          db.query('UPDATE userprofile SET payment_status = ? WHERE UserId = ?', ['Complete', clientTxnId], (err) => {
             if (err) reject(err);
             resolve();
           });
