@@ -852,6 +852,11 @@ const RetailerSidebarData = [
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
+        title: "Apply DTH Connection History",
+        path: "/apply-dth-connection-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
         title: "Eletricity Recharge History",
         path: "/eletricity-recharge-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
