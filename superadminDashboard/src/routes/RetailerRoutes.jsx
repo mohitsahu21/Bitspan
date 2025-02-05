@@ -77,6 +77,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Spinner } from "react-bootstrap";
 import styled from "styled-components";
+import DTHConnectionHistroy from "../components/DashBoard/DTHConnectionHistroy";
 
 // Lazy load all components
 const LoginBitspan = lazy(() => import("../components/LoginBitspan"));
@@ -608,6 +609,16 @@ const RetailerRoutes = () => {
                   <Navigate to="/update-profile" />
                 ) : (
                   <DthConnection />
+                )
+              }
+            />
+            <Route
+              path="/apply-dth-connection-history"
+              element={
+                userStatus === "Pending" || userStatus === "Deactive" ? (
+                  <Navigate to="/update-profile" />
+                ) : (
+                  <DTHConnectionHistroy />
                 )
               }
             />
