@@ -155,14 +155,14 @@ const PrepaidRechargeHistory = () => {
                                     <tr>
                                       <th scope="col">#</th>
                                       <th scope="col">Date</th>
-                                      <th scope="col">Operator Order ID</th>
+                                      <th scope="col">Order ID</th>
                                       <th scope="col">Transaction ID</th>
-                                      <th scope="col">Provider Name</th>
+                                      {/* <th scope="col">Provider Name</th> */}
                                       <th scope="col">Operator Name</th>
-                                      <th scope="col">Phone Number</th>
+                                      <th scope="col">Mob Number</th>
                                       <th scope="col">Details</th>
                                       <th scope="col">Amount</th>
-                                      {/* <th scope="col">Debit</th> */}
+                                      <th scope="col">Debit</th>
                                       <th scope="col">Earning</th>
                                       <th scope="col">Status</th>
                                     </tr>
@@ -175,13 +175,18 @@ const PrepaidRechargeHistory = () => {
                                           <td>{item.created_at}</td>
                                           <td>{item.orderid}</td>
                                           <td>{item.transaction_id}</td>
-                                          <td>{item.providerName}</td>
+                                          {/* <td>{item.providerName}</td> */}
                                           <td>{item.operator_name}</td>
                                           <td>{item.mobile_no}</td>
                                           <td>{item.message}</td>
                                           <td>{item.amount}</td>
-                                          {/* <td></td> */}
-                                          <td>{item.dr_amount}</td>
+                                          {(item.status == "Success" || item.status == "SUCCESS")
+                                           ? <td>{item.walletDeductAmt}</td> : <td>NA</td>}
+                                          {
+                                           ( item.walletDeductAmt && item.amount && (item.status == "Success" || item.status == "SUCCESS")) ? 
+                                           <td>{(parseFloat(item.amount) - parseFloat(item.walletDeductAmt)).toFixed(2)}</td> : <td>NA</td>
+                                          }
+                                          {/* <td>{item.dr_amount}</td> */}
                                           <td>{item.status}</td>
                                         </tr>
                                       ))
