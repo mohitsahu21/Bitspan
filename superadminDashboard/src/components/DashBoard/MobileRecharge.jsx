@@ -7,10 +7,13 @@ import Swal from "sweetalert2";
 import Loading from "../Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleRefresh } from "../../redux/user/userSlice";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal, Button, Spinner } from "react-bootstrap";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const MobileRecharge = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
   const [activeTab, setActiveTab] = useState("tab1");
@@ -202,6 +205,7 @@ const MobileRecharge = () => {
     setLoadingPlans(true);
     if (!selectedOperator || !selectedCircle) {
       alert("Please select both operator and circle!");
+      // setLoadingPlans(false);
       return;
     }
 
@@ -305,17 +309,43 @@ const MobileRecharge = () => {
   // console.log(apiData);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    if(name === "number" || name === "amount"){
+      
+      if (/^\d*$/.test(value)) {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+    }
+    else{
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+    
   };
 
   const handleChangeForm = (e) => {
-    setOfflineForm({
-      ...offlineForm,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    if(name === "mobile_no" || name === "amount"){
+      
+      if (/^\d*$/.test(value)) {
+        setOfflineForm((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+    }
+    else{
+      setOfflineForm({
+        ...offlineForm,
+        [name]: value,
+      });
+    }
+   
   };
 
   // const handleSubmit = async (e) => {
@@ -859,8 +889,8 @@ const MobileRecharge = () => {
           icon: "error",
           title: "Your token is expired please login again",
         });
-        dispatch(clearUser());
         navigate("/");
+        dispatch(clearUser());
       } else {
         Swal.fire({
           icon: "error",
@@ -1070,65 +1100,65 @@ const MobileRecharge = () => {
 
           break;
         } else if (rechargeResult.data &&
-          rechargeResult.data.message === "Recharge in process"){
-            success = true;
-            Swal.fire({
-              icon: "info",
-              title: "Recharge in process",
-              text: "Recharge in process please wait it will take Sometime!",
-            });
-            let allProcessesSuccessful = true;
-            result.retailerFormData.Transaction_details = `Commission Credit for Postpaid Recharge Order Id ${rechargeResult.data.orderId}`;
-            
-            if (result) {
-              let whiteLabel_Commission = 0;
-              let super_Distributor_Commission = 0;
-              let distributor_Commission = 0;
-              let retailer_Commission = 0;
-              if (result.retailerFormData && result.retailerFormData.amount) {
-                retailer_Commission = result.retailerFormData.amount;
-              }
-              console.log(userRelation);
-  
-              const commissionFormData = {
-                order_id: result.Order_Id,
-                transaction_id: result.Transaction_Id,
-                amount: updatedFormData.amount,
-                whiteLabel_id: usersId.whiteLabelId ? usersId.whiteLabelId : "NA",
-                super_Distributor_id: usersId.superDistributorId
-                  ? usersId.superDistributorId
-                  : "NA",
-                distributor_id: usersId.distributorId
-                  ? usersId.distributorId
-                  : "NA",
-                retailer_id: currentUser.userId ? currentUser.userId : "NA",
-                whiteLabel_Commission: whiteLabel_Commission,
-                super_Distributor_Commission: super_Distributor_Commission,
-                distributor_Commission: distributor_Commission,
-                retailer_Commission: retailer_Commission,
-                transaction_type: updatedFormData.recharge_Type,
-                transaction_details: result.retailerFormData.Transaction_details,
-                status: "Success",
-              };
-              console.log(commissionFormData);
-              await axios
-                .post(
-                  "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
-                  // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-                  commissionFormData,
-                  {
-                    headers: {
-                      "Content-Type": "application/json",
-                      Authorization: `Bearer ${token}`,
-                    },
-                  }
-                )
-                .catch(() => {
-                  allProcessesSuccessful = false;
-                });
+          rechargeResult.data.message === "Recharge in process") {
+          success = true;
+          Swal.fire({
+            icon: "info",
+            title: "Recharge in process",
+            text: "Recharge in process please wait it will take Sometime!",
+          });
+          let allProcessesSuccessful = true;
+          result.retailerFormData.Transaction_details = `Commission Credit for Postpaid Recharge Order Id ${rechargeResult.data.orderId}`;
+
+          if (result) {
+            let whiteLabel_Commission = 0;
+            let super_Distributor_Commission = 0;
+            let distributor_Commission = 0;
+            let retailer_Commission = 0;
+            if (result.retailerFormData && result.retailerFormData.amount) {
+              retailer_Commission = result.retailerFormData.amount;
             }
-            // Recharge Commission Credit WL SD D
-            break;
+            console.log(userRelation);
+
+            const commissionFormData = {
+              order_id: result.Order_Id,
+              transaction_id: result.Transaction_Id,
+              amount: updatedFormData.amount,
+              whiteLabel_id: usersId.whiteLabelId ? usersId.whiteLabelId : "NA",
+              super_Distributor_id: usersId.superDistributorId
+                ? usersId.superDistributorId
+                : "NA",
+              distributor_id: usersId.distributorId
+                ? usersId.distributorId
+                : "NA",
+              retailer_id: currentUser.userId ? currentUser.userId : "NA",
+              whiteLabel_Commission: whiteLabel_Commission,
+              super_Distributor_Commission: super_Distributor_Commission,
+              distributor_Commission: distributor_Commission,
+              retailer_Commission: retailer_Commission,
+              transaction_type: updatedFormData.recharge_Type,
+              transaction_details: result.retailerFormData.Transaction_details,
+              status: "Success",
+            };
+            console.log(commissionFormData);
+            await axios
+              .post(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
+                // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+                commissionFormData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .catch(() => {
+                allProcessesSuccessful = false;
+              });
+          }
+          // Recharge Commission Credit WL SD D
+          break;
         } else if (
           result.data.rechargeData &&
           result.data.rechargeData.status === "Failure"
@@ -1140,7 +1170,7 @@ const MobileRecharge = () => {
           });
         }
 
-        console.log(result.data);
+        // console.log(result.data);
         // console.log(result.data.orderId);
       } catch (error) {
         console.error(
@@ -1214,7 +1244,11 @@ const MobileRecharge = () => {
           mobile_no: "",
           operator_name: "",
           amount: "",
+          recharge_Type: "Prepaid",
+          userId: currentUser.userId,
         });
+        setSelectedCircle("")
+        setSelectedOperator("")
       }
     } catch (error) {
       console.error(
@@ -1224,7 +1258,7 @@ const MobileRecharge = () => {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Something went wrong! Please try again later.",
+        text: error?.response ? error?.response?.data?.message : "Something went wrong! Please try again later.",
       });
       // setResponseForm(null);
     } finally {
@@ -1256,7 +1290,7 @@ const MobileRecharge = () => {
       const newPin = [...onlinePin];
       newPin[index] = value;
       setOnlinePin(newPin);
-  
+
       // Move to next input if current is filled, move to previous if deleted
       if (value !== "" && index < onlinePin.length - 1) {
         pinRefs.current[index + 1].focus();
@@ -1280,40 +1314,62 @@ const MobileRecharge = () => {
       );
 
       console.log(response.data);
-      
+
 
       if (response.data.success) {
         return true;
       } else {
-        alert(response.data.message);
+        // alert(response.data.message);
+        // return false;
+        Swal.fire({
+          title: "Error verifying PIN",
+          text: response?.data?.message || "Something went wrong! Please Try again",
+          icon: "error",
+        });
         return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
-      alert("Error verifying PIN");
+      // alert("Error verifying PIN");
+      Swal.fire({
+        title: "Error verifying PIN",
+        text: error?.response?.data?.message || "Something went wrong! Please Try again",
+        icon: "error",
+      });
+
       return false;
     }
   };
 
   // Onlined PIN Integration
-const verifyOnlinePin = async () => {
-  try {
-    const response = await axios.post(
-      `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-      { user_id: currentUser.userId || "", pin: onlinePin.join("") }
-    );
-    if (response.data.success) {
-      return true;
-    } else {
-      alert(response.data.message);
+  const verifyOnlinePin = async () => {
+    try {
+      const response = await axios.post(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        { user_id: currentUser.userId || "", pin: onlinePin.join("") }
+      );
+      if (response.data.success) {
+        return true;
+      } else {
+        // alert(response.data.message);
+        Swal.fire({
+          title: "Error verifying PIN",
+          text: response?.data?.message || "Something went wrong! Please Try again",
+          icon: "error",
+        });
+        return false;
+      }
+    } catch (error) {
+      console.error("Error verifying PIN:", error);
+      // alert("Error verifying PIN");
+      Swal.fire({
+        title: "Error verifying PIN",
+        text: error?.response?.data?.message || "Something went wrong! Please Try again",
+        icon: "error",
+      });
       return false;
     }
-  } catch (error) {
-    console.error("Error verifying PIN:", error);
-    alert("Error verifying PIN");
-    return false;
-  }
-};
+  };
 
 
   const handleModalSubmit = async (e) => {
@@ -1347,14 +1403,14 @@ const verifyOnlinePin = async () => {
     e.preventDefault();
     setShowPinModal(true);
     console.log("Offlined PIN Integration");
-    
+
   };
 
   const openOnlinePinModal = (e) => {
     e.preventDefault();
     setShowOnlinePinModal(true);
     console.log("Online PIN");
-    
+
   };
 
   return (
@@ -1399,17 +1455,15 @@ const verifyOnlinePin = async () => {
                     </div>
                     <div className="circle-nav">
                       <button
-                        className={`circle-btn ${
-                          activeTab === "tab1" ? "active" : ""
-                        }`}
+                        className={`circle-btn ${activeTab === "tab1" ? "active" : ""
+                          }`}
                         onClick={() => handleTabClick("tab1")}
                       >
                         Provider 1
                       </button>
                       <button
-                        className={`circle-btn ${
-                          activeTab === "tab2" ? "active" : ""
-                        }`}
+                        className={`circle-btn ${activeTab === "tab2" ? "active" : ""
+                          }`}
                         onClick={() => handleTabClick("tab2")}
                       >
                         Provider 2
@@ -1417,9 +1471,8 @@ const verifyOnlinePin = async () => {
                     </div>
                     <div className="tab-content">
                       <div
-                        className={`tab-pane ${
-                          activeTab === "tab1" ? "active" : ""
-                        }`}
+                        className={`tab-pane ${activeTab === "tab1" ? "active" : ""
+                          }`}
                       >
                         <div className="container">
                           <div className="row justify-content-center">
@@ -1457,6 +1510,9 @@ const verifyOnlinePin = async () => {
                                               onChange={handleChange}
                                               name="number"
                                               autoComplete="off"
+                                              required
+                                              maxLength={10}
+                                              minLength={10}
                                             />
                                             <label for="floatingInputGroup1">
                                               Mobile Number
@@ -1471,6 +1527,7 @@ const verifyOnlinePin = async () => {
                                             <select
                                               className="form-select"
                                               id="floatingSelectPlanOperator"
+                                              required
                                               aria-label="Select Operator"
                                               value={selectedOperator}
                                               onChange={(e) => {
@@ -1549,7 +1606,7 @@ const verifyOnlinePin = async () => {
                                               backgroundColor: "#6d70ff",
                                             }}
                                             onClick={fetchPlanData}
-                                            disabled={loadingPlans}
+                                            disabled={loadingPlans || !selectedCircle || !selectedOperator || !formData.number || formData.number.length != 10}
                                           >
                                             {loadingPlans
                                               ? "Checking Plans..."
@@ -1808,7 +1865,7 @@ const verifyOnlinePin = async () => {
                                             }}
                                             type="submit"
                                             onClick={() => setIsRecharge(true)}
-                                            disabled={loading}
+                                            disabled={loading || !formData.amount || !formData.number || !selectedCircle || !selectedOperator || formData.number.length != 10}
                                           >
                                             {loading
                                               ? "Recharge Now..."
@@ -1826,9 +1883,8 @@ const verifyOnlinePin = async () => {
                         </div>
                       </div>
                       <div
-                        className={`tab-pane ${
-                          activeTab === "tab2" ? "active" : ""
-                        }`}
+                        className={`tab-pane ${activeTab === "tab2" ? "active" : ""
+                          }`}
                       >
                         <div className="container">
                           <div className="row justify-content-center">
@@ -1852,6 +1908,10 @@ const verifyOnlinePin = async () => {
                                               value={offlineForm.mobile_no}
                                               onChange={handleChangeForm}
                                               name="mobile_no"
+                                              autoComplete="off"
+                                              required
+                                              minLength={10}
+                                              maxLength={10}
                                             />
                                             <label for="floatingInputGroup1">
                                               Mobile Number
@@ -1866,6 +1926,7 @@ const verifyOnlinePin = async () => {
                                             <select
                                               className="form-select"
                                               id="floatingSelectPlanOperator"
+                                              required
                                               aria-label="Select Operator"
                                               value={selectedOperator}
                                               onChange={(e) => {
@@ -1911,6 +1972,7 @@ const verifyOnlinePin = async () => {
                                             <select
                                               class="form-select"
                                               id="floatingSelectOperator"
+                                              required
                                               aria-label="Select Operator"
                                               value={selectedCircle}
                                               onChange={(e) =>
@@ -1946,7 +2008,8 @@ const verifyOnlinePin = async () => {
                                               backgroundColor: "#6d70ff",
                                             }}
                                             onClick={fetchPlanData}
-                                            disabled={loadingPlans}
+                                            // disabled={loadingPlans}
+                                            disabled={loadingPlans || !selectedCircle || !selectedOperator || !offlineForm.mobile_no || offlineForm.mobile_no.length != 10}
                                           >
                                             {loadingPlans
                                               ? "Checking Plans..."
@@ -2105,7 +2168,7 @@ const verifyOnlinePin = async () => {
                                                                     }
                                                                     className="list-group-item"
                                                                     onClick={() => {
-                                                                      setFormData(
+                                                                      setOfflineForm(
                                                                         (
                                                                           prevFormData
                                                                         ) => ({
@@ -2189,6 +2252,7 @@ const verifyOnlinePin = async () => {
                                               value={offlineForm.amount}
                                               onChange={handleChangeForm}
                                               name="amount"
+                                              required
                                             />
                                             <label for="floatingInputGroup1">
                                               Amount
@@ -2199,11 +2263,14 @@ const verifyOnlinePin = async () => {
                                           <button
                                             className="btn btn-none text-light"
                                             type="submit"
+                                            disabled={loading || !offlineForm.amount || !offlineForm.mobile_no || !selectedCircle || !selectedOperator || offlineForm.mobile_no.length != 10}
                                             style={{
                                               backgroundColor: "#6d70ff",
                                             }}
                                           >
-                                            Recharge Now
+                                             {loading
+                                              ? "Recharge Now..."
+                                              : "Recharge Now"}
                                           </button>
                                         </div>
                                       </form>
