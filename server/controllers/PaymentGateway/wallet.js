@@ -390,11 +390,11 @@ const offlineRechargeAndUpdateWallet = (req, res) => {
         }
         const transactionId = `TXNW${Date.now()}`;
         const transactionDetails = `Recharge Deduction ${recharge_Type} Provider 2 ${orderId}`;
-
+        const creditAmt = 0;
         const updateWalletQuery = `
           INSERT INTO user_wallet 
-          (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type,credit_amount, debit_amount, Transaction_details, status) 
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)
         `;
 
         db.query(
@@ -407,6 +407,7 @@ const offlineRechargeAndUpdateWallet = (req, res) => {
             currentBalance.toFixed(2),
             newBalance,
             "Debit",
+            creditAmt,
             amount,
             transactionDetails,
             "Success",
