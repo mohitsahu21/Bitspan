@@ -179,8 +179,12 @@ const DTHRechargeHistory = () => {
                                       <td>{item.mobile_no}</td>
                                       <td>{item.message}</td>
                                       <td>{item.amount}</td>
-                                      <td></td>
-                                      <td>{item.dr_amount}</td>
+                                      {(item.status == "Success" || item.status == "SUCCESS")
+                                           ? <td>{item.walletDeductAmt}</td> : <td>NA</td>}
+                                          {
+                                           ( item.walletDeductAmt && item.amount && (item.status == "Success" || item.status == "SUCCESS")) ? 
+                                           <td>{(parseFloat(item.amount) - parseFloat(item.walletDeductAmt)).toFixed(2)}</td> : <td>NA</td>
+                                          }
                                       <td>{item.status}</td>
                                     </tr>
                                   ))
