@@ -15,24 +15,40 @@ import ShowCaseHomeThree from "./ShowCaseHomeThree.jsx";
 import ServicesHomeTwo from "../HomeTwo/ServicesHomeTwo.jsx";
 import WhatWeDo from "../HomeTwo/WhatWeDo.jsx";
 import FooterHomeTwo from "../HomeTwo/FooterHomeTwo.jsx";
+import HeaderHomeTwo from "../HomeTwo/HeaderHomeTwo.jsx";
+import MyModal from "../Modal/MyModal.jsx";
+import Forms from "../Contact/Forms.jsx";
 
-function HomeThree() {
+function HomeThree({ homePage }) {
+  console.log(homePage);
   const [drawer, drawerAction] = useToggle(false);
   return (
     <>
-      <Drawer drawer={drawer} action={drawerAction.toggle} />
-      <HeaderHomeThree action={drawerAction.toggle} />
-      <HeroHomeThree />
-      <ServicesHomeThree />
-      <ServicesHomeTwo />
-      <WhatWeDo />
-      <FunFactHomeThree />
+      <Drawer
+        drawer={drawer}
+        action={drawerAction.toggle}
+        homePage={homePage}
+      />
+      <HeaderHomeThree action={drawerAction.toggle} homePage={homePage} />
+      {/* <HeaderHomeTwo action={drawerAction.toggle} /> */}
+
+      <HeroHomeThree homePage={homePage} />
+
+      <section id="join">
+        <ServicesHomeThree homePage={homePage} />
+      </section>
+
+      <ServicesHomeTwo homePage={homePage} />
+      <WhatWeDo homePage={homePage} />
+      <FunFactHomeThree homePage={homePage} />
       {/* <AboutHomeThree /> */}
       {/* <ShowCaseHomeThree /> */}
       <BlogHomeThree />
       <DownloadHomeThree />
+      <Forms homePage={homePage} />
       {/* <ProjectHomeThree /> */}
-      <FooterHomeTwo />
+      <FooterHomeTwo homePage={homePage} />
+      <MyModal />
       {/* <FooterHomeThree /> */}
       <BackToTop className="back-to-top-3" />
     </>

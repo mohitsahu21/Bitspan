@@ -3,7 +3,8 @@ import FunFactThumb from "../../assets/images/fun-fact-thumb.png";
 import CounterUpCom from "../../lib/CounterUpCom.jsx";
 import PopupVideo from "../PopupVideo.jsx";
 
-function FunFactHomeThree() {
+function FunFactHomeThree({ homePage }) {
+  console.log(homePage);
   const [showVideo, setVideoValue] = useState(false);
   const handleShowVideo = (e) => {
     e.preventDefault();
@@ -13,7 +14,7 @@ function FunFactHomeThree() {
     <>
       {showVideo && (
         <PopupVideo
-          videoSrc="//www.youtube.com/embed/EE7NqzhMDms?autoplay=1"
+          videoSrc={homePage.Training_Video_Link}
           handler={(e) => handleShowVideo(e)}
         />
       )}
@@ -43,7 +44,7 @@ function FunFactHomeThree() {
                           <div className="appie-fun-fact-item">
                             <h4 className="title">
                               <CounterUpCom
-                                endValue="1"
+                                endValue="85"
                                 sectionSelect="fun-fact-area"
                               />
                               +
@@ -55,7 +56,7 @@ function FunFactHomeThree() {
                           <div className="appie-fun-fact-item">
                             <h4 className="title">
                               <CounterUpCom
-                                endValue="4"
+                                endValue="205"
                                 sectionSelect="fun-fact-area"
                               />
                               +
@@ -67,7 +68,7 @@ function FunFactHomeThree() {
                           <div className="appie-fun-fact-item">
                             <h4 className="title">
                               <CounterUpCom
-                                endValue="128"
+                                endValue="567"
                                 sectionSelect="fun-fact-area"
                               />
                               +
@@ -79,7 +80,7 @@ function FunFactHomeThree() {
                           <div className="appie-fun-fact-item">
                             <h4 className="title">
                               <CounterUpCom
-                                endValue="0"
+                                endValue="1056"
                                 sectionSelect="fun-fact-area"
                               />
                               +

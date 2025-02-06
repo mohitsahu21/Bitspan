@@ -4,8 +4,10 @@ import iconTwo from "../../assets/images/icon/2.png";
 import iconThree from "../../assets/images/icon/3.png";
 import iconFour from "../../assets/images/icon/4.png";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-function ServicesHomeThree() {
+function ServicesHomeThree({ homePage }) {
+  console.log(homePage);
   return (
     <>
       <Wrapper>
@@ -54,10 +56,12 @@ function ServicesHomeThree() {
                     Distributors
                   </p>
                   <hr />
-                  <p>&#8377; 5500</p>
-                  <a href="#">
+                  <p className="price-Font">
+                    &#8377; {homePage?.White_Label_Joining_Price}
+                  </p>
+                  <Link to="/Register " className="custom-btn text-dark">
                     Join us <i className="fal fa-arrow-right" />
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="col-lg-3 col-md-6">
@@ -84,10 +88,12 @@ function ServicesHomeThree() {
                     investment.T&C apply.
                   </p>
                   <hr />
-                  <p>&#8377; 200</p>
-                  <a href="#">
+                  <p className="price-Font">
+                    &#8377; {homePage?.Super_Distributor_Joining_Price}
+                  </p>
+                  <Link to="/Register" className="custom-btn text-dark">
                     Join us <i className="fal fa-arrow-right" />
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="col-lg-3 col-md-6">
@@ -113,10 +119,12 @@ function ServicesHomeThree() {
                     create unlimited Retailers with low cost investment only.
                   </p>
                   <hr />
-                  <p>&#8377; 100</p>
-                  <a href="#">
+                  <p className="price-Font">
+                    &#8377; {homePage?.Distributor_Joining_Price}
+                  </p>
+                  <Link to="/Register" className="custom-btn text-dark">
                     Join us <i className="fal fa-arrow-right" />
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="col-lg-3 col-md-6">
@@ -143,10 +151,12 @@ function ServicesHomeThree() {
                     channel.
                   </p>
                   <hr />
-                  <p>&#8377; 10</p>
-                  <a href="#">
+                  <p className="price-Font">
+                    &#8377; {homePage?.Retailer_Joining_Price}
+                  </p>
+                  <Link to="/Register" className="custom-btn text-dark">
                     Join us <i className="fal fa-arrow-right" />
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

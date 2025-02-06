@@ -32,7 +32,11 @@ function DownloadHomeThree({ className }) {
                 <div className="content">
                   <h4 className="title">Android</h4>
                   <p>Download Apps Managing Business</p>
-                  <a className="main-btn" href="#">
+                  <a
+                    className="main-btn"
+                    href="#"
+                    onClick={(e) => e.preventDefault()}
+                  >
                     <i className="fab fa-google-play" />
                     Download for Android
                   </a>
