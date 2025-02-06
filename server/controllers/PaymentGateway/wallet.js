@@ -449,6 +449,214 @@ const offlineRechargeAndUpdateWallet = (req, res) => {
   });
 };
 
+// const dthConnectionAndUpdateWallet = (req, res) => {
+//   const {
+//     operatorName,
+//     first_name,
+//     last_name,
+//     full_address,
+//     postal_code,
+//     number,
+//     validity,
+//     amount,
+//     message,
+//     userId,
+//   } = req.body;
+
+//   if (
+//     !first_name ||
+//     !last_name ||
+//     !full_address ||
+//     !postal_code ||
+//     !number ||
+//     !validity ||
+//     !amount ||
+//     !message
+//   ) {
+//     return res.status(400).json({
+//       status: "Failure",
+//       step: "Validation",
+//       error: "Please fill all the required fields",
+//     });
+//   }
+
+//   if (isNaN(amount) || parseFloat(amount) <= 0) {
+//     return res.status(400).json({
+//       status: "Failure",
+//       step: "Validation",
+//       error: "Invalid amount. Amount must be a positive number.",
+//     });
+//   }
+
+//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+//   const orderId = `OROD${Date.now()}`;
+
+//   const insertRechargeQuery = `INSERT INTO offline_dth_connection 
+//     (operatorName,
+//     first_name,
+//     last_name,
+//     full_address,
+//     postal_code,
+//     number,
+//     validity,
+//     amount,
+//     orderid,
+//     message,
+//     user_id,
+//     status, 
+//     created_at) 
+//     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+//   db.query(
+//     insertRechargeQuery,
+//     [
+//       operatorName,
+//       first_name,
+//       last_name,
+//       full_address,
+//       postal_code,
+//       number,
+//       validity,
+//       amount,
+//       orderId,
+//       message,
+//       userId,
+//       "Pending",
+//       createdAt,
+//     ],
+//     (err, rechargeResult) => {
+//       if (err) {
+//         console.error("Error inserting recharge record:", err);
+//         return res.status(500).json({
+//           status: "Failure",
+//           step: "DTH Connection",
+//           error: "Failed to process recharge",
+//           details: err.message,
+//         });
+//       }
+
+//       const queryBalance = `
+//         SELECT Closing_Balance 
+//         FROM user_wallet 
+//         WHERE userId = ? 
+//         ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+//         LIMIT 1
+//       `;
+
+//       db.query(queryBalance, [userId], (err, balanceResult) => {
+//         if (err) {
+//           console.error("Error fetching wallet balance:", err);
+//           return res.status(500).json({
+//             status: "Failure",
+//             step: "Fetch Wallet Balance",
+//             error: "Failed to fetch wallet balance",
+//             details: err.message,
+//           });
+//         }
+
+//         if (balanceResult.length === 0) {
+//           return res.status(404).json({
+//             status: "Failure",
+//             step: "Fetch Wallet Balance",
+//             message: "No balance found for the user.",
+//           });
+//         }
+
+//         const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+//         if (isNaN(currentBalance)) {
+//           return res.status(500).json({
+//             status: "Failure",
+//             step: "Fetch Wallet Balance",
+//             error: "Current balance is invalid.",
+//           });
+//         }
+
+//         if (currentBalance < amount) {
+//           return res.status(400).json({
+//             status: "Failure",
+//             step: "Wallet Deduction",
+//             message: "Insufficient balance.",
+//             currentBalance,
+//             requiredAmount: amount,
+//           });
+//         }
+
+//         const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+//         if (isNaN(newBalance)) {
+//           return res.status(500).json({
+//             status: "Failure",
+//             step: "Wallet Deduction",
+//             error: "New balance calculation is invalid.",
+//           });
+//         }
+
+//         const transactionId = `TXNW${Date.now()}`;
+//         const transactionDetails = `Recharge Deduction ${number}`;
+
+//         const updateWalletQuery = `
+//           INSERT INTO user_wallet 
+//           (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
+//           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+//         `;
+
+//         db.query(
+//           updateWalletQuery,
+//           [
+//             userId,
+//             createdAt,
+//             orderId,
+//             transactionId,
+//             currentBalance.toFixed(2),
+//             newBalance,
+//             "Debit",
+//             amount,
+//             transactionDetails,
+//             "Success",
+//           ],
+//           (err, walletResult) => {
+//             if (err) {
+//               console.error("Error updating wallet balance:", err);
+//               return res.status(500).json({
+//                 status: "Failure",
+//                 step: "Update Wallet Balance",
+//                 error: "Failed to update wallet balance",
+//                 details: err.message,
+//               });
+//             }
+
+//             return res.status(200).json({
+//               status: "Success",
+//               message:
+//                 "DTH Connection processed and wallet updated successfully.",
+//               details: {
+//                 dthConnection: {
+//                   orderId,
+//                   operatorName,
+//                   first_name,
+//                   last_name,
+//                   full_address,
+//                   postal_code,
+//                   number,
+//                   amount,
+//                   message,
+//                 },
+//                 wallet: {
+//                   transactionId,
+//                   newBalance,
+//                   previousBalance: currentBalance.toFixed(2),
+//                   deductedAmount: amount,
+//                 },
+//               },
+//             });
+//           }
+//         );
+//       });
+//     }
+//   );
+// };
+
+
+// first check user wallet balance then process recharge.
 const dthConnectionAndUpdateWallet = (req, res) => {
   const {
     operatorName,
@@ -458,11 +666,10 @@ const dthConnectionAndUpdateWallet = (req, res) => {
     postal_code,
     number,
     validity,
-    amount,
     message,
     userId,
   } = req.body;
-
+  let { amount } = req.body;
   if (
     !first_name ||
     !last_name ||
@@ -480,7 +687,7 @@ const dthConnectionAndUpdateWallet = (req, res) => {
     });
   }
 
-  if (isNaN(amount) || parseFloat(amount) <= 0) {
+  if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) <= 0) {
     return res.status(400).json({
       status: "Failure",
       step: "Validation",
@@ -490,136 +697,127 @@ const dthConnectionAndUpdateWallet = (req, res) => {
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const orderId = `OROD${Date.now()}`;
+  const transactionId = `TXNW${Date.now()}`;
+  const transactionDetails = `DTH Connection Deduction Provider 2 ${orderId}`;
 
-  const insertRechargeQuery = `INSERT INTO offline_dth_connection 
-    (operatorName,
-    first_name,
-    last_name,
-    full_address,
-    postal_code,
-    number,
-    validity,
-    amount,
-    orderid,
-    message,
-    user_id,
-    status, 
-    created_at) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  // Query user balance first
+  const queryBalance = `
+    SELECT Closing_Balance 
+    FROM user_wallet 
+    WHERE userId = ? 
+    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+    LIMIT 1
+  `;
 
-  db.query(
-    insertRechargeQuery,
-    [
-      operatorName,
-      first_name,
-      last_name,
-      full_address,
-      postal_code,
-      number,
-      validity,
-      amount,
-      orderId,
-      message,
-      userId,
-      "Pending",
-      createdAt,
-    ],
-    (err, rechargeResult) => {
-      if (err) {
-        console.error("Error inserting recharge record:", err);
-        return res.status(500).json({
-          status: "Failure",
-          step: "DTH Connection",
-          error: "Failed to process recharge",
-          details: err.message,
-        });
-      }
+  db.query(queryBalance, [userId], (err, balanceResult) => {
+    if (err) {
+      console.error("Error fetching wallet balance:", err);
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Failed to fetch wallet balance",
+        details: err.message,
+      });
+    }
 
-      const queryBalance = `
-        SELECT Closing_Balance 
-        FROM user_wallet 
-        WHERE userId = ? 
-        ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
-        LIMIT 1
-      `;
+    if (balanceResult.length === 0) {
+      return res.status(404).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        message: "No balance found for the user.",
+      });
+    }
+    amount = parseFloat(parseFloat(amount).toFixed(2)); // Ensures it's a number with two decimal places
+    const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+    if (isNaN(currentBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Current balance is invalid.",
+      });
+    }
 
-      db.query(queryBalance, [userId], (err, balanceResult) => {
+    if (currentBalance < amount) {
+      return res.status(400).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        message: "Insufficient balance.",
+        currentBalance,
+        requiredAmount: amount,
+      });
+    }
+    const creditAmt = 0;
+    const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+    if (isNaN(newBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        error: "New balance calculation is invalid.",
+      });
+    }
+
+    // Update wallet balance before inserting recharge request
+    const updateWalletQuery = `
+      INSERT INTO user_wallet 
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type,credit_amount, debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)
+    `;
+
+    db.query(
+      updateWalletQuery,
+      [
+        userId,
+        createdAt,
+        orderId,
+        transactionId,
+        currentBalance.toFixed(2),
+        newBalance,
+        "Debit",
+        creditAmt,
+        amount,
+        transactionDetails,
+        "Success",
+      ],
+      (err, walletResult) => {
         if (err) {
-          console.error("Error fetching wallet balance:", err);
+          console.error("Error updating wallet balance:", err);
           return res.status(500).json({
             status: "Failure",
-            step: "Fetch Wallet Balance",
-            error: "Failed to fetch wallet balance",
+            step: "Update Wallet Balance",
+            error: "Failed to update wallet balance",
             details: err.message,
           });
         }
 
-        if (balanceResult.length === 0) {
-          return res.status(404).json({
-            status: "Failure",
-            step: "Fetch Wallet Balance",
-            message: "No balance found for the user.",
-          });
-        }
-
-        const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
-        if (isNaN(currentBalance)) {
-          return res.status(500).json({
-            status: "Failure",
-            step: "Fetch Wallet Balance",
-            error: "Current balance is invalid.",
-          });
-        }
-
-        if (currentBalance < amount) {
-          return res.status(400).json({
-            status: "Failure",
-            step: "Wallet Deduction",
-            message: "Insufficient balance.",
-            currentBalance,
-            requiredAmount: amount,
-          });
-        }
-
-        const newBalance = parseFloat(currentBalance - amount).toFixed(2);
-        if (isNaN(newBalance)) {
-          return res.status(500).json({
-            status: "Failure",
-            step: "Wallet Deduction",
-            error: "New balance calculation is invalid.",
-          });
-        }
-
-        const transactionId = `TXNW${Date.now()}`;
-        const transactionDetails = `Recharge Deduction ${number}`;
-
-        const updateWalletQuery = `
-          INSERT INTO user_wallet 
-          (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `;
+        // Insert recharge record only after wallet update
+        const insertRechargeQuery = `INSERT INTO offline_dth_connection 
+          (operatorName, first_name, last_name, full_address, postal_code, number, validity, amount, orderid, message, user_id, status, created_at) 
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
         db.query(
-          updateWalletQuery,
+          insertRechargeQuery,
           [
-            userId,
-            createdAt,
-            orderId,
-            transactionId,
-            currentBalance.toFixed(2),
-            newBalance,
-            "Debit",
+            operatorName,
+            first_name,
+            last_name,
+            full_address,
+            postal_code,
+            number,
+            validity,
             amount,
-            transactionDetails,
-            "Success",
+            orderId,
+            message,
+            userId,
+            "Pending",
+            createdAt,
           ],
-          (err, walletResult) => {
+          (err, rechargeResult) => {
             if (err) {
-              console.error("Error updating wallet balance:", err);
+              console.error("Error inserting recharge record:", err);
               return res.status(500).json({
                 status: "Failure",
-                step: "Update Wallet Balance",
-                error: "Failed to update wallet balance",
+                step: "DTH Connection",
+                error: "Failed to process recharge",
                 details: err.message,
               });
             }
@@ -627,7 +825,7 @@ const dthConnectionAndUpdateWallet = (req, res) => {
             return res.status(200).json({
               status: "Success",
               message:
-                "DTH Connection processed and wallet updated successfully.",
+                "Wallet updated and DTH Connection processed successfully.",
               details: {
                 dthConnection: {
                   orderId,
@@ -650,10 +848,11 @@ const dthConnectionAndUpdateWallet = (req, res) => {
             });
           }
         );
-      });
-    }
-  );
+      }
+    );
+  });
 };
+
 
 module.exports = {
   getWalletBalance,
