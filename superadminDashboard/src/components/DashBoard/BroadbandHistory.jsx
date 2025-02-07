@@ -6,6 +6,9 @@ import { BiHomeAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import { Dropdown, Modal, Spinner } from "react-bootstrap";
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
+import ProviderTwoHistory from "./ProviderTwoHistory";
 
 const BroadbandHistory = () => {
   const [allData, setAllData] = useState([]);
@@ -41,7 +44,7 @@ const BroadbandHistory = () => {
 
   useEffect(() => {
     const filtered = allData.filter((item) => {
-      const searchValue = filterValue.toLowerCase();
+      const searchValue = filterValue.trim().toLowerCase();
       const mobileNo = item.mobile_no ? item.mobile_no.toLowerCase() : "";
       const transactionId = item.transaction_id
         ? item.transaction_id.toLowerCase()
@@ -106,6 +109,13 @@ const BroadbandHistory = () => {
 
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
+                    <Tabs
+                        defaultActiveKey="Provider 1"
+                        id="uncontrolled-tab-example"
+                        className="mb-3"
+                        variant="tabs"
+                      >
+                         <Tab eventKey="Provider 1" title="Provider 1">
                       <div className="row d-flex flex-column g-4">
                         <div className="d-flex flex-column flex-md-row gap-3">
                           <div className="col-12 col-md-12 col-lg-12 col-xl-8">
@@ -117,16 +127,16 @@ const BroadbandHistory = () => {
                               value={filterValue}
                               onChange={(e) => {
                                 setFilterValue(e.target.value);
-                                if (e.target.value === "") {
-                                  setCurrentPage(0);
-                                }
+                                // if (e.target.value === "") {
+                                //   setCurrentPage(0);
+                                // }
                               }}
-                              onKeyDown={(e) => {
-                                if (e.key === "Escape") {
-                                  setFilterValue("");
-                                  setCurrentPage(0);
-                                }
-                              }}
+                              // onKeyDown={(e) => {
+                              //   if (e.key === "Escape") {
+                              //     setFilterValue("");
+                              //     setCurrentPage(0);
+                              //   }
+                              // }}
                             />
                           </div>
 
@@ -156,6 +166,7 @@ const BroadbandHistory = () => {
                             <table class="table table-striped">
                               <thead className="table-dark">
                                 <tr>
+                                <th scope="col">#</th>
                                   <th scope="col">Date</th>
                                   <th scope="col">Order ID</th>
                                   <th scope="col">Transaction ID</th>
@@ -170,8 +181,9 @@ const BroadbandHistory = () => {
                               </thead>
                               <tbody>
                                 {displayData.length > 0 ? (
-                                  displayData.map((item) => (
+                                  displayData.map((item,index) => (
                                     <tr key={item.id}>
+                                      <td>{(currentPage * complaintsPerPage) + index + 1}</td>
                                       <td>{item.created_at}</td>
                                       <td>{item.orderid}</td>
                                       <td>{item.transaction_id}</td>
@@ -179,8 +191,12 @@ const BroadbandHistory = () => {
                                       <td>{item.mobile_no}</td>
                                       <td>{item.message}</td>
                                       <td>{item.amount}</td>
-                                      <td></td>
-                                      <td>{item.dr_amount}</td>
+                                      {(item.status == "Success" || item.status == "SUCCESS")
+                                           ? <td>{item.walletDeductAmt}</td> : <td>NA</td>}
+                                          {
+                                           ( item.walletDeductAmt && item.amount && (item.status == "Success" || item.status == "SUCCESS")) ? 
+                                           <td>{(parseFloat(item.amount) - parseFloat(item.walletDeductAmt)).toFixed(2)}</td> : <td>NA</td>
+                                          }
                                       <td>{item.status}</td>
                                     </tr>
                                   ))
@@ -211,6 +227,12 @@ const BroadbandHistory = () => {
                           </PaginationContainer>
                         </div>
                       </div>
+                      </Tab>
+                      <Tab eventKey="Provider 2" title="Provider 2">
+                       <ProviderTwoHistory rechargeType="Broadband"/>
+                      </Tab> 
+                     
+                      </Tabs>
                     </div>
                   </div>
                 </div>

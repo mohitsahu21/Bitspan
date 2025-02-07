@@ -989,8 +989,8 @@ const verifyOnlinePin = async () => {
                                               name="number"
                                               autoComplete="off"
                                               required
-                                              maxLength={10}
-                                              minLength={10}
+                                              maxLength={11}
+                                              minLength={11}
                                             />
                                             <label for="floatingInputGroup1">
                                              Number
@@ -1048,7 +1048,7 @@ const verifyOnlinePin = async () => {
                                             style={{
                                               backgroundColor: "#6d70ff",
                                             }}
-                                            disabled={loading || !formData.amount || !formData.number || !formData.operatorName ||  formData.number.length != 10}
+                                            disabled={loading || !formData.amount || !formData.number || !formData.operatorName ||  formData.number.length < 10}
                                             type="submit"
                                           >
                                             Recharge Now
@@ -1094,8 +1094,8 @@ const verifyOnlinePin = async () => {
                                               onChange={handleChangeForm}
                                               name="mobile_no"
                                               required
-                                              maxLength={10}
-                                              minLength={10}
+                                              maxLength={11}
+                                              minLength={11}
                                             />
                                             <label for="floatingInputGroup1">
                                               Number
@@ -1174,7 +1174,7 @@ const verifyOnlinePin = async () => {
                                             style={{
                                               backgroundColor: "#6d70ff",
                                             }}
-                                            disabled={loading || !offlineForm.amount || !offlineForm.mobile_no || !offlineForm.operator_name || offlineForm.mobile_no.length != 10}
+                                            disabled={loading || !offlineForm.amount || !offlineForm.mobile_no || !offlineForm.operator_name || offlineForm.mobile_no.length < 10}
                                           >
                                             Recharge Now
                                           </button>
