@@ -1301,6 +1301,7 @@ const getRechargeData = (req, res) => {
   });
 };
 
+
 const getApiRechargeData = (req, res) => {
   const userId = req.params.userId;
   const rechargeType = "Prepaid";
@@ -1321,6 +1322,48 @@ const getApiRechargeData = (req, res) => {
 
     return res.status(200).json({ status: "Success", data: result });
   });
+};
+
+const getOfflineRecharge = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+
+    const userId = req.params.userId;
+  const rechargeType = req.params.rechargeType;
+    const sql = `SELECT * FROM offline_recharge WHERE recharge_Type = ? AND created_by_userid = ? ORDER BY id DESC`;
+
+    db.query(sql,[rechargeType,userId], (err, result) => {
+      if (err) {
+        console.error("Error getOfflineRecharge from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getOfflineRecharge" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getOfflineRecharge found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getOfflineRecharge fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getOfflineRecharge from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getOfflineRecharge",
+      error: error.message,
+    });
+  }
 };
 
 const offlineDthConnection = (req, res) => {
@@ -4400,5 +4443,6 @@ module.exports = {
   UpdateeDistrictFormData,
   UpdateVerifyDistrictForm,
   UpdatePanFromData,
-  getDTHConnectionData
+  getDTHConnectionData,
+  getOfflineRecharge
 };

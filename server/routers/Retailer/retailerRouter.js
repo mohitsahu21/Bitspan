@@ -51,6 +51,7 @@ const {
   UpdateVerifyDistrictForm,
   UpdatePanFromData,
   getDTHConnectionData,
+  getOfflineRecharge,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -250,6 +251,7 @@ router.put(
   UpdatePanFromData
 );
 router.get("/getDTHConnectionData/:userId", getDTHConnectionData);
+router.get("/getOfflineRecharge/:userId/:rechargeType", getOfflineRecharge);
 
 
 module.exports = router;
