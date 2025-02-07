@@ -72,7 +72,7 @@ const SAWalletWithdrawSummary = () => {
       const matchesKeyword =  (row?.user_id &&
         row.user_id.toLowerCase().includes(keyword.trim().toLowerCase())) ||
       (row?.userName && row.userName.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.userPhone	 &&
-          row.userPhone	.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+          row.userPhone.toLowerCase().includes(keyword.trim().toLowerCase())) ||
         (row?.userEmail &&
           row.userEmail.toLowerCase().includes(keyword.trim().toLowerCase())) ||
           (row?.order_id &&
