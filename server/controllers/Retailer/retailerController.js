@@ -1366,6 +1366,47 @@ const getOfflineRecharge = (req, res) => {
   }
 };
 
+const getOfflineDTHConnection = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+
+    const userId = req.params.userId;
+    const sql = `SELECT * FROM offline_dth_connection WHERE user_id = ? ORDER BY id DESC`;
+
+    db.query(sql,[userId], (err, result) => {
+      if (err) {
+        console.error("Error getOfflineRecharge from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getOfflineRecharge" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getOfflineRecharge found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getOfflineRecharge fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getOfflineRecharge from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getOfflineRecharge",
+      error: error.message,
+    });
+  }
+};
+
 const offlineDthConnection = (req, res) => {
   const {
     operatorName,
@@ -4395,6 +4436,46 @@ const getCoupon = (req, res) => {
   });
 };
 
+const getAllServicesList = (req, res) => {
+  try {
+    const sql = `SELECT * FROM serviceslist`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getAllServicesList from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getAllServicesList" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getAllServicesList found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getAllServicesList fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error(
+      "Error fetching getAllServicesList from MySQL:",
+      error
+    );
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getAllServicesList",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -4444,5 +4525,7 @@ module.exports = {
   UpdateVerifyDistrictForm,
   UpdatePanFromData,
   getDTHConnectionData,
-  getOfflineRecharge
+  getOfflineRecharge,
+  getOfflineDTHConnection,
+  getAllServicesList
 };

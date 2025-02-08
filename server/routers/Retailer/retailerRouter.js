@@ -52,6 +52,8 @@ const {
   UpdatePanFromData,
   getDTHConnectionData,
   getOfflineRecharge,
+  getOfflineDTHConnection,
+  getAllServicesList,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -252,6 +254,8 @@ router.put(
 );
 router.get("/getDTHConnectionData/:userId", getDTHConnectionData);
 router.get("/getOfflineRecharge/:userId/:rechargeType", getOfflineRecharge);
+router.get("/getOfflineDTHConnection/:userId", getOfflineDTHConnection);
+router.get("/getAllServicesList" , getAllServicesList);
 
 
 module.exports = router;
