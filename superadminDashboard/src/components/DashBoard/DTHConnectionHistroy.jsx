@@ -6,6 +6,10 @@ import { BiHomeAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import { Dropdown, Modal, Spinner } from "react-bootstrap";
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
+import ProviderTwoHistory from "./ProviderTwoHistory";
+import ProviderTwoDTHConnectionHistory from "./ProviderTwoDTHConnectionHistory";
 
 const DTHConnectionHistroy = () => {
   const [allData, setAllData] = useState([]);
@@ -150,6 +154,13 @@ const DTHConnectionHistroy = () => {
 
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
+                    <Tabs
+                        defaultActiveKey="Provider 1"
+                        id="uncontrolled-tab-example"
+                        className="mb-3"
+                        variant="tabs"
+                      >
+                         <Tab eventKey="Provider 1" title="Provider 1">
                       <div className="row d-flex flex-column g-4">
                         <div className="d-flex flex-column flex-md-row gap-3">
                           <div className="col-12 col-md-12 col-lg-12 col-xl-8">
@@ -161,16 +172,16 @@ const DTHConnectionHistroy = () => {
                               value={keyword}
                               onChange={(e) => {
                                 setKeyword(e.target.value);
-                                if (e.target.value === "") {
-                                  setCurrentPage(0);
-                                }
+                                // if (e.target.value === "") {
+                                //   setCurrentPage(0);
+                                // }
                               }}
-                              onKeyDown={(e) => {
-                                if (e.key === "Escape") {
-                                    setKeyword("");
-                                  setCurrentPage(0);
-                                }
-                              }}
+                              // onKeyDown={(e) => {
+                              //   if (e.key === "Escape") {
+                              //       setKeyword("");
+                              //     setCurrentPage(0);
+                              //   }
+                              // }}
                             />
                           </div>
 
@@ -210,6 +221,8 @@ const DTHConnectionHistroy = () => {
                                                                     <th scope="col">Postal Code</th>
                                                                     <th scope="col">Plan Id</th>
                                                                     <th scope="col">Amount</th>
+                                                                    <th scope="col">Debit</th>
+                                                                    <th scope="col">Earning</th>
                                                                     <th scope="col">Operator Name</th>
                                                                     <th scope="col">Number</th>
                                                                     <th scope="col">Message</th>
@@ -221,7 +234,7 @@ const DTHConnectionHistroy = () => {
                                 {displayData.length > 0 ? (
                                   displayData.map((item,index) => (
                                     <tr key={index}>
-                                    <th scope="row">{index + 1}</th>
+                                    <td>{(currentPage * complaintsPerPage) + index + 1}</td>
                                     <td>{item.created_at}</td>
                                     <td>{item.orderid}</td>
                                     <td>{item.txid}</td>
@@ -232,6 +245,12 @@ const DTHConnectionHistroy = () => {
                                   
                                     <td>{item.plan_id}</td>
                                     <td>{item.amount}</td>
+                                    {(item.status == "Success" || item.status == "SUCCESS")
+                                           ? <td>{item.walletDeductAmt}</td> : <td>NA</td>}
+                                          {
+                                           ( item.walletDeductAmt && item.amount && (item.status == "Success" || item.status == "SUCCESS")) ? 
+                                           <td>{(parseFloat(item.amount) - parseFloat(item.walletDeductAmt)).toFixed(2)}</td> : <td>NA</td>
+                                          }
                                     <td>{item.operatorName}</td>
                                     <td>{item.number}</td>
                                    
@@ -268,6 +287,12 @@ const DTHConnectionHistroy = () => {
                           </PaginationContainer>
                         </div>
                       </div>
+                      </Tab>
+                      <Tab eventKey="Provider 2" title="Provider 2">
+                       <ProviderTwoDTHConnectionHistory/>
+                      </Tab> 
+                     
+                      </Tabs>
                     </div>
                   </div>
                 </div>
