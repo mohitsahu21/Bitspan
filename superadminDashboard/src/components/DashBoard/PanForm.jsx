@@ -11,12 +11,15 @@ import { MdAlternateEmail } from "react-icons/md";
 import { SlPeople } from "react-icons/sl";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const PanForm = () => {
   const dispatch = useDispatch();
+    const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
   const [fileError, setFileError] = useState("");
+    const [services,setServices] = useState([]);
   const [selectOption, setSelectOption] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
@@ -45,6 +48,36 @@ const PanForm = () => {
     userId: currentUser?.userId,
   });
 
+  const fetchServices = async () => {
+    // setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
+      );
+      setServices(data.data);
+      // setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
+      // setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const fetchPackage = async () => {
       try {
@@ -58,7 +91,26 @@ const PanForm = () => {
       }
     };
     fetchPackage();
+    fetchServices();
   }, []);
+
+   useEffect(()=>{
+        if(services){
+         
+          const purchaseBankIdService = services.find(
+            (item) => item.service_name === "Apply Offline Forms"
+          );
+        
+          if (purchaseBankIdService?.status === "Deactive") {
+            Swal.fire({
+              title: "This service is currently Not Available",
+              text: "Please try after some time",
+              icon: "error",
+            });
+            navigate("/dashboard");
+          }
+        }
+    },[services])
 
   const handleChange = (e) => {
     const { name, value } = e.target;

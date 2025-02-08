@@ -9,14 +9,17 @@ import { Modal, Button, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleRefresh } from "../../redux/user/userSlice";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const NewBankID = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const [optionPrices, setOptionPrices] = useState({});
   const [selectedPrice, setSelectedPrice] = useState(null);
   // console.log(selectedPrice);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [services,setServices] = useState([]);
   console.log(selectedPrice);
   
  const attached_photo_ref = useRef(null);
@@ -39,6 +42,36 @@ const NewBankID = () => {
     { id: 11, name: "Spice Money" },
     { id: 12, name: "Ayushman ID" },
   ];
+
+  const fetchServices = async () => {
+    // setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
+      );
+      setServices(data.data);
+      // setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
+      // setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchPackage = async () => {
@@ -73,7 +106,39 @@ const NewBankID = () => {
     };
 
     fetchPackage();
+    fetchServices()
   }, []);
+
+ 
+  useEffect(()=>{
+      if(services){
+        // services.map((item)=>{
+        //    if(item.service_name == "Purchase Bank Id"){
+        //      if(item.status == "Deactive"){
+        //       Swal.fire({
+        //         title: "This service is currently Not Available",
+        //         text: `Please try after some time`,
+        //         icon: "error",
+        //       });
+        //       navigate("/dashboard")
+        //      }
+        //    }
+        // })
+
+        const purchaseBankIdService = services.find(
+          (item) => item.service_name === "Purchase Bank Id"
+        );
+      
+        if (purchaseBankIdService?.status === "Deactive") {
+          Swal.fire({
+            title: "This service is currently Not Available",
+            text: "Please try after some time",
+            icon: "error",
+          });
+          navigate("/dashboard");
+        }
+      }
+  },[services])
 
   const [formData, setFormData] = useState({
     applicant_name: currentUser.username,
