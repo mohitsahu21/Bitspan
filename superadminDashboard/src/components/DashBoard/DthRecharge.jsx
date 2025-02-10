@@ -16,9 +16,69 @@ const DthRecharge = () => {
   const [activeTab, setActiveTab] = useState("tab1");
   const [apiData, setApiData] = useState([]);
   const navigate = useNavigate();
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
+
+  const [services,setServices] = useState([]);
+  const fetchServices = async () => {
+    // setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
+      );
+      setServices(data.data);
+      // setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
+      // setLoading(false);
+    }
   };
+
+  // const handleTabClick = (tab) => {
+  //   setActiveTab(tab);
+  // };
+
+   const handleTabClick = (tab) => {
+        if(tab == "tab2"){
+          if(services){
+                   
+            const purchaseBankIdService = services.find(
+              (item) => item.service_name === "Provider 2 recharge"
+            );
+          
+            if (purchaseBankIdService?.status === "Deactive") {
+              Swal.fire({
+                title: "Provider 2 service is currently Not Available",
+                text: "Please try after some time",
+                icon: "error",
+              });
+              // navigate("/prepaid-recharge");
+            }
+            else{
+              setActiveTab(tab);
+            }
+          }
+        }
+        else{
+          setActiveTab(tab);
+        }
+        
+        
+      };
 
   const [formData, setFormData] = useState({
     // opcode: "",
@@ -139,6 +199,7 @@ const DthRecharge = () => {
     };
 
     fetchData();
+    fetchServices();
   }, []);
 
   const handleChange = (e) => {

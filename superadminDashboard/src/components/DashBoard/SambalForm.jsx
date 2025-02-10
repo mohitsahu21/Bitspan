@@ -5,9 +5,11 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal, Button, Spinner } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const SambalForm = () => {
   const dispatch = useDispatch();
+    const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const [prices, setPrices] = useState([]);
   const [isVerifying, setIsVerifying] = useState(false);
@@ -30,6 +32,37 @@ const SambalForm = () => {
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
   const pinRefs = useRef([]);
+   const [services,setServices] = useState([]);
+
+  const fetchServices = async () => {
+    // setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
+      );
+      setServices(data.data);
+      // setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
+      // setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchPackage = async () => {
@@ -48,7 +81,26 @@ const SambalForm = () => {
       }
     };
     fetchPackage();
+    fetchServices();
   }, []);
+
+   useEffect(()=>{
+          if(services){
+           
+            const purchaseBankIdService = services.find(
+              (item) => item.service_name === "Sambal Form"
+            );
+          
+            if (purchaseBankIdService?.status === "Deactive") {
+              Swal.fire({
+                title: "This service is currently Not Available",
+                text: "Please try after some time",
+                icon: "error",
+              });
+              navigate("/dashboard");
+            }
+          }
+      },[services])
 
   useEffect(() => {
     if (prices.length > 0) {
