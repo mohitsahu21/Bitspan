@@ -54,6 +54,9 @@ const {
   getOfflineRecharge,
   getOfflineDTHConnection,
   getAllServicesList,
+  getAllMonthCommission,
+  getTodaysCommission,
+  getUserNotification,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -256,6 +259,18 @@ router.get("/getDTHConnectionData/:userId", getDTHConnectionData);
 router.get("/getOfflineRecharge/:userId/:rechargeType", getOfflineRecharge);
 router.get("/getOfflineDTHConnection/:userId", getOfflineDTHConnection);
 router.get("/getAllServicesList" , getAllServicesList);
+router.get(
+  "/getAllMonthCommission/:userId",
+  getAllMonthCommission
+);
+router.get(
+  "/getTodaysCommission/:userId",
+  getTodaysCommission
+);
+router.get(
+  "/getUserNotification/:userId",
 
+  getUserNotification
+);
 
 module.exports = router;

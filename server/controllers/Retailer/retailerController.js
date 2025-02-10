@@ -4476,6 +4476,86 @@ const getAllServicesList = (req, res) => {
   }
 };
 
+const getUserNotification = (req, res) => {
+  const { userId } = req.params;
+
+  // SQL query to fetch notification records for the user
+  const sql = `
+    SELECT * 
+    FROM user_notification `;
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching notification data:", err);
+      return res.status(500).json({
+        success: false,
+        error: `Error fetching data: ${err.message}`,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: results,
+    }); // Return the notification records for the given user
+  });
+};
+
+const getAllMonthCommission = (req, res) => {
+  const { userId } = req.params;
+
+  // SQL query to fetch commission records for the user from the last month
+  const sql = `
+    SELECT * 
+    FROM commission_table 
+    WHERE retailer_id = ? 
+      AND created_at >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+    ORDER BY created_at DESC
+  `;
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching commission data:", err);
+      return res.status(500).json({
+        success: false,
+        error: `Error fetching data: ${err.message}`,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: results,
+    }); // Return the commission records for the last month
+  });
+};
+
+const getTodaysCommission = (req, res) => {
+  const { userId } = req.params;
+
+  // SQL query to fetch commission records for the user for the current day
+  const sql = `
+    SELECT * 
+    FROM commission_table 
+    WHERE retailer_id = ? 
+      AND DATE(created_at) = CURDATE()  -- Fetch data for today's date only
+    ORDER BY created_at DESC
+  `;
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching commission data:", err);
+      return res.status(500).json({
+        success: false,
+        error: `Error fetching data: ${err.message}`,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: results,
+    }); // Return the commission records for the current day
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -4527,5 +4607,8 @@ module.exports = {
   getDTHConnectionData,
   getOfflineRecharge,
   getOfflineDTHConnection,
-  getAllServicesList
+  getAllServicesList,
+  getUserNotification,
+  getAllMonthCommission,
+  getTodaysCommission
 };
