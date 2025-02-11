@@ -32,6 +32,10 @@ const Dashboard = () => {
   const [commissionData, setCommissionData] = useState(0); // Default commission to 0
   const [todayCommission, setTodayCommission] = useState(0);
   const [notificationData, setNotificationData] = useState("");
+  const [monthlyRecharge,setMonthlyRecharge] = useState(0)
+  const [monthlyRechargeAmt,setMonthlyRechargeAmt] = useState(0)
+  const [TodayRecharge,setTodayRecharge] = useState(0)
+  const [TodayRechargeAmt,setTodayRechargeAmt] = useState(0)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -176,9 +180,181 @@ const Dashboard = () => {
       fetchTodaysCommission()
       fetchMonthCommission()
       fetchUserNotifications()
+      fetchMonthRecharge()
+      fetchMonthRechargeOffline()
+      fetchTodayRecharge()
+      fetchTodayRechargeOffline()
     },[userId])
 
-    console.log(TodaysformattedCommission,formattedCommission)
+    const fetchMonthRecharge = async () => {
+      setLoading(true);
+      try {
+        const { data } = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllMonthRecharge/${userId}`,
+  
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        if (data.success && data.data.length > 0) {
+          setMonthlyRecharge((pre)=>  pre + data.total);
+          const totalAmt = data.data.reduce((total, item) => {
+            return total + parseFloat(item.amount);
+          }, 0);
+          setMonthlyRechargeAmt((pre)=> pre+totalAmt); // Convert from cents to the correct format (if needed)
+        } else {
+          // setMonthlyRechargeAmt(0); 
+          // setMonthlyRecharge(0)
+        }
+      } catch (error) {
+        console.error("Error fetching commission data:", error);
+        if (error?.response?.status === 401) {
+          // Alert for expired token
+          Swal.fire({
+            icon: "error",
+            title: "Your token is expired. Please login again.",
+          });
+          dispatch(clearUser());
+          navigate("/");
+        } else {
+          // setMonthlyRechargeAmt(0); 
+          // setMonthlyRecharge(0)
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    const fetchMonthRechargeOffline = async () => {
+      setLoading(true);
+      try {
+        const { data } = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllMonthRechargeOffline/${userId}`,
+  
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        if (data.success && data.data.length > 0) {
+          setMonthlyRecharge((pre)=>  pre + data.total);
+          const totalAmt = data.data.reduce((total, item) => {
+            return total + parseFloat(item.amount);
+          }, 0);
+          setMonthlyRechargeAmt((pre)=> pre+totalAmt); // Convert from cents to the correct format (if needed)
+        } else {
+          // setMonthlyRechargeAmt(0); 
+          // setMonthlyRecharge(0)
+        }
+      } catch (error) {
+        console.error("Error fetching commission data:", error);
+        if (error?.response?.status === 401) {
+          // Alert for expired token
+          Swal.fire({
+            icon: "error",
+            title: "Your token is expired. Please login again.",
+          });
+          dispatch(clearUser());
+          navigate("/");
+        } else {
+          // setMonthlyRechargeAmt(0); 
+          // setMonthlyRecharge(0)
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchTodayRecharge = async () => {
+      setLoading(true);
+      try {
+        const { data } = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getTodaysRecharge/${userId}`,
+  
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        if (data.success && data.data.length > 0) {
+          setTodayRecharge((pre)=>  pre + data.total);
+          const totalAmt = data.data.reduce((total, item) => {
+            return total + parseFloat(item.amount);
+          }, 0);
+          setTodayRechargeAmt((pre)=> pre+totalAmt); // Convert from cents to the correct format (if needed)
+        } else {
+          // setMonthlyRechargeAmt(0); 
+          // setMonthlyRecharge(0)
+        }
+      } catch (error) {
+        console.error("Error fetching commission data:", error);
+        if (error?.response?.status === 401) {
+          // Alert for expired token
+          Swal.fire({
+            icon: "error",
+            title: "Your token is expired. Please login again.",
+          });
+          dispatch(clearUser());
+          navigate("/");
+        } else {
+          // setMonthlyRechargeAmt(0); 
+          // setMonthlyRecharge(0)
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    const fetchTodayRechargeOffline = async () => {
+      setLoading(true);
+      try {
+        const { data } = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getTodaysRechargeOffline/${userId}`,
+  
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        if (data.success && data.data.length > 0) {
+          setTodayRecharge((pre)=>  pre + data.total);
+          const totalAmt = data.data.reduce((total, item) => {
+            return total + parseFloat(item.amount);
+          }, 0);
+          setTodayRechargeAmt((pre)=> pre+totalAmt); // Convert from cents to the correct format (if needed)
+        } else {
+          // setMonthlyRechargeAmt(0); 
+          // setMonthlyRecharge(0)
+        }
+      } catch (error) {
+        console.error("Error fetching commission data:", error);
+        if (error?.response?.status === 401) {
+          // Alert for expired token
+          Swal.fire({
+            icon: "error",
+            title: "Your token is expired. Please login again.",
+          });
+          dispatch(clearUser());
+          navigate("/");
+        } else {
+          // setMonthlyRechargeAmt(0); 
+          // setMonthlyRecharge(0)
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
 
   return (
     <>
@@ -222,7 +398,15 @@ const Dashboard = () => {
 
 <div className="notifications-container">
                         {loading ? (
-                          <p>Loading notifications...</p>
+                          // <p>Loading notifications...</p>
+                         <div className="news d-flex align-items-center">
+                        <span className="p-3 bg-info news-icon">
+                          <BsInfoSquare />
+                        </span>
+                        <p className="d-flex align-items-center mb-0 ms-2">
+                         
+                        </p>
+                      </div> 
                         ) : notificationData.length > 0 ? (
                           notificationData.map((notification, index) => (
                             <div
@@ -254,7 +438,15 @@ const Dashboard = () => {
                             </div>
                           ))
                         ) : (
-                          <p>No notifications available</p>
+                          // <p>No notifications available</p>
+                          <div className="news d-flex align-items-center">
+                        <span className="p-3 bg-info news-icon">
+                          <BsInfoSquare />
+                        </span>
+                        <p className="d-flex align-items-center mb-0 ms-2">
+                         
+                        </p>
+                      </div> 
                         )}
                       </div>
                     </div>
@@ -429,7 +621,7 @@ const Dashboard = () => {
                             <p className="mb-0 px-2 my-0 fs-6">
                               Recharge Today
                             </p>
-                            <h4 className="px-2 my-0">0 - (Rs. 0)</h4>{" "}
+                            <h4 className="px-2 my-0">{TodayRecharge} - (Rs. {TodayRechargeAmt})</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -445,7 +637,7 @@ const Dashboard = () => {
                             <p className="mb-0 px-2 my-0 fs-6">
                               Recharge Month
                             </p>
-                            <h4 className="px-2 my-0">0 - (Rs. 0)</h4>{" "}
+                            <h4 className="px-2 my-0">{monthlyRecharge} - (Rs. {monthlyRechargeAmt})</h4>{" "}
                           </div>
                         </div>
                       </div>
