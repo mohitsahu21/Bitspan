@@ -4556,6 +4556,120 @@ const getTodaysCommission = (req, res) => {
   });
 };
 
+const getAllMonthRecharge = (req, res) => {
+  const { userId } = req.params;
+
+  // SQL query to fetch commission records for the user from the last month
+  const sql = `
+    SELECT * 
+    FROM recharges 
+    WHERE created_by_userid	 = ? AND (status = "SUCCESS" OR status = "Success")
+      AND created_at >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+    ORDER BY created_at DESC
+  `;
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching commission data:", err);
+      return res.status(500).json({
+        success: false,
+        error: `Error fetching data: ${err.message}`,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: results,
+      total : results.length
+    }); // Return the commission records for the last month
+  });
+};
+const getAllMonthRechargeOffline = (req, res) => {
+  const { userId } = req.params;
+
+  // SQL query to fetch commission records for the user from the last month
+  const sql = `
+    SELECT * 
+    FROM offline_recharge 
+    WHERE created_by_userid	 = ? AND status = "Approve"
+      AND created_at >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+    ORDER BY created_at DESC
+  `;
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching commission data:", err);
+      return res.status(500).json({
+        success: false,
+        error: `Error fetching data: ${err.message}`,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: results,
+      total : results.length
+    }); // Return the commission records for the last month
+  });
+};
+
+const getTodaysRecharge = (req, res) => {
+  const { userId } = req.params;
+
+  // SQL query to fetch commission records for the user for the current day
+  const sql = `
+    SELECT * 
+    FROM recharges 
+    WHERE created_by_userid = ? AND (status = "SUCCESS" OR status = "Success")
+      AND DATE(created_at) = CURDATE()  -- Fetch data for today's date only
+    ORDER BY created_at DESC
+  `;
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching commission data:", err);
+      return res.status(500).json({
+        success: false,
+        error: `Error fetching data: ${err.message}`,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: results,
+      total : results.length
+    }); // Return the commission records for the current day
+  });
+};
+const getTodaysRechargeOffline = (req, res) => {
+  const { userId } = req.params;
+
+  // SQL query to fetch commission records for the user for the current day
+  const sql = `
+    SELECT * 
+    FROM offline_recharge 
+    WHERE created_by_userid = ? AND status = "Approve"
+      AND DATE(created_at) = CURDATE()  -- Fetch data for today's date only
+    ORDER BY created_at DESC
+  `;
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching commission data:", err);
+      return res.status(500).json({
+        success: false,
+        error: `Error fetching data: ${err.message}`,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: results,
+      total : results.length
+    }); // Return the commission records for the current day
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -4610,5 +4724,9 @@ module.exports = {
   getAllServicesList,
   getUserNotification,
   getAllMonthCommission,
-  getTodaysCommission
+  getTodaysCommission,
+  getAllMonthRecharge,
+  getAllMonthRechargeOffline,
+  getTodaysRechargeOffline,
+  getTodaysRecharge
 };

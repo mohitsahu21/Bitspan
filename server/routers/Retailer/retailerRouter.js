@@ -57,6 +57,10 @@ const {
   getAllMonthCommission,
   getTodaysCommission,
   getUserNotification,
+  getAllMonthRecharge,
+  getAllMonthRechargeOffline,
+  getTodaysRechargeOffline,
+  getTodaysRecharge,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -271,6 +275,27 @@ router.get(
   "/getUserNotification/:userId",
 
   getUserNotification
+);
+router.get(
+  "/getAllMonthRecharge/:userId",
+
+  getAllMonthRecharge
+);
+router.get(
+  "/getAllMonthRechargeOffline/:userId",
+
+  getAllMonthRechargeOffline
+);
+
+router.get(
+  "/getTodaysRechargeOffline/:userId",
+
+  getTodaysRechargeOffline
+);
+router.get(
+  "/getTodaysRecharge/:userId",
+
+  getTodaysRecharge
 );
 
 module.exports = router;
