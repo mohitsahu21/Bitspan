@@ -304,6 +304,7 @@ import { PiBankFill } from "react-icons/pi";
 import pancard from "../assets/Form_49A (1).pdf";
 import { clearUser } from "../redux/user/userSlice";
 import { RiBaseStationLine } from "react-icons/ri";
+import axios from "axios";
 
 const Nav = styled.div`
   background-color: #e4e4e1;
@@ -2456,6 +2457,33 @@ const Sider = () => {
   };
 
   const showSidebar = () => setSidebar(!sidebar);
+  const [profileImage, setProfileImage] = useState(null);
+  const [error, setError] = useState(null);
+
+  const userId = useSelector((state) => state.user.currentUser?.userId);
+  useEffect(() => {
+    // Call the API to get the profile image
+    const fetchProfileImage = async () => {
+      try {
+        const response = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getProfileImage/${userId}`
+        );
+        if (response.data.success) {
+          setProfileImage(response.data.data.profileImage); // Update the state with the profile image URL
+        } else {
+          setError(response.data.message); // Set error if userId is not found
+        }
+      } catch (error) {
+        console.error("Error fetching profile image:", error);
+        setError("An error occurred while fetching the profile image.");
+      }
+    };
+
+    if (userId) {
+      fetchProfileImage(); // Fetch the profile image if userId is available
+    }
+  }, [userId]);
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -2508,7 +2536,14 @@ const Sider = () => {
               <FaIcons.FaBars onClick={showSidebar} color="black" />
             </NavIcon>
             <div className="d-flex">
-              <img src={profileLogo} width={50} height={75} className="p-2" />
+              {/* <img src={profileLogo} width={50} height={75} className="p-2" /> */}
+              <img
+                src={profileImage ? profileImage : profileLogo}
+                width={50}
+                height={75}
+                className="p-2"
+                alt="Profile"
+              />
               <div className="ms-2 p-2 lh-sm">
                 <p className="m-0 fw-bold">{currentUser?.username} </p>
                 <p className="m-0 fw-bold">{currentUser?.userId} </p>
