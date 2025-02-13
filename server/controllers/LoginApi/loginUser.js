@@ -216,98 +216,102 @@ const userRegiser = async (req, res) => {
       message: "All fields are required",
     });
   }
-
-  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-  const cleanedName = cleanName(UserName);
-  let namePart = cleanedName.slice(0, 4).toUpperCase();
-
-  if (cleanedName.length < 4) {
-    namePart = (cleanedName + cleanedName.slice(0, 4))
-      .slice(0, 4)
-      .toUpperCase();
+  const payment = "Offline";
+  let source = "";
+  if (created_By_User_Role == "SuperAdmin") {
+    source = "Created by SuperAdmin Dashboard";
+  } else if (created_By_User_Role == "WhiteLabel") {
+    source = "Created by WhiteLabel Dashboard";
+  } else if (created_By_User_Role == "SuperDistributor") {
+    source = "Created by SuperDistributor Dashboard";
+  } else if (created_By_User_Role == "Distributor") {
+    source = "Created by Distributor Dashboard";
   }
-
-  const rolePrefix = rolePrefixes[role];
-
   try {
-    db.beginTransaction(async (transactionErr) => {
-      if (transactionErr) {
-        console.error("Error starting transaction:", transactionErr);
+    const cleanName = (name) => {
+      return name.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
+    };
+    let namePart = cleanName(UserName).slice(0, 4);
+    if (namePart.length < 4) {
+      namePart = (namePart + namePart.slice(0, 4)).slice(0, 4);
+    }
+
+    const rolePrefix = rolePrefixes[role];
+    const getLastUserIdQuery = `SELECT UserId FROM userprofile WHERE UserId LIKE '${rolePrefix}-%' ORDER BY UserId DESC LIMIT 1`;
+
+    db.query(getLastUserIdQuery, async (err, results) => {
+      if (err) {
+        console.error("Error fetching latest UserId:", err);
         return res
           .status(500)
           .json({ status: "Failure", message: "Internal server error" });
       }
 
-      const getLastUserIdQuery = `SELECT UserId FROM userprofile WHERE UserId LIKE '${rolePrefix}-%' ORDER BY UserId DESC LIMIT 1`;
+      const shortTimestamp = Date.now().toString().slice(-7);
 
-      db.query(getLastUserIdQuery, async (err, results) => {
-        if (err) {
-          console.error("Error fetching latest UserId:", err);
-          return res
-            .status(500)
-            .json({ status: "Failure", message: "Internal server error" });
-        }
+      const userId = `${rolePrefix}-${namePart}${shortTimestamp}`;
 
-        let sequenceNumber = 1;
-        if (results.length > 0) {
-          const lastUserId = results[0].UserId;
-          const numericPart = lastUserId.match(/\d+$/);
-          if (numericPart) {
-            sequenceNumber = parseInt(numericPart[0], 10) + 1;
+      // Perform duplicate check with UserId
+      const duplicateCheckQuery = `
+              SELECT * FROM userprofile 
+              WHERE Email = ? OR ContactNo = ?`;
+      const duplicateCheckValues = [Email, ContactNo];
+
+      db.query(
+        duplicateCheckQuery,
+        duplicateCheckValues,
+        async (dupErr, dupResults) => {
+          if (dupErr) {
+            console.error("Error checking for duplicates:", dupErr);
+            return res
+              .status(500)
+              .json({ status: "Failure", message: "Internal server error" });
           }
-        }
 
-        const paddingLength = 4;
-        const userId = `${rolePrefix}-${namePart}${sequenceNumber
-          .toString()
-          .padStart(paddingLength, "0")}`;
-
-        const password = generatePassword();
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        const insertUserQuery = `INSERT INTO userprofile (UserId, password, UserName, role, ContactNo, Email, PanCardNumber, AadharNumber, BusinessName, City, State, PinCode,Status,payment_status,White_Label_Website_URL,created_By_User_Id,
-created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?)`;
-
-        const insertValues = [
-          userId,
-          hashedPassword,
-          UserName,
-          role,
-          ContactNo,
-          Email,
-          PanCardNumber,
-          AadharNumber,
-          BusinessName,
-          City,
-          State,
-          PinCode,
-          Status,
-          payment_status,
-          White_Label_Website_URL,
-          created_By_User_Id,
-          created_By_User_Role,
-          created_By_Website,
-          createdAt,
-        ];
-
-        db.query(insertUserQuery, insertValues, (insertErr, result) => {
-          if (insertErr) {
-            return db.rollback(() => {
-              console.error("Error inserting user:", insertErr);
-              return res
-                .status(500)
-                .json({ status: "Failure", message: "Internal server error" });
+          if (dupResults.length > 0) {
+            return res.status(400).json({
+              status: "Failure",
+              message:
+                "A user with the same Email, Contact Number, or User ID already exists.",
             });
           }
 
-          // Insert userId and password into the credentials log table
-          const logQuery = `INSERT INTO user_credentials (userId, password, created_at) VALUES (?, ?, ?)`;
-          const logValues = [userId, password, createdAt];
+          const createdAt = moment()
+            .tz("Asia/Kolkata")
+            .format("YYYY-MM-DD HH:mm:ss");
+          const password = generatePassword();
+          const hashedPassword = await bcrypt.hash(password, 10);
 
-          db.query(logQuery, logValues, (logErr, logResult) => {
-            if (logErr) {
+          const insertUserQuery = `INSERT INTO userprofile (UserId, password, UserName, role, ContactNo, Email, PanCardNumber, AadharNumber, BusinessName, City, State, PinCode, Status, payment_status, White_Label_Website_URL, created_By_User_Id, created_By_User_Role, created_By_Website,paymentMode,source, CreateAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? ,?)`;
+
+          const insertValues = [
+            userId,
+            hashedPassword,
+            UserName,
+            role,
+            ContactNo,
+            Email,
+            PanCardNumber,
+            AadharNumber,
+            BusinessName,
+            City,
+            State,
+            PinCode,
+            Status,
+            payment_status,
+            White_Label_Website_URL,
+            created_By_User_Id,
+            created_By_User_Role,
+            created_By_Website,
+            payment,
+            source,
+            createdAt,
+          ];
+
+          db.query(insertUserQuery, insertValues, (insertErr, result) => {
+            if (insertErr) {
               return db.rollback(() => {
-                console.error("Error logging credentials:", logErr);
+                console.error("Error inserting user:", insertErr);
                 return res.status(500).json({
                   status: "Failure",
                   message: "Internal server error",
@@ -315,11 +319,13 @@ created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ? 
               });
             }
 
-            // Commit the transaction
-            db.commit((commitErr) => {
-              if (commitErr) {
+            const logQuery = `INSERT INTO user_credentials (userId, password, created_at) VALUES (?, ?, ?)`;
+            const logValues = [userId, password, createdAt];
+
+            db.query(logQuery, logValues, (logErr, logResult) => {
+              if (logErr) {
                 return db.rollback(() => {
-                  console.error("Error committing transaction:", commitErr);
+                  console.error("Error logging credentials:", logErr);
                   return res.status(500).json({
                     status: "Failure",
                     message: "Internal server error",
@@ -327,52 +333,63 @@ created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ? 
                 });
               }
 
-              const transporter = nodemailer.createTransport({
-                service: "gmail",
-                auth: {
-                  user: process.env.EMAILSENDER,
-                  pass: process.env.EMAILPASSWORD,
-                },
-              });
-
-              const mailOptions = {
-                from: process.env.EMAILSENDER,
-                to: Email,
-                subject: "Your Account Details",
-                html: `
-              <p>Hello ${UserName},</p>
-              <p>Your account has been successfully created.</p>
-              <p>User ID: <span style="color: #333333; font-weight: bold;">${userId}</span></p>
-              <p>Password: <span style="color: #333333; font-weight: bold;">${password}</span></p>
-              <p>Please keep this information secure.</p>
-              <p>Please log in using this ID and password, and complete the KYC process to activate your account.</p>
-              <br>
-              <p>Regards,<br>Bitspan.com</p>
-            `,
-                // text: `Hello ${UserName},\n\nYour account has been successfully created.\n\nUser ID: ${userId}\nPassword: ${password}\n\nPlease keep this information secure.\n\nPlease login using this ID and password, and complete the KYC process to activate your account.\n\nRegards,\nBitspan.com`,
-              };
-
-              transporter.sendMail(mailOptions, (emailErr, info) => {
-                if (emailErr) {
-                  console.error("Error sending email:", emailErr);
-                  return res.status(500).json({
-                    status: "Failure",
-                    message: "Internal server error",
+              db.commit((commitErr) => {
+                if (commitErr) {
+                  return db.rollback(() => {
+                    console.error("Error committing transaction:", commitErr);
+                    return res.status(500).json({
+                      status: "Failure",
+                      message: "Internal server error",
+                    });
                   });
                 }
 
-                // Respond with success
-                res.json({
-                  message: "User registered successfully, email sent",
-                  status: "Success",
-                  userId,
-                  password,
+                const transporter = nodemailer.createTransport({
+                  host: "bitspan.vimubds5.a2hosted.com",
+                  port: 465,
+                  secure: true,
+                  auth: {
+                    user: "info@bitspan.vimubds5.a2hosted.com",
+                    pass: "bitspan@",
+                  },
+                });
+
+                const mailOptions = {
+                  from: "info@bitspan.vimubds5.a2hosted.com",
+                  to: Email,
+                  subject: "Your Account Details",
+                  html: `
+                                     <p>Hello ${UserName},</p>
+                                     <p>Your account has been successfully created.</p>
+                                     <p>User ID: <span style="color: #333333; font-weight: bold;">${userId}</span></p>
+                                     <p>Password: <span style="color: #333333; font-weight: bold;">${password}</span></p>
+                                     <p>Please keep this information secure.</p>
+                                     <p>Please log in using this ID and password, and complete the KYC process to activate your account.</p>
+                                     <br>
+                                     <p>Regards,<br>Bitspan.com</p>
+                                   `,
+                };
+
+                transporter.sendMail(mailOptions, (emailErr, info) => {
+                  if (emailErr) {
+                    console.error("Error sending email:", emailErr);
+                    return res.status(500).json({
+                      status: "Failure",
+                      message: "Internal server error",
+                    });
+                  }
+
+                  res.json({
+                    message: "User registered successfully",
+                    status: "Success",
+                    userId,
+                  });
                 });
               });
             });
           });
-        });
-      });
+        }
+      );
     });
   } catch (err) {
     console.error("Error processing request:", err);

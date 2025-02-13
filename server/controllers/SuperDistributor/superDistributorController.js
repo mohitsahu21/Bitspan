@@ -3140,7 +3140,50 @@ const getPendingKycUsers = (req, res) => {
 
 const getAllComplaintsData = (req, res) => {
   try {
-    const userId = req.params.userId;
+    const getWhitelabelSettings = (req, res) => {
+      const { userId } = req.params;
+
+      try {
+        const sql = `SELECT * FROM white_label_website_setting`;
+
+        db.query(sql, [userId], (err, result) => {
+          if (err) {
+            console.error("Error white_label_website_setting from MySQL:", err);
+            return res
+              .status(500)
+              .json({
+                success: false,
+                error: "Error white_label_website_setting",
+              });
+          } else {
+            // Check if the result is empty
+            if (result.length === 0) {
+              return res.status(200).json({
+                success: true,
+                data: [],
+                message: "No white_label_website_setting found",
+              });
+            } else {
+              return res.status(200).json({
+                success: true,
+                data: result[0],
+                message: "white_label_website_setting fetched successfully",
+              });
+            }
+          }
+        });
+      } catch (error) {
+        console.error(
+          "Error fetching white_label_website_setting from MySQL:",
+          error
+        );
+        return res.status(500).json({
+          success: false,
+          message: "Error in fetching white_label_website_setting",
+          error: error.message,
+        });
+      }
+    };
     const selectQuery = "SELECT * FROM complaindata WHERE userID = ?";
     db.query(selectQuery, userId, (err, result) => {
       if (err) {
@@ -5251,6 +5294,59 @@ const getUserNotification = (req, res) => {
   });
 };
 
+///API for contact us form
+
+const SAContactUs = async (req, res) => {
+  const { Name, Email, Address, Mobile_No, Message } = req.body;
+  // const CreatedAt = new Date();
+
+  const CreatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+  if (!Name || !Email || !Address || !Mobile_No || !Message) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+
+  const sql =
+    "INSERT INTO sa_contactus (Name, Email, Address, Mobile_No, Message, createdAt) VALUES (?, ?, ?, ?, ?, ?)";
+  db.query(
+    sql,
+    [Name, Email, Address, Mobile_No, Message, CreatedAt],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting data:", err);
+        return res.status(500).json({ error: "Database Error" });
+      }
+      res
+        .status(201)
+        .json({ message: "Data Inserted Successfully", id: result.insertId });
+    }
+  );
+};
+
+const SAGetContactUs = async (req, res) => {
+  try {
+    const sql = "SELECT * FROM sa_contactus";
+
+    db.query(sql, (err, results) => {
+      if (err) {
+        console.error("Database Query Error:", err);
+        return res.status(500).json({ error: "Database query failed" });
+      }
+
+      if (!results || results.length === 0) {
+        return res.status(404).json({ message: "No records found" });
+      }
+
+      res
+        .status(200)
+        .json({ message: "Data retrieved successfully", data: results });
+    });
+  } catch (error) {
+    console.error("Unexpected Server Error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   applyOfflineForm,
   // getApplyOfflineFormByid,
@@ -5335,4 +5431,6 @@ module.exports = {
   getUserDetails,
   getCoupanHistory,
   getUserNotification,
+  SAContactUs,
+  SAGetContactUs,
 };

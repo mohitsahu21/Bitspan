@@ -9,6 +9,7 @@ const fs = require("fs");
 const retailerRouter = require("./routers/Retailer/retailerRouter");
 const superDistributorRouter = require("./routers/SuperDistributor/superDistributorRouter");
 const DistributorRouter = require("./routers/Distributor/DistributorRouter");
+const whiteLabelRouter = require("./routers/WhiteLabel/whiteLabelRouter");
 
 const instpayRouter = require("./routers/Retailer/instpayRouter");
 const ezytmRouter = require("./routers/Retailer/ezytmRouter");
@@ -41,6 +42,7 @@ app.use(express.json());
 app.use("/api/auth/retailer", retailerRouter);
 app.use("/api/auth/superDistributor", superDistributorRouter);
 app.use("/api/auth/Distributor", DistributorRouter);
+app.use("/api/auth/whiteLabel", whiteLabelRouter);
 app.use("/api/auth/log-reg", loginRouter);
 app.use("/api/auth/pay", paymentRouter);
 app.use("/api/auth/wallet", walletRouter);

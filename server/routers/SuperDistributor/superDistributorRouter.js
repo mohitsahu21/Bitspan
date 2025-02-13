@@ -87,6 +87,8 @@ const {
   getUserDetails,
   getCoupanHistory,
   getUserNotification,
+  SAContactUs,
+  SAGetContactUs,
 } = require("../../controllers/SuperDistributor/superDistributorController");
 
 const authenticateToken = require("../../middleware/authenticateToken");
@@ -126,6 +128,10 @@ router.post(
   bankidForm
 );
 // used API to all super distributor
+
+router.post("/SAContactUs", SAContactUs);
+router.get("/SAGetContactUs", SAGetContactUs);
+
 router.get(
   "/getSuperDistributorUsersData/:userId",
   authenticateToken,
@@ -145,7 +151,7 @@ router.get(
 router.get("/getWalletSummary/:userId", authenticateToken, getWalletSummary);
 router.get(
   "/getUserNotification/:userId",
-
+  authenticateToken,
   getUserNotification
 );
 
@@ -169,6 +175,7 @@ router.get(
   getActiveBankDetails
 );
 router.post("/WalletWithdraw/:userId", authenticateToken, WalletWithdraw);
+
 router.get(
   "/getWalletWithdrawHistory/:userId",
   authenticateToken,
