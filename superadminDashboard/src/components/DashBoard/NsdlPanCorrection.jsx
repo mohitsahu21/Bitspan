@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { MdOutlineFormatListNumbered } from "react-icons/md";
 import { FaMobileAlt } from "react-icons/fa";
@@ -8,8 +8,19 @@ import nsdlpan from "../../assets/images/nsdl-vector.png";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import { Modal, Button, Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import {  fetchWalletBalance } from "../../redux/user/userSlice";
+
 
 const NsdlPanCorrection = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { currentUser, token } = useSelector((state) => state.user);
+    const { walletBalance } = useSelector((state) => state.user);
+    const [prices, setPrices] = useState([]);
+    const [isVerifying, setIsVerifying] = useState(false);
   const [formData, setFormData] = useState({
     applicationMode: "",
     selectType: "",
@@ -19,18 +30,71 @@ const NsdlPanCorrection = () => {
     mobile: "",
     email: "",
     physicalPan: "",
-    walletDeductAmt: "10",
-    userId: "userID",
+    pan_no : "",
+    walletDeductAmt: "",
+    userId: currentUser.userId,
   });
 
   const [loading, setLoading] = useState(false);
+const [showPinModal, setShowPinModal] = useState(false);
+    const [pin, setPin] = useState(["", "", "", ""]);
+    const pinRefs = useRef([]);
+  console.log(prices);
 
+  useEffect(() => {
+    const fetchPackage = async () => {
+      try {
+        const response = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+        );
+        // console.log(response.data.data);
+        if (Array.isArray(response.data.data)) {
+          setPrices(response.data.data);
+        } else {
+          console.error("Expected an array, received:", response.data.data);
+        }
+      } catch (error) {
+        console.error("Fetching package data failed:", error);
+      }
+    };
+    fetchPackage();
+   
+  }, []);
+  // const handleChange = (e) => {
+  //   setFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+
+    if(name === "mobile"){
+      
+      if (/^\d*$/.test(value)) {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+    }
+    else{
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+    // setFormData({
+    //   ...formData,
+    //   [e.target.name]: e.target.value,
+    // });
   };
+    useEffect(()=>{
+       setFormData({
+        ...formData,
+        walletDeductAmt : formData.physicalPan == "Yes" ? prices[0]?.P_PAN_Card_Price : prices[0]?.E_PAN_Card_Price
+       })
+    },[formData.physicalPan])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,7 +104,7 @@ const NsdlPanCorrection = () => {
         `https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/nsdl-pan-correction-request`,
         formData
       );
-      setFormData(apiResponse.data);
+      // setFormData(apiResponse.data);
       console.log(apiResponse.data);
       if (
         apiResponse.data.message === "Successful" &&
@@ -48,17 +112,114 @@ const NsdlPanCorrection = () => {
       ) {
         // window.location = apiResponse.data.nsdlData.url;
         window.open(apiResponse.data.nsdlData.url, "_blank");
-      } else if (apiResponse.data.message === "Failure") {
-        Swal.fire({
-          icon: "error",
-          title: "An error occurred during the process. Please try again.",
-        });
+         setFormData({
+                  applicationMode: "",
+                  selectType: "",
+                  name: "",
+                  dob: "",
+                  gender: "",
+                  mobile: "",
+                  email: "",
+                  physicalPan: "",
+                  pan_no : "",
+                  walletDeductAmt: "",
+                  userId: currentUser.userId,
+                })
+                dispatch(fetchWalletBalance(currentUser.userId))
+      } else if (apiResponse.data.message === "Recharge failed") {
+        setLoading(false)
+               Swal.fire({
+                 icon: "error",
+                 title: "Oops",
+                 text: apiResponse?.data?.nsdlData?.message || "Something went wrong! Please Try again",
+               });
       }
+      else{
+              setLoading(false)
+              Swal.fire({
+                icon: "error",
+                title: "Oops",
+                text: "Something went wrong! Please Try again",
+              });
+            }
     } catch (error) {
       console.log(error);
+      setLoading(false)
+            Swal.fire({
+              icon: "error",
+              title: "An error occurred during the process. Please try again.",
+            });
     } finally {
       setLoading(false);
     }
+  };
+
+  const handlePinChange = (index, value) => {
+    if (/^\d?$/.test(value)) {
+      const newPin = [...pin];
+      newPin[index] = value;
+      setPin(newPin);
+
+      // Move to next input if current is filled, move to previous if deleted
+      if (value !== "" && index < pin.length - 1) {
+        pinRefs.current[index + 1].focus();
+      } else if (value === "" && index > 0) {
+        pinRefs.current[index - 1].focus();
+      }
+    }
+  };
+
+  const handleBackspace = (index) => {
+    if (pin[index] === "" && index > 0) {
+      pinRefs.current[index - 1].focus();
+    }
+  };
+
+  const verifyPin = async () => {
+    try {
+      const response = await axios.post(
+        // `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        { user_id: currentUser.userId || "", pin: pin.join("") }
+      );
+
+      if (response.data.success) {
+        return true;
+      } else {
+         Swal.fire({
+                                 title: "Error verifying PIN",
+                                 text: response?.data?.message || "Something went wrong! Please Try again",
+                                 icon: "error",
+                               });
+                       return false
+      }
+    } catch (error) {
+      console.error("Error verifying PIN:", error);
+       Swal.fire({
+                                title: "Error verifying PIN",
+                                text: error?.response?.data?.message || "Something went wrong! Please Try again",
+                                icon: "error",
+                              });
+      return false;
+    }
+  };
+
+  const handleModalSubmit = async (e) => {
+    setIsVerifying(true); // Start loading
+    const isPinValid = await verifyPin();
+    setIsVerifying(false); // Stop loading
+    if (isPinValid) {
+      setShowPinModal(false);
+      setPin(["", "", "", ""]);
+      handleSubmit(e);
+    } else {
+      setPin(["", "", "", ""]);
+    }
+  };
+
+  const openPinModal = (e) => {
+    e.preventDefault();
+    setShowPinModal(true);
   };
   return (
     <>
@@ -112,7 +273,7 @@ const NsdlPanCorrection = () => {
                       </div>
                     </div>
                     <div className="col-xxl-7 col-xl-6 col-lg-9 col-md-10 col-sm-10 shadow bg-body-tertiary rounded  px-4 py-3 mb-3 mt-5">
-                      <form onSubmit={handleSubmit}>
+                      <form onSubmit={openPinModal}>
                         <div className="row d-flex flex-column g-4">
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="form-floating">
@@ -128,8 +289,8 @@ const NsdlPanCorrection = () => {
                                 <option value="" disabled>
                                   Select Application Mode
                                 </option>
-                                <option value="Instant PAN Card">
-                                  Instant PAN Card
+                                <option value="Instant PAN Card - EKYC">
+                                Instant PAN Card - EKYC
                                 </option>
                                 <option value="Scan Based PAN Card">
                                   Scan Based PAN Card
@@ -176,6 +337,8 @@ const NsdlPanCorrection = () => {
                                   onChange={handleChange}
                                   placeholder="Enter Name"
                                   required
+                                  pattern="[A-Za-z\s]*"
+                    title="Text should contain only letters"
                                 />
                                 <label for="floatingInputGroup2">
                                   Enter Name
@@ -243,6 +406,8 @@ const NsdlPanCorrection = () => {
                                   onChange={handleChange}
                                   placeholder="Mobile Number"
                                   required
+                                  maxLength={10}
+                                  minLength={10}
                                 />
                                 <label for="floatingInputGroup2">
                                   Mobile Number
@@ -258,7 +423,7 @@ const NsdlPanCorrection = () => {
                               </span>
                               <div class="form-floating">
                                 <input
-                                  type="text"
+                                  type="email"
                                   class="form-control"
                                   id="floatingInputGroup2"
                                   name="email"
@@ -269,6 +434,32 @@ const NsdlPanCorrection = () => {
                                 />
                                 <label for="floatingInputGroup2">
                                   Email Id
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <div class="input-group">
+                              <span class="input-group-text">
+                                <FaRupeeSign />
+                              </span>
+                              <div class="form-floating">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="floatingInputGroup2"
+                                  name="pan_no"
+                                  value={formData.pan_no}
+                                  onChange={handleChange}
+                                  placeholder="PAN Number"
+                                  required
+                                  pattern="[A-Za-z]{5}[0-9]{4}[A-Za-z]{1}"
+  title="PAN card number should be in the format: 5 letters, 4 digits, 1 letter (e.g., ABCDE1234F)"
+  maxLength={10}
+  minLength={10}
+                                />
+                                <label for="floatingInputGroup2">
+                                  PAN Number
                                 </label>
                               </div>
                             </div>
@@ -285,7 +476,7 @@ const NsdlPanCorrection = () => {
                                 onChange={handleChange}
                                 required
                               >
-                                <option value="" disabled>
+                                <option selected value="" disabled>
                                   Select
                                 </option>
                                 <option value="Yes">Yes</option>
@@ -299,21 +490,21 @@ const NsdlPanCorrection = () => {
 
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <p className="fw-bold">
-                              Wallet Available Amount : Rs. 200.00
+                              Wallet Available Amount : Rs. {walletBalance}
                             </p>
                             <p className="fw-bold">
-                              Payable Amount : Rs. 100.00
+                              Payable Amount : Rs. {formData.walletDeductAmt}
                             </p>
                           </div>
 
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div className="text-start mb-3">
                               <button
-                                className="btn p-2"
+                                className="p-2 btn btn-primary"
                                 type="submit"
                                 disabled={loading}
                               >
-                                {loading ? "Processing..." : "Pay Now"}
+                                {loading ? "Submitting..." : "Submit"}
                               </button>
                             </div>
                           </div>
@@ -326,6 +517,69 @@ const NsdlPanCorrection = () => {
             </div>
           </div>
         </div>
+            {/* pin Model start*/}
+                 <Modal
+                                    show={showPinModal}
+                                    onHide={() => setShowPinModal(false)}
+                                    centered
+                                  >
+                                    <Modal.Header closeButton>
+                                      <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                      <div className="pin-inputs d-flex justify-content-center">
+                                        {pin.map((digit, index) => (
+                                          <input
+                                            key={index}
+                                            ref={(el) => (pinRefs.current[index] = el)}
+                                            type="text"
+                                            value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
+                                            maxLength="1"
+                                            onChange={(e) =>
+                                              handlePinChange(index, e.target.value)
+                                            }
+                                            onKeyDown={(e) =>
+                                              e.key === "Backspace" && handleBackspace(index)
+                                            }
+                                            className="pin-digit form-control mx-1"
+                                            style={{
+                                              width: "50px",
+                                              textAlign: "center",
+                                              fontSize: "1.5rem",
+                                              borderRadius: "8px",
+                                              border: "1px solid #ced4da",
+                                              boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                                            }}
+                                          />
+                                        ))}
+                                      </div>
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                      <Button
+                                        variant="secondary"
+                                        onClick={() => setShowPinModal(false)}
+                                      >
+                                        Cancel
+                                      </Button>
+                                      <Button
+                                        variant="primary"
+                                        onClick={handleModalSubmit}
+                                        disabled={isVerifying}
+                                      >
+                                        {isVerifying ? "Verifying..." : "Verify PIN"}
+                                        {isVerifying && (
+                                          <Spinner
+                                            as="span"
+                                            animation="border"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                          />
+                                        )}
+                                      </Button>
+                                    </Modal.Footer>
+                                  </Modal>
+                                   {/* pin Model end*/}
       </Wrapper>
     </>
   );
