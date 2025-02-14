@@ -309,6 +309,7 @@ const NsdlNewPanCard = () => {
                                 name="selectType"
                                 value={formData.selectType}
                                 onChange={handleChange}
+                                required
                               >
                                 <option value="" disabled>
                                   Select Category Type

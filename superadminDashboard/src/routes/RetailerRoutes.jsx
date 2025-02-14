@@ -78,6 +78,7 @@ import { useSelector } from "react-redux";
 import { Spinner } from "react-bootstrap";
 import styled from "styled-components";
 import DTHConnectionHistroy from "../components/DashBoard/DTHConnectionHistroy";
+import NSDLPanComponent from "../components/DashBoard/NSDLPanComponent";
 
 // Lazy load all components
 const LoginBitspan = lazy(() => import("../components/LoginBitspan"));
@@ -408,13 +409,23 @@ const RetailerRoutes = () => {
                 )
               }
             />
-            <Route
+            {/* <Route
               path="/pan-apply-49"
               element={
                 userStatus === "Pending" || userStatus === "Deactive" ? (
                   <Navigate to="/update-profile" />
                 ) : (
                   <NsdlNewPanCard />
+                )
+              }
+            /> */}
+            <Route
+              path="/pan-apply-49"
+              element={
+                userStatus === "Pending" || userStatus === "Deactive" ? (
+                  <Navigate to="/update-profile" />
+                ) : (
+                  <NSDLPanComponent/>
                 )
               }
             />
