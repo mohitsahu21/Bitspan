@@ -148,11 +148,11 @@ const Distributor = () => {
         <Route
           path="/dashboard"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
-            <DistributorDashboard />
-            // )
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <DistributorDashboard />
+            )
           }
         />
         <Route path="/update-profile" element={<DtProfile />} />
@@ -173,377 +173,385 @@ const Distributor = () => {
         <Route
           path="/wallet-transaction-report"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
-            <DWalletTransactionReport />
-            // )
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <DWalletTransactionReport />
+            )
           }
         />
         <Route
           path="/wallet-to-wallet-transfer"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
-            <DWalletToWalletTransfer />
-            // )
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <DWalletToWalletTransfer />
+            )
           }
         />
 
         <Route
           path="/Wallet-TO-Wallet-Transfer-History"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
-            <DFundTransferStatus />
-            // )
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <DFundTransferStatus />
+            )
           }
         />
         <Route
           path="/wallet-withdraw-History"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
-            <DWalletWithdrawReport />
-            // )
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <DWalletWithdrawReport />
+            )
           }
         />
 
         <Route
           path="/wallet-withdraw"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
-            <DWalletWithdraw />
-            // )
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <DWalletWithdraw />
+            )
           }
         />
         <Route
           path="/view-all-offline-history"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
-            <DAllOfflineForm />
-            // )
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <DAllOfflineForm />
+            )
           }
         />
         <Route
           path="/Sambal-History"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
-            <DSambalHistory />
-            // )
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <DSambalHistory />
+            )
           }
         />
         <Route
           path="/Offline-dth-connection"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
-            <DOfflineDthConnection />
-            // )
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <DOfflineDthConnection />
+            )
           }
         />
 
         <Route
           path="/Offline-Recharge-history"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
-            <DOfflineRechargeHistory />
-            // )
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <DOfflineRechargeHistory />
+            )
           }
         />
         <Route
           path="/my-commission"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
-            <DMyCommission />
-            // )
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <DMyCommission />
+            )
           }
         />
         <Route
           path="/View-All-Commission-History"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
-            <DAllCommissionHistory />
-            // )
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <DAllCommissionHistory />
+            )
           }
         />
 
         <Route
           path="/online-dth-connection-history"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
-            <DOnlineDthConnection />
-            // )
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <DOnlineDthConnection />
+            )
           }
         />
 
         <Route
           path="/online-recharge-history"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
-            <DOnlineRecharges />
-            // )
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <DOnlineRecharges />
+            )
           }
         />
         <Route
           path="/E-District-history"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
-            <DEdistrict />
-            // )
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <DEdistrict />
+            )
           }
         />
 
         <Route
           path="/verify-Edistrict-History"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
-            <DVerifyDistrictHistory />
-            // )
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <DVerifyDistrictHistory />
+            )
           }
         />
 
         <Route
           path="/Pan-Coupan-History"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
-            <DCoupanCommissionHistory />
-            // )
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <DCoupanCommissionHistory />
+            )
           }
         />
         <Route
           path="/create-retailer"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
-            <DCreateDistributor />
-            // )
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <DCreateDistributor />
+            )
           }
         />
 
         <Route
           path="/All-Retailer-List"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
             <DAllDistributorList />
-            // )
+            )
           }
         />
 
         <Route
           path="/buy-retailer-id"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
             <DBuyDistributorId />
-            // )
+            )
           }
         />
 
         <Route
           path="/UserId-Bought-summary"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
             <DBoughtSummery />
-            // )
+            )
           }
         />
 
         <Route
           path="/active-users"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
             <DActiveUsersList />
-            // )
+            )
           }
         />
 
         <Route
           path="/deactive-users"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
             <DDeactiveUsersList />
-            // )
+            )
           }
         />
 
         <Route
           path="/users-joining-list"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
             <DAllUsersJoinedList />
-            // )
+            )
           }
         />
 
         <Route
           path="/pending-kyc-user"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
             <DPendingKycUsers />
-            // )
+            )
           }
         />
 
         <Route
           path="/pending-payment-users"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
             <DPendingPaymentUsers />
-            // )
+            )
           }
         />
 
         <Route
           path="/raise-complaint"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
             <DComplaints />
-            // )
+            )
           }
         />
 
         <Route
           path="/complaint-raised-list"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
             <DAllComplaintsList />
-            // )
+            )
           }
         />
         <Route
           path="/download-certificate"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
             <DDownloadCertificate />
-            // )
+            )
           }
         />
         <Route
           path="/change-password"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
             <DChangePassword />
-            // )
+            )
           }
         />
 
         <Route
           path="/bank-account-setup"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
             <DBankAccountSetup />
-            // )
+            )
           }
         />
 
         <Route
           path="/bank-account-setup/verify/:bid"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
             <DBankAccountVerify />
           }
         />
         <Route
           path="/pan-4.0-history"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
             <DPanFourHistory />
-            // )
+            )
           }
         />
 
         <Route
           path="/pan-transaction-report"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
             <DPanTransactionReport />
-            // )
+            )
           }
         />
 
         <Route
           path="/pan-correction-report"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
             <DPanCorrectionHistory />
-            // )
+            )
           }
         />
         <Route
           path="/generate-pin"
           element={
-            // userStatus === "Pending" || userStatus === "Deactive" ? (
-            //   <Navigate to="/update-profile" />
-            // ) : (
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
             <DCreatePin />
-            // )
+            )
           }
         />
 
-        <Route path="/2-step-verification" element={<DStepVerification />} />
+    
 
-        <Route path="/create-retailer" element={<CreateRetailer />} />
+        <Route path="/2-step-verification" element={
+          userStatus === "Pending" || userStatus === "Deactive" ? (
+            <Navigate to="/update-profile" />
+          ) : (
+          <DStepVerification />
+          )
+        } />
+
+       
         <Route
           path="/uti-transaction-report"
           element={<DUTIPanTransactionReport />}

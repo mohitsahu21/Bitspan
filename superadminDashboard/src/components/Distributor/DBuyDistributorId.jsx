@@ -278,6 +278,7 @@ const DBuyDistributorId = () => {
           noOfId: "",
           paymentMethod: "",
         });
+        fetchNoOfIds();
       } else {
         Swal.fire({
           icon: "error",
