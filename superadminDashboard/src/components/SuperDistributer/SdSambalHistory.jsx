@@ -5,12 +5,15 @@ import { MdFormatListNumberedRtl } from "react-icons/md";
 import { BiHomeAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const SdSambalHistory = () => {
   const [allData, setAllData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [filterValue, setFilterValue] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);

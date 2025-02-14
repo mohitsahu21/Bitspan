@@ -272,10 +272,15 @@ router.get(
   getBankAccountDetails
 );
 
+router.post("/changeBankStatus", authenticateToken, changeBankStatus);
+router.post(
+  "/verifyOtpAndChangeBankStatus",
+  authenticateToken,
+  verifyOtpAndChangeBankStatus
+);
+router.post("/buyId", authenticateToken, buyId);
+
 // used API to all super distributor
-router.post("/changeBankStatus", changeBankStatus);
-router.post("/verifyOtpAndChangeBankStatus", verifyOtpAndChangeBankStatus);
-router.post("/buyId", buyId);
 
 router.get("/getApplyOfflineForm", getApplyOfflineForm);
 router.put("/updateApplyOfflineForm/:id", updateApplyOfflineForm);
@@ -397,8 +402,12 @@ router.get(
 );
 router.post("/addSambalForm", addSambalForm);
 router.post("/verify-Edistrict", addVerifyDistrictForm);
-router.get("/getVerifyEdistrict/:userId", getVerifyEdistrict);
-router.get("/getSambalHistory/:userId", getSambalHistory);
+router.get(
+  "/getVerifyEdistrict/:userId",
+  authenticateToken,
+  getVerifyEdistrict
+);
+router.get("/getSambalHistory/:userId", authenticateToken, getSambalHistory);
 
 router.get("/getProfileImage/:userId", getProfileImage);
 

@@ -2,16 +2,19 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import { Dropdown, Modal, Spinner } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { clearUser } from "../../redux/user/userSlice";
 
 const SdFundTransferStatus = () => {
   // const [transactions, setTransactions] = useState([]); // Default to an empty array
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(0); // For Pagination
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { token } = useSelector((state) => state.user);
   const complaintsPerPage = 10;
   const [fromDate, setFromDate] = useState(""); // From date filter

@@ -124,6 +124,7 @@ const BuyUserId = () => {
       );
       if (response.data.success) {
         setWalletBalance(response.data.data);
+        console.log(response.data.data);
       } else {
         setWalletBalance(0);
       }
@@ -206,35 +207,38 @@ const BuyUserId = () => {
     // Validate number of IDs before submitting
     const noOfId = parseInt(formData.noOfId) || 0;
 
-    if (noOfId < parseInt(idPrice.distributor_min_id_limit)) {
+    // Get min & max limit dynamically based on userId_type
+    const minLimit =
+      parseInt(idPrice[`${formData.userId_type}_min_id_limit`]) || 0;
+    const maxLimit =
+      parseInt(idPrice[`${formData.userId_type}_max_id_limit`]) || Infinity;
+
+    if (noOfId < minLimit) {
       Swal.fire({
         icon: "warning",
         title: "Invalid Input",
-        text: `You must purchase at least ${idPrice.distributor_min_id_limit} IDs.`,
+        text: `You must purchase at least ${minLimit} IDs.`,
       }).then(() => {
-        // Reset the input field after alert
-        setFormData({
-          ...formData,
-          noOfId: "",
-        });
+        setFormData({ ...formData, noOfId: "" });
       });
-      return; // Stop form submission
-    } else if (noOfId > parseInt(idPrice.distributor_max_id_limit)) {
-      Swal.fire({
-        icon: "warning",
-        title: "Invalid Input",
-        text: `You can purchase a maximum of ${idPrice.distributor_max_id_limit} IDs.`,
-      }).then(() => {
-        // Reset the input field after alert
-        setFormData({
-          ...formData,
-          noOfId: "",
-        });
-      });
-      return; // Stop form submission
+      return;
     }
+
+    // Validate max limit
+    if (noOfId > maxLimit) {
+      Swal.fire({
+        icon: "warning",
+        title: "Invalid Input",
+        text: `You can purchase a maximum of ${maxLimit} IDs.`,
+      }).then(() => {
+        setFormData({ ...formData, noOfId: "" });
+      });
+      return;
+    }
+
     const selectedPaymentMethod = e.target.value;
 
+    console.log(walletBalance);
     if (
       selectedPaymentMethod === "Offline" &&
       calculateTotalAmount() > walletBalance

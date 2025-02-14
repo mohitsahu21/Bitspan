@@ -5,12 +5,15 @@ import { MdFormatListNumberedRtl } from "react-icons/md";
 import { BiHomeAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const SdDTHRechargeHistory = () => {
   const [allData, setAllData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [filterValue, setFilterValue] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
@@ -21,14 +24,42 @@ const SdDTHRechargeHistory = () => {
   const fetchRechargeData = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApiPostRechargeData/${userID}`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApiPostRechargeData/${userID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
+
       const data = response.data.data;
       console.log(data);
       setAllData(data);
       setFilteredData(data);
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching Recharge Data:", error);
+
+      if (error?.response?.status === 401) {
+        // 401 Error: Token Expired
+        Swal.fire({
+          icon: "error",
+          title: "Session Expired",
+          text: "Your session has expired. Please log in again.",
+        }).then(() => {
+          dispatch(clearUser()); // Clear user session from Redux
+          navigate("/"); // Redirect to login page
+        });
+      } else {
+        // Handle other API errors
+        Swal.fire({
+          icon: "error",
+          title: "Error Fetching Data",
+          text: "An error occurred while fetching recharge data. Please try again later.",
+        });
+      }
+    } finally {
+      setLoading(false);
     }
   };
   console.log(allData);

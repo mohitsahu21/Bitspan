@@ -4,14 +4,14 @@ import axios from "axios";
 import { FaAddressCard, FaUser } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { BiHomeAlt } from "react-icons/bi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom"; // Import useParams for fetching bid from URL
 import Swal from "sweetalert2";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
 const SdBankAccountVerify = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({

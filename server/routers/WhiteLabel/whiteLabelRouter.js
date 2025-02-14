@@ -236,7 +236,7 @@ router.get(
   authenticateToken,
   getWhiteLabeljoinedData
 );
-router.get("/getWalletBalance/:userId", authenticateToken, getWalletBalance);
+router.get("/getWalletBalance/:userId", getWalletBalance);
 router.get("/getUserDetails/:userId", authenticateToken, getUserDetails);
 
 router.post(

@@ -6,12 +6,15 @@ import { BiHomeAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import { Dropdown, Modal, Spinner } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { clearUser } from "../../redux/user/userSlice";
 
 const SdPrepaidRechargeHistory = () => {
   const [allData, setAllData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [filterValue, setFilterValue] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
@@ -23,19 +26,42 @@ const SdPrepaidRechargeHistory = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApiRechargeData/${userID}`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApiRechargeData/${userID}`,
+
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
+
       const data = response.data.data;
       console.log(data);
       setAllData(data);
       setFilteredData(data);
       setLoading(false);
     } catch (error) {
-      console.log(
-        error.response.data.status === "Failure"
-          ? error.response.data.message
-          : "No response received from the server"
-      );
+      console.error("Error fetching Recharge Data:", error);
+
+      if (error?.response?.status === 401) {
+        // 401 Error: Token Expired
+        Swal.fire({
+          icon: "error",
+          title: "Session Expired",
+          text: "Your session has expired. Please log in again.",
+        }).then(() => {
+          dispatch(clearUser());
+          हटाएं;
+          navigate("/");
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error Fetching Data",
+          text: "An error occurred while fetching recharge data. Please try again later.",
+        });
+      }
     } finally {
       setLoading(false);
     }

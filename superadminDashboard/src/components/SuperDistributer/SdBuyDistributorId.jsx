@@ -46,6 +46,7 @@ const SdBuyDistributorId = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
+          // `http://localhost:7777/api/auth/superDistributor/getPackageData/${package_Id}`,
           `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getPackageData/${package_Id}`,
           {
             headers: {
@@ -96,6 +97,7 @@ const SdBuyDistributorId = () => {
   const fetchWalletBalance = async () => {
     try {
       const response = await axios.get(
+        // `http://localhost:7777/api/auth/superDistributor/getWalletBalance/${userId}`,
         `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletBalance/${userId}`,
         {
           headers: {
@@ -106,6 +108,7 @@ const SdBuyDistributorId = () => {
       );
       if (response.data.success) {
         setWalletBalance(response.data.data);
+        console.log(response.data.data);
       } else {
         setWalletBalance(0);
       }
@@ -136,6 +139,7 @@ const SdBuyDistributorId = () => {
   const fetchNoOfIds = async () => {
     try {
       const response = await axios.get(
+        // `http://localhost:7777/api/auth/superDistributor/getRemainingIds/${userId}`,
         `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getRemainingIds/${userId}`,
         {
           headers: {
@@ -258,6 +262,7 @@ const SdBuyDistributorId = () => {
 
     try {
       const response = await axios.post(
+        // "http://localhost:7777/api/auth/superDistributor/buyId",
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/buyId",
         payload
       );
@@ -278,6 +283,7 @@ const SdBuyDistributorId = () => {
           noOfId: "",
           paymentMethod: "",
         });
+        fetchNoOfIds();
       } else {
         Swal.fire({
           icon: "error",
@@ -288,11 +294,22 @@ const SdBuyDistributorId = () => {
     } catch (error) {
       console.error("Error submitting purchase request:", error);
 
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "An error occurred while submitting your request.",
-      });
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Session Expired",
+          text: "Your token is expired. Please login again.",
+        });
+
+        dispatch(clearUser()); // Logout user
+        navigate("/"); // Redirect to login
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "An error occurred while submitting your request.",
+        });
+      }
     }
   };
 
