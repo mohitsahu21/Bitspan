@@ -257,14 +257,14 @@ function Router() {
           path: "/news/single-news",
           element: <SingleNews />,
         },
-        {
-          path: "/service",
-          element: <Service />,
-        },
-        {
-          path: "/about-us",
-          element: <AboutUs />,
-        },
+        // {
+        //   path: "/service",
+        //   element: <Service />,
+        // },
+        // {
+        //   path: "/about-us",
+        //   element: <AboutUs />,
+        // },
         {
           path: "/contact",
           element: <Contact homePage={homePageNew} />,
@@ -273,18 +273,18 @@ function Router() {
           path: "/error",
           element: <Error />,
         },
-        {
-          path: "/about-us-another",
-          element: <AboutUsTwo />,
-        },
-        {
-          path: "/shops",
-          element: <Shops />,
-        },
-        {
-          path: "/shops/shop-details",
-          element: <ShopDetails />,
-        },
+        // {
+        //   path: "/about-us-another",
+        //   element: <AboutUsTwo />,
+        // },
+        // {
+        //   path: "/shops",
+        //   element: <Shops />,
+        // },
+        // {
+        //   path: "/shops/shop-details",
+        //   element: <ShopDetails />,
+        // },
         {
           path: "/Register",
           element: <Register homePage={homePageNew} />,

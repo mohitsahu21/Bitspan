@@ -22,7 +22,11 @@ function Contact({ homePage }) {
 
   return (
     <>
-      <Drawer drawer={drawer} action={drawerAction.toggle} />
+      <Drawer
+        drawer={drawer}
+        action={drawerAction.toggle}
+        homePage={homePage}
+      />
       <HeaderNews
         drawer={drawer}
         action={drawerAction.toggle}
@@ -51,8 +55,8 @@ function Contact({ homePage }) {
       />
       <Forms homePage={homePage} />
       <FooterHomeTwo homePage={homePage} />
-      <BackToTop className="back-to-top-2 mb-2" />
-      <ScrollingInfo />
+      {/* <BackToTop className="back-to-top-2 mb-2" /> */}
+      {/* <ScrollingInfo /> */}
     </>
   );
 }

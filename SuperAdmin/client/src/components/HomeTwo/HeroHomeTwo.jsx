@@ -117,33 +117,6 @@ function HeroHomeTwo({ homePage }) {
     }
   };
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     setLoading(true);
-  //     try {
-  //       const response = await fetch(
-  //         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
-  //       );
-  //       const result = await response.json();
-
-  //       // API response structure validate karna
-  //       if (result.success && result.data) {
-  //         setLoading(false);
-  //         console.log("✅ API fetched successfully:", result.data);
-  //         setHeroData(result.data);
-  //       } else {
-  //         console.error("❌ Invalid API response", result);
-  //         setLoading(false);
-  //       }
-  //     } catch (error) {
-  //       console.error("❌ Error fetching hero data:", error);
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
   if (!homePage) {
     return (
       <div className={`appie-loader ${loading ? "active" : ""}`}>
@@ -175,8 +148,13 @@ function HeroHomeTwo({ homePage }) {
                 <div className="appie-hero-content">
                   <ul>
                     <li>
-                      <a href="#" onClick={() => scrollToSection("join")}>
-                        {/* <i className="fab fa-apple" />  */}
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          scrollToSection("join");
+                        }}
+                      >
                         JOIN NOW
                       </a>
                     </li>

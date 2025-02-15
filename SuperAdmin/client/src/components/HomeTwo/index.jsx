@@ -35,7 +35,7 @@ function HomeTwo({ homePage }) {
       <HeroHomeTwo homePage={homePage} />
 
       <section id="about">
-        <CounterArea />
+        <CounterArea homePage={homePage} />
       </section>
 
       <section id="Services">
@@ -73,8 +73,8 @@ function HomeTwo({ homePage }) {
       <FooterHomeTwo homePage={homePage} />
       <MyModal />
 
-      <BackToTop className="back-to-top-2 mb-2" />
-      <ScrollingInfo />
+      {/* <BackToTop className="back-to-top-2 mb-2" /> */}
+      {/* <ScrollingInfo /> */}
     </>
   );
 }

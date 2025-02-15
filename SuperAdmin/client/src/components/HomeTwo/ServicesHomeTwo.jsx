@@ -52,7 +52,7 @@ function ServicesHomeTwo({ className, homePage }) {
         >
           <div className="container">
             <div className="row align-items-end">
-              <div className="col-lg-12 col-md-8">
+              <div className="col-lg-12 col-md-12">
                 <div className="appie-section-title p-0">
                   <h3 className="text-center mt-3 appie-title">Our Services</h3>
                   <p className="text-center">What Solutions We Provide</p>
@@ -156,7 +156,7 @@ function ServicesHomeTwo({ className, homePage }) {
                   <div className="icon">
                     <i className="fas fa-cog" />
                   </div>
-                  <h4 className="title">Mobile Application NSDL Instant Pan</h4>
+                  <h4 className="title">NSDL Instant PAN Mobile App</h4>
                   <p>
                     Now Apply NSDL instant Pan in your Mobile with Aadhaar OTP
                     Through,

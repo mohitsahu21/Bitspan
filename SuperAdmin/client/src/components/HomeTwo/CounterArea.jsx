@@ -5,45 +5,52 @@ import counterIconThree from "../../assets/images/icon/counter-icon-3.svg";
 import counterIconFour from "../../assets/images/icon/counter-icon-4.svg";
 import CounterUpCom from "../../lib/CounterUpCom.jsx";
 import heroThumb1 from "../../assets/images/about-1.png";
+import Loader from "../Helper/Loader.jsx";
 
 // ✅ Default dummy data
-const defaultHeroData = {
-  Home_Page_1st_Paragraph: "Welcome to Bitspan",
-  Home_Page_2nd_Paragraph: "Your Trusted Partner in Finance",
-  Calling_No: "0000000000",
-  Email_Id: "info@bitspan.com",
-  Home_Page_Background: heroThumb1, // ✅ Default Background Image
-  Logo: "/default-logo.png",
-};
+// const defaultHeroData = {
+//   Home_Page_1st_Paragraph: "Welcome to Bitspan",
+//   Home_Page_2nd_Paragraph: "Your Trusted Partner in Finance",
+//   Calling_No: "0000000000",
+//   Email_Id: "info@bitspan.com",
+//   Home_Page_Background: heroThumb1, // ✅ Default Background Image
+//   Logo: "/default-logo.png",
+// };
 
-function CounterArea({ style }) {
-  const [heroData, setHeroData] = useState(defaultHeroData);
+function CounterArea({ style, homePage }) {
+  console.log(homePage);
+  // const [heroData, setHeroData] = useState(defaultHeroData);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
-        );
-        const result = await response.json();
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
+  //       );
+  //       const result = await response.json();
 
-        // API response structure validate karna
-        if (result.success && result.data) {
-          console.log("✅ API fetched successfully:", result.data);
-          setHeroData(result.data);
-        } else {
-          console.error("❌ Invalid API response", result);
-        }
-      } catch (error) {
-        console.error("❌ Error fetching hero data:", error);
-      }
-    };
+  //       // API response structure validate karna
+  //       if (result.success && result.data) {
+  //         console.log("✅ API fetched successfully:", result.data);
+  //         setHeroData(result.data);
+  //       } else {
+  //         console.error("❌ Invalid API response", result);
+  //       }
+  //     } catch (error) {
+  //       console.error("❌ Error fetching hero data:", error);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
-  if (!heroData) {
-    return <div>Loading...</div>;
+  const [loading, setLoading] = useState(true);
+  if (!homePage) {
+    return (
+      <div className={`appie-loader ${loading ? "active" : ""}`}>
+        <Loader />
+      </div>
+    );
   }
 
   return (
@@ -58,7 +65,7 @@ function CounterArea({ style }) {
             <div className="col-lg-12">
               <div className="appie-section-title">
                 <h3 className="appie-title">About Us</h3>
-                <p>{heroData.about}</p>
+                <p>{homePage?.about}</p>
               </div>
             </div>
           </div>

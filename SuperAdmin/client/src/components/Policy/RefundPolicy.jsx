@@ -16,7 +16,11 @@ const RefundPolicy = ({ homePage }) => {
   const [drawer, drawerAction] = useToggle(false);
   return (
     <>
-      <Drawer drawer={drawer} action={drawerAction.toggle} />
+      <Drawer
+        drawer={drawer}
+        action={drawerAction.toggle}
+        homePage={homePage}
+      />
 
       {/* <HeaderHomeTwo action={drawerAction.toggle} /> */}
 
@@ -65,8 +69,8 @@ const RefundPolicy = ({ homePage }) => {
       </div>
 
       <FooterHomeTwo homePage={homePage} />
-      <BackToTop className="back-to-top-2 mb-2" />
-      <ScrollingInfo homePage={homePage} />
+      {/* <BackToTop className="back-to-top-2 mb-2" /> */}
+      {/* <ScrollingInfo homePage={homePage} /> */}
     </>
   );
 };

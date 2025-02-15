@@ -143,7 +143,7 @@ function Forms({ homePage }) {
         <div className="container">
           <div className="row mt-5">
             <div className="col-md-4">
-              <div className="contact--info-area">
+              <div className="contact--info-area ">
                 <h3>Get in touch</h3>
                 <p>
                   Ready to begin something new? Simply fill out the form and
@@ -160,26 +160,41 @@ function Forms({ homePage }) {
                 <div className="single-info">
                   <h5>Phone</h5>
                   <p>
-                    <i className="fal fa-phone"></i>
-                    {/* {heroData.Calling_No} */}
-                    {homePage?.Calling_No}
+                    <a
+                      href={`tel:${homePage?.Calling_No}`}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      <i className="fal fa-phone"></i>
+                      {/* {heroData.Calling_No} */}
+                      {homePage?.Calling_No}
+                    </a>
                   </p>
                   <br />
                   <p>
-                    <i class="fab fa-whatsapp"></i>
-                    {homePage?.Whatsapp_No}
-                    {/* {heroData.Whatsapp_No} */}
+                    <a
+                      href={`https://wa.me/${homePage?.Whatsapp_No}`}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      <i class="fab fa-whatsapp"></i>
+                      {homePage?.Whatsapp_No}
+                      {/* {heroData.Whatsapp_No} */}
+                    </a>
                   </p>
                   {/* <FaWhatsapp className="fal" /> */}
                 </div>
                 <div className="single-info">
                   <h5>Email</h5>
                   <p>
-                    <i className="fal fa-envelope"></i>
-                    {homePage?.Email_Id}
-                    {/* {heroData.Email_Id} */}
-                    <br />
-                    {/* help@education.com */}
+                    <a
+                      href={`mailto:${homePage?.Email_Id}`}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      <i className="fal fa-envelope"></i>
+                      {homePage?.Email_Id}
+                      {/* {heroData.Email_Id} */}
+                      <br />
+                      {/* help@education.com */}
+                    </a>
                   </p>
                 </div>
                 <div className="ab-social mb-3 ">
@@ -196,6 +211,13 @@ function Forms({ homePage }) {
                   <a className="lin" href={homePage?.LinkedIn_Link}>
                     <i className="fab fa-linkedin-in"></i>
                   </a>
+                  <a className="insta" href={homePage?.Instagram_Link}>
+                    <i className="fab fa-instagram pt-1"></i>
+                  </a>
+
+                  {/* <a className="Whatsapp" href={homePage?.Whatsapp_No}>
+                    <i class="fab fa-whatsapp"></i>
+                  </a> */}
                 </div>
               </div>
             </div>

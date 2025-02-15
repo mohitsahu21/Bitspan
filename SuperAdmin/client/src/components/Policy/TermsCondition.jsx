@@ -70,8 +70,8 @@ const TermsCondition = ({ homePage }) => {
       </div>
 
       <FooterHomeTwo homePage={homePage} />
-      <BackToTop className="back-to-top-2 mb-2" />
-      <ScrollingInfo homePage={homePage} />
+      {/* <BackToTop className="back-to-top-2 mb-2" /> */}
+      {/* <ScrollingInfo homePage={homePage} /> */}
     </>
   );
 };

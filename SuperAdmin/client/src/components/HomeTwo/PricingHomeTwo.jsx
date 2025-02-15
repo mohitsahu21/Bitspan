@@ -136,7 +136,7 @@ function PricingHomeTwo({ homePage }) {
                           </div>
                           {/* <p>Get your 14 day free trial</p> */}
                         </div>
-                        <div className="pricig-body text-center">
+                        <div className="pricig-body ">
                           {/* <ul>
                                                         <li>
                                                             <i className="fal fa-check" /> 60-day
@@ -188,7 +188,7 @@ function PricingHomeTwo({ homePage }) {
                           </div>
                           {/* <p>Billed $276 per website annually.</p> */}
                         </div>
-                        <div className="pricig-body text-center">
+                        <div className="pricig-body ">
                           {/* <ul>
                                                         <li>
                                                             <i className="fal fa-check" /> 60-day

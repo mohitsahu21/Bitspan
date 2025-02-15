@@ -2515,7 +2515,8 @@ p {
   border-radius: 50%;
 }
 .appie-single-service-2 .title {
-  font-size: 20px;
+  font-size: 19px;
+  /* font-size: 20px; */
   font-weight: 700;
   margin-top: 30px;
   margin-bottom: 10px;
@@ -3260,14 +3261,15 @@ p {
 }
 @media (max-width: 767px) {
   .appie-testimonial-2-box {
-    padding: 50px 30px;
+    padding: 70px 30px;
   }
 }
 
 .appie-testimonial-slider-2 .slick-arrow {
+  /* position: relative; */
   position: absolute;
   right: 0;
-  bottom: 0px;
+  bottom: 20px;
   height: 50px;
   width: 50px;
   text-align: center;
@@ -3277,6 +3279,8 @@ p {
   border-radius: 50%;
   z-index: 9;
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
 }
 .appie-testimonial-slider-2 .slick-arrow:hover {
   background: #ff3e66;
@@ -3284,10 +3288,12 @@ p {
   border-color: #ff3e66;
 }
 .appie-testimonial-slider-2 .slick-arrow.prev {
-  right: 60px;
+  right: 180px;
+  /* right: 0px; */
 }
 .appie-testimonial-slider-2 .slick-arrow.next {
-  right: 0;
+  right: 120px;
+  /* right: 0; */
 }
 
 .appie-testimonial-slider-2-item .item {
@@ -3306,7 +3312,20 @@ p {
     padding-left: 0;
     padding-right: 0;
   }
+  .appie-testimonial-slider-2 .slick-arrow{
+    bottom: 10px;
+  }
+
+  .appie-testimonial-slider-2 .slick-arrow.prev{
+    right: 100px;
+  }
+  .appie-testimonial-slider-2 .slick-arrow.next {
+    right: 40px;
+  }
+  
 }
+
+
 .appie-testimonial-slider-2-item .thumb {
   text-align: center;
   min-width: 140px;
@@ -7557,11 +7576,60 @@ blockquote cite {
   background: #007bb6;
 }
 
+.ab-social .insta {
+  background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+}
+.ab-social .Whatsapp {
+  background-color: #25D366;
+}
+
+
+
+
 .ab-social a:hover {
   -webkit-box-shadow: 0px 10px 20px 0px rgba(9, 111, 150, 0.3);
   -moz-box-shadow: 0px 10px 20px 0px rgba(9, 111, 150, 0.3);
   box-shadow: 0px 10px 20px 0px rgba(9, 111, 150, 0.3);
 }
+
+
+/* mine CSS */
+@media (max-width: 768px) {
+  .single-info {
+    text-align: center; /* Center align text */
+  }
+
+  .single-info p {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center; /* Center align icon and text */
+    gap: 10px; /* Space between icon and text */
+  }
+
+  .single-info i {
+    font-size: 18px; /* Adjust icon size */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center icon properly */
+    width: 24px; /* Give fixed width */
+    height: 24px; /* Give fixed height */
+  }
+  .ab-social {
+    text-align: center;
+  }
+  .contact--info-area{
+    margin-right: 0;
+  }
+  .contact--info-area h3{
+    text-align: center;
+  }
+  .contact--info-area p{
+    text-align: center;
+  }
+}
+
+
+
 
 /*===========================
     17.APPIE CONTACT css 

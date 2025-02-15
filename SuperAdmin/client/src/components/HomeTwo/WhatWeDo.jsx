@@ -108,7 +108,7 @@ function WhatWeDo({ className, homePage }) {
                 <h4 className="title">
                   RETAILER, DISTRIBUTOR & SUPER DISTRIBUTOR
                 </h4>
-                <p>
+                <p className="text-left">
                   A Retailer can start a PAN center with minimum investment
                   only.Retailer can makes unlimited PAN cards through proper
                   channel. A Distributor can makes unlimited PAN cards.He/She
@@ -129,7 +129,7 @@ function WhatWeDo({ className, homePage }) {
                   <i className="fas fa-link" />
                 </div>
                 <h4 className="title">PAN CARD WHITE LABEL</h4>
-                <p>
+                <p className="text-left">
                   We are providing pan card white label portal for your
                   business. Here you can create unlimited pan card agent, pan
                   card Super distributor & distributor with full admin control
