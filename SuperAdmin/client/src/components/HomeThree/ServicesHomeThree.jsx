@@ -59,7 +59,7 @@ function ServicesHomeThree({ homePage }) {
                   <p className="price-Font">
                     &#8377; {homePage?.White_Label_Joining_Price}
                   </p>
-                  <Link to="/Register " className="custom-btn text-dark">
+                  <Link to="/Register" className="custom-btn text-dark">
                     Join us <i className="fal fa-arrow-right" />
                   </Link>
                 </div>

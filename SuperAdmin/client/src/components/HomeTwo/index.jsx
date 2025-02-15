@@ -73,7 +73,7 @@ function HomeTwo({ homePage }) {
       <FooterHomeTwo homePage={homePage} />
       <MyModal />
 
-      {/* <BackToTop className="back-to-top-2 mb-2" /> */}
+      <BackToTop className="back-to-top-2 mb-2" />
       {/* <ScrollingInfo /> */}
     </>
   );

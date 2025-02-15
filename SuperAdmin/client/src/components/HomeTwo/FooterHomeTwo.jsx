@@ -180,8 +180,8 @@ function FooterHomeTwo({ homePage }) {
                                 </div> */}
                 <div className="copyright-text">
                   <p>
-                    Copyright 2017-2023 © {homePage?.Company_Name} PAN. All
-                    rights reserved.
+                    Copyright 2017-2023 © {homePage?.Company_Name}. All rights
+                    reserved.
                   </p>
                 </div>
               </div>

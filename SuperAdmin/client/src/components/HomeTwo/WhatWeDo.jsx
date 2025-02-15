@@ -24,9 +24,9 @@ function WhatWeDo({ className, homePage }) {
                 <p>
                   {homePage?.Company_Name} IS LEADING B2B PTAL WE HAVE 10K+
                   SATISFIED CUSTOMERS TODAY AT <b>www.2kadam.co.in</b> CREATED
-                  BY THE INDUSTRY LEADERS, {homePage?.Company_Name}
-                  PROVIDES A DEDICATED TEAM FOR EACH CUSTOMER WHO MAKES SURE
-                  THAT THE WORK IS DONE WITHIN THE TIME FRAME
+                  BY THE INDUSTRY LEADERS, {homePage?.Company_Name} PROVIDES A
+                  DEDICATED TEAM FOR EACH CUSTOMER WHO MAKES SURE THAT THE WORK
+                  IS DONE WITHIN THE TIME FRAME
                 </p>
               </div>
             </div>
