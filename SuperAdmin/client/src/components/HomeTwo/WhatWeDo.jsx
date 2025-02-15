@@ -2,41 +2,9 @@ import React, { useEffect, useState } from "react";
 import heroThumb1 from "../../assets/images/about-1.png";
 
 // ✅ Default dummy data
-const defaultHeroData = {
-  Home_Page_1st_Paragraph: "Welcome to Bitspan",
-  Home_Page_2nd_Paragraph: "Your Trusted Partner in Finance",
-  Calling_No: "0000000000",
-  Email_Id: "info@bitspan.com",
-  Home_Page_Background: heroThumb1, // ✅ Default Background Image
-  Logo: "/default-logo.png",
-};
 
 function WhatWeDo({ className, homePage }) {
   console.log(homePage);
-  // const [heroData, setHeroData] = useState(defaultHeroData);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
-  //       );
-  //       const result = await response.json();
-
-  //       // API response structure validate karna
-  //       if (result.success && result.data) {
-  //         console.log("✅ API fetched successfully:", result.data);
-  //         setHeroData(result.data);
-  //       } else {
-  //         console.error("❌ Invalid API response", result);
-  //       }
-  //     } catch (error) {
-  //       console.error("❌ Error fetching hero data:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   if (!homePage) {
     return <div>Loading...</div>;
@@ -54,10 +22,11 @@ function WhatWeDo({ className, homePage }) {
               <div className="appie-section-title">
                 <h3 className="appie-title">WHAT WE DO ?</h3>
                 <p>
-                  BITS PAN IS LEADING B2B PTAL WE HAVE 10K+ SATISFIED CUSTOMERS
-                  TODAY AT WWW.BITSPAN.IN CREATED BY THE INDUSTRY LEADERS, BITS
-                  PAN PAN PROVIDES A DEDICATED TEAM FOR EACH CUSTOMER WHO MAKES
-                  SURE THAT THE WORK IS DONE WITHIN THE TIME FRAME
+                  {homePage?.Company_Name} IS LEADING B2B PTAL WE HAVE 10K+
+                  SATISFIED CUSTOMERS TODAY AT <b>www.2kadam.co.in</b> CREATED
+                  BY THE INDUSTRY LEADERS, {homePage?.Company_Name}
+                  PROVIDES A DEDICATED TEAM FOR EACH CUSTOMER WHO MAKES SURE
+                  THAT THE WORK IS DONE WITHIN THE TIME FRAME
                 </p>
               </div>
             </div>

@@ -35,7 +35,7 @@ function HomeFour({ homePage }) {
       <ServicesHomeOne className="pt-190" />
       <FeaturesHomeFour />
       <CounterArea style={{ backgroundColor: "#EEF1F6" }} homePage={homePage} />
-      <WhatWeDo />
+      <WhatWeDo homePage={homePage} />
 
       <section id="join">
         <PricingHomeFour homePage={homePage} />

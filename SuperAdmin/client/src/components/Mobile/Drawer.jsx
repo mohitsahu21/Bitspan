@@ -161,6 +161,16 @@ function Drawer({ drawer, action, lang, homePage }) {
                     </li>
                     <li>
                       <a
+                        href={`https://wa.me/${homePage?.Whatsapp_No}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <i class="fab fa-whatsapp mt-1"></i>
+                        {homePage?.Whatsapp_No}
+                      </a>
+                    </li>
+                    <li>
+                      <a
                         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                           homePage?.Address
                         )}`}

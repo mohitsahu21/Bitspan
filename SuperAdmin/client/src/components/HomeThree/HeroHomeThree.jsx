@@ -76,7 +76,14 @@ function HeroHomeThree({ homePage }) {
                   >
                     {homePage?.Home_Page_2nd_Paragraph}
                   </h1>
-                  <h3 style={{ textTransform: "capitalize" }}>
+                  <h3
+                    style={{
+                      textTransform: "capitalize",
+                      lineHeight: "39px",
+                      fontWeight: "600",
+                      color: "#9999ff",
+                    }}
+                  >
                     {homePage?.Home_Page_1st_Paragraph}
                   </h3>
                   <div className="hero-btns">

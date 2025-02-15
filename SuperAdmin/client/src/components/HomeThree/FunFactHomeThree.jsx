@@ -31,14 +31,7 @@ function FunFactHomeThree({ homePage }) {
                   <div className="col-lg-6">
                     <div className="appie-fun-fact-content">
                       <h3 className="title">About Us</h3>
-                      <p>
-                        BITS PAN SERVICE CENTER PROVIDER. Now PAN CARD is
-                        mandatory for all citizens in India. We are providing a
-                        smart business solution. PAN AGENCY is working two years
-                        over in India.There are more than six thousands
-                        Retailers-Distributors & Super Distributors is working
-                        now smoothly.
-                      </p>
+                      <p>{homePage?.About_Us}</p>
                       <div className="row">
                         <div className="col-sm-6">
                           <div className="appie-fun-fact-item">

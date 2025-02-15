@@ -35,7 +35,11 @@ function HeroHomeFour({ homePage }) {
                 <div className="appie-hero-content text-center">
                   <h2
                     className="welcome-heading"
-                    style={{ textTransform: "capitalize" }}
+                    style={{
+                      textTransform: "capitalize",
+                      color: "#19094d",
+                      opacity: "1",
+                    }}
                   >
                     {" "}
                     {homePage?.Home_Page_1st_Paragraph}

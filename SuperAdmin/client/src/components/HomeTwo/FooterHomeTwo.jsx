@@ -27,11 +27,12 @@ function FooterHomeTwo({ homePage }) {
                   </Link>
                 </div>
                 <p>
-                  BITS PAN SERVICE CENTER PROVIDER. Now PAN CARD is mandatory
-                  for all citizens in India. We are providing a smart business
-                  solution. PAN AGENCY is working two years over in India.There
-                  are more than six thousands Retailers-Distributors & Super
-                  Distributors is working now smoothly.
+                  {homePage?.Company_Name} PAN SERVICE CENTER PROVIDER. Now PAN
+                  CARD is mandatory for all citizens in India. We are providing
+                  a smart business solution. PAN AGENCY is working two years
+                  over in India.There are more than six thousands
+                  Retailers-Distributors & Super Distributors is working now
+                  smoothly.
                 </p>
                 {/* <a href="#">
                                     Read More <i className="fal fa-arrow-right" />
@@ -178,7 +179,10 @@ function FooterHomeTwo({ homePage }) {
                                     </ul>
                                 </div> */}
                 <div className="copyright-text">
-                  <p>Copyright 2017-2023 © BITS PAN. All rights reserved.</p>
+                  <p>
+                    Copyright 2017-2023 © {homePage?.Company_Name} PAN. All
+                    rights reserved.
+                  </p>
                 </div>
               </div>
             </div>

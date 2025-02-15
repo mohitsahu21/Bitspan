@@ -158,7 +158,7 @@ function Forms({ homePage }) {
                   </p>
                 </div>
                 <div className="single-info">
-                  <h5>Phone</h5>
+                  <h5>Contact No.</h5>
                   <p>
                     <a
                       href={`tel:${homePage?.Calling_No}`}
