@@ -82,8 +82,10 @@ function HeroHomeThree({ homePage }) {
                   <div className="hero-btns">
                     <a
                       className="main-btn"
-                      href="#"
-                      onClick={() => scrollToSection("join")}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        scrollToSection("join");
+                      }}
                     >
                       Join Now
                     </a>

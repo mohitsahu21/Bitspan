@@ -44,12 +44,12 @@ function FooterHomeTwo({ homePage }) {
                       </Link>
                     </li>
                     <li>
-                      <Link to={homePage?.Instagram_Link}>
+                      <Link to={homePage?.Twitter_Link}>
                         <i className="fab fa-twitter" />
                       </Link>
                     </li>
                     <li>
-                      <Link to={homePage?.LinkedIn_Link}>
+                      <Link to={homePage?.Instagram_Link}>
                         <i className="fab fa-instagram"></i>
                       </Link>
                     </li>
@@ -84,7 +84,7 @@ function FooterHomeTwo({ homePage }) {
                     <Link to="/Bank-Details">Bank Details</Link>
                   </li>
                   <li>
-                    <Link to="#">Login</Link>
+                    <Link to="https://dashboard.2kadam.co.in/">Login</Link>
                   </li>
                   {/* <li>
                     <Link to="/contact">Contact</Link>
@@ -116,18 +116,18 @@ function FooterHomeTwo({ homePage }) {
                 <h4 className="title">Get In Touch</h4>
                 <ul>
                   <li>
-                    <a href={`mailto:${homePage.Email_Id}`}>
+                    <a href={`mailto:${homePage?.Email_Id}`}>
                       <i className="fal fa-envelope mt-1" />{" "}
                       {homePage?.Email_Id}
                     </a>
                   </li>
                   <li>
-                    <a href={`tel:${homePage.Calling_No}`}>
+                    <a href={`tel:${homePage?.Calling_No}`}>
                       <i className="fal fa-phone mt-1" /> {homePage?.Calling_No}
                     </a>
                     <br />
                     <a
-                      href={`https://wa.me/${homePage.Whatsapp_No}`}
+                      href={`https://wa.me/${homePage?.Whatsapp_No}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

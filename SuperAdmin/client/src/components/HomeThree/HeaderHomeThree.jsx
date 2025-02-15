@@ -13,30 +13,6 @@ function HeaderHomeThree({ action, homePage }) {
       section.scrollIntoView({ behavior: "smooth" });
     }
   };
-  // const [heroData, setHeroData] = useState("");
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
-  //       );
-  //       const result = await response.json();
-
-  //       // API response structure validate karna
-  //       if (result.success && result.data) {
-  //         console.log("✅ API fetched successfully:", result.data);
-  //         setHeroData(result.data);
-  //       } else {
-  //         console.error("❌ Invalid API response", result);
-  //       }
-  //     } catch (error) {
-  //       console.error("❌ Error fetching hero data:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   useEffect(() => {
     StickyMenu();
@@ -64,7 +40,7 @@ function HeaderHomeThree({ action, homePage }) {
                   <div className="appie-btn-box text-right">
                     <a
                       className="main-btn ml-150 d-lg-block d-none"
-                      href="#"
+                      href="https://dashboard.2kadam.co.in/"
                       // onClick={() => scrollToSection("join")}
                     >
                       <i className="fal fa-user px-1" /> Login

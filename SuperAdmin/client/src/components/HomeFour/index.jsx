@@ -34,7 +34,7 @@ function HomeFour({ homePage }) {
       <HeroHomeFour homePage={homePage} />
       <ServicesHomeOne className="pt-190" />
       <FeaturesHomeFour />
-      <CounterArea style={{ backgroundColor: "#EEF1F6" }} />
+      <CounterArea style={{ backgroundColor: "#EEF1F6" }} homePage={homePage} />
       <WhatWeDo />
 
       <section id="join">
@@ -50,7 +50,7 @@ function HomeFour({ homePage }) {
       <FooterHomeTwo homePage={homePage} />
       <MyModal />
       <BackToTop className="back-to-top-3 mb-2" />
-      <ScrollingInfo />
+      {/* <ScrollingInfo /> */}
     </>
   );
 }

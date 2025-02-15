@@ -119,7 +119,7 @@
 
 // export default Router;
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 import { useEffect, useState } from "react";
 import HomeOne from "./components/HomeOne/index.jsx";
 import HomeTwo from "./components/HomeTwo/index.jsx";
@@ -240,7 +240,7 @@ function Router() {
     fetchHomePage();
   }, []);
 
-  const router = createBrowserRouter([
+  const router = createHashRouter([
     {
       path: "/",
       element: <Layout />,

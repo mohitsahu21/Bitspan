@@ -44,7 +44,7 @@ function FunFactHomeThree({ homePage }) {
                           <div className="appie-fun-fact-item">
                             <h4 className="title">
                               <CounterUpCom
-                                endValue="85"
+                                endValue="370"
                                 sectionSelect="fun-fact-area"
                               />
                               +
@@ -56,7 +56,7 @@ function FunFactHomeThree({ homePage }) {
                           <div className="appie-fun-fact-item">
                             <h4 className="title">
                               <CounterUpCom
-                                endValue="205"
+                                endValue="1500"
                                 sectionSelect="fun-fact-area"
                               />
                               +
@@ -68,7 +68,7 @@ function FunFactHomeThree({ homePage }) {
                           <div className="appie-fun-fact-item">
                             <h4 className="title">
                               <CounterUpCom
-                                endValue="567"
+                                endValue="6000"
                                 sectionSelect="fun-fact-area"
                               />
                               +
@@ -80,10 +80,10 @@ function FunFactHomeThree({ homePage }) {
                           <div className="appie-fun-fact-item">
                             <h4 className="title">
                               <CounterUpCom
-                                endValue="1056"
+                                endValue="24"
                                 sectionSelect="fun-fact-area"
                               />
-                              +
+                              k+
                             </h4>
                             <span>Retailer</span>
                           </div>

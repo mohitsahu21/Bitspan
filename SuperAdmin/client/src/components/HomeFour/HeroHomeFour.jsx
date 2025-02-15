@@ -52,7 +52,10 @@ function HeroHomeFour({ homePage }) {
                     <a
                       className="main-btn"
                       href="#"
-                      onClick={() => scrollToSection("join")}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        scrollToSection("join");
+                      }}
                     >
                       JOIN NOW
                     </a>

@@ -10,7 +10,7 @@ function CounterUpCom({ endValue = 0, sectionSelect }) {
       window.addEventListener("scroll", () => {
         const currentScrollPosition =
           window.pageYOffset || document.documentElement.scrollTop;
-        if (currentScrollPosition + 700 > currentPosition) {
+        if (currentScrollPosition + 1000 > currentPosition) {
           setShowCountValue(true);
         }
       });

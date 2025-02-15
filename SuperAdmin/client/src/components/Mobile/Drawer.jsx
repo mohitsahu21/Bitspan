@@ -15,31 +15,6 @@ function Drawer({ drawer, action, lang, homePage }) {
     }
   };
 
-  // const [heroData, setHeroData] = useState("");
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
-  //       );
-  //       const result = await response.json();
-
-  //       // API response structure validate karna
-  //       if (result.success && result.data) {
-  //         console.log("✅ API fetched successfully:", result.data);
-  //         setHeroData(result.data);
-  //       } else {
-  //         console.error("❌ Invalid API response", result);
-  //       }
-  //     } catch (error) {
-  //       console.error("❌ Error fetching hero data:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
   return (
     <>
       <div
@@ -127,14 +102,17 @@ function Drawer({ drawer, action, lang, homePage }) {
                       <Link to="/FindId">Find UserId</Link>
                     </li>
                     <li
-                      onClick={(e) => handler(e, "contact")}
+                      onClick={(e) => handler(e)}
                       id="Login"
                       className="menu-item-has-children active"
                     >
-                      <Link to="#">
+                      <Link to="https://dashboard.2kadam.co.in/">
                         {" "}
                         <i className="fal fa-user pe-5" /> Login
                       </Link>
+                      {/* <a href="https://dashboard.2kadam.co.in/">
+                      <i className="fal fa-user pe-5" /> Login
+                      </a> */}
                     </li>
                   </ul>
                 </div>
@@ -146,7 +124,7 @@ function Drawer({ drawer, action, lang, homePage }) {
                       </a>
                     </li>
                     <li>
-                      <a href={homePage?.Instagram_Link}>
+                      <a href={homePage?.Twitter_Link}>
                         <i className="fab fa-twitter"></i>
                       </a>
                     </li>
@@ -160,23 +138,36 @@ function Drawer({ drawer, action, lang, homePage }) {
                         <i className="fab fa-linkedin-in" />
                       </a>
                     </li>
+                    <li>
+                      <a href={homePage?.Youtube_Link}>
+                        <i className="fab fa-youtube"></i>
+                      </a>
+                    </li>
                   </ul>
                 </div>
                 <div className="footer-widget-info">
                   <ul>
                     <li>
-                      <a href="#">
-                        <i className="fal fa-envelope" /> {homePage?.Email_Id}
+                      <a href={`mailto:${homePage?.Email_Id}`}>
+                        <i className="fal fa-envelope mt-1" />{" "}
+                        {homePage?.Email_Id}
                       </a>
                     </li>
                     <li>
-                      <a href="#">
-                        <i className="fal fa-phone" /> {homePage?.Calling_No}
+                      <a href={`tel:${homePage?.Calling_No}`}>
+                        <i className="fal fa-phone mt-1" />{" "}
+                        {homePage?.Calling_No}
                       </a>
                     </li>
                     <li>
-                      <a href="#">
-                        <i className="fal fa-map-marker-alt" />
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                          homePage?.Address
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <i className="fal fa-map-marker-alt mt-1" />
                         {homePage?.Address}
                       </a>
                     </li>

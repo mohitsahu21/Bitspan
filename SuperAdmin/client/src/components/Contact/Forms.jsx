@@ -276,6 +276,10 @@ function Forms({ homePage }) {
                       value={formData.Mobile_No}
                       onChange={handleChange}
                       required
+                      minLength={10} // Ensures at least 10 characters
+                      maxLength={10} // Limits to 10 characters
+                      pattern="[0-9]{10}" // Ensures only 10-digit numbers
+                      title="Enter a valid 10-digit phone number"
                     />
                     {errors.Mobile_No && (
                       <small className="error">{errors.Mobile_No}</small>
