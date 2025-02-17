@@ -70,6 +70,9 @@
 // import VerifyEdistrict from "../components/DashBoard/VerifyEdistrict";
 // import VerifyDistrictHistory from "../components/DashBoard/VerifyDistrictHistory";
 // import SambalHistory from "../components/DashBoard/SambalHistory";
+// import DTHConnectionHistroy from "../components/DashBoard/DTHConnectionHistroy";
+// import NSDLPanComponent from "../components/DashBoard/NSDLPanComponent";
+// import NSDLPANCorrectionComponent from "../components/DashBoard/NSDLPANCorrectionComponent";
 // import { useSelector } from "react-redux";
 
 import React, { Suspense, lazy } from "react";
@@ -77,8 +80,8 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Spinner } from "react-bootstrap";
 import styled from "styled-components";
-import DTHConnectionHistroy from "../components/DashBoard/DTHConnectionHistroy";
-import NSDLPanComponent from "../components/DashBoard/NSDLPanComponent";
+// import NSDLPanStatusComponent from "../components/DashBoard/NSDLPanStatusComponent";
+// import NSDLIncompletePanCompoent from "../components/DashBoard/NSDLIncompletePanCompoent";
 
 // Lazy load all components
 const LoginBitspan = lazy(() => import("../components/LoginBitspan"));
@@ -87,6 +90,11 @@ const MultiStepForm = lazy(() =>
   import("../components/PanCardForm/MultiStepForm")
 );
 const Profile = lazy(() => import("../pages/Profile"));
+const DTHConnectionHistroy = lazy(() => import("../components/DashBoard/DTHConnectionHistroy"));
+const NSDLPanComponent = lazy(() => import("../components/DashBoard/NSDLPanComponent"));
+const NSDLPANCorrectionComponent = lazy(() => import("../components/DashBoard/NSDLPANCorrectionComponent"));
+const NSDLIncompletePanCompoent = lazy(() => import("../components/DashBoard/NSDLIncompletePanCompoent"));
+const NSDLPanStatusComponent = lazy(() => import("../components/DashBoard/NSDLPanStatusComponent"));
 const MobileRecharge = lazy(() =>
   import("../components/DashBoard/MobileRecharge")
 );
@@ -429,7 +437,7 @@ const RetailerRoutes = () => {
                 )
               }
             />
-            <Route
+            {/* <Route
               path="/pan-apply-cr"
               element={
                 userStatus === "Pending" || userStatus === "Deactive" ? (
@@ -438,14 +446,34 @@ const RetailerRoutes = () => {
                   <NsdlPanCorrection />
                 )
               }
-            />
+            /> */}
             <Route
+              path="/pan-apply-cr"
+              element={
+                userStatus === "Pending" || userStatus === "Deactive" ? (
+                  <Navigate to="/update-profile" />
+                ) : (
+                  <NSDLPANCorrectionComponent />
+                )
+              }
+            />
+            {/* <Route
               path="/pan-status"
               element={
                 userStatus === "Pending" || userStatus === "Deactive" ? (
                   <Navigate to="/update-profile" />
                 ) : (
                   <PanStatus />
+                )
+              }
+            /> */}
+            <Route
+              path="/pan-status"
+              element={
+                userStatus === "Pending" || userStatus === "Deactive" ? (
+                  <Navigate to="/update-profile" />
+                ) : (
+                  <NSDLPanStatusComponent />
                 )
               }
             />
@@ -909,13 +937,23 @@ const RetailerRoutes = () => {
                 )
               }
             />
-            <Route
+            {/* <Route
               path="/incomplete-request"
               element={
                 userStatus === "Pending" || userStatus === "Deactive" ? (
                   <Navigate to="/update-profile" />
                 ) : (
                   <NsdlIncomplete />
+                )
+              }
+            /> */}
+            <Route
+              path="/incomplete-request"
+              element={
+                userStatus === "Pending" || userStatus === "Deactive" ? (
+                  <Navigate to="/update-profile" />
+                ) : (
+                  <NSDLIncompletePanCompoent />
                 )
               }
             />

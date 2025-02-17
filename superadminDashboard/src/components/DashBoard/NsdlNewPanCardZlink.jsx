@@ -113,7 +113,7 @@ const NsdlNewPanCardZlink = () => {
           dispatch(fetchWalletBalance(currentUser.userId))
        // Navigate to the success page and pass the response data
       navigate('/nsdl-new-pan-card-redirect', { state: { enc_data: apiResponse.data.nsdlData.enc_data } });
-     
+      dispatch(fetchWalletBalance(currentUser.userId))
      
       // const encData = apiResponse.data.nsdlData.enc_data;
   // Open a new tab using an anchor tag and the route

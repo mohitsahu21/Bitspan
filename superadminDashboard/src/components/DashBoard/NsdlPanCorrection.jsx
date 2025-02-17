@@ -66,6 +66,29 @@ const [showPinModal, setShowPinModal] = useState(false);
   //     [e.target.name]: e.target.value,
   //   });
   // };
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+
+  //   if(name === "mobile"){
+      
+  //     if (/^\d*$/.test(value)) {
+  //       setFormData((prevData) => ({
+  //         ...prevData,
+  //         [name]: value,
+  //       }));
+  //     }
+  //   }
+  //   else{
+  //     setFormData({
+  //       ...formData,
+  //       [name]: value,
+  //     });
+  //   }
+  //   // setFormData({
+  //   //   ...formData,
+  //   //   [e.target.name]: e.target.value,
+  //   // });
+  // };
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -79,15 +102,13 @@ const [showPinModal, setShowPinModal] = useState(false);
       }
     }
     else{
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
+        setFormData({
+    ...formData,
+    // [e.target.name]: e.target.value,
+    [name] : name === "pan_no" ? value.toUpperCase() : value,
+  });
     }
-    // setFormData({
-    //   ...formData,
-    //   [e.target.name]: e.target.value,
-    // });
+
   };
     useEffect(()=>{
        setFormData({
@@ -450,6 +471,7 @@ const [showPinModal, setShowPinModal] = useState(false);
                                   id="floatingInputGroup2"
                                   name="pan_no"
                                   value={formData.pan_no}
+                                  style={{ textTransform: 'uppercase' }}
                                   onChange={handleChange}
                                   placeholder="PAN Number"
                                   required
