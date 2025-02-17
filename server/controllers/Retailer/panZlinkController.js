@@ -394,90 +394,260 @@ const getDataFromZlinkPANApi = async (endpoint, bodyData  = {}) => {
 
 
 
-  const zlinkCorrectionPanRequest = async (req, res) => {
-    try {
-      const {app_mode, selectType,phyPanIsReq, redirect_url,first_name,middle_name,last_name,gender,dob,mobile_no,email_id,pan_no,walletDeductAmt,userId, branchCode } = req.body;
+//   const zlinkCorrectionPanRequest = async (req, res) => {
+//     try {
+//       const {app_mode, selectType,phyPanIsReq, redirect_url,first_name,middle_name,last_name,gender,dob,mobile_no,email_id,pan_no,walletDeductAmt,userId, branchCode } = req.body;
 
-     // Try to get balance, handle errors if they occur
-     let balanceData;
-     try {
-       balanceData = await zlinkBalanceForPan(); // Wait for the balance data
+//      // Try to get balance, handle errors if they occur
+//      let balanceData;
+//      try {
+//        balanceData = await zlinkBalanceForPan(); // Wait for the balance data
       
-     } catch (error) {
-       console.error("Error fetching balance:", error.message);
-       return res.status(500).json({ error: "Error fetching balance data" });
-     }
-      if (!balanceData || balanceData.user_balance < walletDeductAmt) {
-        return res.status(400).json({ error: "Insufficient balance" });
-      }
+//      } catch (error) {
+//        console.error("Error fetching balance:", error.message);
+//        return res.status(500).json({ error: "Error fetching balance data" });
+//      }
+//       if (!balanceData || balanceData.user_balance < walletDeductAmt) {
+//         return res.status(400).json({ error: "Insufficient balance" });
+//       }
 
-      if(
-        !app_mode ||
-        !redirect_url ||
-        !first_name ||
-        !last_name ||
-        !dob ||
-        !gender ||
-        !mobile_no ||
-        !email_id ||
-        !phyPanIsReq ||
-        !selectType ||
-        !walletDeductAmt ||
-        !pan_no ||
-        !userId
-      ){
-        return res.status(400).json({ error: "All fields are required" });
-      }
+//       if(
+//         !app_mode ||
+//         !redirect_url ||
+//         !first_name ||
+//         !last_name ||
+//         !dob ||
+//         !gender ||
+//         !mobile_no ||
+//         !email_id ||
+//         !phyPanIsReq ||
+//         !selectType ||
+//         !walletDeductAmt ||
+//         !pan_no ||
+//         !userId
+//       ){
+//         return res.status(400).json({ error: "All fields are required" });
+//       }
 
-      let applicationMode ;
-      if(app_mode == 'Instant PAN Card - EKYC'){
-        applicationMode = "E"
-      }
-      else if(app_mode == 'Scan Based PAN Card'){
-        applicationMode = "K"
-      }
+//       let applicationMode ;
+//       if(app_mode == 'Instant PAN Card - EKYC'){
+//         applicationMode = "E"
+//       }
+//       else if(app_mode == 'Scan Based PAN Card'){
+//         applicationMode = "K"
+//       }
 
-      let physicalPanReq ;
+//       let physicalPanReq ;
 
-      if(phyPanIsReq == 'Yes'){
-        physicalPanReq = "Y"
-      }
-      else{
-        physicalPanReq = "N"
-      }
-      const endpoint = "/nsdl/request";
-      const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-      const fullName = first_name + " " + middle_name + " " + last_name;
-      // Insert initial row to generate orderid
-    const insertQuery = `INSERT INTO nsdlpancorrection (applicationMode, selectType, name, dob, gender, mobile, email, pan_no, physicalPan, walletDeductAmt, providerName, userId, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    const values = [
-      app_mode,
-      selectType,
-      fullName,
-      dob,
-      gender,
-      mobile_no,
-      email_id,
-      pan_no,
-      phyPanIsReq,
-      walletDeductAmt,
-      "zlink",
-      userId,
-      createdAt,
-    ];
+//       if(phyPanIsReq == 'Yes'){
+//         physicalPanReq = "Y"
+//       }
+//       else{
+//         physicalPanReq = "N"
+//       }
+//       const endpoint = "/nsdl/request";
+//       const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+//       const fullName = first_name + " " + middle_name + " " + last_name;
+//       // Insert initial row to generate orderid
+//     const insertQuery = `INSERT INTO nsdlpancorrection (applicationMode, selectType, name, dob, gender, mobile, email, pan_no, physicalPan, walletDeductAmt, providerName, userId, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+//     const values = [
+//       app_mode,
+//       selectType,
+//       fullName,
+//       dob,
+//       gender,
+//       mobile_no,
+//       email_id,
+//       pan_no,
+//       phyPanIsReq,
+//       walletDeductAmt,
+//       "zlink",
+//       userId,
+//       createdAt,
+//     ];
 
 
-    const result = await new Promise((resolve, reject) => {
-      db.query(insertQuery, values, (err, result) => {
-        if (err) return reject(err);
-        resolve(result);
-      });
-    });
+//     const result = await new Promise((resolve, reject) => {
+//       db.query(insertQuery, values, (err, result) => {
+//         if (err) return reject(err);
+//         resolve(result);
+//       });
+//     });
 
-    const autoGeneratedOrderId = result.insertId;
-    const formattedOrderId = String(autoGeneratedOrderId).padStart(6, "0");
+//     const autoGeneratedOrderId = result.insertId;
+//     const formattedOrderId = String(autoGeneratedOrderId).padStart(6, "0");
 
-    const nsdlData = await getDataFromZlinkPANApi(endpoint,  {
+//     const nsdlData = await getDataFromZlinkPANApi(endpoint,  {
+//       api_key : zlinkApiKey,
+//       env_mode : "LIVE",
+//       app_type : "CR",
+//       app_mode : applicationMode ,
+//       phyPanIsReq: physicalPanReq,
+//       branchCode,
+//       redirect_url,
+//       order_id: formattedOrderId,
+//       applicant_data : {
+//           first_name,
+//           middle_name,
+//           last_name,
+//           gender,
+//           dob,
+//           mobile_no,
+//           email_id,
+//           pan_no
+//         }
+//  })
+
+//  // Update the database with API response data
+//  const updateQuery = `
+//  UPDATE nsdlpancorrection SET txid = ?, status = ?, message = ?, orderid = ? WHERE id = ?`;
+// const updateValues = [
+//  nsdlData?.txnid,
+//  nsdlData?.status,
+//  nsdlData?.message,
+//  formattedOrderId, // Use the generated orderid if not returned from API
+//  autoGeneratedOrderId, // Use the database id for updating
+// ];
+
+// await new Promise((resolve, reject) => {
+//  db.query(updateQuery, updateValues, (err, result) => {
+//    if (err) return reject(err);
+//    resolve(result);
+//  });
+// });
+
+
+//  if( nsdlData.status == "Success"){
+//  return res.json({
+//     message: "Success",
+//     nsdlData,
+//     orderid: formattedOrderId, // Include the generated orderid in the response
+//   });
+
+//  }
+// return res.json({
+//   message: "Failed",
+//   nsdlData,
+//   orderid: formattedOrderId, // Include the generated orderid in the response
+// });
+
+      
+//     } catch (error) {
+//       console.error("Error in nsdlNewRequest:", error);
+//     res
+//       .status(500)
+//       .json({ error: "Error during recharge process", message: error.message });
+//     }
+   
+  
+     
+      
+//   };
+
+const zlinkCorrectionPanRequest = async (req, res) => {
+    
+  const {app_mode, selectType,phyPanIsReq, redirect_url,first_name,middle_name,last_name,gender,dob,mobile_no,email_id,pan_no,walletDeductAmt,userId, branchCode } = req.body;
+
+  let applicationMode ;
+  if(app_mode == 'Instant PAN Card - EKYC'){
+    applicationMode = "E"
+  }
+  else if(app_mode == 'Scan Based PAN Card'){
+    applicationMode = "K"
+  }
+
+  let physicalPanReq ;
+
+  if(phyPanIsReq == 'Yes'){
+    physicalPanReq = "Y"
+  }
+  else{
+    physicalPanReq = "N"
+  }
+  const endpoint = "/nsdl/request";
+ 
+if (walletDeductAmt == null || isNaN(parseFloat(walletDeductAmt)) || parseFloat(walletDeductAmt) < 0) {
+return res.status(400).json({ status: "failure", error: "Invalid or missing walletDeductAmt" });
+}
+const AmountNumber = parseFloat(walletDeductAmt).toFixed(2);
+const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+const queryBalance = `SELECT Closing_Balance FROM user_wallet WHERE userId = ? ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC LIMIT 1`;
+db.query(queryBalance, [userId], (err, balanceResult) => {
+if (err) {
+  return res.status(500).json({ error: "Error fetching wallet balance", message: err.message });
+}
+if (balanceResult.length === 0 || parseFloat(balanceResult[0].Closing_Balance) < AmountNumber) {
+  return res.status(400).json({ error: "Insufficient wallet balance" });
+}
+
+const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+const orderId = `ORPAN${Date.now()}`;
+
+
+
+
+
+
+ // Try to get balance, handle errors if they occur
+ 
+ zlinkBalanceForPan().then((balanceData) => {
+  if (!balanceData || parseFloat(balanceData.user_balance) < AmountNumber) {
+    return Promise.reject({ status: 400, error: "Insufficient provider balance" });
+  }
+ 
+
+  if(
+    !app_mode ||
+    !redirect_url ||
+    !first_name ||
+    !last_name ||
+    !dob ||
+    !gender ||
+    !mobile_no ||
+    !email_id ||
+    !phyPanIsReq ||
+    !selectType ||
+    !walletDeductAmt ||
+    !userId
+  ){
+    return res.status(400).json({ error: "All fields are required" });
+  }
+
+ 
+  
+  const fullName = first_name + " " + middle_name + " " + last_name;
+  // Insert initial row to generate orderid
+const insertQuery = `INSERT INTO nsdlpancorrection (applicationMode, selectType, name, dob, gender, mobile, email,pan_no, physicalPan, walletDeductAmt, providerName, userId,orderid, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)`;
+const values = [
+  app_mode,
+  selectType,
+  fullName,
+  dob,
+  gender,
+  mobile_no,
+  email_id,
+  pan_no,
+  phyPanIsReq,
+  walletDeductAmt,
+  "zlink",
+  userId,
+  orderId,
+  createdAt,
+];
+
+
+return new Promise((resolve, reject) => {
+db.query(insertQuery, values, (err) => {
+  if (err) {
+    reject({ status: 500, error: "Database insertion error", message: err.message });
+  } else {
+    resolve({ orderId });
+  }
+});
+});
+}).then(({orderId})=>{
+  return getDataFromZlinkPANApi(
+    endpoint,  {
       api_key : zlinkApiKey,
       env_mode : "LIVE",
       app_type : "CR",
@@ -485,7 +655,7 @@ const getDataFromZlinkPANApi = async (endpoint, bodyData  = {}) => {
       phyPanIsReq: physicalPanReq,
       branchCode,
       redirect_url,
-      order_id: formattedOrderId,
+      order_id: orderId,
       applicant_data : {
           first_name,
           middle_name,
@@ -496,53 +666,54 @@ const getDataFromZlinkPANApi = async (endpoint, bodyData  = {}) => {
           email_id,
           pan_no
         }
- })
-
- // Update the database with API response data
- const updateQuery = `
- UPDATE nsdlpancorrection SET txid = ?, status = ?, message = ?, orderid = ? WHERE id = ?`;
-const updateValues = [
- nsdlData?.txnid,
- nsdlData?.status,
- nsdlData?.message,
- formattedOrderId, // Use the generated orderid if not returned from API
- autoGeneratedOrderId, // Use the database id for updating
-];
-
-await new Promise((resolve, reject) => {
- db.query(updateQuery, updateValues, (err, result) => {
-   if (err) return reject(err);
-   resolve(result);
- });
-});
-
-
- if( nsdlData.status == "Success"){
- return res.json({
-    message: "Success",
-    nsdlData,
-    orderid: formattedOrderId, // Include the generated orderid in the response
-  });
-
  }
-return res.json({
-  message: "Failed",
-  nsdlData,
-  orderid: formattedOrderId, // Include the generated orderid in the response
-});
-
-      
-    } catch (error) {
-      console.error("Error in nsdlNewRequest:", error);
-    res
-      .status(500)
-      .json({ error: "Error during recharge process", message: error.message });
+  ).then((nsdlData) => ({ nsdlData, orderId }));
+}).then(({nsdlData, orderId}) => {
+  const updateQuery = `
+  UPDATE nsdlpancorrection SET txid = ?, status = ?, message = ?  WHERE orderid = ?`;
+ const updateValues = [
+  nsdlData?.txnid,
+  nsdlData?.status,
+  nsdlData?.message,
+   // Use the generated orderid if not returned from API
+   orderId // Use the database id for updating
+ ];
+ 
+ return new Promise((resolve, reject) => {
+  db.query(updateQuery, updateValues, (err, result) => {
+    if (err) {
+      reject({ status: 500, error: "Failed to update NSDL data", message: err.message });
+    } else {
+      resolve({ nsdlData, orderId, newBalance: (currentBalance - walletDeductAmt).toFixed(2) });
     }
-   
-  
-     
-      
-  };
+  });
+ });
+}).then(({nsdlData, orderId, newBalance}) =>{
+  if (nsdlData.status === "Success" || nsdlData.status === "Pending") {
+    const transactionId = `TXNPAN${Date.now()}`;
+    const transactionDetails = `NSDL PAN Correction Deduction Order Id ${orderId}`;
+    const updateWalletQuery = `INSERT INTO user_wallet (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    return new Promise((resolve, reject) => {
+      db.query(updateWalletQuery, [userId, createdAt, orderId, transactionId, currentBalance.toFixed(2), newBalance, "Debit", 0, walletDeductAmt, transactionDetails, "Success"], (err) => {
+        if (err) {
+          reject({ status: 500, error: "Failed to update wallet balance", message: err.message });
+        } else {
+          resolve({ message: nsdlData.status === "Success" ? "Successful" : "Recharge failed", nsdlData, wallet: { previousBalance: currentBalance.toFixed(2), newBalance }, orderId });
+        }
+      });
+    });
+  } else {
+    return Promise.resolve({ message: "Recharge failed", nsdlData, wallet: { previousBalance: currentBalance.toFixed(2), newBalance: currentBalance.toFixed(2) }, orderId });
+  }
+}).then((finalResult) => {
+  res.json(finalResult);
+})
+.catch((error) => {
+  console.error("Caught an error in the promise chain:", error);
+  res.status(error.status || 500).json({ error: error.error || "Request failed", message: error.message || "Unknown error" });
+});
+});
+};
 
 
   const zlinkIncompletePan = async (req,res) => {
