@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 
 
 
-const PanStatus = () => {
+const NSDLPanStatusEasysmart = () => {
 
   const [formData, setFormData] = useState({
     order_id: "",
@@ -27,7 +27,7 @@ const PanStatus = () => {
     try {
       const { data } = await axios.post(
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/nsdl-pan-incomplete`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/zlinkPantxnStatus`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/nsdlpan/easySmartNewPanTransactionStatus`,
 
         formData
       );
@@ -177,7 +177,7 @@ const PanStatus = () => {
   );
 }
 
-export default PanStatus
+export default NSDLPanStatusEasysmart
 
 const Wrapper = styled.div`
   .main {
