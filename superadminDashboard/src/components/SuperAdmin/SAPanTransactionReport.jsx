@@ -275,7 +275,12 @@ const SAPanTransactionReport = () => {
                         row.mobile.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.email &&
                             row.email.toLowerCase().includes(keyword.trim().toLowerCase())) 
              
-            const matchesType = !PaymentMode || PaymentMode === "---Select---" || row.status === PaymentMode;
+            // const matchesType = !PaymentMode || PaymentMode === "---Select---" || row.status === PaymentMode;
+
+            const matchesType = !PaymentMode || PaymentMode === "---Select---" ||
+            (PaymentMode === "Failed" && (row.status === "Failed" || row.status === "Failure")) ||
+            row.status === PaymentMode;
+            
             // return matchesKeyword && matchesType ;
             const matchesDate =
         (!fromDate || new Date(row.created_at).toISOString().split("T")[0] >= new Date(fromDate).toISOString().split("T")[0] ) &&
@@ -453,7 +458,7 @@ onChange={(e) => setKeyword(e.target.value)}
                                           <td>{item.physicalPan}</td>
                                           <td>{item.userId}</td>
                                           <td>{item.UserName}</td>
-                                          <td>{item.amount}</td>
+                                          <td>{item.walletDeductAmt}</td>
                                           <td>{item.message}</td>
                                           <td>{item.providerName}</td>
                                           <td>{item.status}</td>
