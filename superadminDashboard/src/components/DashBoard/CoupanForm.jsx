@@ -16,6 +16,7 @@ const CoupanForm = () => {
     coupon_Price: "",
     total_Amount: "",
     coupon_Type: "",
+    pan_id : "",
     userId: currentUser.userId,
   });
 
@@ -96,6 +97,7 @@ const CoupanForm = () => {
           coupon_Price: prices[0]?.UTI_PAN_Coupon_Price,
           total_Amount: "",
           coupon_Type: "",
+          pan_id : "",
           userId: currentUser.userId,
         });
       } else {
@@ -225,6 +227,7 @@ const CoupanForm = () => {
                           value={formData.coupon_Quantity}
                           onChange={handleChange}
                           required
+                          placeholder="Enter Coupon Quantity"
                         />
                       </div>
                     </div>
@@ -239,6 +242,7 @@ const CoupanForm = () => {
                           onChange={handleChange}
                           required
                           readOnly
+                          disabled
                         />
                       </div>
                       <div className="col-md-6">
@@ -250,6 +254,34 @@ const CoupanForm = () => {
                           value={formData.total_Amount}
                           onChange={handleChange}
                           required
+                          disabled
+                        />
+                      </div>
+                    </div>
+                    <div className="row mb-3">
+                     
+                      <div className="col-md-6">
+                        <label className="form-label">User ID</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="userId"
+                          value={formData.userId}
+                          // onChange={handleChange}
+                          required
+                          disabled
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label">PSA User ID</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="pan_id"
+                          value={formData.pan_id}
+                          onChange={handleChange}
+                          required
+                          placeholder="Enter PSA User ID"
                         />
                       </div>
                     </div>
