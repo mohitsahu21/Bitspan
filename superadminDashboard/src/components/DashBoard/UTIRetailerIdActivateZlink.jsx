@@ -8,7 +8,7 @@ import { clearUser } from "../../redux/user/userSlice";
 // import { clearUser } from "../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
-const UTIRetailerIdActivate = () => {
+const UTIRetailerIdActivateZlink = () => {
   // const [formdata, setFormdata] = useState(
   //   {
   //     name: "John Promith",
@@ -48,8 +48,8 @@ const UTIRetailerIdActivate = () => {
     try {
       const { data } = await axios.post(
         // 'http://localhost:7777/api/auth/nsdlpan/easySmartUtiAgentOnbording',
-        'https://bitspan.vimubds5.a2hosted.com/api/auth/nsdlpan/easySmartUtiAgentOnbording',
-        // 'https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/zlinkUtiAgentOnbording',
+        // 'https://bitspan.vimubds5.a2hosted.com/api/auth/nsdlpan/easySmartUtiAgentOnbording',
+        'https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/zlinkUtiAgentOnbording',
 
         formdata);
       setLoading(false);
@@ -133,7 +133,7 @@ const UTIRetailerIdActivate = () => {
   );
 };
 
-export default UTIRetailerIdActivate;
+export default UTIRetailerIdActivateZlink;
 const Wrapper = styled.div`
  
 
