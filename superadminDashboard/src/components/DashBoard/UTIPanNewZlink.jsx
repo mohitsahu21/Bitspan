@@ -6,7 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 
-const UtiPanNew = () => {
+const UTIPanNewZlink = () => {
   const { currentUser, token } = useSelector((state) => state.user);
     const [Loading,setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -26,8 +26,8 @@ const UtiPanNew = () => {
         try {
           const {data} = await axios.post(
             // `http://localhost:7777/api/auth/nsdlpan/easySmartUtiLogin`,
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/nsdlpan/easySmartUtiLogin`,
-            // 'https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/ZlinkUtiLogin',
+            // `https://bitspan.vimubds5.a2hosted.com/api/auth/nsdlpan/easySmartUtiLogin`,
+            'https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/ZlinkUtiLogin',
             formData
           );
         //   setFormData(apiResponse.data);
@@ -97,7 +97,7 @@ const UtiPanNew = () => {
   );
 };
 
-export default UtiPanNew;
+export default UTIPanNewZlink;
 const Wrapper = styled.div`
 
 @media (min-width: 1025px) and (max-width : 1500px){
