@@ -80,6 +80,8 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Spinner } from "react-bootstrap";
 import styled from "styled-components";
+// import UTIRetailerIdActivateComponent from "../components/DashBoard/UTIRetailerIdActivateComponent";
+// import UTIPanLoginComponent from "../components/DashBoard/UTIPanLoginComponent";
 // import NSDLPanStatusComponent from "../components/DashBoard/NSDLPanStatusComponent";
 // import NSDLIncompletePanCompoent from "../components/DashBoard/NSDLIncompletePanCompoent";
 
@@ -95,6 +97,8 @@ const NSDLPanComponent = lazy(() => import("../components/DashBoard/NSDLPanCompo
 const NSDLPANCorrectionComponent = lazy(() => import("../components/DashBoard/NSDLPANCorrectionComponent"));
 const NSDLIncompletePanCompoent = lazy(() => import("../components/DashBoard/NSDLIncompletePanCompoent"));
 const NSDLPanStatusComponent = lazy(() => import("../components/DashBoard/NSDLPanStatusComponent"));
+const UTIPanLoginComponent = lazy(() => import("../components/DashBoard/UTIPanLoginComponent"));
+const UTIRetailerIdActivateComponent = lazy(() => import("../components/DashBoard/UTIRetailerIdActivateComponent"));
 const MobileRecharge = lazy(() =>
   import("../components/DashBoard/MobileRecharge")
 );
@@ -581,7 +585,7 @@ const RetailerRoutes = () => {
                 )
               }
             />
-            <Route
+            {/* <Route
               path="/pan-transaction-resume-report"
               element={
                 userStatus === "Pending" || userStatus === "Deactive" ? (
@@ -590,7 +594,7 @@ const RetailerRoutes = () => {
                   <PanTransactionResumeReport />
                 )
               }
-            />
+            /> */}
             <Route
               path="/raise-complaint"
               element={
@@ -621,13 +625,23 @@ const RetailerRoutes = () => {
                 )
               }
             />
-            <Route
+            {/* <Route
               path="/uti-login-new"
               element={
                 userStatus === "Pending" || userStatus === "Deactive" ? (
                   <Navigate to="/update-profile" />
                 ) : (
                   <UtiPanNew />
+                )
+              }
+            /> */}
+            <Route
+              path="/uti-login-new"
+              element={
+                userStatus === "Pending" || userStatus === "Deactive" ? (
+                  <Navigate to="/update-profile" />
+                ) : (
+                  <UTIPanLoginComponent />
                 )
               }
             />
@@ -701,13 +715,23 @@ const RetailerRoutes = () => {
                 )
               }
             />
-            <Route
+            {/* <Route
               path="/retailer-id-revamp-activate"
               element={
                 userStatus === "Pending" || userStatus === "Deactive" ? (
                   <Navigate to="/update-profile" />
                 ) : (
                   <UTIRetailerIdActivate />
+                )
+              }
+            /> */}
+            <Route
+              path="/retailer-id-revamp-activate"
+              element={
+                userStatus === "Pending" || userStatus === "Deactive" ? (
+                  <Navigate to="/update-profile" />
+                ) : (
+                  <UTIRetailerIdActivateComponent />
                 )
               }
             />
