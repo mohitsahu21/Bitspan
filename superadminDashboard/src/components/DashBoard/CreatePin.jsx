@@ -261,6 +261,8 @@ const CreatePin = () => {
                                       handleInputChange(e, "change")
                                     }
                                     required
+                                    readOnly
+                                    disabled
                                   />
                                 </div>
                                 <div className="mb-3">
@@ -277,6 +279,8 @@ const CreatePin = () => {
                                       handleInputChange(e, "change")
                                     }
                                     required
+                                    readOnly
+                                    disabled
                                   />
                                 </div>
                                 {otpSent ? (
@@ -334,6 +338,7 @@ const CreatePin = () => {
                                       maxLength={4}
                                       minLength={4}
                                       required
+                                      autoComplete="off"
                                     />
                                   </div>
                                 )}
