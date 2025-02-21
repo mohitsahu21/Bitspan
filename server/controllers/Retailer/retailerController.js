@@ -4021,7 +4021,7 @@ const PanDocumentUpload = (req, res) => {
 
     const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
     const orderId = `PDOC${Date.now()}`;
-    const userStatus = "Pending";
+    const userStatus = "Success";
     const domain = "http://localhost:7777";
 
     const podfile =
@@ -4074,7 +4074,7 @@ const PanDocumentUpload = (req, res) => {
 const getPanDocument = (req, res) => {
   const userId = req.params.userId;
 
-  let query = `SELECT * FROM pandocument WHERE userId = ?`;
+  let query = `SELECT * FROM pandocument WHERE userId = ? ORDER BY id DESC`;
 
   db.query(query, [userId], (err, result) => {
     if (err) {
