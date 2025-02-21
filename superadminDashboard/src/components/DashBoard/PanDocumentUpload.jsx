@@ -31,6 +31,29 @@ const PanDocumentUpload = () => {
   };
 
   const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    console.log(`File input changed - Name: ${name}, Files:`, files);
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png" , "application/pdf"];
+    const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+
+     if (!allowedTypes.includes(files[0].type)) {
+                Swal.fire({
+                  icon: "error",
+                  title: "Invalid File Type",
+                  text: `Invalid file: ${files[0].name}. Only JPEG, JPG, PNG , PDF are allowed.`,
+                });
+                e.target.value = "";
+                return;
+              }
+                 if (files[0].size > maxSize) {
+                      Swal.fire({
+                        icon: "error",
+                        title: "File Too Large",
+                        text: `File ${files[0].name} exceeds the 5MB limit.`,
+                      });
+                      e.target.value = "";
+                      return;
+                    }
     setFile(e.target.files[0]);
   };
 
@@ -198,7 +221,7 @@ const PanDocumentUpload = () => {
                               <div class="input-group mb-3">
                                 <div class="form-floating">
                                   <input
-                                    type="text"
+                                    type="number"
                                     class="form-control"
                                     id="floatingInputGroup1"
                                     name="documentCount"
@@ -206,6 +229,7 @@ const PanDocumentUpload = () => {
                                     onChange={handleChange}
                                     placeholder="Document Count"
                                     required
+                                    min={1}
                                   />
                                   <label for="floatingInputGroup1">
                                     No. of Document
@@ -224,6 +248,7 @@ const PanDocumentUpload = () => {
                                     value={formData.courierDate}
                                     onChange={handleChange}
                                     placeholder="Courier Date"
+                                    required
                                   />
                                   <label for="floatingInputGroup1">
                                     Date of Courier
@@ -244,6 +269,7 @@ const PanDocumentUpload = () => {
                                     value={formData.trackingNumber}
                                     onChange={handleChange}
                                     placeholder="Tracking Number"
+                                    required
                                   />
                                   <label for="floatingInputGroup1">
                                     POD/Tracking Number
@@ -262,6 +288,7 @@ const PanDocumentUpload = () => {
                                     value={formData.courierCompany}
                                     onChange={handleChange}
                                     placeholder="Courier Company"
+                                    required
                                   />
                                   <label for="floatingInputGroup1">
                                     Courier Company Name
@@ -282,6 +309,7 @@ const PanDocumentUpload = () => {
                                     value={formData.deliveryDate}
                                     onChange={handleChange}
                                     placeholder="Delivery Date"
+                                    required
                                   />
                                   <label for="floatingInputGroup1">
                                     Delivery Date
@@ -300,6 +328,7 @@ const PanDocumentUpload = () => {
                                     value={formData.deliveryLocation}
                                     onChange={handleChange}
                                     placeholder="Delivery Location"
+                                    required
                                   />
                                   <label for="floatingInputGroup1">
                                     Delivery Location
@@ -320,6 +349,7 @@ const PanDocumentUpload = () => {
                                     value={formData.confirmAddress}
                                     onChange={handleChange}
                                     placeholder="Confirm Address"
+                                    required
                                   />
                                   <label for="floatingInputGroup1">
                                     Confirm the Address
@@ -337,22 +367,25 @@ const PanDocumentUpload = () => {
                                   value={formData.remark}
                                   onChange={handleChange}
                                   placeholder="Remark"
+                                  required
                                 ></textarea>
                               </div>
                             </div>
                           </div>
 
                           <div className="d-flex  flex-column flex-xl-row gap-3">
-                            <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                               <div>
                                 <label for="formFileLg" class="form-label">
                                   Tab to upload scan copy of POD
                                 </label>
                                 <input
                                   class="form-control form-control-lg"
+                                  accept="image/*,application/pdf"
                                   id="formFileLg"
                                   type="file"
                                   onChange={handleFileChange}
+                                  required
                                 />
                               </div>
                             </div>
@@ -361,7 +394,7 @@ const PanDocumentUpload = () => {
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div className="text-start mb-3">
                               <button
-                                className="btn p-2"
+                                className="p-2 btn btn-primary"
                                 type="submit"
                                 disabled={loading}
                               >

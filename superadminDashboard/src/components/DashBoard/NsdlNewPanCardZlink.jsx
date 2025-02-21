@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { MdOutlineFormatListNumbered } from "react-icons/md";
-import { FaMobileAlt } from "react-icons/fa";
+import { MdEmail, MdOutlineFormatListNumbered } from "react-icons/md";
+import { FaIdCard, FaMobileAlt, FaUser } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { FaRupeeSign } from "react-icons/fa";
 import nsdlpan from "../../assets/images/nsdl-vector.png";
@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { Modal, Button, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {  fetchWalletBalance } from "../../redux/user/userSlice";
+import { FaMobileButton } from "react-icons/fa6";
 
 const NsdlNewPanCardZlink = () => {
   const dispatch = useDispatch();
@@ -313,7 +314,7 @@ const NsdlNewPanCardZlink = () => {
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="input-group">
                               <span class="input-group-text">
-                                <FaRupeeSign />
+                              <FaUser/>
                               </span>
                               <div class="form-floating">
                                 <input
@@ -338,7 +339,7 @@ const NsdlNewPanCardZlink = () => {
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="input-group">
                               <span class="input-group-text">
-                                <FaRupeeSign />
+                              <FaUser/>
                               </span>
                               <div class="form-floating">
                                 <input
@@ -362,7 +363,7 @@ const NsdlNewPanCardZlink = () => {
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="input-group">
                               <span class="input-group-text">
-                                <FaRupeeSign />
+                              <FaUser/>
                               </span>
                               <div class="form-floating">
                                 <input
@@ -388,7 +389,7 @@ const NsdlNewPanCardZlink = () => {
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="input-group">
                               <span class="input-group-text">
-                                <FaRupeeSign />
+                              <FaIdCard />
                               </span>
                               <div class="form-floating">
                                 <input
@@ -432,7 +433,7 @@ const NsdlNewPanCardZlink = () => {
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="input-group">
                               <span class="input-group-text">
-                                <FaRupeeSign />
+                              <FaMobileButton />
                               </span>
                               <div class="form-floating">
                                 <input
@@ -457,7 +458,7 @@ const NsdlNewPanCardZlink = () => {
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="input-group">
                               <span class="input-group-text">
-                                <FaRupeeSign />
+                              <MdEmail />
                               </span>
                               <div class="form-floating">
                                 <input

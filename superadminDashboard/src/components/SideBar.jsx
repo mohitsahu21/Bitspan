@@ -669,11 +669,11 @@ const RetailerSidebarData = [
     // 	},
     // ],
   },
-  {
-    title: "Set PIN and 2 Step",
-    path: "/2-step-verification",
-    icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
-  },
+  // {
+  //   title: "Set PIN and 2 Step",
+  //   path: "/2-step-verification",
+  //   icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
+  // },
   {
     title: "Important Links",
     path: "/important-links",
