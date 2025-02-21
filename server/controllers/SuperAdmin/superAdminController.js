@@ -40,6 +40,8 @@ const addPackage = (req, res) => {
       payworld_BankId_Price,
       Anypay_BankId_Price,
       Roinet_BankId_Price,
+      NSDL_PSA_ID_Price,
+      UTI_PSA_ID_Price,
       Offline_Services_Commission_Type,
       offline_E_PAN_Card_Commission,
       offline_P_PAN_Card_Commission,
@@ -159,7 +161,7 @@ const addPackage = (req, res) => {
       Airtel_BankId_Price,
       payworld_BankId_Price,
       Anypay_BankId_Price,
-      Roinet_BankId_Price, Offline_Services_Commission_Type, offline_E_PAN_Card_Commission , offline_P_PAN_Card_Commission ,Pan_Find_Commission,Google_Play_Commission,
+      Roinet_BankId_Price,NSDL_PSA_ID_Price,UTI_PSA_ID_Price, Offline_Services_Commission_Type, offline_E_PAN_Card_Commission , offline_P_PAN_Card_Commission ,Pan_Find_Commission,Google_Play_Commission,
         IRCTC_Agent_ID_Commission, Birth_Certificate_Commission, Death_Certificate_Commission, E_Stamp_Commission,
         ITR_Registration_Commission, GST_Registration_Commission, Sambal_Commission,Udyog_Aadhar_Commission, eKYC_Income_Certificate_Commission,
         eKYC_Domicile_Certificate_Commission, offlineKYC_Income_Certificate_Commission,offlineKYC_Domicile_Certificate_Commission, non_samagra_income_Certificate_Commission, non_samagra_Domicile_Certificate_Commission,verify_edistrict_Certificate_Commission, Bank_ID_Commission, Off_Prepaid_Recharge_Comm_Type, Off_Airtel_Prepaid_Recharge_Comm,
@@ -203,7 +205,7 @@ const addPackage = (req, res) => {
       retailer_id_price,
       retailer_min_id_limit,
       retailer_max_id_limit, created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?, ?, ? ,?, ? , ? , ? , ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ? , ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ? , ?, ? , ?, ?, ?, ?, ?, ?, ?)`;
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?, ?, ? ,?, ? , ? , ? , ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ? , ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ? , ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     const values = [
       package_name,
@@ -239,6 +241,8 @@ const addPackage = (req, res) => {
       payworld_BankId_Price,
       Anypay_BankId_Price,
       Roinet_BankId_Price,
+      NSDL_PSA_ID_Price,
+      UTI_PSA_ID_Price,
       Offline_Services_Commission_Type,
       offline_E_PAN_Card_Commission,
       offline_P_PAN_Card_Commission,
@@ -628,6 +632,8 @@ const editPackage = (req, res) => {
       payworld_BankId_Price,
       Anypay_BankId_Price,
       Roinet_BankId_Price,
+      NSDL_PSA_ID_Price,
+      UTI_PSA_ID_Price,
       Offline_Services_Commission_Type,
       offline_E_PAN_Card_Commission,
       offline_P_PAN_Card_Commission,
@@ -754,7 +760,8 @@ const editPackage = (req, res) => {
       Airtel_BankId_Price = ?,
       payworld_BankId_Price = ?,
       Anypay_BankId_Price =?, 
-      Roinet_BankId_Price = ?,  
+      Roinet_BankId_Price = ?, 
+      NSDL_PSA_ID_Price = ?, UTI_PSA_ID_Price = ?,  
          Offline_Services_Commission_Type = ?, 
         offline_E_PAN_Card_Commission = ?, offline_P_PAN_Card_Commission = ?,
         Pan_Find_Commission = ? ,
@@ -844,6 +851,8 @@ const editPackage = (req, res) => {
       payworld_BankId_Price,
       Anypay_BankId_Price,
       Roinet_BankId_Price,
+      NSDL_PSA_ID_Price,
+      UTI_PSA_ID_Price,
       Offline_Services_Commission_Type,
       offline_E_PAN_Card_Commission,
       offline_P_PAN_Card_Commission,
