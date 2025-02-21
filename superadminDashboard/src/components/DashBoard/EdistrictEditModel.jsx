@@ -47,6 +47,8 @@ const EdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
   const [prices, setPrices] = useState([]);
   const kycRef = useRef(null)
   console.log(formData);
+  console.log(files);
+  console.log(kycRef);
   
 //   useEffect(() => {
 //     const fetchPackage = async () => {
@@ -124,10 +126,39 @@ const EdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
   
   };
 
-  const handleFileChange = (e) => {
-    setFiles(e.target.files);
-  };
+  // const handleFileChange = (e) => {
+  //   setFiles(e.target.files);
+  // };
 
+   const handleFileChange = (e) => {
+      const { name, files } = e.target;
+      console.log(`File input changed - Name: ${name}, Files:`, files);
+      const allowedTypes = ["image/jpeg", "image/jpg", "image/png" , "application/pdf"];
+      const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+       for (const file of files) {
+                       if (file.size > maxSize) {
+                         Swal.fire({
+                           title: "File Too Large",
+                           text: `The file "${file.name}" exceeds the 2 MB size limit. Please select smaller files.`,
+                           icon: "error",
+                         });
+                         // Clear the file input
+                         e.target.value = null;
+                         return;
+                       }
+                       else if(!allowedTypes.includes(file.type)){
+                 Swal.fire({
+                                   icon: "error",
+                                   title: "Invalid File Type",
+                                   text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG , PDF are allowed.`,
+                                 });
+                                 e.target.value = null;
+                                 return;
+                       }
+                      
+                     }
+      setFiles(e.target.files);
+    };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -140,6 +171,7 @@ const EdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
         // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
         Array.from(files).forEach((file) => data.append("documentUpload", file));
     }
+  
     // Append files to form data
     
 

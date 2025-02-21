@@ -6,6 +6,7 @@ import ReactPaginate from "react-paginate";
 import axios from "axios";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
+import { Spinner } from "react-bootstrap";
 
 const AllComplaintsList = () => {
   const dispatch = useDispatch();
@@ -207,7 +208,13 @@ const AllComplaintsList = () => {
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
                             {loading ? (
-                              <p>Loading...</p>
+                             <div className="d-flex justify-content-center">
+                             <Spinner animation="border" role="status">
+                               <span className="visually-hidden ">
+                                 Loading...
+                               </span>
+                             </Spinner>
+                           </div>
                             ) : (
                               <table class="table table-striped">
                                 <thead className="table-dark">

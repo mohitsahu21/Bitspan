@@ -167,7 +167,37 @@ const EdistrictForm = () => {
   
   };
 
-  const handleFileChange = (e) => {
+  // const handleFileChange = (e) => {
+  //   setFiles(e.target.files);
+  // };
+
+   const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    console.log(`File input changed - Name: ${name}, Files:`, files);
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png" , "application/pdf"];
+    const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+      for (const file of files) {
+                 if (file.size > maxSize) {
+                   Swal.fire({
+                     title: "File Too Large",
+                     text: `The file "${file.name}" exceeds the 2 MB size limit. Please select smaller files.`,
+                     icon: "error",
+                   });
+                   // Clear the file input
+                   e.target.value = null;
+                   return;
+                 }
+                 else if(!allowedTypes.includes(file.type)){
+           Swal.fire({
+                             icon: "error",
+                             title: "Invalid File Type",
+                             text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG , PDF are allowed.`,
+                           });
+                           e.target.value = null;
+                           return;
+                 }
+                
+               }
     setFiles(e.target.files);
   };
 
@@ -513,6 +543,7 @@ const EdistrictForm = () => {
                         multiple
                         onChange={handleFileChange}
                         required
+                         accept="image/*,application/pdf"
                         ref={kycRef}
                       />
                     </div>

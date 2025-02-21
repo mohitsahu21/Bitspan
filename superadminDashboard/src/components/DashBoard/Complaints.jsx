@@ -30,6 +30,29 @@ const Complaints = () => {
   };
 
   const handleFileChange = (e) => {
+    const { name, files } = e.target;
+        console.log(`File input changed - Name: ${name}, Files:`, files);
+        const allowedTypes = ["image/jpeg", "image/jpg", "image/png" , "application/pdf"];
+        const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+    
+         if (!allowedTypes.includes(files[0].type)) {
+                    Swal.fire({
+                      icon: "error",
+                      title: "Invalid File Type",
+                      text: `Invalid file: ${files[0].name}. Only JPEG, JPG, PNG , PDF are allowed.`,
+                    });
+                    e.target.value = "";
+                    return;
+                  }
+                     if (files[0].size > maxSize) {
+                          Swal.fire({
+                            icon: "error",
+                            title: "File Too Large",
+                            text: `File ${files[0].name} exceeds the 5MB limit.`,
+                          });
+                          e.target.value = "";
+                          return;
+                        }
     setComplainFile(e.target.files[0]);
   };
 
@@ -214,6 +237,7 @@ const Complaints = () => {
                           <input
                             class="form-control form-control-lg"
                             id="formFileLg"
+                            accept="image/*,application/pdf"
                             type="file"
                             name="complainFile"
                             onChange={handleFileChange}
@@ -224,7 +248,7 @@ const Complaints = () => {
 
                       <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                         <div className="text-start mb-3">
-                          <button className="btn p-2" disabled={loading}>
+                          <button className="btn btn-primary p-2" disabled={loading}>
                             {loading ? "Submitting..." : "Submit"}
                           </button>
                         </div>

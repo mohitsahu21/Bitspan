@@ -477,6 +477,7 @@ const SdMyCommission = () => {
                           name="offline_E_PAN_Card_Price"
                           value={packageData?.offline_E_PAN_Card_Price}
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -497,6 +498,7 @@ const SdMyCommission = () => {
                           name="offline_P_PAN_Card_Price"
                           value={packageData?.offline_P_PAN_Card_Price}
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -516,6 +518,7 @@ const SdMyCommission = () => {
                           name="Pan_Find_Price"
                           value={packageData?.Pan_Find_Price}
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -535,6 +538,7 @@ const SdMyCommission = () => {
                           class="form-control"
                           placeholder="IFSC Code"
                           value={packageData?.Google_Play_Price}
+                          disabled
                         />
                       </div>
                     </div>
@@ -554,6 +558,7 @@ const SdMyCommission = () => {
                           class="form-control"
                           placeholder="IFSC Code"
                           value={packageData?.Birth_Certificate_Price}
+                          disabled
                         />
                       </div>
                     </div>
@@ -572,6 +577,7 @@ const SdMyCommission = () => {
                           class="form-control"
                           placeholder="IFSC Code"
                           value={packageData?.Death_Certificate_Price}
+                          disabled
                         />
                       </div>
                     </div>
@@ -590,6 +596,7 @@ const SdMyCommission = () => {
                           class="form-control"
                           placeholder="IFSC Code"
                           value={packageData?.E_Stamp_Price}
+                          disabled
                         />
                       </div>
                     </div>
@@ -608,6 +615,7 @@ const SdMyCommission = () => {
                           class="form-control"
                           placeholder="IFSC Code"
                           value={packageData?.ITR_Registration_Price}
+                          disabled
                         />
                       </div>
                     </div>
@@ -626,6 +634,7 @@ const SdMyCommission = () => {
                           class="form-control"
                           placeholder="IFSC Code"
                           value={packageData?.GST_Registration_Price}
+                          disabled
                         />
                       </div>
                     </div>
@@ -644,6 +653,7 @@ const SdMyCommission = () => {
                           class="form-control"
                           placeholder="IFSC Code"
                           value={packageData?.Sambal_Price}
+                          disabled
                         />
                       </div>
                     </div>
@@ -663,6 +673,7 @@ const SdMyCommission = () => {
                           name="Udyog_Aadhar_Price"
                           value={packageData?.Udyog_Aadhar_Price}
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -708,6 +719,7 @@ const SdMyCommission = () => {
                           name="eKYC_Income_Certificate_Price"
                           value={packageData?.eKYC_Income_Certificate_Price}
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -727,6 +739,7 @@ const SdMyCommission = () => {
                           name="eKYC_Domicile_Certificate_Price"
                           value={packageData?.eKYC_Domicile_Certificate_Price}
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -748,6 +761,7 @@ const SdMyCommission = () => {
                             packageData?.offlineKYC_Income_Certificate_Price
                           }
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -769,6 +783,7 @@ const SdMyCommission = () => {
                             packageData?.offlineKYC_Domicile_Certificate_Price
                           }
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -790,6 +805,7 @@ const SdMyCommission = () => {
                             packageData?.non_samagra_income_Certificate_Price
                           }
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -811,6 +827,7 @@ const SdMyCommission = () => {
                             packageData?.non_samagra_Domicile_Certificate_Price
                           }
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -833,6 +850,7 @@ const SdMyCommission = () => {
                             packageData?.verify_edistrict_Certificate_Price
                           }
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -861,6 +879,7 @@ const SdMyCommission = () => {
                           name="Ayushman_Id_Price"
                           value={packageData?.Ayushman_Id_Price}
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -880,6 +899,7 @@ const SdMyCommission = () => {
                           name="IRCTC_Agent_ID_Price"
                           value={packageData?.IRCTC_Agent_ID_Price}
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -899,6 +919,7 @@ const SdMyCommission = () => {
                           name="PayNearBy_BankId_Price"
                           value={packageData?.PayNearBy_BankId_Price}
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -918,6 +939,7 @@ const SdMyCommission = () => {
                           name="Fino_BankId_Price"
                           value={packageData?.Fino_BankId_Price}
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -937,6 +959,7 @@ const SdMyCommission = () => {
                           name="SpiceMoney_BankId_Price"
                           value={packageData?.SpiceMoney_BankId_Price}
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -956,6 +979,7 @@ const SdMyCommission = () => {
                           name="Nsdl_BankId_Price"
                           value={packageData?.Nsdl_BankId_Price}
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -975,6 +999,7 @@ const SdMyCommission = () => {
                           name="Ezeepay_BankId_Price"
                           value={packageData?.Ezeepay_BankId_Price}
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -994,6 +1019,7 @@ const SdMyCommission = () => {
                           name="ReligareDigipay_BankId_Price"
                           value={packageData?.ReligareDigipay_BankId_Price}
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -1013,6 +1039,7 @@ const SdMyCommission = () => {
                           name="Airtel_BankId_Price"
                           value={packageData?.Airtel_BankId_Price}
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -1032,6 +1059,7 @@ const SdMyCommission = () => {
                           name="payworld_BankId_Price"
                           value={packageData?.payworld_BankId_Price}
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -1051,6 +1079,7 @@ const SdMyCommission = () => {
                           name="Anypay_BankId_Price"
                           value={packageData?.Anypay_BankId_Price}
                           required
+                          disabled
                         />
                       </div>
                     </div>
@@ -1070,9 +1099,54 @@ const SdMyCommission = () => {
                           name="Roinet_BankId_Price"
                           value={packageData?.Roinet_BankId_Price}
                           required
+                          disabled
                         />
                       </div>
                     </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                              NSDL PSA ID Price
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                              <span class="input-group-text" id="addon-wrapping">
+                                                {" "}
+                                                <MdNumbers />
+                                              </span>
+                                              <input
+                                                type="number"
+                                                
+                                                class="form-control"
+                                                placeholder="Enter price"
+                                                name="NSDL_PSA_ID_Price"
+                                                value={packageData?.NSDL_PSA_ID_Price}
+                                                disabled
+                                                required
+                                                
+                                              />
+                                            </div>
+                                          </div>
+                                          <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <label for="name" class="form-label">
+                                              UTI PSA ID Price
+                                            </label>
+                                            <div class="input-group flex-nowrap">
+                                              <span class="input-group-text" id="addon-wrapping">
+                                                {" "}
+                                                <MdNumbers />
+                                              </span>
+                                              <input
+                                                type="number"
+                                                
+                                                class="form-control"
+                                                placeholder="Enter price"
+                                                name="UTI_PSA_ID_Price"
+                                                value={packageData?.UTI_PSA_ID_Price}
+                                                disabled
+                                                required
+                                               
+                                              />
+                                            </div>
+                                          </div>
 
                   </div> 
 
