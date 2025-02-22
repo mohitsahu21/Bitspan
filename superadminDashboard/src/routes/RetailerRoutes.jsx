@@ -70,6 +70,9 @@
 // import VerifyEdistrict from "../components/DashBoard/VerifyEdistrict";
 // import VerifyDistrictHistory from "../components/DashBoard/VerifyDistrictHistory";
 // import SambalHistory from "../components/DashBoard/SambalHistory";
+// import DTHConnectionHistroy from "../components/DashBoard/DTHConnectionHistroy";
+// import NSDLPanComponent from "../components/DashBoard/NSDLPanComponent";
+// import NSDLPANCorrectionComponent from "../components/DashBoard/NSDLPANCorrectionComponent";
 // import { useSelector } from "react-redux";
 
 import React, { Suspense, lazy } from "react";
@@ -77,6 +80,10 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Spinner } from "react-bootstrap";
 import styled from "styled-components";
+// import UTIRetailerIdActivateComponent from "../components/DashBoard/UTIRetailerIdActivateComponent";
+// import UTIPanLoginComponent from "../components/DashBoard/UTIPanLoginComponent";
+// import NSDLPanStatusComponent from "../components/DashBoard/NSDLPanStatusComponent";
+// import NSDLIncompletePanCompoent from "../components/DashBoard/NSDLIncompletePanCompoent";
 
 // Lazy load all components
 const LoginBitspan = lazy(() => import("../components/LoginBitspan"));
@@ -85,6 +92,13 @@ const MultiStepForm = lazy(() =>
   import("../components/PanCardForm/MultiStepForm")
 );
 const Profile = lazy(() => import("../pages/Profile"));
+const DTHConnectionHistroy = lazy(() => import("../components/DashBoard/DTHConnectionHistroy"));
+const NSDLPanComponent = lazy(() => import("../components/DashBoard/NSDLPanComponent"));
+const NSDLPANCorrectionComponent = lazy(() => import("../components/DashBoard/NSDLPANCorrectionComponent"));
+const NSDLIncompletePanCompoent = lazy(() => import("../components/DashBoard/NSDLIncompletePanCompoent"));
+const NSDLPanStatusComponent = lazy(() => import("../components/DashBoard/NSDLPanStatusComponent"));
+const UTIPanLoginComponent = lazy(() => import("../components/DashBoard/UTIPanLoginComponent"));
+const UTIRetailerIdActivateComponent = lazy(() => import("../components/DashBoard/UTIRetailerIdActivateComponent"));
 const MobileRecharge = lazy(() =>
   import("../components/DashBoard/MobileRecharge")
 );
@@ -407,7 +421,7 @@ const RetailerRoutes = () => {
                 )
               }
             />
-            <Route
+            {/* <Route
               path="/pan-apply-49"
               element={
                 userStatus === "Pending" || userStatus === "Deactive" ? (
@@ -416,8 +430,18 @@ const RetailerRoutes = () => {
                   <NsdlNewPanCard />
                 )
               }
-            />
+            /> */}
             <Route
+              path="/pan-apply-49"
+              element={
+                userStatus === "Pending" || userStatus === "Deactive" ? (
+                  <Navigate to="/update-profile" />
+                ) : (
+                  <NSDLPanComponent/>
+                )
+              }
+            />
+            {/* <Route
               path="/pan-apply-cr"
               element={
                 userStatus === "Pending" || userStatus === "Deactive" ? (
@@ -426,14 +450,34 @@ const RetailerRoutes = () => {
                   <NsdlPanCorrection />
                 )
               }
-            />
+            /> */}
             <Route
+              path="/pan-apply-cr"
+              element={
+                userStatus === "Pending" || userStatus === "Deactive" ? (
+                  <Navigate to="/update-profile" />
+                ) : (
+                  <NSDLPANCorrectionComponent />
+                )
+              }
+            />
+            {/* <Route
               path="/pan-status"
               element={
                 userStatus === "Pending" || userStatus === "Deactive" ? (
                   <Navigate to="/update-profile" />
                 ) : (
                   <PanStatus />
+                )
+              }
+            /> */}
+            <Route
+              path="/pan-status"
+              element={
+                userStatus === "Pending" || userStatus === "Deactive" ? (
+                  <Navigate to="/update-profile" />
+                ) : (
+                  <NSDLPanStatusComponent />
                 )
               }
             />
@@ -541,7 +585,7 @@ const RetailerRoutes = () => {
                 )
               }
             />
-            <Route
+            {/* <Route
               path="/pan-transaction-resume-report"
               element={
                 userStatus === "Pending" || userStatus === "Deactive" ? (
@@ -550,7 +594,7 @@ const RetailerRoutes = () => {
                   <PanTransactionResumeReport />
                 )
               }
-            />
+            /> */}
             <Route
               path="/raise-complaint"
               element={
@@ -581,13 +625,23 @@ const RetailerRoutes = () => {
                 )
               }
             />
-            <Route
+            {/* <Route
               path="/uti-login-new"
               element={
                 userStatus === "Pending" || userStatus === "Deactive" ? (
                   <Navigate to="/update-profile" />
                 ) : (
                   <UtiPanNew />
+                )
+              }
+            /> */}
+            <Route
+              path="/uti-login-new"
+              element={
+                userStatus === "Pending" || userStatus === "Deactive" ? (
+                  <Navigate to="/update-profile" />
+                ) : (
+                  <UTIPanLoginComponent />
                 )
               }
             />
@@ -608,6 +662,16 @@ const RetailerRoutes = () => {
                   <Navigate to="/update-profile" />
                 ) : (
                   <DthConnection />
+                )
+              }
+            />
+            <Route
+              path="/apply-dth-connection-history"
+              element={
+                userStatus === "Pending" || userStatus === "Deactive" ? (
+                  <Navigate to="/update-profile" />
+                ) : (
+                  <DTHConnectionHistroy />
                 )
               }
             />
@@ -651,13 +715,23 @@ const RetailerRoutes = () => {
                 )
               }
             />
-            <Route
+            {/* <Route
               path="/retailer-id-revamp-activate"
               element={
                 userStatus === "Pending" || userStatus === "Deactive" ? (
                   <Navigate to="/update-profile" />
                 ) : (
                   <UTIRetailerIdActivate />
+                )
+              }
+            /> */}
+            <Route
+              path="/retailer-id-revamp-activate"
+              element={
+                userStatus === "Pending" || userStatus === "Deactive" ? (
+                  <Navigate to="/update-profile" />
+                ) : (
+                  <UTIRetailerIdActivateComponent />
                 )
               }
             />
@@ -887,13 +961,23 @@ const RetailerRoutes = () => {
                 )
               }
             />
-            <Route
+            {/* <Route
               path="/incomplete-request"
               element={
                 userStatus === "Pending" || userStatus === "Deactive" ? (
                   <Navigate to="/update-profile" />
                 ) : (
                   <NsdlIncomplete />
+                )
+              }
+            /> */}
+            <Route
+              path="/incomplete-request"
+              element={
+                userStatus === "Pending" || userStatus === "Deactive" ? (
+                  <Navigate to="/update-profile" />
+                ) : (
+                  <NSDLIncompletePanCompoent />
                 )
               }
             />

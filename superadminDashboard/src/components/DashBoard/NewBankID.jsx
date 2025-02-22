@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import { FaMobileAlt } from "react-icons/fa";
+import { FaIdCard, FaMobileAlt } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { IoMail, IoPerson } from "react-icons/io5";
 import { BiHomeAlt } from "react-icons/bi";
@@ -9,14 +9,18 @@ import { Modal, Button, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleRefresh } from "../../redux/user/userSlice";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import { FaRupeeSign } from "react-icons/fa";
 
 const NewBankID = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const [optionPrices, setOptionPrices] = useState({});
   const [selectedPrice, setSelectedPrice] = useState(null);
   // console.log(selectedPrice);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [services,setServices] = useState([]);
   console.log(selectedPrice);
   
  const attached_photo_ref = useRef(null);
@@ -31,14 +35,46 @@ const NewBankID = () => {
     { id: 3, name: "Ezeepay" },
     { id: 4, name: "Fino" },
     { id: 5, name: "IRCTC" },
-    { id: 6, name: "NSDL" },
+    { id: 6, name: "NSDL Bank ID" },
     { id: 7, name: "PayNearBy" },
     { id: 8, name: "Payworld" },
     { id: 9, name: "Religare Digipay" },
     { id: 10, name: "Roinet" },
     { id: 11, name: "Spice Money" },
     { id: 12, name: "Ayushman ID" },
+    { id: 13, name: "NSDL PSA ID" },
+    { id: 14, name: "UTI PSA ID" },
   ];
+
+  const fetchServices = async () => {
+    // setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
+      );
+      setServices(data.data);
+      // setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
+      // setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchPackage = async () => {
@@ -56,13 +92,15 @@ const NewBankID = () => {
           Ezeepay: priceData?.Ezeepay_BankId_Price || "N/A",
           Fino: priceData?.Fino_BankId_Price || "N/A",
           IRCTC: priceData?.IRCTC_Agent_ID_Price || "N/A",
-          NSDL: priceData?.Nsdl_BankId_Price || "N/A",
+          "NSDL Bank ID": priceData?.Nsdl_BankId_Price || "N/A",
           PayNearBy: priceData?.PayNearBy_BankId_Price || "N/A",
           Payworld: priceData?.payworld_BankId_Price || "N/A",
           "Religare Digipay": priceData?.ReligareDigipay_BankId_Price || "N/A",
           Roinet: priceData?.Roinet_BankId_Price || "N/A",
           "Spice Money": priceData?.SpiceMoney_BankId_Price || "N/A",
           "Ayushman ID": priceData?.Ayushman_Id_Price || "N/A",
+          "NSDL PSA ID": priceData?.NSDL_PSA_ID_Price || "N/A",
+          "UTI PSA ID": priceData?.UTI_PSA_ID_Price || "N/A",
         };
 
         console.log("Mapped Price Data:", priceMap);
@@ -73,7 +111,39 @@ const NewBankID = () => {
     };
 
     fetchPackage();
+    fetchServices()
   }, []);
+
+ 
+  useEffect(()=>{
+      if(services){
+        // services.map((item)=>{
+        //    if(item.service_name == "Purchase Bank Id"){
+        //      if(item.status == "Deactive"){
+        //       Swal.fire({
+        //         title: "This service is currently Not Available",
+        //         text: `Please try after some time`,
+        //         icon: "error",
+        //       });
+        //       navigate("/dashboard")
+        //      }
+        //    }
+        // })
+
+        const purchaseBankIdService = services.find(
+          (item) => item.service_name === "Purchase Bank Id"
+        );
+      
+        if (purchaseBankIdService?.status === "Deactive") {
+          Swal.fire({
+            title: "This service is currently Not Available",
+            text: "Please try after some time",
+            icon: "error",
+          });
+          navigate("/dashboard");
+        }
+      }
+  },[services])
 
   const [formData, setFormData] = useState({
     applicant_name: currentUser.username,
@@ -148,7 +218,8 @@ const NewBankID = () => {
   // };
 
   const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
-
+  const allowedTypes = ["image/jpeg", "image/jpg", "image/png" , "application/pdf"];
+  const allowedPhoto = ["image/jpeg", "image/jpg", "image/png"];
 const handleFileChange = (e) => {
   const { name, files: selectedFiles } = e.target;
 
@@ -165,7 +236,17 @@ const handleFileChange = (e) => {
         // Clear the file input
         e.target.value = null;
         return;
-      } else {
+      }
+      else if(!allowedTypes.includes(file.type)){
+Swal.fire({
+                  icon: "error",
+                  title: "Invalid File Type",
+                  text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG , PDF are allowed.`,
+                });
+                e.target.value = null;
+                return;
+      }
+       else {
         validFiles.push(file);
       }
     }
@@ -175,6 +256,36 @@ const handleFileChange = (e) => {
       ...prevFiles,
       [name]: validFiles,
     }));
+  }
+  else if(name === "attached_photo" || name === "shop_photo"){
+ // For single file input
+ const file = selectedFiles[0];
+ if (file) {
+   if (file.size > MAX_FILE_SIZE) {
+     Swal.fire({
+       title: "File Too Large",
+       text: `The file "${file.name}" exceeds the 2 MB size limit. Please select a smaller file.`,
+       icon: "error",
+     });
+
+     // Clear the file input
+     e.target.value = null;
+     return;
+   }
+   else if(!allowedPhoto.includes(file.type)){
+    Swal.fire({
+      icon: "error",
+      title: "Invalid File Type",
+      text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG are allowed.`,
+    });
+    e.target.value = null;
+    return;
+   }
+   setFiles((prevFiles) => ({
+     ...prevFiles,
+     [name]: file,
+   }));
+ }
   } else {
     // For single file input
     const file = selectedFiles[0];
@@ -536,7 +647,7 @@ const handleFileChange = (e) => {
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="input-group mb-3">
                         <span className="input-group-text">
-                          <IoMail />
+                        <IoPerson />
                         </span>
                         <div className="form-floating">
                           <input
@@ -556,7 +667,7 @@ const handleFileChange = (e) => {
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="input-group mb-3">
                         <span className="input-group-text">
-                          <IoMail />
+                        <IoPerson />
                         </span>
                         <div className="form-floating">
                           <input
@@ -597,7 +708,7 @@ const handleFileChange = (e) => {
                     <div className="col-xl-5 col-lg-5 col-md-5 col-sm-12">
                       <div className="input-group">
                         <span className="input-group-text">
-                          <FaMobileAlt />
+                        <IoMail />
                         </span>
                         <div className="form-floating">
                           <input
@@ -673,7 +784,7 @@ const handleFileChange = (e) => {
                     <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12">
                       <div className="input-group">
                         <span className="input-group-text">
-                          <FaMobileAlt />
+                          <FaRupeeSign />
                         </span>
                         <div className="form-floating">
                           <input
@@ -693,7 +804,7 @@ const handleFileChange = (e) => {
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="input-group">
                         <span className="input-group-text">
-                          <FaMobileAlt />
+                        <FaIdCard />
                         </span>
                         <div className="form-floating">
                           <input
@@ -714,7 +825,7 @@ const handleFileChange = (e) => {
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="input-group">
                         <span className="input-group-text">
-                          <FaMobileAlt />
+                        <FaIdCard />
                         </span>
                         <div className="form-floating">
                           <input
@@ -735,7 +846,7 @@ const handleFileChange = (e) => {
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="input-group">
                         <span className="input-group-text">
-                          <FaMobileAlt />
+                        <FaIdCard />
                         </span>
                         <div className="form-floating">
                           <input
@@ -763,6 +874,7 @@ const handleFileChange = (e) => {
                         <input
                           type="file"
                           className="form-control form-control-lg"
+                          accept="image/*"
                           id="formFileLg1"
                           name="attached_photo"
                           onChange={handleFileChange}
@@ -780,6 +892,7 @@ const handleFileChange = (e) => {
                           className="form-control form-control-lg"
                           id="attached_kyc"
                           name="attached_kyc"
+                          accept="image/*,application/pdf"
                           multiple
                           onChange={handleFileChange}
                           ref={attached_Kyc_ref}
@@ -795,6 +908,7 @@ const handleFileChange = (e) => {
                           type="file"
                           className="form-control form-control-lg"
                           id="bank_passbook"
+                          accept="image/*,application/pdf"
                           name="bank_passbook"
                           onChange={handleFileChange}
                           ref={bank_passbook_ref}
@@ -811,6 +925,7 @@ const handleFileChange = (e) => {
                           className="form-control form-control-lg"
                           id="shop_photo"
                           name="shop_photo"
+                          accept="image/*"
                           onChange={handleFileChange}
                           ref={shop_photo_ref}
                         />
@@ -826,6 +941,7 @@ const handleFileChange = (e) => {
                           className="form-control form-control-lg"
                           id="electric_bill"
                           name="electric_bill"
+                          accept="image/*,application/pdf"
                           onChange={handleFileChange}
                           ref={Electricity_bill_ref}
 
@@ -836,7 +952,7 @@ const handleFileChange = (e) => {
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="text-start mb-3">
                         <button
-                          className="btn p-2"
+                          className="btn btn-primary p-2"
                           type="submit"
                           disabled={isLoading}
                         >

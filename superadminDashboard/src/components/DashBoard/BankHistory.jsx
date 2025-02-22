@@ -79,12 +79,12 @@ const BankHistory = () => {
         <div className="main">
           <div className="container-fluid">
             <div className="row flex-wrap justify-content-center">
-              <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11 mt-5 formdata">
+              <div className="col-xxl-12 col-xl-11 col-lg-11 col-md-11 col-sm-11 mt-5 formdata">
                 <div className="main shadow-none">
                   <div className="row shadow-none">
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
-                        <h4 className="px-lg-3">Bank ID History</h4>
+                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Bank ID History</h4>
                         <h6 className="mx-lg-5">
                           <BiHomeAlt /> &nbsp;/ &nbsp; Bank ID History
                         </h6>

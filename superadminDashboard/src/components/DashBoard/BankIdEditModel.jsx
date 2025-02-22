@@ -31,13 +31,15 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     { id: 3, name: "Ezeepay" },
     { id: 4, name: "Fino" },
     { id: 5, name: "IRCTC" },
-    { id: 6, name: "NSDL" },
+    { id: 6, name: "NSDL Bank ID" },
     { id: 7, name: "PayNearBy" },
     { id: 8, name: "Payworld" },
     { id: 9, name: "Religare Digipay" },
     { id: 10, name: "Roinet" },
     { id: 11, name: "Spice Money" },
     { id: 12, name: "Ayushman ID" },
+    { id: 13, name: "NSDL PSA ID" },
+    { id: 14, name: "UTI PSA ID" },
   ];
 
   useEffect(() => {
@@ -56,13 +58,15 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
           Ezeepay: priceData?.Ezeepay_BankId_Price || "N/A",
           Fino: priceData?.Fino_BankId_Price || "N/A",
           IRCTC: priceData?.IRCTC_Agent_ID_Price || "N/A",
-          NSDL: priceData?.Nsdl_BankId_Price || "N/A",
+          "NSDL Bank ID": priceData?.Nsdl_BankId_Price || "N/A",
           PayNearBy: priceData?.PayNearBy_BankId_Price || "N/A",
           Payworld: priceData?.payworld_BankId_Price || "N/A",
           "Religare Digipay": priceData?.ReligareDigipay_BankId_Price || "N/A",
           Roinet: priceData?.Roinet_BankId_Price || "N/A",
           "Spice Money": priceData?.SpiceMoney_BankId_Price || "N/A",
           "Ayushman ID": priceData?.Ayushman_Id_Price || "N/A",
+          "NSDL PSA ID": priceData?.NSDL_PSA_ID_Price || "N/A",
+          "UTI PSA ID": priceData?.UTI_PSA_ID_Price || "N/A",
         };
 
         console.log("Mapped Price Data:", priceMap);
@@ -162,7 +166,8 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
   // };
 
   const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
-
+  const allowedTypes = ["image/jpeg", "image/jpg", "image/png" , "application/pdf"];
+  const allowedPhoto = ["image/jpeg", "image/jpg", "image/png"];
   const handleFileChange = (e) => {
     const { name, files: selectedFiles } = e.target;
 
@@ -179,7 +184,16 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
           // Clear the file input
           e.target.value = null;
           return;
-        } else {
+        }
+         else if(!allowedTypes.includes(file.type)){
+        Swal.fire({
+                          icon: "error",
+                          title: "Invalid File Type",
+                          text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG , PDF are allowed.`,
+                        });
+                        e.target.value = null;
+                        return;
+              } else {
           validFiles.push(file);
         }
       }
@@ -189,7 +203,37 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
         ...prevFiles,
         [name]: validFiles,
       }));
-    } else {
+    }
+     else if(name === "attached_photo" || name === "shop_photo"){
+     // For single file input
+     const file = selectedFiles[0];
+     if (file) {
+       if (file.size > MAX_FILE_SIZE) {
+         Swal.fire({
+           title: "File Too Large",
+           text: `The file "${file.name}" exceeds the 2 MB size limit. Please select a smaller file.`,
+           icon: "error",
+         });
+    
+         // Clear the file input
+         e.target.value = null;
+         return;
+       }
+       else if(!allowedPhoto.includes(file.type)){
+        Swal.fire({
+          icon: "error",
+          title: "Invalid File Type",
+          text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG are allowed.`,
+        });
+        e.target.value = null;
+        return;
+       }
+       setFiles((prevFiles) => ({
+         ...prevFiles,
+         [name]: file,
+       }));
+     }
+      } else {
       // For single file input
       const file = selectedFiles[0];
       if (file) {
@@ -832,6 +876,7 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
                           className="form-control form-control-lg"
                           id="formFileLg1"
                           name="attached_photo"
+                          accept="image/*"
                           onChange={handleFileChange}
                           ref={attached_photo_ref}
                         />
@@ -857,6 +902,7 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
                           id="attached_kyc"
                           name="attached_kyc"
                           multiple
+                          accept="image/*,application/pdf"
                           onChange={handleFileChange}
                           ref={attached_Kyc_ref}
                         />
@@ -885,6 +931,7 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
                           className="form-control form-control-lg"
                           id="bank_passbook"
                           name="bank_passbook"
+                          accept="image/*,application/pdf"
                           onChange={handleFileChange}
                           ref={bank_passbook_ref}
                         />
@@ -910,6 +957,7 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
                           id="shop_photo"
                           name="shop_photo"
                           onChange={handleFileChange}
+                          accept="image/*"
                           ref={shop_photo_ref}
                         />
                         {preveiewfiles.shop_photo && (
@@ -933,6 +981,7 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
                           className="form-control form-control-lg"
                           id="electric_bill"
                           name="electric_bill"
+                          accept="image/*,application/pdf"
                           onChange={handleFileChange}
                           ref={Electricity_bill_ref}
                         />
@@ -951,7 +1000,7 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="text-start mb-3">
                         <button
-                          className="btn p-2"
+                          className="btn btn-primary p-2"
                           type="submit"
                           disabled={isLoading}
                         >

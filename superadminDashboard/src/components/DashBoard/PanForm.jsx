@@ -11,12 +11,15 @@ import { MdAlternateEmail } from "react-icons/md";
 import { SlPeople } from "react-icons/sl";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const PanForm = () => {
   const dispatch = useDispatch();
+    const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
   const [fileError, setFileError] = useState("");
+    const [services,setServices] = useState([]);
   const [selectOption, setSelectOption] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
@@ -45,6 +48,36 @@ const PanForm = () => {
     userId: currentUser?.userId,
   });
 
+  const fetchServices = async () => {
+    // setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
+      );
+      setServices(data.data);
+      // setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
+      // setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const fetchPackage = async () => {
       try {
@@ -58,7 +91,26 @@ const PanForm = () => {
       }
     };
     fetchPackage();
+    fetchServices();
   }, []);
+
+   useEffect(()=>{
+        if(services){
+         
+          const purchaseBankIdService = services.find(
+            (item) => item.service_name === "Apply Offline Forms"
+          );
+        
+          if (purchaseBankIdService?.status === "Deactive") {
+            Swal.fire({
+              title: "This service is currently Not Available",
+              text: "Please try after some time",
+              icon: "error",
+            });
+            navigate("/dashboard");
+          }
+        }
+    },[services])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -117,11 +169,80 @@ const PanForm = () => {
     }));
   }, [selectedPrice, eStampAmount, selectOption]);
 
+
+  const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
+  const allowedTypes = ["image/jpeg", "image/jpg", "image/png" , "application/pdf"];
+  const allowedPhoto = ["image/jpeg", "image/jpg", "image/png"];
   const handleFileChange = (e) => {
     const { name, files } = e.target;
     if (name === "attached_kyc") {
+       for (const file of files) {
+            if (file.size > MAX_FILE_SIZE) {
+              Swal.fire({
+                title: "File Too Large",
+                text: `The file "${file.name}" exceeds the 2 MB size limit. Please select smaller files.`,
+                icon: "error",
+              });
+              // Clear the file input
+              e.target.value = null;
+              return;
+            }
+            else if(!allowedTypes.includes(file.type)){
+      Swal.fire({
+                        icon: "error",
+                        title: "Invalid File Type",
+                        text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG , PDF are allowed.`,
+                      });
+                      e.target.value = null;
+                      return;
+            }
+           
+          }
       setFormData({ ...formData, [name]: Array.from(files) });
-    } else {
+    } else if(name === "attached_photo" || name === "attached_sign"){
+     // For single file input
+     const file = files[0];
+     if (file) {
+       if (file.size > MAX_FILE_SIZE) {
+         Swal.fire({
+           title: "File Too Large",
+           text: `The file "${file.name}" exceeds the 2 MB size limit. Please select a smaller file.`,
+           icon: "error",
+         });
+    
+         // Clear the file input
+         e.target.value = null;
+         return;
+       }
+       else if(!allowedPhoto.includes(file.type)){
+        Swal.fire({
+          icon: "error",
+          title: "Invalid File Type",
+          text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG are allowed.`,
+        });
+        e.target.value = null;
+        return;
+       }
+       setFormData((prevFiles) => ({
+         ...prevFiles,
+         [name]: file,
+       }));
+     }
+      } else {
+        const file = files[0];
+        if (file) {
+          if (file.size > MAX_FILE_SIZE) {
+            Swal.fire({
+              title: "File Too Large",
+              text: `The file "${file.name}" exceeds the 2 MB size limit. Please select a smaller file.`,
+              icon: "error",
+            });
+       
+            // Clear the file input
+            e.target.value = null;
+            return;
+          }
+        }
       setFormData({ ...formData, [name]: files[0] });
     }
   };
@@ -653,7 +774,7 @@ const PanForm = () => {
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div>
                         <label htmlFor="formFileLg4" className="form-label">
-                          Attachment KYC (JPG, JPEG, PNG)
+                          Attachment KYC (JPG, JPEG, PNG,PDF)
                         </label>
                         <input
                           className="form-control form-control-lg"
@@ -661,7 +782,7 @@ const PanForm = () => {
                           type="file"
                           name="attached_kyc"
                           multiple
-                          accept=".jpg,.jpeg,.png"
+                          accept="image/*,application/pdf"
                           onChange={handleFileChange}
                           ref={attachKycRef}
                         />
@@ -669,7 +790,7 @@ const PanForm = () => {
                     </div>
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="text-start mb-3">
-                        <button className="btn p-2" type="submit"  disabled={isLoading}>
+                        <button className="btn btn-primary p-2" type="submit"  disabled={isLoading}>
                         {isLoading ? "Submit..." : "Submit"}
                         </button>
                       </div>

@@ -69,6 +69,8 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
         payworld_BankId_Price: packages.payworld_BankId_Price,
         Anypay_BankId_Price: packages.Anypay_BankId_Price,
         Roinet_BankId_Price: packages.Roinet_BankId_Price,
+        NSDL_PSA_ID_Price : packages.NSDL_PSA_ID_Price,
+        UTI_PSA_ID_Price : packages.UTI_PSA_ID_Price,
         Offline_Services_Commission_Type: packages.Offline_Services_Commission_Type,
         offline_E_PAN_Card_Commission : packages.offline_E_PAN_Card_Commission,
         offline_P_PAN_Card_Commission : packages.offline_P_PAN_Card_Commission,
@@ -1119,6 +1121,52 @@ const SAEditPackageModel = ({packages,setEditPackgeDetail,setIsRefresh}) => {
                             placeholder="Enter price"
                             name="Roinet_BankId_Price"
                             value={formData.Roinet_BankId_Price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter NSDL PSA ID Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="NSDL_PSA_ID_Price"
+                            value={formData.NSDL_PSA_ID_Price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter UTI PSA ID Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="UTI_PSA_ID_Price"
+                            value={formData.UTI_PSA_ID_Price}
                             onChange={handleChange}
                             required
                             min={0}

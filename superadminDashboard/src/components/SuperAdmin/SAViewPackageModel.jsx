@@ -762,6 +762,50 @@ const SAViewPackageModel = ({ packages }) => {
                           />
                         </div>
                       </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          NSDL PSA ID Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="NSDL_PSA_ID_Price"
+                            value={packages.NSDL_PSA_ID_Price}
+                            
+                            required
+                            
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          UTI PSA ID Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            
+                            class="form-control"
+                            placeholder="Enter price"
+                            name="UTI_PSA_ID_Price"
+                            value={packages.UTI_PSA_ID_Price}
+                           
+                            required
+                           
+                          />
+                        </div>
+                      </div>
                       
                       {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                             <div className="text-center  mb-5 mt-3">

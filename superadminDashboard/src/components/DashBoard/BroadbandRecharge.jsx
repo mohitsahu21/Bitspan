@@ -16,9 +16,67 @@ const BroadbandRecharge = () => {
   const [activeTab, setActiveTab] = useState("tab1");
   const [apiData, setApiData] = useState([]);
   const navigate = useNavigate();
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
+  const [services,setServices] = useState([]);
+  const fetchServices = async () => {
+    // setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
+      );
+      setServices(data.data);
+      // setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
+      // setLoading(false);
+    }
   };
+  // const handleTabClick = (tab) => {
+  //   setActiveTab(tab);
+  // };
+
+       const handleTabClick = (tab) => {
+            if(tab == "tab2"){
+              if(services){
+                       
+                const purchaseBankIdService = services.find(
+                  (item) => item.service_name === "Provider 2 recharge"
+                );
+              
+                if (purchaseBankIdService?.status === "Deactive") {
+                  Swal.fire({
+                    title: "Provider 2 service is currently Not Available",
+                    text: "Please try after some time",
+                    icon: "error",
+                  });
+                  // navigate("/prepaid-recharge");
+                }
+                else{
+                  setActiveTab(tab);
+                }
+              }
+            }
+            else{
+              setActiveTab(tab);
+            }
+            
+            
+          };
 
   const [formData, setFormData] = useState({
     operatorName: "",
@@ -68,20 +126,53 @@ const BroadbandRecharge = () => {
     };
 
     fetchData();
+    fetchServices();
   }, []);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    // setFormData({
+    //   ...formData,
+    //   [e.target.name]: e.target.value,
+    // });
+    const { name, value } = e.target;
+    if(name === "number" || name === "amount"){
+      
+      if (/^\d*$/.test(value)) {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+    }
+    else{
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const handleChangeForm = (e) => {
-    setOfflineForm({
-      ...offlineForm,
-      [e.target.name]: e.target.value,
-    });
+    // setOfflineForm({
+    //   ...offlineForm,
+    //   [e.target.name]: e.target.value,
+    // });
+    const { name, value } = e.target;
+    if(name === "mobile_no" || name === "amount"){
+      
+      if (/^\d*$/.test(value)) {
+        setOfflineForm((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+    }
+    else{
+      setOfflineForm({
+        ...offlineForm,
+        [name]: value,
+      });
+    }
   };
 
   const BroadbandRechargeComm = async (
@@ -701,6 +792,8 @@ const BroadbandRecharge = () => {
           mobile_no: "",
           operator_name: "",
           amount: "",
+          recharge_Type: "Broadband",
+          userId: currentUser.userId,
         });
       }
     } catch (error) {
@@ -767,38 +860,60 @@ const BroadbandRecharge = () => {
       if (response.data.success) {
         return true;
       } else {
-        alert(response.data.message);
+        // alert(response.data.message);
+        Swal.fire({
+                         title: "Error verifying PIN",
+                         text: response?.data?.message || "Something went wrong! Please Try again",
+                         icon: "error",
+                       });
         return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
-      alert("Error verifying PIN");
+      // alert("Error verifying PIN");
+      Swal.fire({
+                   title: "Error verifying PIN",
+                   text: error?.response?.data?.message || "Something went wrong! Please Try again",
+                   icon: "error",
+                 });
       return false;
     }
   };
 
-  // Onlined PIN Integration
-  const verifyOnlinePin = async () => {
-    try {
-      const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: onlinePin.join("") }
-      );
-      if (response.data.success) {
-        return true;
-      } else {
-        alert(response.data.message);
-        return false;
-      }
-    } catch (error) {
-      console.error("Error verifying PIN:", error);
-      alert("Error verifying PIN");
+      // Onlined PIN Integration
+const verifyOnlinePin = async () => {
+  try {
+    const response = await axios.post(
+      `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+      { user_id: currentUser.userId || "", pin: onlinePin.join("") }
+    );
+    if (response.data.success) {
+      return true;
+    } else {
+      // alert(response.data.message);
+      Swal.fire({
+                        title: "Error verifying PIN",
+                        text: response?.data?.message || "Something went wrong! Please Try again",
+                        icon: "error",
+                      });
       return false;
     }
-  };
+  } catch (error) {
+    console.error("Error verifying PIN:", error);
+    // alert("Error verifying PIN");
+     Swal.fire({
+                  title: "Error verifying PIN",
+                  text: error?.response?.data?.message || "Something went wrong! Please Try again",
+                  icon: "error",
+                });
+    return false;
+  }
+};
 
   const handleModalSubmit = async (e) => {
+    setIsVerifying(true);
     const isPinValid = await verifyPin();
+    setIsVerifying(false);
     if (isPinValid) {
       setShowPinModal(false);
       handlesubmitForm(e);
@@ -932,9 +1047,12 @@ const BroadbandRecharge = () => {
                                               onChange={handleChange}
                                               name="number"
                                               autoComplete="off"
+                                              required
+                                              maxLength={11}
+                                              minLength={11}
                                             />
                                             <label for="floatingInputGroup1">
-                                              Mobile Number
+                                             Number
                                             </label>
                                           </div>
                                         </div>
@@ -989,6 +1107,7 @@ const BroadbandRecharge = () => {
                                             style={{
                                               backgroundColor: "#6d70ff",
                                             }}
+                                            disabled={loading || !formData.amount || !formData.number || !formData.operatorName ||  formData.number.length < 10}
                                             type="submit"
                                           >
                                             Recharge Now
@@ -1033,9 +1152,12 @@ const BroadbandRecharge = () => {
                                               value={offlineForm.mobile_no}
                                               onChange={handleChangeForm}
                                               name="mobile_no"
+                                              required
+                                              maxLength={11}
+                                              minLength={11}
                                             />
                                             <label for="floatingInputGroup1">
-                                              Mobile Number
+                                              Number
                                             </label>
                                           </div>
                                         </div>
@@ -1111,6 +1233,7 @@ const BroadbandRecharge = () => {
                                             style={{
                                               backgroundColor: "#6d70ff",
                                             }}
+                                            disabled={loading || !offlineForm.amount || !offlineForm.mobile_no || !offlineForm.operator_name || offlineForm.mobile_no.length < 10}
                                           >
                                             Recharge Now
                                           </button>

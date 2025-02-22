@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import HeadBar from "../components/HeadBar";
 import Sider from "../components/SideBar";
@@ -18,6 +18,8 @@ import { BiHomeAlt } from "react-icons/bi";
 import { BsInfoSquare } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, fetchWalletBalance } from "../redux/user/userSlice";
+import axios from "axios";
+import { LuIndianRupee } from "react-icons/lu";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -25,6 +27,15 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { walletBalance } = useSelector((state) => state.user);
   console.log(walletBalance);
+  const userId = useSelector((state) => state.user.currentUser?.userId);
+  const [loading, setLoading] = useState(true);
+  const [commissionData, setCommissionData] = useState(0); // Default commission to 0
+  const [todayCommission, setTodayCommission] = useState(0);
+  const [notificationData, setNotificationData] = useState("");
+  const [monthlyRecharge,setMonthlyRecharge] = useState(0)
+  const [monthlyRechargeAmt,setMonthlyRechargeAmt] = useState(0)
+  const [TodayRecharge,setTodayRecharge] = useState(0)
+  const [TodayRechargeAmt,setTodayRechargeAmt] = useState(0)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -35,6 +46,315 @@ const Dashboard = () => {
 
     return () => clearInterval(interval); // Cleanup on unmount
   }, []);
+
+  const fetchUserNotifications = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getUserNotification/${userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (data.success && data.data.length > 0) {
+        console.log("Fetched Notifications:", data.data);
+        setNotificationData(data.data); // Save notifications in state
+      } else {
+        setNotificationData([]); // Set empty array if no data found
+      }
+    } catch (error) {
+      console.error("Error fetching user notifications:", error);
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired. Please login again.",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        setNotificationData([]); // Handle other errors
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchMonthCommission = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllMonthCommission/${userId}`,
+
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (data.success && data.data.length > 0) {
+        const totalCommission = data.data.reduce((total, item) => {
+          return total + parseFloat(item.super_Distributor_Commission);
+        }, 0);
+        setCommissionData(totalCommission); // Convert from cents to the correct format (if needed)
+      } else {
+        setCommissionData(0); // If no data found, set commission to 0
+      }
+    } catch (error) {
+      console.error("Error fetching commission data:", error);
+      if (error?.response?.status === 401) {
+        // Alert for expired token
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired. Please login again.",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        setCommissionData(0); // If another error occurs, set commission to 0
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+   // Format commission to limit decimals to 2
+   const formattedCommission = commissionData
+   ? parseFloat(commissionData).toFixed(2) // Limit to 2 decimal places
+   : "0.00"; // Default to "0.00" if commissionData is 0
+
+ //fetch Todays commission
+
+  const fetchTodaysCommission = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getTodaysCommission/${userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (data.success && data.data.length > 0) {
+        // Assuming `super_Distributor_Commission` is the field you want to display
+        const totalCommission = data.data.reduce((total, item) => {
+          return total + parseFloat(item.super_Distributor_Commission);
+        }, 0);
+
+        setTodayCommission(totalCommission); // Convert to decimal if needed
+      } else {
+        setTodayCommission(0); // If no data found, set commission to 0
+      }
+    } catch (error) {
+      console.error("Error fetching commission data:", error);
+
+      if (error?.response?.status === 401) {
+        // Alert for expired token
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired. Please login again.",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        setTodayCommission(0); // If another error occurs, set commission to 0
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const TodaysformattedCommission = todayCommission
+    ? parseFloat(todayCommission).toFixed(2) // Limit to 2 decimal places
+    : "0.00"; // Default to "0.00" if commissionData is 0
+
+    useEffect(()=>{
+      fetchTodaysCommission()
+      fetchMonthCommission()
+      fetchUserNotifications()
+      fetchMonthRecharge()
+      fetchMonthRechargeOffline()
+      fetchTodayRecharge()
+      fetchTodayRechargeOffline()
+    },[userId])
+
+    const fetchMonthRecharge = async () => {
+      setLoading(true);
+      try {
+        const { data } = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllMonthRecharge/${userId}`,
+  
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        if (data.success && data.data.length > 0) {
+          setMonthlyRecharge((pre)=>  pre + data.total);
+          const totalAmt = data.data.reduce((total, item) => {
+            return total + parseFloat(item.amount);
+          }, 0);
+          setMonthlyRechargeAmt((pre)=> pre+totalAmt); // Convert from cents to the correct format (if needed)
+        } else {
+          // setMonthlyRechargeAmt(0); 
+          // setMonthlyRecharge(0)
+        }
+      } catch (error) {
+        console.error("Error fetching commission data:", error);
+        if (error?.response?.status === 401) {
+          // Alert for expired token
+          Swal.fire({
+            icon: "error",
+            title: "Your token is expired. Please login again.",
+          });
+          dispatch(clearUser());
+          navigate("/");
+        } else {
+          // setMonthlyRechargeAmt(0); 
+          // setMonthlyRecharge(0)
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    const fetchMonthRechargeOffline = async () => {
+      setLoading(true);
+      try {
+        const { data } = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllMonthRechargeOffline/${userId}`,
+  
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        if (data.success && data.data.length > 0) {
+          setMonthlyRecharge((pre)=>  pre + data.total);
+          const totalAmt = data.data.reduce((total, item) => {
+            return total + parseFloat(item.amount);
+          }, 0);
+          setMonthlyRechargeAmt((pre)=> pre+totalAmt); // Convert from cents to the correct format (if needed)
+        } else {
+          // setMonthlyRechargeAmt(0); 
+          // setMonthlyRecharge(0)
+        }
+      } catch (error) {
+        console.error("Error fetching commission data:", error);
+        if (error?.response?.status === 401) {
+          // Alert for expired token
+          Swal.fire({
+            icon: "error",
+            title: "Your token is expired. Please login again.",
+          });
+          dispatch(clearUser());
+          navigate("/");
+        } else {
+          // setMonthlyRechargeAmt(0); 
+          // setMonthlyRecharge(0)
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchTodayRecharge = async () => {
+      setLoading(true);
+      try {
+        const { data } = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getTodaysRecharge/${userId}`,
+  
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        if (data.success && data.data.length > 0) {
+          setTodayRecharge((pre)=>  pre + data.total);
+          const totalAmt = data.data.reduce((total, item) => {
+            return total + parseFloat(item.amount);
+          }, 0);
+          setTodayRechargeAmt((pre)=> pre+totalAmt); // Convert from cents to the correct format (if needed)
+        } else {
+          // setMonthlyRechargeAmt(0); 
+          // setMonthlyRecharge(0)
+        }
+      } catch (error) {
+        console.error("Error fetching commission data:", error);
+        if (error?.response?.status === 401) {
+          // Alert for expired token
+          Swal.fire({
+            icon: "error",
+            title: "Your token is expired. Please login again.",
+          });
+          dispatch(clearUser());
+          navigate("/");
+        } else {
+          // setMonthlyRechargeAmt(0); 
+          // setMonthlyRecharge(0)
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    const fetchTodayRechargeOffline = async () => {
+      setLoading(true);
+      try {
+        const { data } = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getTodaysRechargeOffline/${userId}`,
+  
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        if (data.success && data.data.length > 0) {
+          setTodayRecharge((pre)=>  pre + data.total);
+          const totalAmt = data.data.reduce((total, item) => {
+            return total + parseFloat(item.amount);
+          }, 0);
+          setTodayRechargeAmt((pre)=> pre+totalAmt); // Convert from cents to the correct format (if needed)
+        } else {
+          // setMonthlyRechargeAmt(0); 
+          // setMonthlyRecharge(0)
+        }
+      } catch (error) {
+        console.error("Error fetching commission data:", error);
+        if (error?.response?.status === 401) {
+          // Alert for expired token
+          Swal.fire({
+            icon: "error",
+            title: "Your token is expired. Please login again.",
+          });
+          dispatch(clearUser());
+          navigate("/");
+        } else {
+          // setMonthlyRechargeAmt(0); 
+          // setMonthlyRecharge(0)
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
 
   return (
     <>
@@ -63,7 +383,7 @@ const Dashboard = () => {
                 <div className="container-fluid">
                   <div className="row d-flex formdata justify-content-center mb-3">
                     <div className="col-12 boarder bg-white p-2">
-                      <div className="news d-flex align-items-center">
+                      {/* <div className="news d-flex align-items-center">
                         <span className="p-3 bg-info news-icon">
                           <BsInfoSquare />
                         </span>
@@ -74,6 +394,60 @@ const Dashboard = () => {
                           accusantium maxime! Voluptatibus aut corrupti dolores
                           veniam? Eveniet, nemo quod? Inventore.
                         </p>
+                      </div> */}
+
+<div className="notifications-container">
+                        {loading ? (
+                          // <p>Loading notifications...</p>
+                         <div className="news d-flex align-items-center">
+                        <span className="p-3 bg-info news-icon">
+                          <BsInfoSquare />
+                        </span>
+                        <p className="d-flex align-items-center mb-0 ms-2">
+                         
+                        </p>
+                      </div> 
+                        ) : notificationData.length > 0 ? (
+                          notificationData.map((notification, index) => (
+                            <div
+                              className="news d-flex align-items-center"
+                              key={index}
+                              ref={(el) => {
+                                if (el) {
+                                  const textWidth =
+                                    el.querySelector("p").offsetWidth; // Get notification width
+                                  const containerWidth = el.offsetWidth; // Get container width
+                                  const speed = Math.max(
+                                    (textWidth / containerWidth) * 20,
+                                    10
+                                  ); // Dynamic speed calculation
+                                  el.querySelector("p").style.setProperty(
+                                    "--dynamic-duration",
+                                    `${speed}s`
+                                  );
+                                }
+                              }}
+                            >
+                              <span className="p-3 bg-info news-icon">
+                                <BsInfoSquare />
+                              </span>
+                              <p className="d-flex align-items-center mb-0 ms-2">
+                                {notification.Retailer_Notification ||
+                                  "No notification available."}
+                              </p>
+                            </div>
+                          ))
+                        ) : (
+                          // <p>No notifications available</p>
+                          <div className="news d-flex align-items-center">
+                        <span className="p-3 bg-info news-icon">
+                          <BsInfoSquare />
+                        </span>
+                        <p className="d-flex align-items-center mb-0 ms-2">
+                         
+                        </p>
+                      </div> 
+                        )}
                       </div>
                     </div>
                   </div>
@@ -247,7 +621,7 @@ const Dashboard = () => {
                             <p className="mb-0 px-2 my-0 fs-6">
                               Recharge Today
                             </p>
-                            <h4 className="px-2 my-0">0 - (Rs. 0)</h4>{" "}
+                            <h4 className="px-2 my-0">{TodayRecharge} - (Rs. {TodayRechargeAmt})</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -263,7 +637,7 @@ const Dashboard = () => {
                             <p className="mb-0 px-2 my-0 fs-6">
                               Recharge Month
                             </p>
-                            <h4 className="px-2 my-0">0 - (Rs. 0)</h4>{" "}
+                            <h4 className="px-2 my-0">{monthlyRecharge} - (Rs. {monthlyRechargeAmt})</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -272,13 +646,13 @@ const Dashboard = () => {
                       <div className="card card-4">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <MdAddCard />
+                           <LuIndianRupee />
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
                             <p className="mb-0 px-2 my-0 fs-6">Wallet Amount</p>
                             {/* <h4 className="px-2 my-0">(Rs. 250/-)</h4>{" "} */}
-                            <h4 className="px-2 my-0">{walletBalance}</h4>{" "}
+                            <h4 className="px-2 my-0">{`₹${walletBalance}`}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -303,14 +677,16 @@ const Dashboard = () => {
                       <div className="card card-2">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <MdAddCard />
+                            <LuIndianRupee/>
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
                             <p className="mb-0 px-2 my-0 fs-6">
                               Today Commission
                             </p>
-                            <h4 className="px-2 my-0">0</h4>{" "}
+                            <h4 className="px-2 my-0">{TodaysformattedCommission
+                                  ? `₹${TodaysformattedCommission}`
+                                  : "..."}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -319,14 +695,15 @@ const Dashboard = () => {
                       <div className="card card-3">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <MdAddCard />
+                            <LuIndianRupee />
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
                             <p className="mb-0 px-2 my-0 fs-6">
                               Month Commission
                             </p>
-                            <h4 className="px-2 my-0">0</h4>{" "}
+                            <h4 className="px-2 my-0">{formattedCommission
+                                  ?  `₹${formattedCommission}` : "..."}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -444,7 +821,8 @@ const Wrapper = styled.div`
   .news p {
     display: inline-block;
     white-space: nowrap;
-    animation: moveLeftToRight 30s linear infinite;
+    /* animation: moveLeftToRight 30s linear infinite; */
+    animation: moveLeftToRight var(--dynamic-duration, 10s) linear infinite;
     position: absolute;
     right: 0;
   }

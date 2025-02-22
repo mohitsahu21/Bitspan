@@ -21,13 +21,14 @@ import { useNavigate } from "react-router-dom";
 //  approve model component start//
 const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false); 
+  const { currentUser} = useSelector((state) => state.user);
  const navigate = useNavigate();
  const dispatch = useDispatch();
  const [userRelation,setUserRelation] = useState([]);
  const { token } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     user_id : item.user_id ,
-
+    process_by_userId : currentUser?.userId,
     order_id: item.order_id,
     note : "",
     // amount : item.amount,
@@ -629,12 +630,13 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 //  reject model component start//
 const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 const [loading, setLoading] = useState(false);
+const { currentUser} = useSelector((state) => state.user);
 const navigate = useNavigate();
 const dispatch = useDispatch();
 const { token } = useSelector((state) => state.user);
 const [formData, setFormData] = useState({
   user_id : item.user_id ,
-
+  process_by_userId : currentUser?.userId,
   order_id: item.order_id,
   note : "",
   refundAmount : item.total_Amount,
@@ -1022,6 +1024,7 @@ const SAPanCouponRequests = () => {
                                                                     <th scope="col">Coupon Price</th>
                                                                     <th scope="col">Total Amount</th>
                                                                     <th scope="col">Coupon Type</th>
+                                                                    <th scope="col">PSA User ID</th>
                                                                     <th scope="col">User Id</th>
                                                                     <th scope="col">User Name</th>
                                                                     {/* <th scope="col">User Role</th> */}
@@ -1047,7 +1050,7 @@ const SAPanCouponRequests = () => {
                                           <td>{item.coupon_Price}</td>
                                           <td>{item.total_Amount}</td>
                                           <td>{item.coupon_Type}</td>
-                                         
+                                          <td>{item.pan_id}</td>
                                           <td>{item.user_id}</td>
                                           <td>{item.UserName}</td>
                                           {/* <td>{item.role}</td> */}

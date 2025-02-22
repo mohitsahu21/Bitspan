@@ -304,6 +304,7 @@ import { PiBankFill } from "react-icons/pi";
 import pancard from "../assets/Form_49A (1).pdf";
 import { clearUser } from "../redux/user/userSlice";
 import { RiBaseStationLine } from "react-icons/ri";
+import axios from "axios";
 
 const Nav = styled.div`
   background-color: #e4e4e1;
@@ -462,6 +463,86 @@ const RetailerSidebarData = [
     ],
   },
   {
+    title: "Recharge",
+    // path: "/training-video",
+    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+      {
+        title: "Prepaid Recharge",
+        path: "/prepaid-recharge",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Postpaid Recharge",
+        path: "/postpaid-recharge",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "DTH Recharge",
+        path: "/dth-recharge",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Electricity Recharge",
+        path: "/electricity-recharge",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Broadband Recharge",
+        path: "/broadband-recharge",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Apply DTH Connection",
+        path: "/dth-connection",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Prepaid Recharge History",
+        path: "/prepaid-recharge-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Postpaid Recharge History",
+        path: "/postpaid-recharge-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "DTH Recharge History",
+        path: "/dth-recharge-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Apply DTH Connection History",
+        path: "/apply-dth-connection-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Eletricity Recharge History",
+        path: "/eletricity-recharge-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Broadband Recharge History",
+        path: "/broadband-recharge-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Recharge Refund Request",
+        path: "/recharge-refund-report",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "My Commission",
+        path: "/my-commission",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+    ],
+  },
+  {
     title: "Purchase Bank ID",
     path: "#",
     icon: <PiBankFill color="#fe662b" />,
@@ -588,11 +669,11 @@ const RetailerSidebarData = [
     // 	},
     // ],
   },
-  {
-    title: "Set PIN and 2 Step",
-    path: "/2-step-verification",
-    icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
-  },
+  // {
+  //   title: "Set PIN and 2 Step",
+  //   path: "/2-step-verification",
+  //   icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
+  // },
   {
     title: "Important Links",
     path: "/important-links",
@@ -632,13 +713,13 @@ const RetailerSidebarData = [
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
-        title: "UTI 2.4 PAN Card",
-        path: "/uti-login",
+        title: "PAN 4.0 History",
+        path: "/pan-4.0-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
-        title: "UTI PAN Card Login",
-        path: "/uti-login-new",
+        title: "UTI 2.4 PAN Card",
+        path: "/uti-login",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
@@ -647,8 +728,19 @@ const RetailerSidebarData = [
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
+        title: "UTI PAN Card Login",
+        path: "/uti-login-new",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+    
+      {
         title: "UTI 2.4 PAN Track",
         path: "https://www.trackpan.utiitsl.com/PANONLINE/#forward",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "User ID Activate",
+        path: "/retailer-id-revamp-activate",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
@@ -672,57 +764,83 @@ const RetailerSidebarData = [
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
-        title: "PAN Status",
+        title: "NSDL PAN Status",
         path: "/pan-status",
-        icon: <IoIcons.IoIosPaper color="#fe672b75" />,
-      },
-      {
-        title: "PAN 4.0 History",
-        path: "/pan-4.0-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+     
       {
-        title: "PAN Transaction History",
+        title: "NSDL PAN Transaction History",
         path: "/pan-transaction-report",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
-      {
-        title: "PAN Refund",
-        path: "/pan-transaction-refund-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "PAN Re Apply",
-        path: "/pan-transaction-resume-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
+      // {
+      //   title: "PAN Refund",
+      //   path: "/pan-transaction-refund-report",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
+      // {
+      //   title: "PAN Re Apply",
+      //   path: "/pan-transaction-resume-report",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
     ],
   },
+  // {
+  //   title: "UTI New",
+  //   // path: "/training-video",
+  //   icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+  //   iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+  //   iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+  //   subNav: [
+  //     {
+  //       title: "User ID Activate",
+  //       path: "/retailer-id-revamp-activate",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //     {
+  //       title: "Password Reset",
+  //       path: "/password-reset",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //     {
+  //       title: "Buy Coupon",
+  //       path: "/buy-coupon",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //     {
+  //       title: "UTI Coupon History",
+  //       path: "/uti-coupon-history",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //   ],
+  // },
   {
-    title: "UTI New",
+    title: "PAN Coupon",
     // path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
-      {
-        title: "User ID Activate",
-        path: "/retailer-id-revamp-activate",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Password Reset",
-        path: "/password-reset",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
+      // {
+      //   title: "User ID Activate",
+      //   path: "/retailer-id-revamp-activate",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
+      // {
+      //   title: "Password Reset",
+      //   path: "/password-reset",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
       {
         title: "Buy Coupon",
         path: "/buy-coupon",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
-        title: "UTI Coupon History",
+        title: "Buy Coupon History",
         path: "/uti-coupon-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
@@ -798,81 +916,7 @@ const RetailerSidebarData = [
       },
     ],
   },
-  {
-    title: "Recharge",
-    // path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
-
-    subNav: [
-      {
-        title: "Prepaid Recharge",
-        path: "/prepaid-recharge",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Postpaid Recharge",
-        path: "/postpaid-recharge",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "DTH Recharge",
-        path: "/dth-recharge",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Electricity Recharge",
-        path: "/electricity-recharge",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Broadband Recharge",
-        path: "/broadband-recharge",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Apply DTH Connection",
-        path: "/dth-connection",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Prepaid Recharge History",
-        path: "/prepaid-recharge-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Postpaid Recharge History",
-        path: "/postpaid-recharge-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "DTH Recharge History",
-        path: "/dth-recharge-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Eletricity Recharge History",
-        path: "/eletricity-recharge-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Broadband Recharge History",
-        path: "/broadband-recharge-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Recharge Refund Request",
-        path: "/recharge-refund-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "My Commission",
-        path: "/my-commission",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-    ],
-  },
+  
   {
     title: "Complaint",
     // path: "/training-video",
@@ -2451,6 +2495,33 @@ const Sider = () => {
   };
 
   const showSidebar = () => setSidebar(!sidebar);
+  const [profileImage, setProfileImage] = useState(null);
+  const [error, setError] = useState(null);
+
+  const userId = useSelector((state) => state.user.currentUser?.userId);
+  useEffect(() => {
+    // Call the API to get the profile image
+    const fetchProfileImage = async () => {
+      try {
+        const response = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getProfileImage/${userId}`
+        );
+        if (response.data.success) {
+          setProfileImage(response.data.data.profileImage); // Update the state with the profile image URL
+        } else {
+          setError(response.data.message); // Set error if userId is not found
+        }
+      } catch (error) {
+        console.error("Error fetching profile image:", error);
+        setError("An error occurred while fetching the profile image.");
+      }
+    };
+
+    if (userId) {
+      fetchProfileImage(); // Fetch the profile image if userId is available
+    }
+  }, [userId]);
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -2503,7 +2574,14 @@ const Sider = () => {
               <FaIcons.FaBars onClick={showSidebar} color="black" />
             </NavIcon>
             <div className="d-flex">
-              <img src={profileLogo} width={50} height={75} className="p-2" />
+              {/* <img src={profileLogo} width={50} height={75} className="p-2" /> */}
+              <img
+                src={profileImage ? profileImage : profileLogo}
+                width={50}
+                height={75}
+                className="p-2"
+                alt="Profile"
+              />
               <div className="ms-2 p-2 lh-sm">
                 <p className="m-0 fw-bold">{currentUser?.username} </p>
                 <p className="m-0 fw-bold">{currentUser?.userId} </p>

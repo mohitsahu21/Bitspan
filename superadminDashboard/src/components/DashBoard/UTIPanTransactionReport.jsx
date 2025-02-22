@@ -100,7 +100,7 @@ const UTIPanTransactionReport = () => {
                                                                     <th scope="col">Message</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody>
+                                                            {/* <tbody>
                                                                 <tr>
                                                                     <th scope="row">Refund</th>
                                                                     <td>23/05/2024 14:35:58</td>
@@ -134,7 +134,7 @@ const UTIPanTransactionReport = () => {
                                                                     <td>Transaction Successfull</td>
                                                                 </tr>
 
-                                                            </tbody>
+                                                            </tbody> */}
                                                         </table>
                                                     </div>
                                                     <div className="float-end">

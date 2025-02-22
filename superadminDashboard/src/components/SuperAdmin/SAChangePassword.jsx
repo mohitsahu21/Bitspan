@@ -197,7 +197,7 @@ const SAChangePassword = () => {
                             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                               <div className="text-center mb-3">
                                 <button
-                                  className="btn py-2 px-4"
+                                  className="btn btn-primary py-2 px-4"
                                   type="submit"
                                   disabled={isLoading}
                                 >
@@ -234,7 +234,7 @@ const SAChangePassword = () => {
                             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                               <div className="text-center mb-3 mt-3">
                                 <button
-                                  className="btn py-2 px-4"
+                                  className="btn btn-primary py-2 px-4"
                                   type="submit"
                                   disabled={isLoading}
                                 >

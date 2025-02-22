@@ -259,7 +259,7 @@ const AddMoney = () => {
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div className="text-start mb-3">
-                          <button className="btn p-2" disabled={isLoading}>
+                          <button className="btn btn-primary p-2" disabled={isLoading}>
                                 {isLoading
                                   ? "Processing..."
                                   : "Pay Now"}

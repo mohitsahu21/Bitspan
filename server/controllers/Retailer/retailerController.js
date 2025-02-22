@@ -1301,6 +1301,7 @@ const getRechargeData = (req, res) => {
   });
 };
 
+
 const getApiRechargeData = (req, res) => {
   const userId = req.params.userId;
   const rechargeType = "Prepaid";
@@ -1321,6 +1322,89 @@ const getApiRechargeData = (req, res) => {
 
     return res.status(200).json({ status: "Success", data: result });
   });
+};
+
+const getOfflineRecharge = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+
+    const userId = req.params.userId;
+  const rechargeType = req.params.rechargeType;
+    const sql = `SELECT * FROM offline_recharge WHERE recharge_Type = ? AND created_by_userid = ? ORDER BY id DESC`;
+
+    db.query(sql,[rechargeType,userId], (err, result) => {
+      if (err) {
+        console.error("Error getOfflineRecharge from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getOfflineRecharge" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getOfflineRecharge found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getOfflineRecharge fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getOfflineRecharge from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getOfflineRecharge",
+      error: error.message,
+    });
+  }
+};
+
+const getOfflineDTHConnection = (req, res) => {
+  try {
+    // const sql = `SELECT * FROM apply_offline_form ORDER BY id DESC`;
+    // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+
+    const userId = req.params.userId;
+    const sql = `SELECT * FROM offline_dth_connection WHERE user_id = ? ORDER BY id DESC`;
+
+    db.query(sql,[userId], (err, result) => {
+      if (err) {
+        console.error("Error getOfflineRecharge from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getOfflineRecharge" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getOfflineRecharge found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getOfflineRecharge fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getOfflineRecharge from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getOfflineRecharge",
+      error: error.message,
+    });
+  }
 };
 
 const offlineDthConnection = (req, res) => {
@@ -1879,6 +1963,120 @@ const panFromData = (req, res) => {
   });
 };
 
+const UpdatePanFromData = (req, res) => {
+  const {
+    application_type,
+    applicant_type,
+    select_title,
+    name,
+    father_name,
+    mother_name,
+    dob,
+    gender,
+    office_address,
+    aadhar_details,
+    Address_Communication_OfficeResident,
+    alternative_communication_Address,
+    mobile_no,
+    email_id,
+    pin_code,
+    state,
+    Change_Request,
+    status,
+    note,
+    previous_documentUpload,
+    previous_attachment_form,
+    previous_attachment_photo,
+    previous_attachment_signature,
+    order_id
+  } = req.body;
+
+
+  const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const domain = "http://localhost:7777";
+
+  // Handle file uploads
+  const documentUpload =
+    req.files && req.files.documentUpload
+      ? req.files.documentUpload.map((file) => `${domain}/uploads/${file.filename}`).join(",")
+      : previous_documentUpload;
+
+  const attachment_form =
+    req.files && req.files.attachment_form
+      ? `${domain}/uploads/${req.files.attachment_form[0].filename}`
+      : previous_attachment_form;
+
+  const attachment_photo =
+    req.files && req.files.attachment_photo
+      ? `${domain}/uploads/${req.files.attachment_photo[0].filename}`
+      : previous_attachment_photo;
+
+  const attachment_signature =
+    req.files && req.files.attachment_signature
+      ? `${domain}/uploads/${req.files.attachment_signature[0].filename}`
+      : previous_attachment_signature;
+
+  // const orderId = `PANZ${Date.now()}`;
+
+  
+        const insertFormQuery = `
+          UPDATE pan_offline SET 
+            application_type = ?,applicant_type = ?, select_title = ?, name = ?, father_name = ?, mother_name = ?, dob = ?, gender = ?, office_address = ?, 
+            aadhar_details = ?, Address_Communication_OfficeResident = ?, alternative_communication_Address = ?, mobile_no = ?, email_id = ?, 
+            pin_code = ?, state = ?, Change_Request = ?, documentUpload = ?, attachment_form = ?, attachment_signature = ?, 
+            attachment_photo = ?, status = ?, note = ?, updated_at = ?  WHERE order_id = ?`;
+
+        const formValues = [
+          
+          application_type,
+          applicant_type,
+          select_title,
+          name,
+          father_name,
+          mother_name,
+          dob,
+          gender,
+          office_address,
+          aadhar_details,
+          Address_Communication_OfficeResident,
+          alternative_communication_Address,
+          mobile_no,
+          email_id,
+          pin_code,
+          state,
+          Change_Request,
+          documentUpload,
+          attachment_form,
+          attachment_signature,
+          attachment_photo,
+          status,
+          note,
+          updatedAt,
+          order_id
+
+        ];
+
+        db.query(insertFormQuery, formValues, (err, result) => {
+          if (err) {
+            console.error("Error inserting form data:", err);
+            return res.status(500).json({
+              status: "Failure",
+              error: "Failed to insert form data",
+            });
+          }
+
+          if (result.affectedRows === 0) {
+            res.status(404).json({ error: "Form not found" });
+            return;
+          }
+    
+                return res.status(200).json({
+                  status: "Success",
+                  message: "Update Form Successfully",
+                });
+              }
+            );
+          };
 
 const nsdlTransactionNewRequest = (req, res) => {
   const query = `SELECT * FROM nsdlpan ORDER BY id DESC`;
@@ -2834,7 +3032,7 @@ const getApiPostRechargeData = (req, res) => {
   const userId = req.params.userId;
   const rechargeType = "Postpaid";
 
-  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ?`;
+  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ? ORDER BY id DESC`;
 
   db.query(query, [rechargeType, userId], (err, result) => {
     if (err) {
@@ -2856,9 +3054,30 @@ const getApiDTHRechargeData = (req, res) => {
   const userId = req.params.userId;
   const rechargeType = "DTH";
 
-  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ?`;
+  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ? ORDER BY id DESC`;
 
   db.query(query, [rechargeType, userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
+const getDTHConnectionData = (req, res) => {
+  const userId = req.params.userId;
+
+  let query = `SELECT * FROM dth_connection WHERE user_id = ? ORDER BY id DESC`;
+
+  db.query(query, [userId], (err, result) => {
     if (err) {
       console.error("Database error:", err);
       return res.status(400).json({ status: "Failure", error: err.message });
@@ -2878,7 +3097,7 @@ const getApiEletricityRechargeData = (req, res) => {
   const userId = req.params.userId;
   const rechargeType = "Electricity";
 
-  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ?`;
+  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ? ORDER BY id DESC`;
 
   db.query(query, [rechargeType, userId], (err, result) => {
     if (err) {
@@ -2900,7 +3119,7 @@ const getApiBroadbrandRechargeData = (req, res) => {
   const userId = req.params.userId;
   const rechargeType = "Broadband";
 
-  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ?`;
+  let query = `SELECT * FROM recharges WHERE recharge_Type = ? AND created_by_userid = ? ORDER BY id DESC`;
 
   db.query(query, [rechargeType, userId], (err, result) => {
     if (err) {
@@ -3802,7 +4021,7 @@ const PanDocumentUpload = (req, res) => {
 
     const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
     const orderId = `PDOC${Date.now()}`;
-    const userStatus = "Pending";
+    const userStatus = "Success";
     const domain = "http://localhost:7777";
 
     const podfile =
@@ -3855,7 +4074,7 @@ const PanDocumentUpload = (req, res) => {
 const getPanDocument = (req, res) => {
   const userId = req.params.userId;
 
-  let query = `SELECT * FROM pandocument WHERE userId = ?`;
+  let query = `SELECT * FROM pandocument WHERE userId = ? ORDER BY id DESC`;
 
   db.query(query, [userId], (err, result) => {
     if (err) {
@@ -4025,17 +4244,184 @@ const getWalletSummary = (req, res) => {
   });
 };
 
+// const buyCoupon = (req, res) => {
+//   const { coupon_Quantity, coupon_Price, total_Amount, coupon_Type,pan_id, userId } =
+//     req.body;
+
+//   if (
+//     !coupon_Quantity ||
+//     !coupon_Price ||
+//     !total_Amount ||
+//     !coupon_Type ||
+//     !pan_id ||
+//     !userId
+//   ) {
+//     return res.status(400).json({ error: "All fields are required" });
+//   }
+
+//   if (isNaN(total_Amount) || parseFloat(total_Amount) <= 0) {
+//     return res.status(400).json({
+//       status: "Failure",
+//       step: "Validation",
+//       error: "Invalid amount. Amount must be a positive number.",
+//     });
+//   }
+
+//   const orderId = `COU${Date.now()}`;
+//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+//   const status = "Pending";
+
+//   const sql = `
+//   INSERT INTO pan_coupon_requests
+//   (order_id, coupon_Quantity, coupon_Price, total_Amount, coupon_Type,pan_id, user_id, status, created_at)
+//   VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+// `;
+
+//   const values = [
+//     orderId,
+//     coupon_Quantity,
+//     coupon_Price,
+//     total_Amount,
+//     coupon_Type,
+//     pan_id,
+//     userId,
+//     status,
+//     createdAt,
+//   ];
+
+//   db.query(sql, values, (err, result) => {
+//     if (err) {
+//       console.error("Error inserting recharge record:", err);
+//       return res.status(500).json({
+//         status: "Failure",
+//         step: "Buy Coupan",
+//         error: "Failed to process Buy Coupan",
+//         details: err.message,
+//       });
+//     }
+
+//     const queryBalance = `
+//     SELECT Closing_Balance 
+//     FROM user_wallet 
+//     WHERE userId = ? 
+//     ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+//     LIMIT 1
+//   `;
+
+//     db.query(queryBalance, [userId], (err, balanceResult) => {
+//       if (err) {
+//         console.error("Error fetching wallet balance:", err);
+//         return res.status(500).json({
+//           status: "Failure",
+//           step: "Fetch Wallet Balance",
+//           error: "Failed to fetch wallet balance",
+//           details: err.message,
+//         });
+//       }
+
+//       if (balanceResult.length === 0) {
+//         return res.status(404).json({
+//           status: "Failure",
+//           step: "Fetch Wallet Balance",
+//           message: "No balance found for the user.",
+//         });
+//       }
+
+//       const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+//       if (isNaN(currentBalance)) {
+//         return res.status(500).json({
+//           status: "Failure",
+//           step: "Fetch Wallet Balance",
+//           error: "Current balance is invalid.",
+//         });
+//       }
+
+//       if (currentBalance < total_Amount) {
+//         return res.status(400).json({
+//           status: "Failure",
+//           step: "Wallet Deduction",
+//           message: "Insufficient balance.",
+//           currentBalance,
+//           requiredAmount: total_Amount,
+//         });
+//       }
+
+//       const newBalance = parseFloat(currentBalance - total_Amount).toFixed(2);
+//       if (isNaN(newBalance)) {
+//         return res.status(500).json({
+//           status: "Failure",
+//           step: "Wallet Deduction",
+//           error: "New balance calculation is invalid.",
+//         });
+//       }
+
+//       const transactionId = `TXNW${Date.now()}`;
+//       const transactionDetails = `Buy Coupan ${coupon_Type}`;
+//       const creditAmt = 0;
+
+//       const updateWalletQuery = `
+//       INSERT INTO user_wallet 
+//       (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+//       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+//     `;
+
+//       db.query(
+//         updateWalletQuery,
+//         [
+//           userId,
+//           createdAt,
+//           orderId,
+//           transactionId,
+//           currentBalance.toFixed(2),
+//           newBalance,
+//           "Debit",
+//           creditAmt,
+//           total_Amount,
+//           transactionDetails,
+//           "Success",
+//         ],
+//         (err, walletResult) => {
+//           if (err) {
+//             console.error("Error updating wallet balance:", err);
+//             return res.status(500).json({
+//               status: "Failure",
+//               step: "Update Wallet Balance",
+//               error: "Failed to update wallet balance",
+//               details: err.message,
+//             });
+//           }
+
+//           return res.status(200).json({
+//             status: "Success",
+//             message:
+//               "Coupon purchase processed and wallet updated successfully.",
+//             details: {
+//               recharge: {
+//                 orderId,
+//                 coupon_Quantity,
+//                 coupon_Price,
+//                 total_Amount,
+//                 coupon_Type,
+//               },
+//               wallet: {
+//                 transactionId,
+//                 newBalance,
+//                 previousBalance: currentBalance.toFixed(2),
+//                 deductedAmount: total_Amount,
+//               },
+//             },
+//           });
+//         }
+//       );
+//     });
+//   });
+// };
+
 const buyCoupon = (req, res) => {
-  const { coupon_Quantity, coupon_Price, total_Amount, coupon_Type, userId } =
+  const { coupon_Quantity, coupon_Price, total_Amount, coupon_Type, pan_id, userId } =
     req.body;
 
-  if (
-    !coupon_Quantity ||
-    !coupon_Price ||
-    !total_Amount ||
-    !coupon_Type ||
-    !userId
-  ) {
+  if (!coupon_Quantity || !coupon_Price || !total_Amount || !coupon_Type || !pan_id || !userId) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
@@ -4047,39 +4433,10 @@ const buyCoupon = (req, res) => {
     });
   }
 
-  const orderId = `COU${Date.now()}`;
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-  const status = "Pending";
 
-  const sql = `
-  INSERT INTO pan_coupon_requests
-  (order_id, coupon_Quantity, coupon_Price, total_Amount, coupon_Type, user_id, status, created_at)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-`;
-
-  const values = [
-    orderId,
-    coupon_Quantity,
-    coupon_Price,
-    total_Amount,
-    coupon_Type,
-    userId,
-    status,
-    createdAt,
-  ];
-
-  db.query(sql, values, (err, result) => {
-    if (err) {
-      console.error("Error inserting recharge record:", err);
-      return res.status(500).json({
-        status: "Failure",
-        step: "Buy Coupan",
-        error: "Failed to process Buy Coupan",
-        details: err.message,
-      });
-    }
-
-    const queryBalance = `
+  // Step 1: Fetch the latest closing balance
+  const queryBalance = `
     SELECT Closing_Balance 
     FROM user_wallet 
     WHERE userId = ? 
@@ -4087,112 +4444,145 @@ const buyCoupon = (req, res) => {
     LIMIT 1
   `;
 
-    db.query(queryBalance, [userId], (err, balanceResult) => {
-      if (err) {
-        console.error("Error fetching wallet balance:", err);
-        return res.status(500).json({
-          status: "Failure",
-          step: "Fetch Wallet Balance",
-          error: "Failed to fetch wallet balance",
-          details: err.message,
-        });
-      }
+  db.query(queryBalance, [userId], (err, balanceResult) => {
+    if (err) {
+      console.error("Error fetching wallet balance:", err);
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Failed to fetch wallet balance",
+        details: err.message,
+      });
+    }
 
-      if (balanceResult.length === 0) {
-        return res.status(404).json({
-          status: "Failure",
-          step: "Fetch Wallet Balance",
-          message: "No balance found for the user.",
-        });
-      }
+    if (balanceResult.length === 0) {
+      return res.status(404).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        message: "No balance found for the user.",
+      });
+    }
 
-      const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
-      if (isNaN(currentBalance)) {
-        return res.status(500).json({
-          status: "Failure",
-          step: "Fetch Wallet Balance",
-          error: "Current balance is invalid.",
-        });
-      }
+    const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+    if (isNaN(currentBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Current balance is invalid.",
+      });
+    }
 
-      if (currentBalance < total_Amount) {
-        return res.status(400).json({
-          status: "Failure",
-          step: "Wallet Deduction",
-          message: "Insufficient balance.",
-          currentBalance,
-          requiredAmount: total_Amount,
-        });
-      }
+    if (currentBalance < total_Amount) {
+      return res.status(400).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        message: "Insufficient balance.",
+        currentBalance,
+        requiredAmount: total_Amount,
+      });
+    }
 
-      const newBalance = parseFloat(currentBalance - total_Amount).toFixed(2);
-      if (isNaN(newBalance)) {
-        return res.status(500).json({
-          status: "Failure",
-          step: "Wallet Deduction",
-          error: "New balance calculation is invalid.",
-        });
-      }
+    // Step 2: Update wallet first
+    const newBalance = parseFloat(currentBalance - total_Amount).toFixed(2);
+    if (isNaN(newBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        error: "New balance calculation is invalid.",
+      });
+    }
 
-      const transactionId = `TXNW${Date.now()}`;
-      const transactionDetails = `Buy Coupan ${coupon_Type}`;
-      const creditAmt = 0;
+    const orderId = `COU${Date.now()}`;
+    const transactionId = `TXNW${Date.now()}`;
+    const transactionDetails = `Buy PAN Coupon ${coupon_Type} quantity ${coupon_Quantity}`;
 
-      const updateWalletQuery = `
+    const updateWalletQuery = `
       INSERT INTO user_wallet 
       (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-      db.query(
-        updateWalletQuery,
-        [
-          userId,
-          createdAt,
-          orderId,
-          transactionId,
-          currentBalance.toFixed(2),
-          newBalance,
-          "Debit",
-          creditAmt,
-          total_Amount,
-          transactionDetails,
-          "Success",
-        ],
-        (err, walletResult) => {
-          if (err) {
-            console.error("Error updating wallet balance:", err);
-            return res.status(500).json({
-              status: "Failure",
-              step: "Update Wallet Balance",
-              error: "Failed to update wallet balance",
-              details: err.message,
-            });
-          }
-
-          return res.status(200).json({
-            status: "Success",
-            message:
-              "Coupon purchase processed and wallet updated successfully.",
-            details: {
-              recharge: {
-                orderId,
-                coupon_Quantity,
-                coupon_Price,
-                total_Amount,
-                coupon_Type,
-              },
-              wallet: {
-                transactionId,
-                newBalance,
-                previousBalance: currentBalance.toFixed(2),
-                deductedAmount: total_Amount,
-              },
-            },
+    db.query(
+      updateWalletQuery,
+      [
+        userId,
+        createdAt,
+        orderId,
+        transactionId,
+        currentBalance.toFixed(2),
+        newBalance,
+        "Debit",
+        0, // Credit amount is zero
+        total_Amount,
+        transactionDetails,
+        "Success",
+      ],
+      (err, walletResult) => {
+        if (err) {
+          console.error("Error updating wallet balance:", err);
+          return res.status(500).json({
+            status: "Failure",
+            step: "Update Wallet Balance",
+            error: "Failed to update wallet balance",
+            details: err.message,
           });
         }
-      );
-    });
+
+        // Step 3: Insert Coupon Request after wallet update
+        const status = "Pending";
+        const insertCouponQuery = `
+          INSERT INTO pan_coupon_requests
+          (order_id, coupon_Quantity, coupon_Price, total_Amount, coupon_Type, pan_id, user_id, status, created_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        db.query(
+          insertCouponQuery,
+          [
+            orderId,
+            coupon_Quantity,
+            coupon_Price,
+            total_Amount,
+            coupon_Type,
+            pan_id,
+            userId,
+            status,
+            createdAt,
+          ],
+          (err, couponResult) => {
+            if (err) {
+              console.error("Error inserting coupon request:", err);
+              return res.status(500).json({
+                status: "Failure",
+                step: "Buy Coupon",
+                error: "Failed to process Buy Coupon",
+                details: err.message,
+              });
+            }
+
+            return res.status(200).json({
+              status: "Success",
+              message: "Coupon purchase processed and wallet updated successfully.",
+              details: {
+                wallet: {
+                  transactionId,
+                  newBalance,
+                  previousBalance: currentBalance.toFixed(2),
+                  deductedAmount: total_Amount,
+                },
+                recharge: {
+                  orderId,
+                  coupon_Quantity,
+                  coupon_Price,
+                  total_Amount,
+                  coupon_Type,
+                },
+              },
+            });
+          }
+        );
+      }
+    );
   });
 };
 
@@ -4214,6 +4604,240 @@ const getCoupon = (req, res) => {
     }
 
     return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
+const getAllServicesList = (req, res) => {
+  try {
+    const sql = `SELECT * FROM serviceslist`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getAllServicesList from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getAllServicesList" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getAllServicesList found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getAllServicesList fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error(
+      "Error fetching getAllServicesList from MySQL:",
+      error
+    );
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getAllServicesList",
+      error: error.message,
+    });
+  }
+};
+
+const getUserNotification = (req, res) => {
+  const { userId } = req.params;
+
+  // SQL query to fetch notification records for the user
+  const sql = `
+    SELECT * 
+    FROM user_notification `;
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching notification data:", err);
+      return res.status(500).json({
+        success: false,
+        error: `Error fetching data: ${err.message}`,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: results,
+    }); // Return the notification records for the given user
+  });
+};
+
+const getAllMonthCommission = (req, res) => {
+  const { userId } = req.params;
+
+  // SQL query to fetch commission records for the user from the last month
+  const sql = `
+    SELECT * 
+    FROM commission_table 
+    WHERE retailer_id = ? 
+      AND created_at >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+    ORDER BY created_at DESC
+  `;
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching commission data:", err);
+      return res.status(500).json({
+        success: false,
+        error: `Error fetching data: ${err.message}`,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: results,
+    }); // Return the commission records for the last month
+  });
+};
+
+const getTodaysCommission = (req, res) => {
+  const { userId } = req.params;
+
+  // SQL query to fetch commission records for the user for the current day
+  const sql = `
+    SELECT * 
+    FROM commission_table 
+    WHERE retailer_id = ? 
+      AND DATE(created_at) = CURDATE()  -- Fetch data for today's date only
+    ORDER BY created_at DESC
+  `;
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching commission data:", err);
+      return res.status(500).json({
+        success: false,
+        error: `Error fetching data: ${err.message}`,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: results,
+    }); // Return the commission records for the current day
+  });
+};
+
+const getAllMonthRecharge = (req, res) => {
+  const { userId } = req.params;
+
+  // SQL query to fetch commission records for the user from the last month
+  const sql = `
+    SELECT * 
+    FROM recharges 
+    WHERE created_by_userid	 = ? AND (status = "SUCCESS" OR status = "Success")
+      AND created_at >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+    ORDER BY created_at DESC
+  `;
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching commission data:", err);
+      return res.status(500).json({
+        success: false,
+        error: `Error fetching data: ${err.message}`,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: results,
+      total : results.length
+    }); // Return the commission records for the last month
+  });
+};
+const getAllMonthRechargeOffline = (req, res) => {
+  const { userId } = req.params;
+
+  // SQL query to fetch commission records for the user from the last month
+  const sql = `
+    SELECT * 
+    FROM offline_recharge 
+    WHERE created_by_userid	 = ? AND status = "Approve"
+      AND created_at >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+    ORDER BY created_at DESC
+  `;
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching commission data:", err);
+      return res.status(500).json({
+        success: false,
+        error: `Error fetching data: ${err.message}`,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: results,
+      total : results.length
+    }); // Return the commission records for the last month
+  });
+};
+
+const getTodaysRecharge = (req, res) => {
+  const { userId } = req.params;
+
+  // SQL query to fetch commission records for the user for the current day
+  const sql = `
+    SELECT * 
+    FROM recharges 
+    WHERE created_by_userid = ? AND (status = "SUCCESS" OR status = "Success")
+      AND DATE(created_at) = CURDATE()  -- Fetch data for today's date only
+    ORDER BY created_at DESC
+  `;
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching commission data:", err);
+      return res.status(500).json({
+        success: false,
+        error: `Error fetching data: ${err.message}`,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: results,
+      total : results.length
+    }); // Return the commission records for the current day
+  });
+};
+const getTodaysRechargeOffline = (req, res) => {
+  const { userId } = req.params;
+
+  // SQL query to fetch commission records for the user for the current day
+  const sql = `
+    SELECT * 
+    FROM offline_recharge 
+    WHERE created_by_userid = ? AND status = "Approve"
+      AND DATE(created_at) = CURDATE()  -- Fetch data for today's date only
+    ORDER BY created_at DESC
+  `;
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching commission data:", err);
+      return res.status(500).json({
+        success: false,
+        error: `Error fetching data: ${err.message}`,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: results,
+      total : results.length
+    }); // Return the commission records for the current day
   });
 };
 
@@ -4263,5 +4887,17 @@ module.exports = {
   update_applyOfflineForm,
   EditSambalForm,
   UpdateeDistrictFormData,
-  UpdateVerifyDistrictForm
+  UpdateVerifyDistrictForm,
+  UpdatePanFromData,
+  getDTHConnectionData,
+  getOfflineRecharge,
+  getOfflineDTHConnection,
+  getAllServicesList,
+  getUserNotification,
+  getAllMonthCommission,
+  getTodaysCommission,
+  getAllMonthRecharge,
+  getAllMonthRechargeOffline,
+  getTodaysRechargeOffline,
+  getTodaysRecharge
 };

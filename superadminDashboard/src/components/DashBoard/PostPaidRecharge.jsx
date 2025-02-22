@@ -10,16 +10,75 @@ import { Modal, Button, Spinner } from "react-bootstrap";
 import { clearUser } from "../../redux/user/userSlice";
 
 const PostPaidRecharge = () => {
+
   const dispatch = useDispatch();
 
   const { currentUser, token } = useSelector((state) => state.user);
   const [activeTab, setActiveTab] = useState("tab1");
   const [getdata, setGetData] = useState([]);
   const [apiData, setApiData] = useState([]);
+   
+  const [services,setServices] = useState([]);
+  const fetchServices = async () => {
+    // setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
 
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
+      );
+      setServices(data.data);
+      // setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
+      // setLoading(false);
+    }
   };
+  // const handleTabClick = (tab) => {
+  //   setActiveTab(tab);
+  // };
+
+   const handleTabClick = (tab) => {
+      if(tab == "tab2"){
+        if(services){
+                 
+          const purchaseBankIdService = services.find(
+            (item) => item.service_name === "Provider 2 recharge"
+          );
+        
+          if (purchaseBankIdService?.status === "Deactive") {
+            Swal.fire({
+              title: "Provider 2 service is currently Not Available",
+              text: "Please try after some time",
+              icon: "error",
+            });
+            // navigate("/prepaid-recharge");
+          }
+          else{
+            setActiveTab(tab);
+          }
+        }
+      }
+      else{
+        setActiveTab(tab);
+      }
+      
+      
+    };
 
   const [formData, setFormData] = useState({
     operatorName: "",
@@ -71,22 +130,47 @@ const PostPaidRecharge = () => {
       }
     };
     fetchdata();
+    fetchServices();
   }, []);
 
   console.log(getdata);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+     const { name, value } = e.target;
+    if(name === "number" || name === "amount"){
+      
+      if (/^\d*$/.test(value)) {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+    }
+    else{
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const handleChangeForm = (e) => {
-    setOfflineForm({
-      ...offlineForm,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    if(name === "mobile_no" || name === "amount"){
+      
+      if (/^\d*$/.test(value)) {
+        setOfflineForm((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+    }
+    else{
+      setOfflineForm({
+        ...offlineForm,
+        [name]: value,
+      });
+    }
   };
 
   useEffect(() => {
@@ -939,6 +1023,8 @@ const PostPaidRecharge = () => {
           mobile_no: "",
           operator_name: "",
           amount: "",
+          recharge_Type: "Postpaid",
+          userId: currentUser.userId,
         });
       }
     } catch (error) {
@@ -1005,13 +1091,25 @@ const PostPaidRecharge = () => {
       if (response.data.success) {
         return true;
       } else {
-        alert(response.data.message);
-        return false;
+        // alert(response.data.message);
+               // return false;
+               Swal.fire({
+                 title: "Error verifying PIN",
+                 text: response?.data?.message || "Something went wrong! Please Try again",
+                 icon: "error",
+               });
+               return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
-      alert("Error verifying PIN");
-      return false;
+      // alert("Error verifying PIN");
+           Swal.fire({
+             title: "Error verifying PIN",
+             text: error?.response?.data?.message || "Something went wrong! Please Try again",
+             icon: "error",
+           });
+     
+           return false;
     }
   };
 
@@ -1025,12 +1123,23 @@ const PostPaidRecharge = () => {
       if (response.data.success) {
         return true;
       } else {
-        alert(response.data.message);
+        // alert(response.data.message);
+        Swal.fire({
+                  title: "Error verifying PIN",
+                  text: response?.data?.message || "Something went wrong! Please Try again",
+                  icon: "error",
+                });
+               
         return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
-      alert("Error verifying PIN");
+      // alert("Error verifying PIN");
+      Swal.fire({
+              title: "Error verifying PIN",
+              text: error?.response?.data?.message || "Something went wrong! Please Try again",
+              icon: "error",
+            });
       return false;
     }
   };
@@ -1171,6 +1280,10 @@ const PostPaidRecharge = () => {
                                               onChange={handleChange}
                                               name="number"
                                               autoComplete="off"
+                                              required
+                                              maxLength={10}
+                                              minLength={10}
+
                                             />
                                             <label for="floatingInputGroup1">
                                               Mobile Number
@@ -1187,6 +1300,7 @@ const PostPaidRecharge = () => {
                                               onChange={handleChange}
                                               name="operatorName"
                                               aria-label="Select Operator"
+                                              required
                                             >
                                               <option value="">
                                                 Select Operator
@@ -1216,6 +1330,7 @@ const PostPaidRecharge = () => {
                                               onChange={handleChange}
                                               name="amount"
                                               autoComplete="off"
+
                                             />
                                             <label for="floatingInputGroup1">
                                               Amount
@@ -1229,6 +1344,7 @@ const PostPaidRecharge = () => {
                                               backgroundColor: "#6d70ff",
                                             }}
                                             type="submit"
+                                            disabled={loading || !formData.amount || !formData.number || !formData.operatorName ||  formData.number.length != 10}
                                           >
                                             Recharge Now
                                           </button>
@@ -1272,6 +1388,10 @@ const PostPaidRecharge = () => {
                                               value={offlineForm.mobile_no}
                                               onChange={handleChangeForm}
                                               name="mobile_no"
+                                               autoComplete="off"
+                                              required
+                                              minLength={10}
+                                              maxLength={10}
                                             />
                                             <label for="floatingInputGroup1">
                                               Mobile Number
@@ -1337,6 +1457,7 @@ const PostPaidRecharge = () => {
                                               value={offlineForm.amount}
                                               onChange={handleChangeForm}
                                               name="amount"
+                                              required
                                             />
                                             <label for="floatingInputGroup1">
                                               Amount
@@ -1350,6 +1471,7 @@ const PostPaidRecharge = () => {
                                             style={{
                                               backgroundColor: "#6d70ff",
                                             }}
+                                            disabled={loading || !offlineForm.amount || !offlineForm.mobile_no || !offlineForm.operator_name || offlineForm.mobile_no.length != 10}
                                           >
                                             Recharge Now
                                           </button>

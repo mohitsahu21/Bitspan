@@ -6,6 +6,7 @@ import { BiHomeAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
 
 const PanUploadedDocsList = () => {
   const [allData, setAllData] = useState([]);
@@ -21,6 +22,7 @@ const PanUploadedDocsList = () => {
 
   const fetchRechargeData = async () => {
     try {
+      setLoading(true);
       const response = await axios.get(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPanDocument/${userID}`
       );
@@ -28,8 +30,10 @@ const PanUploadedDocsList = () => {
       console.log(data);
       setAllData(data);
       setFilteredData(data);
+      setLoading(false)
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
   console.log(allData);
@@ -156,6 +160,15 @@ const PanUploadedDocsList = () => {
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
+                          {loading ? (
+                             <div className="d-flex justify-content-center">
+                             <Spinner animation="border" role="status">
+                               <span className="visually-hidden ">
+                                 Loading...
+                               </span>
+                             </Spinner>
+                           </div>
+                            ) : (
                             <table class="table table-striped">
                               <thead className="table-dark">
                                 <tr>
@@ -208,6 +221,7 @@ const PanUploadedDocsList = () => {
                                 )}
                               </tbody>
                             </table>
+                              )}
                           </div>
                           <PaginationContainer>
                             <ReactPaginate

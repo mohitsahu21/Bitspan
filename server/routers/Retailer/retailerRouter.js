@@ -49,6 +49,18 @@ const {
   EditSambalForm,
   UpdateeDistrictFormData,
   UpdateVerifyDistrictForm,
+  UpdatePanFromData,
+  getDTHConnectionData,
+  getOfflineRecharge,
+  getOfflineDTHConnection,
+  getAllServicesList,
+  getAllMonthCommission,
+  getTodaysCommission,
+  getUserNotification,
+  getAllMonthRecharge,
+  getAllMonthRechargeOffline,
+  getTodaysRechargeOffline,
+  getTodaysRecharge,
 } = require("../../controllers/Retailer/retailerController");
 
 const router = express.Router();
@@ -237,5 +249,53 @@ router.put(
   update_applyOfflineForm
 );
 
+router.put(
+  "/UpdatePanFromData",
+  upload.fields([
+    { name: "documentUpload", maxCount: 10 },
+    { name: "attachment_form", maxCount: 10 },
+    { name: "attachment_photo", maxCount: 10 },
+    { name: "attachment_signature", maxCount: 10 },
+  ]),
+  UpdatePanFromData
+);
+router.get("/getDTHConnectionData/:userId", getDTHConnectionData);
+router.get("/getOfflineRecharge/:userId/:rechargeType", getOfflineRecharge);
+router.get("/getOfflineDTHConnection/:userId", getOfflineDTHConnection);
+router.get("/getAllServicesList" , getAllServicesList);
+router.get(
+  "/getAllMonthCommission/:userId",
+  getAllMonthCommission
+);
+router.get(
+  "/getTodaysCommission/:userId",
+  getTodaysCommission
+);
+router.get(
+  "/getUserNotification/:userId",
+
+  getUserNotification
+);
+router.get(
+  "/getAllMonthRecharge/:userId",
+
+  getAllMonthRecharge
+);
+router.get(
+  "/getAllMonthRechargeOffline/:userId",
+
+  getAllMonthRechargeOffline
+);
+
+router.get(
+  "/getTodaysRechargeOffline/:userId",
+
+  getTodaysRechargeOffline
+);
+router.get(
+  "/getTodaysRecharge/:userId",
+
+  getTodaysRecharge
+);
 
 module.exports = router;

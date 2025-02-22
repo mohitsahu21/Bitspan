@@ -235,7 +235,7 @@ const LogoAndImages = () => {
                                   
                                     <div className="col-sm-12 mb-5">
                                         <label for="name" class="form-label">
-                                            Upload To Change Home Page Background (100 X 600)px
+                                            Upload To Change Home Page Background (946 X 749)px
                                         </label>
                                         <div>
                                         <img src={formData.Home_Page_Background_Preview} width={600} height={100} className="img-fluid" />
@@ -247,7 +247,7 @@ const LogoAndImages = () => {
                                                 id="name"
                                                 class="form-control"
                                                 name="Home_Page_Background"
-                                                onChange={(e) => validateImage(e, 600, 100, "Home_Page_Background",
+                                                onChange={(e) => validateImage(e, 946, 749, "Home_Page_Background",
                                                     "Home_Page_Background_Preview",     homepageBgRef)}
                                                 accept="image/png, image/jpeg"
                                                 ref={homepageBgRef}

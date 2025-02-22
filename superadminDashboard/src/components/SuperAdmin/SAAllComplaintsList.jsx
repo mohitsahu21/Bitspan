@@ -19,12 +19,14 @@ import { useNavigate } from "react-router-dom";
 // resolve complaint component start//
 const SAResolveComplaint = ({ complaint, setShowResolveModel, setIsRefresh }) => {
     const [loading, setLoading] = useState(false);
+    const { currentUser} = useSelector((state) => state.user);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { token } = useSelector((state) => state.user);
     const [formData, setFormData] = useState({
       complaintId: complaint.id,
       response : "",
+      process_by_userId : currentUser?.userId ,
       status : "Resolve"
     });
   
@@ -413,6 +415,7 @@ const SAAllComplaintsList = () => {
                                                                     <th scope="col">User Email</th>
                                                                     <th scope="col">User Mobile</th>
                                                                     <th scope="col">Complaint File</th>
+                                                                    <th scope="col">Resolve Date</th>
                                                                     <th scope="col">Response</th>
                                                                     <th scope="col">Status</th>
                                                                     <th scope="col">Action</th>
@@ -457,13 +460,19 @@ const SAAllComplaintsList = () => {
                                                 ))}
                                           </td> */}
                                             <td>
-                                              <a
-                                                href={user.complainFile}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                              >
-                                                View
-                                              </a>
+                                              {
+                                               user.complainFile ? 
+                                               <a
+                                               href={user.complainFile}
+                                               target="_blank"
+                                               rel="noopener noreferrer"
+                                             >
+                                               View
+                                             </a> 
+                                             :
+                                             "Not Available"
+                                              }
+                                             
                                             </td>
                                             {/* <td>
                                               <a
@@ -486,6 +495,7 @@ const SAAllComplaintsList = () => {
                                            
                                             {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
                                             {/* <td>{user?.Note}</td> */}
+                                            <td>{user.process_date}</td>
                                             <td>{user.response}</td>
                                             <td>{user.status}</td>
                                             <td>

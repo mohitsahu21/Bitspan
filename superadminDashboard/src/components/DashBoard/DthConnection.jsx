@@ -21,9 +21,66 @@ const DthConnection = () => {
   const [activeTab, setActiveTab] = useState("tab1");
     const [isVerifying, setIsVerifying] = useState(false);
 const navigate = useNavigate();
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
+const [services,setServices] = useState([]);
+const fetchServices = async () => {
+  // setLoading(true);
+  try {
+    const { data } = await axios.get(
+      "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+
+    );
+    setServices(data.data);
+    // setLoading(false);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    if (error?.response?.status == 401) {
+      // alert("Your token is expired please login again")
+      Swal.fire({
+                icon: "error",
+                title: "Your token is expired please login again",
+              });
+      dispatch(clearUser());
+      navigate("/");
+    }
+    // setLoading(false);
+  }
+};
+  // const handleTabClick = (tab) => {
+  //   setActiveTab(tab);
+  // };
+   const handleTabClick = (tab) => {
+          if(tab == "tab2"){
+            if(services){
+                     
+              const purchaseBankIdService = services.find(
+                (item) => item.service_name === "Provider 2 recharge"
+              );
+            
+              if (purchaseBankIdService?.status === "Deactive") {
+                Swal.fire({
+                  title: "Provider 2 service is currently Not Available",
+                  text: "Please try after some time",
+                  icon: "error",
+                });
+                // navigate("/prepaid-recharge");
+              }
+              else{
+                setActiveTab(tab);
+              }
+            }
+          }
+          else{
+            setActiveTab(tab);
+          }
+          
+          
+        };
 
   const [loading, setLoading] = useState(false);
 
@@ -50,8 +107,24 @@ const navigate = useNavigate();
   const [userRelation, setUserRelation] = useState([]);
 
   const handleChange = (e) => {
+    // const { name, value } = e.target;
+    // setFormData({ ...formData, [name]: value });
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    if(name === "number" || name === "postal_code"){
+      
+      if (/^\d*$/.test(value)) {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+    }
+    else{
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const handlePlanChange = (plan) => {
@@ -975,6 +1048,7 @@ const navigate = useNavigate();
       }
     };
     getData();
+    fetchServices();
   }, []);
 
   const [offlineForm, setOfflineForm] = useState({
@@ -1062,8 +1136,24 @@ const navigate = useNavigate();
   };
 
   const handleOfflineChange = (e) => {
+    // const { name, value } = e.target;
+    // setOfflineForm({ ...offlineForm, [name]: value });
     const { name, value } = e.target;
-    setOfflineForm({ ...offlineForm, [name]: value });
+    if(name === "postal_code" || name === "number"){
+      
+      if (/^\d*$/.test(value)) {
+        setOfflineForm((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+    }
+    else{
+      setOfflineForm({
+        ...offlineForm,
+        [name]: value,
+      });
+    }
   };
 
   // const handleOfflineSubmit = async (e) => {
@@ -1308,6 +1398,7 @@ const navigate = useNavigate();
                                             <select
                                               class="form-select"
                                               id="plans"
+                                              required
                                               value={
                                                 selectedPlan?.plan_id || ""
                                               }
@@ -1382,6 +1473,9 @@ const navigate = useNavigate();
                                               onChange={handleChange}
                                               required
                                               autoComplete="new-password"
+                                            
+                                              maxLength={10}
+                                              minLength={10}
                                             />
                                             <label for="floatingInputGroup1">
                                               Mobile Number
@@ -1516,6 +1610,9 @@ const navigate = useNavigate();
                                               onChange={handleChange}
                                               required
                                               autoComplete="new-password"
+                                              
+                                              maxLength={6}
+                                              minLength={6}
                                             />
                                             <label for="floatingInputGroup1">
                                               Postal Code
@@ -1710,6 +1807,9 @@ const navigate = useNavigate();
                                               onChange={handleOfflineChange}
                                               required
                                               autoComplete="new-password"
+                                              
+                                              maxLength={6}
+                                              minLength={6}
                                             />
                                             <label for="floatingInputGroup1">
                                               Postal Code
@@ -1731,6 +1831,8 @@ const navigate = useNavigate();
                                               onChange={handleOfflineChange}
                                               required
                                               autoComplete="new-password"
+                                              maxLength={10}
+                                              minLength={10}
                                             />
                                             <label for="floatingInputGroup1">
                                               Phone Number

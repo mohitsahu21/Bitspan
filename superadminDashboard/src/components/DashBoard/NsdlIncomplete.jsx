@@ -28,7 +28,7 @@ const NsdlIncomplete = () => {
         `https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/nsdl-pan-incomplete`,
         formData
       );
-      setFormData(data);
+      // setFormData(data);
       console.log(data);
       if (data.status === "Success") {
         setRedirectURL(data.url);
@@ -41,6 +41,11 @@ const NsdlIncomplete = () => {
       }
     } catch (error) {
       console.log(error);
+      Swal.fire({
+        icon: "error",
+          title: "Oops",
+          text: "Something went wrong! Please Try again",
+      });
     } finally {
       setLoading(false);
     }

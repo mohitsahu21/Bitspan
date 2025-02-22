@@ -6,6 +6,9 @@ import { BiHomeAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import { Dropdown, Modal, Spinner } from "react-bootstrap";
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
+import ProviderTwoHistory from "./ProviderTwoHistory";
 
 const PrepaidRechargeHistory = () => {
   const [allData, setAllData] = useState([]);
@@ -32,9 +35,10 @@ const PrepaidRechargeHistory = () => {
       setLoading(false);
     } catch (error) {
       console.log(
-        error.response.data.status === "Failure"
-          ? error.response.data.message
-          : "No response received from the server"
+        error.message
+        // error.response.data.status === "Failure"
+        //   ? error.response.data.message
+        //   : "No response received from the server"
       );
     } finally {
       setLoading(false);
@@ -44,7 +48,7 @@ const PrepaidRechargeHistory = () => {
 
   useEffect(() => {
     const filtered = allData.filter((item) => {
-      const searchValue = filterValue.toLowerCase();
+      const searchValue = filterValue.trim().toLowerCase();
       const mobileNo = item.mobile_no ? item.mobile_no.toLowerCase() : "";
       const transactionId = item.transaction_id
         ? item.transaction_id.toLowerCase()
@@ -102,6 +106,13 @@ const PrepaidRechargeHistory = () => {
 
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
+                    <Tabs
+                        defaultActiveKey="Provider 1"
+                        id="uncontrolled-tab-example"
+                        className="mb-3"
+                        variant="tabs"
+                      >
+                         <Tab eventKey="Provider 1" title="Provider 1">
                       <div className="row d-flex flex-column g-4">
                         <div className="d-flex flex-column flex-xl-row gap-3">
                           {/* <div className="col-12 col-md-4 col-lg-3"> */}
@@ -114,16 +125,16 @@ const PrepaidRechargeHistory = () => {
                               value={filterValue}
                               onChange={(e) => {
                                 setFilterValue(e.target.value);
-                                if (e.target.value === "") {
-                                  setCurrentPage(0);
-                                }
+                                // if (e.target.value === "") {
+                                //   setCurrentPage(0);
+                                // }
                               }}
-                              onKeyDown={(e) => {
-                                if (e.key === "Escape") {
-                                  setFilterValue("");
-                                  setCurrentPage(0);
-                                }
-                              }}
+                              // onKeyDown={(e) => {
+                              //   if (e.key === "Escape") {
+                              //     setFilterValue("");
+                              //     setCurrentPage(0);
+                              //   }
+                              // }}
                             />
                           </div>
 
@@ -155,14 +166,14 @@ const PrepaidRechargeHistory = () => {
                                     <tr>
                                       <th scope="col">#</th>
                                       <th scope="col">Date</th>
-                                      <th scope="col">Operator Order ID</th>
+                                      <th scope="col">Order ID</th>
                                       <th scope="col">Transaction ID</th>
-                                      <th scope="col">Provider Name</th>
+                                      {/* <th scope="col">Provider Name</th> */}
                                       <th scope="col">Operator Name</th>
-                                      <th scope="col">Phone Number</th>
+                                      <th scope="col">Mob Number</th>
                                       <th scope="col">Details</th>
                                       <th scope="col">Amount</th>
-                                      {/* <th scope="col">Debit</th> */}
+                                      <th scope="col">Debit</th>
                                       <th scope="col">Earning</th>
                                       <th scope="col">Status</th>
                                     </tr>
@@ -171,17 +182,22 @@ const PrepaidRechargeHistory = () => {
                                     {displayData.length > 0 ? (
                                       displayData.map((item, index) => (
                                         <tr key={`${item.id}-${index}`}>
-                                          <td>{index + 1}</td>
+                                          <td>{(currentPage * complaintsPerPage) + index + 1}</td>
                                           <td>{item.created_at}</td>
                                           <td>{item.orderid}</td>
                                           <td>{item.transaction_id}</td>
-                                          <td>{item.providerName}</td>
+                                          {/* <td>{item.providerName}</td> */}
                                           <td>{item.operator_name}</td>
                                           <td>{item.mobile_no}</td>
                                           <td>{item.message}</td>
                                           <td>{item.amount}</td>
-                                          {/* <td></td> */}
-                                          <td>{item.dr_amount}</td>
+                                          {(item.status == "Success" || item.status == "SUCCESS")
+                                           ? <td>{item.walletDeductAmt}</td> : <td>NA</td>}
+                                          {
+                                           ( item.walletDeductAmt && item.amount && (item.status == "Success" || item.status == "SUCCESS")) ? 
+                                           <td>{(parseFloat(item.amount) - parseFloat(item.walletDeductAmt)).toFixed(2)}</td> : <td>NA</td>
+                                          }
+                                          {/* <td>{item.dr_amount}</td> */}
                                           <td>{item.status}</td>
                                         </tr>
                                       ))
@@ -215,6 +231,12 @@ const PrepaidRechargeHistory = () => {
                           </PaginationContainer>
                         </div>
                       </div>
+                      </Tab>
+                      <Tab eventKey="Provider 2" title="Provider 2">
+                       <ProviderTwoHistory rechargeType="Prepaid"/>
+                      </Tab> 
+                     
+                      </Tabs>
                     </div>
                   </div>
                 </div>

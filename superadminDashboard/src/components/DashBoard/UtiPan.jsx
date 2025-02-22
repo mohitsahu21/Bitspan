@@ -28,7 +28,7 @@ const UtiPan = () => {
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11  shadow  rounded m-4 px-3 py-5 bg-body-tertiary">
                       <div className="text-start m-3">
-                       <Link target="_blank" to="https://www.psaonline.utiitsl.com/psaonline/showLogin"> <button className="btn p-2">Login to UTI Portal</button> </Link>
+                       <Link target="_blank" to="https://www.psaonline.utiitsl.com/psapanservices/forms/login.html/loginHome"> <button className="btn p-2">Login to UTI Portal</button> </Link>
                       </div>
                     </div>
                   </div>

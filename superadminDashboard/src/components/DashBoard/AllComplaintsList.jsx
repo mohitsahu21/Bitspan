@@ -6,16 +6,18 @@ import ReactPaginate from "react-paginate";
 import axios from "axios";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
+import { Spinner } from "react-bootstrap";
 
 const AllComplaintsList = () => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
+  const [keyword, setKeyword] = useState("");
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [keyword, setKeyword] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const complaintsPerPage = 10;
+  const [complaintStatus, setComplaintStatus] = useState(""); // For user type filter
   const [currentPage, setCurrentPage] = useState(0);
 
   const fetchData = async () => {
@@ -38,18 +40,30 @@ const AllComplaintsList = () => {
     fetchData();
   }, []);
 
-  const handleSearch = () => {
-    const from = fromDate ? moment(fromDate, "YYYY-MM-DD") : null;
-    const to = toDate ? moment(toDate, "YYYY-MM-DD") : null;
+  // const handleSearch = () => {
+  //   const from = fromDate ? moment(fromDate, "YYYY-MM-DD") : null;
+  //   const to = toDate ? moment(toDate, "YYYY-MM-DD") : null;
 
-    return apiData.filter((item) => {
-      const itemDate = moment(item.createdAt, "YYYY-MM-DD HH:mm:ss");
-      // Apply date filter based on from and to dates
-      const isAfterFromDate = from ? itemDate.isSameOrAfter(from) : true;
-      const isBeforeToDate = to ? itemDate.isSameOrBefore(to) : true;
-      return isAfterFromDate && isBeforeToDate;
-    });
-  };
+  //   return apiData.filter((item) => {
+  //     const itemDate = moment(item.createdAt, "YYYY-MM-DD HH:mm:ss");
+  //     // Apply date filter based on from and to dates
+  //     const isAfterFromDate = from ? itemDate.isSameOrAfter(from) : true;
+  //     const isBeforeToDate = to ? itemDate.isSameOrBefore(to) : true;
+  //     return isAfterFromDate && isBeforeToDate;
+  //   });
+  // };
+
+  const filteredItems = apiData.filter(
+    (row) =>{ 
+      const matchesKeyword =  
+        (row?.id &&
+          row?.id.toString().toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.transactionNo && row?.transactionNo.toLowerCase().includes(keyword.trim().toLowerCase())) 
+
+          const matchesType = !complaintStatus || complaintStatus === "---Select Complaint Status---" || row.status === complaintStatus;
+          return matchesKeyword && matchesType;
+        }
+  );
   // const handleSearch = () => {
   //   const filteredDate = apiData.filter((item) => {
   //     const itemDate = new Date(item.createdAt);
@@ -73,10 +87,10 @@ const AllComplaintsList = () => {
   const totalPages = Math.ceil(apiData.length / complaintsPerPage);
 
   const filterPagination = () => {
-    const filteredItems = handleSearch();
+    const filteredItem = filteredItems;
     const startIndex = currentPage * complaintsPerPage;
     const endIndex = startIndex + complaintsPerPage;
-    return filteredItems?.slice(startIndex, endIndex);
+    return filteredItem?.slice(startIndex, endIndex);
   };
 
   const handlePageChange = ({ selected }) => {
@@ -117,8 +131,8 @@ const AllComplaintsList = () => {
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
                       <div className="row d-flex flex-column g-4">
-                        <div className="d-flex flex-column flex-md-row gap-3">
-                          <div className="col-12 col-md-4 col-lg-3">
+                        <div className="d-flex flex-column flex-xl-row gap-3">
+                          {/* <div className="col-12 col-md-4 col-lg-3">
                             <label for="fromDate" className="form-label">
                               From
                             </label>
@@ -159,13 +173,48 @@ const AllComplaintsList = () => {
                             >
                               Clear
                             </button>
-                          </div>
+                          </div> */}
+
+<div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                                                        {/* <label for="fromDate" className="form-label">From</label> */}
+                                                        <input id="fromDate" 
+                                                        className="form-control"
+                                                         type="search"
+                                                         placeholder="Search By Complaint ID ,Transaction No."
+                                                         value={keyword}
+                              onChange={(e) => setKeyword(e.target.value)}
+                                                         />
+                                                    </div>
+                                                    <div className="col-12 col-md-12 col-lg-12 col-xl-3">
+                                                        
+                                                  
+                                                        {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
+                                                        <select
+                                                          className="form-select"
+                                                          aria-label="Default select example"
+                                                          value={complaintStatus}
+                                                          onChange={(e) => setComplaintStatus(e.target.value)}
+                                                          
+                                                        >
+                                                          <option selected>---Select Complaint Status---</option>
+                                                          <option value="Pending">Pending</option>
+                                                          <option value="Resolve">Resolve</option>
+                                                      
+                                                        </select>
+                                                     
+                                                                                </div>
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
                             {loading ? (
-                              <p>Loading...</p>
+                             <div className="d-flex justify-content-center">
+                             <Spinner animation="border" role="status">
+                               <span className="visually-hidden ">
+                                 Loading...
+                               </span>
+                             </Spinner>
+                           </div>
                             ) : (
                               <table class="table table-striped">
                                 <thead className="table-dark">
@@ -173,8 +222,13 @@ const AllComplaintsList = () => {
                                     <th scope="col">Complaint ID</th>
                                     <th scope="col">Ticket Raised Date</th>
                                     <th scope="col">Complaint Type</th>
+                                    <th scope="col">Complaint Mobile</th>
                                     <th scope="col">Remark</th>
                                     <th scope="col">Transaction No.</th>
+                                    <th scope="col">Complaint File</th>
+                                    <th scope="col">Resolve Date</th>
+                                    <th scope="col">Response</th>
+
                                     <th scope="col">Status</th>
                                     {/* <th scope="col">Response</th> */}
                                   </tr>
@@ -186,8 +240,26 @@ const AllComplaintsList = () => {
                                         <th scope="row">{item.id}</th>
                                         <td>{item.createdAt}</td>
                                         <td>{item.complainType}</td>
+                                        <td>{item.mobileNo}</td>
                                         <td>{item.remark}</td>
                                         <td>{item.transactionNo}</td>
+                                        <td>
+                                              {
+                                               item.complainFile ? 
+                                               <a
+                                               href={item.complainFile}
+                                               target="_blank"
+                                               rel="noopener noreferrer"
+                                             >
+                                               View
+                                             </a> 
+                                             :
+                                             "Not Available"
+                                              }
+                                             
+                                            </td>
+                                            <td>{item.process_date}</td>
+                                            <td>{item.response}</td>
                                         <td>{item.status}</td>
                                       </tr>
                                     ))
