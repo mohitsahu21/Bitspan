@@ -62,6 +62,7 @@ const {
   getTodaysRechargeOffline,
   getTodaysRecharge,
 } = require("../../controllers/Retailer/retailerController");
+const authenticateToken = require("../../middleware/authenticateToken");
 
 const router = express.Router();
 
@@ -146,7 +147,7 @@ router.post(
   complainInsertApi
 );
 
-router.get("/complain-data/:userid", complainGetData);
+router.get("/complain-data/:userid", authenticateToken, complainGetData);
 
 const profileDataStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -230,13 +231,17 @@ router.get("/getDthConnectionPlan", getDthConnectionPlan);
 router.get("/getWalletSummary/:userId", getWalletSummary);
 router.post("/buyCoupon", buyCoupon);
 router.get("/getCoupon/:userId", getCoupon);
-router.put("/update_bankidForm", upload.fields([
-  { name: "attached_photo", maxCount: 1 },
-  { name: "attached_kyc", maxCount: 10 },
-  { name: "bank_passbook", maxCount: 1 },
-  { name: "shop_photo", maxCount: 1 },
-  { name: "electric_bill", maxCount: 1 },
-]), update_bankidForm);
+router.put(
+  "/update_bankidForm",
+  upload.fields([
+    { name: "attached_photo", maxCount: 1 },
+    { name: "attached_kyc", maxCount: 10 },
+    { name: "bank_passbook", maxCount: 1 },
+    { name: "shop_photo", maxCount: 1 },
+    { name: "electric_bill", maxCount: 1 },
+  ]),
+  update_bankidForm
+);
 
 router.put(
   "/update_applyOfflineForm",
@@ -262,15 +267,9 @@ router.put(
 router.get("/getDTHConnectionData/:userId", getDTHConnectionData);
 router.get("/getOfflineRecharge/:userId/:rechargeType", getOfflineRecharge);
 router.get("/getOfflineDTHConnection/:userId", getOfflineDTHConnection);
-router.get("/getAllServicesList" , getAllServicesList);
-router.get(
-  "/getAllMonthCommission/:userId",
-  getAllMonthCommission
-);
-router.get(
-  "/getTodaysCommission/:userId",
-  getTodaysCommission
-);
+router.get("/getAllServicesList", getAllServicesList);
+router.get("/getAllMonthCommission/:userId", getAllMonthCommission);
+router.get("/getTodaysCommission/:userId", getTodaysCommission);
 router.get(
   "/getUserNotification/:userId",
 

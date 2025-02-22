@@ -501,11 +501,14 @@ const rechargeWithBalanceCheck = (req, res) => {
         });
       })
       .then(({ rechargeData, orderId, newBalance }) => {
-        if (rechargeData.status === "Success" || rechargeData.status === "Pending") {
+        if (
+          rechargeData.status === "Success" ||
+          rechargeData.status === "Pending"
+        ) {
           let rechargeMessage = "Recharge in process";
-          if(rechargeData.STATUS === "Success"){
-            rechargeMessage = "Recharge successful"
-          } else if(rechargeData.STATUS === "Pending"){
+          if (rechargeData.STATUS === "Success") {
+            rechargeMessage = "Recharge successful";
+          } else if (rechargeData.STATUS === "Pending") {
             rechargeMessage = "Recharge in process";
           }
           const transactionId = `TXNW${Date.now()}`;
@@ -662,7 +665,7 @@ const generateUniqueOrderId = () => {
 //     .then((generatedOrderId) => {
 //       const insertQuery = `
 //         INSERT INTO dth_connection (
-//           operatorName, number, amount, plan_id, first_name, last_name, 
+//           operatorName, number, amount, plan_id, first_name, last_name,
 //           full_address, postal_code, orderid, providerName, user_id, created_at
 //         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
@@ -774,7 +777,7 @@ const dthRechargeWithBalanceCheck = (req, res) => {
     postal_code,
     user_id,
   } = req.body;
- 
+
   const providerName = "inspay";
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
@@ -788,7 +791,7 @@ const dthRechargeWithBalanceCheck = (req, res) => {
     !first_name ||
     !last_name ||
     !full_address ||
-    !postal_code || 
+    !postal_code ||
     !user_id
   ) {
     return res
@@ -796,224 +799,229 @@ const dthRechargeWithBalanceCheck = (req, res) => {
       .json({ status: "failure", error: "All fields are required" });
   }
 
-  
-       // Validate Amount: Check for undefined, null, or invalid number
-       if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
-        return res.status(400).json({
-          status: "failure",
-          success: false,
-          error: "Invalid or missing amount",
-        });
-      }
-      if (walletDeductAmt == null || isNaN(parseFloat(walletDeductAmt)) || parseFloat(walletDeductAmt) < 0) {
-        return res.status(400).json({
-          status: "failure",
-          success: false,
-          error: "Invalid or missing walletDeductAmt",
-        });
-      }
-  
-      const AmountNumber = parseFloat(amount).toFixed(2);
+  // Validate Amount: Check for undefined, null, or invalid number
+  if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+    return res.status(400).json({
+      status: "failure",
+      success: false,
+      error: "Invalid or missing amount",
+    });
+  }
+  if (
+    walletDeductAmt == null ||
+    isNaN(parseFloat(walletDeductAmt)) ||
+    parseFloat(walletDeductAmt) < 0
+  ) {
+    return res.status(400).json({
+      status: "failure",
+      success: false,
+      error: "Invalid or missing walletDeductAmt",
+    });
+  }
 
-      const queryBalance = `SELECT Closing_Balance FROM user_wallet WHERE userId = ? ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC LIMIT 1`;
-      db.query(queryBalance, [user_id], (err, balanceResult) => {
-        if (err) {
-          return res.status(500).json({
-            error: "Error fetching wallet balance",
-            message: err.message,
+  const AmountNumber = parseFloat(amount).toFixed(2);
+
+  const queryBalance = `SELECT Closing_Balance FROM user_wallet WHERE userId = ? ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC LIMIT 1`;
+  db.query(queryBalance, [user_id], (err, balanceResult) => {
+    if (err) {
+      return res.status(500).json({
+        error: "Error fetching wallet balance",
+        message: err.message,
+      });
+    }
+
+    if (
+      balanceResult.length === 0 ||
+      parseFloat(balanceResult[0].Closing_Balance) < AmountNumber
+    ) {
+      return res.status(400).json({ error: "Insufficient wallet balance" });
+    }
+
+    const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+    const orderId = `OROD${Date.now()}`;
+
+    // Step 1: Fetch balance
+    getDataFromClientApi("/v3/recharge/balance", token, username, {
+      format: "json",
+    })
+      .then((balanceData) => {
+        if (!balanceData || parseFloat(balanceData.balance) < AmountNumber) {
+          return Promise.reject({
+            status: 400,
+            error: "Insufficient provider balance",
           });
         }
-    
-        if (
-          balanceResult.length === 0 ||
-          parseFloat(balanceResult[0].Closing_Balance) < AmountNumber
-        ) {
-          return res.status(400).json({ error: "Insufficient wallet balance" });
-        }
-    
-        const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
-        const orderId = `OROD${Date.now()}`;
-    
 
-  // Step 1: Fetch balance
-  getDataFromClientApi("/v3/recharge/balance", token, username, {
-    format: "json",
-  })
-    .then((balanceData) => {
-      if (!balanceData || parseFloat(balanceData.balance) < AmountNumber) {
-        return Promise.reject({
-          status: 400,
-          error: "Insufficient provider balance",
-        });
-      }
+        // Step 3: Generate a unique orderid
+        // return generateUniqueOrderId();
 
-      // Step 3: Generate a unique orderid
-      // return generateUniqueOrderId();
-    
-      const insertQuery = `
+        const insertQuery = `
         INSERT INTO dth_connection (
           operatorName, number, amount,walletDeductAmt, plan_id, first_name, last_name, 
           full_address, postal_code, orderid, providerName, user_id, created_at
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)`;
 
-      const values = [
-        operatorName,
-        number,
-        amount,
-        walletDeductAmt,
-        plan_id,
-        first_name,
-        last_name,
-        full_address,
-        postal_code,
-        orderId,
-        providerName,
-        user_id,
-        createdAt,
-      ];
+        const values = [
+          operatorName,
+          number,
+          amount,
+          walletDeductAmt,
+          plan_id,
+          first_name,
+          last_name,
+          full_address,
+          postal_code,
+          orderId,
+          providerName,
+          user_id,
+          createdAt,
+        ];
 
-      return new Promise((resolve, reject) => {
-        db.query(insertQuery, values, (err, result) => {
-          if (err) {
-            reject({
-              status: 500,
-              error: "Database insertion error",
-              message: err.message,
-            });
-          } else {
-            resolve({ orderId });
-          }
-        });
-      });
-    })
-    .then(({ orderId}) => {
-      return getDataFromClientApi("/v3/dth_connection/api", token, username, {
-        // opcode: operatorMappingDTH[operatorName].code,
-        opcode: opcode,
-        number: number,
-        amount: amount,
-        plan_id: plan_id,
-        first_name: first_name,
-        last_name: last_name,
-        full_address: full_address,
-        postal_code: postal_code,
-        orderid: orderId,
-      }).then((rechargeData) => {
-        return { rechargeData, orderId };
-      });
-    })
-    .then(({ rechargeData, orderId }) => {
-      const updateQuery = `
-        UPDATE dth_connection SET opcode = ?, txid = ?, status = ?, opid = ?, dr_amount = ?, message = ? WHERE orderid = ?`;
-      const updateValues = [
-        rechargeData.opcode || "",
-        rechargeData.txid || "",
-        rechargeData.status,
-        rechargeData.opid || "",
-        rechargeData.dr_amount || "",
-        rechargeData.message || "",
-        orderId,
-      ];
-
-      return new Promise((resolve, reject) => {
-        db.query(updateQuery, updateValues, (err) => {
-          if (err) {
-            reject({
-              status: 500,
-              error: "Failed to update recharge data",
-              message: err.message,
-            });
-          } else {
-            resolve({
-              rechargeData,
-              orderId,
-              newBalance: currentBalance.toFixed(2),
-            });
-          }
-        });
-      });
-    })
-    .then(({ rechargeData, orderId, newBalance }) => {
-      if (rechargeData.status === "Success" || rechargeData.status === "Pending") {
-        let rechargeMessage = "Recharge in process";
-        if(rechargeData.STATUS === "Success"){
-          rechargeMessage = "Recharge successful"
-        } else if(rechargeData.STATUS === "Pending"){
-          rechargeMessage = "Recharge in process";
-        }
-        const transactionId = `TXNW${Date.now()}`;
-        const transactionDetails = `DTH Connection Deduction Order Id ${orderId}`;
-        const newWalletBalance = (currentBalance - walletDeductAmt).toFixed(
-          2
-        );
-
-        const updateWalletQuery = `
-        INSERT INTO user_wallet
-        (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `;
-      return new Promise((resolve, reject) => {
-        db.query(
-          updateWalletQuery,
-          [
-            user_id,
-            updatedAt,
-            orderId,
-            transactionId,
-            currentBalance.toFixed(2),
-            newWalletBalance,
-            "Debit",
-            0,
-            walletDeductAmt,
-            transactionDetails,
-            "Success",
-          ],
-          (err, walletResult) => {
+        return new Promise((resolve, reject) => {
+          db.query(insertQuery, values, (err, result) => {
             if (err) {
               reject({
                 status: 500,
-                error: "Failed to update wallet balance",
+                error: "Database insertion error",
+                message: err.message,
+              });
+            } else {
+              resolve({ orderId });
+            }
+          });
+        });
+      })
+      .then(({ orderId }) => {
+        return getDataFromClientApi("/v3/dth_connection/api", token, username, {
+          // opcode: operatorMappingDTH[operatorName].code,
+          opcode: opcode,
+          number: number,
+          amount: amount,
+          plan_id: plan_id,
+          first_name: first_name,
+          last_name: last_name,
+          full_address: full_address,
+          postal_code: postal_code,
+          orderid: orderId,
+        }).then((rechargeData) => {
+          return { rechargeData, orderId };
+        });
+      })
+      .then(({ rechargeData, orderId }) => {
+        const updateQuery = `
+        UPDATE dth_connection SET opcode = ?, txid = ?, status = ?, opid = ?, dr_amount = ?, message = ? WHERE orderid = ?`;
+        const updateValues = [
+          rechargeData.opcode || "",
+          rechargeData.txid || "",
+          rechargeData.status,
+          rechargeData.opid || "",
+          rechargeData.dr_amount || "",
+          rechargeData.message || "",
+          orderId,
+        ];
+
+        return new Promise((resolve, reject) => {
+          db.query(updateQuery, updateValues, (err) => {
+            if (err) {
+              reject({
+                status: 500,
+                error: "Failed to update recharge data",
                 message: err.message,
               });
             } else {
               resolve({
-                // message: "Recharge successful",
-                message: rechargeMessage,
                 rechargeData,
-                wallet: {
-                  previousBalance: currentBalance.toFixed(2),
-                  newBalance: newWalletBalance,
-                },
-                orderId: orderId,
+                orderId,
+                newBalance: currentBalance.toFixed(2),
               });
             }
+          });
+        });
+      })
+      .then(({ rechargeData, orderId, newBalance }) => {
+        if (
+          rechargeData.status === "Success" ||
+          rechargeData.status === "Pending"
+        ) {
+          let rechargeMessage = "Recharge in process";
+          if (rechargeData.STATUS === "Success") {
+            rechargeMessage = "Recharge successful";
+          } else if (rechargeData.STATUS === "Pending") {
+            rechargeMessage = "Recharge in process";
           }
-        );
+          const transactionId = `TXNW${Date.now()}`;
+          const transactionDetails = `DTH Connection Deduction Order Id ${orderId}`;
+          const newWalletBalance = (currentBalance - walletDeductAmt).toFixed(
+            2
+          );
+
+          const updateWalletQuery = `
+        INSERT INTO user_wallet
+        (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
+          return new Promise((resolve, reject) => {
+            db.query(
+              updateWalletQuery,
+              [
+                user_id,
+                updatedAt,
+                orderId,
+                transactionId,
+                currentBalance.toFixed(2),
+                newWalletBalance,
+                "Debit",
+                0,
+                walletDeductAmt,
+                transactionDetails,
+                "Success",
+              ],
+              (err, walletResult) => {
+                if (err) {
+                  reject({
+                    status: 500,
+                    error: "Failed to update wallet balance",
+                    message: err.message,
+                  });
+                } else {
+                  resolve({
+                    // message: "Recharge successful",
+                    message: rechargeMessage,
+                    rechargeData,
+                    wallet: {
+                      previousBalance: currentBalance.toFixed(2),
+                      newBalance: newWalletBalance,
+                    },
+                    orderId: orderId,
+                  });
+                }
+              }
+            );
+          });
+        } else {
+          return Promise.resolve({
+            message: "Recharge failed but no money was deducted",
+            rechargeData,
+            wallet: {
+              previousBalance: currentBalance.toFixed(2),
+              newBalance: currentBalance.toFixed(2),
+            },
+            orderId: orderId,
+          });
+        }
+      })
+      .then((finalResult) => {
+        res.json(finalResult);
+      })
+      .catch((error) => {
+        console.error("Caught an error in the promise chain:", error);
+        res.status(error.status || 500).json({
+          error: error.error || "Recharge failed",
+          message: error.message || "Unknown error",
+          details: error.details || "No additional information available.",
+        });
       });
-    } else {
-      return Promise.resolve({
-        message: "Recharge failed but no money was deducted",
-        rechargeData,
-        wallet: {
-          previousBalance: currentBalance.toFixed(2),
-          newBalance: currentBalance.toFixed(2),
-        },
-        orderId: orderId,
-      });
-    }
-  })
-  .then((finalResult) => {
-    res.json(finalResult);
-  })
-  .catch((error) => {
-    console.error("Caught an error in the promise chain:", error);
-    res.status(error.status || 500).json({
-      error: error.error || "Recharge failed",
-      message: error.message || "Unknown error",
-      details: error.details || "No additional information available.",
-    });
   });
-});
 };
 // const nsdlNewRequest = async (req, res) => {
 //   try {
@@ -1067,9 +1075,6 @@ const dthRechargeWithBalanceCheck = (req, res) => {
 //       }
 
 //       const AmountNumber = parseFloat(walletDeductAmt).toFixed(2);
-    
-      
-
 
 //     // Fetch balance
 //     const balanceData = await getDataFromClientApi(
@@ -1079,7 +1084,6 @@ const dthRechargeWithBalanceCheck = (req, res) => {
 //       { format: "json" }
 //     );
 
-    
 //     if (!balanceData || balanceData.balance < walletDeductAmt) {
 //       return res.status(400).json({ error: "Insufficient balance" });
 //     }
@@ -1171,7 +1175,6 @@ const dthRechargeWithBalanceCheck = (req, res) => {
 //   }
 // };
 
-
 const nsdlNewRequest = (req, res) => {
   const token = process.env.APITokenInstapay;
   const username = process.env.APIUsernameInstapay;
@@ -1192,41 +1195,89 @@ const nsdlNewRequest = (req, res) => {
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
-  if (!applicationMode || !selectType || !name || !dob || !gender || !mobile || !email || !physicalPan || !walletDeductAmt || !userId) {
-    return res.status(400).json({ status: "failure", error: "All fields are required" });
+  if (
+    !applicationMode ||
+    !selectType ||
+    !name ||
+    !dob ||
+    !gender ||
+    !mobile ||
+    !email ||
+    !physicalPan ||
+    !walletDeductAmt ||
+    !userId
+  ) {
+    return res
+      .status(400)
+      .json({ status: "failure", error: "All fields are required" });
   }
 
-  if (walletDeductAmt == null || isNaN(parseFloat(walletDeductAmt)) || parseFloat(walletDeductAmt) < 0) {
-    return res.status(400).json({ status: "failure", error: "Invalid or missing walletDeductAmt" });
+  if (
+    walletDeductAmt == null ||
+    isNaN(parseFloat(walletDeductAmt)) ||
+    parseFloat(walletDeductAmt) < 0
+  ) {
+    return res
+      .status(400)
+      .json({ status: "failure", error: "Invalid or missing walletDeductAmt" });
   }
 
   const AmountNumber = parseFloat(walletDeductAmt).toFixed(2);
-  const appMode = applicationMode === 'Instant PAN Card - EKYC' ? "EKYC" : "ESIGN";
+  const appMode =
+    applicationMode === "Instant PAN Card - EKYC" ? "EKYC" : "ESIGN";
 
   const queryBalance = `SELECT Closing_Balance FROM user_wallet WHERE userId = ? ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC LIMIT 1`;
   db.query(queryBalance, [userId], (err, balanceResult) => {
     if (err) {
-      return res.status(500).json({ error: "Error fetching wallet balance", message: err.message });
+      return res
+        .status(500)
+        .json({ error: "Error fetching wallet balance", message: err.message });
     }
-    if (balanceResult.length === 0 || parseFloat(balanceResult[0].Closing_Balance) < AmountNumber) {
+    if (
+      balanceResult.length === 0 ||
+      parseFloat(balanceResult[0].Closing_Balance) < AmountNumber
+    ) {
       return res.status(400).json({ error: "Insufficient wallet balance" });
     }
 
     const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
     const orderId = `ORPAN${Date.now()}`;
 
-    getDataFromClientApi("/v3/recharge/balance", token, username, { format: "json" })
+    getDataFromClientApi("/v3/recharge/balance", token, username, {
+      format: "json",
+    })
       .then((balanceData) => {
         if (!balanceData || parseFloat(balanceData.balance) < AmountNumber) {
-          return Promise.reject({ status: 400, error: "Insufficient provider balance" });
+          return Promise.reject({
+            status: 400,
+            error: "Insufficient provider balance",
+          });
         }
 
         const insertQuery = `INSERT INTO nsdlpan (applicationMode, selectType, name, dob, gender, mobile, email, physicalPan, walletDeductAmt, providerName, userId, orderid, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-        const values = [applicationMode, selectType, name, dob, gender, mobile, email, physicalPan, walletDeductAmt, providerName, userId, orderId, createdAt];
+        const values = [
+          applicationMode,
+          selectType,
+          name,
+          dob,
+          gender,
+          mobile,
+          email,
+          physicalPan,
+          walletDeductAmt,
+          providerName,
+          userId,
+          orderId,
+          createdAt,
+        ];
         return new Promise((resolve, reject) => {
           db.query(insertQuery, values, (err) => {
             if (err) {
-              reject({ status: 500, error: "Database insertion error", message: err.message });
+              reject({
+                status: 500,
+                error: "Database insertion error",
+                message: err.message,
+              });
             } else {
               resolve({ orderId });
             }
@@ -1242,13 +1293,30 @@ const nsdlNewRequest = (req, res) => {
       })
       .then(({ nsdlData, orderId }) => {
         const updateQuery = `UPDATE nsdlpan SET txid = ?, status = ?, opid = ?, message = ?, url = ?, number = ?, amount = ? WHERE orderid = ?`;
-        const updateValues = [nsdlData.txid || "", nsdlData.status, nsdlData.opid || "", nsdlData.message || "", nsdlData.url || "", nsdlData.number || "", nsdlData.amount || "", orderId];
+        const updateValues = [
+          nsdlData.txid || "",
+          nsdlData.status,
+          nsdlData.opid || "",
+          nsdlData.message || "",
+          nsdlData.url || "",
+          nsdlData.number || "",
+          nsdlData.amount || "",
+          orderId,
+        ];
         return new Promise((resolve, reject) => {
           db.query(updateQuery, updateValues, (err) => {
             if (err) {
-              reject({ status: 500, error: "Failed to update NSDL data", message: err.message });
+              reject({
+                status: 500,
+                error: "Failed to update NSDL data",
+                message: err.message,
+              });
             } else {
-              resolve({ nsdlData, orderId, newBalance: (currentBalance - walletDeductAmt).toFixed(2) });
+              resolve({
+                nsdlData,
+                orderId,
+                newBalance: (currentBalance - walletDeductAmt).toFixed(2),
+              });
             }
           });
         });
@@ -1259,16 +1327,55 @@ const nsdlNewRequest = (req, res) => {
           const transactionDetails = `NSDL PAN Deduction Order Id ${orderId}`;
           const updateWalletQuery = `INSERT INTO user_wallet (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
           return new Promise((resolve, reject) => {
-            db.query(updateWalletQuery, [userId, updatedAt, orderId, transactionId, currentBalance.toFixed(2), newBalance, "Debit", 0, walletDeductAmt, transactionDetails, "Success"], (err) => {
-              if (err) {
-                reject({ status: 500, error: "Failed to update wallet balance", message: err.message });
-              } else {
-                resolve({ message: nsdlData.status === "Success" ? "Successful" : "Recharge failed", nsdlData, wallet: { previousBalance: currentBalance.toFixed(2), newBalance }, orderId });
+            db.query(
+              updateWalletQuery,
+              [
+                userId,
+                updatedAt,
+                orderId,
+                transactionId,
+                currentBalance.toFixed(2),
+                newBalance,
+                "Debit",
+                0,
+                walletDeductAmt,
+                transactionDetails,
+                "Success",
+              ],
+              (err) => {
+                if (err) {
+                  reject({
+                    status: 500,
+                    error: "Failed to update wallet balance",
+                    message: err.message,
+                  });
+                } else {
+                  resolve({
+                    message:
+                      nsdlData.status === "Success"
+                        ? "Successful"
+                        : "Recharge failed",
+                    nsdlData,
+                    wallet: {
+                      previousBalance: currentBalance.toFixed(2),
+                      newBalance,
+                    },
+                    orderId,
+                  });
+                }
               }
-            });
+            );
           });
         } else {
-          return Promise.resolve({ message: "Recharge failed", nsdlData, wallet: { previousBalance: currentBalance.toFixed(2), newBalance: currentBalance.toFixed(2) }, orderId });
+          return Promise.resolve({
+            message: "Recharge failed",
+            nsdlData,
+            wallet: {
+              previousBalance: currentBalance.toFixed(2),
+              newBalance: currentBalance.toFixed(2),
+            },
+            orderId,
+          });
         }
       })
       .then((finalResult) => {
@@ -1276,7 +1383,12 @@ const nsdlNewRequest = (req, res) => {
       })
       .catch((error) => {
         console.error("Caught an error in the promise chain:", error);
-        res.status(error.status || 500).json({ error: error.error || "Request failed", message: error.message || "Unknown error" });
+        res
+          .status(error.status || 500)
+          .json({
+            error: error.error || "Request failed",
+            message: error.message || "Unknown error",
+          });
       });
   });
 };
@@ -1446,41 +1558,90 @@ const nsdlCorrection = (req, res) => {
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
-  if (!applicationMode || !selectType || !name || !dob || !gender || !mobile || !email || !physicalPan || !walletDeductAmt || !userId) {
-    return res.status(400).json({ status: "failure", error: "All fields are required" });
+  if (
+    !applicationMode ||
+    !selectType ||
+    !name ||
+    !dob ||
+    !gender ||
+    !mobile ||
+    !email ||
+    !physicalPan ||
+    !walletDeductAmt ||
+    !userId
+  ) {
+    return res
+      .status(400)
+      .json({ status: "failure", error: "All fields are required" });
   }
 
-  if (walletDeductAmt == null || isNaN(parseFloat(walletDeductAmt)) || parseFloat(walletDeductAmt) < 0) {
-    return res.status(400).json({ status: "failure", error: "Invalid or missing walletDeductAmt" });
+  if (
+    walletDeductAmt == null ||
+    isNaN(parseFloat(walletDeductAmt)) ||
+    parseFloat(walletDeductAmt) < 0
+  ) {
+    return res
+      .status(400)
+      .json({ status: "failure", error: "Invalid or missing walletDeductAmt" });
   }
 
   const AmountNumber = parseFloat(walletDeductAmt).toFixed(2);
-  const appMode = applicationMode === 'Instant PAN Card - EKYC' ? "EKYC" : "ESIGN";
+  const appMode =
+    applicationMode === "Instant PAN Card - EKYC" ? "EKYC" : "ESIGN";
 
   const queryBalance = `SELECT Closing_Balance FROM user_wallet WHERE userId = ? ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC LIMIT 1`;
   db.query(queryBalance, [userId], (err, balanceResult) => {
     if (err) {
-      return res.status(500).json({ error: "Error fetching wallet balance", message: err.message });
+      return res
+        .status(500)
+        .json({ error: "Error fetching wallet balance", message: err.message });
     }
-    if (balanceResult.length === 0 || parseFloat(balanceResult[0].Closing_Balance) < AmountNumber) {
+    if (
+      balanceResult.length === 0 ||
+      parseFloat(balanceResult[0].Closing_Balance) < AmountNumber
+    ) {
       return res.status(400).json({ error: "Insufficient wallet balance" });
     }
 
     const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
     const orderId = `ORPAN${Date.now()}`;
 
-    getDataFromClientApi("/v3/recharge/balance", token, username, { format: "json" })
+    getDataFromClientApi("/v3/recharge/balance", token, username, {
+      format: "json",
+    })
       .then((balanceData) => {
         if (!balanceData || parseFloat(balanceData.balance) < AmountNumber) {
-          return Promise.reject({ status: 400, error: "Insufficient provider balance" });
+          return Promise.reject({
+            status: 400,
+            error: "Insufficient provider balance",
+          });
         }
 
         const insertQuery = `INSERT INTO nsdlpancorrection (applicationMode, selectType, name, dob, gender, mobile, email, physicalPan, walletDeductAmt, providerName, pan_no, userId, orderid, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)`;
-        const values = [applicationMode, selectType, name, dob, gender, mobile, email, physicalPan, walletDeductAmt, providerName,	pan_no, userId, orderId, createdAt];
+        const values = [
+          applicationMode,
+          selectType,
+          name,
+          dob,
+          gender,
+          mobile,
+          email,
+          physicalPan,
+          walletDeductAmt,
+          providerName,
+          pan_no,
+          userId,
+          orderId,
+          createdAt,
+        ];
         return new Promise((resolve, reject) => {
           db.query(insertQuery, values, (err) => {
             if (err) {
-              reject({ status: 500, error: "Database insertion error", message: err.message });
+              reject({
+                status: 500,
+                error: "Database insertion error",
+                message: err.message,
+              });
             } else {
               resolve({ orderId });
             }
@@ -1496,13 +1657,30 @@ const nsdlCorrection = (req, res) => {
       })
       .then(({ nsdlData, orderId }) => {
         const updateQuery = `UPDATE nsdlpancorrection SET txid = ?, status = ?, opid = ?, message = ?, url = ?, number = ?, amount = ? WHERE orderid = ?`;
-        const updateValues = [nsdlData.txid || "", nsdlData.status, nsdlData.opid || "", nsdlData.message || "", nsdlData.url || "", nsdlData.number || "", nsdlData.amount || "", orderId];
+        const updateValues = [
+          nsdlData.txid || "",
+          nsdlData.status,
+          nsdlData.opid || "",
+          nsdlData.message || "",
+          nsdlData.url || "",
+          nsdlData.number || "",
+          nsdlData.amount || "",
+          orderId,
+        ];
         return new Promise((resolve, reject) => {
           db.query(updateQuery, updateValues, (err) => {
             if (err) {
-              reject({ status: 500, error: "Failed to update NSDL data", message: err.message });
+              reject({
+                status: 500,
+                error: "Failed to update NSDL data",
+                message: err.message,
+              });
             } else {
-              resolve({ nsdlData, orderId, newBalance: (currentBalance - walletDeductAmt).toFixed(2) });
+              resolve({
+                nsdlData,
+                orderId,
+                newBalance: (currentBalance - walletDeductAmt).toFixed(2),
+              });
             }
           });
         });
@@ -1513,16 +1691,55 @@ const nsdlCorrection = (req, res) => {
           const transactionDetails = `NSDL PAN Correction Deduction Order Id ${orderId}`;
           const updateWalletQuery = `INSERT INTO user_wallet (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
           return new Promise((resolve, reject) => {
-            db.query(updateWalletQuery, [userId, updatedAt, orderId, transactionId, currentBalance.toFixed(2), newBalance, "Debit", 0, walletDeductAmt, transactionDetails, "Success"], (err) => {
-              if (err) {
-                reject({ status: 500, error: "Failed to update wallet balance", message: err.message });
-              } else {
-                resolve({ message: nsdlData.status === "Success" ? "Successful" : "Recharge failed", nsdlData, wallet: { previousBalance: currentBalance.toFixed(2), newBalance }, orderId });
+            db.query(
+              updateWalletQuery,
+              [
+                userId,
+                updatedAt,
+                orderId,
+                transactionId,
+                currentBalance.toFixed(2),
+                newBalance,
+                "Debit",
+                0,
+                walletDeductAmt,
+                transactionDetails,
+                "Success",
+              ],
+              (err) => {
+                if (err) {
+                  reject({
+                    status: 500,
+                    error: "Failed to update wallet balance",
+                    message: err.message,
+                  });
+                } else {
+                  resolve({
+                    message:
+                      nsdlData.status === "Success"
+                        ? "Successful"
+                        : "Recharge failed",
+                    nsdlData,
+                    wallet: {
+                      previousBalance: currentBalance.toFixed(2),
+                      newBalance,
+                    },
+                    orderId,
+                  });
+                }
               }
-            });
+            );
           });
         } else {
-          return Promise.resolve({ message: "Recharge failed", nsdlData, wallet: { previousBalance: currentBalance.toFixed(2), newBalance: currentBalance.toFixed(2) }, orderId });
+          return Promise.resolve({
+            message: "Recharge failed",
+            nsdlData,
+            wallet: {
+              previousBalance: currentBalance.toFixed(2),
+              newBalance: currentBalance.toFixed(2),
+            },
+            orderId,
+          });
         }
       })
       .then((finalResult) => {
@@ -1530,7 +1747,12 @@ const nsdlCorrection = (req, res) => {
       })
       .catch((error) => {
         console.error("Caught an error in the promise chain:", error);
-        res.status(error.status || 500).json({ error: error.error || "Request failed", message: error.message || "Unknown error" });
+        res
+          .status(error.status || 500)
+          .json({
+            error: error.error || "Request failed",
+            message: error.message || "Unknown error",
+          });
       });
   });
 };
