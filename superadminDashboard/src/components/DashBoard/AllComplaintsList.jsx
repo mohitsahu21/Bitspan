@@ -25,7 +25,13 @@ const AllComplaintsList = () => {
     try {
       const response = await axios.get(
         // `http://localhost:7777/api/auth/retailer/complain-data`
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/complain-data/${currentUser?.userId}`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/complain-data/${currentUser?.userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setApiData(response.data.data);
       console.log(response.data.data);
@@ -53,17 +59,24 @@ const AllComplaintsList = () => {
   //   });
   // };
 
-  const filteredItems = apiData.filter(
-    (row) =>{ 
-      const matchesKeyword =  
-        (row?.id &&
-          row?.id.toString().toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.transactionNo && row?.transactionNo.toLowerCase().includes(keyword.trim().toLowerCase())) 
+  const filteredItems = apiData.filter((row) => {
+    const matchesKeyword =
+      (row?.id &&
+        row?.id
+          .toString()
+          .toLowerCase()
+          .includes(keyword.trim().toLowerCase())) ||
+      (row?.transactionNo &&
+        row?.transactionNo
+          .toLowerCase()
+          .includes(keyword.trim().toLowerCase()));
 
-          const matchesType = !complaintStatus || complaintStatus === "---Select Complaint Status---" || row.status === complaintStatus;
-          return matchesKeyword && matchesType;
-        }
-  );
+    const matchesType =
+      !complaintStatus ||
+      complaintStatus === "---Select Complaint Status---" ||
+      row.status === complaintStatus;
+    return matchesKeyword && matchesType;
+  });
   // const handleSearch = () => {
   //   const filteredDate = apiData.filter((item) => {
   //     const itemDate = new Date(item.createdAt);
@@ -175,46 +188,46 @@ const AllComplaintsList = () => {
                             </button>
                           </div> */}
 
-<div className="col-12 col-md-12 col-lg-12 col-xl-8">
-                                                        {/* <label for="fromDate" className="form-label">From</label> */}
-                                                        <input id="fromDate" 
-                                                        className="form-control"
-                                                         type="search"
-                                                         placeholder="Search By Complaint ID ,Transaction No."
-                                                         value={keyword}
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                            {/* <label for="fromDate" className="form-label">From</label> */}
+                            <input
+                              id="fromDate"
+                              className="form-control"
+                              type="search"
+                              placeholder="Search By Complaint ID ,Transaction No."
+                              value={keyword}
                               onChange={(e) => setKeyword(e.target.value)}
-                                                         />
-                                                    </div>
-                                                    <div className="col-12 col-md-12 col-lg-12 col-xl-3">
-                                                        
-                                                  
-                                                        {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
-                                                        <select
-                                                          className="form-select"
-                                                          aria-label="Default select example"
-                                                          value={complaintStatus}
-                                                          onChange={(e) => setComplaintStatus(e.target.value)}
-                                                          
-                                                        >
-                                                          <option selected>---Select Complaint Status---</option>
-                                                          <option value="Pending">Pending</option>
-                                                          <option value="Resolve">Resolve</option>
-                                                      
-                                                        </select>
-                                                     
-                                                                                </div>
+                            />
+                          </div>
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-3">
+                            {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              value={complaintStatus}
+                              onChange={(e) =>
+                                setComplaintStatus(e.target.value)
+                              }
+                            >
+                              <option selected>
+                                ---Select Complaint Status---
+                              </option>
+                              <option value="Pending">Pending</option>
+                              <option value="Resolve">Resolve</option>
+                            </select>
+                          </div>
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
                             {loading ? (
-                             <div className="d-flex justify-content-center">
-                             <Spinner animation="border" role="status">
-                               <span className="visually-hidden ">
-                                 Loading...
-                               </span>
-                             </Spinner>
-                           </div>
+                              <div className="d-flex justify-content-center">
+                                <Spinner animation="border" role="status">
+                                  <span className="visually-hidden ">
+                                    Loading...
+                                  </span>
+                                </Spinner>
+                              </div>
                             ) : (
                               <table class="table table-striped">
                                 <thead className="table-dark">
@@ -244,22 +257,20 @@ const AllComplaintsList = () => {
                                         <td>{item.remark}</td>
                                         <td>{item.transactionNo}</td>
                                         <td>
-                                              {
-                                               item.complainFile ? 
-                                               <a
-                                               href={item.complainFile}
-                                               target="_blank"
-                                               rel="noopener noreferrer"
-                                             >
-                                               View
-                                             </a> 
-                                             :
-                                             "Not Available"
-                                              }
-                                             
-                                            </td>
-                                            <td>{item.process_date}</td>
-                                            <td>{item.response}</td>
+                                          {item.complainFile ? (
+                                            <a
+                                              href={item.complainFile}
+                                              target="_blank"
+                                              rel="noopener noreferrer"
+                                            >
+                                              View
+                                            </a>
+                                          ) : (
+                                            "Not Available"
+                                          )}
+                                        </td>
+                                        <td>{item.process_date}</td>
+                                        <td>{item.response}</td>
                                         <td>{item.status}</td>
                                       </tr>
                                     ))
