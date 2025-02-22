@@ -215,10 +215,11 @@ router.get("/getSambalHistory/:userId", getSambalHistory);
 
 router.post(
   "/panDocument",
+  authenticateToken,
   upload.fields([{ name: "podfile", maxCount: 1 }]),
   PanDocumentUpload
 );
-router.get("/getPanDocument/:userId", getPanDocument);
+router.get("/getPanDocument/:userId", authenticateToken, getPanDocument);
 router.post(
   "/add-money-wallet",
   upload.fields([{ name: "Receiept_Attechment", maxCount: 1 }]),
@@ -226,11 +227,11 @@ router.post(
 );
 router.get("/getWalletOffline/:userId", getWalletOffline);
 router.get("/getAddMoneyToWalletOnline/:userId", getAddMoneyToWalletOnline);
-router.get("/getPackageData/:packageId", getPackageData);
+router.get("/getPackageData/:packageId", authenticateToken, getPackageData);
 router.get("/getDthConnectionPlan", getDthConnectionPlan);
 router.get("/getWalletSummary/:userId", getWalletSummary);
-router.post("/buyCoupon", buyCoupon);
-router.get("/getCoupon/:userId", getCoupon);
+router.post("/buyCoupon", authenticateToken, buyCoupon);
+router.get("/getCoupon/:userId", authenticateToken, getCoupon);
 router.put(
   "/update_bankidForm",
   upload.fields([

@@ -39,7 +39,6 @@ const UTICouponHistory = () => {
     try {
       const { data } = await axios.get(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getCoupon/${currentUser?.userId}`,
-
         {
           headers: {
             "Content-Type": "application/json",
@@ -74,8 +73,8 @@ const UTICouponHistory = () => {
 
   const filteredItems = users.filter((row) => {
     const matchesKeyword =
-      (row?.order_id &&
-        row.order_id.toLowerCase().includes(keyword.trim().toLowerCase()));
+      row?.order_id &&
+      row.order_id.toLowerCase().includes(keyword.trim().toLowerCase());
 
     // const matchesType = !formStatus || formStatus === "---Select Form Status---" || row.status === formStatus;
     // return matchesKeyword && matchesType ;
@@ -225,7 +224,11 @@ const UTICouponHistory = () => {
                                     {showApiData && showApiData.length > 0 ? (
                                       showApiData?.map((item, index) => (
                                         <tr key={index}>
-                                          <th scope="row">{index + 1}</th>
+                                          <th scope="row">
+                                            {currentPage * complaintsPerPage +
+                                              index +
+                                              1}
+                                          </th>
                                           <td>{item.created_at}</td>
                                           <td>{item.order_id}</td>
                                           <td>{item.coupon_Quantity}</td>

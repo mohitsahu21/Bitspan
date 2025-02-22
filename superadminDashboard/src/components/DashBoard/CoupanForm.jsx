@@ -16,10 +16,10 @@ const CoupanForm = () => {
     coupon_Price: "",
     total_Amount: "",
     coupon_Type: "",
-    pan_id : "",
+    pan_id: "",
     userId: currentUser.userId,
   });
-
+  console.log(formData);
   console.log(prices[0]?.UTI_PAN_Coupon_Price);
 
   const [loading, setLoading] = useState(false);
@@ -31,7 +31,13 @@ const CoupanForm = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         // console.log(response.data.data);
         if (Array.isArray(response.data.data)) {
@@ -82,8 +88,13 @@ const CoupanForm = () => {
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/buyCoupon`,
-        formData
-        // { headers: { Authorization: `Bearer ${token}` } }
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.status === "Success") {
@@ -97,7 +108,7 @@ const CoupanForm = () => {
           coupon_Price: prices[0]?.UTI_PAN_Coupon_Price,
           total_Amount: "",
           coupon_Type: "",
-          pan_id : "",
+          pan_id: "",
           userId: currentUser.userId,
         });
       } else {
@@ -141,10 +152,23 @@ const CoupanForm = () => {
   };
 
   const verifyPin = async () => {
+    if (!token) {
+      alert("Token Missing");
+      return false; // Stop execution if token is missing
+    }
+
     try {
+      const pinString = Array.isArray(pin) ? pin.join("") : ""; // Ensure pin is an array
+
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: pin.join("") }
+        { user_id: currentUser?.userId || "", pin: pinString },
+        {
+          headers: {
+            "Content-Type": "application/json", // Corrected Content-Type
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {
@@ -155,10 +179,39 @@ const CoupanForm = () => {
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
-      alert("Error verifying PIN");
+      alert(error.response?.data?.message || "Error verifying PIN");
       return false;
     }
   };
+
+  // const verifyPin = async () => {
+  //   if (!token) {
+  //     alert("Token Missing");
+  //   }
+  //   try {
+  //     const response = await axios.post(
+  //       `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+  //       { user_id: currentUser.userId || "", pin: pin.join("") },
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+
+  //     if (response.data.success) {
+  //       return true;
+  //     } else {
+  //       alert(response.data.message);
+  //       return false;
+  //     }
+  //   } catch (error) {
+  //     console.error("Error verifying PIN:", error);
+  //     alert("Error verifying PIN");
+  //     return false;
+  //   }
+  // };
 
   const handleModalSubmit = async (e) => {
     setIsVerifying(true); // Start loading
@@ -259,7 +312,6 @@ const CoupanForm = () => {
                       </div>
                     </div>
                     <div className="row mb-3">
-                     
                       <div className="col-md-6">
                         <label className="form-label">User ID</label>
                         <input

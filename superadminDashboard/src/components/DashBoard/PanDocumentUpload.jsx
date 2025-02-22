@@ -33,27 +33,32 @@ const PanDocumentUpload = () => {
   const handleFileChange = (e) => {
     const { name, files } = e.target;
     console.log(`File input changed - Name: ${name}, Files:`, files);
-    const allowedTypes = ["image/jpeg", "image/jpg", "image/png" , "application/pdf"];
+    const allowedTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "application/pdf",
+    ];
     const maxSize = 5 * 1024 * 1024; // 5MB in bytes
 
-     if (!allowedTypes.includes(files[0].type)) {
-                Swal.fire({
-                  icon: "error",
-                  title: "Invalid File Type",
-                  text: `Invalid file: ${files[0].name}. Only JPEG, JPG, PNG , PDF are allowed.`,
-                });
-                e.target.value = "";
-                return;
-              }
-                 if (files[0].size > maxSize) {
-                      Swal.fire({
-                        icon: "error",
-                        title: "File Too Large",
-                        text: `File ${files[0].name} exceeds the 5MB limit.`,
-                      });
-                      e.target.value = "";
-                      return;
-                    }
+    if (!allowedTypes.includes(files[0].type)) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid File Type",
+        text: `Invalid file: ${files[0].name}. Only JPEG, JPG, PNG , PDF are allowed.`,
+      });
+      e.target.value = "";
+      return;
+    }
+    if (files[0].size > maxSize) {
+      Swal.fire({
+        icon: "error",
+        title: "File Too Large",
+        text: `File ${files[0].name} exceeds the 5MB limit.`,
+      });
+      e.target.value = "";
+      return;
+    }
     setFile(e.target.files[0]);
   };
 
@@ -75,6 +80,7 @@ const PanDocumentUpload = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );

@@ -75,7 +75,7 @@
 // import NSDLPANCorrectionComponent from "../components/DashBoard/NSDLPANCorrectionComponent";
 // import { useSelector } from "react-redux";
 
-import React, {  useState, useEffect,Suspense, lazy } from "react";
+import React, { useState, useEffect, Suspense, lazy } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from "react-bootstrap";
@@ -96,13 +96,27 @@ const MultiStepForm = lazy(() =>
   import("../components/PanCardForm/MultiStepForm")
 );
 const Profile = lazy(() => import("../pages/Profile"));
-const DTHConnectionHistroy = lazy(() => import("../components/DashBoard/DTHConnectionHistroy"));
-const NSDLPanComponent = lazy(() => import("../components/DashBoard/NSDLPanComponent"));
-const NSDLPANCorrectionComponent = lazy(() => import("../components/DashBoard/NSDLPANCorrectionComponent"));
-const NSDLIncompletePanCompoent = lazy(() => import("../components/DashBoard/NSDLIncompletePanCompoent"));
-const NSDLPanStatusComponent = lazy(() => import("../components/DashBoard/NSDLPanStatusComponent"));
-const UTIPanLoginComponent = lazy(() => import("../components/DashBoard/UTIPanLoginComponent"));
-const UTIRetailerIdActivateComponent = lazy(() => import("../components/DashBoard/UTIRetailerIdActivateComponent"));
+const DTHConnectionHistroy = lazy(() =>
+  import("../components/DashBoard/DTHConnectionHistroy")
+);
+const NSDLPanComponent = lazy(() =>
+  import("../components/DashBoard/NSDLPanComponent")
+);
+const NSDLPANCorrectionComponent = lazy(() =>
+  import("../components/DashBoard/NSDLPANCorrectionComponent")
+);
+const NSDLIncompletePanCompoent = lazy(() =>
+  import("../components/DashBoard/NSDLIncompletePanCompoent")
+);
+const NSDLPanStatusComponent = lazy(() =>
+  import("../components/DashBoard/NSDLPanStatusComponent")
+);
+const UTIPanLoginComponent = lazy(() =>
+  import("../components/DashBoard/UTIPanLoginComponent")
+);
+const UTIRetailerIdActivateComponent = lazy(() =>
+  import("../components/DashBoard/UTIRetailerIdActivateComponent")
+);
 const MobileRecharge = lazy(() =>
   import("../components/DashBoard/MobileRecharge")
 );
@@ -283,13 +297,13 @@ const RetailerRoutes = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState("");
   const dispatch = useDispatch();
-  const [user, setUser] = useState("")
+  const [user, setUser] = useState("");
   // const userStatus = currentUser?.Status;
 
   // Logging the current user and token for debugging
   console.log("Current User:", currentUser);
   console.log("Token:", token);
-console.log(status)
+  console.log(status);
   // UseEffect hook to call the API once when the component mounts
   useEffect(() => {
     if (currentUser?.userId && token) {
@@ -315,7 +329,7 @@ console.log(status)
       console.log("User Details:", response.data?.data);
       const userStatus = response.data?.data?.Status; // API response se status fetch kar rahe hain
       const PaymentStatus = response.data?.data?.payment_status;
-      setUser(response.data?.data)
+      setUser(response.data?.data);
       if (userStatus == "Deactive") {
         Swal.fire({
           icon: "error",
@@ -324,19 +338,16 @@ console.log(status)
         });
         dispatch(clearUser());
         navigate("/");
-      }
-      else if (PaymentStatus == "Pending") {
+      } else if (PaymentStatus == "Pending") {
         Swal.fire({
           icon: "error",
           title: "User Payment is Pending",
           text: "Please Make Payment First Or Contact Admin if Payment Done",
         });
         // dispatch(clearUser());
-        
-        navigate("/payment");
 
-      }
-      else if(userStatus == "Pending"){
+        navigate("/payment");
+      } else if (userStatus == "Pending") {
         Swal.fire({
           icon: "error",
           title: "User KYC is Pending",
@@ -345,7 +356,7 @@ console.log(status)
         // dispatch(clearUser());
         navigate("/update-profile");
       }
-    
+
       setStatus(userStatus); // Status ko state mein set karenge
     } catch (error) {
       console.error("Error fetching user details:", error);
@@ -396,7 +407,7 @@ console.log(status)
         >
           <Routes>
             <Route path="/" element={<LoginBitspan />} />
-            <Route path="/payment" element={<Payment user={user}/>} />
+            <Route path="/payment" element={<Payment user={user} />} />
             <Route path="/update-profile" element={<Profile />} />
             <Route
               path="/dashboard"
@@ -546,7 +557,7 @@ console.log(status)
                 userStatus === "Pending" || userStatus === "Deactive" ? (
                   <Navigate to="/update-profile" />
                 ) : (
-                  <NSDLPanComponent/>
+                  <NSDLPanComponent />
                 )
               }
             />
@@ -1043,9 +1054,9 @@ console.log(status)
                   <Certificate
                     user="RETAILER"
                     name={currentUser?.username}
-                address={`${currentUser?.City}, ${currentUser?.State}, ${currentUser?.PinCode}`}
-                date="02-Jul-2024"
-                id={currentUser?.userId}
+                    address={`${currentUser?.City}, ${currentUser?.State}, ${currentUser?.PinCode}`}
+                    date="02-Jul-2024"
+                    id={currentUser?.userId}
                   />
                 )
               }
