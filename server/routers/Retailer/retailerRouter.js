@@ -79,6 +79,7 @@ const upload = multer({ storage });
 
 router.post(
   "/applyOfflineForm",
+  authenticateToken,
   upload.fields([
     { name: "attached_form", maxCount: 1 },
     { name: "attached_photo", maxCount: 1 },
@@ -89,6 +90,7 @@ router.post(
 );
 router.post(
   "/bankidForm",
+  authenticateToken,
   upload.fields([
     { name: "attached_photo", maxCount: 1 },
     { name: "attached_kyc", maxCount: 10 },
@@ -99,13 +101,25 @@ router.post(
   bankidForm
 );
 
-router.get("/getApplyOfflineFormByid/:id", getApplyOfflineFormByid);
-router.get("/getApplyOfflineForm", getApplyOfflineForm);
-router.put("/updateApplyOfflineForm/:id", updateApplyOfflineForm);
-router.post("/offline-recharge", offlineRecharge);
-router.get("/getRechargeData", getRechargeData);
-router.get("/getApiRechargeData/:userId", getApiRechargeData);
-router.post("/offline-dth-connection", offlineDthConnection);
+router.get(
+  "/getApplyOfflineFormByid/:id",
+  authenticateToken,
+  getApplyOfflineFormByid
+);
+router.get("/getApplyOfflineForm", authenticateToken, getApplyOfflineForm);
+router.put(
+  "/updateApplyOfflineForm/:id",
+  authenticateToken,
+  updateApplyOfflineForm
+);
+router.post("/offline-recharge", authenticateToken, offlineRecharge);
+router.get("/getRechargeData", authenticateToken, getRechargeData);
+router.get(
+  "/getApiRechargeData/:userId",
+  authenticateToken,
+  getApiRechargeData
+);
+router.post("/offline-dth-connection", authenticateToken, offlineDthConnection);
 
 const panDataStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -119,6 +133,7 @@ const panDataStorage = multer.diskStorage({
 const panDataUpload = multer({ storage: panDataStorage });
 router.post(
   "/pan-4.0-form",
+  authenticateToken,
   upload.fields([
     { name: "documentUpload", maxCount: 10 },
     { name: "attachment_form", maxCount: 10 },
@@ -128,9 +143,17 @@ router.post(
   panFromData
 );
 
-router.get("/nsdl-trans-new-requst", nsdlTransactionNewRequest);
-router.get("/nsdl-trans-correction", nsdlTransactionCorrection);
-router.get("/pan-4.0/:user_id", panFourZeroGetAPI);
+router.get(
+  "/nsdl-trans-new-requst",
+  authenticateToken,
+  nsdlTransactionNewRequest
+);
+router.get(
+  "/nsdl-trans-correction",
+  authenticateToken,
+  nsdlTransactionCorrection
+);
+router.get("/pan-4.0/:user_id", authenticateToken, panFourZeroGetAPI);
 
 const complainDataStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -143,6 +166,7 @@ const complainDataStorage = multer.diskStorage({
 const complainDataUpload = multer({ storage: complainDataStorage });
 router.post(
   "/complain-query",
+  authenticateToken,
   complainDataUpload.fields([{ name: "complainFile", maxCount: 1 }]),
   complainInsertApi
 );
@@ -162,6 +186,7 @@ const profileDataUpload = multer({ storage: profileDataStorage });
 
 router.put(
   "/user-profile/:UserId",
+  authenticateToken,
   upload.fields([
     { name: "aadharFront", maxCount: 1 },
     { name: "aadharBack", maxCount: 1 },
@@ -172,6 +197,7 @@ router.put(
 
 router.post(
   "/kyc-profile",
+  authenticateToken,
   profileDataUpload.fields([
     { name: "aadharFront", maxCount: 1 },
     { name: "aadharBack", maxCount: 1 },
@@ -182,36 +208,60 @@ router.post(
 
 router.post(
   "/e-district-Form",
+  authenticateToken,
   upload.array("documentUpload", 10),
   eDistrictFormData
 );
 router.put(
   "/UpdateeDistrictFormData",
+  authenticateToken,
   upload.array("documentUpload", 10),
   UpdateeDistrictFormData
 );
 
-router.get("/getSelectedServices/:user_id", getSelectedServices);
-router.get("/getAllBranchId/:id", getAllBranchId);
-router.get("/getEdistrictData/:user_id", getEdistrictData);
-router.get("/getAllRechargeApi", getAllRechargeApi);
-router.get("/getAllDTHeApi", getAllDTHeApi);
-router.get("/getApiPostRechargeData/:userId", getApiPostRechargeData);
-router.get("/getApiDTHRechargeData/:userId", getApiDTHRechargeData);
+router.get(
+  "/getSelectedServices/:user_id",
+  authenticateToken,
+  getSelectedServices
+);
+router.get("/getAllBranchId/:id", authenticateToken, getAllBranchId);
+router.get("/getEdistrictData/:user_id", authenticateToken, getEdistrictData);
+router.get("/getAllRechargeApi", authenticateToken, getAllRechargeApi);
+router.get("/getAllDTHeApi", authenticateToken, getAllDTHeApi);
+router.get(
+  "/getApiPostRechargeData/:userId",
+  authenticateToken,
+  getApiPostRechargeData
+);
+router.get(
+  "/getApiDTHRechargeData/:userId",
+  authenticateToken,
+  getApiDTHRechargeData
+);
 router.get(
   "/getApiEletricityRechargeData/:userId",
+  authenticateToken,
   getApiEletricityRechargeData
 );
 router.get(
   "/getApiBroadbrandRechargeData/:userId",
+  authenticateToken,
   getApiBroadbrandRechargeData
 );
-router.post("/addSambalForm", addSambalForm);
-router.put("/EditSambalForm", EditSambalForm);
-router.post("/verify-Edistrict", addVerifyDistrictForm);
-router.put("/UpdateVerifyDistrictForm", UpdateVerifyDistrictForm);
-router.get("/getVerifyEdistrict/:userId", getVerifyEdistrict);
-router.get("/getSambalHistory/:userId", getSambalHistory);
+router.post("/addSambalForm", authenticateToken, addSambalForm);
+router.put("/EditSambalForm", authenticateToken, EditSambalForm);
+router.post("/verify-Edistrict", authenticateToken, addVerifyDistrictForm);
+router.put(
+  "/UpdateVerifyDistrictForm",
+  authenticateToken,
+  UpdateVerifyDistrictForm
+);
+router.get(
+  "/getVerifyEdistrict/:userId",
+  authenticateToken,
+  getVerifyEdistrict
+);
+router.get("/getSambalHistory/:userId", authenticateToken, getSambalHistory);
 
 router.post(
   "/panDocument",
@@ -222,18 +272,24 @@ router.post(
 router.get("/getPanDocument/:userId", authenticateToken, getPanDocument);
 router.post(
   "/add-money-wallet",
+  authenticateToken,
   upload.fields([{ name: "Receiept_Attechment", maxCount: 1 }]),
   walletOffline
 );
-router.get("/getWalletOffline/:userId", getWalletOffline);
-router.get("/getAddMoneyToWalletOnline/:userId", getAddMoneyToWalletOnline);
+router.get("/getWalletOffline/:userId", authenticateToken, getWalletOffline);
+router.get(
+  "/getAddMoneyToWalletOnline/:userId",
+  authenticateToken,
+  getAddMoneyToWalletOnline
+);
 router.get("/getPackageData/:packageId", authenticateToken, getPackageData);
-router.get("/getDthConnectionPlan", getDthConnectionPlan);
+router.get("/getDthConnectionPlan", authenticateToken, getDthConnectionPlan);
 router.get("/getWalletSummary/:userId", getWalletSummary);
 router.post("/buyCoupon", authenticateToken, buyCoupon);
 router.get("/getCoupon/:userId", authenticateToken, getCoupon);
 router.put(
   "/update_bankidForm",
+  authenticateToken,
   upload.fields([
     { name: "attached_photo", maxCount: 1 },
     { name: "attached_kyc", maxCount: 10 },
@@ -246,6 +302,7 @@ router.put(
 
 router.put(
   "/update_applyOfflineForm",
+  authenticateToken,
   upload.fields([
     { name: "attached_form", maxCount: 1 },
     { name: "attached_photo", maxCount: 1 },
@@ -257,6 +314,7 @@ router.put(
 
 router.put(
   "/UpdatePanFromData",
+  authenticateToken,
   upload.fields([
     { name: "documentUpload", maxCount: 10 },
     { name: "attachment_form", maxCount: 10 },
@@ -265,37 +323,53 @@ router.put(
   ]),
   UpdatePanFromData
 );
-router.get("/getDTHConnectionData/:userId", getDTHConnectionData);
-router.get("/getOfflineRecharge/:userId/:rechargeType", getOfflineRecharge);
-router.get("/getOfflineDTHConnection/:userId", getOfflineDTHConnection);
-router.get("/getAllServicesList", getAllServicesList);
-router.get("/getAllMonthCommission/:userId", getAllMonthCommission);
-router.get("/getTodaysCommission/:userId", getTodaysCommission);
+router.get(
+  "/getDTHConnectionData/:userId",
+  authenticateToken,
+  getDTHConnectionData
+);
+router.get(
+  "/getOfflineRecharge/:userId/:rechargeType",
+  authenticateToken,
+  getOfflineRecharge
+);
+router.get(
+  "/getOfflineDTHConnection/:userId",
+  authenticateToken,
+  getOfflineDTHConnection
+);
+router.get("/getAllServicesList", authenticateToken, getAllServicesList);
+router.get(
+  "/getAllMonthCommission/:userId",
+  authenticateToken,
+  getAllMonthCommission
+);
+router.get(
+  "/getTodaysCommission/:userId",
+  authenticateToken,
+  getTodaysCommission
+);
 router.get(
   "/getUserNotification/:userId",
-
+  authenticateToken,
   getUserNotification
 );
 router.get(
   "/getAllMonthRecharge/:userId",
-
+  authenticateToken,
   getAllMonthRecharge
 );
 router.get(
   "/getAllMonthRechargeOffline/:userId",
-
+  authenticateToken,
   getAllMonthRechargeOffline
 );
 
 router.get(
   "/getTodaysRechargeOffline/:userId",
-
+  authenticateToken,
   getTodaysRechargeOffline
 );
-router.get(
-  "/getTodaysRecharge/:userId",
-
-  getTodaysRecharge
-);
+router.get("/getTodaysRecharge/:userId", authenticateToken, getTodaysRecharge);
 
 module.exports = router;

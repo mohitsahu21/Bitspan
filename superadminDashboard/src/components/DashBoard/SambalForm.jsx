@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const SambalForm = () => {
   const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const [prices, setPrices] = useState([]);
   const [isVerifying, setIsVerifying] = useState(false);
@@ -32,7 +32,7 @@ const SambalForm = () => {
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
   const pinRefs = useRef([]);
-   const [services,setServices] = useState([]);
+  const [services, setServices] = useState([]);
 
   const fetchServices = async () => {
     // setLoading(true);
@@ -45,7 +45,6 @@ const SambalForm = () => {
             Authorization: `Bearer ${token}`,
           },
         }
-
       );
       setServices(data.data);
       // setLoading(false);
@@ -54,9 +53,9 @@ const SambalForm = () => {
       if (error?.response?.status == 401) {
         // alert("Your token is expired please login again")
         Swal.fire({
-                  icon: "error",
-                  title: "Your token is expired please login again",
-                });
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
         dispatch(clearUser());
         navigate("/");
       }
@@ -68,7 +67,13 @@ const SambalForm = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         // console.log(response.data.data);
         if (Array.isArray(response.data.data)) {
@@ -84,23 +89,22 @@ const SambalForm = () => {
     fetchServices();
   }, []);
 
-   useEffect(()=>{
-          if(services){
-           
-            const purchaseBankIdService = services.find(
-              (item) => item.service_name === "Sambal Form"
-            );
-          
-            if (purchaseBankIdService?.status === "Deactive") {
-              Swal.fire({
-                title: "This service is currently Not Available",
-                text: "Please try after some time",
-                icon: "error",
-              });
-              navigate("/dashboard");
-            }
-          }
-      },[services])
+  useEffect(() => {
+    if (services) {
+      const purchaseBankIdService = services.find(
+        (item) => item.service_name === "Sambal Form"
+      );
+
+      if (purchaseBankIdService?.status === "Deactive") {
+        Swal.fire({
+          title: "This service is currently Not Available",
+          text: "Please try after some time",
+          icon: "error",
+        });
+        navigate("/dashboard");
+      }
+    }
+  }, [services]);
 
   useEffect(() => {
     if (prices.length > 0) {
@@ -113,20 +117,20 @@ const SambalForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if(name === "samagraId" || name === "familyId" || name === "mobileNumber"){
-      
+    if (
+      name === "samagraId" ||
+      name === "familyId" ||
+      name === "mobileNumber"
+    ) {
       if (/^\d*$/.test(value)) {
         setFormData((prevData) => ({
           ...prevData,
           [name]: value,
         }));
       }
-    }
-    else{
+    } else {
       setFormData({ ...formData, [name]: value });
     }
-    
-
   };
 
   const handleSubmit = async (e) => {
@@ -137,38 +141,42 @@ const SambalForm = () => {
       const response = await axios.post(
         // `http://localhost:7777/api/auth/retailer/addSambalForm`,
         `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/addSambalForm`,
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-       if(response.data.status == "Success"){
-              Swal.fire({
-                title: "Form Submitted Successfully",
-                text: response?.data?.message,
-                icon: "success",
-              });
-              setFormData({
-                samagraId: "",
-                familyId: "",
-                applicantType: "",
-                education: "",
-                occupation: "",
-                smsNotification: "",
-                incomeTaxPayer: "",
-                landOwnership: "",
-                govtService: "",
-                mobileNumber: "",
-                amount: prices[0]?.Sambal_Price,
-                userId: currentUser?.userId,
-              });
-     
-    }
-     else{
-            Swal.fire({
-              title: "Error",
-              text: response?.data?.message || "Something went wrong!",
-              icon: "error",
-            });
-          }}
-           catch (error) {
+      if (response.data.status == "Success") {
+        Swal.fire({
+          title: "Form Submitted Successfully",
+          text: response?.data?.message,
+          icon: "success",
+        });
+        setFormData({
+          samagraId: "",
+          familyId: "",
+          applicantType: "",
+          education: "",
+          occupation: "",
+          smsNotification: "",
+          incomeTaxPayer: "",
+          landOwnership: "",
+          govtService: "",
+          mobileNumber: "",
+          amount: prices[0]?.Sambal_Price,
+          userId: currentUser?.userId,
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: response?.data?.message || "Something went wrong!",
+          icon: "error",
+        });
+      }
+    } catch (error) {
       console.log(error);
       Swal.fire({
         title: "Error",
@@ -180,8 +188,6 @@ const SambalForm = () => {
       setPin(["", "", "", ""]);
       pinRefs.current[0]?.focus();
     }
-
-  
   };
 
   const handlePinChange = (index, value) => {
@@ -210,27 +216,36 @@ const SambalForm = () => {
       const response = await axios.post(
         // `http://localhost:7777/api/auth/log-reg/verify-pin`,
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: pin.join("") }
+        { user_id: currentUser.userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {
         return true;
       } else {
         Swal.fire({
-                         title: "Error verifying PIN",
-                         text: response?.data?.message || "Something went wrong! Please Try again",
-                         icon: "error",
-                       });
-               return false;
+          title: "Error verifying PIN",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
+          icon: "error",
+        });
+        return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
-            Swal.fire({
-                          title: "Error verifying PIN",
-                          text: error?.response?.data?.message || "Something went wrong! Please Try again",
-                          icon: "error",
-                        });
-            return false;
+      Swal.fire({
+        title: "Error verifying PIN",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
+        icon: "error",
+      });
+      return false;
     }
   };
 

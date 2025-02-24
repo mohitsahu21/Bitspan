@@ -30,7 +30,13 @@ const VerifyDistrictHistory = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getVerifyEdistrict/${userID}`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getVerifyEdistrict/${userID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = response.data.data;
       console.log(data);

@@ -8,32 +8,32 @@ import nsdlpan from "../../assets/images/nsdl-vector.png";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { Modal, Button, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import {  fetchWalletBalance } from "../../redux/user/userSlice";
+import { fetchWalletBalance } from "../../redux/user/userSlice";
 import { FaMobileButton } from "react-icons/fa6";
-
 
 const NsdlNewPanCardEasySmart = () => {
   const dispatch = useDispatch();
-   const navigate = useNavigate();
-    const { currentUser, token } = useSelector((state) => state.user);
-     const { walletBalance } = useSelector((state) => state.user);
-     const [prices, setPrices] = useState([]);
-     const [isVerifying, setIsVerifying] = useState(false);
-   const [loading, setLoading] = useState(false);
-   const [showPinModal, setShowPinModal] = useState(false);
-       const [pin, setPin] = useState(["", "", "", ""]);
-       const pinRefs = useRef([]);
-     console.log(prices);
+  const navigate = useNavigate();
+  const { currentUser, token } = useSelector((state) => state.user);
+  const { walletBalance } = useSelector((state) => state.user);
+  const [prices, setPrices] = useState([]);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showPinModal, setShowPinModal] = useState(false);
+  const [pin, setPin] = useState(["", "", "", ""]);
+  const pinRefs = useRef([]);
+  console.log(prices);
   const [formData, setFormData] = useState({
     app_mode: "",
-    redirect_url : "https://bitspan.vimubds5.a2hosted.com/easySmartNsdlPANCallback",
+    redirect_url:
+      "https://bitspan.vimubds5.a2hosted.com/easySmartNsdlPANCallback",
     selectType: "",
     first_name: "",
-    middle_name : "",
-    last_name : "",
+    middle_name: "",
+    last_name: "",
     dob: "",
     gender: "",
     mobile_no: "",
@@ -47,7 +47,13 @@ const NsdlNewPanCardEasySmart = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         // console.log(response.data.data);
         if (Array.isArray(response.data.data)) {
@@ -60,7 +66,6 @@ const NsdlNewPanCardEasySmart = () => {
       }
     };
     fetchPackage();
-   
   }, []);
 
   // const handleChange = (e) => {
@@ -73,16 +78,14 @@ const NsdlNewPanCardEasySmart = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if(name === "mobile_no"){
-      
+    if (name === "mobile_no") {
       if (/^\d*$/.test(value)) {
         setFormData((prevData) => ({
           ...prevData,
           [name]: value,
         }));
       }
-    }
-    else{
+    } else {
       setFormData({
         ...formData,
         [name]: value,
@@ -90,13 +93,15 @@ const NsdlNewPanCardEasySmart = () => {
     }
   };
 
-
-   useEffect(()=>{
-       setFormData({
-        ...formData,
-        walletDeductAmt : formData.phyPanIsReq == "Yes" ? prices[0]?.P_PAN_Card_Price : prices[0]?.E_PAN_Card_Price
-       })
-    },[formData.phyPanIsReq])
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      walletDeductAmt:
+        formData.phyPanIsReq == "Yes"
+          ? prices[0]?.P_PAN_Card_Price
+          : prices[0]?.E_PAN_Card_Price,
+    });
+  }, [formData.phyPanIsReq]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -109,27 +114,28 @@ const NsdlNewPanCardEasySmart = () => {
       );
       // setFormData(apiResponse.data);
       console.log(apiResponse.data);
-      if (apiResponse.data.nsdlData.status
-        == "Success") {
-       // Navigate to the success page and pass the response data
-      navigate('/nsdl-new-pan-card-redirect', { state: { enc_data: apiResponse.data.nsdlData.enc_data } });
-      dispatch(fetchWalletBalance(currentUser.userId))
-     
-      // const encData = apiResponse.data.nsdlData.enc_data;
-  // Open a new tab using an anchor tag and the route
-  // window.open(`/nsdl-new-pan-card-redirect?enc_data=${encData}`, '_blank');
-        
+      if (apiResponse.data.nsdlData.status == "Success") {
+        // Navigate to the success page and pass the response data
+        navigate("/nsdl-new-pan-card-redirect", {
+          state: { enc_data: apiResponse.data.nsdlData.enc_data },
+        });
+        dispatch(fetchWalletBalance(currentUser.userId));
 
+        // const encData = apiResponse.data.nsdlData.enc_data;
+        // Open a new tab using an anchor tag and the route
+        // window.open(`/nsdl-new-pan-card-redirect?enc_data=${encData}`, '_blank');
       } else if (apiResponse.data.nsdlData.status == "Failed") {
         // Swal.fire({
         //   icon: "error",
         //   title: "An error occurred during the process. Please try again.",
         // });
         Swal.fire({
-                          icon: "error",
-                          title: "Oops",
-                          text: apiResponse?.data?.nsdlData?.message || "Something went wrong! Please Try again",
-                        });
+          icon: "error",
+          title: "Oops",
+          text:
+            apiResponse?.data?.nsdlData?.message ||
+            "Something went wrong! Please Try again",
+        });
         setLoading(false);
       }
     } catch (error) {
@@ -168,26 +174,35 @@ const NsdlNewPanCardEasySmart = () => {
       const response = await axios.post(
         // `http://localhost:7777/api/auth/log-reg/verify-pin`,
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: pin.join("") }
+        { user_id: currentUser.userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {
         return true;
       } else {
-         Swal.fire({
-                                 title: "Error verifying PIN",
-                                 text: response?.data?.message || "Something went wrong! Please Try again",
-                                 icon: "error",
-                               });
-                       return false
+        Swal.fire({
+          title: "Error verifying PIN",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
+          icon: "error",
+        });
+        return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
-       Swal.fire({
-                                title: "Error verifying PIN",
-                                text: error?.response?.data?.message || "Something went wrong! Please Try again",
-                                icon: "error",
-                              });
+      Swal.fire({
+        title: "Error verifying PIN",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
+        icon: "error",
+      });
       return false;
     }
   };
@@ -317,7 +332,7 @@ const NsdlNewPanCardEasySmart = () => {
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="input-group">
                               <span class="input-group-text">
-                               <FaUser/>
+                                <FaUser />
                               </span>
                               <div class="form-floating">
                                 <input
@@ -329,8 +344,8 @@ const NsdlNewPanCardEasySmart = () => {
                                   onChange={handleChange}
                                   placeholder="Enter Name"
                                   required
-                                   pattern="[A-Za-z\s]*"
-                    title="Text should contain only letters"
+                                  pattern="[A-Za-z\s]*"
+                                  title="Text should contain only letters"
                                 />
                                 <label for="floatingInputGroup2">
                                   Enter First Name
@@ -341,7 +356,7 @@ const NsdlNewPanCardEasySmart = () => {
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="input-group">
                               <span class="input-group-text">
-                                <FaUser/>
+                                <FaUser />
                               </span>
                               <div class="form-floating">
                                 <input
@@ -352,9 +367,8 @@ const NsdlNewPanCardEasySmart = () => {
                                   value={formData.middle_name}
                                   onChange={handleChange}
                                   placeholder="Enter Middle Name"
-                                   pattern="[A-Za-z\s]*"
-                    title="Text should contain only letters"
-                                  
+                                  pattern="[A-Za-z\s]*"
+                                  title="Text should contain only letters"
                                 />
                                 <label for="floatingInputGroup2">
                                   Enter Middle Name
@@ -365,7 +379,7 @@ const NsdlNewPanCardEasySmart = () => {
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="input-group">
                               <span class="input-group-text">
-                                <FaUser/>
+                                <FaUser />
                               </span>
                               <div class="form-floating">
                                 <input
@@ -377,9 +391,8 @@ const NsdlNewPanCardEasySmart = () => {
                                   onChange={handleChange}
                                   placeholder="Enter Last Name"
                                   required
-                                   pattern="[A-Za-z\s]*"
-                    title="Text should contain only letters"
-                                  
+                                  pattern="[A-Za-z\s]*"
+                                  title="Text should contain only letters"
                                 />
                                 <label for="floatingInputGroup2">
                                   Enter Last Name
@@ -491,7 +504,9 @@ const NsdlNewPanCardEasySmart = () => {
                                 onChange={handleChange}
                                 required
                               >
-                                <option selected value="" disabled>Select</option>
+                                <option selected value="" disabled>
+                                  Select
+                                </option>
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
                               </select>
@@ -512,8 +527,12 @@ const NsdlNewPanCardEasySmart = () => {
 
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div className="text-start mb-3">
-                              <button type="submit" className="p-2 btn btn-primary" disabled={loading}>
-                              {loading ? "Submitting..." : "Submit"}
+                              <button
+                                type="submit"
+                                className="p-2 btn btn-primary"
+                                disabled={loading}
+                              >
+                                {loading ? "Submitting..." : "Submit"}
                               </button>
                             </div>
                           </div>
@@ -528,68 +547,63 @@ const NsdlNewPanCardEasySmart = () => {
           </div>
         </div>
         {/* pin Model start*/}
-                         <Modal
-                                            show={showPinModal}
-                                            onHide={() => setShowPinModal(false)}
-                                            centered
-                                          >
-                                            <Modal.Header closeButton>
-                                              <Modal.Title>Enter 4-Digit PIN</Modal.Title>
-                                            </Modal.Header>
-                                            <Modal.Body>
-                                              <div className="pin-inputs d-flex justify-content-center">
-                                                {pin.map((digit, index) => (
-                                                  <input
-                                                    key={index}
-                                                    ref={(el) => (pinRefs.current[index] = el)}
-                                                    type="text"
-                                                    value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
-                                                    maxLength="1"
-                                                    onChange={(e) =>
-                                                      handlePinChange(index, e.target.value)
-                                                    }
-                                                    onKeyDown={(e) =>
-                                                      e.key === "Backspace" && handleBackspace(index)
-                                                    }
-                                                    className="pin-digit form-control mx-1"
-                                                    style={{
-                                                      width: "50px",
-                                                      textAlign: "center",
-                                                      fontSize: "1.5rem",
-                                                      borderRadius: "8px",
-                                                      border: "1px solid #ced4da",
-                                                      boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
-                                                    }}
-                                                  />
-                                                ))}
-                                              </div>
-                                            </Modal.Body>
-                                            <Modal.Footer>
-                                              <Button
-                                                variant="secondary"
-                                                onClick={() => setShowPinModal(false)}
-                                              >
-                                                Cancel
-                                              </Button>
-                                              <Button
-                                                variant="primary"
-                                                onClick={handleModalSubmit}
-                                                disabled={isVerifying}
-                                              >
-                                                {isVerifying ? "Verifying..." : "Verify PIN"}
-                                                {isVerifying && (
-                                                  <Spinner
-                                                    as="span"
-                                                    animation="border"
-                                                    size="sm"
-                                                    role="status"
-                                                    aria-hidden="true"
-                                                  />
-                                                )}
-                                              </Button>
-                                            </Modal.Footer>
-                                          </Modal>
-                                           {/* pin Model end*/}
+        <Modal
+          show={showPinModal}
+          onHide={() => setShowPinModal(false)}
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="pin-inputs d-flex justify-content-center">
+              {pin.map((digit, index) => (
+                <input
+                  key={index}
+                  ref={(el) => (pinRefs.current[index] = el)}
+                  type="text"
+                  value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
+                  maxLength="1"
+                  onChange={(e) => handlePinChange(index, e.target.value)}
+                  onKeyDown={(e) =>
+                    e.key === "Backspace" && handleBackspace(index)
+                  }
+                  className="pin-digit form-control mx-1"
+                  style={{
+                    width: "50px",
+                    textAlign: "center",
+                    fontSize: "1.5rem",
+                    borderRadius: "8px",
+                    border: "1px solid #ced4da",
+                    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                  }}
+                />
+              ))}
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowPinModal(false)}>
+              Cancel
+            </Button>
+            <Button
+              variant="primary"
+              onClick={handleModalSubmit}
+              disabled={isVerifying}
+            >
+              {isVerifying ? "Verifying..." : "Verify PIN"}
+              {isVerifying && (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              )}
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        {/* pin Model end*/}
       </Wrapper>
     </>
   );

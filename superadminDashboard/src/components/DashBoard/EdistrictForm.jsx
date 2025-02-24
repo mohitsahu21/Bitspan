@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const EdistrictForm = () => {
   const dispatch = useDispatch();
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
@@ -39,8 +39,8 @@ const EdistrictForm = () => {
   const [files, setFiles] = useState([]);
   const [message, setMessage] = useState("");
   const [prices, setPrices] = useState([]);
-  const kycRef = useRef(null)
-   const [services,setServices] = useState([]);
+  const kycRef = useRef(null);
+  const [services, setServices] = useState([]);
 
   const fetchServices = async () => {
     // setLoading(true);
@@ -53,7 +53,6 @@ const EdistrictForm = () => {
             Authorization: `Bearer ${token}`,
           },
         }
-
       );
       setServices(data.data);
       // setLoading(false);
@@ -62,9 +61,9 @@ const EdistrictForm = () => {
       if (error?.response?.status == 401) {
         // alert("Your token is expired please login again")
         Swal.fire({
-                  icon: "error",
-                  title: "Your token is expired please login again",
-                });
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
         dispatch(clearUser());
         navigate("/");
       }
@@ -76,7 +75,13 @@ const EdistrictForm = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         // console.log(response.data.data);
         if (Array.isArray(response.data.data)) {
@@ -92,23 +97,22 @@ const EdistrictForm = () => {
     fetchServices();
   }, []);
 
-   useEffect(()=>{
-            if(services){
-             
-              const purchaseBankIdService = services.find(
-                (item) => item.service_name === "E-District"
-              );
-            
-              if (purchaseBankIdService?.status === "Deactive") {
-                Swal.fire({
-                  title: "This service is currently Not Available",
-                  text: "Please try after some time",
-                  icon: "error",
-                });
-                navigate("/dashboard");
-              }
-            }
-        },[services])
+  useEffect(() => {
+    if (services) {
+      const purchaseBankIdService = services.find(
+        (item) => item.service_name === "E-District"
+      );
+
+      if (purchaseBankIdService?.status === "Deactive") {
+        Swal.fire({
+          title: "This service is currently Not Available",
+          text: "Please try after some time",
+          icon: "error",
+        });
+        navigate("/dashboard");
+      }
+    }
+  }, [services]);
 
   // console.log(prices[0]?.offline_kyc_eDistrict);
 
@@ -121,19 +125,22 @@ const EdistrictForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if(name === "mobile_no" || name === "aadhar_no" || name === "samagar_member_id" || name === "annual_income"){
-      
+    if (
+      name === "mobile_no" ||
+      name === "aadhar_no" ||
+      name === "samagar_member_id" ||
+      name === "annual_income"
+    ) {
       if (/^\d*$/.test(value)) {
         setFormData((prevData) => ({
           ...prevData,
           [name]: value,
         }));
       }
-    }
-    else{
+    } else {
       setFormData((prevFormData) => {
         const newFormData = { ...prevFormData, [name]: value };
-  
+
         if (name === "application_type" || name === "samagar") {
           let priceKey = "";
           if (newFormData.application_type === "income") {
@@ -160,44 +167,46 @@ const EdistrictForm = () => {
             newFormData.amount = "";
           }
         }
-  
+
         return newFormData;
       });
     }
-  
   };
 
   // const handleFileChange = (e) => {
   //   setFiles(e.target.files);
   // };
 
-   const handleFileChange = (e) => {
+  const handleFileChange = (e) => {
     const { name, files } = e.target;
     console.log(`File input changed - Name: ${name}, Files:`, files);
-    const allowedTypes = ["image/jpeg", "image/jpg", "image/png" , "application/pdf"];
+    const allowedTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "application/pdf",
+    ];
     const maxSize = 2 * 1024 * 1024; // 2MB in bytes
-      for (const file of files) {
-                 if (file.size > maxSize) {
-                   Swal.fire({
-                     title: "File Too Large",
-                     text: `The file "${file.name}" exceeds the 2 MB size limit. Please select smaller files.`,
-                     icon: "error",
-                   });
-                   // Clear the file input
-                   e.target.value = null;
-                   return;
-                 }
-                 else if(!allowedTypes.includes(file.type)){
-           Swal.fire({
-                             icon: "error",
-                             title: "Invalid File Type",
-                             text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG , PDF are allowed.`,
-                           });
-                           e.target.value = null;
-                           return;
-                 }
-                
-               }
+    for (const file of files) {
+      if (file.size > maxSize) {
+        Swal.fire({
+          title: "File Too Large",
+          text: `The file "${file.name}" exceeds the 2 MB size limit. Please select smaller files.`,
+          icon: "error",
+        });
+        // Clear the file input
+        e.target.value = null;
+        return;
+      } else if (!allowedTypes.includes(file.type)) {
+        Swal.fire({
+          icon: "error",
+          title: "Invalid File Type",
+          text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG , PDF are allowed.`,
+        });
+        e.target.value = null;
+        return;
+      }
+    }
     setFiles(e.target.files);
   };
 
@@ -218,54 +227,56 @@ const EdistrictForm = () => {
         "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/e-district-Form",
         data,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-      if(response?.data?.status == "Success"){
-      const resData = response?.data?.message;
-      Swal.fire({
-        title: "Form Sumitted Success",
-        text: `${resData}`,
-        icon: "success",
-      });
-      setFormData({
-        application_type: "",
-        samagar: "",
-        gender: "",
-        name: "",
-        father_husband_name: "",
-        dob: "",
-        address: "",
-        mobile_no: "",
-        cast: "",
-        aadhar_no: "",
-        samagar_member_id: "",
-        state: "",
-        annual_income: "",
-        previous_application: "",
-        amount: "",
-        userId: currentUser.userId,
-        status: "Pending",
-      });
-      if(kycRef.current){
-        kycRef.current.value = null
+      if (response?.data?.status == "Success") {
+        const resData = response?.data?.message;
+        Swal.fire({
+          title: "Form Sumitted Success",
+          text: `${resData}`,
+          icon: "success",
+        });
+        setFormData({
+          application_type: "",
+          samagar: "",
+          gender: "",
+          name: "",
+          father_husband_name: "",
+          dob: "",
+          address: "",
+          mobile_no: "",
+          cast: "",
+          aadhar_no: "",
+          samagar_member_id: "",
+          state: "",
+          annual_income: "",
+          previous_application: "",
+          amount: "",
+          userId: currentUser.userId,
+          status: "Pending",
+        });
+        if (kycRef.current) {
+          kycRef.current.value = null;
+        }
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: response?.data?.message || "Something went wrong!",
+          icon: "error",
+        });
       }
-    }
-     else{
-                Swal.fire({
-                  title: "Error",
-                  text: response?.data?.message || "Something went wrong!",
-                  icon: "error",
-                });
-              }
     } catch (error) {
       setMessage("Error submitting form");
       console.error("Error:", error);
-       Swal.fire({
-              title: "Error",
-              text: error?.response?.data?.message || "Something went wrong!",
-              icon: "error",
-            });
+      Swal.fire({
+        title: "Error",
+        text: error?.response?.data?.message || "Something went wrong!",
+        icon: "error",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -297,27 +308,36 @@ const EdistrictForm = () => {
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: pin.join("") }
+        { user_id: currentUser.userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {
         return true;
       } else {
-         Swal.fire({
-                                 title: "Error verifying PIN",
-                                 text: response?.data?.message || "Something went wrong! Please Try again",
-                                 icon: "error",
-                               });
-                       return false;
+        Swal.fire({
+          title: "Error verifying PIN",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
+          icon: "error",
+        });
+        return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
       Swal.fire({
-                               title: "Error verifying PIN",
-                               text: error?.response?.data?.message || "Something went wrong! Please Try again",
-                               icon: "error",
-                             });
-                 return false;
+        title: "Error verifying PIN",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
+        icon: "error",
+      });
+      return false;
     }
   };
 
@@ -351,7 +371,10 @@ const EdistrictForm = () => {
                     <h2 className="text-center m-0 px-5 py-3">E District</h2>
                   </div>
                 </div>
-                <form onSubmit={openPinModal} className="shadow p-3 mb-5 bg-body-tertiary rounded">
+                <form
+                  onSubmit={openPinModal}
+                  className="shadow p-3 mb-5 bg-body-tertiary rounded"
+                >
                   <div className="row mb-3">
                     <div className="col-md-6 mb-3">
                       <label>Select Application</label>
@@ -514,10 +537,12 @@ const EdistrictForm = () => {
                         className="form-control"
                         name="samagar_member_id"
                         maxLength={9}
-                        
                         value={formData.samagar_member_id}
                         onChange={handleChange}
-                        required={formData.samagar == "ekyc" || formData.samagar == "non-ekyc"}
+                        required={
+                          formData.samagar == "ekyc" ||
+                          formData.samagar == "non-ekyc"
+                        }
                         disabled={formData.samagar == "non"}
                       />
                     </div>
@@ -543,7 +568,7 @@ const EdistrictForm = () => {
                         multiple
                         onChange={handleFileChange}
                         required
-                         accept="image/*,application/pdf"
+                        accept="image/*,application/pdf"
                         ref={kycRef}
                       />
                     </div>
@@ -574,7 +599,6 @@ const EdistrictForm = () => {
                         onChange={handleChange}
                         required
                         disabled={formData.application_type === "domicile"}
-                        
                       />
                     </div>
                     <div className="col-md-4 mb-3">

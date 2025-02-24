@@ -9,16 +9,16 @@ import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Modal, Spinner } from "react-bootstrap";
 
-const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
+const PanCardFourEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
   const pinRefs = useRef([]);
-  const documentUploadRef = useRef(null)
-  const attachment_formRef = useRef(null)
-  const attachment_photoRef = useRef(null)
-  const attachment_signatureRef = useRef(null)
+  const documentUploadRef = useRef(null);
+  const attachment_formRef = useRef(null);
+  const attachment_photoRef = useRef(null);
+  const attachment_signatureRef = useRef(null);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [prices, setPrices] = useState({
@@ -26,7 +26,7 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
     physicalPrice: "",
   });
   const [formData, setFormData] = useState({
-    order_id : item.order_id,
+    order_id: item.order_id,
     application_type: item.application_type,
     applicant_type: item.applicant_type,
     select_title: item.select_title,
@@ -38,7 +38,8 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
     pantype: item.pantype,
     office_address: item.office_address,
     aadhar_details: item.aadhar_details,
-    Address_Communication_OfficeResident: item.Address_Communication_OfficeResident,
+    Address_Communication_OfficeResident:
+      item.Address_Communication_OfficeResident,
     alternative_communication_Address: item.alternative_communication_Address,
     mobile_no: item.mobile_no,
     email_id: item.email_id,
@@ -63,71 +64,71 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
     previous_attachment_signature: item.attachment_signature,
   });
 
-  useEffect(()=>{
-    if(item.application_type == "Correction"){
-        let parsedChangeRequest = {};
-        parsedChangeRequest = JSON.parse(item.Change_Request);
-        setFormData(prevState => ({
-            ...prevState,
-            Change_Request: {
-                name: parsedChangeRequest.name ? true : false,
-                father_Name: parsedChangeRequest.father_Name  ? true : false,
-                dob: parsedChangeRequest.dob ? true : false,
-                mother_Name: parsedChangeRequest.mother_Name ? true : false,
-                email: parsedChangeRequest.email ? true : false,
-                mobile: parsedChangeRequest.mobile? true : false,
-                gender: parsedChangeRequest.gender ? true : false,
-                },
-    
-      }))}
-  },[item])
+  useEffect(() => {
+    if (item.application_type == "Correction") {
+      let parsedChangeRequest = {};
+      parsedChangeRequest = JSON.parse(item.Change_Request);
+      setFormData((prevState) => ({
+        ...prevState,
+        Change_Request: {
+          name: parsedChangeRequest.name ? true : false,
+          father_Name: parsedChangeRequest.father_Name ? true : false,
+          dob: parsedChangeRequest.dob ? true : false,
+          mother_Name: parsedChangeRequest.mother_Name ? true : false,
+          email: parsedChangeRequest.email ? true : false,
+          mobile: parsedChangeRequest.mobile ? true : false,
+          gender: parsedChangeRequest.gender ? true : false,
+        },
+      }));
+    }
+  }, [item]);
 
+  //   useEffect(() => {
+  //     const fetchPrices = async () => {
+  //       try {
+  //         const response = await axios.get(
+  //           `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+  //         );
+  //         if (response.data?.data?.length > 0) {
+  //           const packageData = response.data.data[0];
+  //           console.log(packageData);
+  //           console.log(packageData.offline_E_PAN_Card_Price);
+  //           console.log(packageData.offline_P_PAN_Card_Price);
+  //           setPrices({
+  //             electronicPrice: packageData.offline_E_PAN_Card_Price,
+  //             physicalPrice: packageData.offline_P_PAN_Card_Price,
+  //           });
+  //         }
+  //       } catch (error) {
+  //         console.error("Error fetching package data:", error);
+  //       }
+  //     };
 
-  
-
-//   useEffect(() => {
-//     const fetchPrices = async () => {
-//       try {
-//         const response = await axios.get(
-//           `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
-//         );
-//         if (response.data?.data?.length > 0) {
-//           const packageData = response.data.data[0];
-//           console.log(packageData);
-//           console.log(packageData.offline_E_PAN_Card_Price);
-//           console.log(packageData.offline_P_PAN_Card_Price);
-//           setPrices({
-//             electronicPrice: packageData.offline_E_PAN_Card_Price,
-//             physicalPrice: packageData.offline_P_PAN_Card_Price,
-//           });
-//         }
-//       } catch (error) {
-//         console.error("Error fetching package data:", error);
-//       }
-//     };
-
-//     fetchPrices();
-//   }, []);
-
-
+  //     fetchPrices();
+  //   }, []);
 
   const [files, setFiles] = useState({
-    documentUpload:  item.documentUpload || [],
+    documentUpload: item.documentUpload || [],
     attachment_form: item.attachment_form || null,
     attachment_photo: item.attachment_photo || null,
     attachment_signature: item.attachment_signature || null,
   });
 
-    const [preveiewfiles, preveiewSetFiles] = useState({
-      documentUpload: item.documentUpload || [],
-      attachment_form: item.attachment_form || null,
-      attachment_photo: item.attachment_photo || null,
-      attachment_signature: item.attachment_signature || null,
-    });
+  const [preveiewfiles, preveiewSetFiles] = useState({
+    documentUpload: item.documentUpload || [],
+    attachment_form: item.attachment_form || null,
+    attachment_photo: item.attachment_photo || null,
+    attachment_signature: item.attachment_signature || null,
+  });
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
-    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "application/pdf"];
+    const allowedTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "application/pdf",
+    ];
     const maxSize = 5 * 1024 * 1024; // 5MB in bytes
     const maxFiles = 6;
 
@@ -189,24 +190,25 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
         value === "Electronic"
           ? prices.electronicPrice
           : value === "Physical"
-            ? prices.physicalPrice
-            : "";
+          ? prices.physicalPrice
+          : "";
       setFormData((prevData) => ({
         ...prevData,
         [name]: value,
         amount: updatedAmount,
       }));
-    }
-    else if (name === "mobile_no" || name === "pin_code" || name === "aadhar_details") {
-
+    } else if (
+      name === "mobile_no" ||
+      name === "pin_code" ||
+      name === "aadhar_details"
+    ) {
       if (/^\d*$/.test(value)) {
         setFormData((prevData) => ({
           ...prevData,
           [name]: value,
         }));
       }
-    }
-    else {
+    } else {
       setFormData((prevData) => ({
         ...prevData,
         [name]: value,
@@ -225,8 +227,6 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
     }));
   };
 
-
-
   const clearFileInput = () => {
     if (documentUploadRef.current) {
       documentUploadRef.current.value = null;
@@ -240,9 +240,7 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
     if (attachment_signatureRef.current) {
       attachment_signatureRef.current.value = null;
     }
-
-
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -274,16 +272,15 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
       }
     });
 
-    if(documentUploadRef.current.value){
-        if (Array.isArray(files.documentUpload)) {
-            files.documentUpload.forEach((file) => {
-              form.append("documentUpload", file);
-            });
-          }else{
-            form.append("documentUpload", files.documentUpload);
-          }
+    if (documentUploadRef.current.value) {
+      if (Array.isArray(files.documentUpload)) {
+        files.documentUpload.forEach((file) => {
+          form.append("documentUpload", file);
+        });
+      } else {
+        form.append("documentUpload", files.documentUpload);
+      }
     }
-    
 
     // Add single files, check for existence first
     if (attachment_formRef.current.value) {
@@ -307,81 +304,81 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
       console.log(response.data);
       // alert("Form submitted successfully");
       setIsLoading(false);
-       if(response.data.status == "Success"){
-              Swal.fire({
-                title: "Form Submitted Successfully",
-                text: response?.data?.message,
-                icon: "success",
-              });
-      
-      clearFileInput();
-      // Reset form data and file inputs after successful submission
-      setFormData({
-        application_type: "",
-        applicant_type: "",
-        select_title: "",
-        name: "",
-        father_name: "",
-        mother_name: "",
-        dob: "",
-        gender: "",
-        pantype: "",
-        office_address: "",
-        aadhar_details: "",
-        Address_Communication_OfficeResident: "",
-        alternative_communication_Address: "",
-        mobile_no: "",
-        email_id: "",
-        pin_code: "",
-        state: "",
-        Change_Request: {
-          name: false,
-          father_Name: false,
-          dob: false,
-          mother_Name: false,
-          email: false,
-          mobile: false,
-          gender: false,
-        },
-        amount: "",
-        userId: currentUser.userId,
-        status: "Pending",
-      });
-      setShowMarkEditModel(false);
-      setIsRefresh((value) => !value);
-      // setFiles({
-      //   documentUpload: null,
-      //   attachment_form: null,
-      //   attachment_photo: null,
-      //   attachment_signature: null,
-      // });
+      if (response.data.status == "Success") {
+        Swal.fire({
+          title: "Form Submitted Successfully",
+          text: response?.data?.message,
+          icon: "success",
+        });
 
-      // // Reset file input fields manually
-      // document.getElementById("documentUpload").value = "";
-      // document.getElementById("attachment_form").value = "";
-      // document.getElementById("attachment_photo").value = "";
-      // document.getElementById("attachment_signature").value = "";
-    }
-     else{
-            Swal.fire({
-              title: "Error",
-              text: response?.data?.message || "Something went wrong!",
-              icon: "error",
-            });
-          }
+        clearFileInput();
+        // Reset form data and file inputs after successful submission
+        setFormData({
+          application_type: "",
+          applicant_type: "",
+          select_title: "",
+          name: "",
+          father_name: "",
+          mother_name: "",
+          dob: "",
+          gender: "",
+          pantype: "",
+          office_address: "",
+          aadhar_details: "",
+          Address_Communication_OfficeResident: "",
+          alternative_communication_Address: "",
+          mobile_no: "",
+          email_id: "",
+          pin_code: "",
+          state: "",
+          Change_Request: {
+            name: false,
+            father_Name: false,
+            dob: false,
+            mother_Name: false,
+            email: false,
+            mobile: false,
+            gender: false,
+          },
+          amount: "",
+          userId: currentUser.userId,
+          status: "Pending",
+        });
+        setShowMarkEditModel(false);
+        setIsRefresh((value) => !value);
+        // setFiles({
+        //   documentUpload: null,
+        //   attachment_form: null,
+        //   attachment_photo: null,
+        //   attachment_signature: null,
+        // });
+
+        // // Reset file input fields manually
+        // document.getElementById("documentUpload").value = "";
+        // document.getElementById("attachment_form").value = "";
+        // document.getElementById("attachment_photo").value = "";
+        // document.getElementById("attachment_signature").value = "";
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: response?.data?.message || "Something went wrong!",
+          icon: "error",
+        });
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
-       Swal.fire({
-              title: "Error",
-              text: error?.response?.data?.message || "Something went wrong!",
-              icon: "error",
-            });
+      Swal.fire({
+        title: "Error",
+        text: error?.response?.data?.message || "Something went wrong!",
+        icon: "error",
+      });
     } finally {
       setIsLoading(false);
       setPin(["", "", "", ""]);
@@ -416,7 +413,13 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: pin.join("") }
+        { user_id: currentUser.userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {
@@ -424,7 +427,8 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
       } else {
         Swal.fire({
           title: "Error verifying PIN",
-          text: response?.data?.message || "Something went wrong! Please Try again",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
           icon: "error",
         });
         return false;
@@ -433,7 +437,9 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
       console.error("Error verifying PIN:", error);
       Swal.fire({
         title: "Error verifying PIN",
-        text: error?.response?.data?.message || "Something went wrong! Please Try again",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
         icon: "error",
       });
       return false;
@@ -505,9 +511,7 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
                         </select>
                       </div>
                       <div className="col-md-6 mb-3">
-                        <label htmlFor="applicant_type">
-                          Application Type
-                        </label>
+                        <label htmlFor="applicant_type">Application Type</label>
                         <select
                           className="form-control"
                           id="applicant_type"
@@ -521,7 +525,6 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
                           </option>
                           <option value="Minor">Minor</option>
                           <option value="Major">Major</option>
-
                         </select>
                       </div>
                       <div className="col-md-6 mb-3">
@@ -589,7 +592,10 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
                       </div>
                       <div className="col-md-3 mb-3">
                         <label htmlFor="dob">Date of Birth</label>
-                        <input type="date" className="form-control" id="dob"
+                        <input
+                          type="date"
+                          className="form-control"
+                          id="dob"
                           name="dob"
                           onChange={handleChange}
                           required
@@ -629,9 +635,7 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
                         />
                       </div>
                       <div className="col-md-6 mb-3">
-                        <label htmlFor="aadhaarDetails">
-                          Aadhar Number
-                        </label>
+                        <label htmlFor="aadhaarDetails">Aadhar Number</label>
                         <input
                           type="text"
                           className="form-control"
@@ -801,7 +805,9 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
                           required
                           disabled
                         >
-                          <option selected value="">SELECT</option>
+                          <option selected value="">
+                            SELECT
+                          </option>
                           <option value="Electronic">Electronic</option>
                           <option value="Physical">Physical</option>
                         </select>
@@ -820,23 +826,23 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
                           multiple
                           className="form-control"
                           id="documentUpload"
-                         
                           accept=".jpeg, .jpg, .png, .pdf" // Restricts file types
                           ref={documentUploadRef}
                         />
-                         {preveiewfiles.documentUpload.length > 0 && preveiewfiles?.documentUpload
-                                          ?.split(",")
-                                          ?.map((kycurl, kycindx) => (
-                                            <div key={kycindx}>
-                                              <a
-                                                href={kycurl}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                              >
-                                                View Existing File {kycindx + 1}
-                                              </a>
-                                            </div>
-                                          ))}
+                        {preveiewfiles.documentUpload.length > 0 &&
+                          preveiewfiles?.documentUpload
+                            ?.split(",")
+                            ?.map((kycurl, kycindx) => (
+                              <div key={kycindx}>
+                                <a
+                                  href={kycurl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  View Existing File {kycindx + 1}
+                                </a>
+                              </div>
+                            ))}
                       </div>
                     </div>
 
@@ -849,7 +855,6 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
                           onChange={handleFileChange}
                           className="form-control"
                           id="documentUpload"
-                         
                           accept=".jpeg, .jpg, .png, .pdf" // Restricts file types
                           ref={attachment_formRef}
                         />
@@ -862,8 +867,6 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
                             View Existing File
                           </a>
                         )}
-
-                        
                       </div>
                     </div>
 
@@ -876,11 +879,10 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
                           onChange={handleFileChange}
                           className="form-control"
                           id="documentUpload"
-                          
                           accept=".jpeg, .jpg, .png, .pdf" // Restricts file types
                           ref={attachment_photoRef}
                         />
-                           {preveiewfiles.attachment_photo && (
+                        {preveiewfiles.attachment_photo && (
                           <a
                             href={preveiewfiles.attachment_photo}
                             target="_blank"
@@ -903,11 +905,10 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
                           onChange={handleFileChange}
                           className="form-control"
                           id="documentUpload"
-                          
                           accept=".jpeg, .jpg, .png, .pdf" // Restricts file types
                           ref={attachment_signatureRef}
                         />
-                           {preveiewfiles.attachment_signature && (
+                        {preveiewfiles.attachment_signature && (
                           <a
                             href={preveiewfiles.attachment_signature}
                             target="_blank"
@@ -936,10 +937,13 @@ const PanCardFourEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
                           disabled
                         />
                       </div>
-
                     </div>
                     <div className="text-center my-3">
-                      <button type="submit" className="btn btn-primary  mb-4" disabled={isLoading}>
+                      <button
+                        type="submit"
+                        className="btn btn-primary  mb-4"
+                        disabled={isLoading}
+                      >
                         {isLoading ? "Submit..." : "Submit"}
                       </button>
                     </div>

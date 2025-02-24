@@ -10,15 +10,14 @@ import { Modal, Button, Spinner } from "react-bootstrap";
 import { clearUser } from "../../redux/user/userSlice";
 
 const PostPaidRecharge = () => {
-
   const dispatch = useDispatch();
 
   const { currentUser, token } = useSelector((state) => state.user);
   const [activeTab, setActiveTab] = useState("tab1");
   const [getdata, setGetData] = useState([]);
   const [apiData, setApiData] = useState([]);
-   
-  const [services,setServices] = useState([]);
+
+  const [services, setServices] = useState([]);
   const fetchServices = async () => {
     // setLoading(true);
     try {
@@ -30,7 +29,6 @@ const PostPaidRecharge = () => {
             Authorization: `Bearer ${token}`,
           },
         }
-
       );
       setServices(data.data);
       // setLoading(false);
@@ -39,9 +37,9 @@ const PostPaidRecharge = () => {
       if (error?.response?.status == 401) {
         // alert("Your token is expired please login again")
         Swal.fire({
-                  icon: "error",
-                  title: "Your token is expired please login again",
-                });
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
         dispatch(clearUser());
         navigate("/");
       }
@@ -52,33 +50,28 @@ const PostPaidRecharge = () => {
   //   setActiveTab(tab);
   // };
 
-   const handleTabClick = (tab) => {
-      if(tab == "tab2"){
-        if(services){
-                 
-          const purchaseBankIdService = services.find(
-            (item) => item.service_name === "Provider 2 recharge"
-          );
-        
-          if (purchaseBankIdService?.status === "Deactive") {
-            Swal.fire({
-              title: "Provider 2 service is currently Not Available",
-              text: "Please try after some time",
-              icon: "error",
-            });
-            // navigate("/prepaid-recharge");
-          }
-          else{
-            setActiveTab(tab);
-          }
+  const handleTabClick = (tab) => {
+    if (tab == "tab2") {
+      if (services) {
+        const purchaseBankIdService = services.find(
+          (item) => item.service_name === "Provider 2 recharge"
+        );
+
+        if (purchaseBankIdService?.status === "Deactive") {
+          Swal.fire({
+            title: "Provider 2 service is currently Not Available",
+            text: "Please try after some time",
+            icon: "error",
+          });
+          // navigate("/prepaid-recharge");
+        } else {
+          setActiveTab(tab);
         }
       }
-      else{
-        setActiveTab(tab);
-      }
-      
-      
-    };
+    } else {
+      setActiveTab(tab);
+    }
+  };
 
   const [formData, setFormData] = useState({
     operatorName: "",
@@ -119,7 +112,13 @@ const PostPaidRecharge = () => {
       try {
         const response = await axios.get(
           // `http://localhost:7777/api/auth/retailer/getAllRechargeApi`
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllRechargeApi`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllRechargeApi`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         if (response.data.status === "Success") {
           setGetData(response.data.data);
@@ -136,17 +135,15 @@ const PostPaidRecharge = () => {
   console.log(getdata);
 
   const handleChange = (e) => {
-     const { name, value } = e.target;
-    if(name === "number" || name === "amount"){
-      
+    const { name, value } = e.target;
+    if (name === "number" || name === "amount") {
       if (/^\d*$/.test(value)) {
         setFormData((prevData) => ({
           ...prevData,
           [name]: value,
         }));
       }
-    }
-    else{
+    } else {
       setFormData({
         ...formData,
         [name]: value,
@@ -156,16 +153,14 @@ const PostPaidRecharge = () => {
 
   const handleChangeForm = (e) => {
     const { name, value } = e.target;
-    if(name === "mobile_no" || name === "amount"){
-      
+    if (name === "mobile_no" || name === "amount") {
       if (/^\d*$/.test(value)) {
         setOfflineForm((prevData) => ({
           ...prevData,
           [name]: value,
         }));
       }
-    }
-    else{
+    } else {
       setOfflineForm({
         ...offlineForm,
         [name]: value,
@@ -173,24 +168,24 @@ const PostPaidRecharge = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          // `http://localhost:7777/api/auth/retailer/getAllRechargeApi`
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllRechargeApi`
-        );
-        if (response.data.status === "Success") {
-          console.log(response.data.data);
-          setApiData(response.data.data);
-        }
-      } catch (error) {
-        console.log(`Error In API URLs accessing data ${error}`);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         // `http://localhost:7777/api/auth/retailer/getAllRechargeApi`
+  //         `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllRechargeApi`
+  //       );
+  //       if (response.data.status === "Success") {
+  //         console.log(response.data.data);
+  //         setApiData(response.data.data);
+  //       }
+  //     } catch (error) {
+  //       console.log(`Error In API URLs accessing data ${error}`);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   const prepaidRechargeComm = async (
     retailer,
@@ -655,7 +650,6 @@ const PostPaidRecharge = () => {
       try {
         const rechargeResult = await axios.post(api.API_URL, updatedFormData);
         console.log(rechargeResult);
-        
 
         if (
           rechargeResult.data &&
@@ -806,66 +800,68 @@ const PostPaidRecharge = () => {
           }
           // Recharge Commission Credit WL SD D
           break;
-        } else if (rechargeResult.data &&
-          rechargeResult.data.message === "Recharge in process"){
-            success = true;
-            Swal.fire({
-              icon: "info",
-              title: "Recharge in process",
-              text: "Recharge in process please wait it will take Sometime!",
-            });
-            let allProcessesSuccessful = true;
-            result.retailerFormData.Transaction_details = `Commission Credit for Postpaid Recharge Order Id ${rechargeResult.data.orderId}`;
-            
-            if (result) {
-              let whiteLabel_Commission = 0;
-              let super_Distributor_Commission = 0;
-              let distributor_Commission = 0;
-              let retailer_Commission = 0;
-              if (result.retailerFormData && result.retailerFormData.amount) {
-                retailer_Commission = result.retailerFormData.amount;
-              }
-              console.log(userRelation);
-  
-              const commissionFormData = {
-                order_id: result.Order_Id,
-                transaction_id: result.Transaction_Id,
-                amount: updatedFormData.amount,
-                whiteLabel_id: usersId.whiteLabelId ? usersId.whiteLabelId : "NA",
-                super_Distributor_id: usersId.superDistributorId
-                  ? usersId.superDistributorId
-                  : "NA",
-                distributor_id: usersId.distributorId
-                  ? usersId.distributorId
-                  : "NA",
-                retailer_id: currentUser.userId ? currentUser.userId : "NA",
-                whiteLabel_Commission: whiteLabel_Commission,
-                super_Distributor_Commission: super_Distributor_Commission,
-                distributor_Commission: distributor_Commission,
-                retailer_Commission: retailer_Commission,
-                transaction_type: updatedFormData.recharge_Type,
-                transaction_details: result.retailerFormData.Transaction_details,
-                status: "Success",
-              };
-              console.log(commissionFormData);
-              await axios
-                .post(
-                  "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
-                  // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-                  commissionFormData,
-                  {
-                    headers: {
-                      "Content-Type": "application/json",
-                      Authorization: `Bearer ${token}`,
-                    },
-                  }
-                )
-                .catch(() => {
-                  allProcessesSuccessful = false;
-                });
+        } else if (
+          rechargeResult.data &&
+          rechargeResult.data.message === "Recharge in process"
+        ) {
+          success = true;
+          Swal.fire({
+            icon: "info",
+            title: "Recharge in process",
+            text: "Recharge in process please wait it will take Sometime!",
+          });
+          let allProcessesSuccessful = true;
+          result.retailerFormData.Transaction_details = `Commission Credit for Postpaid Recharge Order Id ${rechargeResult.data.orderId}`;
+
+          if (result) {
+            let whiteLabel_Commission = 0;
+            let super_Distributor_Commission = 0;
+            let distributor_Commission = 0;
+            let retailer_Commission = 0;
+            if (result.retailerFormData && result.retailerFormData.amount) {
+              retailer_Commission = result.retailerFormData.amount;
             }
-            // Recharge Commission Credit WL SD D
-            break;
+            console.log(userRelation);
+
+            const commissionFormData = {
+              order_id: result.Order_Id,
+              transaction_id: result.Transaction_Id,
+              amount: updatedFormData.amount,
+              whiteLabel_id: usersId.whiteLabelId ? usersId.whiteLabelId : "NA",
+              super_Distributor_id: usersId.superDistributorId
+                ? usersId.superDistributorId
+                : "NA",
+              distributor_id: usersId.distributorId
+                ? usersId.distributorId
+                : "NA",
+              retailer_id: currentUser.userId ? currentUser.userId : "NA",
+              whiteLabel_Commission: whiteLabel_Commission,
+              super_Distributor_Commission: super_Distributor_Commission,
+              distributor_Commission: distributor_Commission,
+              retailer_Commission: retailer_Commission,
+              transaction_type: updatedFormData.recharge_Type,
+              transaction_details: result.retailerFormData.Transaction_details,
+              status: "Success",
+            };
+            console.log(commissionFormData);
+            await axios
+              .post(
+                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
+                // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+                commissionFormData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .catch(() => {
+                allProcessesSuccessful = false;
+              });
+          }
+          // Recharge Commission Credit WL SD D
+          break;
         } else if (
           rechargeResult.data.rechargeData &&
           rechargeResult.data.rechargeData.status === "Failure"
@@ -1001,7 +997,13 @@ const PostPaidRecharge = () => {
       const result = await axios.post(
         // "http://localhost:7777/api/auth/wallet/offlineRechargeAndUpdateWallet",
         "https://bitspan.vimubds5.a2hosted.com/api/auth/wallet/offlineRechargeAndUpdateWallet",
-        offlineForm
+        offlineForm,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       setResponseForm(result.data);
@@ -1085,31 +1087,40 @@ const PostPaidRecharge = () => {
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: pin.join("") }
+        { user_id: currentUser.userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {
         return true;
       } else {
         // alert(response.data.message);
-               // return false;
-               Swal.fire({
-                 title: "Error verifying PIN",
-                 text: response?.data?.message || "Something went wrong! Please Try again",
-                 icon: "error",
-               });
-               return false;
+        // return false;
+        Swal.fire({
+          title: "Error verifying PIN",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
+          icon: "error",
+        });
+        return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
       // alert("Error verifying PIN");
-           Swal.fire({
-             title: "Error verifying PIN",
-             text: error?.response?.data?.message || "Something went wrong! Please Try again",
-             icon: "error",
-           });
-     
-           return false;
+      Swal.fire({
+        title: "Error verifying PIN",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
+        icon: "error",
+      });
+
+      return false;
     }
   };
 
@@ -1118,28 +1129,37 @@ const PostPaidRecharge = () => {
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: onlinePin.join("") }
+        { user_id: currentUser.userId || "", pin: onlinePin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (response.data.success) {
         return true;
       } else {
         // alert(response.data.message);
         Swal.fire({
-                  title: "Error verifying PIN",
-                  text: response?.data?.message || "Something went wrong! Please Try again",
-                  icon: "error",
-                });
-               
+          title: "Error verifying PIN",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
+          icon: "error",
+        });
+
         return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
       // alert("Error verifying PIN");
       Swal.fire({
-              title: "Error verifying PIN",
-              text: error?.response?.data?.message || "Something went wrong! Please Try again",
-              icon: "error",
-            });
+        title: "Error verifying PIN",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
+        icon: "error",
+      });
       return false;
     }
   };
@@ -1283,7 +1303,6 @@ const PostPaidRecharge = () => {
                                               required
                                               maxLength={10}
                                               minLength={10}
-
                                             />
                                             <label for="floatingInputGroup1">
                                               Mobile Number
@@ -1330,7 +1349,6 @@ const PostPaidRecharge = () => {
                                               onChange={handleChange}
                                               name="amount"
                                               autoComplete="off"
-
                                             />
                                             <label for="floatingInputGroup1">
                                               Amount
@@ -1344,7 +1362,13 @@ const PostPaidRecharge = () => {
                                               backgroundColor: "#6d70ff",
                                             }}
                                             type="submit"
-                                            disabled={loading || !formData.amount || !formData.number || !formData.operatorName ||  formData.number.length != 10}
+                                            disabled={
+                                              loading ||
+                                              !formData.amount ||
+                                              !formData.number ||
+                                              !formData.operatorName ||
+                                              formData.number.length != 10
+                                            }
                                           >
                                             Recharge Now
                                           </button>
@@ -1388,7 +1412,7 @@ const PostPaidRecharge = () => {
                                               value={offlineForm.mobile_no}
                                               onChange={handleChangeForm}
                                               name="mobile_no"
-                                               autoComplete="off"
+                                              autoComplete="off"
                                               required
                                               minLength={10}
                                               maxLength={10}
@@ -1471,7 +1495,13 @@ const PostPaidRecharge = () => {
                                             style={{
                                               backgroundColor: "#6d70ff",
                                             }}
-                                            disabled={loading || !offlineForm.amount || !offlineForm.mobile_no || !offlineForm.operator_name || offlineForm.mobile_no.length != 10}
+                                            disabled={
+                                              loading ||
+                                              !offlineForm.amount ||
+                                              !offlineForm.mobile_no ||
+                                              !offlineForm.operator_name ||
+                                              offlineForm.mobile_no.length != 10
+                                            }
                                           >
                                             Recharge Now
                                           </button>
@@ -1493,68 +1523,68 @@ const PostPaidRecharge = () => {
           </div>
         )}
         <Modal
-               show={showPinModal}
-               onHide={() => setShowPinModal(false)}
-               centered
-             >
-               <Modal.Header closeButton>
-                 <Modal.Title>Enter 4-Digit PIN</Modal.Title>
-               </Modal.Header>
-               <Modal.Body>
-                 <div className="pin-inputs d-flex justify-content-center">
-                   {pin.map((digit, index) => (
-                     <input
-                       key={index}
-                       ref={(el) => (pinRefs.current[index] = el)}
-                       type="text"
-                       value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
-                       maxLength="1"
-                       onChange={(e) => handlePinChange(index, e.target.value)}
-                       onKeyDown={(e) =>
-                         e.key === "Backspace" && handleBackspace(index)
-                       }
-                       className="pin-digit form-control mx-1"
-                       style={{
-                         width: "50px",
-                         textAlign: "center",
-                         fontSize: "1.5rem",
-                         borderRadius: "8px",
-                         border: "1px solid #ced4da",
-                         boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
-                       }}
-                     />
-                   ))}
-                 </div>
-               </Modal.Body>
-               <Modal.Footer>
-                 <div className="w-100 d-flex justify-content-center">
-                   <Button
-                     variant="secondary"
-                     onClick={() => setShowPinModal(false)}
-                     className="mx-1"
-                   >
-                     Cancel
-                   </Button>
-     
-                   <Button
-                     variant="primary"
-                     onClick={handleModalSubmit}
-                     disabled={isVerifying}
-                   >
-                     {isVerifying ? "Verifying..." : "Verify PIN"}
-                     {isVerifying && (
-                       <Spinner
-                         as="span"
-                         animation="border"
-                         size="sm"
-                         role="status"
-                         aria-hidden="true"
-                       />
-                     )}
-                   </Button>
-                 </div>
-               </Modal.Footer>
-             </Modal>
+          show={showPinModal}
+          onHide={() => setShowPinModal(false)}
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="pin-inputs d-flex justify-content-center">
+              {pin.map((digit, index) => (
+                <input
+                  key={index}
+                  ref={(el) => (pinRefs.current[index] = el)}
+                  type="text"
+                  value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
+                  maxLength="1"
+                  onChange={(e) => handlePinChange(index, e.target.value)}
+                  onKeyDown={(e) =>
+                    e.key === "Backspace" && handleBackspace(index)
+                  }
+                  className="pin-digit form-control mx-1"
+                  style={{
+                    width: "50px",
+                    textAlign: "center",
+                    fontSize: "1.5rem",
+                    borderRadius: "8px",
+                    border: "1px solid #ced4da",
+                    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                  }}
+                />
+              ))}
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <div className="w-100 d-flex justify-content-center">
+              <Button
+                variant="secondary"
+                onClick={() => setShowPinModal(false)}
+                className="mx-1"
+              >
+                Cancel
+              </Button>
+
+              <Button
+                variant="primary"
+                onClick={handleModalSubmit}
+                disabled={isVerifying}
+              >
+                {isVerifying ? "Verifying..." : "Verify PIN"}
+                {isVerifying && (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                )}
+              </Button>
+            </div>
+          </Modal.Footer>
+        </Modal>
         <Modal
           show={showOnlinePinModal}
           onHide={() => setShowOnlinePinModal(false)}

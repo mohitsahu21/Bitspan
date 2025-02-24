@@ -28,7 +28,7 @@ const VerifyEdistrict = () => {
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
   const pinRefs = useRef([]);
-   const [services,setServices] = useState([]);
+  const [services, setServices] = useState([]);
 
   const fetchServices = async () => {
     // setLoading(true);
@@ -41,7 +41,6 @@ const VerifyEdistrict = () => {
             Authorization: `Bearer ${token}`,
           },
         }
-
       );
       setServices(data.data);
       // setLoading(false);
@@ -50,21 +49,27 @@ const VerifyEdistrict = () => {
       if (error?.response?.status == 401) {
         // alert("Your token is expired please login again")
         Swal.fire({
-                  icon: "error",
-                  title: "Your token is expired please login again",
-                });
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
         dispatch(clearUser());
         navigate("/");
       }
       // setLoading(false);
     }
   };
-  
+
   useEffect(() => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         // console.log(response.data.data);
         if (Array.isArray(response.data.data)) {
@@ -80,13 +85,12 @@ const VerifyEdistrict = () => {
     fetchServices();
   }, []);
 
-  useEffect(()=>{
-    if(services){
-     
+  useEffect(() => {
+    if (services) {
       const purchaseBankIdService = services.find(
         (item) => item.service_name === "E-District"
       );
-    
+
       if (purchaseBankIdService?.status === "Deactive") {
         Swal.fire({
           title: "This service is currently Not Available",
@@ -96,7 +100,7 @@ const VerifyEdistrict = () => {
         navigate("/dashboard");
       }
     }
-},[services])
+  }, [services]);
 
   useEffect(() => {
     if (prices.length > 0) {
@@ -117,19 +121,16 @@ const VerifyEdistrict = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if(name === "mobileNo"){
-      
+    if (name === "mobileNo") {
       if (/^\d*$/.test(value)) {
         setFormData((prevData) => ({
           ...prevData,
           [name]: value,
         }));
       }
-    }
-    else{
+    } else {
       setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
     }
-   
   };
 
   // const handleSubmit = async (e) => {
@@ -180,9 +181,15 @@ const VerifyEdistrict = () => {
         // `http://localhost:7777/api/auth/retailer/verify-Edistrict`,
         `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/verify-Edistrict`,
         formData,
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+        // { headers: { Authorization: `Bearer ${token}` } }
       );
-      if(response.data.status == "Success"){
+      if (response.data.status == "Success") {
         Swal.fire({
           title: "Form Submitted Successfully",
           text: response?.data?.message,
@@ -198,15 +205,13 @@ const VerifyEdistrict = () => {
           amount: prices[0]?.verify_edistrict_Certificate_Price || "",
           userId: currentUser.userId,
         });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: response?.data?.message || "Something went wrong!",
+          icon: "error",
+        });
       }
-      else{
-         Swal.fire({
-                      title: "Error",
-                      text: response?.data?.message || "Something went wrong!",
-                      icon: "error",
-                    });
-      }
-      
     } catch (error) {
       Swal.fire({
         title: "Error",
@@ -247,26 +252,35 @@ const VerifyEdistrict = () => {
       const response = await axios.post(
         // `http://localhost:7777/api/auth/log-reg/verify-pin`,
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: pin.join("") }
+        { user_id: currentUser.userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {
         return true;
       } else {
-         Swal.fire({
-                                 title: "Error verifying PIN",
-                                 text: response?.data?.message || "Something went wrong! Please Try again",
-                                 icon: "error",
-                               });
-                       return false
+        Swal.fire({
+          title: "Error verifying PIN",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
+          icon: "error",
+        });
+        return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
-       Swal.fire({
-                                title: "Error verifying PIN",
-                                text: error?.response?.data?.message || "Something went wrong! Please Try again",
-                                icon: "error",
-                              });
+      Swal.fire({
+        title: "Error verifying PIN",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
+        icon: "error",
+      });
       return false;
     }
   };
@@ -408,8 +422,12 @@ const VerifyEdistrict = () => {
                     </div>
                     <div className="row">
                       <div className="col-md-12 m-3 d-flex justify-content-center">
-                        <button type="submit" className="btn btn-primary" disabled={loading}>
-                        {loading ? "Submitting..." : "Submit"}
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                          disabled={loading}
+                        >
+                          {loading ? "Submitting..." : "Submit"}
                         </button>
                       </div>
                     </div>

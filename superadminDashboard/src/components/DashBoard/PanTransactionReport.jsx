@@ -5,8 +5,10 @@ import { MdFormatListNumberedRtl } from "react-icons/md";
 import { BiHomeAlt } from "react-icons/bi";
 import ReactPaginate from "react-paginate";
 import { Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 
 const PanTransactionReport = () => {
+  const { currentUser, token } = useSelector((state) => state.user);
   const [selectedApi, setSelectedApi] = useState("api1");
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -14,10 +16,9 @@ const PanTransactionReport = () => {
   // const [selectedDate, setSelectedDate] = useState("");
   const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
-      const [fromDate, setFromDate] = useState(""); // From date filter
-      const [toDate, setToDate] = useState(""); // To date filter
-      const [PaymentMode, setPaymentMode] = useState("")
-
+  const [fromDate, setFromDate] = useState(""); // From date filter
+  const [toDate, setToDate] = useState(""); // To date filter
+  const [PaymentMode, setPaymentMode] = useState("");
 
   const api1Url = `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/nsdl-trans-new-requst`;
   const api2Url = `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/nsdl-trans-correction`;
@@ -25,7 +26,12 @@ const PanTransactionReport = () => {
   const fetchData = async (url) => {
     setLoading(true);
     try {
-      const response = await axios.get(url);
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setApiData(response.data.data);
       console.log(response.data.data);
     } catch (error) {
@@ -54,30 +60,37 @@ const PanTransactionReport = () => {
   //     (row?.orderid && row.orderid.includes(keyword.trim())) ||
   //     (row?.created_at && row.created_at.split(" ")[0] === selectedDate)
   // );
-  const filteredItems = apiData.filter(
-    (row) =>{ 
-      const matchesKeyword =   (row?.orderid &&
-          row.orderid.toLowerCase().includes(keyword.trim().toLowerCase())) || 
-           (row?.txid &&
-              row.txid.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.name &&
-                  row.name.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.mobile &&
-                      row.mobile.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.email &&
-                          row.email.toLowerCase().includes(keyword.trim().toLowerCase())) 
-           
-          // const matchesType = !PaymentMode || PaymentMode === "---Select---" || row.status === PaymentMode;
-          const matchesType = !PaymentMode || PaymentMode === "---Select---" ||
-  (PaymentMode === "Failed" && (row.status === "Failed" || row.status === "Failure")) ||
-  row.status === PaymentMode;
-          // return matchesKeyword && matchesType ;
-          const matchesDate =
-      (!fromDate || new Date(row.created_at).toISOString().split("T")[0] >= new Date(fromDate).toISOString().split("T")[0] ) &&
-      (!toDate || new Date(row.created_at).toISOString().split("T")[0]  <= new Date(toDate).toISOString().split("T")[0] );
-      console.log(matchesKeyword)
-          return matchesKeyword && matchesDate && matchesType;
-          
-        }
-       
-  );
+  const filteredItems = apiData.filter((row) => {
+    const matchesKeyword =
+      (row?.orderid &&
+        row.orderid.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.txid &&
+        row.txid.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.name &&
+        row.name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.mobile &&
+        row.mobile.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.email &&
+        row.email.toLowerCase().includes(keyword.trim().toLowerCase()));
+
+    // const matchesType = !PaymentMode || PaymentMode === "---Select---" || row.status === PaymentMode;
+    const matchesType =
+      !PaymentMode ||
+      PaymentMode === "---Select---" ||
+      (PaymentMode === "Failed" &&
+        (row.status === "Failed" || row.status === "Failure")) ||
+      row.status === PaymentMode;
+    // return matchesKeyword && matchesType ;
+    const matchesDate =
+      (!fromDate ||
+        new Date(row.created_at).toISOString().split("T")[0] >=
+          new Date(fromDate).toISOString().split("T")[0]) &&
+      (!toDate ||
+        new Date(row.created_at).toISOString().split("T")[0] <=
+          new Date(toDate).toISOString().split("T")[0]);
+    console.log(matchesKeyword);
+    return matchesKeyword && matchesDate && matchesType;
+  });
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
@@ -174,78 +187,94 @@ const PanTransactionReport = () => {
                             </select>
                           </div>
                         </div> */}
-                        
+
                         <div className="d-flex flex-column flex-md-row gap-3">
-                                                    <div className="col-12 col-md-4 col-lg-3">
-                                                        <label for="fromDate" className="form-label">From</label>
-                                                        <input id="fromDate" className="form-control" type="date" value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}/>
-                                                    </div>
-                                                    <div className="col-12 col-md-4 col-lg-3">
-                                                        <label for="toDate" className="form-label">To</label>
-                                                        <input id="toDate" className="form-control " type="date" value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}/>
-                                                    </div>
-                                                    <div className="col-12 col-md-4 col-lg-3">
-                                                        <label for="toDate" className="form-label">Select Status</label>
-                                                        <select className="form-select" aria-label="Default select example"
-                                                         value={PaymentMode}
-                                                         onChange={(e) => setPaymentMode(e.target.value)}>
-                                                             <option selected>---Select---</option>
-                                                            <option value="Success">Success</option>
-                                                            <option value="Failed">Failed</option>
+                          <div className="col-12 col-md-4 col-lg-3">
+                            <label for="fromDate" className="form-label">
+                              From
+                            </label>
+                            <input
+                              id="fromDate"
+                              className="form-control"
+                              type="date"
+                              value={fromDate}
+                              onChange={(e) => setFromDate(e.target.value)}
+                            />
+                          </div>
+                          <div className="col-12 col-md-4 col-lg-3">
+                            <label for="toDate" className="form-label">
+                              To
+                            </label>
+                            <input
+                              id="toDate"
+                              className="form-control "
+                              type="date"
+                              value={toDate}
+                              onChange={(e) => setToDate(e.target.value)}
+                            />
+                          </div>
+                          <div className="col-12 col-md-4 col-lg-3">
+                            <label for="toDate" className="form-label">
+                              Select Status
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              value={PaymentMode}
+                              onChange={(e) => setPaymentMode(e.target.value)}
+                            >
+                              <option selected>---Select---</option>
+                              <option value="Success">Success</option>
+                              <option value="Failed">Failed</option>
+                            </select>
+                          </div>
 
-
-                                                        </select>
-                                                    </div>
-                                                    
-                                                    {/* <div className="d-flex align-items-end">
+                          {/* <div className="d-flex align-items-end">
                                                         <button type="button" className="btn btn-primary button">Search</button>
                                                     </div> */}
-
-                                                </div>
-                                                <div className="d-flex flex-column flex-xl-row gap-3">
-
-<div className="col-12 col-md-12 col-lg-12 col-xl-8">
-        {/* <label for="fromDate" className="form-label">From</label> */}
-        <input id="fromDate" 
-        className="form-control"
-         type="search"
-         placeholder="Search By Name/Mobile/Email/Order Id/Txn Id"
-         value={keyword}
-onChange={(e) => setKeyword(e.target.value)}
-         />
-    </div>
-    <div className="d-flex align-items-end">
+                        </div>
+                        <div className="d-flex flex-column flex-xl-row gap-3">
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                            {/* <label for="fromDate" className="form-label">From</label> */}
+                            <input
+                              id="fromDate"
+                              className="form-control"
+                              type="search"
+                              placeholder="Search By Name/Mobile/Email/Order Id/Txn Id"
+                              value={keyword}
+                              onChange={(e) => setKeyword(e.target.value)}
+                            />
+                          </div>
+                          <div className="d-flex align-items-end">
                             <select
                               class="form-select"
                               aria-label="Default select example"
                               onChange={handleApiChange}
                               value={selectedApi}
                             >
-                              <option value="" disabled>-- Select--</option>
+                              <option value="" disabled>
+                                -- Select--
+                              </option>
                               <option value="api1">NSDL New Request</option>
                               <option value="api2">NSDL Correction</option>
                             </select>
                           </div>
-    
-   
-    {/* <div className="d-flex align-items-end">
+
+                          {/* <div className="d-flex align-items-end">
         <button type="button" className="btn btn-primary button">Search</button>
     </div> */}
-
-</div>
+                        </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
                             {loading ? (
-                               <div className="d-flex justify-content-center">
-                               <Spinner animation="border" role="status">
-                                 <span className="visually-hidden ">
-                                   Loading...
-                                 </span>
-                               </Spinner>
-                             </div>
+                              <div className="d-flex justify-content-center">
+                                <Spinner animation="border" role="status">
+                                  <span className="visually-hidden ">
+                                    Loading...
+                                  </span>
+                                </Spinner>
+                              </div>
                             ) : (
                               <table class="table table-striped">
                                 <thead className="table-dark">
@@ -282,7 +311,11 @@ onChange={(e) => setKeyword(e.target.value)}
                                         index // Pass `index` here as the second argument
                                       ) => (
                                         <tr key={index}>
-                                          <td>{index + 1}</td>{" "}
+                                          <td>
+                                            {currentPage * complaintsPerPage +
+                                              index +
+                                              1}
+                                          </td>{" "}
                                           {/* Use `index + 1` for the row number */}
                                           <td>{item.created_at}</td>
                                           <td>{item.orderid}</td>
@@ -335,8 +368,8 @@ onChange={(e) => setKeyword(e.target.value)}
                           </div> */}
                           <PaginationContainer>
                             <ReactPaginate
-                              previousLabel={"previous"}
-                              nextLabel={"next"}
+                              previousLabel={"Previous"}
+                              nextLabel={"Next"}
                               breakLabel={"..."}
                               pageCount={totalPages}
                               marginPagesDisplayed={2}

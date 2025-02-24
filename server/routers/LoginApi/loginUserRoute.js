@@ -55,7 +55,7 @@ router.post("/create-pin", authenticateToken, createPin);
 router.post("/request-otp", authenticateToken, requestOtpForPinChange);
 router.post("/verify-otp", authenticateToken, verifyOtp);
 router.get("/check-user", authenticateToken, getUserId);
-router.post("/verify-pin", verifyPin);
+router.post("/verify-pin", authenticateToken, verifyPin);
 router.post("/superAdminEmployeeRegiser", superAdminEmployeeRegiser);
 
 router.post("/userRegisterDumy", userRegisterDumy);

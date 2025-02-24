@@ -12,24 +12,23 @@ import { useNavigate } from "react-router-dom";
 
 const PanCardFour = () => {
   const dispatch = useDispatch();
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
   const pinRefs = useRef([]);
-  const documentUploadRef = useRef(null)
-  const attachment_formRef = useRef(null)
-  const attachment_photoRef = useRef(null)
-  const attachment_signatureRef = useRef(null)
+  const documentUploadRef = useRef(null);
+  const attachment_formRef = useRef(null);
+  const attachment_photoRef = useRef(null);
+  const attachment_signatureRef = useRef(null);
   const [isVerifying, setIsVerifying] = useState(false);
-    const [services,setServices] = useState([]);
+  const [services, setServices] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [prices, setPrices] = useState({
     electronicPrice: "",
     physicalPrice: "",
   });
   const [formData, setFormData] = useState({
-
     application_type: "",
     applicant_type: "",
     select_title: "",
@@ -73,7 +72,6 @@ const PanCardFour = () => {
             Authorization: `Bearer ${token}`,
           },
         }
-
       );
       setServices(data.data);
       // setLoading(false);
@@ -82,9 +80,9 @@ const PanCardFour = () => {
       if (error?.response?.status == 401) {
         // alert("Your token is expired please login again")
         Swal.fire({
-                  icon: "error",
-                  title: "Your token is expired please login again",
-                });
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
         dispatch(clearUser());
         navigate("/");
       }
@@ -96,7 +94,13 @@ const PanCardFour = () => {
     const fetchPrices = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         if (response.data?.data?.length > 0) {
           const packageData = response.data.data[0];
@@ -117,13 +121,12 @@ const PanCardFour = () => {
     fetchServices();
   }, []);
 
-  useEffect(()=>{
-    if(services){
-     
+  useEffect(() => {
+    if (services) {
       const purchaseBankIdService = services.find(
         (item) => item.service_name === "PAN - 4.0"
       );
-    
+
       if (purchaseBankIdService?.status === "Deactive") {
         Swal.fire({
           title: "This service is currently Not Available",
@@ -133,7 +136,7 @@ const PanCardFour = () => {
         navigate("/dashboard");
       }
     }
-},[services])
+  }, [services]);
 
   const [files, setFiles] = useState({
     documentUpload: null,
@@ -144,7 +147,12 @@ const PanCardFour = () => {
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
-    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "application/pdf"];
+    const allowedTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "application/pdf",
+    ];
     const maxSize = 5 * 1024 * 1024; // 5MB in bytes
     const maxFiles = 6;
 
@@ -206,24 +214,25 @@ const PanCardFour = () => {
         value === "Electronic"
           ? prices.electronicPrice
           : value === "Physical"
-            ? prices.physicalPrice
-            : "";
+          ? prices.physicalPrice
+          : "";
       setFormData((prevData) => ({
         ...prevData,
         [name]: value,
         amount: updatedAmount,
       }));
-    }
-    else if (name === "mobile_no" || name === "pin_code" || name === "aadhar_details") {
-
+    } else if (
+      name === "mobile_no" ||
+      name === "pin_code" ||
+      name === "aadhar_details"
+    ) {
       if (/^\d*$/.test(value)) {
         setFormData((prevData) => ({
           ...prevData,
           [name]: value,
         }));
       }
-    }
-    else {
+    } else {
       setFormData((prevData) => ({
         ...prevData,
         [name]: value,
@@ -242,8 +251,6 @@ const PanCardFour = () => {
     }));
   };
 
-
-
   const clearFileInput = () => {
     if (documentUploadRef.current) {
       documentUploadRef.current.value = null;
@@ -257,9 +264,7 @@ const PanCardFour = () => {
     if (attachment_signatureRef.current) {
       attachment_signatureRef.current.value = null;
     }
-
-
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -295,7 +300,7 @@ const PanCardFour = () => {
       files.documentUpload.forEach((file) => {
         form.append("documentUpload", file);
       });
-    }else{
+    } else {
       form.append("documentUpload", files.documentUpload);
     }
 
@@ -320,79 +325,79 @@ const PanCardFour = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
       console.log(response.data);
       // alert("Form submitted successfully");
       setIsLoading(false);
-       if(response.data.status == "Success"){
-              Swal.fire({
-                title: "Form Submitted Successfully",
-                text: response?.data?.message,
-                icon: "success",
-              });
-      
-      clearFileInput();
-      // Reset form data and file inputs after successful submission
-      setFormData({
-        application_type: "",
-        applicant_type: "",
-        select_title: "",
-        name: "",
-        father_name: "",
-        mother_name: "",
-        dob: "",
-        gender: "",
-        pantype: "",
-        office_address: "",
-        aadhar_details: "",
-        Address_Communication_OfficeResident: "",
-        alternative_communication_Address: "",
-        mobile_no: "",
-        email_id: "",
-        pin_code: "",
-        state: "",
-        Change_Request: {
-          name: false,
-          father_Name: false,
-          dob: false,
-          mother_Name: false,
-          email: false,
-          mobile: false,
-          gender: false,
-        },
-        amount: "",
-        userId: currentUser.userId,
-        status: "Pending",
-      });
-      // setFiles({
-      //   documentUpload: null,
-      //   attachment_form: null,
-      //   attachment_photo: null,
-      //   attachment_signature: null,
-      // });
+      if (response.data.status == "Success") {
+        Swal.fire({
+          title: "Form Submitted Successfully",
+          text: response?.data?.message,
+          icon: "success",
+        });
 
-      // // Reset file input fields manually
-      // document.getElementById("documentUpload").value = "";
-      // document.getElementById("attachment_form").value = "";
-      // document.getElementById("attachment_photo").value = "";
-      // document.getElementById("attachment_signature").value = "";
-    }
-     else{
-            Swal.fire({
-              title: "Error",
-              text: response?.data?.message || "Something went wrong!",
-              icon: "error",
-            });
-          }
+        clearFileInput();
+        // Reset form data and file inputs after successful submission
+        setFormData({
+          application_type: "",
+          applicant_type: "",
+          select_title: "",
+          name: "",
+          father_name: "",
+          mother_name: "",
+          dob: "",
+          gender: "",
+          pantype: "",
+          office_address: "",
+          aadhar_details: "",
+          Address_Communication_OfficeResident: "",
+          alternative_communication_Address: "",
+          mobile_no: "",
+          email_id: "",
+          pin_code: "",
+          state: "",
+          Change_Request: {
+            name: false,
+            father_Name: false,
+            dob: false,
+            mother_Name: false,
+            email: false,
+            mobile: false,
+            gender: false,
+          },
+          amount: "",
+          userId: currentUser.userId,
+          status: "Pending",
+        });
+        // setFiles({
+        //   documentUpload: null,
+        //   attachment_form: null,
+        //   attachment_photo: null,
+        //   attachment_signature: null,
+        // });
+
+        // // Reset file input fields manually
+        // document.getElementById("documentUpload").value = "";
+        // document.getElementById("attachment_form").value = "";
+        // document.getElementById("attachment_photo").value = "";
+        // document.getElementById("attachment_signature").value = "";
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: response?.data?.message || "Something went wrong!",
+          icon: "error",
+        });
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
-       Swal.fire({
-              title: "Error",
-              text: error?.response?.data?.message || "Something went wrong!",
-              icon: "error",
-            });
+      Swal.fire({
+        title: "Error",
+        text: error?.response?.data?.message || "Something went wrong!",
+        icon: "error",
+      });
     } finally {
       setIsLoading(false);
       setPin(["", "", "", ""]);
@@ -427,7 +432,13 @@ const PanCardFour = () => {
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: pin.join("") }
+        { user_id: currentUser.userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {
@@ -435,7 +446,8 @@ const PanCardFour = () => {
       } else {
         Swal.fire({
           title: "Error verifying PIN",
-          text: response?.data?.message || "Something went wrong! Please Try again",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
           icon: "error",
         });
         return false;
@@ -444,7 +456,9 @@ const PanCardFour = () => {
       console.error("Error verifying PIN:", error);
       Swal.fire({
         title: "Error verifying PIN",
-        text: error?.response?.data?.message || "Something went wrong! Please Try again",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
         icon: "error",
       });
       return false;
@@ -515,9 +529,7 @@ const PanCardFour = () => {
                         </select>
                       </div>
                       <div className="col-md-6 mb-3">
-                        <label htmlFor="applicant_type">
-                          Application Type
-                        </label>
+                        <label htmlFor="applicant_type">Application Type</label>
                         <select
                           className="form-control"
                           id="applicant_type"
@@ -531,7 +543,6 @@ const PanCardFour = () => {
                           </option>
                           <option value="Minor">Minor</option>
                           <option value="Major">Major</option>
-
                         </select>
                       </div>
                       <div className="col-md-6 mb-3">
@@ -599,7 +610,10 @@ const PanCardFour = () => {
                       </div>
                       <div className="col-md-3 mb-3">
                         <label htmlFor="dob">Date of Birth</label>
-                        <input type="date" className="form-control" id="dob"
+                        <input
+                          type="date"
+                          className="form-control"
+                          id="dob"
                           name="dob"
                           onChange={handleChange}
                           required
@@ -639,9 +653,7 @@ const PanCardFour = () => {
                         />
                       </div>
                       <div className="col-md-6 mb-3">
-                        <label htmlFor="aadhaarDetails">
-                          Aadhar Number
-                        </label>
+                        <label htmlFor="aadhaarDetails">Aadhar Number</label>
                         <input
                           type="text"
                           className="form-control"
@@ -810,7 +822,9 @@ const PanCardFour = () => {
                           onChange={handleChange}
                           required
                         >
-                          <option selected value="">SELECT</option>
+                          <option selected value="">
+                            SELECT
+                          </option>
                           <option value="Electronic">Electronic</option>
                           <option value="Physical">Physical</option>
                         </select>
@@ -903,10 +917,13 @@ const PanCardFour = () => {
                           disabled
                         />
                       </div>
-
                     </div>
                     <div className="text-center my-3">
-                      <button type="submit" className="btn btn-primary  mb-4" disabled={isLoading}>
+                      <button
+                        type="submit"
+                        className="btn btn-primary  mb-4"
+                        disabled={isLoading}
+                      >
                         {isLoading ? "Submit..." : "Submit"}
                       </button>
                     </div>

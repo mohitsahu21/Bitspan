@@ -6,13 +6,17 @@ import { Modal, Button, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 
-const VerifyEdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
+const VerifyEdistrictEditModel = ({
+  item,
+  setShowMarkEditModel,
+  setIsRefresh,
+}) => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
   const [prices, setPrices] = useState([]);
   const [isVerifying, setIsVerifying] = useState(false);
   const [formData, setFormData] = useState({
-    order_id : item.order_id,
+    order_id: item.order_id,
     applicationType: item.applicationType,
     name: item.name,
     mobileNo: item.mobileNo,
@@ -31,7 +35,13 @@ const VerifyEdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         // console.log(response.data.data);
         if (Array.isArray(response.data.data)) {
@@ -46,14 +56,14 @@ const VerifyEdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
     fetchPackage();
   }, []);
 
-//   useEffect(() => {
-//     if (prices.length > 0) {
-//       setFormData((prevFormData) => ({
-//         ...prevFormData,
-//         amount: prices[0].verify_edistrict_Certificate_Price,
-//       }));
-//     }
-//   }, [prices]);
+  //   useEffect(() => {
+  //     if (prices.length > 0) {
+  //       setFormData((prevFormData) => ({
+  //         ...prevFormData,
+  //         amount: prices[0].verify_edistrict_Certificate_Price,
+  //       }));
+  //     }
+  //   }, [prices]);
 
   // console.log(prices[0]?.verify_edistrict_Certificate_Price);
   console.log(formData);
@@ -65,19 +75,16 @@ const VerifyEdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if(name === "mobileNo"){
-      
+    if (name === "mobileNo") {
       if (/^\d*$/.test(value)) {
         setFormData((prevData) => ({
           ...prevData,
           [name]: value,
         }));
       }
-    }
-    else{
+    } else {
       setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
     }
-   
   };
 
   // const handleSubmit = async (e) => {
@@ -128,9 +135,14 @@ const VerifyEdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
         // `http://localhost:7777/api/auth/retailer/verify-Edistrict`,
         `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/UpdateVerifyDistrictForm`,
         formData,
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      if(response.data.status == "Success"){
+      if (response.data.status == "Success") {
         Swal.fire({
           title: "Form Submitted Successfully",
           text: response?.data?.message,
@@ -148,15 +160,13 @@ const VerifyEdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
         });
         setShowMarkEditModel(false);
         setIsRefresh((value) => !value);
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: response?.data?.message || "Something went wrong!",
+          icon: "error",
+        });
       }
-      else{
-         Swal.fire({
-                      title: "Error",
-                      text: response?.data?.message || "Something went wrong!",
-                      icon: "error",
-                    });
-      }
-      
     } catch (error) {
       Swal.fire({
         title: "Error",
@@ -197,26 +207,35 @@ const VerifyEdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
       const response = await axios.post(
         // `http://localhost:7777/api/auth/log-reg/verify-pin`,
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: pin.join("") }
+        { user_id: currentUser.userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {
         return true;
       } else {
-         Swal.fire({
-                                 title: "Error verifying PIN",
-                                 text: response?.data?.message || "Something went wrong! Please Try again",
-                                 icon: "error",
-                               });
-                       return false
+        Swal.fire({
+          title: "Error verifying PIN",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
+          icon: "error",
+        });
+        return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
-       Swal.fire({
-                                title: "Error verifying PIN",
-                                text: error?.response?.data?.message || "Something went wrong! Please Try again",
-                                icon: "error",
-                              });
+      Swal.fire({
+        title: "Error verifying PIN",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
+        icon: "error",
+      });
       return false;
     }
   };
@@ -360,8 +379,12 @@ const VerifyEdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
                     </div>
                     <div className="row">
                       <div className="col-md-12 m-3 d-flex justify-content-center">
-                        <button type="submit" className="btn btn-primary" disabled={loading}>
-                        {loading ? "Submitting..." : "Submit"}
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                          disabled={loading}
+                        >
+                          {loading ? "Submitting..." : "Submit"}
                         </button>
                       </div>
                     </div>
