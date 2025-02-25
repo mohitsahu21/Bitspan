@@ -3522,6 +3522,18 @@ const Sider = () => {
                         />
                       );
                     })}
+
+                    {user == "SuperAdmin_Employee" &&
+                    SuperAdminEmployeeData.map((item, index) => {
+                      return (
+                        <SubMenu
+                          item={item}
+                          key={index}
+                          activeDropdown={activeDropdown}
+                          handleDropdownClick={handleDropdownClick}
+                        />
+                      );
+                    })}
                 </>
               ) : (
                 <>
