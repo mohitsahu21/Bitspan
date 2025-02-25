@@ -20,14 +20,14 @@ const NewBankID = () => {
   const [selectedPrice, setSelectedPrice] = useState(null);
   // console.log(selectedPrice);
   const [isVerifying, setIsVerifying] = useState(false);
-  const [services,setServices] = useState([]);
+  const [services, setServices] = useState([]);
   console.log(selectedPrice);
-  
- const attached_photo_ref = useRef(null);
- const attached_Kyc_ref = useRef(null);
- const bank_passbook_ref = useRef(null);
- const shop_photo_ref = useRef(null);
- const Electricity_bill_ref = useRef(null);
+
+  const attached_photo_ref = useRef(null);
+  const attached_Kyc_ref = useRef(null);
+  const bank_passbook_ref = useRef(null);
+  const shop_photo_ref = useRef(null);
+  const Electricity_bill_ref = useRef(null);
 
   const optionsDrop = [
     { id: 1, name: "Airtel" },
@@ -57,7 +57,6 @@ const NewBankID = () => {
             Authorization: `Bearer ${token}`,
           },
         }
-
       );
       setServices(data.data);
       // setLoading(false);
@@ -66,9 +65,9 @@ const NewBankID = () => {
       if (error?.response?.status == 401) {
         // alert("Your token is expired please login again")
         Swal.fire({
-                  icon: "error",
-                  title: "Your token is expired please login again",
-                });
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
         dispatch(clearUser());
         navigate("/");
       }
@@ -80,7 +79,13 @@ const NewBankID = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
         const priceData = response.data.data[0];
@@ -111,39 +116,38 @@ const NewBankID = () => {
     };
 
     fetchPackage();
-    fetchServices()
+    fetchServices();
   }, []);
 
- 
-  useEffect(()=>{
-      if(services){
-        // services.map((item)=>{
-        //    if(item.service_name == "Purchase Bank Id"){
-        //      if(item.status == "Deactive"){
-        //       Swal.fire({
-        //         title: "This service is currently Not Available",
-        //         text: `Please try after some time`,
-        //         icon: "error",
-        //       });
-        //       navigate("/dashboard")
-        //      }
-        //    }
-        // })
+  useEffect(() => {
+    if (services) {
+      // services.map((item)=>{
+      //    if(item.service_name == "Purchase Bank Id"){
+      //      if(item.status == "Deactive"){
+      //       Swal.fire({
+      //         title: "This service is currently Not Available",
+      //         text: `Please try after some time`,
+      //         icon: "error",
+      //       });
+      //       navigate("/dashboard")
+      //      }
+      //    }
+      // })
 
-        const purchaseBankIdService = services.find(
-          (item) => item.service_name === "Purchase Bank Id"
-        );
-      
-        if (purchaseBankIdService?.status === "Deactive") {
-          Swal.fire({
-            title: "This service is currently Not Available",
-            text: "Please try after some time",
-            icon: "error",
-          });
-          navigate("/dashboard");
-        }
+      const purchaseBankIdService = services.find(
+        (item) => item.service_name === "Purchase Bank Id"
+      );
+
+      if (purchaseBankIdService?.status === "Deactive") {
+        Swal.fire({
+          title: "This service is currently Not Available",
+          text: "Please try after some time",
+          icon: "error",
+        });
+        navigate("/dashboard");
       }
-  },[services])
+    }
+  }, [services]);
 
   const [formData, setFormData] = useState({
     applicant_name: currentUser.username,
@@ -208,7 +212,6 @@ const NewBankID = () => {
 
   // const handleFileChange = (e) => {
 
-
   //   const { name, files: selectedFiles } = e.target;
   //   if (name === "attached_kyc") {
   //     setFiles({ ...files, [name]: [...selectedFiles] });
@@ -218,97 +221,98 @@ const NewBankID = () => {
   // };
 
   const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
-  const allowedTypes = ["image/jpeg", "image/jpg", "image/png" , "application/pdf"];
+  const allowedTypes = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "application/pdf",
+  ];
   const allowedPhoto = ["image/jpeg", "image/jpg", "image/png"];
-const handleFileChange = (e) => {
-  const { name, files: selectedFiles } = e.target;
+  const handleFileChange = (e) => {
+    const { name, files: selectedFiles } = e.target;
 
-  // For multiple files (e.g., "attached_kyc")
-  if (name === "attached_kyc") {
-    const validFiles = [];
-    for (const file of selectedFiles) {
-      if (file.size > MAX_FILE_SIZE) {
-        Swal.fire({
-          title: "File Too Large",
-          text: `The file "${file.name}" exceeds the 2 MB size limit. Please select smaller files.`,
-          icon: "error",
-        });
-        // Clear the file input
-        e.target.value = null;
-        return;
-      }
-      else if(!allowedTypes.includes(file.type)){
-Swal.fire({
-                  icon: "error",
-                  title: "Invalid File Type",
-                  text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG , PDF are allowed.`,
-                });
-                e.target.value = null;
-                return;
-      }
-       else {
-        validFiles.push(file);
-      }
-    }
-
-    // Only set files that are within the size limit
-    setFiles((prevFiles) => ({
-      ...prevFiles,
-      [name]: validFiles,
-    }));
-  }
-  else if(name === "attached_photo" || name === "shop_photo"){
- // For single file input
- const file = selectedFiles[0];
- if (file) {
-   if (file.size > MAX_FILE_SIZE) {
-     Swal.fire({
-       title: "File Too Large",
-       text: `The file "${file.name}" exceeds the 2 MB size limit. Please select a smaller file.`,
-       icon: "error",
-     });
-
-     // Clear the file input
-     e.target.value = null;
-     return;
-   }
-   else if(!allowedPhoto.includes(file.type)){
-    Swal.fire({
-      icon: "error",
-      title: "Invalid File Type",
-      text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG are allowed.`,
-    });
-    e.target.value = null;
-    return;
-   }
-   setFiles((prevFiles) => ({
-     ...prevFiles,
-     [name]: file,
-   }));
- }
-  } else {
-    // For single file input
-    const file = selectedFiles[0];
-    if (file) {
-      if (file.size > MAX_FILE_SIZE) {
-        Swal.fire({
-          title: "File Too Large",
-          text: `The file "${file.name}" exceeds the 2 MB size limit. Please select a smaller file.`,
-          icon: "error",
-        });
-
-        // Clear the file input
-        e.target.value = null;
-        return;
+    // For multiple files (e.g., "attached_kyc")
+    if (name === "attached_kyc") {
+      const validFiles = [];
+      for (const file of selectedFiles) {
+        if (file.size > MAX_FILE_SIZE) {
+          Swal.fire({
+            title: "File Too Large",
+            text: `The file "${file.name}" exceeds the 2 MB size limit. Please select smaller files.`,
+            icon: "error",
+          });
+          // Clear the file input
+          e.target.value = null;
+          return;
+        } else if (!allowedTypes.includes(file.type)) {
+          Swal.fire({
+            icon: "error",
+            title: "Invalid File Type",
+            text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG , PDF are allowed.`,
+          });
+          e.target.value = null;
+          return;
+        } else {
+          validFiles.push(file);
+        }
       }
 
+      // Only set files that are within the size limit
       setFiles((prevFiles) => ({
         ...prevFiles,
-        [name]: file,
+        [name]: validFiles,
       }));
+    } else if (name === "attached_photo" || name === "shop_photo") {
+      // For single file input
+      const file = selectedFiles[0];
+      if (file) {
+        if (file.size > MAX_FILE_SIZE) {
+          Swal.fire({
+            title: "File Too Large",
+            text: `The file "${file.name}" exceeds the 2 MB size limit. Please select a smaller file.`,
+            icon: "error",
+          });
+
+          // Clear the file input
+          e.target.value = null;
+          return;
+        } else if (!allowedPhoto.includes(file.type)) {
+          Swal.fire({
+            icon: "error",
+            title: "Invalid File Type",
+            text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG are allowed.`,
+          });
+          e.target.value = null;
+          return;
+        }
+        setFiles((prevFiles) => ({
+          ...prevFiles,
+          [name]: file,
+        }));
+      }
+    } else {
+      // For single file input
+      const file = selectedFiles[0];
+      if (file) {
+        if (file.size > MAX_FILE_SIZE) {
+          Swal.fire({
+            title: "File Too Large",
+            text: `The file "${file.name}" exceeds the 2 MB size limit. Please select a smaller file.`,
+            icon: "error",
+          });
+
+          // Clear the file input
+          e.target.value = null;
+          return;
+        }
+
+        setFiles((prevFiles) => ({
+          ...prevFiles,
+          [name]: file,
+        }));
+      }
     }
-  }
-};
+  };
   const handlePinChange = (index, value) => {
     if (/^\d?$/.test(value)) {
       const newPin = [...pin];
@@ -333,7 +337,13 @@ Swal.fire({
   const getServices = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getSelectedServices/${currentUser.userId}`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getSelectedServices/${currentUser.userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response.data);
       setSelectedOptions(response.data.selectedServices);
@@ -342,7 +352,7 @@ Swal.fire({
     }
   };
 
-  const clearFileInput = ()=>{
+  const clearFileInput = () => {
     if (attached_photo_ref.current) {
       attached_photo_ref.current.value = null;
     }
@@ -358,11 +368,9 @@ Swal.fire({
     if (Electricity_bill_ref.current) {
       Electricity_bill_ref.current.value = null;
     }
-   
-  }
+  };
 
   useEffect(() => {
-   
     getServices();
   }, [currentUser.userId]);
 
@@ -390,10 +398,15 @@ Swal.fire({
         // "http://localhost:7777/api/auth/retailer/bankidForm",
         "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/bankidForm",
         submitForm,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       // alert(response.data.message);
-      if(response.data.status == "Success"){
+      if (response.data.status == "Success") {
         Swal.fire({
           title: "Form Submitted Successfully",
           text: response?.data?.message,
@@ -408,32 +421,30 @@ Swal.fire({
           applicant_select_service: "New Bank ID",
           select_bank_service: "",
           aadhar_card: currentUser.AadharNumber,
-    pan_card: currentUser.PanCardNumber,
-    business_name: currentUser.BusinessName,
-    status: "Pending",
-    amount: selectedPrice,
+          pan_card: currentUser.PanCardNumber,
+          business_name: currentUser.BusinessName,
+          status: "Pending",
+          amount: selectedPrice,
           userId: currentUser.userId,
         });
         setFiles({
           attached_photo: null,
-    attached_kyc: [],
-    bank_passbook: null,
-    shop_photo: null,
-    electric_bill: null,
-        })
+          attached_kyc: [],
+          bank_passbook: null,
+          shop_photo: null,
+          electric_bill: null,
+        });
         getServices();
-        setSelectedPrice(null)
+        setSelectedPrice(null);
         clearFileInput();
         dispatch(toggleRefresh());
-      }
-      else{
+      } else {
         Swal.fire({
           title: "Error",
           text: response?.data?.message || "Something went wrong!",
           icon: "error",
         });
       }
-      
     } catch (error) {
       console.error("Error submitting form:", error);
       // alert("Error submitting form");
@@ -468,26 +479,35 @@ Swal.fire({
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: pin.join("") }
+        { user_id: currentUser.userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {
         return true;
       } else {
         Swal.fire({
-                  title: "Error verifying PIN",
-                  text: response?.data?.message || "Something went wrong! Please Try again",
-                  icon: "error",
-                });
+          title: "Error verifying PIN",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
+          icon: "error",
+        });
         return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
       Swal.fire({
-                    title: "Error verifying PIN",
-                    text: error?.response?.data?.message || "Something went wrong! Please Try again",
-                    icon: "error",
-                  });
+        title: "Error verifying PIN",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
+        icon: "error",
+      });
       return false;
     }
   };
@@ -506,7 +526,7 @@ Swal.fire({
       "business_name",
       "amount",
     ];
-  
+
     // Check if all required fields in formData are filled
     for (const field of requiredFields) {
       if (!formData[field] || formData[field].trim() === "") {
@@ -518,8 +538,7 @@ Swal.fire({
         return false;
       }
     }
-   
-   
+
     // Check if files are uploaded
     if (!files.attached_photo) {
       Swal.fire({
@@ -561,7 +580,7 @@ Swal.fire({
       });
       return false;
     }
-    if(!formData.userId){
+    if (!formData.userId) {
       Swal.fire({
         title: "Validation Error",
         text: "Something went wrong! Please Try again",
@@ -569,13 +588,11 @@ Swal.fire({
       });
       return false;
     }
-  
+
     return true; // Validation passed
   };
 
-  
   const handleModalSubmit = async (e) => {
-   
     setIsVerifying(true);
     const isPinValid = await verifyPin();
     setIsVerifying(false);
@@ -590,17 +607,14 @@ Swal.fire({
   };
 
   const openPinModal = (e) => {
- 
     e.preventDefault();
 
-        // Validate the form
-  if (!validateForm()) {
-    return; // Stop the submission if validation fails
-  }
+    // Validate the form
+    if (!validateForm()) {
+      return; // Stop the submission if validation fails
+    }
     setShowPinModal(true);
   };
-
-  
 
   return (
     <Wrapper>
@@ -647,7 +661,7 @@ Swal.fire({
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="input-group mb-3">
                         <span className="input-group-text">
-                        <IoPerson />
+                          <IoPerson />
                         </span>
                         <div className="form-floating">
                           <input
@@ -667,7 +681,7 @@ Swal.fire({
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="input-group mb-3">
                         <span className="input-group-text">
-                        <IoPerson />
+                          <IoPerson />
                         </span>
                         <div className="form-floating">
                           <input
@@ -708,7 +722,7 @@ Swal.fire({
                     <div className="col-xl-5 col-lg-5 col-md-5 col-sm-12">
                       <div className="input-group">
                         <span className="input-group-text">
-                        <IoMail />
+                          <IoMail />
                         </span>
                         <div className="form-floating">
                           <input
@@ -747,8 +761,8 @@ Swal.fire({
                               const isDisabled =
                                 selectedServices &&
                                 selectedServices.status !== "Reject";
-                                console.log(isDisabled);
-                                
+                              console.log(isDisabled);
+
                               // const isDisabled =
                               //   selectedServices &&
                               //   (selectedServices.status == "Success" || selectedServices.status == "Pending" || selectedServices.status == "Mark Edit"  || selectedServices.status == "Under Process")
@@ -804,7 +818,7 @@ Swal.fire({
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="input-group">
                         <span className="input-group-text">
-                        <FaIdCard />
+                          <FaIdCard />
                         </span>
                         <div className="form-floating">
                           <input
@@ -825,7 +839,7 @@ Swal.fire({
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="input-group">
                         <span className="input-group-text">
-                        <FaIdCard />
+                          <FaIdCard />
                         </span>
                         <div className="form-floating">
                           <input
@@ -846,7 +860,7 @@ Swal.fire({
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="input-group">
                         <span className="input-group-text">
-                        <FaIdCard />
+                          <FaIdCard />
                         </span>
                         <div className="form-floating">
                           <input
@@ -944,7 +958,6 @@ Swal.fire({
                           accept="image/*,application/pdf"
                           onChange={handleFileChange}
                           ref={Electricity_bill_ref}
-
                         />
                       </div>
                     </div>

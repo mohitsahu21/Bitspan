@@ -30,7 +30,13 @@ const PanFourHistory = () => {
     try {
       const response = await axios.get(
         // `http://localhost:7777/api/auth/retailer/pan-4.0/${userData}`
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/pan-4.0/${userData}`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/pan-4.0/${userData}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setApiData(response.data.data);
       console.log(response.data.data);
@@ -45,31 +51,27 @@ const PanFourHistory = () => {
     fetchData();
   }, [isRefresh]);
 
-  const filteredItems = apiData.filter(
-    (row) => {
+  const filteredItems = apiData.filter((row) => {
+    const matchesKeyword =
+      (row?.name &&
+        row.name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.order_id &&
+        row.order_id.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.mobile_no &&
+        row.mobile_no.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.email_id &&
+        row.email_id.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.aadhar_details &&
+        row.aadhar_details
+          .toLowerCase()
+          .includes(keyword.trim().toLowerCase()));
 
-      const matchesKeyword =
-        (row?.name &&
-          row.name
-            .toLowerCase()
-            .includes(keyword.trim().toLowerCase())) ||
-        (row?.order_id &&
-          row.order_id
-            .toLowerCase()
-            .includes(keyword.trim().toLowerCase())) ||
-        (row?.mobile_no &&
-          row.mobile_no.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-        (row?.email_id &&
-          row.email_id.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-        (row?.aadhar_details &&
-          row.aadhar_details.toLowerCase().includes(keyword.trim().toLowerCase()));
-
-      const matchesType =
-        !formStatus ||
-        formStatus === "---Select Form Status---" ||
-        row.status === formStatus;
-      return matchesKeyword && matchesType;
-    });
+    const matchesType =
+      !formStatus ||
+      formStatus === "---Select Form Status---" ||
+      row.status === formStatus;
+    return matchesKeyword && matchesType;
+  });
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
@@ -138,15 +140,13 @@ const PanFourHistory = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={formStatus}
-                              onChange={(e) =>
-                                setFormStatus(e.target.value)
-                              }
+                              onChange={(e) => setFormStatus(e.target.value)}
                             >
-                              <option selected>
-                                ---Select Form Status---
-                              </option>
+                              <option selected>---Select Form Status---</option>
                               <option value="Pending">Pending</option>
-                              <option value="Under Process">Under Process</option>
+                              <option value="Under Process">
+                                Under Process
+                              </option>
                               <option value="Success">Success</option>
                               <option value="Mark Edit">Mark Edit</option>
                               <option value="Reject">Reject</option>
@@ -208,7 +208,8 @@ const PanFourHistory = () => {
                                       Application <br /> Type
                                     </th>
                                     <th scope="col">
-                                      Applicant<br /> Type
+                                      Applicant
+                                      <br /> Type
                                     </th>
                                     <th scope="col">Category</th>
                                     <th scope="col">Name</th>
@@ -240,7 +241,11 @@ const PanFourHistory = () => {
                                   {showApiData && showApiData.length > 0 ? (
                                     showApiData.map((item, index) => (
                                       <tr key={index}>
-                                        <td>{index + 1}</td>{" "}
+                                        <td>
+                                          {currentPage * complaintsPerPage +
+                                            index +
+                                            1}
+                                        </td>{" "}
                                         <td>{item.created_at}</td>
                                         <td>{item.order_id}</td>
                                         <td>{item.application_type}</td>
@@ -263,35 +268,47 @@ const PanFourHistory = () => {
                                             let parsedChangeRequest = {};
 
                                             try {
-                                              parsedChangeRequest = JSON.parse(item.Change_Request); // Parse JSON string
+                                              parsedChangeRequest = JSON.parse(
+                                                item.Change_Request
+                                              ); // Parse JSON string
                                             } catch (error) {
-                                              console.error("Invalid JSON format:", error);
+                                              console.error(
+                                                "Invalid JSON format:",
+                                                error
+                                              );
                                               return "No Changes";
                                             }
 
                                             // Get keys where value is true
-                                            const trueKeys = Object.keys(parsedChangeRequest).filter(
+                                            const trueKeys = Object.keys(
+                                              parsedChangeRequest
+                                            ).filter(
                                               (key) => parsedChangeRequest[key]
                                             );
 
-                                            return trueKeys.length > 0 ? trueKeys.join(", ").replace(/_/g, " ").toUpperCase() : "No Changes";
+                                            return trueKeys.length > 0
+                                              ? trueKeys
+                                                  .join(", ")
+                                                  .replace(/_/g, " ")
+                                                  .toUpperCase()
+                                              : "No Changes";
                                           })()}
                                         </td>
                                         <td>
                                           {item.documentUpload
                                             ? item.documentUpload
-                                              .split(",")
-                                              .map((kycurl, kycindx) => (
-                                                <div key={kycindx}>
-                                                  <a
-                                                    href={kycurl}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                  >
-                                                    View {kycindx + 1}
-                                                  </a>
-                                                </div>
-                                              ))
+                                                .split(",")
+                                                .map((kycurl, kycindx) => (
+                                                  <div key={kycindx}>
+                                                    <a
+                                                      href={kycurl}
+                                                      target="_blank"
+                                                      rel="noopener noreferrer"
+                                                    >
+                                                      View {kycindx + 1}
+                                                    </a>
+                                                  </div>
+                                                ))
                                             : "No KYC available"}
                                         </td>
                                         <td>
@@ -328,17 +345,18 @@ const PanFourHistory = () => {
                                               item.status === "Pending"
                                                 ? "#FFC107"
                                                 : item.status === "Reject"
-                                                  ? "#DC3545"
-                                                  : item.status === "Success"
-                                                    ? "#28A745"
-                                                    : "black",
+                                                ? "#DC3545"
+                                                : item.status === "Success"
+                                                ? "#28A745"
+                                                : "black",
                                           }}
                                         >
                                           {item.status}
                                         </td>
                                         <td>{item.note}</td>
                                         <td>
-                                          {(item.status === "Pending" || item.status === "Mark Edit") && (
+                                          {(item.status === "Pending" ||
+                                            item.status === "Mark Edit") && (
                                             <Dropdown>
                                               <Dropdown.Toggle
                                                 variant="success"
@@ -354,7 +372,6 @@ const PanFourHistory = () => {
                                                 <PiDotsThreeOutlineVerticalBold />
                                               </Dropdown.Toggle>
                                               <Dropdown.Menu>
-
                                                 <Dropdown.Item
                                                   onClick={() => {
                                                     // setSelectedUser(user);

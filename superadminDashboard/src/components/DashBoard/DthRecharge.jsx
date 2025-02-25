@@ -17,7 +17,7 @@ const DthRecharge = () => {
   const [apiData, setApiData] = useState([]);
   const navigate = useNavigate();
 
-  const [services,setServices] = useState([]);
+  const [services, setServices] = useState([]);
   const fetchServices = async () => {
     // setLoading(true);
     try {
@@ -29,7 +29,6 @@ const DthRecharge = () => {
             Authorization: `Bearer ${token}`,
           },
         }
-
       );
       setServices(data.data);
       // setLoading(false);
@@ -38,9 +37,9 @@ const DthRecharge = () => {
       if (error?.response?.status == 401) {
         // alert("Your token is expired please login again")
         Swal.fire({
-                  icon: "error",
-                  title: "Your token is expired please login again",
-                });
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
         dispatch(clearUser());
         navigate("/");
       }
@@ -52,33 +51,28 @@ const DthRecharge = () => {
   //   setActiveTab(tab);
   // };
 
-   const handleTabClick = (tab) => {
-        if(tab == "tab2"){
-          if(services){
-                   
-            const purchaseBankIdService = services.find(
-              (item) => item.service_name === "Provider 2 recharge"
-            );
-          
-            if (purchaseBankIdService?.status === "Deactive") {
-              Swal.fire({
-                title: "Provider 2 service is currently Not Available",
-                text: "Please try after some time",
-                icon: "error",
-              });
-              // navigate("/prepaid-recharge");
-            }
-            else{
-              setActiveTab(tab);
-            }
-          }
-        }
-        else{
+  const handleTabClick = (tab) => {
+    if (tab == "tab2") {
+      if (services) {
+        const purchaseBankIdService = services.find(
+          (item) => item.service_name === "Provider 2 recharge"
+        );
+
+        if (purchaseBankIdService?.status === "Deactive") {
+          Swal.fire({
+            title: "Provider 2 service is currently Not Available",
+            text: "Please try after some time",
+            icon: "error",
+          });
+          // navigate("/prepaid-recharge");
+        } else {
           setActiveTab(tab);
         }
-        
-        
-      };
+      }
+    } else {
+      setActiveTab(tab);
+    }
+  };
 
   const [formData, setFormData] = useState({
     // opcode: "",
@@ -187,7 +181,13 @@ const DthRecharge = () => {
       try {
         const response = await axios.get(
           // `http://localhost:7777/api/auth/retailer/getAllRechargeApi`
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllRechargeApi`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllRechargeApi`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         if (response.data.status === "Success") {
           console.log(response.data.data);
@@ -209,16 +209,14 @@ const DthRecharge = () => {
     // });
 
     const { name, value } = e.target;
-    if(name === "number" || name === "amount"){
-      
+    if (name === "number" || name === "amount") {
       if (/^\d*$/.test(value)) {
         setFormData((prevData) => ({
           ...prevData,
           [name]: value,
         }));
       }
-    }
-    else{
+    } else {
       setFormData({
         ...formData,
         [name]: value,
@@ -233,16 +231,14 @@ const DthRecharge = () => {
     // });
 
     const { name, value } = e.target;
-    if(name === "mobile_no" || name === "amount"){
-      
+    if (name === "mobile_no" || name === "amount") {
       if (/^\d*$/.test(value)) {
         setOfflineForm((prevData) => ({
           ...prevData,
           [name]: value,
         }));
       }
-    }
-    else{
+    } else {
       setOfflineForm({
         ...offlineForm,
         [name]: value,
@@ -1015,7 +1011,7 @@ const DthRecharge = () => {
           recharge_Type: "DTH",
           created_by_userid: currentUser.userId,
         });
-        setSelectedOperator("")
+        setSelectedOperator("");
         setLoading(false);
       }
     }
@@ -1103,7 +1099,13 @@ const DthRecharge = () => {
       const result = await axios.post(
         // "http://localhost:7777/api/auth/wallet/offlineRechargeAndUpdateWallet",
         "https://bitspan.vimubds5.a2hosted.com/api/auth/wallet/offlineRechargeAndUpdateWallet",
-        offlineForm
+        offlineForm,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       setResponseForm(result.data);
@@ -1128,7 +1130,7 @@ const DthRecharge = () => {
           recharge_Type: "DTH",
           userId: currentUser.userId,
         });
-        setSelectedOperator("")
+        setSelectedOperator("");
       }
     } catch (error) {
       console.error(
@@ -1188,28 +1190,37 @@ const DthRecharge = () => {
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: pin.join("") }
+        { user_id: currentUser.userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {
         return true;
       } else {
         // alert(response.data.message);
-         Swal.fire({
-                  title: "Error verifying PIN",
-                  text: response?.data?.message || "Something went wrong! Please Try again",
-                  icon: "error",
-                });
+        Swal.fire({
+          title: "Error verifying PIN",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
+          icon: "error",
+        });
         return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
       // alert("Error verifying PIN");
       Swal.fire({
-              title: "Error verifying PIN",
-              text: error?.response?.data?.message || "Something went wrong! Please Try again",
-              icon: "error",
-            });
+        title: "Error verifying PIN",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
+        icon: "error",
+      });
       return false;
     }
   };
@@ -1219,27 +1230,36 @@ const DthRecharge = () => {
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: onlinePin.join("") }
+        { user_id: currentUser.userId || "", pin: onlinePin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (response.data.success) {
         return true;
       } else {
         // alert(response.data.message);
-         Swal.fire({
-                  title: "Error verifying PIN",
-                  text: response?.data?.message || "Something went wrong! Please Try again",
-                  icon: "error",
-                });
+        Swal.fire({
+          title: "Error verifying PIN",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
+          icon: "error",
+        });
         return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
       // alert("Error verifying PIN");
-       Swal.fire({
-              title: "Error verifying PIN",
-              text: error?.response?.data?.message || "Something went wrong! Please Try again",
-              icon: "error",
-            });
+      Swal.fire({
+        title: "Error verifying PIN",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
+        icon: "error",
+      });
       return false;
     }
   };
@@ -1372,7 +1392,6 @@ const DthRecharge = () => {
                                               required
                                               maxLength={10}
                                               minLength={10}
-
                                             />
                                             <label for="floatingInputGroup1">
                                               DTH Number
@@ -1432,7 +1451,12 @@ const DthRecharge = () => {
                                               backgroundColor: "#6d70ff",
                                             }}
                                             onClick={fetchPlanData}
-                                            disabled={loadingPlans ||  !selectedOperator || !formData.number || formData.number.length != 10}
+                                            disabled={
+                                              loadingPlans ||
+                                              !selectedOperator ||
+                                              !formData.number ||
+                                              formData.number.length != 10
+                                            }
                                           >
                                             {loadingPlans
                                               ? "Checking Plans..."
@@ -1633,7 +1657,13 @@ const DthRecharge = () => {
                                             }}
                                             type="submit"
                                             onClick={() => setIsRecharge(true)}
-                                            disabled={loading || !formData.amount || !formData.number ||  !selectedOperator || formData.number.length != 10}
+                                            disabled={
+                                              loading ||
+                                              !formData.amount ||
+                                              !formData.number ||
+                                              !selectedOperator ||
+                                              formData.number.length != 10
+                                            }
                                           >
                                             {loading
                                               ? "Recharge Now..."
@@ -1740,7 +1770,12 @@ const DthRecharge = () => {
                                               backgroundColor: "#6d70ff",
                                             }}
                                             onClick={fetchPlanData}
-                                            disabled={loadingPlans || !selectedOperator || !offlineForm.mobile_no || offlineForm.mobile_no.length != 10}
+                                            disabled={
+                                              loadingPlans ||
+                                              !selectedOperator ||
+                                              !offlineForm.mobile_no ||
+                                              offlineForm.mobile_no.length != 10
+                                            }
                                           >
                                             {loadingPlans
                                               ? "Checking Plans..."
@@ -1967,8 +2002,13 @@ const DthRecharge = () => {
                                             style={{
                                               backgroundColor: "#6d70ff",
                                             }}
-                                            disabled={loading || !offlineForm.amount || !offlineForm.mobile_no || !selectedOperator || offlineForm.mobile_no.length != 10}
-
+                                            disabled={
+                                              loading ||
+                                              !offlineForm.amount ||
+                                              !offlineForm.mobile_no ||
+                                              !selectedOperator ||
+                                              offlineForm.mobile_no.length != 10
+                                            }
                                           >
                                             Recharge Now
                                           </button>

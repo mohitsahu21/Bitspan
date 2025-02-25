@@ -46,7 +46,13 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
         const priceData = response.data.data[0];
@@ -93,17 +99,16 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     status: "Pending",
     amount: item.amount,
     userId: currentUser.userId,
-    id : item.id,
+    id: item.id,
     previous_attached_photo: item.attached_photo,
     previous_attached_kyc: item.attached_kyc,
     previous_bank_passbook: item.bank_passbook,
     previous_shop_photo: item.shop_photo,
     previous_electric_bill: item.electric_bill,
-
   });
 
   console.log(formData);
- 
+
   const [files, setFiles] = useState({
     attached_photo: item.attached_photo || null,
     attached_kyc: item.attached_kyc || [],
@@ -132,12 +137,12 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-//   useEffect(() => {
-//     setFormData((prevData) => ({
-//       ...prevData,
-//       amount: selectedPrice,
-//     }));
-//   }, [selectedPrice]);
+  //   useEffect(() => {
+  //     setFormData((prevData) => ({
+  //       ...prevData,
+  //       amount: selectedPrice,
+  //     }));
+  //   }, [selectedPrice]);
 
   const handleDropdownChange = (e) => {
     const selectedOption = e.target.value;
@@ -166,7 +171,12 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
   // };
 
   const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
-  const allowedTypes = ["image/jpeg", "image/jpg", "image/png" , "application/pdf"];
+  const allowedTypes = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "application/pdf",
+  ];
   const allowedPhoto = ["image/jpeg", "image/jpg", "image/png"];
   const handleFileChange = (e) => {
     const { name, files: selectedFiles } = e.target;
@@ -184,16 +194,15 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
           // Clear the file input
           e.target.value = null;
           return;
-        }
-         else if(!allowedTypes.includes(file.type)){
-        Swal.fire({
-                          icon: "error",
-                          title: "Invalid File Type",
-                          text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG , PDF are allowed.`,
-                        });
-                        e.target.value = null;
-                        return;
-              } else {
+        } else if (!allowedTypes.includes(file.type)) {
+          Swal.fire({
+            icon: "error",
+            title: "Invalid File Type",
+            text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG , PDF are allowed.`,
+          });
+          e.target.value = null;
+          return;
+        } else {
           validFiles.push(file);
         }
       }
@@ -203,37 +212,35 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
         ...prevFiles,
         [name]: validFiles,
       }));
-    }
-     else if(name === "attached_photo" || name === "shop_photo"){
-     // For single file input
-     const file = selectedFiles[0];
-     if (file) {
-       if (file.size > MAX_FILE_SIZE) {
-         Swal.fire({
-           title: "File Too Large",
-           text: `The file "${file.name}" exceeds the 2 MB size limit. Please select a smaller file.`,
-           icon: "error",
-         });
-    
-         // Clear the file input
-         e.target.value = null;
-         return;
-       }
-       else if(!allowedPhoto.includes(file.type)){
-        Swal.fire({
-          icon: "error",
-          title: "Invalid File Type",
-          text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG are allowed.`,
-        });
-        e.target.value = null;
-        return;
-       }
-       setFiles((prevFiles) => ({
-         ...prevFiles,
-         [name]: file,
-       }));
-     }
-      } else {
+    } else if (name === "attached_photo" || name === "shop_photo") {
+      // For single file input
+      const file = selectedFiles[0];
+      if (file) {
+        if (file.size > MAX_FILE_SIZE) {
+          Swal.fire({
+            title: "File Too Large",
+            text: `The file "${file.name}" exceeds the 2 MB size limit. Please select a smaller file.`,
+            icon: "error",
+          });
+
+          // Clear the file input
+          e.target.value = null;
+          return;
+        } else if (!allowedPhoto.includes(file.type)) {
+          Swal.fire({
+            icon: "error",
+            title: "Invalid File Type",
+            text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG are allowed.`,
+          });
+          e.target.value = null;
+          return;
+        }
+        setFiles((prevFiles) => ({
+          ...prevFiles,
+          [name]: file,
+        }));
+      }
+    } else {
       // For single file input
       const file = selectedFiles[0];
       if (file) {
@@ -280,7 +287,13 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
   const getServices = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getSelectedServices/${currentUser.userId}`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getSelectedServices/${currentUser.userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response.data);
       setSelectedOptions(response.data.selectedServices);
@@ -321,31 +334,28 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
       submitForm.append(key, value);
     });
 
-
-
-    if(attached_photo_ref.current.value){
-        // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
-        submitForm.append("attached_photo", files.attached_photo);
+    if (attached_photo_ref.current.value) {
+      // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
+      submitForm.append("attached_photo", files.attached_photo);
     }
-    if(bank_passbook_ref.current.value){
-        // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
-        submitForm.append("bank_passbook", files.bank_passbook);
+    if (bank_passbook_ref.current.value) {
+      // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
+      submitForm.append("bank_passbook", files.bank_passbook);
     }
-    if(shop_photo_ref.current.value){
-        // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
-        submitForm.append("shop_photo", files.shop_photo);
+    if (shop_photo_ref.current.value) {
+      // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
+      submitForm.append("shop_photo", files.shop_photo);
     }
-    if(Electricity_bill_ref.current.value){
-        // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
-        submitForm.append("electric_bill", files.electric_bill);
+    if (Electricity_bill_ref.current.value) {
+      // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
+      submitForm.append("electric_bill", files.electric_bill);
     }
-    if(attached_Kyc_ref.current.value){
-        // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
-        files.attached_kyc.forEach((file) => {
-            submitForm.append("attached_kyc", file);
-          });
+    if (attached_Kyc_ref.current.value) {
+      // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
+      files.attached_kyc.forEach((file) => {
+        submitForm.append("attached_kyc", file);
+      });
     }
-
 
     // Append files
     // submitForm.append("attached_photo", files.attached_photo);
@@ -361,7 +371,12 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
         // "http://localhost:7777/api/auth/retailer/update_bankidForm",
         "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/update_bankidForm",
         submitForm,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       // alert(response.data.message);
       if (response.data.status == "Success") {
@@ -397,9 +412,8 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
         clearFileInput();
         setShowMarkEditModel(false);
         setIsRefresh((value) => !value);
-        
-        // dispatch(toggleRefresh());
 
+        // dispatch(toggleRefresh());
       } else {
         Swal.fire({
           title: "Error",
@@ -441,7 +455,13 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: pin.join("") }
+        { user_id: currentUser.userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {
@@ -906,19 +926,20 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
                           onChange={handleFileChange}
                           ref={attached_Kyc_ref}
                         />
-                         {preveiewfiles.attached_kyc.length > 0 && preveiewfiles?.attached_kyc
-                                          ?.split(",")
-                                          ?.map((kycurl, kycindx) => (
-                                            <div key={kycindx}>
-                                              <a
-                                                href={kycurl}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                              >
-                                                View Existing File {kycindx + 1}
-                                              </a>
-                                            </div>
-                                          ))}
+                        {preveiewfiles.attached_kyc.length > 0 &&
+                          preveiewfiles?.attached_kyc
+                            ?.split(",")
+                            ?.map((kycurl, kycindx) => (
+                              <div key={kycindx}>
+                                <a
+                                  href={kycurl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  View Existing File {kycindx + 1}
+                                </a>
+                              </div>
+                            ))}
                       </div>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
@@ -935,7 +956,7 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
                           onChange={handleFileChange}
                           ref={bank_passbook_ref}
                         />
-                         {preveiewfiles.bank_passbook && (
+                        {preveiewfiles.bank_passbook && (
                           <a
                             href={preveiewfiles.bank_passbook}
                             target="_blank"

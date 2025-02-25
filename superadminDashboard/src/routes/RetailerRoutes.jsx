@@ -985,7 +985,7 @@ const RetailerRoutes = () => {
                 )
               }
             />
-            <Route
+            {/* <Route
               path="/recharge-refund-report"
               element={
                 userStatus === "Pending" || userStatus === "Deactive" ? (
@@ -994,7 +994,7 @@ const RetailerRoutes = () => {
                   <RechargeRefundReport />
                 )
               }
-            />
+            /> */}
             <Route
               path="/my-commission"
               element={

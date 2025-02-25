@@ -15,11 +15,11 @@ import { useNavigate } from "react-router-dom";
 
 const PanForm = () => {
   const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
   const [fileError, setFileError] = useState("");
-    const [services,setServices] = useState([]);
+  const [services, setServices] = useState([]);
   const [selectOption, setSelectOption] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState(["", "", "", ""]);
@@ -29,10 +29,10 @@ const PanForm = () => {
   const [eStampAmount, setEStampAmount] = useState("");
   const [totalAmount, setTotalAmount] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
-  const attachFormRef = useRef(null)
-  const attachPhotoRef = useRef(null)
-  const attachSignRef = useRef(null)
-  const attachKycRef = useRef(null)
+  const attachFormRef = useRef(null);
+  const attachPhotoRef = useRef(null);
+  const attachSignRef = useRef(null);
+  const attachKycRef = useRef(null);
   const [formData, setFormData] = useState({
     applicant_name: "",
     applicant_father: "",
@@ -59,7 +59,6 @@ const PanForm = () => {
             Authorization: `Bearer ${token}`,
           },
         }
-
       );
       setServices(data.data);
       // setLoading(false);
@@ -68,9 +67,9 @@ const PanForm = () => {
       if (error?.response?.status == 401) {
         // alert("Your token is expired please login again")
         Swal.fire({
-                  icon: "error",
-                  title: "Your token is expired please login again",
-                });
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
         dispatch(clearUser());
         navigate("/");
       }
@@ -82,7 +81,13 @@ const PanForm = () => {
     const fetchPackage = async () => {
       try {
         const { data } = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         console.log(data.data);
         setPrices(data.data);
@@ -94,35 +99,34 @@ const PanForm = () => {
     fetchServices();
   }, []);
 
-   useEffect(()=>{
-        if(services){
-         
-          const purchaseBankIdService = services.find(
-            (item) => item.service_name === "Apply Offline Forms"
-          );
-        
-          if (purchaseBankIdService?.status === "Deactive") {
-            Swal.fire({
-              title: "This service is currently Not Available",
-              text: "Please try after some time",
-              icon: "error",
-            });
-            navigate("/dashboard");
-          }
-        }
-    },[services])
+  useEffect(() => {
+    if (services) {
+      const purchaseBankIdService = services.find(
+        (item) => item.service_name === "Apply Offline Forms"
+      );
+
+      if (purchaseBankIdService?.status === "Deactive") {
+        Swal.fire({
+          title: "This service is currently Not Available",
+          text: "Please try after some time",
+          icon: "error",
+        });
+        navigate("/dashboard");
+      }
+    }
+  }, [services]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     if (name === "eStampAmount") {
-      if(/^\d*$/.test(value)){
+      if (/^\d*$/.test(value)) {
         let parsedValue = parseInt(value, 10);
         parsedValue = isNaN(parsedValue) ? 0 : parsedValue; // Default to 0 if not a number
-  
+
         const parsedSelectedPrice = parseInt(selectedPrice, 10) || 0;
         const total = parsedValue + parsedSelectedPrice;
-  
+
         setEStampAmount(value); // Always update the input value to allow changes
         setFormData((prevFormData) => ({
           ...prevFormData,
@@ -130,18 +134,14 @@ const PanForm = () => {
           amount: total.toString(), // Calculate the total amount
         }));
       }
-   
-    }
-    else if(name === "applicant_number"){
-      
+    } else if (name === "applicant_number") {
       if (/^\d*$/.test(value)) {
         setFormData((prevData) => ({
           ...prevData,
           [name]: value,
         }));
       }
-    }
-     else {
+    } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
         [name]: value,
@@ -169,80 +169,81 @@ const PanForm = () => {
     }));
   }, [selectedPrice, eStampAmount, selectOption]);
 
-
   const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
-  const allowedTypes = ["image/jpeg", "image/jpg", "image/png" , "application/pdf"];
+  const allowedTypes = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "application/pdf",
+  ];
   const allowedPhoto = ["image/jpeg", "image/jpg", "image/png"];
   const handleFileChange = (e) => {
     const { name, files } = e.target;
     if (name === "attached_kyc") {
-       for (const file of files) {
-            if (file.size > MAX_FILE_SIZE) {
-              Swal.fire({
-                title: "File Too Large",
-                text: `The file "${file.name}" exceeds the 2 MB size limit. Please select smaller files.`,
-                icon: "error",
-              });
-              // Clear the file input
-              e.target.value = null;
-              return;
-            }
-            else if(!allowedTypes.includes(file.type)){
-      Swal.fire({
-                        icon: "error",
-                        title: "Invalid File Type",
-                        text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG , PDF are allowed.`,
-                      });
-                      e.target.value = null;
-                      return;
-            }
-           
-          }
-      setFormData({ ...formData, [name]: Array.from(files) });
-    } else if(name === "attached_photo" || name === "attached_sign"){
-     // For single file input
-     const file = files[0];
-     if (file) {
-       if (file.size > MAX_FILE_SIZE) {
-         Swal.fire({
-           title: "File Too Large",
-           text: `The file "${file.name}" exceeds the 2 MB size limit. Please select a smaller file.`,
-           icon: "error",
-         });
-    
-         // Clear the file input
-         e.target.value = null;
-         return;
-       }
-       else if(!allowedPhoto.includes(file.type)){
-        Swal.fire({
-          icon: "error",
-          title: "Invalid File Type",
-          text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG are allowed.`,
-        });
-        e.target.value = null;
-        return;
-       }
-       setFormData((prevFiles) => ({
-         ...prevFiles,
-         [name]: file,
-       }));
-     }
-      } else {
-        const file = files[0];
-        if (file) {
-          if (file.size > MAX_FILE_SIZE) {
-            Swal.fire({
-              title: "File Too Large",
-              text: `The file "${file.name}" exceeds the 2 MB size limit. Please select a smaller file.`,
-              icon: "error",
-            });
-       
-            // Clear the file input
-            e.target.value = null;
-            return;
-          }
+      for (const file of files) {
+        if (file.size > MAX_FILE_SIZE) {
+          Swal.fire({
+            title: "File Too Large",
+            text: `The file "${file.name}" exceeds the 2 MB size limit. Please select smaller files.`,
+            icon: "error",
+          });
+          // Clear the file input
+          e.target.value = null;
+          return;
+        } else if (!allowedTypes.includes(file.type)) {
+          Swal.fire({
+            icon: "error",
+            title: "Invalid File Type",
+            text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG , PDF are allowed.`,
+          });
+          e.target.value = null;
+          return;
         }
+      }
+      setFormData({ ...formData, [name]: Array.from(files) });
+    } else if (name === "attached_photo" || name === "attached_sign") {
+      // For single file input
+      const file = files[0];
+      if (file) {
+        if (file.size > MAX_FILE_SIZE) {
+          Swal.fire({
+            title: "File Too Large",
+            text: `The file "${file.name}" exceeds the 2 MB size limit. Please select a smaller file.`,
+            icon: "error",
+          });
+
+          // Clear the file input
+          e.target.value = null;
+          return;
+        } else if (!allowedPhoto.includes(file.type)) {
+          Swal.fire({
+            icon: "error",
+            title: "Invalid File Type",
+            text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG are allowed.`,
+          });
+          e.target.value = null;
+          return;
+        }
+        setFormData((prevFiles) => ({
+          ...prevFiles,
+          [name]: file,
+        }));
+      }
+    } else {
+      const file = files[0];
+      if (file) {
+        if (file.size > MAX_FILE_SIZE) {
+          Swal.fire({
+            title: "File Too Large",
+            text: `The file "${file.name}" exceeds the 2 MB size limit. Please select a smaller file.`,
+            icon: "error",
+          });
+
+          // Clear the file input
+          e.target.value = null;
+          return;
+        }
+      }
       setFormData({ ...formData, [name]: files[0] });
     }
   };
@@ -296,7 +297,7 @@ const PanForm = () => {
     }
   }, [currentUser]);
 
-  const clearFileInput = ()=>{
+  const clearFileInput = () => {
     if (attachFormRef.current) {
       attachFormRef.current.value = null;
     }
@@ -309,9 +310,7 @@ const PanForm = () => {
     if (attachKycRef.current) {
       attachKycRef.current.value = null;
     }
-   
-   
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -363,20 +362,25 @@ const PanForm = () => {
         `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/applyOfflineForm`,
         formDataObj,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       // alert(response.data.message);
       console.log(response);
       const resData = response?.data?.message;
       setIsLoading(false);
-      if(response.data.status == "Success"){
+      if (response.data.status == "Success") {
         Swal.fire({
           title: "Form Sumitted Success",
-          text: `${resData}` ||  "Other Services processed and wallet updated successfully.",
+          text:
+            `${resData}` ||
+            "Other Services processed and wallet updated successfully.",
           icon: "success",
         });
-  
+
         setFormData({
           applicant_name: "",
           applicant_father: "",
@@ -393,31 +397,31 @@ const PanForm = () => {
           attached_kyc: [],
           userId: currentUser?.userId,
         });
-  
+
         setEStampAmount("");
         setTotalAmount("");
         setSelectedPrice("");
         clearFileInput();
-  
+
         setPin(["", "", "", ""]);
         pinRefs.current[0]?.focus();
-      }
-      else{
+      } else {
         Swal.fire({
           title: "Something went wrong!",
-          text: response?.data?.message || "Something went wrong! Please Try again",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
           icon: "error",
         });
       }
-     
-      
     } catch (error) {
       // alert("An error occurred. Please try again.");
       console.log(error);
       setIsLoading(false);
       Swal.fire({
         title: "Something went wrong!",
-        text: error?.response?.data?.message || "Something went wrong! Please Try again",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
         icon: "error",
       });
     }
@@ -470,22 +474,24 @@ const PanForm = () => {
         // alert(response.data.message);
         Swal.fire({
           title: "Error verifying PIN",
-          text: response?.data?.message || "Something went wrong! Please Try again",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
           icon: "error",
         });
         return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
-      
+
       Swal.fire({
-              title: "Error verifying PIN",
-              text: error?.response?.data?.message || "Something went wrong! Please Try again",
-              icon: "error",
-            });
+        title: "Error verifying PIN",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
+        icon: "error",
+      });
       return false;
     }
-   
   };
 
   const handleModalSubmit = async (e) => {
@@ -582,9 +588,9 @@ const PanForm = () => {
                             className="form-control"
                             id="floatingInputGroup3"
                             pattern="[0-9]{10}"
-                    title="Mobile number should be 10 digits"
-                    maxLength={10}
-                    minLength={10}
+                            title="Mobile number should be 10 digits"
+                            maxLength={10}
+                            minLength={10}
                             name="applicant_number"
                             value={formData.applicant_number}
                             onChange={handleChange}
@@ -790,8 +796,12 @@ const PanForm = () => {
                     </div>
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="text-start mb-3">
-                        <button className="btn btn-primary p-2" type="submit"  disabled={isLoading}>
-                        {isLoading ? "Submit..." : "Submit"}
+                        <button
+                          className="btn btn-primary p-2"
+                          type="submit"
+                          disabled={isLoading}
+                        >
+                          {isLoading ? "Submit..." : "Submit"}
                         </button>
                       </div>
                     </div>
