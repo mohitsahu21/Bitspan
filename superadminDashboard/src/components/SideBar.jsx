@@ -305,6 +305,7 @@ import pancard from "../assets/Form_49A (1).pdf";
 import { clearUser } from "../redux/user/userSlice";
 import { RiBaseStationLine } from "react-icons/ri";
 import axios from "axios";
+import { FaWallet } from "react-icons/fa";
 
 const Nav = styled.div`
   background-color: #e4e4e1;
