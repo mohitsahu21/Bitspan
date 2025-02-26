@@ -564,10 +564,32 @@ const RetailerSidebarData = [
         path: "/recharge-refund-report",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+      // {
+      //   title: "My Commission",
+      //   path: "/my-commission",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
+    ],
+  },
+  {
+    title: "Commission",
+    path: "#",
+    icon: <FaHandHoldingUsd color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
       {
         title: "My Commission",
         path: "/my-commission",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        cName: "sub-nav",
+      },
+      {
+        title: "View All Commission History",
+        path: "/View-All-Commission-History",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        cName: "sub-nav",
       },
     ],
   },
@@ -761,7 +783,7 @@ const RetailerSidebarData = [
         path: "/uti-login-new",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
-    
+
       {
         title: "UTI 2.4 PAN Track",
         path: "https://www.trackpan.utiitsl.com/PANONLINE/#forward",
@@ -797,7 +819,7 @@ const RetailerSidebarData = [
         path: "/pan-status",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
-     
+
       {
         title: "NSDL PAN Transaction History",
         path: "/pan-transaction-report",
@@ -945,7 +967,7 @@ const RetailerSidebarData = [
       },
     ],
   },
-  
+
   {
     title: "Complaint",
     // path: "/training-video",
@@ -3351,7 +3373,6 @@ const Sider = () => {
     }
   }, [userId]);
 
-
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 1024) {
@@ -3523,7 +3544,7 @@ const Sider = () => {
                       );
                     })}
 
-                    {user == "SuperAdmin_Employee" &&
+                  {user == "SuperAdmin_Employee" &&
                     SuperAdminEmployeeData.map((item, index) => {
                       return (
                         <SubMenu

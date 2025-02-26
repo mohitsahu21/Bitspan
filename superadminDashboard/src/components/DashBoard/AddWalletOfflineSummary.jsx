@@ -27,7 +27,13 @@ const AddWalletOfflineSummary = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getWalletOffline/${userID}`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getWalletOffline/${userID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = response.data.data;
       console.log(data);
@@ -37,7 +43,6 @@ const AddWalletOfflineSummary = () => {
     } catch (error) {
       console.log(error);
       setLoading(false);
-
     }
   };
   console.log(allData);
@@ -148,7 +153,7 @@ const AddWalletOfflineSummary = () => {
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
-                          {loading ? (
+                            {loading ? (
                               <div className="d-flex justify-content-center">
                                 <Spinner animation="border" role="status">
                                   <span className="visually-hidden ">
@@ -158,58 +163,67 @@ const AddWalletOfflineSummary = () => {
                               </div>
                             ) : (
                               <>
-                            <table class="table table-striped">
-                              <thead className="table-dark">
-                                <tr>
-                                  <th scope="col">Date</th>
-                                  <th scope="col">Order ID</th>
-                                  {/* <th scope="col">User ID</th>
+                                <table class="table table-striped">
+                                  <thead className="table-dark">
+                                    <tr>
+                                      <th scope="col">#</th>
+                                      <th scope="col">Date</th>
+                                      <th scope="col">Order ID</th>
+                                      {/* <th scope="col">User ID</th>
                                   <th scope="col">User Type</th>
                                   <th scope="col">Full Name</th> */}
-                                  <th scope="col">Amount</th>
-                                  <th scope="col">Payment Mode</th>
-                                  <th scope="col">Transaction Reference</th>
-                                  <th scope="col">Receiept Attechment</th>
-                                  <th scope="col">Status</th>
-                                  <th scope="col">Remark</th>
-                                  <th scope="col">Process Date</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {displayData.length > 0 ? (
-                                  displayData.map((item) => (
-                                    <tr key={item.id}>
-                                      <td>{item.created_at}</td>
-                                      <td>{item.order_id}</td>
-                                      {/* <td>{item.user_id}</td>
+                                      <th scope="col">Amount</th>
+                                      <th scope="col">Payment Mode</th>
+                                      <th scope="col">Transaction Reference</th>
+                                      <th scope="col">Receiept Attechment</th>
+                                      <th scope="col">Status</th>
+                                      <th scope="col">Remark</th>
+                                      <th scope="col">Process Date</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {displayData.length > 0 ? (
+                                      displayData.map((item, index) => (
+                                        <tr key={(item.id, index)}>
+                                          <td>
+                                            {currentPage * complaintsPerPage +
+                                              index +
+                                              1}
+                                          </td>
+                                          <td>{item.created_at}</td>
+                                          <td>{item.order_id}</td>
+                                          {/* <td>{item.user_id}</td>
                                       <td>{item.userRole}</td>
                                       <td>{item.userName}</td> */}
-                                      <td>{item.amount}</td>
-                                      <td>{item.Payment_Mode}</td>
-                                      <td>{item.Transaction_Reference}</td>
-                                      <td>
-                                        <Link
-                                          to={item.Receiept_Attechment}
-                                          target="blank"
+                                          <td>{item.amount}</td>
+                                          <td>{item.Payment_Mode}</td>
+                                          <td>{item.Transaction_Reference}</td>
+                                          <td>
+                                            <Link
+                                              to={item.Receiept_Attechment}
+                                              target="blank"
+                                            >
+                                              View
+                                            </Link>
+                                          </td>
+                                          <td>{item.status}</td>
+                                          <td>{item.remark}</td>
+                                          <td>{item.process_date}</td>
+                                        </tr>
+                                      ))
+                                    ) : (
+                                      <tr>
+                                        <td
+                                          colSpan="10"
+                                          className="text-center"
                                         >
-                                          View
-                                        </Link>
-                                      </td>
-                                      <td>{item.status}</td>
-                                      <td>{item.remark}</td>
-                                      <td>{item.process_date}</td>
-                                    </tr>
-                                  ))
-                                ) : (
-                                  <tr>
-                                    <td colSpan="10" className="text-center">
-                                      No results found
-                                    </td>
-                                  </tr>
-                                )}
-                              </tbody>
-                            </table>
-                            </>
+                                          No results found
+                                        </td>
+                                      </tr>
+                                    )}
+                                  </tbody>
+                                </table>
+                              </>
                             )}
                           </div>
                           <PaginationContainer>

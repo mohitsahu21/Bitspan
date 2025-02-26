@@ -284,6 +284,9 @@ const SambalHistory = lazy(() =>
   import("../components/DashBoard/SambalHistory")
 );
 const CoupanForm = lazy(() => import("../components/DashBoard/CoupanForm"));
+const RtAllCommissionHistory = lazy(() =>
+  import("../components/DashBoard/RtAllCommissionHistory")
+);
 
 const RetailerRoutes = () => {
   const { currentUser, token } = useSelector((state) => state.user);
@@ -392,6 +395,34 @@ const RetailerRoutes = () => {
       </Wrapper>
     );
   }
+
+  console.log("Current User:", currentUser);
+
+  // const [userRelation, setUserRelation] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchUserRelation = async () => {
+  //     try {
+  //       const resposne = await axios.get(
+  //         `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${currentUser.userId}`,
+  //         {
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+  //       const userData = resposne.data.data;
+  //       setUserRelation(userData);
+  //       console.log(userData);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   fetchUserRelation();
+  // }, [currentUser.userId]);
+
+  // console.log(userRelation);
 
   return (
     <>
@@ -1229,6 +1260,17 @@ const RetailerRoutes = () => {
                   <Navigate to="/update-profile" />
                 ) : (
                   <CoupanForm />
+                )
+              }
+            />
+
+            <Route
+              path="/View-All-Commission-History"
+              element={
+                userStatus === "Pending" || userStatus === "Deactive" ? (
+                  <Navigate to="/update-profile" />
+                ) : (
+                  <RtAllCommissionHistory />
                 )
               }
             />

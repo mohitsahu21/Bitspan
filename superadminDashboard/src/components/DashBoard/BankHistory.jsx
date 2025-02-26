@@ -169,7 +169,7 @@ const BankHistory = () => {
                                 <table class="table table-striped">
                                   <thead className="table-dark">
                                     <tr>
-                                      <th scope="col">Sr.No</th>
+                                      <th scope="col">#</th>
                                       <th scope="col">Date</th>
                                       <th scope="col">Order ID</th>
                                       <th scope="col">Name</th>
@@ -197,7 +197,11 @@ const BankHistory = () => {
                                     {showApiData.length > 0 ? (
                                       showApiData.map((data, index) => (
                                         <tr key={index}>
-                                          <td>{index + 1}</td>
+                                          <th scope="row">
+                                            {currentPage * complaintsPerPage +
+                                              index +
+                                              1}
+                                          </th>
                                           <td>{data.created_at}</td>
                                           <td>{data.order_id}</td>
                                           <td>{data.applicant_name}</td>

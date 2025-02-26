@@ -461,11 +461,25 @@ const PanForm = () => {
   };
 
   const verifyPin = async () => {
+    if (!currentUser.userId || !pin) {
+      return Swal.fire({
+        title: "Error",
+        text: "Please enter your pin and login to your account",
+        icon: "error",
+      });
+    }
+
     try {
       const response = await axios.post(
         // `http://localhost:7777/api/auth/log-reg/verify-pin`,
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: pin.join("") }
+        { user_id: currentUser.userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {

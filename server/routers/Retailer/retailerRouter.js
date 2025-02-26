@@ -61,6 +61,10 @@ const {
   getAllMonthRechargeOffline,
   getTodaysRechargeOffline,
   getTodaysRecharge,
+  getAllCommission,
+  getCertificateDetails,
+  getSuperAdminData,
+  getWhiteLableData,
 } = require("../../controllers/Retailer/retailerController");
 const authenticateToken = require("../../middleware/authenticateToken");
 
@@ -371,5 +375,9 @@ router.get(
   getTodaysRechargeOffline
 );
 router.get("/getTodaysRecharge/:userId", authenticateToken, getTodaysRecharge);
+router.get("/getAllCommission/:userId", authenticateToken, getAllCommission);
+router.get("/certificateDetails/:userId", getCertificateDetails);
+router.get("/getSuperAdminData", getSuperAdminData);
+router.get("/getWhiteLableData/:whiteLabelId", getWhiteLableData);
 
 module.exports = router;

@@ -38,6 +38,8 @@ const AllPanForm = () => {
         }
       );
 
+      console.log(response.data);
+
       const newResponseData = response.data.filter(
         (item) => item.applicant_select_service !== "New Bank ID"
       );
@@ -238,7 +240,7 @@ const AllPanForm = () => {
                                 <table class="table table-striped">
                                   <thead className="table-dark">
                                     <tr>
-                                      <th scope="col">Sr.No</th>
+                                      <th scope="col">#</th>
                                       <th scope="col">Date</th>
                                       <th scope="col">Order ID</th>
                                       <th scope="col">Applicant Name</th>
@@ -260,7 +262,11 @@ const AllPanForm = () => {
                                     {displayData?.length > 0 ? (
                                       displayData.map((item, index) => (
                                         <tr key={index}>
-                                          <th scope="row">{index + 1}</th>
+                                          <th scope="row">
+                                            {currentPage * complaintsPerPage +
+                                              index +
+                                              1}
+                                          </th>
                                           <td>{item.created_at}</td>
                                           <td>{item.order_id}</td>
                                           <td>{item.applicant_name}</td>

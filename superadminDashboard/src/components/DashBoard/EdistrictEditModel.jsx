@@ -163,6 +163,7 @@ const EdistrictEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     }
     setFiles(e.target.files);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -242,6 +243,87 @@ const EdistrictEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
   };
 
   // Pin Verification Logic **
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+  //   const data = new FormData();
+
+  //   // Append form data fields
+  //   Object.keys(formData).forEach((key) => data.append(key, formData[key]));
+
+  //   // Append files to FormData
+  //   if (files.documentUpload.length > 0) {
+  //     files.documentUpload.forEach((file) => {
+  //       data.append("documentUpload", file);
+  //     });
+  //   }
+
+  //   try {
+  //     const response = await axios.put(
+  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/UpdateeDistrictFormData",
+  //       data,
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+
+  //     if (response?.data?.status === "Success") {
+  //       Swal.fire({
+  //         title: "Form Submitted Successfully",
+  //         text: response?.data?.message,
+  //         icon: "success",
+  //       });
+
+  //       // Reset form state
+  //       setFormData({
+  //         application_type: "",
+  //         samagar: "",
+  //         gender: "",
+  //         name: "",
+  //         father_husband_name: "",
+  //         dob: "",
+  //         address: "",
+  //         mobile_no: "",
+  //         cast: "",
+  //         aadhar_no: "",
+  //         samagar_member_id: "",
+  //         state: "",
+  //         annual_income: "",
+  //         previous_application: "",
+  //         amount: "",
+  //         userId: currentUser.userId,
+  //         status: "Pending",
+  //       });
+
+  //       setFiles({ documentUpload: [] }); // Clear files state
+  //       preveiewSetFiles({ documentUpload: [] }); // Clear preview files
+  //       setShowMarkEditModel(false);
+  //       setIsRefresh((value) => !value);
+  //       if (kycRef.current) {
+  //         kycRef.current.value = null;
+  //       }
+  //     } else {
+  //       Swal.fire({
+  //         title: "Error",
+  //         text: response?.data?.message || "Something went wrong!",
+  //         icon: "error",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     Swal.fire({
+  //       title: "Error",
+  //       text: error?.response?.data?.message || "Something went wrong!",
+  //       icon: "error",
+  //     });
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const handlePinChange = (index, value) => {
     if (/^\d?$/.test(value)) {

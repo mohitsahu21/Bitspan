@@ -233,7 +233,7 @@ const Edistrict = () => {
                                 <table class="table table-striped">
                                   <thead className="table-dark">
                                     <tr>
-                                      <th scope="col">Sr.No</th>
+                                      <th scope="col">#</th>
                                       <th scope="col">Order ID</th>
                                       <th scope="col">Applicant For</th>
                                       <th scope="col">Applicant Type</th>
@@ -261,7 +261,11 @@ const Edistrict = () => {
                                     {displayData.length > 0 ? (
                                       displayData?.map((item, index) => (
                                         <tr key={index}>
-                                          <th scope="row">{index + 1}</th>
+                                          <th scope="row">
+                                            {currentPage * complaintsPerPage +
+                                              index +
+                                              1}
+                                          </th>
                                           <td>{item.order_id}</td>
                                           <td>{item.application_type}</td>
                                           <td>{item.samagar}</td>

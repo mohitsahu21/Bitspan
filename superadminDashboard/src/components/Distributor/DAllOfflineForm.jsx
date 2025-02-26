@@ -1,8 +1,110 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BiHomeAlt } from "react-icons/bi";
 import styled from "styled-components";
+import { Dropdown, DropdownButton } from "react-bootstrap";
+import axios from "axios";
+import ReactPaginate from "react-paginate";
+import { useDispatch, useSelector } from "react-redux";
 
 const DAllOfflineForm = () => {
+  const [formData, setFormData] = useState([]);
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("All");
+  const [loading, setLoading] = useState(false);
+  const complaintsPerPage = 10; // Set items per page
+  const [currentPage, setCurrentPage] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
+  const userId = useSelector((state) => state.user.currentUser?.userId);
+  const { token } = useSelector((state) => state.user);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getApplyOfflineFormById/${userId}`,
+        // `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApplyOfflineForm`
+
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const newResponseData = response.data.filter(
+        (item) => item.applicant_select_service !== "New Bank ID"
+      );
+
+      setFormData(newResponseData);
+      console.log(newResponseData);
+    } catch (error) {
+      console.log(error);
+      // Check if the error is due to token expiration (401)
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired. Please login again.",
+        });
+        dispatch(clearUser()); // Clear user session
+        navigate("/"); // Redirect to login page
+      } else {
+        // Handle other errors (optional)
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "An error occurred while fetching data.",
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [fromDate, toDate]);
+
+  const handleSearch = () => {
+    fetchData();
+  };
+
+  console.log(formData);
+
+  const filteredData = formData?.filter((item) => {
+    const createdAtDate = item.created_at ? new Date(item.created_at) : null;
+    const fromDateObj = fromDate ? new Date(fromDate) : null;
+    const toDateObj = toDate ? new Date(toDate) : null;
+
+    const matchesSearch =
+      item.applicant_name
+        ?.toLowerCase()
+        ?.includes(searchQuery?.toLowerCase()) ||
+      item.applicant_number
+        ?.toLowerCase()
+        ?.includes(searchQuery?.toLowerCase()) ||
+      item.order_id?.toLowerCase()?.includes(searchQuery?.toLowerCase());
+    const matchesStatus =
+      selectedStatus === "All" ||
+      item.status?.toLowerCase() === selectedStatus?.toLowerCase();
+    const matchesDate =
+      (!fromDateObj || (createdAtDate && createdAtDate >= fromDateObj)) &&
+      (!toDateObj || (createdAtDate && createdAtDate <= toDateObj));
+
+    return matchesSearch && matchesStatus && matchesDate;
+  });
+
+  const totalPages = Math.ceil(filteredData.length / complaintsPerPage);
+
+  const paginateData = () => {
+    const startIndex = currentPage * complaintsPerPage;
+    const endIndex = startIndex + complaintsPerPage;
+    return filteredData.slice(startIndex, endIndex);
+  };
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
+  const displayData = paginateData();
+
   return (
     <>
       <Wrapper>
@@ -39,12 +141,48 @@ const DAllOfflineForm = () => {
                         <div className="d-flex flex-column flex-md-row gap-3">
                           <div className="col-12 col-md-4 col-lg-3">
                             <label for="fromDate" className="form-label">
+                              Search
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control responsive-input"
+                              // placeholder="Search by Name, Mobile, or Order ID"
+                              placeholder="Search by  Order ID"
+                              value={searchQuery}
+                              onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                          </div>
+                          <div className="col-12 col-md-4 col-lg-3 d-flex align-items-end">
+                            <DropdownButton
+                              id="dropdown-basic-button"
+                              title={selectedStatus}
+                              onSelect={(e) => setSelectedStatus(e)}
+                            >
+                              <Dropdown.Item eventKey="All">All</Dropdown.Item>
+                              <Dropdown.Item eventKey="Success">
+                                Success
+                              </Dropdown.Item>
+                              <Dropdown.Item eventKey="Reject">
+                                Reject
+                              </Dropdown.Item>
+                              <Dropdown.Item eventKey="Pending">
+                                Pending
+                              </Dropdown.Item>
+                            </DropdownButton>
+                          </div>
+                        </div>
+
+                        <div className="d-flex flex-column flex-md-row gap-3">
+                          <div className="col-12 col-md-4 col-lg-3">
+                            <label for="fromDate" className="form-label">
                               From
                             </label>
                             <input
                               id="fromDate"
                               className="form-control"
                               type="date"
+                              value={fromDate}
+                              onChange={(e) => setFromDate(e.target.value)}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -55,16 +193,14 @@ const DAllOfflineForm = () => {
                               id="toDate"
                               className="form-control "
                               type="date"
+                              value={toDate}
+                              onChange={(e) => setToDate(e.target.value)}
                             />
                           </div>
-                          <div className="d-flex align-items-end">
-                            <button
-                              type="button"
-                              className="btn btn-primary button"
-                            >
-                              Search
-                            </button>
-                          </div>
+
+                          {/* <div className="d-flex align-items-end">
+                                                        <button type="button" className="btn btn-primary button">Search</button>
+                                                    </div> */}
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -73,36 +209,87 @@ const DAllOfflineForm = () => {
                               <thead className="table-dark">
                                 <tr>
                                   <th scope="col">Sr.No</th>
-                                  <th scope="col">Applicant Name</th>
-                                  <th scope="col">Applicant Email</th>
-                                  <th scope="col">Applicant Number</th>
-                                  <th scope="col">Remark</th>
-                                  <th scope="col">View Form</th>
+                                  <th scope="col">Date</th>
+                                  <th scope="col">Order ID</th>
+                                  {/* <th scope="col">Applicant Name</th>
+                                  <th scope="col">Applicant Father Name</th>
+                                  <th scope="col">Applicant Number</th> */}
+                                  <th scope="col">Service</th>
+                                  <th scope="col">other</th>
+                                  {/* <th scope="col">View Form</th>
+                                  <th scope="col">View Photo</th>
+                                  <th scope="col">View Signature</th>
+                                  <th scope="col">View KYC</th> */}
+                                  <th scope="col">Status</th>
+                                  <th scope="col">Note</th>
                                 </tr>
                               </thead>
-                              {/* <tbody>
-                                                                <tr>
-                                                                    <th scope="row">Refund</th>
-                                                                    <td>23/05/2024 14:35:58</td>
-                                                                    <td>PAN465484654</td>
-                                                                    <td>NSDL464444416785165</td>
-                                                                    <td>EKYC 49A</td>
-                                                                    <td>Individual</td> 
-                                                                    <td>107.00</td>
-                                                                    <td>Mohit Sahu</td>
-                                                                    <td>30/05/2000</td>
-                                                                    <td>M</td>
-                                                                    <td>9856325698</td>
-                                                                    <td>mohitsahu@gmail.com</td>
-                                                                    <td>SUCCESS</td>
-                                                                    <td>Transaction Successfull</td>
-                                                                </tr>
-                                                               
-
-                                                            </tbody> */}
+                              <tbody>
+                                {loading ? (
+                                  <>
+                                    <p>Loading...</p>
+                                  </>
+                                ) : (
+                                  <>
+                                    {displayData.map((item, index) => (
+                                      <tr key={index}>
+                                        <th scope="row">{index + 1}</th>
+                                        <td>{item.created_at}</td>
+                                        <td>{item.order_id}</td>
+                                        {/* <td>{item.applicant_name}</td>
+                                        <td>{item.applicant_father}</td>
+                                        <td>{item.applicant_number}</td> */}
+                                        <td>{item.applicant_select_service}</td>
+                                        <td>{item.other}</td>
+                                        {/* <td>
+                                          <a
+                                            href={item.attached_form}
+                                            target="_blank"
+                                          >
+                                            View Form
+                                          </a>
+                                        </td>
+                                        <td>
+                                          <a
+                                            href={item.attached_photo}
+                                            target="_blank"
+                                          >
+                                            View Photo
+                                          </a>
+                                        </td>
+                                        <td>
+                                          <a
+                                            href={item.attached_sign}
+                                            target="_blank"
+                                          >
+                                            View Sign
+                                          </a>
+                                        </td>
+                                        <td>
+                                          {item?.attached_kyc
+                                            ?.split(",")
+                                            ?.map((kycurl, kycindx) => (
+                                              <div key={kycindx}>
+                                                <a
+                                                  href={kycurl}
+                                                  target="_blank"
+                                                  rel="noopener noreferrer"
+                                                >
+                                                  View KYC {kycindx + 1}
+                                                </a>
+                                              </div>
+                                            ))}
+                                        </td> */}
+                                        <td>{item.status}</td>
+                                        <td>{item.note}</td>
+                                      </tr>
+                                    ))}
+                                  </>
+                                )}
+                              </tbody>
                             </table>
                           </div>
-                          <div className="float-end">
+                          {/* <div className="float-end">
                             <nav aria-label="Page navigation example">
                               <ul className="pagination">
                                 <li className="page-item">
@@ -123,7 +310,20 @@ const DAllOfflineForm = () => {
                                 </li>
                               </ul>
                             </nav>
-                          </div>
+                          </div> */}
+                          <PaginationContainer>
+                            <ReactPaginate
+                              previousLabel={"Previous"}
+                              nextLabel={"Next"}
+                              breakLabel={"..."}
+                              pageCount={totalPages}
+                              marginPagesDisplayed={2}
+                              pageRangeDisplayed={3}
+                              onPageChange={handlePageChange}
+                              containerClassName={"pagination"}
+                              activeClassName={"active"}
+                            />
+                          </PaginationContainer>
                         </div>
                       </div>
                     </div>
@@ -168,6 +368,93 @@ const Wrapper = styled.div`
   @media (min-width: 1500px) {
     .formdata {
       padding-left: 13rem;
+    }
+  }
+`;
+
+const PaginationContainer = styled.div`
+  .pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    list-style: none;
+    border-radius: 5px;
+  }
+
+  .pagination li {
+    margin: 0 5px;
+  }
+
+  .pagination li a {
+    display: block;
+    padding: 8px 16px;
+    border: 1px solid #e6ecf1;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 1px #000;
+    font-size: 14px; /* Default font size */
+  }
+
+  .pagination li.active a {
+    background-color: #004aad;
+    color: white;
+    border: 1px solid #004aad;
+  }
+
+  .pagination li.disabled a {
+    color: white;
+    cursor: not-allowed;
+    background-color: #3a4e69;
+    border: 1px solid #3a4e69;
+  }
+
+  .pagination li a:hover:not(.active) {
+    background-color: #004aad;
+    color: white;
+  }
+
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .pagination {
+      padding: 5px;
+      flex-wrap: wrap;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pagination {
+      padding: 5px;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 4px 8px;
+      font-size: 10px;
+    }
+
+    /* Hide the previous and next labels for extra-small screens */
+    .pagination li:first-child a::before {
+      content: "«";
+      margin-right: 5px;
+    }
+
+    .pagination li:last-child a::after {
+      content: "»";
+      margin-left: 5px;
     }
   }
 `;
