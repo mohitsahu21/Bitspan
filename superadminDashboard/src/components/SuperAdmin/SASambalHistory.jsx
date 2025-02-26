@@ -1587,8 +1587,8 @@ const SASambalHistory = () => {
                                               <td>{item.user_id}</td>
                                               <td>{item.UserName}</td>
                                               <td>{item.ContactNo}</td>
-                                              <td>{item.amount}</td>
                                               <td>{item.note}</td>
+                                              <td>{item.amount}</td>
                                               <td>{item.status}</td>
 
                                              

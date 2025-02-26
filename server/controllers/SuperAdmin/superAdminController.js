@@ -594,6 +594,86 @@ const getAllUsers = (req, res) => {
   }
 };
 
+const getWhiteLabelWebisiteJoinUsers = (req, res) => {
+  try {
+    // const sql =
+    //   "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE role NOT IN ('SuperAdmin_Employee', 'SuperAdmin')";
+    // const sql =
+    //   "SELECT  * FROM userprofile WHERE created_By_User_Role = 'WhiteLabel' AND 	paymentMode = 'Online Payment'" ;
+
+    // const sql =  "SELECT  u.*, p.Retailer_Joining_Price, p.Distributor_Joining_Price, p.Super_Distributor_Joining_Price, p.White_Label_Joining_Price FROM userprofile u LEFT JOIN white_label_website_setting p ON u.created_By_User_Id = p.whiteLabel_id WHERE created_By_User_Role = 'WhiteLabel' AND paymentMode = 'Online Payment'";
+
+    const sql = `
+SELECT  
+    u.*, 
+    p.Retailer_Joining_Price, 
+    p.Distributor_Joining_Price, 
+    p.Super_Distributor_Joining_Price, 
+    p.White_Label_Joining_Price,
+    wl_package.package_name AS WhiteLabel_Package_Name,
+    wl_package.id AS WhiteLabel_Package_ID,
+    wl_package.whitelabel_joining_price AS whiteLabel_Package_price,
+    wl_package.retailer_joining_price AS retailer_Package_price,
+    wl_package.superDistributor_joining_price AS superDistributor_Package_price,
+    wl_package.distributor_joining_price AS distributor_Package_price
+FROM 
+    userprofile u 
+LEFT JOIN 
+    white_label_website_setting p 
+    ON u.created_By_User_Id = p.whiteLabel_id 
+LEFT JOIN 
+    userprofile wl 
+    ON u.created_By_User_Id = wl.UserId 
+LEFT JOIN 
+    packagestable wl_package 
+    ON wl.package_Id = wl_package.id 
+WHERE 
+    u.created_By_User_Role = 'WhiteLabel' 
+    AND u.paymentMode = 'Online Payment'
+    ORDER BY id DESC
+`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error fetching Deactive users from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error fetching users" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No Deactive users found",
+          });
+        } else {
+          // Remove the password field from each user object
+          const sanitizedResult = result.map(({ password, ...rest }) => rest);
+
+          return res.status(200).json({
+            success: true,
+            data: sanitizedResult,
+            message: "Users fetched successfully",
+          });
+
+         
+          const whiteLabelPackage1 =     "SELECT u.*, up.package_name AS userPackageName, wp.package_name AS whiteLabelPackageName FROM userprofile u LEFT JOIN packagestable up  ON u.package_Id = up.id  LEFT JOIN packagestable wp ON u.createdbywhitebaleid = wp.id  WHERE  u.created_By_User_Role = 'WhiteLabel' AND wp.package_for = 'WhiteLabel'";
+
+
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching users from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching users",
+      error: error.message,
+    });
+  }
+};
+
 const editPackage = (req, res) => {
   try {
     const {
@@ -7982,6 +8062,545 @@ const SAGetContactUs = async (req, res) => {
   }
 };
 
+const AddCommisionForWhiteLabelJoinUser = (req, res) => {
+  try {
+    const { userId, amount, Transaction_details, status ,JoinUserId } = req.body;
+
+    // Validate `order_id`: Check for undefined, null, or invalid value
+    if (!status || !userId || !JoinUserId || !Transaction_details) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing User id",
+      });
+    }
+
+    // Validate `refundAmount`: Check for undefined, null, or invalid number
+    if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing amount",
+      });
+    }
+
+    const AmountNumber = parseFloat(amount);
+
+    const Transaction_Type = "Credit";
+    const transaction_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+    const Order_Id = `ORW${Date.now()}`;
+    const Transaction_Id = `TXNW${Date.now()}`;
+    const process_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+
+    // Query to get the user's current closing balance from the user_wallet table
+    const getClosingBalanceQuery = `SELECT Closing_Balance FROM user_wallet WHERE userId = ? ORDER BY wid DESC LIMIT 1`;
+
+    db.query(getClosingBalanceQuery, [userId], (error, results) => {
+      if (error) {
+        console.error("Error fetching closing balance:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to fetch closing balance",
+        });
+      }
+
+      // if (results.length === 0) {
+      //   return res.status(404).json({
+      //     success: false,
+      //     message: "Wallet Add Money Request not found",
+      //   });
+      // }
+
+      console.log(results);
+      const old_balance = results.length != 0 ? results[0].Closing_Balance : 0;
+
+      // Ensure `old_balance` is a valid number
+      if (isNaN(old_balance)) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid closing balance in user wallet",
+        });
+      }
+
+      const opening_balance = Number(old_balance);
+      const credit_amount = AmountNumber;
+      const debit_amount = 0;
+      let new_balance = credit_amount + opening_balance;
+
+      // Ensure all calculated balances are valid numbers
+      if (
+        isNaN(opening_balance) ||
+        isNaN(credit_amount) ||
+        isNaN(new_balance)
+      ) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid balance calculations",
+        });
+      }
+      new_balance = parseFloat(new_balance.toFixed(2)); // Convert back to a number
+
+      // SQL query to update the user_wallet table with new balance
+
+      const sql2 = `INSERT INTO user_wallet (userId, transaction_date, Order_Id , Transaction_Id , Opening_Balance, Closing_Balance , credit_amount, debit_amount,Transaction_Type,Transaction_details ,status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)`;
+      const values2 = [
+        userId,
+        transaction_date,
+        Order_Id,
+        Transaction_Id,
+        opening_balance,
+        new_balance,
+        credit_amount,
+        debit_amount,
+        Transaction_Type,
+        Transaction_details,
+        status,
+      ];
+
+      db.query(sql2, values2, (error, results) => {
+        if (error) {
+          console.error("Error inserting into user_wallet:", error);
+          return res.status(500).json({
+            success: false,
+            error: "Failed to inserting into the user_wallet",
+          });
+        }
+
+        // return res.status(200).json({
+        //   success: true,
+        //   message: "Add wallet Money Direct Success",
+        // });
+        const White_Label_Commission_Status = "Credit" 
+        const sql3 = `UPDATE userprofile SET White_Label_Commission_Status	 = ?  WHERE UserId = ?`;
+        const values3 = [White_Label_Commission_Status,JoinUserId];
+        db.query(sql3, values3, (error, results) => {
+          if (error) {
+            console.error("Error updating package:", error);
+            return res
+              .status(500)
+              .json({ success: false, error: "Failed to Credit the Commission" });
+          }
+    
+          if (results.affectedRows === 0) {
+            return res
+              .status(404)
+              .json({ success: false, message: "user not found" });
+          }
+        return res.status(200).json({
+          success: true,
+          message: "Credit Commission Success",
+        });
+        })
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const SuccessNSDLForm = (req, res) => {
+  try {
+    const { order_id, note, status ,process_by_userId	} = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+    const commissionStatus = "Credit"
+    // SQL query to update the package details
+    const sql = `UPDATE nsdlpan SET note = ? , status = ? , Commission_Status = ? , process_by_userId = ? , updated_at = ? WHERE orderid = ?`;
+
+    const values = [note, status,commissionStatus,process_by_userId,updatedAt, order_id];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error Updating Nsdl Form:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating  Nsdl Form",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Nsdl form not found" });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "updating  Nsdl Form successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+const rejectNSDLForm = (req, res) => {
+  try {
+    const {
+      order_id,
+      note,
+      status,
+      user_id,
+      refundAmount,
+      Transaction_details,
+      process_by_userId
+    } = req.body;
+
+    // Validate `order_id`: Check for undefined, null, or invalid value
+    if (
+      !order_id ||
+      typeof order_id !== "string" ||
+      order_id.trim() === "" ||
+      !status ||
+      !user_id ||
+      !process_by_userId
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing order_id",
+      });
+    }
+
+    // Validate `refundAmount`: Check for undefined, null, or invalid number
+    if (
+      refundAmount == null ||
+      isNaN(parseFloat(refundAmount)) ||
+      parseFloat(refundAmount) < 0
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing refund amount",
+      });
+    }
+
+    const refundAmountNumber = parseFloat(refundAmount);
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+    const Transaction_Id = `TXNW${Date.now()}`;
+    const Transaction_Type = "Credit";
+    const Transaction_status = "Success";
+    const transaction_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE nsdlpan SET note = ? , status = ? ,process_by_userId = ? , updated_at = ?   WHERE orderid = ?`;
+ 
+    const values = [note, status,process_by_userId,updatedAt, order_id];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating rejectNSDLForm:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating rejectNSDLForm",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "rejectNSDLForm not found" });
+      }
+
+      // return res.status(200).json({
+      //   success: true,
+      //   message: "updating rejectSambalForm successfully",
+      // });
+
+      const getClosingBalanceQuery = `SELECT Closing_Balance FROM user_wallet WHERE userId = ? ORDER BY wid DESC LIMIT 1`;
+
+      db.query(getClosingBalanceQuery, [user_id], (error, results) => {
+        if (error) {
+          console.error("Error fetching closing balance:", error);
+          return res.status(500).json({
+            success: false,
+            error: "Failed to fetch closing balance",
+          });
+        }
+
+        // if (results.length === 0) {
+        //   return res.status(404).json({
+        //     success: false,
+        //     message: "Wallet Add Money Request not found",
+        //   });
+        // }
+
+        const old_balance =
+          results.length != 0 ? results[0].Closing_Balance : 0;
+
+        // Ensure `old_balance` is a valid number
+        if (isNaN(old_balance)) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid closing balance in user wallet",
+          });
+        }
+        const opening_balance = Number(old_balance);
+        const credit_amount = refundAmountNumber;
+        const debit_amount = 0;
+        const new_balance = credit_amount + opening_balance;
+        // Ensure all calculated balances are valid numbers
+        if (
+          isNaN(opening_balance) ||
+          isNaN(credit_amount) ||
+          isNaN(new_balance)
+        ) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid balance calculations",
+          });
+        }
+
+        const new_balance_final = parseFloat(new_balance.toFixed(2)); // Ensure `new_balance` remains a number
+
+        // SQL query to update the user_wallet table with new balance
+
+        const sql2 = `INSERT INTO user_wallet (userId, transaction_date, Order_Id , Transaction_Id , Opening_Balance, Closing_Balance , credit_amount, debit_amount,Transaction_Type,Transaction_details ,status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)`;
+        const values2 = [
+          user_id,
+          transaction_date,
+          order_id,
+          Transaction_Id,
+          opening_balance,
+          new_balance_final,
+          credit_amount,
+          debit_amount,
+          Transaction_Type,
+          Transaction_details,
+          Transaction_status,
+        ];
+
+        db.query(sql2, values2, (error, results) => {
+          if (error) {
+            console.error("Error inserting into user_wallet:", error);
+            return res.status(500).json({
+              success: false,
+              error: "Failed to inserting refund amount into the user_wallet",
+            });
+          }
+
+          return res.status(200).json({
+            success: true,
+            message: "Reject the form and refund money successfully",
+          });
+        });
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const SuccessNSDLCorrectionForm = (req, res) => {
+  try {
+    const { order_id, note, status ,process_by_userId	} = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+    const commissionStatus = "Credit"
+    // SQL query to update the package details
+    const sql = `UPDATE nsdlpancorrection SET note = ? , status = ? , Commission_Status = ? , process_by_userId = ? , updated_at = ? WHERE orderid = ?`;
+
+    const values = [note, status,commissionStatus,process_by_userId,updatedAt, order_id];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error Updating Nsdl Form:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating  Nsdl Form",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Nsdl form not found" });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "updating  Nsdl Form successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+const rejectNSDLCorrectionForm = (req, res) => {
+  try {
+    const {
+      order_id,
+      note,
+      status,
+      user_id,
+      refundAmount,
+      Transaction_details,
+      process_by_userId
+    } = req.body;
+
+    // Validate `order_id`: Check for undefined, null, or invalid value
+    if (
+      !order_id ||
+      typeof order_id !== "string" ||
+      order_id.trim() === "" ||
+      !status ||
+      !user_id ||
+      !process_by_userId
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing order_id",
+      });
+    }
+
+    // Validate `refundAmount`: Check for undefined, null, or invalid number
+    if (
+      refundAmount == null ||
+      isNaN(parseFloat(refundAmount)) ||
+      parseFloat(refundAmount) < 0
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing refund amount",
+      });
+    }
+
+    const refundAmountNumber = parseFloat(refundAmount);
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+    const Transaction_Id = `TXNW${Date.now()}`;
+    const Transaction_Type = "Credit";
+    const Transaction_status = "Success";
+    const transaction_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE nsdlpancorrection SET note = ? , status = ? ,process_by_userId = ? , updated_at = ?   WHERE orderid = ?`;
+ 
+    const values = [note, status,process_by_userId,updatedAt, order_id];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating rejectNSDLForm:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating rejectNSDLForm",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "rejectNSDLForm not found" });
+      }
+
+      // return res.status(200).json({
+      //   success: true,
+      //   message: "updating rejectSambalForm successfully",
+      // });
+
+      const getClosingBalanceQuery = `SELECT Closing_Balance FROM user_wallet WHERE userId = ? ORDER BY wid DESC LIMIT 1`;
+
+      db.query(getClosingBalanceQuery, [user_id], (error, results) => {
+        if (error) {
+          console.error("Error fetching closing balance:", error);
+          return res.status(500).json({
+            success: false,
+            error: "Failed to fetch closing balance",
+          });
+        }
+
+        // if (results.length === 0) {
+        //   return res.status(404).json({
+        //     success: false,
+        //     message: "Wallet Add Money Request not found",
+        //   });
+        // }
+
+        const old_balance =
+          results.length != 0 ? results[0].Closing_Balance : 0;
+
+        // Ensure `old_balance` is a valid number
+        if (isNaN(old_balance)) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid closing balance in user wallet",
+          });
+        }
+        const opening_balance = Number(old_balance);
+        const credit_amount = refundAmountNumber;
+        const debit_amount = 0;
+        const new_balance = credit_amount + opening_balance;
+        // Ensure all calculated balances are valid numbers
+        if (
+          isNaN(opening_balance) ||
+          isNaN(credit_amount) ||
+          isNaN(new_balance)
+        ) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid balance calculations",
+          });
+        }
+
+        const new_balance_final = parseFloat(new_balance.toFixed(2)); // Ensure `new_balance` remains a number
+
+        // SQL query to update the user_wallet table with new balance
+
+        const sql2 = `INSERT INTO user_wallet (userId, transaction_date, Order_Id , Transaction_Id , Opening_Balance, Closing_Balance , credit_amount, debit_amount,Transaction_Type,Transaction_details ,status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)`;
+        const values2 = [
+          user_id,
+          transaction_date,
+          order_id,
+          Transaction_Id,
+          opening_balance,
+          new_balance_final,
+          credit_amount,
+          debit_amount,
+          Transaction_Type,
+          Transaction_details,
+          Transaction_status,
+        ];
+
+        db.query(sql2, values2, (error, results) => {
+          if (error) {
+            console.error("Error inserting into user_wallet:", error);
+            return res.status(500).json({
+              success: false,
+              error: "Failed to inserting refund amount into the user_wallet",
+            });
+          }
+
+          return res.status(200).json({
+            success: true,
+            message: "Reject the form and refund money successfully",
+          });
+        });
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
 module.exports = {
   addPackage,
   getPackages,
@@ -8111,4 +8730,10 @@ module.exports = {
   getUsersUsingPAN,
   SAGetContactUs,
   SAContactUs,
+  getWhiteLabelWebisiteJoinUsers,
+  AddCommisionForWhiteLabelJoinUser,
+  SuccessNSDLForm,
+  rejectNSDLForm,
+  SuccessNSDLCorrectionForm,
+  rejectNSDLCorrectionForm
 };

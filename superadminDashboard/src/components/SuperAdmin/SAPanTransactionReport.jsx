@@ -208,6 +208,813 @@ import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
+import { MdGrid3X3 } from "react-icons/md";
+
+
+// Success Model start //
+const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
+  const [loading, setLoading] = useState(false);
+ const navigate = useNavigate();
+ const dispatch = useDispatch();
+  const [userRelation,setUserRelation] = useState([]);
+  const { currentUser } = useSelector((state) => state.user);
+ const { token } = useSelector((state) => state.user);
+  const [formData, setFormData] = useState({
+    order_id: item.orderid,
+    note: "",
+    status: "Success",
+    process_by_userId	: currentUser.userId
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+//   const handlesubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       setLoading(true);
+//       const response = await axios.put(
+//         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessSambalForm",
+//         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+//         formData,
+//         {
+//   headers: {
+//     "Content-Type": "application/json",
+//     Authorization: `Bearer ${token}`,
+//   },
+// }
+//       );
+//       console.log(response);
+//       setLoading(false);
+//       if (response.data.success) {
+//         Swal.fire({
+//           icon: "success",
+//           title: "Mark Success Form Successfully",
+//         });
+//         setShowSuccessModel(false);
+//         setIsRefresh((value) => !value);
+//       } else {
+//         Swal.fire({
+//           icon: "error",
+//           title: "An error occurred during the process. Please try again.",
+//         });
+//       }
+//     } catch (error) {
+//       console.error("There was an error submitting the form!", error);
+//       if (error?.response?.status == 401) {
+//         // alert("Your token is expired please login again")
+//         Swal.fire({
+//                   icon: "error",
+//                   title: "Your token is expired please login again",
+//                 });
+//         dispatch(clearUser());
+//         navigate("/");
+//       }
+//       setLoading(false);
+//       Swal.fire({
+//         icon: "error",
+//         title: "An error occurred during the process. Please try again.",
+//       });
+//     }
+//   };
+
+const NSDLCommission = async (retailer, distributor, superDistributor, white_lable ,packageDetails,item)=>{
+  const Order_Id = `ORW${Date.now()}`;
+  const Transaction_Id = `TXNW${Date.now()}`;
+ const  retailerFormData = {
+    userId: retailer,
+amount : "",
+Transaction_details : `Commission Credit for NSDL PAN Application Order Id ${item.orderid}`,
+status : "Success",
+Order_Id,
+Transaction_Id
+  }
+  const  distributorFormData = {
+    userId: distributor,
+amount : "",
+Transaction_details : `Commission Credit for NSDL PAN Application Order Id ${item.orderid}`,
+status : "Success",
+Order_Id,
+Transaction_Id
+  }
+  const  superDistributorFormData = {
+    userId: superDistributor,
+amount : "",
+Transaction_details : `Commission Credit for NSDL PAN Application Order Id ${item.orderid}`,
+status : "Success",
+Order_Id,
+Transaction_Id
+  }
+  const  whiteLableFormData = {
+    userId: white_lable,
+amount : "",
+Transaction_details : `Commission Credit for NSDL PAN Application Order Id ${item.orderid}`,
+status : "Success",
+Order_Id,
+Transaction_Id
+  }
+  const retailerPackage = packageDetails?.retailer ? packageDetails?.retailer[0]:  {};
+  const distributorPackage = packageDetails?.distributor ? packageDetails?.distributor[0] : {};
+  const superDistributorPackage = packageDetails?.superDistributor ? packageDetails?.superDistributor[0] : {} ;
+  const whiteLablePackage = packageDetails?.whiteLable ? packageDetails?.whiteLable[0] : {} ;
+
+  // const application_type = item.application_type;
+  const amount = parseFloat(item.walletDeductAmt);
+
+  let retailerCommAmount = 0;
+  let distributorCommAmount = 0;
+  let superDistributorCommAmount = 0;
+  let whiteLableCommAmount = 0;
+
+
+  try {
+        
+        if(retailerPackage.PAN_Card_Commission_Type == "Percentage"){
+            if(item.physicalPan == "No"){
+              retailerCommAmount = (amount * parseFloat(retailerPackage.E_PAN_Card_Commission))/100
+            }
+            else if(item.physicalPan == "Yes"){
+              retailerCommAmount = (amount * parseFloat(retailerPackage.P_PAN_Card_Commission))/100
+            }
+            
+          
+        }
+        else{
+          if(item.physicalPan == "No"){
+            retailerCommAmount = parseFloat(retailerPackage.E_PAN_Card_Commission);
+          }
+          else if(item.physicalPan == "Yes"){
+            retailerCommAmount = parseFloat(retailerPackage.P_PAN_Card_Commission);
+          }
+            
+           
+        }
+
+        if(distributor && distributorPackage){
+          if(distributorPackage.PAN_Card_Commission_Type == "Percentage"){
+            if(item.physicalPan == "No"){
+              distributorCommAmount = (amount * parseFloat(distributorPackage.E_PAN_Card_Commission))/100
+            }
+            else if(item.physicalPan == "Yes"){
+              distributorCommAmount = (amount * parseFloat(distributorPackage.P_PAN_Card_Commission))/100
+            }
+            
+           
+          }
+          else{
+            if(item.physicalPan == "No"){
+              distributorCommAmount = parseFloat(distributorPackage.E_PAN_Card_Commission);
+            }
+            else if(item.physicalPan == "Yes"){
+              distributorCommAmount = parseFloat(distributorPackage.P_PAN_Card_Commission);
+            }
+              
+          }
+
+        }
+        if(superDistributor && superDistributorPackage){
+          if(superDistributorPackage.PAN_Card_Commission_Type == "Percentage"){
+           
+                
+                if(item.physicalPan == "No"){
+                  superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.E_PAN_Card_Commission))/100
+                }
+                else if(item.physicalPan == "Yes"){
+                  superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.P_PAN_Card_Commission))/100
+                }
+            
+          }
+          else{
+            
+            if(item.physicalPan == "No"){
+              superDistributorCommAmount = parseFloat(superDistributorPackage.E_PAN_Card_Commission);
+            }
+            else if(item.physicalPan == "Yes"){
+              superDistributorCommAmount = parseFloat(superDistributorPackage.P_PAN_Card_Commission);
+            }
+              
+             
+          }
+
+        }
+        if(white_lable && whiteLablePackage){
+          if(whiteLablePackage.PAN_Card_Commission_Type == "Percentage"){
+           
+            if(item.physicalPan == "No"){
+              whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.E_PAN_Card_Commission))/100
+            }
+            else if(item.physicalPan == "Yes"){
+              whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.P_PAN_Card_Commission))/100
+            }
+              
+             
+          }
+          else{
+            
+                
+                if(item.physicalPan == "No"){
+                  whiteLableCommAmount = parseFloat(whiteLablePackage.E_PAN_Card_Commission);
+                }
+                else if(item.physicalPan == "Yes"){
+                  whiteLableCommAmount = parseFloat(whiteLablePackage.P_PAN_Card_Commission);
+                }
+          }
+
+        }
+
+
+       retailerFormData.amount = retailerCommAmount;
+       distributorFormData.amount = distributorCommAmount;
+       superDistributorFormData.amount = superDistributorCommAmount;
+       whiteLableFormData.amount = whiteLableCommAmount;
+      //  console.log(retailerCommAmount)
+      //  console.log(distributorCommAmount)
+      //  console.log(superDistributorCommAmount)
+      //  console.log(whiteLableCommAmount)
+        
+  } catch (error) {
+    console.log(error)
+  }
+  return { retailerFormData, distributorFormData, superDistributorFormData, whiteLableFormData,Order_Id,Transaction_Id };
+}
+
+const handlesubmit = async (e) => {
+  e.preventDefault();
+  try {
+    setLoading(true);
+
+    const { data } = await axios.get(
+      `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${item.userId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log(data);
+    setUserRelation(data.data);
+
+    if (data.data) {
+      const { distributor, superDistributor, white_lable } = data.data;
+      const retailer = item.userId
+      // Create an array to hold promises and a mapping object
+      const promises = [];
+      const resultsMap = {
+        retailer : null,
+        distributor: null,
+        superDistributor: null,
+        whiteLable: null,
+      };
+
+    const retailerPromise = axios
+      .get(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        resultsMap.retailer = response.data.data;
+      });
+      promises.push(retailerPromise);
+
+      if (distributor) {
+        const distributorPromise = axios
+          .get(
+            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((response) => {
+            resultsMap.distributor = response.data.data;
+          });
+        promises.push(distributorPromise);
+      }
+
+      if (superDistributor) {
+        const superDistributorPromise = axios
+          .get(
+            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((response) => {
+            resultsMap.superDistributor = response.data.data;
+          });
+        promises.push(superDistributorPromise);
+      }
+
+      if (white_lable) {
+        const whiteLablePromise = axios
+          .get(
+            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((response) => {
+            resultsMap.whiteLable = response.data.data;
+          });
+        promises.push(whiteLablePromise);
+      }
+
+      // Wait for all promises to resolve
+      await Promise.all(promises);
+
+      // Log the results
+      console.log("retailer Package:", resultsMap.retailer);
+      console.log("Distributor Package:", resultsMap.distributor);
+      console.log("Super Distributor Package:", resultsMap.superDistributor);
+      console.log("White Label Package:", resultsMap.whiteLable);
+     
+      let result = {};
+      // Use the results as needed
+        
+          result = await NSDLCommission(retailer, distributor, superDistributor, white_lable ,resultsMap,item)
+          console.log(result)
+        
+      
+     
+       // Track whether all commissions were processed successfully
+  let allProcessesSuccessful = true;
+      
+      if(result && result.retailerFormData && result.retailerFormData.amount){
+        const response = await axios.put(
+          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+          // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+          result.retailerFormData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        ).catch(() => {
+          allProcessesSuccessful = false;
+        });
+      }
+      if( result && result.distributorFormData && result.distributorFormData.amount){
+        const response = await axios.put(
+          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+          // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+          result.distributorFormData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        ).catch(() => {
+          allProcessesSuccessful = false;
+        });
+      }
+      if( result && result.superDistributorFormData && result.superDistributorFormData.amount){
+        const response = await axios.put(
+          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+          // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+          result.superDistributorFormData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        ).catch(() => {
+          allProcessesSuccessful = false;
+        });
+      }
+      if( result && result.whiteLableFormData && result.whiteLableFormData.amount){
+        const response = await axios.put(
+          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
+          // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+          result.whiteLableFormData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        ).catch(() => {
+          allProcessesSuccessful = false;
+        });
+      }
+      console.log(result)
+      if(result && result.retailerFormData){
+        let whiteLabel_Commission = 0 ;
+        let super_Distributor_Commission = 0 ;
+        let distributor_Commission = 0 ;
+        let retailer_Commission = 0;
+        if(result.whiteLableFormData && result.whiteLableFormData.amount){
+          whiteLabel_Commission = result.whiteLableFormData.amount
+        }
+        if(result.superDistributorFormData && result.superDistributorFormData.amount){
+          super_Distributor_Commission = result.superDistributorFormData.amount
+        }
+        if(result.distributorFormData && result.distributorFormData.amount){
+          distributor_Commission = result.distributorFormData.amount
+        }
+        if(result.retailerFormData && result.retailerFormData.amount){
+          retailer_Commission = result.retailerFormData.amount
+        }
+        
+
+
+      
+
+        const commissionFormData = {
+
+          order_id: result.Order_Id,
+          transaction_id : result.Transaction_Id,
+          amount :  item.walletDeductAmt,
+          whiteLabel_id : white_lable ? white_lable : "NA",
+          super_Distributor_id : superDistributor ? superDistributor : "NA",
+          distributor_id : distributor ? distributor : "NA",
+          retailer_id : retailer ? retailer : "NA",
+          whiteLabel_Commission : whiteLabel_Commission ,
+          super_Distributor_Commission : super_Distributor_Commission,
+          distributor_Commission : distributor_Commission,
+          retailer_Commission : retailer_Commission,
+          transaction_type : "NSDL PAN",
+          transaction_details : result.retailerFormData.Transaction_details,
+          status : "Success",
+        }
+        await axios.post(
+          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
+          // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+          commissionFormData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        ).catch(() => {
+          allProcessesSuccessful = false;
+        });
+      }
+
+        await axios.put(
+              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessNSDLForm",
+              // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+              formData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            ).catch(() => {
+              allProcessesSuccessful = false;
+            });
+      
+       // Show success message if all processes succeeded
+  if (allProcessesSuccessful) {
+    setShowSuccessModel(false);
+    setIsRefresh((value) => !value);
+    Swal.fire({
+      icon: "success",
+      title: "Success",
+      text: "All commissions have been processed successfully!",
+    });
+  } else {
+    setShowSuccessModel(false);
+    setIsRefresh((value) => !value);
+    Swal.fire({
+      icon: "warning",
+      title: "Partial Success",
+      text: "Some commissions were not processed. Please check the logs.",
+    });
+  }
+
+
+
+    }
+  } catch (error) {
+    console.error("There was an error submitting the form!", error);
+    if (error?.response?.status === 401) {
+      Swal.fire({
+        icon: "error",
+        title: "Your token is expired please login again",
+      });
+      dispatch(clearUser());
+      navigate("/");
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "An error occurred during the process. Please try again.",
+      });
+    }
+  } finally {
+    setLoading(false);
+  }
+};
+
+  return (
+    <>
+      <div>
+        <form onSubmit={handlesubmit}>
+          <div className="">
+            <label for="name" class="form-label">
+              Order Id
+            </label>
+            <div class="input-group flex-nowrap">
+              <span class="input-group-text" id="addon-wrapping">
+                {" "}
+                <MdGrid3X3 />
+              </span>
+              <input
+                type="text"
+                name="package_name"
+                class="form-control"
+                placeholder="Enter Package Name"
+                value={item.orderid}
+                onChange={handleChange}
+                disabled
+                required
+              />
+            </div>
+          </div>
+
+          <div className="mt-3">
+            <label for="name" class="form-label">
+              Enter Note
+            </label>
+            <div class="input-group flex-nowrap">
+              <span class="input-group-text" id="addon-wrapping">
+                {" "}
+                <MdGrid3X3 />
+              </span>
+              <input
+                type="text"
+                name="note"
+                class="form-control"
+                placeholder="Enter Note"
+                value={formData.note}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <div className="text-center  m-5">
+              <button type="submit" className="btn p-2" disabled={loading}>
+                {loading ? "Loading..." : "Submit"}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </>
+  );
+};
+// Success Model end //
+
+//  reject model component start//
+const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
+  const [loading, setLoading] = useState(false);
+ const navigate = useNavigate();
+ const dispatch = useDispatch();
+ const { token } = useSelector((state) => state.user);
+ const { currentUser } = useSelector((state) => state.user);
+  const [formData, setFormData] = useState({
+    order_id: item.orderid,
+    note: "",
+    status: "Reject",
+    amount : item.walletDeductAmt,
+    Transaction_details : `Refund Credit for NSDL PAN Application Order Id ${item.orderid}`,
+    chargeAmount : "",
+    refundAmount : "",
+    user_id : item.userId,
+    process_by_userId	: currentUser.userId
+
+  });
+
+  // const handleChange = (e) => {
+  //   setFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    // Update formData and calculate refund amount if chargeAmount changes
+    setFormData((prev) => {
+      const updatedFormData = { ...prev, [name]: value };
+
+      if (name === "chargeAmount") {
+        // Calculate refundAmount dynamically
+        const chargeAmount = parseFloat(value) || 0; // Handle non-numeric input
+        const refundAmount = Math.max(0, parseFloat(item.walletDeductAmt) - chargeAmount);
+        updatedFormData.refundAmount = refundAmount.toFixed(2); // Format to 2 decimal places
+      }
+
+      return updatedFormData;
+    });
+  };
+
+
+
+  const handlesubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const response = await axios.put(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectNSDLForm",
+        // "http://localhost:7777/api/auth/superAdmin/rejectSambalForm",
+        formData,
+        {
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+}
+      );
+      console.log(response);
+      setLoading(false);
+      if (response.data.success) {
+        Swal.fire({
+          icon: "success",
+          title: "Reject Form Successfully",
+        });
+        setShowRejectModel(false);
+        setIsRefresh((value) => !value);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "An error occurred during the process. Please try again.",
+        });
+      }
+    } catch (error) {
+      console.error("There was an error submitting the form!", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+                  icon: "error",
+                  title: "Your token is expired please login again",
+                });
+        dispatch(clearUser());
+        navigate("/");
+      }
+      setLoading(false);
+      Swal.fire({
+        icon: "error",
+        title: "An error occurred during the process. Please try again.",
+      });
+    }
+  };
+  return (
+    <>
+      <div>
+        <form onSubmit={handlesubmit}>
+          <div className="">
+            <label for="name" class="form-label">
+              Order Id
+            </label>
+            <div class="input-group flex-nowrap">
+              <span class="input-group-text" id="addon-wrapping">
+                {" "}
+                <MdGrid3X3 />
+              </span>
+              <input
+                type="text"
+                name="package_name"
+                class="form-control"
+                placeholder="Enter Package Name"
+                value={item.orderid}
+                onChange={handleChange}
+                disabled
+                required
+              />
+            </div>
+          </div>
+
+          <div className="mt-3">
+            <label for="name" class="form-label">
+              Amount
+            </label>
+            <div class="input-group flex-nowrap">
+              <span class="input-group-text" id="addon-wrapping">
+                {" "}
+                <MdGrid3X3 />
+              </span>
+              <input
+                type="text"
+                name="package_name"
+                class="form-control"
+                placeholder="Enter Package Name"
+                value={item.walletDeductAmt}
+                onChange={handleChange}
+                disabled
+                required
+              />
+            </div>
+          </div>
+          <div className="mt-3">
+            <label for="name" class="form-label">
+             Charge Amount
+            </label>
+            <div class="input-group flex-nowrap">
+              <span class="input-group-text" id="addon-wrapping">
+                {" "}
+                <MdGrid3X3 />
+              </span>
+              <input
+                type="text"
+                name="chargeAmount"
+                class="form-control"
+                placeholder="Enter Charge Amount"
+                value={formData.chargeAmount}
+                onChange={handleChange}
+                pattern="^\d+(\.\d+)?$"
+                title="Price should be digits Only"
+                required
+              />
+            </div>
+          </div>
+          <div className="mt-3">
+            <label for="name" class="form-label">
+             Refund Amount
+            </label>
+            <div class="input-group flex-nowrap">
+              <span class="input-group-text" id="addon-wrapping">
+                {" "}
+                <MdGrid3X3 />
+              </span>
+              <input
+                type="text"
+                name="package_name"
+                class="form-control"
+                placeholder="Refund amount"
+                value={formData.refundAmount  || formData.amount}
+                // onChange={handleChange}
+                disabled
+                
+              />
+            </div>
+          </div>
+
+          <div className="mt-3">
+            <label for="name" class="form-label">
+              Enter Note
+            </label>
+            <div class="input-group flex-nowrap">
+              <span class="input-group-text" id="addon-wrapping">
+                {" "}
+                <MdGrid3X3 />
+              </span>
+              <input
+                type="text"
+                name="note"
+                class="form-control"
+                placeholder="Enter Note"
+                value={formData.note}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <div className="text-center  m-5">
+              <button type="submit" className="btn p-2" disabled={loading}>
+                {loading ? "Loading..." : "Submit"}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </>
+  );
+};
+
+//  reject model component end//
+
+
+
+
 
 
 const SAPanTransactionReport = () => {
@@ -224,6 +1031,9 @@ const SAPanTransactionReport = () => {
     const [fromDate, setFromDate] = useState(""); // From date filter
     const [toDate, setToDate] = useState(""); // To date filter
     const [PaymentMode, setPaymentMode] = useState("")
+    const [showSuccessModel, setShowSuccessModel] = useState(false);
+      const [ShowRejectModel, setShowRejectModel] = useState(false);
+      const [selectedItem, setSelectedItem] = useState("");
   
   
     const fetchOfflineForm = async () => {
@@ -366,6 +1176,7 @@ const SAPanTransactionReport = () => {
                                                              <option selected>---Select---</option>
                                                             <option value="Success">Success</option>
                                                             <option value="Failed">Failed</option>
+                                                            <option value="Reject">Reject</option>
 
 
                                                         </select>
@@ -434,8 +1245,11 @@ onChange={(e) => setKeyword(e.target.value)}
                                                                     <th scope="col">Amount</th>
                                                                     <th scope="col">Message</th>
                                                                     <th scope="col">API Provider Name</th>
+                                                                    <th scope="col">Note</th>
                                                                    
                                                                     <th scope="col">Status</th>
+                                                                    <th scope="col">Commission Credit Status</th>
+                                                                    <th scope="col">Action</th>
 
 
                                                                 </tr>
@@ -461,7 +1275,58 @@ onChange={(e) => setKeyword(e.target.value)}
                                           <td>{item.walletDeductAmt}</td>
                                           <td>{item.message}</td>
                                           <td>{item.providerName}</td>
+                                          <td>{item.note}</td>
                                           <td>{item.status}</td>
+                                          <td>{item.Commission_Status}</td>
+                                            <td>
+                                                                                          {(item.status === "Success" && item.Commission_Status != "Credit") && (
+                                                                                            <Dropdown>
+                                                                                              <Dropdown.Toggle
+                                                                                                variant="success"
+                                                                                                // id={`dropdown-${user.id}`}
+                                                                                                as="span"
+                                                                                                style={{
+                                                                                                  border: "none",
+                                                                                                  background: "none",
+                                                                                                  cursor: "pointer",
+                                                                                                }}
+                                                                                                className="custom-dropdown-toggle"
+                                                                                              >
+                                                                                                <PiDotsThreeOutlineVerticalBold />
+                                                                                              </Dropdown.Toggle>
+                                                                                              <Dropdown.Menu>
+                                                                                                <Dropdown.Item
+                                                                                                  onClick={() => {
+                                                                                                    // setSelectedUser(user);
+                                                                                                    setShowSuccessModel(true);
+                                                                                                    setSelectedItem(item);
+                                                                                                    //   deactivateUser(user.UserId)
+                                                                                                  }}
+                                                                                                >
+                                                                                                  <span className="">
+                                                                                                    {" "}
+                                                                                                    <CiViewList />
+                                                                                                  </span>{" "}
+                                                                                                  Credit Commission
+                                                                                                </Dropdown.Item>
+                                                                                                <Dropdown.Item
+                                                                                                  onClick={() => {
+                                                                                                    // setSelectedUser(user);
+                                                                                                    setShowRejectModel(true);
+                                                                                                    setSelectedItem(item);
+                                                                                                    //   deactivateUser(user.UserId)
+                                                                                                  }}
+                                                                                                >
+                                                                                                  <span className="">
+                                                                                                    {" "}
+                                                                                                    <CiViewList />
+                                                                                                  </span>{" "}
+                                                                                                  Reject
+                                                                                                </Dropdown.Item>
+                                                                                              </Dropdown.Menu>
+                                                                                            </Dropdown>
+                                                                                          )}
+                                                                                        </td>
                                        
                                         </tr>
                                         ))
@@ -503,6 +1368,62 @@ onChange={(e) => setKeyword(e.target.value)}
                         </div>
                     </div>
                 </div>
+
+                 
+                           {/* Success Model  start*/}
+                
+                           <Modal
+                          // size="lg"
+                          show={showSuccessModel}
+                          //   fullscreen={true}
+                          onHide={() => setShowSuccessModel(false)}
+                          aria-labelledby="packageDetail-modal-sizes-title-lg"
+                        >
+                          <Modal.Header closeButton>
+                            <Modal.Title id="packageDetail-modal-sizes-title-lg">
+                              Success Form
+                            </Modal.Title>
+                          </Modal.Header>
+                          <Modal.Body>
+                            {selectedItem && (
+                              <SASuccessModel
+                                item={selectedItem}
+                                setShowSuccessModel={setShowSuccessModel}
+                                setIsRefresh={setIsRefresh}
+                              />
+                            )}
+                          </Modal.Body>
+                        </Modal>
+                
+                        {/*  Success Model  end*/}
+                
+                
+                        {/* Reject Model  start*/}
+                
+                        <Modal
+                          // size="lg"
+                          show={ShowRejectModel}
+                          //   fullscreen={true}
+                          onHide={() => setShowRejectModel(false)}
+                          aria-labelledby="packageDetail-modal-sizes-title-lg"
+                        >
+                          <Modal.Header closeButton>
+                            <Modal.Title id="packageDetail-modal-sizes-title-lg">
+                              Reject Form
+                            </Modal.Title>
+                          </Modal.Header>
+                          <Modal.Body>
+                            {selectedItem && (
+                              <SARejectModel
+                                item={selectedItem}
+                                setShowRejectModel={setShowRejectModel}
+                                setIsRefresh={setIsRefresh}
+                              />
+                            )}
+                          </Modal.Body>
+                        </Modal>
+                
+                        {/*  Reject Model  end*/}
             </Wrapper>
         </>
     );

@@ -8,6 +8,7 @@ import styled from "styled-components";
 import AadharLinkingStatus from "../components/DashBoard/AadharLinkingStatus";
 import TrainingVideo from "../components/DashBoard/TrainingVideo";
 import NotFound from "../components/NotFound.jsx";
+import SAWhiteLabelWebsiteJoinUsers from "../components/SuperAdmin/SAWhiteLabelWebsiteJoinUsers.jsx";
 // Lazy imports
 const SuperAdminDashboard = lazy(() => import("../pages/SuperAdminDashboard"));
 const SAProfile = lazy(() => import("../components/SuperAdmin/SAProfile"));
@@ -174,6 +175,7 @@ const SuperAdminRoutes = () => {
         <Route path="/deactive-users" element={<SADeactiveUsersList />} />
         <Route path="/pending-kyc-user" element={<SAPendingKycUsers />} />
         <Route path="/users-joining-list" element={<SAAllUsersJoinedList />} />
+        <Route path="/whiteLabel-users-joining-list" element={<SAWhiteLabelWebsiteJoinUsers />} />
         <Route
           path="/pending-payment-users"
           element={<SAPendingPaymentUsers />}
