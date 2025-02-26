@@ -87,7 +87,7 @@ const {
   getUserDetails,
   getCoupanHistory,
   getUserNotification,
-  SAContactUs,
+  WLContactUs,
   SAGetContactUs,
   getWhiteLabeljoinedData,
   getWhitelabelSettings,
@@ -155,14 +155,14 @@ router.post(
 );
 // used API to all white Label
 
-router.post("/SAContactUs", SAContactUs);
+router.post("/WLContactUs", WLContactUs);
 router.get("/SAGetContactUs", SAGetContactUs);
 
 //website setting API  //
 
 router.get(
   "/getWhitelabelSettings/:userId",
-  authenticateToken,
+
   getWhitelabelSettings
 );
 router.get("/getUserNotifications", authenticateToken, getUserNotifications);

@@ -40,7 +40,7 @@ const Genral = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getWhitelabelSettings/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWhitelabelSettings/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -190,7 +190,7 @@ const Genral = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:7777/api/auth/whiteLabel/UpdateGenralSetting",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/UpdateGenralSetting",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateGenralSetting",
         formDataSend,
         {

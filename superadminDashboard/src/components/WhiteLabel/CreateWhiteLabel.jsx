@@ -43,7 +43,7 @@ const CreateWhiteLabel = () => {
   const fetchNoOfIds = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getRemainingIds/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getRemainingIds/${userId}`,
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getRemainingIds/${userId}`,
         {
           headers: {
@@ -83,7 +83,7 @@ const CreateWhiteLabel = () => {
   const updateNoOfIds = async () => {
     try {
       const response = await axios.put(
-        "http://localhost:7777/api/auth/whiteLabel/updateUserProfile",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/updateUserProfile",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/updateUserProfile",
         updatedFormData,
         {
@@ -170,7 +170,7 @@ const CreateWhiteLabel = () => {
 
       const response = await axios.post(
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
-        "http://localhost:7777/api/auth/log-reg/user-register",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
         formData,
 

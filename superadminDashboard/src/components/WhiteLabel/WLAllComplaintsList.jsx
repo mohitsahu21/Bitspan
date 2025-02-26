@@ -27,7 +27,7 @@ const WLAllComplaintsList = () => {
       const response = await axios.get(
         // `http://localhost:7777/api/auth/retailer/complain-data`
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getAllComplaintsData/${currentUser?.userId}`,
-        `http://localhost:7777/api/auth/whiteLabel/getAllComplaintsData/${currentUser?.userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getAllComplaintsData/${currentUser?.userId}`,
         {
           headers: {
             "Content-Type": "application/json",

@@ -91,7 +91,7 @@ const WLComplaints = () => {
 
     try {
       const res = await axios.post(
-        `http://localhost:7777/api/auth/whiteLabel/complain-query`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/complain-query`,
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/complain-query`,
         data,
         {

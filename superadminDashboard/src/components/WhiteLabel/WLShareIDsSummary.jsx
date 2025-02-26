@@ -36,7 +36,7 @@ const WLShareIDsSummary = () => {
       console.log("Fetching API..."); // ✅ Step 1: Check if API call is triggered
 
       const { data } = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getShareIdsSummary/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getShareIdsSummary/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

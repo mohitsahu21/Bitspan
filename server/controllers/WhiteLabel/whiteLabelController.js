@@ -5520,7 +5520,7 @@ const getUserNotification = (req, res) => {
 
 ///API for contact us form
 
-const SAContactUs = async (req, res) => {
+const WLContactUs = async (req, res) => {
   const { Name, Email, Address, Mobile_No, Message } = req.body;
   // const CreatedAt = new Date();
 
@@ -5531,7 +5531,7 @@ const SAContactUs = async (req, res) => {
   }
 
   const sql =
-    "INSERT INTO sa_contactus (Name, Email, Address, Mobile_No, Message, createdAt) VALUES (?, ?, ?, ?, ?, ?)";
+    "INSERT INTO wl_contactus (Name, Email, Address, Mobile_No, Message, createdAt) VALUES (?, ?, ?, ?, ?, ?)";
   db.query(
     sql,
     [Name, Email, Address, Mobile_No, Message, CreatedAt],
@@ -6157,7 +6157,7 @@ module.exports = {
   getUserDetails,
   getCoupanHistory,
   getUserNotification,
-  SAContactUs,
+  WLContactUs,
   SAGetContactUs,
   getWhiteLabeljoinedData,
   getWhitelabelSettings,

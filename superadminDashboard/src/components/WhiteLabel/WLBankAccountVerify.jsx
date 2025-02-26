@@ -34,7 +34,7 @@ const WLBankAccountVerify = () => {
     try {
       const response = await axios.get(
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getBankAccountDetails/${bid}`,
-        `http://localhost:7777/api/auth/whiteLabel/getBankAccountDetails/${bid}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getBankAccountDetails/${bid}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -97,7 +97,7 @@ const WLBankAccountVerify = () => {
     try {
       const response = await axios.post(
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/changeBankStatus",
-        "http://localhost:7777/api/auth/whiteLabel/changeBankStatus",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/changeBankStatus",
         { UserId, bid }
       );
 
@@ -148,7 +148,7 @@ const WLBankAccountVerify = () => {
     try {
       const response = await axios.post(
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/verifyOtpAndChangeBankStatus",
-        "http://localhost:7777/api/auth/whiteLabel/verifyOtpAndChangeBankStatus",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/verifyOtpAndChangeBankStatus",
         { UserId, otp },
 
         {

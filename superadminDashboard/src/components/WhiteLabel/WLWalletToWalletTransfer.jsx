@@ -75,7 +75,7 @@ const WLWalletToWalletTransfer = () => {
     try {
       const { data } = await axios.get(
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getActiveUsers/${userId}`,
-        `http://localhost:7777/api/auth/whiteLabel/getActiveUsers/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getActiveUsers/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -112,7 +112,7 @@ const WLWalletToWalletTransfer = () => {
     // setLoading(true);
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getWalletBalance/${formData.userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWalletBalance/${formData.userId}`,
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletBalance/${formData.userId}`,
         {
           headers: {
@@ -158,7 +158,7 @@ const WLWalletToWalletTransfer = () => {
   const fetchWalletBalance = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getWalletBalance/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWalletBalance/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -260,7 +260,7 @@ const WLWalletToWalletTransfer = () => {
       setButtonLoading(true);
 
       const response = await axios.post(
-        `http://localhost:7777/api/auth/whiteLabel/walletToWalletTransfer`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/walletToWalletTransfer`,
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/walletToWalletTransfer`,
         updatedFormData,
         {

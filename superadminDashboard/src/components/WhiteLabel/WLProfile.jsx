@@ -75,7 +75,7 @@ const WLProfile = () => {
     try {
       const response = await axios.get(
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
-        `http://localhost:7777/api/auth/whiteLabel/getUserDetails/${currentUser?.userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getUserDetails/${currentUser?.userId}`,
         {
           headers: {
             "Content-Type": "application/json",

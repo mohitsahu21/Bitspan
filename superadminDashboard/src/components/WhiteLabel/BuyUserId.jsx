@@ -55,7 +55,7 @@ const BuyUserId = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:7777/api/auth/whiteLabel/getPackageData/${package_Id}`,
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getPackageData/${package_Id}`,
           // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getPackageData/${package_Id}`,
           {
             headers: {
@@ -113,7 +113,7 @@ const BuyUserId = () => {
   const fetchWalletBalance = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getWalletBalance/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWalletBalance/${userId}`,
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletBalance/${userId}`,
         {
           headers: {
@@ -155,7 +155,7 @@ const BuyUserId = () => {
   const fetchNoOfIds = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getRemainingIds/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getRemainingIds/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -289,7 +289,7 @@ const BuyUserId = () => {
     try {
       const response = await axios.post(
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/buyId",
-        "http://localhost:7777/api/auth/whiteLabel/buyId",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/buyId",
         payload,
         {
           headers: {

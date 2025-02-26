@@ -56,7 +56,7 @@ const WLWalletWithdraw = () => {
   const fetchBankAccounts = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getActiveBankDetails/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getActiveBankDetails/${userId}`,
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getActiveBankDetails/${userId}`,
         {
           headers: {
@@ -90,11 +90,13 @@ const WLWalletWithdraw = () => {
   };
 
   // Fetch Wallet Balance
+
   const fetchWalletBalance = async () => {
     try {
+      console.log("📢 Fetching wallet balance for userId:", userId);
+
       const response = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getWalletBalance/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletBalance/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWalletBalance/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -102,26 +104,50 @@ const WLWalletWithdraw = () => {
           },
         }
       );
+
+      console.log("✅ API Response:", response.data);
+
       if (response.data.success) {
-        setWalletBalance(response.data.data); // Set the fetched wallet balance
+        setWalletBalance(response.data.data); // Wallet balance update karo
+        console.log("💰 Wallet Balance Set:", response.data.data);
+
+        // Swal.fire({
+        //   icon: "success",
+        //   title: "Wallet Balance Fetched Successfully!",
+        //   text: `Your current balance is ₹${response.data.data}`,
+        // });
       } else {
-        setWalletBalance(0); // Default to 0 if no data found
+        setWalletBalance(0);
+        console.warn("⚠️ No wallet balance found. Defaulting to 0.");
+
+        Swal.fire({
+          icon: "warning",
+          title: "No Wallet Balance Found",
+          text: "Your wallet balance is ₹0.",
+        });
       }
     } catch (error) {
-      console.error("Error fetching wallet balance:", error);
-      // Check for token expiration (401 error)
+      console.error("❌ Error fetching wallet balance:", error);
+
       if (error?.response?.status === 401) {
         Swal.fire({
           icon: "error",
-          title: "Your token is expired. Please login again.",
+          title: "Session Expired!",
+          text: "Your token is expired. Please login again.",
         });
-        dispatch(clearUser()); // Clear user data
-        navigate("/"); // Redirect to login page
+
+        dispatch(clearUser()); // User data clear karo
+        navigate("/"); // Login page pe redirect karo
       } else {
-        alert("Failed to load wallet balance.");
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "Failed to load wallet balance. Please try again later.",
+        });
       }
     }
   };
+
   console.log(walletBalance);
   console.log(finalAmount);
 
@@ -162,7 +188,7 @@ const WLWalletWithdraw = () => {
       // Submit the form data to the server
       const response = await axios.post(
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/WalletWithdraw/${userId}`,
-        `http://localhost:7777/api/auth/whiteLabel//WalletWithdraw/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel//WalletWithdraw/${userId}`,
         formData,
         {
           headers: {

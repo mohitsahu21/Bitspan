@@ -30,7 +30,7 @@ const SetJoiningPrice = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getWhitelabelSettings/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWhitelabelSettings/${userId}`,
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
         {
           headers: {
@@ -85,7 +85,7 @@ const SetJoiningPrice = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getPackageData/${package_Id}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getPackageData/${package_Id}`,
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getPackageData/${package_Id}`,
         {
           headers: {
@@ -143,7 +143,7 @@ const SetJoiningPrice = () => {
     setLoading(true);
     try {
       const response = await axios.put(
-        "http://localhost:7777/api/auth/whiteLabel/UpdateWLWebsiteJoiningPrice",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/UpdateWLWebsiteJoiningPrice",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateSAWebsiteJoiningPrice",
         formData,
 

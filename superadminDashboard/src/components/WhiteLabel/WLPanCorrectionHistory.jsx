@@ -33,7 +33,7 @@ const WLPanCorrectionHistory = () => {
     try {
       const { data } = await axios.get(
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getOnlinePanCorrectionData",
-        `http://localhost:7777/api/auth/whiteLabel/getNsdlPanCorrectionHistory/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getNsdlPanCorrectionHistory/${userId}`,
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getNsdlPanCorrectionHistory/${userId}`,
         {
           headers: {

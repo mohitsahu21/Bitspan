@@ -30,7 +30,7 @@ const SdAllCommissionHistory = () => {
     try {
       const response = await axios.get(
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getAllCommission/${userId}`,
-        `http://localhost:7777/api/auth/whiteLabel/getAllCommission/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getAllCommission/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

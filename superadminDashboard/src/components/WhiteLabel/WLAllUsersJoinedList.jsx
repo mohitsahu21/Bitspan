@@ -32,7 +32,7 @@ const WLAllUsersJoinedList = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getActiveUsers/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getActiveUsers/${userId}`,
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getSuperDistributorUsersData/${userId}`,
         {
           headers: {
