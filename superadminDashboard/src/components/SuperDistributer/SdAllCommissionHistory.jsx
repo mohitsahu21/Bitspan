@@ -290,7 +290,11 @@ const SdAllCommissionHistory = () => {
                                 ) : displayData.length > 0 ? (
                                   displayData.map((item, index) => (
                                     <tr key={index}>
-                                      <th scope="row">{index + 1}</th>
+                                      <td>
+                                        {currentPage * complaintsPerPage +
+                                          index +
+                                          1}
+                                      </td>
                                       <td>{item.created_at}</td>
                                       <td>{item.order_id}</td>
                                       <td>{item.transaction_id}</td>

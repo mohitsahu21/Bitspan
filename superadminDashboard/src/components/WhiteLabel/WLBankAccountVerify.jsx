@@ -98,7 +98,13 @@ const WLBankAccountVerify = () => {
       const response = await axios.post(
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/changeBankStatus",
         "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/changeBankStatus",
-        { UserId, bid }
+        { UserId, bid },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Add token to the request header
+          },
+        }
       );
 
       console.log(response);

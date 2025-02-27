@@ -48,6 +48,7 @@ const SdBankAccountSetup = () => {
     try {
       const response = await axios.get(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getBankDetails/${userId}`,
+        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getBankDetails/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -393,12 +394,7 @@ const SdBankAccountSetup = () => {
                                       <Link
                                         to={`/bank-account-setup/verify/${account.bid}`}
                                       >
-                                        <button
-                                          className="btn btn-primary btn-sm"
-                                          onClick={() =>
-                                            fetchBankDetails(account.bid)
-                                          }
-                                        >
+                                        <button className="btn btn-primary btn-sm">
                                           Verify
                                         </button>
                                       </Link>

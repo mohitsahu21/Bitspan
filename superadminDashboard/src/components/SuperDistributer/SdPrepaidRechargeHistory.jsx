@@ -197,7 +197,11 @@ const SdPrepaidRechargeHistory = () => {
                                     {displayData.length > 0 ? (
                                       displayData.map((item, index) => (
                                         <tr key={`${item.id}-${index}`}>
-                                          <td>{index + 1}</td>
+                                          <td>
+                                            {currentPage * complaintsPerPage +
+                                              index +
+                                              1}
+                                          </td>
                                           <td>{item.created_at}</td>
                                           <td>{item.orderid}</td>
                                           <td>{item.transaction_id}</td>

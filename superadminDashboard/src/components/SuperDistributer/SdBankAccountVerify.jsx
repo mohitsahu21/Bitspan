@@ -108,7 +108,13 @@ const SdBankAccountVerify = () => {
     try {
       const response = await axios.post(
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/changeBankStatus",
-        { UserId, bid }
+        { UserId, bid },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Add token to the request header
+          },
+        }
       );
 
       console.log(response);
@@ -158,7 +164,13 @@ const SdBankAccountVerify = () => {
     try {
       const response = await axios.post(
         "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/verifyOtpAndChangeBankStatus",
-        { UserId, otp }
+        { UserId, otp },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Add token to the request header
+          },
+        }
       );
       if (response.data.status === "Success") {
         Swal.fire({

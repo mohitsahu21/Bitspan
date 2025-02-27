@@ -178,6 +178,7 @@ const SdAllComplaintsList = () => {
                               <table class="table table-striped">
                                 <thead className="table-dark">
                                   <tr>
+                                    <th scope="col">#</th>
                                     <th scope="col">Complaint ID</th>
                                     <th scope="col">Ticket Raised Date</th>
                                     <th scope="col">Complaint Type</th>
@@ -192,6 +193,11 @@ const SdAllComplaintsList = () => {
                                   {showApiData && showApiData.length > 0 ? (
                                     showApiData.map((item, index) => (
                                       <tr>
+                                        <td>
+                                          {currentPage * complaintsPerPage +
+                                            index +
+                                            1}
+                                        </td>
                                         <th scope="row">{item.id}</th>
                                         <td>{item.createdAt}</td>
                                         <td>{item.complainType}</td>

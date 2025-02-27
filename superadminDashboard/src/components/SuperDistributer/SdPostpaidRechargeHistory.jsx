@@ -169,6 +169,7 @@ const SdPostpaidRechargeHistory = () => {
                             <table class="table table-striped">
                               <thead className="table-dark">
                                 <tr>
+                                  <th scope="col">#</th>
                                   <th scope="col">Date</th>
                                   <th scope="col">Transaction ID</th>
                                   <th scope="col">Operator Order ID</th>
@@ -185,6 +186,11 @@ const SdPostpaidRechargeHistory = () => {
                                 {displayData.length > 0 ? (
                                   displayData.map((item) => (
                                     <tr key={item.id}>
+                                      <td>
+                                        {currentPage * complaintsPerPage +
+                                          index +
+                                          1}
+                                      </td>
                                       <td>{item.created_at}</td>
                                       <td>{item.transaction_id}</td>
                                       <td>{item.orderid}</td>
