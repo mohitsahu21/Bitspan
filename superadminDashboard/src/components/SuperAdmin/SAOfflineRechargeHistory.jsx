@@ -23,11 +23,13 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
  const navigate = useNavigate();
  const dispatch = useDispatch();
  const [userRelation,setUserRelation] = useState([]);
+ const { currentUser } = useSelector((state) => state.user);
  const { token } = useSelector((state) => state.user);
     const [formData, setFormData] = useState({
       order_id: item.orderid,
       note : "",
-      status : "Approve"
+      status : "Approve",
+      process_by_userId	: currentUser.userId
     });
   
     const handleChange = (e) => {
@@ -1689,6 +1691,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
  const navigate = useNavigate();
+ const { currentUser } = useSelector((state) => state.user);
  const dispatch = useDispatch();
  const { token } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
@@ -1697,7 +1700,8 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     status : "Reject",
     user_id : item.created_by_userid,
     Transaction_details : `Refund Credit for ${item.recharge_Type} Recharge Order Id ${item.orderid}`,
-    refundAmount : item.amount
+    refundAmount : item.amount,
+    process_by_userId	: currentUser.userId
 
   });
 
@@ -2123,6 +2127,8 @@ const SAOfflineRechargeHistory = () => {
                                   <th scope="col">User Name</th>
                                   <th scope="col">User Mobile</th>
                                   <th scope="col">Status</th>
+                                  <th scope="col">Process By</th>
+                                  <th scope="col">Process Date</th>
                                   <th scope="col">Note</th>
                                   <th scope="col">Action</th>
                                   </tr>
@@ -2201,6 +2207,8 @@ const SAOfflineRechargeHistory = () => {
                                           <td>{item.UserName}</td>
                                           <td>{item.ContactNo}</td>
                                           <td>{item.status}</td>
+                                          <td>{item.process_by_userId}</td>
+                                          <td>{item.updated_at}</td>
                                           <td>{item.note}</td>
                                           <td>
                                             { (item.status === "Pending") && 

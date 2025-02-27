@@ -1044,6 +1044,7 @@ onChange={(e) => setKeyword(e.target.value)}
                                                                    
                                                                     <th scope="col">Status</th>
                                                                     <th scope="col">Commission Credit Status</th>
+                                                                    <th scope="col">Process By</th>
                                                                     <th scope="col">Action</th>
 
 
@@ -1074,6 +1075,7 @@ onChange={(e) => setKeyword(e.target.value)}
                                           <td>{item.note}</td>
                                           <td>{item.status}</td>
                                           <td>{item.Commission_Status}</td>
+                                          <td>{item.process_by_userId}</td>
                                                <td>
                                                                                                                                     {(item.status === "Success" && item.Commission_Status != "Credit") && (
                                                                                                                                       <Dropdown>

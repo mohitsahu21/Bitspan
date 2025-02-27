@@ -329,7 +329,7 @@ const [status, setStatus] = useState(""); // For status filter
         row.Email.toLowerCase().includes(keyword.trim().toLowerCase()));
 
     const matchesUserType = !userType || userType === "---Select User Type---" || row.role === userType;
-    const matchesStatus = !status || status === "---Select Status---" || row.Status === status;
+    const matchesStatus = !status || status === "---Select Payment Status---" || row.payment_status === status;
 
     return matchesKeyword && matchesUserType && matchesStatus;
   });
@@ -396,7 +396,7 @@ const [status, setStatus] = useState(""); // For status filter
                               id="toDate"
                               className="form-control "
                               type="search"
-                              placeholder="Enter User Name/User Id/Mobile/Email Id/Package Name"
+                              placeholder="Enter User Name/User Id/Mobile/Email Id"
                               value={keyword}
                               onChange={(e) => setKeyword(e.target.value)}
                             />
@@ -426,10 +426,10 @@ const [status, setStatus] = useState(""); // For status filter
                               value={status}
     onChange={(e) => setStatus(e.target.value)}
                             >
-                              <option selected>---Select Status---</option>
-                              <option value="Active">Active</option>
-                              <option value="Deactive">Deactive</option>
+                              <option selected>---Select Payment Status---</option>
                               <option value="Pending">Pending</option>
+                              <option value="Complete">Complete</option>
+                              {/* <option value="Pending">Pending</option> */}
                             </select>
                           </div>
                           <div className="field-group  col-11 col-md-4 col-lg-2 ">

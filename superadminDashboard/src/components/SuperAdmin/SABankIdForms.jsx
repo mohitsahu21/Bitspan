@@ -25,11 +25,12 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.user);
- 
+  const { currentUser } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     order_id: item.order_id,
     note: "",
-    status: "Under Process"
+    status: "Under Process",
+    process_by_userId	: currentUser.userId
   });
 
   const handleChange = (e) => {
@@ -159,11 +160,13 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
  
   const [formData, setFormData] = useState({
     order_id: item.order_id,
     note: "",
     status: "Mark Edit",
+    process_by_userId	: currentUser.userId
   });
 
   const handleChange = (e) => {
@@ -289,11 +292,13 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
  
   const [formData, setFormData] = useState({
     order_id: item.order_id,
     note: "",
     status: "Success",
+    process_by_userId	: currentUser.userId
   });
 
   const handleChange = (e) => {
@@ -419,6 +424,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
  
   const [formData, setFormData] = useState({
     order_id: item.order_id,
@@ -428,7 +434,8 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     Transaction_details : `Refund Credit for Bank ID Order Id ${item.order_id}`,
     chargeAmount : "",
     refundAmount : "",
-    user_id : item.user_id
+    user_id : item.user_id,
+    process_by_userId	: currentUser.userId
 
   });
 
@@ -962,6 +969,8 @@ const SABankIdForms = () => {
                                             <th scope="col">User Mobile</th>
                                             <th scope="col">Amount</th>
                                             <th scope="col">Status</th>
+                                            <th scope="col">Process By</th>
+                                  <th scope="col">Process Date</th>
                                             <th scope="col">Note</th>
                                             <th scope="col">Action</th>
                                           </tr>
@@ -1068,6 +1077,8 @@ View Form
                                                 <td>{item.ContactNo}</td>
                                                 <td>{item.amount}</td>
                                                 <td>{item.status}</td>
+                                                <td>{item.process_by_userId}</td>
+                                          <td>{item.updated_at}</td>
                                                 <td>{item.note}</td>
                                                 <td>
                                                   {(item.status === "Pending" || item.status === "Mark Edit") &&
@@ -1242,6 +1253,8 @@ View Form
                 <th scope="col">User Mobile</th>
                 <th scope="col">Amount</th>
                 <th scope="col">Status</th>
+                <th scope="col">Process By</th>
+                                  <th scope="col">Process Date</th>
                 <th scope="col">Note</th>
                 <th scope="col">Action</th>
               </tr>
@@ -1344,6 +1357,8 @@ View Form
                     <td>{item.ContactNo}</td>
                     <td>{item.amount}</td>
                     <td>{item.status}</td>
+                    <td>{item.process_by_userId}</td>
+                                          <td>{item.updated_at}</td>
                     <td>{item.note}</td>
                     <td>
                       {item.status === "Under Process" &&

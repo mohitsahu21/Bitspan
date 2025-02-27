@@ -320,7 +320,7 @@ const ProviderTwoDTHConnectionHistory = () => {
                 <option value="Pending">Pending</option>
                 <option value="Under Process">Under Process</option>
                 <option value="Success">Success</option>
-                <option value="Mark Edit">Mark Edit</option>
+                {/* <option value="Mark Edit">Mark Edit</option> */}
                 <option value="Reject">Reject</option>
               </select>
             </div>
