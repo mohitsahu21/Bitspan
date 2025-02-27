@@ -1,7 +1,8 @@
-import React, { Suspense, lazy } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React, { Suspense, lazy, useEffect, useState } from "react";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
+import axios from "axios";
 
 // Lazy-loaded components
 const DistributorDashboard = lazy(() =>
@@ -126,13 +127,103 @@ import DUTICouponHistory from "../components/Distributor/DUTICouponHistory";
 import DChangePrice from "../components/Distributor/DChangePrice";
 
 import Certificate from "../components/Distributor/Certificate";
+import Swal from "sweetalert2";
 
 const DtProfile = lazy(() => import("../components/Distributor/DtProfile"));
 
 const Distributor = () => {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, token } = useSelector((state) => state.user);
   const userStatus = currentUser?.Status;
   const userId = currentUser?.userId;
+
+  const pathname = window.location.pathname;
+  const [status, setStatus] = useState(null);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState("");
+  const dispatch = useDispatch();
+  const [user, setUser] = useState("");
+  // const userStatus = currentUser?.Status;
+
+  // Logging the current user and token for debugging
+  console.log("Current User:", currentUser);
+  console.log("Token:", token);
+  console.log(status);
+  // UseEffect hook to call the API once when the component mounts
+  useEffect(() => {
+    if (currentUser?.userId && token) {
+      fetchUserData();
+    } else {
+      console.log("Missing userId or token, cannot fetch data.");
+    }
+  }, [currentUser, token, pathname]);
+
+  const fetchUserData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("User Details:", response.data?.data);
+      const userStatus = response.data?.data?.Status; // API response se status fetch kar rahe hain
+      const PaymentStatus = response.data?.data?.payment_status;
+      setUser(response.data?.data);
+      if (userStatus == "Deactive") {
+        Swal.fire({
+          icon: "error",
+          title: "User Deactive",
+          text: "Please contact Admin!",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else if (PaymentStatus == "Pending") {
+        Swal.fire({
+          icon: "error",
+          title: "User Payment is Pending",
+          text: "Please Make Payment First Or Contact Admin if Payment Done",
+        });
+        // dispatch(clearUser());
+
+        navigate("/payment");
+      } else if (userStatus == "Pending") {
+        Swal.fire({
+          icon: "error",
+          title: "User KYC is Pending",
+          text: "Please Update KYC details First Or Contact Admin if Already Submitted Kyc details",
+        });
+        // dispatch(clearUser());
+        navigate("/update-profile");
+      }
+
+      setStatus(userStatus); // Status ko state mein set karenge
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Session Expired",
+          text: "Your session has expired. Please log in again.",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong! Please try again later.",
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
       <Suspense
@@ -584,92 +675,3 @@ const Distributor = () => {
 };
 
 export default Distributor;
-
-// import React from "react";
-// import { Route, Routes } from "react-router-dom";
-// import DistributorDashboard from "../pages/DistributorDashboard";
-// import DtProfile from "../components/Distributor/DtProfile";
-// import AadharLinkingStatus from "../components/DashBoard/AadharLinkingStatus";
-// import TrainingVideo from "../components/DashBoard/TrainingVideo";
-// import DWalletTransactionReport from "../components/Distributor/DWalletTransactionReport";
-// import DAllOfflineForm from "../components/Distributor/DAllOfflineForm";
-// import DStepVerification from "../components/Distributor/DStepVerification";
-// import CreateRetailer from "../components/Distributor/CreateRetailer";
-// import DUTIPanTransactionReport from "../components/Distributor/DUTIPanTransactionReport";
-// import DDistributeCoupon from "../components/Distributor/DDistributeCoupon";
-// import DPanTransactionReport from "../components/Distributor/DPanTransactionReport";
-// import DActiveUsersList from "../components/Distributor/DActiveUsersList";
-// import DDeactiveUsersList from "../components/Distributor/DDeactiveUsersList";
-// import DAllUsersJoinedList from "../components/Distributor/DAllUsersJoinedList";
-// import DUTICouponHistory from "../components/Distributor/DUTICouponHistory";
-// import DChangePrice from "../components/Distributor/DChangePrice";
-// import DComplaints from "../components/Distributor/DComplaints";
-// import DAllComplaintsList from "../components/Distributor/DAllComplaintsList";
-// import DChangePassword from "../components/Distributor/DChangePassword";
-// import DBankAccountSetup from "../components/Distributor/DBankAccountSetup";
-// import DFundTransferStatus from "../components/Distributor/DFundTransferStatus";
-// import Certificate from "../components/Distributor/Certificate";
-// import DDownloadCertificate from "../components/Distributor/DDownloadCertificate";
-// import DBankAccountVerify from "../components/Distributor/DBankAccountVerify";
-
-// const Distributor = () => {
-//   return (
-//     <>
-//       <Routes>
-//         <Route path="/dashboard" element={<DistributorDashboard />} />
-//         <Route path="/update-profile" element={<DtProfile />} />
-//         <Route
-//           path="/aadhar-linking-status"
-//           element={<AadharLinkingStatus />}
-//         />
-//         <Route path="/training-video" element={<TrainingVideo />} />
-//         <Route
-//           path="/wallet-transaction-report"
-//           element={<DWalletTransactionReport />}
-//         />
-//         <Route path="/view-all-offline-history" element={<DAllOfflineForm />} />
-//         <Route path="/2-step-verification" element={<DStepVerification />} />
-//         {/* <Route path="/create-distributor" element={<CreateDistributor />} /> -------- */}
-//         <Route path="/create-retailer" element={<CreateRetailer />} />
-//         <Route
-//           path="/uti-transaction-report"
-//           element={<DUTIPanTransactionReport />}
-//         />
-//         <Route path="/distribute-uti-coupon" element={<DDistributeCoupon />} />
-//         <Route path="/uti-coupon-history" element={<DUTICouponHistory />} />
-//         <Route
-//           path="/pan-transaction-report"
-//           element={<DPanTransactionReport />}
-//         />
-//         <Route path="/active-users" element={<DActiveUsersList />} />
-//         <Route path="/deactive-users" element={<DDeactiveUsersList />} />
-//         <Route path="/users-joining-list" element={<DAllUsersJoinedList />} />
-//         <Route path="/change-price" element={<DChangePrice />} />
-//         <Route path="/raise-complaint" element={<DComplaints />} />
-//         <Route path="/complaint-raised-list" element={<DAllComplaintsList />} />
-//         <Route path="/change-password" element={<DChangePassword />} />
-//         <Route path="/bank-account-setup" element={<DBankAccountSetup />} />
-//         <Route path="/bank-account-setup/:bank_id/:user_id" element={<DBankAccountVerify />} />
-//         <Route path="/fund-transfer-status" element={<DFundTransferStatus />} />
-//         <Route
-//           path="/download-certificate"
-//           element={<DDownloadCertificate />}
-//         />
-//         <Route
-//           path="/download-certificate-print"
-//           element={
-//             <Certificate
-//               user="DISTRIBUTOR"
-//               name="Aashish Kumar"
-//               address="Jabalpur, BIHAR - 482001"
-//               date="02-Jul-2024"
-//               id="AASHISD29164"
-//             />
-//           }
-//         />
-//       </Routes>
-//     </>
-//   );
-// };
-
-// export default Distributor;
