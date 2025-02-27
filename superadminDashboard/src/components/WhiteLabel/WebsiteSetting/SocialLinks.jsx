@@ -28,7 +28,7 @@ const SocialLinks = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getWhitelabelSettings/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWhitelabelSettings/${userId}`,
 
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
 
@@ -101,7 +101,7 @@ const SocialLinks = () => {
     setLoading(true);
     try {
       const response = await axios.put(
-        "http://localhost:7777/api/auth/whiteLabel/UpdateSocialLinkSetting",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/UpdateSocialLinkSetting",
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateSocialLinkSetting",
         formData,
 

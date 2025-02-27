@@ -35,7 +35,7 @@ const WLWalletTransactionReport = () => {
     try {
       const { data } = await axios.get(
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletSummary/${userId}`,
-        `http://localhost:7777/api/auth/whiteLabel/getWalletSummary/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWalletSummary/${userId}`,
 
         {
           headers: {

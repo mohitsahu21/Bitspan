@@ -42,7 +42,7 @@ const WLSambalHistory = () => {
     try {
       const response = await axios.get(
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getSambalHistory/${userID}`,
-        `http://localhost:7777/api/auth/whiteLabel/getSambalHistory/${userID}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getSambalHistory/${userID}`,
         {
           headers: {
             "Content-Type": "application/json",

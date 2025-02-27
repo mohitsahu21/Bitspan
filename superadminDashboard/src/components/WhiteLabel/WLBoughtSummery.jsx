@@ -26,7 +26,7 @@ const WLBoughtSummery = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getBoughtUserId/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getBoughtUserId/${userId}`,
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getBoughtUserId/${userId}`,
         {
           headers: {

@@ -31,7 +31,7 @@ const WLFundTransferStatus = () => {
     setLoading(true); // Start loading
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getWalletToWalletTransfer/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWalletToWalletTransfer/${userId}`,
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletToWalletTransfer/${userId}`,
         {
           headers: {

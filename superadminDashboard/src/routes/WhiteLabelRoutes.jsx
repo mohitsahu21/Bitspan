@@ -1,7 +1,10 @@
-import React, { Suspense, lazy } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React, { Suspense, lazy, useEffect, useState } from "react";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
+import axios from "axios";
+import WLProfile from "../components/WhiteLabel/WLProfile";
+import Swal from "sweetalert2";
 
 // Lazy-loaded components
 
@@ -14,8 +17,6 @@ const TrainingVideo = lazy(() =>
 );
 
 const WhiteLabelDashboard = lazy(() => import("../pages/WhiteLabelDashboard"));
-
-import WLProfile from "../components/WhiteLabel/WLProfile";
 
 const WLWalletTransactionReport = lazy(() =>
   import("../components/WhiteLabel/WLWalletTransactionReport")
@@ -223,9 +224,97 @@ const WLBoughtSummery = lazy(() =>
 );
 
 const WhiteLabelRoutes = () => {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, token } = useSelector((state) => state.user);
   const userStatus = currentUser?.Status;
   const userId = currentUser?.userId;
+
+  const pathname = window.location.pathname;
+  const [status, setStatus] = useState(null);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState("");
+  const dispatch = useDispatch();
+  const [user, setUser] = useState("");
+  // const userStatus = currentUser?.Status;
+
+  // Logging the current user and token for debugging
+  console.log("Current User:", currentUser);
+  console.log("Token:", token);
+  console.log(status);
+  // UseEffect hook to call the API once when the component mounts
+  useEffect(() => {
+    if (currentUser?.userId && token) {
+      fetchUserData();
+    } else {
+      console.log("Missing userId or token, cannot fetch data.");
+    }
+  }, [currentUser, token, pathname]);
+
+  const fetchUserData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("User Details:", response.data?.data);
+      const userStatus = response.data?.data?.Status; // API response se status fetch kar rahe hain
+      const PaymentStatus = response.data?.data?.payment_status;
+      setUser(response.data?.data);
+      if (userStatus == "Deactive") {
+        Swal.fire({
+          icon: "error",
+          title: "User Deactive",
+          text: "Please contact Admin!",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else if (PaymentStatus == "Pending") {
+        Swal.fire({
+          icon: "error",
+          title: "User Payment is Pending",
+          text: "Please Make Payment First Or Contact Admin if Payment Done",
+        });
+        // dispatch(clearUser());
+
+        navigate("/payment");
+      } else if (userStatus == "Pending") {
+        Swal.fire({
+          icon: "error",
+          title: "User KYC is Pending",
+          text: "Please Update KYC details First Or Contact Admin if Already Submitted Kyc details",
+        });
+        // dispatch(clearUser());
+        navigate("/update-profile");
+      }
+
+      setStatus(userStatus); // Status ko state mein set karenge
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Session Expired",
+          text: "Your session has expired. Please log in again.",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong! Please try again later.",
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -837,115 +926,3 @@ const WhiteLabelRoutes = () => {
 };
 
 export default WhiteLabelRoutes;
-
-// import React from "react";
-// import { Route, Routes } from "react-router-dom";
-
-// import AadharLinkingStatus from "../components/DashBoard/AadharLinkingStatus";
-// import TrainingVideo from "../components/DashBoard/TrainingVideo";
-// import WhiteLabelDashboard from "../pages/WhiteLabelDashboard";
-// import WLProfile from "../components/WhiteLabel/WLProfile";
-// import WLWalletTransactionReport from "../components/WhiteLabel/WLWalletTransactionReport";
-// import WLAllOfflineForm from "../components/WhiteLabel/WLAllOfflineForm";
-// import WLStepVerification from "../components/WhiteLabel/WLStepVerification";
-// import WLUTIPanTransactionReport from "../components/WhiteLabel/WLUTIPanTransactionReport";
-// import WLDistributeCoupon from "../components/WhiteLabel/WLDistributeCoupon";
-// import WLUTICouponHistory from "../components/WhiteLabel/WLUTICouponHistory";
-// import WLPanTransactionReport from "../components/WhiteLabel/WLPanTransactionReport";
-// import WLActiveUsersList from "../components/WhiteLabel/WLActiveUsersList";
-// import WLDeactiveUsersList from "../components/WhiteLabel/WLDeactiveUsersList";
-// import WLAllUsersJoinedList from "../components/WhiteLabel/WLAllUsersJoinedList";
-// import WLChangePrice from "../components/WhiteLabel/WLChangePrice";
-// import WLComplaints from "../components/WhiteLabel/WLComplaints";
-// import WLAllComplaintsList from "../components/WhiteLabel/WLAllComplaintsList";
-// import WLDownloadCertificate from "../components/WhiteLabel/WLDownloadCertificate";
-// import WLChangePassword from "../components/WhiteLabel/WLChangePassword";
-// import WLBankAccountSetup from "../components/WhiteLabel/WLBankAccountSetup";
-// import WLBankAccountVerify from "../components/WhiteLabel/WLBankAccountVerify";
-// import WLWalletWithdraw from "../components/WhiteLabel/WLWalletWithdraw";
-// import WLFundTransferStatus from "../components/WhiteLabel/WLFundTransferStatus";
-// import Certificate from "../components/SuperDistributer/Certificate";
-// import WebsiteSetting from "../components/WhiteLabel/WebsiteSetting";
-// import CreateWhiteLabel from "../components/WhiteLabel/CreateWhiteLabel";
-// import BuyUserId from "../components/WhiteLabel/BuyUserId";
-// import CreateSuperDistributor from "../components/WhiteLabel/CreateSuperDistributor";
-// import WLPendingPaymentUsers from "../components/WhiteLabel/WLPendingPaymentUsers";
-// import WhiteLabelJoiningList from "../components/WhiteLabel/WhiteLabelJoiningList";
-// import BuyUserIdSummary from "../components/WhiteLabel/BuyUserIdSummary";
-// import ChangeIdSetRate from "../components/WhiteLabel/ChangeIdSetRate";
-// import ChangeUTINewCouponPrice from "../components/WhiteLabel/ChangeUTINewCouponPrice";
-// import ChangeNSDLPrice from "../components/WhiteLabel/ChangeNSDLPrice";
-// import ChangeUTIPanPrice from "../components/WhiteLabel/ChangeUTIPanPrice";
-// import WACreateRetailer from "../components/WhiteLabel/WACreateRetailer";
-// import WACreateDistributor from "../components/WhiteLabel/WACreateDistributor";
-
-// const WhiteLabelRoutes = () => {
-//   return (
-//     <React.Fragment>
-//       <Routes>
-//         <Route path="/dashboard" element={<WhiteLabelDashboard />} />
-//         <Route path="/update-profile" element={<WLProfile />} />
-//         <Route
-//           path="/aadhar-linking-status"
-//           element={<AadharLinkingStatus />}
-//         />
-//         <Route path="/training-video" element={<TrainingVideo />} />
-
-//         <Route
-//           path="/wallet-transaction-report"
-//           element={<WLWalletTransactionReport />}
-//         />
-//         <Route
-//           path="/view-all-offline-history"
-//           element={<WLAllOfflineForm />}
-//         />
-
-//         <Route path="/2-step-verification" element={<WLStepVerification />} />
-//         <Route path="/website-setting" element={<WebsiteSetting />} />
-
-//         <Route path="/create-super-distributor" element={<CreateSuperDistributor />} />
-//         <Route path="/create-white-label" element={<CreateWhiteLabel />} />
-//         <Route path="/create-retailer" element={<WACreateRetailer />} />
-//         <Route path="/create-distributor" element={<WACreateDistributor />} />
-//         <Route path="/buy-admin-id" element={<BuyUserId />} />
-
-//         <Route
-//           path="/uti-transaction-report"
-//           element={<WLUTIPanTransactionReport />}
-//         />
-
-//         <Route path="/distribute-uti-coupon" element={<WLDistributeCoupon />} />
-
-//         <Route path="/uti-coupon-history" element={<WLUTICouponHistory />} />
-
-//       <Route path="/active-users" element={<WLActiveUsersList />} />
-//       <Route path="/deactive-users" element={<WLDeactiveUsersList />} />
-//       <Route path="/users-joining-list" element={<WLAllUsersJoinedList />} />
-//       <Route path="/pending-payment-users" element={<WLPendingPaymentUsers />} />
-//       <Route path="/white-label-joining-list" element={<WhiteLabelJoiningList />} />
-//       <Route path="/buy-user-id-summary" element={<BuyUserIdSummary />} />
-//       <Route path="/pan-transaction-report" element={<WLPanTransactionReport />} />
-//       <Route path="/change-price" element={<WLChangePrice />} />
-//       <Route path="/raise-complaint" element={<WLComplaints />} />
-//       <Route path="/complaint-raised-list" element={<WLAllComplaintsList />} />
-//       <Route path="/download-certificate" element={<WLDownloadCertificate />} />
-//       <Route path="/change-coupon-price" element={<ChangeIdSetRate />} />
-//       <Route path="/change-nsdl-price" element={<ChangeNSDLPrice/>} />
-//       <Route path="/change-uti-price" element={<ChangeUTIPanPrice/>} />
-//       <Route path="/change-uti-new-price" element={<ChangeUTINewCouponPrice />} />
-//       <Route path="/change-password" element={<WLChangePassword />} />
-//       <Route path="/bank-account-setup" element={<WLBankAccountSetup />} />
-//       <Route path="/bank-account-setup/:bank_id/:user_id" element={<WLBankAccountVerify />} />
-//       <Route path="/wallet-withdraw" element={<WLWalletWithdraw/>} />
-//       <Route path="/fund-transfer-status" element={<WLFundTransferStatus />} />
-//       <Route path="/download-certificate-print" element={<Certificate user="WHITE LABEL" name="Aashish Kumar"
-//         address="Jabalpur, BIHAR - 482001"
-//         date="02-Jul-2024"
-//         id="AASHISD29164"/>} />
-
-//       </Routes>
-//     </React.Fragment>
-//   );
-// };
-
-// export default WhiteLabelRoutes;

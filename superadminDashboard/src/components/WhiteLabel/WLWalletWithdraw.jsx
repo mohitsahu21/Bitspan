@@ -56,7 +56,7 @@ const WLWalletWithdraw = () => {
   const fetchBankAccounts = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getActiveBankDetails/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getActiveBankDetails/${userId}`,
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getActiveBankDetails/${userId}`,
         {
           headers: {
@@ -93,7 +93,7 @@ const WLWalletWithdraw = () => {
   const fetchWalletBalance = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getWalletBalance/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWalletBalance/${userId}`,
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletBalance/${userId}`,
         {
           headers: {
@@ -162,7 +162,7 @@ const WLWalletWithdraw = () => {
       // Submit the form data to the server
       const response = await axios.post(
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/WalletWithdraw/${userId}`,
-        `http://localhost:7777/api/auth/whiteLabel//WalletWithdraw/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel//WalletWithdraw/${userId}`,
         formData,
         {
           headers: {

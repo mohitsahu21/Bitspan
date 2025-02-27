@@ -104,7 +104,7 @@ const LogoAndImages = () => {
     try {
       const { data } = await axios.get(
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
-        `http://localhost:7777/api/auth/whiteLabel/getWhitelabelSettings/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWhitelabelSettings/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -214,7 +214,7 @@ const LogoAndImages = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:7777/api/auth/whiteLabel/UpdateLogoImageSetting",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/UpdateLogoImageSetting",
         formDataSend,
         {
           headers: {

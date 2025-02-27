@@ -98,7 +98,7 @@ const WhiteLabelDashboard = () => {
     try {
       const { data } = await axios.get(
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getSuperDistributorUsersData/${userId}`,
-        `http://localhost:7777/api/auth/whiteLabel/getWhiteLabelUsersData/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWhiteLabelUsersData/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -132,7 +132,7 @@ const WhiteLabelDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getUserNotification/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getUserNotification/${userId}`,
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getUserNotification/${userId}`,
         {
           headers: {
@@ -174,7 +174,7 @@ const WhiteLabelDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getAllMonthCommission/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getAllMonthCommission/${userId}`,
 
         {
           headers: {
@@ -225,7 +225,7 @@ const WhiteLabelDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getTodaysCommission/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getTodaysCommission/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

@@ -65,7 +65,7 @@ const WLTransferId = () => {
   const fetchNoOfIds = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getRemainingIds/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getRemainingIds/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -102,7 +102,7 @@ const WLTransferId = () => {
     try {
       const { data } = await axios.get(
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getActiveUsers/${userId}`,
-        `http://localhost:7777/api/auth/whiteLabel/getActiveUsers/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getActiveUsers/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -139,7 +139,7 @@ const WLTransferId = () => {
     // setLoading(true);
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getRemainingIds/${formData.userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getRemainingIds/${formData.userId}`,
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletBalance/${formData.userId}`,
         {
           headers: {
@@ -280,7 +280,7 @@ const WLTransferId = () => {
       setButtonLoading(true);
 
       const response = await axios.post(
-        `http://localhost:7777/api/auth/whiteLabel/idTransfer`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/idTransfer`,
         updatedFormData,
         {
           headers: {

@@ -29,7 +29,7 @@ const WLCoupanCommissionHistory = () => {
     setLoading(true); // Start loading
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/whiteLabel/getCoupanHistory/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getCoupanHistory/${userId}`,
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getCoupanHistory/${userId}`,
         {
           headers: {

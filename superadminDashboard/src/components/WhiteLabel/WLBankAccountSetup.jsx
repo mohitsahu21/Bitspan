@@ -48,7 +48,7 @@ const WLBankAccountSetup = () => {
     try {
       const response = await axios.get(
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getBankDetails/${userId}`,
-        `http://localhost:7777/api/auth/whiteLabel/getBankDetails/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getBankDetails/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -115,7 +115,7 @@ const WLBankAccountSetup = () => {
     axios
       .post(
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/addBankDetails/${userId}`,
-        `http://localhost:7777/api/auth/whiteLabel/addBankDetails/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/addBankDetails/${userId}`,
         {
           userId: userId, // Ensure userId is passed to the backend
           bankholder_name: bankData.holderName,
@@ -189,7 +189,7 @@ const WLBankAccountSetup = () => {
       try {
         const response = await axios.delete(
           // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/deleteBankDetails/${bid}`,
-          `http://localhost:7777/api/auth/whiteLabel/deleteBankDetails/${bid}`,
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/deleteBankDetails/${bid}`,
           {
             headers: {
               "Content-Type": "application/json",
