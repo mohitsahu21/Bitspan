@@ -1,7 +1,9 @@
-import React, { Suspense, lazy } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React, { Suspense, lazy, useEffect, useState } from "react";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 // Lazy-loaded components
 const SuperDistributerDashboard = lazy(() =>
@@ -166,9 +168,97 @@ const SdWalletToWalletTransfer = lazy(() =>
 const Profile = lazy(() => import("../pages/Profile"));
 
 const SuperDistributorRoutes = () => {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, token } = useSelector((state) => state.user);
   const userStatus = currentUser?.Status;
   const userId = currentUser?.userId;
+
+  const pathname = window.location.pathname;
+  const [status, setStatus] = useState(null);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState("");
+  const dispatch = useDispatch();
+  const [user, setUser] = useState("");
+  // const userStatus = currentUser?.Status;
+
+  // Logging the current user and token for debugging
+  console.log("Current User:", currentUser);
+  console.log("Token:", token);
+  console.log(status);
+  // UseEffect hook to call the API once when the component mounts
+  useEffect(() => {
+    if (currentUser?.userId && token) {
+      fetchUserData();
+    } else {
+      console.log("Missing userId or token, cannot fetch data.");
+    }
+  }, [currentUser, token, pathname]);
+
+  const fetchUserData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("User Details:", response.data?.data);
+      const userStatus = response.data?.data?.Status; // API response se status fetch kar rahe hain
+      const PaymentStatus = response.data?.data?.payment_status;
+      setUser(response.data?.data);
+      if (userStatus == "Deactive") {
+        Swal.fire({
+          icon: "error",
+          title: "User Deactive",
+          text: "Please contact Admin!",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else if (PaymentStatus == "Pending") {
+        Swal.fire({
+          icon: "error",
+          title: "User Payment is Pending",
+          text: "Please Make Payment First Or Contact Admin if Payment Done",
+        });
+        // dispatch(clearUser());
+
+        navigate("/payment");
+      } else if (userStatus == "Pending") {
+        Swal.fire({
+          icon: "error",
+          title: "User KYC is Pending",
+          text: "Please Update KYC details First Or Contact Admin if Already Submitted Kyc details",
+        });
+        // dispatch(clearUser());
+        navigate("/update-profile");
+      }
+
+      setStatus(userStatus); // Status ko state mein set karenge
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Session Expired",
+          text: "Your session has expired. Please log in again.",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong! Please try again later.",
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Suspense

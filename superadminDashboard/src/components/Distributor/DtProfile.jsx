@@ -75,7 +75,8 @@ const DtProfile = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/auth/Distributor/getUserDetails/${currentUser?.userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getUserDetails/${currentUser?.userId}`,
+        // `http://localhost:7777/api/auth/Distributor/getUserDetails/${currentUser?.userId}`,
         {
           headers: {
             "Content-Type": "application/json",

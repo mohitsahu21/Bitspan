@@ -3325,8 +3325,8 @@ const Sider = () => {
     const fetchProfileImage = async () => {
       try {
         const response = await axios.get(
-          // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getProfileImage/${userId}`
-          `http://localhost:7777/api/auth/whiteLabel/getProfileImage/${userId}`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getProfileImage/${userId}`
+          // `http://localhost:7777/api/auth/whiteLabel/getProfileImage/${userId}`
         );
 
         if (response.data.success) {

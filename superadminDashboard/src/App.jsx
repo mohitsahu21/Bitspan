@@ -49,6 +49,7 @@ import { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import styled from "styled-components";
 import NotFound from "./components/NotFound";
+import Payment from "./pages/Payment";
 // Lazy routes
 const LoginBitspan = lazy(() => import("./components/LoginBitspan"));
 const Sider = lazy(() => import("./components/SideBar"));
@@ -89,7 +90,8 @@ function App() {
             location.pathname !== "/" &&
             location.pathname !== "/password-reset" &&
             location.pathname !== "/download-certificate-print" &&
-            location.pathname !== "/registration-page" && <Sider />}
+            location.pathname !== "/registration-page" &&
+            location.pathname !== "/payment" && <Sider />}
 
           <Routes>
             <Route
@@ -104,6 +106,11 @@ function App() {
                 currentUser ? <Navigate to="/dashboard" /> : <ForgotPassword />
               }
             />
+            <Route
+              path="/payment"
+              element={currentUser ? <Navigate to="/" /> : <Payment />}
+            />
+            {/* {!currentUser && < Route path="/payment" element={<Payment user={user} />} />} */}
             {!currentUser && <Route path="*" element={<NotFound />} />}
           </Routes>
           {user === "Retailer" && <RetailerRoutes />}

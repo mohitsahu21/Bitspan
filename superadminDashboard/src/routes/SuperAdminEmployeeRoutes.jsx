@@ -78,6 +78,7 @@ const SuperAdminEmployeeRoutes = () => {
   // Logging the current user and token for debugging
   console.log("Current User:", currentUser);
   console.log("Token:", token);
+  console.log(status);
 
   // UseEffect hook to call the API once when the component mounts
   useEffect(() => {

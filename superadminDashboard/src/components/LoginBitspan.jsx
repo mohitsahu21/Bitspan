@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -254,6 +254,15 @@ const LoginBitspan = () => {
   const navigate = useNavigate();
   const inputsRef = useRef([]);
 
+  useEffect(() => {
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", () => navigate("/"));
+
+    return () => {
+      window.removeEventListener("popstate", () => navigate("/"));
+    };
+  }, [navigate]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -307,21 +316,40 @@ const LoginBitspan = () => {
           });
         } else if (response.data.message === "User Payment is Pending") {
           console.error("Login error:", response.data.message);
+          // Swal.fire({
+          //         icon: "error",
+          //         title: "User Payment is Pending",
+          //         text: "Please Make Payment First Or Contact Admin if Payment Done",
+          //       });
+          //       // dispatch(clearUser());
+
+          //       navigate("/payment" , { state: { user: response.data.user } });
+          // Navigate to the success page and pass the response data
           Swal.fire({
-            icon: "error",
-            title: "User Payment Pending",
-            text: "Please Make Payment First",
+            title: "User Payment is Pending",
+            text: "Please Make Payment First Or Contact Admin if Payment Done",
+            showDenyButton: false,
+            showCancelButton: true,
+            confirmButtonText: "Pay Now",
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              // Swal.fire("Saved!", "", "success");
+              navigate("/payment", { state: { user: response.data.user } });
+            } else if (result.isDenied) {
+              Swal.fire("Changes are not saved", "", "info");
+            }
           });
         } else if (response.data.message === "User KYC is Pending") {
           console.error("Login error:", response.data.message);
           const user = response.data.user;
           const token = response.data.token;
           dispatch(setUser({ user, token }));
-          Swal.fire({
-            icon: "error",
-            title: "User KYC Pending",
-            text: "Please Submit KYC to use Services",
-          });
+          // Swal.fire({
+          //   icon: "error",
+          //   title: "User KYC Pending",
+          //   text: "Please Submit KYC to use Services",
+          // });
           navigate("/update-profile");
         }
       } else {
