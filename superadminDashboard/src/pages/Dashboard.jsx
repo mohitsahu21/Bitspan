@@ -26,7 +26,7 @@ const Dashboard = () => {
   const { currentUser, token } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const { walletBalance } = useSelector((state) => state.user);
-  console.log(walletBalance);
+  console.log(walletBalance === null || undefined ? "0.00" : walletBalance);
   const userId = useSelector((state) => state.user.currentUser?.userId);
   const [loading, setLoading] = useState(true);
   const [commissionData, setCommissionData] = useState(0); // Default commission to 0
@@ -652,7 +652,7 @@ const Dashboard = () => {
                           <div className="d-flex flex-column cardtext">
                             <p className="mb-0 px-2 my-0 fs-6">Wallet Amount</p>
                             {/* <h4 className="px-2 my-0">(Rs. 250/-)</h4>{" "} */}
-                            <h4 className="px-2 my-0">{`₹${walletBalance}`}</h4>{" "}
+                            <h4 className="px-2 my-0">{`₹${walletBalance === null || undefined ? "0.00" : walletBalance}`}</h4>{" "}
                           </div>
                         </div>
                       </div>

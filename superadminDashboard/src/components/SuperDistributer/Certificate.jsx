@@ -161,8 +161,11 @@ const Certificate = ({ user, name, address, date, id }) => {
     fetchUserRelation();
   }, []);
 
+  const signImage = apiData?.data[0]?.Signature_With_Stamp;
+
   console.log(userRelation);
   console.log(apiData);
+  console.log(apiData?.data[0]?.Company_Name);
 
   return (
     <Wrapper>
@@ -196,14 +199,17 @@ const Certificate = ({ user, name, address, date, id }) => {
             </p>
             <p className="para">
               is an authorized as a{" "}
-              <strong className="strong">{user} of BITS PAN</strong>
+              <strong className="strong">{user} of {apiData?.data[0]?.Company_Name}</strong>
             </p>
           </div>
           <div className="footer">
             <p>Authorised sign</p>
-            <p className="sign">
+            <div>
+            {signImage && <img src={signImage} alt="Authorized Signature" className="signature-image" />}
+            </div>
+            {/* <p className="sign">
               <strong>BITS PAN</strong>
-            </p>
+            </p> */}
           </div>
         </div>
         <div className="colored-side right"></div>
@@ -318,6 +324,13 @@ const Wrapper = styled.div`
   .sign {
     font-size: 20px;
   }
+    .signature-image {
+  display: block;
+  margin: 10px auto;
+  max-width: 150px; /* Adjust size as needed */
+  height: auto;
+}
+
 `;
 
 export default Certificate;
