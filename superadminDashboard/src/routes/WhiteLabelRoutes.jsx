@@ -3,6 +3,8 @@ import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
+import WLProfile from "../components/WhiteLabel/WLProfile";
+import Swal from "sweetalert2";
 
 // Lazy-loaded components
 
@@ -15,9 +17,6 @@ const TrainingVideo = lazy(() =>
 );
 
 const WhiteLabelDashboard = lazy(() => import("../pages/WhiteLabelDashboard"));
-
-import WLProfile from "../components/WhiteLabel/WLProfile";
-import Swal from "sweetalert2";
 
 const WLWalletTransactionReport = lazy(() =>
   import("../components/WhiteLabel/WLWalletTransactionReport")
