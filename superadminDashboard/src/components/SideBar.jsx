@@ -3293,6 +3293,43 @@ const SuperAdminEmployeeData = [
     // cName: "sub-nav",
   },
   {
+    title: "Online PAN Services",
+    path: "#",
+    icon: <RiBaseStationLine color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+      // {
+      //   title: "View Recharge History",
+      //   path: "/online-recharge-history",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   // cName: "sub-nav",
+      // },
+      // {
+      //   title: "View DTH Connection History",
+      //   path: "/online-dth-connection-history",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   // cName: "sub-nav",
+      // },
+      {
+        title: "NSDL PAN Transaction History",
+        path: "/pan-transaction-report",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "NSDL PAN Correction History",
+        path: "/pan-correction-report",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      // {
+      //   title: "UTI PAN Transaction History",
+      //   path: "/uti-transaction-report",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
+    ],
+  },
+  {
     title: "View Bank Id Forms",
     path: "/Bank-Id-history",
     icon: <IoIcons.IoIosPaper color="#fe662b" />,
