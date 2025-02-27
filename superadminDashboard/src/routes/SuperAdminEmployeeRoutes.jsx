@@ -31,6 +31,14 @@ const SAEPanOfflineHistory = lazy(() =>
   import("../components/SuperAdminEmployee/SAEPanOfflineHistory")
 );
 
+const SAEPanTransactionReport = lazy(() =>
+  import("../components/SuperAdminEmployee/SAEPanTransactionReport")
+);
+
+const SAEPanCorrectionReport = lazy(() =>
+  import("../components/SuperAdminEmployee/SAEPanCorrectionReport")
+);
+
 const SAEBankIdForms = lazy(() =>
   import("../components/SuperAdminEmployee/SAEBankIdForms")
 );
@@ -207,6 +215,28 @@ const SuperAdminEmployeeRoutes = () => {
                   <Navigate to="/update-profile" />
                 ) : (
                   <SAEPanOfflineHistory />
+                )
+              }
+            />
+
+            <Route
+              path="/pan-transaction-report"
+              element={
+                status === "Deactive" ? (
+                  <Navigate to="/update-profile" />
+                ) : (
+                  <SAEPanTransactionReport />
+                )
+              }
+            />
+
+            <Route
+              path="/pan-correction-report"
+              element={
+                status === "Deactive" ? (
+                  <Navigate to="/update-profile" />
+                ) : (
+                  <SAEPanCorrectionReport />
                 )
               }
             />
