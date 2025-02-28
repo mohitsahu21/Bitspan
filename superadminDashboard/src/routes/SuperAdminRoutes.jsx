@@ -8,9 +8,12 @@ import styled from "styled-components";
 import AadharLinkingStatus from "../components/DashBoard/AadharLinkingStatus";
 import TrainingVideo from "../components/DashBoard/TrainingVideo";
 import NotFound from "../components/NotFound.jsx";
-import SAWhiteLabelWebsiteJoinUsers from "../components/SuperAdmin/SAWhiteLabelWebsiteJoinUsers.jsx";
+// import SAWhiteLabelWebsiteJoinUsers from "../components/SuperAdmin/SAWhiteLabelWebsiteJoinUsers.jsx";
+// import SAContactUs from "../components/SuperAdmin/SAContactUs.jsx";
 // Lazy imports
 const SuperAdminDashboard = lazy(() => import("../pages/SuperAdminDashboard"));
+const SAContactUs = lazy(() => import("../components/SuperAdmin/SAContactUs.jsx"));
+const SAWhiteLabelWebsiteJoinUsers = lazy(() => import("../components/SuperAdmin/SAWhiteLabelWebsiteJoinUsers.jsx"));
 const SAProfile = lazy(() => import("../components/SuperAdmin/SAProfile"));
 const SAWalletTransactionReport = lazy(() => import("../components/SuperAdmin/SAWalletTransactionReport"));
 const SAAllOfflineForm = lazy(() => import("../components/SuperAdmin/SAAllOfflineForm"));
@@ -89,6 +92,7 @@ const SuperAdminRoutes = () => {
     </div>}>
       <Routes>
         <Route path="/dashboard" element={<SuperAdminDashboard />} />
+        {/* <Route path="/" element={<Navigate to="/dashboard" />} /> */}
         <Route path="/update-profile" element={<SAProfile />} />
         {/* <Route
           path="/aadhar-linking-status"
@@ -256,7 +260,11 @@ const SuperAdminRoutes = () => {
           path="/uploaded-documents"
           element={<SAPanUploadedDocsList />}
         />
-         {/* <Route path="*" element={<NotFound />} /> */}
+        <Route
+          path="/contact-us-users"
+          element={<SAContactUs />}
+        />
+         <Route path="*" element={<NotFound />} />
 
         {/* <Route path="/download-certificate-print" element={<Certificate user="WHITE LABEL" name="Aashish Kumar"
         address="Jabalpur, BIHAR - 482001"

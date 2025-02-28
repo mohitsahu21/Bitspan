@@ -135,7 +135,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button type="submit" className="btn btn-primary p-2" disabled={loading}>
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -267,7 +267,7 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button type="submit" className="btn btn-primary p-2" disabled={loading}>
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -1430,7 +1430,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button type="submit" className="btn btn-primary p-2" disabled={loading}>
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -1650,7 +1650,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button type="submit" className="btn btn-primary p-2" disabled={loading}>
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -1995,7 +1995,13 @@ const SAAllOfflineForm = () => {
                                     {showApiData && showApiData.length > 0 ? (
                                       showApiData?.map((item, index) => (
                                         <tr key={index}>
-                                          <th scope="row">{index + 1}</th>
+                                          {/* <th scope="row">{index + 1}</th> */}
+                                          <td>
+                                                {currentPage *
+                                                  complaintsPerPage +
+                                                  index +
+                                                  1}
+                                              </td>
                                           <td>{item.created_at}</td>
                                           <td>{item.order_id}</td>
                                           <td>{item.applicant_name}</td>
@@ -2233,7 +2239,13 @@ const SAAllOfflineForm = () => {
                                     {showUnderProcessData && showUnderProcessData.length > 0 ? (
                                       showUnderProcessData?.map((item, index) => (
                                         <tr key={index}>
-                                          <th scope="row">{index + 1}</th>
+                                          {/* <th scope="row">{index + 1}</th> */}
+                                          <td>
+                                                {currentPage *
+                                                  complaintsPerPage +
+                                                  index +
+                                                  1}
+                                              </td>
                                           <td>{item.created_at}</td>
                                           <td>{item.order_id}</td>
                                           <td>{item.applicant_name}</td>

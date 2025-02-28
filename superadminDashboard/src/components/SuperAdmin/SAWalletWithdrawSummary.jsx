@@ -221,7 +221,13 @@ const SAWalletWithdrawSummary = () => {
                                                             {showApiData && showApiData.length > 0 ? (
                                         showApiData?.map((item, index) => (
                                           <tr key={index}>
-                                          <th scope="row">{index + 1}</th>
+                                          {/* <th scope="row">{index + 1}</th> */}
+                                          <td>
+                                                {currentPage *
+                                                  complaintsPerPage +
+                                                  index +
+                                                  1}
+                                              </td>
                                           <td>{item.created_at}</td>
                                           <td>{item.order_id}</td>
                                           <td>{item.amount}</td>

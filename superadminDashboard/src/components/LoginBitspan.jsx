@@ -537,13 +537,22 @@ const LoginBitspan = () => {
           <div className="col-md-8 col-lg-8 col-xl-4">
             <div className="card">
               <div className="p-4">
-                <div className="text-center">
+                {/* <div className="text-center">
                   <h3>Bitspan.com</h3>
                   <h4 className="text-muted mt-2 text-center fs-5">
                     Welcome Back!
                   </h4>
                   <p className="mb-5 text-center">
                     Sign in to continue to Bitspan.
+                  </p>
+                </div> */}
+                <div className="text-center">
+                  <h3>Welcome Back!</h3>
+                  <h4 className="text-muted mt-2 text-center fs-5">
+                  Sign in to continue to Dashboard
+                  </h4>
+                  <p className="mb-5 text-center">
+                   
                   </p>
                 </div>
                 {/* <form onSubmit={(e) => e.preventDefault()}> */}
@@ -552,7 +561,7 @@ const LoginBitspan = () => {
                     <>
                       <div className="form-outline mb-4">
                         <label className="form-label" htmlFor="form2Example1">
-                          User Name
+                          User ID
                         </label>
                         <input
                           type="text"
@@ -562,6 +571,7 @@ const LoginBitspan = () => {
                           onChange={(e) => setUserName(e.target.value)}
                           onKeyDown={handlebutton}
                           required
+                          placeholder="Enter your User ID"
                         />
                       </div>
 
@@ -577,6 +587,7 @@ const LoginBitspan = () => {
                           onChange={(e) => setPassword(e.target.value)}
                           onKeyDown={handlebutton}
                           required
+                          placeholder="Enter your password"
                         />
                       </div>
 

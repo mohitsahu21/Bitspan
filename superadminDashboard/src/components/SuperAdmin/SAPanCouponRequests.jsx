@@ -612,7 +612,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 
             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
               <div className="text-center  m-5">
-                <button type="submit" className="btn p-2" disabled={loading}>
+                <button type="submit" className="btn btn-primary p-2" disabled={loading}>
                   {loading ? "Loading..." : "Submit"}
                 </button>
               </div>
@@ -817,7 +817,7 @@ return (
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button type="submit" className="btn btn-primary p-2" disabled={loading}>
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -1032,6 +1032,7 @@ const SAPanCouponRequests = () => {
                                                                     <th scope="col">User Email</th>
                                                                     {/* <th scope="col">Receiept Attechment</th> */}
                                                                     <th scope="col">Note</th>
+                                                                    <th scope="col">Process By</th>
                                                                     <th scope="col">Process Date</th>
                                                                     <th scope="col">Status</th>
                                                                   
@@ -1043,7 +1044,13 @@ const SAPanCouponRequests = () => {
                                                             {showApiData && showApiData.length > 0 ? (
                                         showApiData?.map((item, index) => (
                                           <tr key={index}>
-                                          <th scope="row">{index + 1}</th>
+                                          {/* <th scope="row">{index + 1}</th> */}
+                                          <td>
+                                                {currentPage *
+                                                  complaintsPerPage +
+                                                  index +
+                                                  1}
+                                              </td>
                                           <td>{item.created_at}</td>
                                           <td>{item.order_id}</td>
                                           <td>{item.coupon_Quantity}</td>
@@ -1058,6 +1065,7 @@ const SAPanCouponRequests = () => {
                                           <td>{item.Email}</td>
                                          
                                           <td>{item.note}</td>
+                                          <td>{item.process_by_userId}</td>
                                           <td>{item.process_date}</td>
                                           <td>{item.status}</td>
                                          

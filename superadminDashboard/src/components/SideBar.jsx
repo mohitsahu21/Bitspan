@@ -2192,6 +2192,11 @@ const SuperAdminData = [
         path: "/choice-user-notification",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+      {
+        title: "Contact us users",
+        path: "/contact-us-users",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
     ],
   },
 ];

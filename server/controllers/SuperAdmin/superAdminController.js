@@ -5641,7 +5641,7 @@ const getBuyUserIdSummary = (req, res) => {
     // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM user_wallet c LEFT JOIN userprofile u  ON c.userId = u.UserId ORDER BY wid DESC`;
     const sql = `
   SELECT c.*, u.UserName, u.role, u.ContactNo, u.Email 
-  FROM userId_bought_summary c 
+  FROM userid_bought_summary c 
   LEFT JOIN userprofile u 
   ON c.userId = u.UserId COLLATE utf8mb4_unicode_ci 
   ORDER BY bid DESC
@@ -7792,7 +7792,7 @@ const SAContactUs = async (req, res) => {
 
 const SAGetContactUs = async (req, res) => {
   try {
-    const sql = "SELECT * FROM sa_contactus";
+    const sql = "SELECT * FROM sa_contactus ORDER BY id DESC";
 
     db.query(sql, (err, results) => {
       if (err) {
