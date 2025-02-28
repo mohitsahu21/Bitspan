@@ -788,7 +788,9 @@ const SuperDistributorRoutes = () => {
                 user="SUPER DISTRIBUTOR"
                 name={currentUser?.username}
                 address={`${currentUser?.City}, ${currentUser?.State}, ${currentUser?.PinCode}`}
-                date="02-Jul-2024"
+                date={
+                  new Date(currentUser?.CreateAt).toISOString().split("T")[0]
+                }
                 id={currentUser?.userId}
               />
             )
