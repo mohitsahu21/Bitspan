@@ -264,7 +264,11 @@ const WLPanFourHistory = () => {
                                   {showApiData && showApiData.length > 0 ? (
                                     showApiData.map((item, index) => (
                                       <tr key={index}>
-                                        <td>{index + 1}</td>{" "}
+                                        <td>
+                                          {currentPage * complaintsPerPage +
+                                            index +
+                                            1}
+                                        </td>
                                         <td>{item.created_at}</td>
                                         <td>{item.order_id}</td>
                                         <td>{item.application_type}</td>

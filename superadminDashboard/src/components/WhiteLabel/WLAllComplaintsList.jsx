@@ -178,7 +178,8 @@ const WLAllComplaintsList = () => {
                               <table class="table table-striped">
                                 <thead className="table-dark">
                                   <tr>
-                                    <th scope="col">Complaint ID</th>
+                                    <th scope="col">#</th>
+                                    {/* <th scope="col">Complaint ID</th> */}
                                     <th scope="col">Ticket Raised Date</th>
                                     <th scope="col">Complaint Type</th>
                                     <th scope="col">Complaint file</th>
@@ -192,7 +193,11 @@ const WLAllComplaintsList = () => {
                                   {showApiData && showApiData.length > 0 ? (
                                     showApiData.map((item, index) => (
                                       <tr>
-                                        <th scope="row">{item.id}</th>
+                                        <td>
+                                          {currentPage * complaintsPerPage +
+                                            index +
+                                            1}
+                                        </td>
                                         <td>{item.createdAt}</td>
                                         <td>{item.complainType}</td>
                                         <td>

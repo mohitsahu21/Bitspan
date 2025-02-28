@@ -278,7 +278,7 @@ const LogoAndImages = () => {
                           <h4>Enter All Correct Details For Update</h4>
                         </div>
 
-                        <div className="col-sm-12 mb-5">
+                        {/* <div className="col-sm-12 mb-5">
                           <label for="name" class="form-label">
                             Upload To Change Home Page Background (946 X 749)px
                           </label>
@@ -318,7 +318,7 @@ const LogoAndImages = () => {
                               </div>
                             )}
                           </span>
-                        </div>
+                        </div> */}
                         <div className="col-sm-12 mb-5">
                           <label for="name" class="form-label">
                             Upload To Change Logo (300 X 96)px - PNG Only

@@ -280,7 +280,11 @@ const WLSambalHistory = () => {
                                     showApiData.map((item, index) => (
                                       <tr key={index}>
                                         {/* <tr key={item.id}> */}
-                                        <td>{index + 1}</td>
+                                        <td>
+                                          {currentPage * complaintsPerPage +
+                                            index +
+                                            1}
+                                        </td>
                                         <td>{item.created_at}</td>
                                         <td>{item.order_id}</td>
                                         {/* <td>{item.samagra_id}</td>

@@ -32,7 +32,7 @@ const WLAllUsersJoinedList = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getActiveUsers/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWhiteLabelUsersData/${userId}`,
         // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getSuperDistributorUsersData/${userId}`,
         {
           headers: {
@@ -278,7 +278,11 @@ const WLAllUsersJoinedList = () => {
                                     {showApiData && showApiData.length > 0 ? (
                                       showApiData?.map((user, index) => (
                                         <tr key={user.id}>
-                                          <th scope="row">{index + 1}</th>
+                                          <td>
+                                            {currentPage * complaintsPerPage +
+                                              index +
+                                              1}
+                                          </td>
                                           <td>{user.CreateAt}</td>
 
                                           <td>{user.UserId}</td>

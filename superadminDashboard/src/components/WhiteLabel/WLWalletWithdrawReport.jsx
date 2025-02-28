@@ -228,7 +228,7 @@ const WLWalletWithdrawReport = () => {
                                 <thead className="table-dark">
                                   <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">ID</th>
+                                    {/* <th scope="col">ID</th> */}
                                     <th scope="col">Date</th>
                                     <th scope="col">Order ID</th>
                                     <th scope="col">Bank Holder Name</th>
@@ -249,9 +249,13 @@ const WLWalletWithdrawReport = () => {
                                   {showApiData && showApiData.length > 0 ? (
                                     showApiData.map((item, index) => (
                                       <tr key={index}>
-                                        <td>{index + 1}</td>
+                                        <td>
+                                          {currentPage * complaintsPerPage +
+                                            index +
+                                            1}
+                                        </td>
 
-                                        <td>{item.id}</td>
+                                        {/* <td>{item.id}</td> */}
                                         <td>{item.created_at}</td>
                                         <td>{item.order_id}</td>
                                         <td>{item.bankholder_name}</td>

@@ -161,7 +161,11 @@ const WLBoughtSummery = () => {
                                 {showApiData && showApiData.length > 0 ? (
                                   showApiData.map((item, index) => (
                                     <tr key={index}>
-                                      <th scope="row">{index + 1}</th>
+                                      <td>
+                                        {currentPage * complaintsPerPage +
+                                          index +
+                                          1}
+                                      </td>
 
                                       <td>{item.userId}</td>
                                       <td>{item.number_of_userId}</td>
