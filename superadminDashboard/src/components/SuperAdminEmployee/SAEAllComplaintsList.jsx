@@ -408,7 +408,7 @@ const SAEAllComplaintsList = () => {
                                 <table class="table table-striped">
                                   <thead className="table-dark">
                                     <tr>
-                                      <th scope="col">Complaint ID</th>
+                                      <th scope="col">#</th>
                                       <th scope="col">Ticket Raised Date</th>
 
                                       <th scope="col">Complaint Type</th>
@@ -425,6 +425,7 @@ const SAEAllComplaintsList = () => {
                                       <th scope="col">Response</th>
                                       <th scope="col">Status</th>
                                       <th scope="col">Process By</th>
+                                      <th scope="col">Process Date</th>
                                       <th scope="col">Action</th>
                                     </tr>
                                   </thead>
@@ -433,7 +434,11 @@ const SAEAllComplaintsList = () => {
                                       showApiData?.map((user, index) => (
                                         <tr key={user.id}>
                                           {/* <th scope="row">{index + 1}</th> */}
-                                          <th scope="row">{user.id}</th>
+                                          <td>
+                                            {currentPage * complaintsPerPage +
+                                              index +
+                                              1}
+                                          </td>
                                           <td>{user.createdAt}</td>
                                           <td>{user.complainType}</td>
                                           <td>{user.mobileNo}</td>
@@ -495,6 +500,7 @@ const SAEAllComplaintsList = () => {
                                           <td>{user.response}</td>
                                           <td>{user.status}</td>
                                           <td>{user.process_by_userId}</td>
+                                          <td>{user.updated_at}</td>
                                           <td>
                                             {user.status === "Pending" && (
                                               <Dropdown>

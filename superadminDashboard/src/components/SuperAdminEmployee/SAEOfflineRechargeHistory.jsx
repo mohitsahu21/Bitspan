@@ -2427,7 +2427,8 @@ const SAEOfflineRechargeHistory = () => {
                                       <th scope="col">User Name</th>
                                       <th scope="col">User Mobile</th>
                                       <th scope="col">Status</th>
-                                      <th scope="col">process_by</th>
+                                      <th scope="col">process By</th>
+                                      <th scope="col">process Date</th>
                                       <th scope="col">Note</th>
                                       <th scope="col">Action</th>
                                     </tr>
@@ -2436,7 +2437,11 @@ const SAEOfflineRechargeHistory = () => {
                                     {showApiData && showApiData.length > 0 ? (
                                       showApiData?.map((item, index) => (
                                         <tr key={index}>
-                                          <th scope="row">{index + 1}</th>
+                                          <td>
+                                            {currentPage * complaintsPerPage +
+                                              index +
+                                              1}
+                                          </td>
                                           <td>{item.created_at}</td>
                                           <td>{item.orderid}</td>
                                           <td>{item.mobile_no}</td>
@@ -2504,6 +2509,7 @@ const SAEOfflineRechargeHistory = () => {
                                           <td>{item.ContactNo}</td>
                                           <td>{item.status}</td>
                                           <td>{item.process_by_userId}</td>
+                                          <td>{item.updated_at}</td>
                                           <td>{item.note}</td>
                                           <td>
                                             {item.status === "Pending" && (

@@ -1077,6 +1077,7 @@ const SAEPanCouponRequests = () => {
                                       <th scope="col">Coupon Price</th>
                                       <th scope="col">Total Amount</th>
                                       <th scope="col">Coupon Type</th>
+                                      <th scope="col">PSA User ID</th>
                                       <th scope="col">User Id</th>
                                       <th scope="col">User Name</th>
                                       {/* <th scope="col">User Role</th> */}
@@ -1084,9 +1085,10 @@ const SAEPanCouponRequests = () => {
                                       <th scope="col">User Email</th>
                                       {/* <th scope="col">Receiept Attechment</th> */}
                                       <th scope="col">Note</th>
-                                      <th scope="col">Process Date</th>
+
                                       <th scope="col">Status</th>
                                       <th scope="col">Process By</th>
+                                      <th scope="col">Process Date</th>
 
                                       <th scope="col">Action</th>
                                     </tr>
@@ -1095,13 +1097,18 @@ const SAEPanCouponRequests = () => {
                                     {showApiData && showApiData.length > 0 ? (
                                       showApiData?.map((item, index) => (
                                         <tr key={index}>
-                                          <th scope="row">{index + 1}</th>
+                                          <td>
+                                            {currentPage * complaintsPerPage +
+                                              index +
+                                              1}
+                                          </td>
                                           <td>{item.created_at}</td>
                                           <td>{item.order_id}</td>
                                           <td>{item.coupon_Quantity}</td>
                                           <td>{item.coupon_Price}</td>
                                           <td>{item.total_Amount}</td>
                                           <td>{item.coupon_Type}</td>
+                                          <td>{item.pan_id}</td>
 
                                           <td>{item.user_id}</td>
                                           <td>{item.UserName}</td>
@@ -1110,9 +1117,10 @@ const SAEPanCouponRequests = () => {
                                           <td>{item.Email}</td>
 
                                           <td>{item.note}</td>
-                                          <td>{item.process_date}</td>
+
                                           <td>{item.status}</td>
                                           <td>{item.process_by_userId}</td>
+                                          <td>{item.process_date}</td>
 
                                           <td>
                                             {item.status === "Pending" && (

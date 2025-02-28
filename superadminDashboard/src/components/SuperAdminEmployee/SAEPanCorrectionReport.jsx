@@ -1110,6 +1110,8 @@ const SAEPanCorrectionReport = () => {
                                       <th scope="col">
                                         Commission Credit Status
                                       </th>
+                                      <th scope="col">Process By</th>
+                                      <th scope="col">Process Date</th>
                                       <th scope="col">Action</th>
                                     </tr>
                                   </thead>
@@ -1117,7 +1119,11 @@ const SAEPanCorrectionReport = () => {
                                     {showApiData && showApiData.length > 0 ? (
                                       showApiData?.map((item, index) => (
                                         <tr key={index}>
-                                          <th scope="row">{index + 1}</th>
+                                          <td>
+                                            {currentPage * complaintsPerPage +
+                                              index +
+                                              1}
+                                          </td>
                                           <td>{item.created_at}</td>
                                           <td>{item.orderid}</td>
                                           <td>{item.txid}</td>
@@ -1138,6 +1144,8 @@ const SAEPanCorrectionReport = () => {
                                           <td>{item.note}</td>
                                           <td>{item.status}</td>
                                           <td>{item.Commission_Status}</td>
+                                          <td>{item.process_by_userId}</td>
+                                          <td>{item.updated_at}</td>
                                           <td>
                                             {item.status === "Success" &&
                                               item.Commission_Status !=

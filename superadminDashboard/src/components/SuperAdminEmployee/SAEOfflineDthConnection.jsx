@@ -1603,6 +1603,7 @@ const SAEOfflineDthConnection = () => {
                                           <th scope="col">User Mobile</th>
                                           <th scope="col">Status</th>
                                           <th scope="col">Process By</th>
+                                          <th scope="col">Process Date</th>
                                           <th scope="col">Note</th>
                                           <th scope="col">Action</th>
                                         </tr>
@@ -1612,7 +1613,12 @@ const SAEOfflineDthConnection = () => {
                                         showApiData.length > 0 ? (
                                           showApiData?.map((item, index) => (
                                             <tr key={index}>
-                                              <th scope="row">{index + 1}</th>
+                                              <td>
+                                                {currentPage *
+                                                  complaintsPerPage +
+                                                  index +
+                                                  1}
+                                              </td>
                                               <td>{item.created_at}</td>
                                               <td>{item.orderid}</td>
                                               <td>{item.first_name}</td>
@@ -1630,6 +1636,7 @@ const SAEOfflineDthConnection = () => {
                                               <td>{item.ContactNo}</td>
                                               <td>{item.status}</td>
                                               <td>{item.process_by_userId}</td>
+                                              <td>{item.updated_at}</td>
                                               <td>{item.note}</td>
                                               <td>
                                                 {(item.status === "Pending" ||
@@ -1666,10 +1673,24 @@ const SAEOfflineDthConnection = () => {
                                                         </span>{" "}
                                                         Approve
                                                       </Dropdown.Item>
+                                                      {/* <Dropdown.Item
+                                                                                                          onClick={() => {
+                                                                                                            // setSelectedUser(user);
+                                                                                                            setShowMarkEditModel(true);
+                                                                                                            setSelectedItem(item)
+                                                                                                          //   deactivateUser(user.UserId)
+                                                                                                          }}
+                                                                                                        >
+                                                                                                          <span className="">
+                                                                                                            {" "}
+                                                                                                            <CiViewList />
+                                                                                                          </span>{" "}
+                                                                                                          Mark for Edit
+                                                                                                        </Dropdown.Item> */}
                                                       <Dropdown.Item
                                                         onClick={() => {
                                                           // setSelectedUser(user);
-                                                          setShowMarkEditModel(
+                                                          setShowRejectModel(
                                                             true
                                                           );
                                                           setSelectedItem(item);
@@ -1680,7 +1701,7 @@ const SAEOfflineDthConnection = () => {
                                                           {" "}
                                                           <CiViewList />
                                                         </span>{" "}
-                                                        Mark for Edit
+                                                        Reject
                                                       </Dropdown.Item>
                                                     </Dropdown.Menu>
                                                   </Dropdown>

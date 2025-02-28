@@ -2175,6 +2175,7 @@ const SAAllOfflineForm = () => {
                                           <th scope="col">Amount</th>
                                           <th scope="col">Status</th>
                                           <th scope="col">Process By</th>
+                                          <th scope="col">Process Date</th>
                                           <th scope="col">Note</th>
                                           <th scope="col">Action</th>
                                         </tr>
@@ -2184,7 +2185,12 @@ const SAAllOfflineForm = () => {
                                         showApiData.length > 0 ? (
                                           showApiData?.map((item, index) => (
                                             <tr key={index}>
-                                              <th scope="row">{index + 1}</th>
+                                              <td>
+                                                {currentPage *
+                                                  complaintsPerPage +
+                                                  index +
+                                                  1}
+                                              </td>
                                               <td>{item.created_at}</td>
                                               <td>{item.order_id}</td>
                                               <td>{item.applicant_name}</td>
@@ -2257,6 +2263,7 @@ const SAAllOfflineForm = () => {
                                               <td>{item.amount}</td>
                                               <td>{item.status}</td>
                                               <td>{item.process_by_userId}</td>
+                                              <td>{item.updated_at}</td>
                                               <td>{item.note}</td>
                                               <td>
                                                 {(item.status === "Pending" ||
@@ -2424,6 +2431,7 @@ const SAAllOfflineForm = () => {
                                           <th scope="col">Amount</th>
                                           <th scope="col">Status</th>
                                           <th scope="col">Process By</th>
+                                          <th scope="col">Process Date</th>
                                           <th scope="col">Note</th>
                                           <th scope="col">Action</th>
                                         </tr>
@@ -2434,7 +2442,12 @@ const SAAllOfflineForm = () => {
                                           showUnderProcessData?.map(
                                             (item, index) => (
                                               <tr key={index}>
-                                                <th scope="row">{index + 1}</th>
+                                                <td>
+                                                  {currentPage *
+                                                    complaintsPerPage +
+                                                    index +
+                                                    1}
+                                                </td>
                                                 <td>{item.created_at}</td>
                                                 <td>{item.order_id}</td>
                                                 <td>{item.applicant_name}</td>
@@ -2511,6 +2524,7 @@ const SAAllOfflineForm = () => {
                                                 <td>
                                                   {item.process_by_userId}
                                                 </td>
+                                                <td>{item.updated_at}</td>
                                                 <td>{item.note}</td>
                                                 <td>
                                                   {item.status ===
