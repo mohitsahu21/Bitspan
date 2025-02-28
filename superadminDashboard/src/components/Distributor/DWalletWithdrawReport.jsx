@@ -248,7 +248,11 @@ const DWalletWithdrawReport = () => {
                                       <tr key={index}>
                                         {/* <td>{index + 1}</td> */}
 
-                                        <td>{item.id}</td>
+                                        <td>
+                                          {currentPage * complaintsPerPage +
+                                            index +
+                                            1}
+                                        </td>
                                         <td>{item.created_at}</td>
                                         <td>{item.order_id}</td>
                                         <td>{item.bankholder_name}</td>

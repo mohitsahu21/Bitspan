@@ -33,7 +33,7 @@ const DAllUsersJoinedList = () => {
     try {
       const { data } = await axios.get(
         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getSuperDistributorUsersData/${userId}`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getDistributorUsersData/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -278,7 +278,11 @@ const DAllUsersJoinedList = () => {
                                     {showApiData && showApiData.length > 0 ? (
                                       showApiData?.map((user, index) => (
                                         <tr key={user.id}>
-                                          <th scope="row">{index + 1}</th>
+                                          <td>
+                                            {currentPage * complaintsPerPage +
+                                              index +
+                                              1}
+                                          </td>
                                           <td>{user.CreateAt}</td>
 
                                           <td>{user.UserId}</td>

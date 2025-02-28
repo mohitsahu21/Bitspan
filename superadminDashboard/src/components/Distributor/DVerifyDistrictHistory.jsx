@@ -243,6 +243,7 @@ const DVerifyDistrictHistory = () => {
                             <table class="table table-striped">
                               <thead className="table-dark">
                                 <tr>
+                                  <th scope="col">#</th>
                                   <th scope="col">Date</th>
                                   <th scope="col">Order ID</th>
                                   <th scope="col">Application Type</th>
@@ -255,8 +256,13 @@ const DVerifyDistrictHistory = () => {
                               </thead>
                               <tbody>
                                 {displayData.length > 0 ? (
-                                  displayData.map((item) => (
+                                  displayData.map((item, index) => (
                                     <tr key={item.id}>
+                                      <td>
+                                        {currentPage * complaintsPerPage +
+                                          index +
+                                          1}
+                                      </td>
                                       <td>{item.created_at}</td>
                                       <td>{item.order_id}</td>
                                       <td>{item.applicationType}</td>

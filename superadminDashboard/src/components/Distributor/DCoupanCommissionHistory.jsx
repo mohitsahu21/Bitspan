@@ -264,7 +264,7 @@ const DCoupanCommissionHistory = () => {
                               <thead className="table-dark">
                                 <tr>
                                   <th scope="col">Sr. No</th>
-                                  <th scope="col">ID</th>
+                                  {/* <th scope="col">ID</th> */}
                                   <th scope="col">Order ID</th>
                                   <th scope="col">Coupon Quantity</th>
                                   <th scope="col">Coupon Price</th>
@@ -290,8 +290,12 @@ const DCoupanCommissionHistory = () => {
                                 ) : displayData.length > 0 ? (
                                   displayData.map((item, index) => (
                                     <tr key={index}>
-                                      <th scope="row">{index + 1}</th>
-                                      <td>{item.id}</td>
+                                      <td>
+                                        {currentPage * complaintsPerPage +
+                                          index +
+                                          1}
+                                      </td>
+                                      {/* <td>{item.id}</td> */}
                                       <td>{item.order_id}</td>
                                       <td>{item.coupon_Quantity}</td>
                                       <td>{item.coupon_Price}</td>

@@ -267,7 +267,11 @@ const DEdistrict = () => {
                                   {displayData && displayData.length > 0 ? (
                                     displayData.map((item, index) => (
                                       <tr key={index}>
-                                        <th scope="row">{index + 1}</th>
+                                        <td>
+                                          {currentPage * complaintsPerPage +
+                                            index +
+                                            1}
+                                        </td>
                                         <td>{item.order_id}</td>
                                         <td>{item.application_type}</td>
                                         {/* <td>{item.name}</td>

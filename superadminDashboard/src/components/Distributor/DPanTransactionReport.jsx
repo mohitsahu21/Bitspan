@@ -276,7 +276,11 @@ const DPanTransactionReport = () => {
                                   {showApiData && showApiData.length > 0 ? (
                                     showApiData.map((item, index) => (
                                       <tr key={index}>
-                                        <td>{index + 1}</td>
+                                        <td>
+                                          {currentPage * complaintsPerPage +
+                                            index +
+                                            1}
+                                        </td>
                                         <td>{item.id}</td>
                                         <td>{item.applicationMode}</td>
                                         <td>{item.selectType}</td>
