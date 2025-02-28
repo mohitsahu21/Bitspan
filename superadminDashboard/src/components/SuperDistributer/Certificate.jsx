@@ -104,7 +104,7 @@
 //     margin-top: 20px;
 //     border-top: 1px solid #000;
 //     padding-top: 10px;
-//   }
+//
 // `;
 
 // export default Certificate;
@@ -199,13 +199,21 @@ const Certificate = ({ user, name, address, date, id }) => {
             </p>
             <p className="para">
               is an authorized as a{" "}
-              <strong className="strong">{user} of {apiData?.data[0]?.Company_Name}</strong>
+              <strong className="strong">
+                {user} of {apiData?.data[0]?.Company_Name}
+              </strong>
             </p>
           </div>
           <div className="footer">
             <p>Authorised sign</p>
             <div>
-            {signImage && <img src={signImage} alt="Authorized Signature" className="signature-image" />}
+              {signImage && (
+                <img
+                  src={signImage}
+                  alt="Authorized Signature"
+                  className="signature-image"
+                />
+              )}
             </div>
             {/* <p className="sign">
               <strong>BITS PAN</strong>
@@ -324,13 +332,12 @@ const Wrapper = styled.div`
   .sign {
     font-size: 20px;
   }
-    .signature-image {
-  display: block;
-  margin: 10px auto;
-  max-width: 150px; /* Adjust size as needed */
-  height: auto;
-}
-
+  .signature-image {
+    display: block;
+    margin: 10px auto;
+    max-width: 150px; /* Adjust size as needed */
+    height: auto;
+  }
 `;
 
 export default Certificate;

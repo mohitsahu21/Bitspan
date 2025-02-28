@@ -4,6 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
 
+import DStepVerification from "../components/Distributor/DStepVerification";
+import CreateRetailer from "../components/Distributor/CreateRetailer";
+import DUTIPanTransactionReport from "../components/Distributor/DUTIPanTransactionReport";
+import DDistributeCoupon from "../components/Distributor/DDistributeCoupon";
+
+import DUTICouponHistory from "../components/Distributor/DUTICouponHistory";
+import DChangePrice from "../components/Distributor/DChangePrice";
+
+import Certificate from "../components/Distributor/Certificate";
+import Swal from "sweetalert2";
+
 // Lazy-loaded components
 const DistributorDashboard = lazy(() =>
   import("../pages/DistributorDashboard")
@@ -117,17 +128,6 @@ const DPanCorrectionHistory = lazy(() =>
   import("../components/Distributor/DPanCorrectionHistory")
 );
 const DCreatePin = lazy(() => import("../components/Distributor/DCreatePin"));
-
-import DStepVerification from "../components/Distributor/DStepVerification";
-import CreateRetailer from "../components/Distributor/CreateRetailer";
-import DUTIPanTransactionReport from "../components/Distributor/DUTIPanTransactionReport";
-import DDistributeCoupon from "../components/Distributor/DDistributeCoupon";
-
-import DUTICouponHistory from "../components/Distributor/DUTICouponHistory";
-import DChangePrice from "../components/Distributor/DChangePrice";
-
-import Certificate from "../components/Distributor/Certificate";
-import Swal from "sweetalert2";
 
 const DtProfile = lazy(() => import("../components/Distributor/DtProfile"));
 

@@ -16,6 +16,10 @@ const TrainingVideo = lazy(() =>
   import("../components/DashBoard/TrainingVideo")
 );
 
+const WLTrainingVideo = lazy(() =>
+  import("../components/WhiteLabel/WLTrainingVideo")
+);
+
 const WhiteLabelDashboard = lazy(() => import("../pages/WhiteLabelDashboard"));
 
 const WLWalletTransactionReport = lazy(() =>
@@ -348,6 +352,17 @@ const WhiteLabelRoutes = () => {
               <Navigate to="/update-profile" />
             ) : (
               <TrainingVideo />
+            )
+          }
+        />
+
+        <Route
+          path="/WL-training-video"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <WLTrainingVideo />
             )
           }
         />

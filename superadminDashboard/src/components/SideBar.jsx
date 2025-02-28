@@ -2350,7 +2350,7 @@ const WhiteLabelData = [
   },
   {
     title: "Training Video",
-    path: "/training-video",
+    path: "/WL-training-video",
     icon: <FaVideo color="#fe662b" />,
 
     // iconClosed: <RiIcons.RiArrowDownSFill />,
