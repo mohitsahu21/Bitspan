@@ -336,9 +336,11 @@ const Wrapper = styled.div`
   th {
     font-weight: 500;
     font-size: 14px;
+    white-space: nowrap;
   }
   td {
     font-size: 14px;
+    white-space: nowrap;
   }
   @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {

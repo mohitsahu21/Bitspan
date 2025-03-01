@@ -234,6 +234,7 @@ const DFundTransferStatus = () => {
                                       <th scope="col">Amount</th>
                                       <th scope="col">Order ID</th>
                                       <th scope="col">Transaction ID</th>
+                                      <th scope="col">Transaction Details</th>
                                       <th scope="col">Status</th>
                                     </tr>
                                   </thead>
@@ -252,6 +253,7 @@ const DFundTransferStatus = () => {
                                           <td>{item.amount}</td>
                                           <td>{item.order_id}</td>
                                           <td>{item.transaction_id}</td>
+                                          <td>{item.transaction_details}</td>
                                           <td>{item.status}</td>
                                         </tr>
                                       ))
@@ -320,6 +322,7 @@ const Wrapper = styled.div`
   }
   td {
     font-size: 14px;
+    white-space: nowrap;
   }
   .pagination {
     display: flex;
