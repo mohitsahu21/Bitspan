@@ -24,16 +24,22 @@ const PanUploadedDocsList = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPanDocument/${userID}`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPanDocument/${userID}`,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = response.data.data;
       console.log(data);
       setAllData(data);
       setFilteredData(data);
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
       console.log(error);
-      setLoading(false)
+      setLoading(false);
     }
   };
   console.log(allData);
@@ -160,68 +166,77 @@ const PanUploadedDocsList = () => {
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
-                          {loading ? (
-                             <div className="d-flex justify-content-center">
-                             <Spinner animation="border" role="status">
-                               <span className="visually-hidden ">
-                                 Loading...
-                               </span>
-                             </Spinner>
-                           </div>
+                            {loading ? (
+                              <div className="d-flex justify-content-center">
+                                <Spinner animation="border" role="status">
+                                  <span className="visually-hidden ">
+                                    Loading...
+                                  </span>
+                                </Spinner>
+                              </div>
                             ) : (
-                            <table class="table table-striped">
-                              <thead className="table-dark">
-                                <tr>
-                                  <th scope="col">Date</th>
-                                  <th scope="col">Order ID</th>
-                                  <th scope="col">Application Detail</th>
-                                  <th scope="col">No. of Document</th>
-                                  <th scope="col">Date of Courier</th>
-                                  <th scope="col">POD/Tracking Number</th>
-                                  <th scope="col">Courier Company Name</th>
-                                  <th scope="col">Delivery Date</th>
-                                  <th scope="col">Delivery Location</th>
-                                  <th scope="col">Confirm the Address</th>
-                                  <th scope="col">Remark</th>
-                                  <th scope="col">File</th>
-                                  <th scope="col">Status</th>
-                                  <th scope="col">Note</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {displayData.length > 0 ? (
-                                  displayData.map((item) => (
-                                    <tr key={item.id}>
-                                      <td>{item.created_at}</td>
-                                      <td>{item.order_id}</td>
-                                      <td>{item.applicationDetails}</td>
-                                      <td>{item.documentCount}</td>
-                                      <td>{item.courierDate}</td>
-                                      <td>{item.trackingNumber}</td>
-                                      <td>{item.courierCompany}</td>
-                                      <td>{item.deliveryDate}</td>
-                                      <td>{item.deliveryLocation}</td>
-                                      <td>{item.confirmAddress}</td>
-                                      <td>{item.remark}</td>
-                                      <td>
-                                        <Link to={item.podfile} target="_blank">
-                                          View
-                                        </Link>
-                                      </td>
-                                      <td>{item.status}</td>
-                                      <td>{item.note}</td>
-                                    </tr>
-                                  ))
-                                ) : (
+                              <table class="table table-striped">
+                                <thead className="table-dark">
                                   <tr>
-                                    <td colSpan="10" className="text-center">
-                                      No results found
-                                    </td>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Order ID</th>
+                                    <th scope="col">Application Detail</th>
+                                    <th scope="col">No. of Document</th>
+                                    <th scope="col">Date of Courier</th>
+                                    <th scope="col">POD/Tracking Number</th>
+                                    <th scope="col">Courier Company Name</th>
+                                    <th scope="col">Delivery Date</th>
+                                    <th scope="col">Delivery Location</th>
+                                    <th scope="col">Confirm the Address</th>
+                                    <th scope="col">Remark</th>
+                                    <th scope="col">File</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Note</th>
                                   </tr>
-                                )}
-                              </tbody>
-                            </table>
-                              )}
+                                </thead>
+                                <tbody>
+                                  {displayData.length > 0 ? (
+                                    displayData.map((item, index) => (
+                                      <tr key={(item.id, index)}>
+                                        <td>
+                                          {currentPage * complaintsPerPage +
+                                            index +
+                                            1}
+                                        </td>
+                                        <td>{item.created_at}</td>
+                                        <td>{item.order_id}</td>
+                                        <td>{item.applicationDetails}</td>
+                                        <td>{item.documentCount}</td>
+                                        <td>{item.courierDate}</td>
+                                        <td>{item.trackingNumber}</td>
+                                        <td>{item.courierCompany}</td>
+                                        <td>{item.deliveryDate}</td>
+                                        <td>{item.deliveryLocation}</td>
+                                        <td>{item.confirmAddress}</td>
+                                        <td>{item.remark}</td>
+                                        <td>
+                                          <Link
+                                            to={item.podfile}
+                                            target="_blank"
+                                          >
+                                            View
+                                          </Link>
+                                        </td>
+                                        <td>{item.status}</td>
+                                        <td>{item.note}</td>
+                                      </tr>
+                                    ))
+                                  ) : (
+                                    <tr>
+                                      <td colSpan="10" className="text-center">
+                                        No results found
+                                      </td>
+                                    </tr>
+                                  )}
+                                </tbody>
+                              </table>
+                            )}
                           </div>
                           <PaginationContainer>
                             <ReactPaginate

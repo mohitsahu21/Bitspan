@@ -1425,6 +1425,236 @@ const  userRegiserOnlinePGVerify = async (req, res) => {
 };
 
 
+const MakePaymentINPortal = async (req, res) => {
+  
+  // const {
+  //   user_id,
+  //   amount,
+  //   userName,
+  //   userPhone,
+  //   userEmail,
+  //   userRole,
+  //   Payment_Mode,
+  //   website
+  // } = req.body;
+
+const {
+    userId,
+    website,
+    total_amount,
+    payment_method,
+    userPhone
+  } = req.body;
+
+  // Validate the request data
+  if (
+    !userId ||
+    !website||
+    !total_amount ||
+    !payment_method ||
+    !userPhone
+  ) {
+    return res.status(400).json({ message: "All fields are required." });
+  }
+
+         // Validate Amount: Check for undefined, null, or invalid number
+         if (total_amount == null || isNaN(parseFloat(total_amount)) || parseFloat(total_amount) < 0) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid or missing amount",
+          });
+        }
+  
+
+  const order_id = `ORUID${Date.now()}`; // Dynamic order ID based on timestamp
+  // const Transaction_Reference = `Buy ${userId_type} User Id Payment Gateway Order ID ${userId}`
+  const user_token = process.env.UPIWF_KEY // Security token from environment
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const redirect_url = `https://bitspan.vimubds5.a2hosted.com/api/auth/upiwf/MakeUserPaymentINPortalPGVerify?order_id=${userId}&website=${website}`
+  const status = "Pending"
+
+  // const sql = `
+  //   INSERT INTO orders (customer_mobile, amount, order_id, remark1, remark2, status, created_at)
+  //   VALUES (?, ?, ?, ?, ?, ?, ?)`;
+  // const sql = `INSERT INTO userId_bought_summary (userId, number_of_userId, userId_amount, userId_type, orderId, bought_date, total_amount, payment_method, status)
+  //     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+  // const values = [
+  //   userId,
+  //   number_of_userId,
+  //   userId_amount,
+  //   userId_type,
+  //   order_id,
+  //   createdAt,
+  //   total_amount,
+  //   payment_method,
+  //   status
+  // ];
+
+  
+    try {
+      const postData = { customer_mobile : userPhone,
+        user_token,
+        amount : total_amount,
+        order_id : userId,
+        redirect_url};
+      const response = await axios.post('https://upi.wf/api/create-order',
+        postData
+      );
+      console.log(response);
+      if(response.data && response.data.status === "Success"){
+        // return data;
+        res.status(200).json({
+          status: true,
+          message: "Order created successfully!",
+          data: response.data,
+          
+        });
+      } else {
+          throw new Error(response.data.message || 'Unknown error');
+      }
+      
+      
+    } catch (apiError) {
+      console.error("Error in external API call:", apiError.message);
+     
+      res.status(500).json({
+        status: false,
+        message: "Error in external API call",
+        error: apiError.message,
+      });
+    }
+
+};
+
+
+// const  MakeUserPaymentINPortalPGVerify = async (req, res) => {
+//   const clientTxnId = req.query.order_id;
+//   const website = req.query.website;
+//   const key = process.env.UPIWF_KEY;
+
+//   console.log(clientTxnId)
+
+//   try {
+//     // Fetch transaction details from the database
+//     const [dbData] = await new Promise((resolve, reject) => {
+//       db.query('SELECT * FROM userprofile WHERE UserId = ?', [clientTxnId], (err, results) => {
+//         if (err) reject(err);
+//         resolve(results);
+//       });
+//     });
+
+//     if (!dbData) {
+//       // return res.status(404).send('Transaction not found.');
+//       return res.status(404).send(
+//         `<script>alert('Transaction not found.Please Contact to Admin'); window.location.replace('${website}');</script>`
+//       );
+//     }
+
+//     // Check the order status from the external API
+//     const postData = new URLSearchParams({ user_token: key, order_id: dbData.UserId });
+//     const response = await axios.post('https://upi.wf/api/check-order-status', postData.toString(), {
+//       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+//     });
+
+//     if (response.data.status === 'Success') {
+//       const txnStatus = response.data.result.txnStatus;
+//       const utr = response.data.result.utr;
+//       const amount = parseFloat(response.data.result.amount).toFixed(2); // Ensure amount is a valid number
+     
+//       if (dbData.payment_status === 'Pending') {
+//         // Update the order status to 'Success'
+//         await new Promise((resolve, reject) => {
+//           db.query('UPDATE userprofile SET payment_status = ? WHERE UserId = ?', ['Complete', clientTxnId], (err) => {
+//             if (err) reject(err);
+//             resolve();
+//           });
+//         });
+//             // Send success response
+//             return res.send(
+//               `<script>alert('Payment Successful'); window.location.replace('${website}');</script>`
+//             );
+//           }
+        
+//        else {
+//         return res.send(
+//           `<script>alert('Transaction Failed , Please Contact to Admin'); window.location.replace('${website}');</script>`
+//         );
+//       }
+//     }
+//   } catch (error) {
+//     console.error('Error:', error);
+//     // res.status(500).send('Internal Server Error.');
+//     return res.status(500).send(
+//       `<script>alert('Transaction Failed , Please Contact to Admin'); window.location.replace('${website}');</script>`
+//     );
+//   }
+// };
+const  MakeUserPaymentINPortalPGVerify = async (req, res) => {
+  const clientTxnId = req.query.order_id;
+  const website = req.query.website;
+  const key = process.env.UPIWF_KEY;
+
+  const userId = clientTxnId.split("_")[0]
+  console.log(clientTxnId)
+  console.log(userId)
+
+  try {
+    // Fetch transaction details from the database
+    const [dbData] = await new Promise((resolve, reject) => {
+      db.query('SELECT * FROM userprofile WHERE UserId = ?', [userId], (err, results) => {
+        if (err) reject(err);
+        resolve(results);
+      });
+    });
+
+    if (!dbData) {
+      // return res.status(404).send('Transaction not found.');
+      return res.status(404).send(
+        `<script>alert('Transaction not found.Please Contact to Admin'); window.location.replace('${website}');</script>`
+      );
+    }
+
+    // Check the order status from the external API
+    const postData = new URLSearchParams({ user_token: key, order_id: clientTxnId });
+    const response = await axios.post('https://upi.wf/api/check-order-status', postData.toString(), {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    });
+
+    if (response.data.status === 'Success') {
+      const txnStatus = response.data.result.txnStatus;
+      const utr = response.data.result.utr;
+      const amount = parseFloat(response.data.result.amount).toFixed(2); // Ensure amount is a valid number
+     
+      if (dbData.payment_status === 'Pending') {
+        // Update the order status to 'Success'
+        await new Promise((resolve, reject) => {
+          db.query('UPDATE userprofile SET payment_status = ? WHERE UserId = ?', ['Complete', userId], (err) => {
+            if (err) reject(err);
+            resolve();
+          });
+        });
+            // Send success response
+            return res.send(
+              `<script>alert('Payment Successful, Please Login Again'); window.location.replace('${website}');</script>`
+            );
+          }
+        
+       else {
+        return res.send(
+          `<script>alert('Transaction Failed , Please Contact to Admin'); window.location.replace('${website}');</script>`
+        );
+      }
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    // res.status(500).send('Internal Server Error.');
+    return res.status(500).send(
+      `<script>alert('Transaction Failed , Please Contact to Admin'); window.location.replace('${website}');</script>`
+    );
+  }
+};
+
   module.exports = {
     webhook,
     webhook_two,
@@ -1434,6 +1664,8 @@ const  userRegiserOnlinePGVerify = async (req, res) => {
     createOrderToBuyUserId,
     BuyUserIdUsingPGVerify,
     userRegiserOnline,
-    userRegiserOnlinePGVerify
+    userRegiserOnlinePGVerify,
+    MakePaymentINPortal,
+    MakeUserPaymentINPortalPGVerify
 
   }

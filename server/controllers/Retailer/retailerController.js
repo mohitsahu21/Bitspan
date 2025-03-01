@@ -168,10 +168,10 @@ const fs = require("fs");
 //       }
 
 //       const queryBalance = `
-//       SELECT Closing_Balance 
-//       FROM user_wallet 
-//       WHERE userId = ? 
-//       ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+//       SELECT Closing_Balance
+//       FROM user_wallet
+//       WHERE userId = ?
+//       ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
 //       LIMIT 1
 //     `;
 
@@ -227,8 +227,8 @@ const fs = require("fs");
 //         const creditAmt = 0;
 
 //         const updateWalletQuery = `
-//         INSERT INTO user_wallet 
-//         (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+//         INSERT INTO user_wallet
+//         (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status)
 //         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 //       `;
 
@@ -300,7 +300,6 @@ const applyOfflineForm = (req, res) => {
   } = req.body;
   let { amount } = req.body;
 
-
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
   const domain = "http://localhost:7777";
@@ -359,16 +358,16 @@ const applyOfflineForm = (req, res) => {
       });
     }
 
-      // Validate `Amount`: Check for undefined, null, or invalid number
-      if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
-        return res.status(500).json({
-          success: false,
-          status: "Failure",
-          error: "Invalid or missing amount",
-        });
-      }
-  
-      amount = parseFloat(parseFloat(amount).toFixed(2)); // Ensures it's a number with two decimal places
+    // Validate `Amount`: Check for undefined, null, or invalid number
+    if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+      return res.status(500).json({
+        success: false,
+        status: "Failure",
+        error: "Invalid or missing amount",
+      });
+    }
+
+    amount = parseFloat(parseFloat(amount).toFixed(2)); // Ensures it's a number with two decimal places
 
     if (currentBalance < amount) {
       return res.status(400).json({
@@ -382,7 +381,6 @@ const applyOfflineForm = (req, res) => {
 
     // Step 2: Update Wallet
     const newBalance = parseFloat(currentBalance - amount).toFixed(2);
-
 
     const transactionId = `TXNW${Date.now()}`;
     const transactionDetails = `${applicant_select_service} Services Deduction Order Id ${orderId}`;
@@ -464,7 +462,10 @@ const applyOfflineForm = (req, res) => {
           ],
           (err, result) => {
             if (err) {
-              console.error("Error inserting data into apply_offline_form:", err);
+              console.error(
+                "Error inserting data into apply_offline_form:",
+                err
+              );
               return res.status(500).json({
                 status: "Failure",
                 step: "Insert Apply Offline Form",
@@ -502,7 +503,6 @@ const applyOfflineForm = (req, res) => {
     );
   });
 };
-
 
 const update_applyOfflineForm = (req, res) => {
   const {
@@ -583,7 +583,7 @@ const update_applyOfflineForm = (req, res) => {
       status,
       userId,
       updated_at,
-      order_id
+      order_id,
     ],
     (err, result) => {
       if (err) {
@@ -591,41 +591,61 @@ const update_applyOfflineForm = (req, res) => {
         res.status(500).json({ error: "Database error" });
         return;
       }
-      
+
       if (result.affectedRows === 0) {
         res.status(404).json({ error: "Form not found" });
         return;
       }
-      
 
-            return res.status(200).json({
-              status: "Success",
-              message:
-                "Update Form Successfully",
-              
-              });
-            }
-          );
-        };
+      return res.status(200).json({
+        status: "Success",
+        message: "Update Form Successfully",
+      });
+    }
+  );
+};
+
+// const getApplyOfflineFormByid = (req, res) => {
+//   const userId = req.params.id; // Extracting the id from the request parameters
+//   const query = `SELECT * FROM apply_offline_form WHERE user_id = ?`;
+
+//   db.query(query, [userId], (err, result) => {
+//     // Use array to pass the parameter
+//     if (err) {
+//       console.error("Error getting data from MySQL:", err);
+//       res.status(500).json({ error: "Database error" });
+//       return;
+//     }
+
+//     if (result.length === 0) {
+//       res.status(404).json({ message: "Form not found" });
+//       return;
+//     }
+
+//     res.status(200).json(result[0]); // Return the first result as it is a single form
+//   });
+// };
 
 const getApplyOfflineFormByid = (req, res) => {
-  const id = req.params.id; // Extracting the id from the request parameters
-  const query = `SELECT * FROM apply_offline_form WHERE id = ?`;
+  const userId = req.params.id; // Extract user ID from request params
 
-  db.query(query, [id], (err, result) => {
-    // Use array to pass the parameter
+  // if (!userId || isNaN(userId)) {
+  //   return res.status(400).json({ error: "Invalid user ID" });
+  // }
+
+  const query = `SELECT * FROM apply_offline_form WHERE user_id = ?`;
+
+  db.query(query, [userId], (err, results) => {
     if (err) {
       console.error("Error getting data from MySQL:", err);
-      res.status(500).json({ error: "Database error" });
-      return;
+      return res.status(500).json({ error: "Database error" });
     }
 
-    if (result.length === 0) {
-      res.status(404).json({ message: "Form not found" });
-      return;
+    if (results.length === 0) {
+      return res.status(404).json({ message: "No forms found for this user" });
     }
 
-    res.status(200).json(result[0]); // Return the first result as it is a single form
+    return res.status(200).json(results); // Return all forms for the user
   });
 };
 
@@ -773,10 +793,10 @@ const updateApplyOfflineForm = (req, res) => {
 //       }
 
 //       const queryBalance = `
-//         SELECT Closing_Balance 
-//         FROM user_wallet 
-//         WHERE userId = ? 
-//         ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+//         SELECT Closing_Balance
+//         FROM user_wallet
+//         WHERE userId = ?
+//         ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
 //         LIMIT 1
 //       `;
 
@@ -831,8 +851,8 @@ const updateApplyOfflineForm = (req, res) => {
 //         const transactionDetails = `Recharge Deduction ${applicant_number}`;
 
 //         const updateWalletQuery = `
-//           INSERT INTO user_wallet 
-//           (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
+//           INSERT INTO user_wallet
+//           (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status)
 //           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 //         `;
 
@@ -889,7 +909,6 @@ const updateApplyOfflineForm = (req, res) => {
 //     }
 //   );
 // };
-
 
 // first check the wallet then update wallet balance then insert transaction.
 const bankidForm = (req, res) => {
@@ -970,16 +989,16 @@ const bankidForm = (req, res) => {
       });
     }
 
-      // Validate `Amount`: Check for undefined, null, or invalid number
-      if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
-        return res.status(500).json({
-          success: false,
-          status: "Failure",
-          error: "Invalid or missing amount",
-        });
-      }
-  
-      amount = parseFloat(parseFloat(amount).toFixed(2)); // Ensures it's a number with two decimal places
+    // Validate `Amount`: Check for undefined, null, or invalid number
+    if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+      return res.status(500).json({
+        success: false,
+        status: "Failure",
+        error: "Invalid or missing amount",
+      });
+    }
+
+    amount = parseFloat(parseFloat(amount).toFixed(2)); // Ensures it's a number with two decimal places
     if (currentBalance < amount) {
       return res.status(400).json({
         status: "Failure",
@@ -992,7 +1011,7 @@ const bankidForm = (req, res) => {
 
     // Step 2: Update Wallet
     const newBalance = parseFloat(currentBalance - amount).toFixed(2);
-      
+
     const transactionId = `TXNW${Date.now()}`;
     const transactionDetails = `Purchase ${select_bank_service} Bank ID Form Deduction Order id ${orderId}`;
     const creditAmt = 0;
@@ -1140,7 +1159,7 @@ const update_bankidForm = (req, res) => {
     previous_bank_passbook,
     previous_shop_photo,
     previous_electric_bill,
-    id
+    id,
   } = req.body;
 
   // console.log(req.files.attached_photo)
@@ -1217,7 +1236,7 @@ const update_bankidForm = (req, res) => {
       amount,
       userId,
       updatedAt,
-      id
+      id,
     ],
     (err, result) => {
       if (err) {
@@ -1231,14 +1250,13 @@ const update_bankidForm = (req, res) => {
         return;
       }
 
-            return res.status(200).json({
-              status: "Success",
-              message: "Update Form Successfully",
-            });
-          }
-        );
-      };
-   
+      return res.status(200).json({
+        status: "Success",
+        message: "Update Form Successfully",
+      });
+    }
+  );
+};
 
 const offlineRecharge = (req, res) => {
   const { mobile_no, operator_name, amount, recharge_Type, created_by_userid } =
@@ -1301,7 +1319,6 @@ const getRechargeData = (req, res) => {
   });
 };
 
-
 const getApiRechargeData = (req, res) => {
   const userId = req.params.userId;
   const rechargeType = "Prepaid";
@@ -1330,10 +1347,10 @@ const getOfflineRecharge = (req, res) => {
     // const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM apply_offline_form c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
 
     const userId = req.params.userId;
-  const rechargeType = req.params.rechargeType;
+    const rechargeType = req.params.rechargeType;
     const sql = `SELECT * FROM offline_recharge WHERE recharge_Type = ? AND created_by_userid = ? ORDER BY id DESC`;
 
-    db.query(sql,[rechargeType,userId], (err, result) => {
+    db.query(sql, [rechargeType, userId], (err, result) => {
       if (err) {
         console.error("Error getOfflineRecharge from MySQL:", err);
         return res
@@ -1374,7 +1391,7 @@ const getOfflineDTHConnection = (req, res) => {
     const userId = req.params.userId;
     const sql = `SELECT * FROM offline_dth_connection WHERE user_id = ? ORDER BY id DESC`;
 
-    db.query(sql,[userId], (err, result) => {
+    db.query(sql, [userId], (err, result) => {
       if (err) {
         console.error("Error getOfflineRecharge from MySQL:", err);
         return res
@@ -1632,10 +1649,10 @@ const offlineDthConnection = (req, res) => {
 //     // });
 
 //     const queryBalance = `
-//     SELECT Closing_Balance 
-//     FROM user_wallet 
-//     WHERE userId = ? 
-//     ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+//     SELECT Closing_Balance
+//     FROM user_wallet
+//     WHERE userId = ?
+//     ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
 //     LIMIT 1
 //   `;
 
@@ -1691,8 +1708,8 @@ const offlineDthConnection = (req, res) => {
 //       const creditAmt = 0;
 
 //       const updateWalletQuery = `
-//       INSERT INTO user_wallet 
-//       (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+//       INSERT INTO user_wallet
+//       (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status)
 //       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 //     `;
 
@@ -1776,7 +1793,7 @@ const panFromData = (req, res) => {
     note,
   } = req.body;
 
-  let {amount} = req.body;
+  let { amount } = req.body;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const domain = "http://localhost:7777";
@@ -1784,7 +1801,9 @@ const panFromData = (req, res) => {
   // Handle file uploads
   const documentUpload =
     req.files && req.files.documentUpload
-      ? req.files.documentUpload.map((file) => `${domain}/uploads/${file.filename}`).join(",")
+      ? req.files.documentUpload
+          .map((file) => `${domain}/uploads/${file.filename}`)
+          .join(",")
       : null;
 
   const attachment_form =
@@ -1816,16 +1835,22 @@ const panFromData = (req, res) => {
   db.query(queryBalance, [userId], (err, balanceResult) => {
     if (err) {
       console.error("Error fetching wallet balance:", err);
-      return res.status(500).json({ status: "Failure", error: "Failed to fetch wallet balance" });
+      return res
+        .status(500)
+        .json({ status: "Failure", error: "Failed to fetch wallet balance" });
     }
 
     if (balanceResult.length === 0) {
-      return res.status(404).json({ status: "Failure", message: "No balance found for the user." });
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No balance found for the user." });
     }
 
     const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
     if (isNaN(currentBalance)) {
-      return res.status(500).json({ status: "Failure", error: "Current balance is invalid." });
+      return res
+        .status(500)
+        .json({ status: "Failure", error: "Current balance is invalid." });
     }
 
     // Validate `Amount`: Check for undefined, null, or invalid number
@@ -1988,9 +2013,8 @@ const UpdatePanFromData = (req, res) => {
     previous_attachment_form,
     previous_attachment_photo,
     previous_attachment_signature,
-    order_id
+    order_id,
   } = req.body;
-
 
   const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const domain = "http://localhost:7777";
@@ -1998,7 +2022,9 @@ const UpdatePanFromData = (req, res) => {
   // Handle file uploads
   const documentUpload =
     req.files && req.files.documentUpload
-      ? req.files.documentUpload.map((file) => `${domain}/uploads/${file.filename}`).join(",")
+      ? req.files.documentUpload
+          .map((file) => `${domain}/uploads/${file.filename}`)
+          .join(",")
       : previous_documentUpload;
 
   const attachment_form =
@@ -2018,65 +2044,61 @@ const UpdatePanFromData = (req, res) => {
 
   // const orderId = `PANZ${Date.now()}`;
 
-  
-        const insertFormQuery = `
+  const insertFormQuery = `
           UPDATE pan_offline SET 
             application_type = ?,applicant_type = ?, select_title = ?, name = ?, father_name = ?, mother_name = ?, dob = ?, gender = ?, office_address = ?, 
             aadhar_details = ?, Address_Communication_OfficeResident = ?, alternative_communication_Address = ?, mobile_no = ?, email_id = ?, 
             pin_code = ?, state = ?, Change_Request = ?, documentUpload = ?, attachment_form = ?, attachment_signature = ?, 
             attachment_photo = ?, status = ?, note = ?, updated_at = ?  WHERE order_id = ?`;
 
-        const formValues = [
-          
-          application_type,
-          applicant_type,
-          select_title,
-          name,
-          father_name,
-          mother_name,
-          dob,
-          gender,
-          office_address,
-          aadhar_details,
-          Address_Communication_OfficeResident,
-          alternative_communication_Address,
-          mobile_no,
-          email_id,
-          pin_code,
-          state,
-          Change_Request,
-          documentUpload,
-          attachment_form,
-          attachment_signature,
-          attachment_photo,
-          status,
-          note,
-          updatedAt,
-          order_id
+  const formValues = [
+    application_type,
+    applicant_type,
+    select_title,
+    name,
+    father_name,
+    mother_name,
+    dob,
+    gender,
+    office_address,
+    aadhar_details,
+    Address_Communication_OfficeResident,
+    alternative_communication_Address,
+    mobile_no,
+    email_id,
+    pin_code,
+    state,
+    Change_Request,
+    documentUpload,
+    attachment_form,
+    attachment_signature,
+    attachment_photo,
+    status,
+    note,
+    updatedAt,
+    order_id,
+  ];
 
-        ];
+  db.query(insertFormQuery, formValues, (err, result) => {
+    if (err) {
+      console.error("Error inserting form data:", err);
+      return res.status(500).json({
+        status: "Failure",
+        error: "Failed to insert form data",
+      });
+    }
 
-        db.query(insertFormQuery, formValues, (err, result) => {
-          if (err) {
-            console.error("Error inserting form data:", err);
-            return res.status(500).json({
-              status: "Failure",
-              error: "Failed to insert form data",
-            });
-          }
+    if (result.affectedRows === 0) {
+      res.status(404).json({ error: "Form not found" });
+      return;
+    }
 
-          if (result.affectedRows === 0) {
-            res.status(404).json({ error: "Form not found" });
-            return;
-          }
-    
-                return res.status(200).json({
-                  status: "Success",
-                  message: "Update Form Successfully",
-                });
-              }
-            );
-          };
+    return res.status(200).json({
+      status: "Success",
+      message: "Update Form Successfully",
+    });
+  });
+};
 
 const nsdlTransactionNewRequest = (req, res) => {
   const query = `SELECT * FROM nsdlpan ORDER BY id DESC`;
@@ -2526,10 +2548,10 @@ const profileUserKyc = (req, res) => {
 //     }
 
 //     const queryBalance = `
-//     SELECT Closing_Balance 
-//     FROM user_wallet 
-//     WHERE userId = ? 
-//     ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+//     SELECT Closing_Balance
+//     FROM user_wallet
+//     WHERE userId = ?
+//     ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
 //     LIMIT 1
 //   `;
 
@@ -2584,8 +2606,8 @@ const profileUserKyc = (req, res) => {
 //       const transactionDetails = `Services Deduction ${mobile_no}`;
 
 //       const updateWalletQuery = `
-//     INSERT INTO user_wallet 
-//     (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
+//     INSERT INTO user_wallet
+//     (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status)
 //     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 //   `;
 
@@ -2640,7 +2662,6 @@ const profileUserKyc = (req, res) => {
 //     });
 //   });
 // };
-
 
 // first check the current balance then insert the data
 
@@ -2716,16 +2737,16 @@ const eDistrictFormData = (req, res) => {
       });
     }
 
-               // Validate `Amount`: Check for undefined, null, or invalid number
-               if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
-                return res.status(500).json({
-                  success: false,
-                  status: "Failure",
-                  error: "Invalid or missing amount",
-                });
-              }
-          
-              amount = parseFloat(parseFloat(amount).toFixed(2)); // Ensures it's a number with two decimal places
+    // Validate `Amount`: Check for undefined, null, or invalid number
+    if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+      return res.status(500).json({
+        success: false,
+        status: "Failure",
+        error: "Invalid or missing amount",
+      });
+    }
+
+    amount = parseFloat(parseFloat(amount).toFixed(2)); // Ensures it's a number with two decimal places
 
     if (currentBalance < amount) {
       return res.status(400).json({
@@ -2739,7 +2760,7 @@ const eDistrictFormData = (req, res) => {
 
     // Step 2: Deduct amount from user wallet
     const newBalance = parseFloat(currentBalance - amount).toFixed(2);
-    
+
     const updateWalletQuery = `
       INSERT INTO user_wallet 
       (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type,credit_amount, debit_amount, Transaction_details, status) 
@@ -2842,7 +2863,6 @@ const eDistrictFormData = (req, res) => {
   });
 };
 
-
 const UpdateeDistrictFormData = (req, res) => {
   const {
     order_id,
@@ -2862,7 +2882,7 @@ const UpdateeDistrictFormData = (req, res) => {
     // user_id,
     userId,
     status,
-    previous_documentUpload
+    previous_documentUpload,
   } = req.body;
 
   // console.log(req.body);
@@ -2871,9 +2891,13 @@ const UpdateeDistrictFormData = (req, res) => {
   const domain = "http://localhost:7777";
 
   // Handling multiple file uploads
-  const documentUpload = req.files.documentUpload
-    ? req.files.map((file) => `${domain}/uploads/${file.filename}`).join(",")
-    : previous_documentUpload;
+  // const documentUpload = req.files.documentUpload
+  //   ? req.files.map((file) => `${domain}/uploads/${file.filename}`).join(",")
+  //   : previous_documentUpload;
+  const documentUpload =
+    req.files && req.files.length > 0
+      ? req.files.map((file) => `${domain}/uploads/${file.filename}`).join(",")
+      : previous_documentUpload;
 
   // const orderId = `EDST${Date.now()}`;
 
@@ -2883,8 +2907,6 @@ const UpdateeDistrictFormData = (req, res) => {
     `;
 
   const values = [
-    
-    
     gender,
     name,
     father_husband_name,
@@ -2913,15 +2935,13 @@ const UpdateeDistrictFormData = (req, res) => {
       res.status(404).json({ error: "Form not found" });
       return;
     }
-   
+
     return res.status(200).json({
       status: "Success",
       message: "Update Form Successfully",
     });
-  }
-);
+  });
 };
-
 
 // const getSelectedServices = (req, res) => {
 //   const applicationId = req.params.user_id;
@@ -3189,10 +3209,10 @@ const getApiBroadbrandRechargeData = (req, res) => {
 //         .json({ status: "Failure", error: "Database error" });
 //     }
 //     const queryBalance = `
-//     SELECT Closing_Balance 
-//     FROM user_wallet 
-//     WHERE userId = ? 
-//     ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+//     SELECT Closing_Balance
+//     FROM user_wallet
+//     WHERE userId = ?
+//     ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
 //     LIMIT 1
 //   `;
 
@@ -3247,8 +3267,8 @@ const getApiBroadbrandRechargeData = (req, res) => {
 //       const transactionDetails = `Sambal Deduction ${mobileNumber}`;
 
 //       const updateWalletQuery = `
-//       INSERT INTO user_wallet 
-//       (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
+//       INSERT INTO user_wallet
+//       (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status)
 //       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 //     `;
 
@@ -3324,7 +3344,7 @@ const addSambalForm = (req, res) => {
     userId,
   } = req.body;
 
-let { amount } = req.body;
+  let { amount } = req.body;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const orderId = `ORDS${Date.now()}`;
@@ -3369,16 +3389,16 @@ let { amount } = req.body;
       });
     }
 
-        // Validate `Amount`: Check for undefined, null, or invalid number
-        if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
-          return res.status(500).json({
-            success: false,
-            status: "Failure",
-            error: "Invalid or missing amount",
-          });
-        }
-    
-        amount = parseFloat(parseFloat(amount).toFixed(2)); // Ensures it's a number with two decimal places
+    // Validate `Amount`: Check for undefined, null, or invalid number
+    if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+      return res.status(500).json({
+        success: false,
+        status: "Failure",
+        error: "Invalid or missing amount",
+      });
+    }
+
+    amount = parseFloat(parseFloat(amount).toFixed(2)); // Ensures it's a number with two decimal places
 
     if (currentBalance < amount) {
       return res.status(400).json({
@@ -3533,7 +3553,7 @@ const EditSambalForm = (req, res) => {
     userId,
     "Pending",
     updated_at,
-    order_id
+    order_id,
   ];
 
   db.query(sql, values, (err, result) => {
@@ -3544,18 +3564,20 @@ const EditSambalForm = (req, res) => {
         .json({ status: "Failure", error: "Database error" });
     }
     if (result.affectedRows === 0) {
-      res.status(404).json({status: "Failure", error: "Form not found" ,message : "Form not found" });
+      res.status(404).json({
+        status: "Failure",
+        error: "Form not found",
+        message: "Form not found",
+      });
       return;
     }
-    
+
     return res.status(200).json({
       status: "Success",
       message: "Update Form Successfully",
     });
-  }
-);
+  });
 };
-         
 
 // const addVerifyDistrictForm = (req, res) => {
 //   const { applicationType, name, mobileNo, rsNumber, user_id } = req.body;
@@ -3648,10 +3670,10 @@ const EditSambalForm = (req, res) => {
 //     }
 
 //     const queryBalance = `
-//       SELECT Closing_Balance 
-//       FROM user_wallet 
-//       WHERE userId = ? 
-//       ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+//       SELECT Closing_Balance
+//       FROM user_wallet
+//       WHERE userId = ?
+//       ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
 //       LIMIT 1
 //     `;
 
@@ -3685,8 +3707,8 @@ const EditSambalForm = (req, res) => {
 //       const transactionDetails = `Verify E-District Deduction ${mobileNo}`;
 
 //       const updateWalletQuery = `
-//         INSERT INTO user_wallet 
-//         (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
+//         INSERT INTO user_wallet
+//         (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status)
 //         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 //       `;
 
@@ -3789,16 +3811,16 @@ const addVerifyDistrictForm = (req, res) => {
 
     const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
 
-      // Validate `Amount`: Check for undefined, null, or invalid number
-      if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
-        return res.status(500).json({
-          success: false,
-          status: "Failure",
-          error: "Invalid or missing amount",
-        });
-      }
-  
-      amount = parseFloat(parseFloat(amount).toFixed(2)); // Ensures it's a number with two decimal places
+    // Validate `Amount`: Check for undefined, null, or invalid number
+    if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+      return res.status(500).json({
+        success: false,
+        status: "Failure",
+        error: "Invalid or missing amount",
+      });
+    }
+
+    amount = parseFloat(parseFloat(amount).toFixed(2)); // Ensures it's a number with two decimal places
 
     if (currentBalance < amount) {
       return res.status(403).json({
@@ -3901,19 +3923,12 @@ const addVerifyDistrictForm = (req, res) => {
 };
 
 const UpdateVerifyDistrictForm = (req, res) => {
-  const {
-    order_id,
-    name,
-    mobileNo,
-    rsNumber,
-    district,
-    tehsil,
-    userId,
-  } = req.body;
+  const { order_id, name, mobileNo, rsNumber, district, tehsil, userId } =
+    req.body;
 
   // console.log("Request Body:", req.body);
 
-  if ( !name || !mobileNo || !userId || !order_id) {
+  if (!name || !mobileNo || !userId || !order_id) {
     return res.status(400).json({
       status: "Failure",
       error: "Missing required fields.",
@@ -3928,7 +3943,6 @@ const UpdateVerifyDistrictForm = (req, res) => {
       name = ? , mobileNo = ?, rsNumber = ?, district = ?, tehsil = ?, user_id = ?, status = ?, updated_at = ? WHERE order_id = ?`;
 
   const values = [
-
     name,
     mobileNo,
     rsNumber,
@@ -3937,7 +3951,7 @@ const UpdateVerifyDistrictForm = (req, res) => {
     userId,
     "Pending",
     updated_at,
-    order_id
+    order_id,
   ];
 
   db.query(sql, values, (err, result) => {
@@ -3948,18 +3962,20 @@ const UpdateVerifyDistrictForm = (req, res) => {
         .json({ status: "Failure", error: "Database error" });
     }
     if (result.affectedRows === 0) {
-      res.status(404).json({status: "Failure", error: "Form not found" ,message : "Form not found" });
+      res.status(404).json({
+        status: "Failure",
+        error: "Form not found",
+        message: "Form not found",
+      });
       return;
     }
-    
+
     return res.status(200).json({
       status: "Success",
       message: "Update Form Successfully",
     });
-  }
-);
+  });
 };
-   
 
 const getVerifyEdistrict = (req, res) => {
   const userId = req.params.userId;
@@ -4301,10 +4317,10 @@ const getWalletSummary = (req, res) => {
 //     }
 
 //     const queryBalance = `
-//     SELECT Closing_Balance 
-//     FROM user_wallet 
-//     WHERE userId = ? 
-//     ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+//     SELECT Closing_Balance
+//     FROM user_wallet
+//     WHERE userId = ?
+//     ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
 //     LIMIT 1
 //   `;
 
@@ -4360,8 +4376,8 @@ const getWalletSummary = (req, res) => {
 //       const creditAmt = 0;
 
 //       const updateWalletQuery = `
-//       INSERT INTO user_wallet 
-//       (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+//       INSERT INTO user_wallet
+//       (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status)
 //       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 //     `;
 
@@ -4418,10 +4434,23 @@ const getWalletSummary = (req, res) => {
 // };
 
 const buyCoupon = (req, res) => {
-  const { coupon_Quantity, coupon_Price, total_Amount, coupon_Type, pan_id, userId } =
-    req.body;
+  const {
+    coupon_Quantity,
+    coupon_Price,
+    total_Amount,
+    coupon_Type,
+    pan_id,
+    userId,
+  } = req.body;
 
-  if (!coupon_Quantity || !coupon_Price || !total_Amount || !coupon_Type || !pan_id || !userId) {
+  if (
+    !coupon_Quantity ||
+    !coupon_Price ||
+    !total_Amount ||
+    !coupon_Type ||
+    !pan_id ||
+    !userId
+  ) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
@@ -4562,7 +4591,8 @@ const buyCoupon = (req, res) => {
 
             return res.status(200).json({
               status: "Success",
-              message: "Coupon purchase processed and wallet updated successfully.",
+              message:
+                "Coupon purchase processed and wallet updated successfully.",
               details: {
                 wallet: {
                   transactionId,
@@ -4635,10 +4665,7 @@ const getAllServicesList = (req, res) => {
       }
     });
   } catch (error) {
-    console.error(
-      "Error fetching getAllServicesList from MySQL:",
-      error
-    );
+    console.error("Error fetching getAllServicesList from MySQL:", error);
     return res.status(500).json({
       success: false,
       message: "Error in fetching getAllServicesList",
@@ -4751,7 +4778,7 @@ const getAllMonthRecharge = (req, res) => {
     return res.status(200).json({
       success: true,
       data: results,
-      total : results.length
+      total: results.length,
     }); // Return the commission records for the last month
   });
 };
@@ -4779,7 +4806,7 @@ const getAllMonthRechargeOffline = (req, res) => {
     return res.status(200).json({
       success: true,
       data: results,
-      total : results.length
+      total: results.length,
     }); // Return the commission records for the last month
   });
 };
@@ -4808,7 +4835,7 @@ const getTodaysRecharge = (req, res) => {
     return res.status(200).json({
       success: true,
       data: results,
-      total : results.length
+      total: results.length,
     }); // Return the commission records for the current day
   });
 };
@@ -4836,8 +4863,144 @@ const getTodaysRechargeOffline = (req, res) => {
     return res.status(200).json({
       success: true,
       data: results,
-      total : results.length
+      total: results.length,
     }); // Return the commission records for the current day
+  });
+};
+
+const getAllCommission = (req, res) => {
+  const { userId } = req.params;
+
+  // SQL query to fetch commission records for the user
+  const sql = `
+    SELECT * 
+    FROM commission_table 
+    WHERE distributor_id = ?
+    ORDER BY created_at DESC
+  `;
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching commission data:", err);
+      return res.status(500).json({
+        success: false,
+        error: `Error fetching data: ${err.message}`,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: results,
+    }); // Return the commission records for the given user
+  });
+};
+
+const getCertificateDetails = async (req, res) => {
+  const { userId } = req.params;
+  // const query = `
+  //     SELECT
+  //         ur.UserId,
+  //         ur.userType,
+  //         ur.superAdmin,
+  //         ur.white_lable,
+  //         CASE
+  //             WHEN ur.white_lable IS NOT NULL THEN wl.Company_Name
+  //             WHEN ur.white_lable IS NULL AND ur.superAdmin IS NOT NULL THEN sa.Company_Name
+  //             ELSE NULL
+  //         END AS Company_Name,
+  //         CASE
+  //             WHEN ur.white_lable IS NOT NULL THEN wl.Logo
+  //             WHEN ur.white_lable IS NULL AND ur.superAdmin IS NOT NULL THEN sa.Logo
+  //             ELSE NULL
+  //         END AS Logo
+  //     FROM user_relations AS ur
+  //     LEFT JOIN white_label_website_setting AS wl ON ur.white_lable = wl.id
+  //     LEFT JOIN super_admin_website_setting AS sa ON ur.superAdmin = sa.id
+  //     WHERE ur.UserId = ?
+  // `;
+  const query = `
+      SELECT 
+    ur.UserId, 
+    ur.userType, 
+    ur.superAdmin, 
+    ur.white_lable, 
+    CASE 
+        WHEN ur.white_lable IS NOT NULL AND ur.white_lable != '' THEN wl.Company_Name
+        WHEN (ur.white_lable IS NULL OR ur.white_lable = '') AND ur.superAdmin IS NOT NULL THEN sa.Company_Name
+        ELSE NULL 
+    END AS Company_Name,
+    CASE 
+        WHEN ur.white_lable IS NOT NULL AND ur.white_lable != '' THEN wl.Logo
+        WHEN (ur.white_lable IS NULL OR ur.white_lable = '') AND ur.superAdmin IS NOT NULL THEN sa.Logo
+        ELSE NULL 
+    END AS Logo
+FROM user_relations AS ur
+LEFT JOIN white_label_website_setting AS wl ON ur.white_lable = wl.id
+LEFT JOIN super_admin_website_setting AS sa ON ur.superAdmin = sa.id
+WHERE ur.UserId = ?;
+  `;
+
+  db.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching certificate details:", err);
+      return res.status(500).json({
+        success: false,
+        error: `Error fetching data: ${err.message}`,
+      });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No data found for this user.",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      data: results[0],
+    });
+  });
+};
+
+const getSuperAdminData = (req, res) => {
+  // const packageId = req.params.packageId;
+
+  const sqlQuery = `SELECT * FROM super_admin_website_setting `;
+
+  db.query(sqlQuery, (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
+const getWhiteLableData = (req, res) => {
+  const whiteLabelId = req.params.whiteLabelId;
+
+  const sqlQuery = `SELECT * FROM  white_label_website_setting WHERE whiteLabel_id = ?`;
+
+  db.query(sqlQuery, [whiteLabelId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
   });
 };
 
@@ -4899,5 +5062,9 @@ module.exports = {
   getAllMonthRecharge,
   getAllMonthRechargeOffline,
   getTodaysRechargeOffline,
-  getTodaysRecharge
+  getTodaysRecharge,
+  getAllCommission,
+  getCertificateDetails,
+  getSuperAdminData,
+  getWhiteLableData,
 };

@@ -16,6 +16,7 @@ const SAChangePassword = () => {
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
+   const { token } = useSelector((state) => state.user);
 
   const userID = currentUser?.userId;
   console.log(userID);
@@ -33,6 +34,12 @@ const SAChangePassword = () => {
           UserId: userID,
           oldPassword: oldPassword,
           newPassword: newPassword,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -80,7 +87,13 @@ const SAChangePassword = () => {
         {
           UserId: userID,
           otp: otp,
+        }, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
+
       );
 
       setMessage(response.data.message);

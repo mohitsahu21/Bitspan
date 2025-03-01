@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { BiHomeAlt } from "react-icons/bi";
 import styled from "styled-components";
-import { Dropdown, DropdownButton,Modal, Spinner } from "react-bootstrap";
+import { Dropdown, DropdownButton, Modal, Spinner } from "react-bootstrap";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { CiViewList } from "react-icons/ci";
 import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
 import PanFormEditModel from "./PanFormEditModel";
+import { useSelector } from "react-redux";
 
 const AllPanForm = () => {
   const [formData, setFormData] = useState([]);
@@ -17,34 +18,45 @@ const AllPanForm = () => {
   const complaintsPerPage = 10; // Set items per page
   const [currentPage, setCurrentPage] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
-    const [selectedItem, setSelectedItem] = useState("");
-    const [showMarkEditModel, setShowMarkEditModel] = useState(false);
-      const [isRefresh, setIsRefresh] = useState(false);
+  const [selectedItem, setSelectedItem] = useState("");
+  const [showMarkEditModel, setShowMarkEditModel] = useState(false);
+  const [isRefresh, setIsRefresh] = useState(false);
+  const { currentUser, token } = useSelector((state) => state.user);
 
   const fetchData = async () => {
     setLoading(true);
     try {
       const response = await axios.get(
         // `http://localhost:7777/api/auth/retailer/getApplyOfflineForm`
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApplyOfflineForm`
+        // `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApplyOfflineForm`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApplyOfflineFormByid/${currentUser?.userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
+
+      console.log(response.data);
 
       const newResponseData = response.data.filter(
         (item) => item.applicant_select_service !== "New Bank ID"
       );
-      setLoading(false)
+      setLoading(false);
 
       setFormData(newResponseData);
       console.log(newResponseData);
     } catch (error) {
       console.log(error);
-      setLoading(false)
+      setLoading(false);
     }
   };
+  console.log(formData);
 
   useEffect(() => {
     fetchData();
-  }, [fromDate, toDate,isRefresh]);
+  }, [fromDate, toDate, isRefresh]);
 
   const handleSearch = () => {
     fetchData();
@@ -60,8 +72,11 @@ const AllPanForm = () => {
       item.applicant_number
         ?.toLowerCase()
         ?.includes(searchQuery?.trim()?.toLowerCase()) ||
-      item.order_id?.toLowerCase()?.includes(searchQuery?.trim()?.toLowerCase());
-    const matchesStatus = !selectedStatus || 
+      item.order_id
+        ?.toLowerCase()
+        ?.includes(searchQuery?.trim()?.toLowerCase());
+    const matchesStatus =
+      !selectedStatus ||
       selectedStatus === "---Select Form Status---" ||
       item?.status?.toLowerCase() === selectedStatus?.toLowerCase();
 
@@ -170,27 +185,26 @@ const AllPanForm = () => {
                               onChange={(e) => setSearchQuery(e.target.value)}
                             />
                           </div>
-                               <div className="col-12 col-md-12 col-lg-12 col-xl-3">
-
-
-                                {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
-                                <select
-                                  className="form-select"
-                                  aria-label="Default select example"
-                                  value={selectedStatus}
-                                  onChange={(e) => setSelectedStatus(e.target.value)}
-
-                                >
-                                  <option selected>---Select Form Status---</option>
-                                  <option value="Pending">Pending</option>
-                                  <option value="Under Process">Under Process</option>
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-3">
+                            {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              value={selectedStatus}
+                              onChange={(e) =>
+                                setSelectedStatus(e.target.value)
+                              }
+                            >
+                              <option selected>---Select Form Status---</option>
+                              <option value="Pending">Pending</option>
+                              <option value="Under Process">
+                                Under Process
+                              </option>
                               <option value="Success">Success</option>
                               <option value="Mark Edit">Mark Edit</option>
                               <option value="Reject">Reject</option>
-
-                                </select>
-
-                              </div>
+                            </select>
+                          </div>
                           {/* <div className="col-12 col-md-4 col-lg-3 d-flex align-items-end">
                             <DropdownButton
                               id="dropdown-basic-button"
@@ -213,138 +227,147 @@ const AllPanForm = () => {
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
-                             {loading ? (
-                                                                                          <div className="d-flex justify-content-center">
-                                                                                            <Spinner animation="border" role="status">
-                                                                                              <span className="visually-hidden ">Loading...</span>
-                                                                                            </Spinner>
-                                                                                          </div>
-                                                                                        )
-                                                                                          :
-                                                                                          (
-                                                                                            <>
-                            <table class="table table-striped">
-                              <thead className="table-dark">
-                                <tr>
-                                  <th scope="col">Sr.No</th>
-                                  <th scope="col">Date</th>
-                                  <th scope="col">Order ID</th>
-                                  <th scope="col">Applicant Name</th>
-                                  <th scope="col">Applicant Father Name</th>
-                                  <th scope="col">Applicant Email</th>
-                                  <th scope="col">Applicant Number</th>
-                                  <th scope="col">Service</th>
-                                  <th scope="col">other</th>
-                                  <th scope="col">View Form</th>
-                                  <th scope="col">View Photo</th>
-                                  <th scope="col">View Signature</th>
-                                  <th scope="col">View KYC</th>
-                                  <th scope="col">Status</th>
-                                  <th scope="col">Note</th>
-                                  <th scope="col">Action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                    {displayData?.length > 0  ? (displayData.map((item, index) => (
-                                      <tr key={index}>
-                                        <th scope="row">{index + 1}</th>
-                                        <td>{item.created_at}</td>
-                                        <td>{item.order_id}</td>
-                                        <td>{item.applicant_name}</td>
-                                        <td>{item.applicant_father}</td>
-                                        <td>{item.email}</td>
-                                        <td>{item.applicant_number}</td>
-                                        <td>{item.applicant_select_service}</td>
-                                        <td>{item.other}</td>
-                                        <td>
-                                          <a
-                                            href={item.attached_form}
-                                            target="_blank"
-                                          >
-                                            View Form
-                                          </a>
-                                        </td>
-                                        <td>
-                                          <a
-                                            href={item.attached_photo}
-                                            target="_blank"
-                                          >
-                                            View Photo
-                                          </a>
-                                        </td>
-                                        <td>
-                                          <a
-                                            href={item.attached_sign}
-                                            target="_blank"
-                                          >
-                                            View Sign
-                                          </a>
-                                        </td>
-                                        <td>
-                                          {item?.attached_kyc
-                                            ?.split(",")
-                                            ?.map((kycurl, kycindx) => (
-                                              <div key={kycindx}>
-                                                <a
-                                                  href={kycurl}
-                                                  target="_blank"
-                                                  rel="noopener noreferrer"
-                                                >
-                                                  View KYC {kycindx + 1}
-                                                </a>
-                                              </div>
-                                            ))}
-                                        </td>
-                                        <td>{item.status}</td>
-                                        <td>{item.note}</td>
-                                        <td>
-                                          {(item.status === "Pending" ||
-                                            item.status === "Mark Edit") && (
-                                            <Dropdown>
-                                              <Dropdown.Toggle
-                                                variant="success"
-                                                // id={`dropdown-${user.id}`}
-                                                as="span"
-                                                style={{
-                                                  border: "none",
-                                                  background: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                                className="custom-dropdown-toggle"
-                                              >
-                                                <PiDotsThreeOutlineVerticalBold />
-                                              </Dropdown.Toggle>
-                                              <Dropdown.Menu>
-                                                <Dropdown.Item
-                                                  onClick={() => {
-                                                    // setSelectedUser(user);
-                                                    setShowMarkEditModel(true);
-                                                    setSelectedItem(item);
-                                                    //   deactivateUser(user.UserId)
-                                                  }}
-                                                >
-                                                  <span className="">
-                                                    {" "}
-                                                    <CiViewList />
-                                                  </span>{" "}
-                                                  Edit
-                                                </Dropdown.Item>
-                                              </Dropdown.Menu>
-                                            </Dropdown>
-                                          )}
-                                        </td>
-                                      </tr>
-                                    ))
-                                  ) : (
+                            {loading ? (
+                              <div className="d-flex justify-content-center">
+                                <Spinner animation="border" role="status">
+                                  <span className="visually-hidden ">
+                                    Loading...
+                                  </span>
+                                </Spinner>
+                              </div>
+                            ) : (
+                              <>
+                                <table class="table table-striped">
+                                  <thead className="table-dark">
                                     <tr>
-                                      <td colSpan="19">No data available</td>{" "}
-                                      {/* Updated colSpan to match table columns */}
+                                      <th scope="col">#</th>
+                                      <th scope="col">Date</th>
+                                      <th scope="col">Order ID</th>
+                                      <th scope="col">Applicant Name</th>
+                                      <th scope="col">Applicant Father Name</th>
+                                      <th scope="col">Applicant Email</th>
+                                      <th scope="col">Applicant Number</th>
+                                      <th scope="col">Service</th>
+                                      <th scope="col">other</th>
+                                      <th scope="col">View Form</th>
+                                      <th scope="col">View Photo</th>
+                                      <th scope="col">View Signature</th>
+                                      <th scope="col">View KYC</th>
+                                      <th scope="col">Status</th>
+                                      <th scope="col">Note</th>
+                                      <th scope="col">Action</th>
                                     </tr>
-                                  )}
-                              </tbody>
-                            </table>
-                            </>
-                                  )}
+                                  </thead>
+                                  <tbody>
+                                    {displayData?.length > 0 ? (
+                                      displayData.map((item, index) => (
+                                        <tr key={index}>
+                                          <th scope="row">
+                                            {currentPage * complaintsPerPage +
+                                              index +
+                                              1}
+                                          </th>
+                                          <td>{item.created_at}</td>
+                                          <td>{item.order_id}</td>
+                                          <td>{item.applicant_name}</td>
+                                          <td>{item.applicant_father}</td>
+                                          <td>{item.email}</td>
+                                          <td>{item.applicant_number}</td>
+                                          <td>
+                                            {item.applicant_select_service}
+                                          </td>
+                                          <td>{item.other}</td>
+                                          <td>
+                                            <a
+                                              href={item.attached_form}
+                                              target="_blank"
+                                            >
+                                              View Form
+                                            </a>
+                                          </td>
+                                          <td>
+                                            <a
+                                              href={item.attached_photo}
+                                              target="_blank"
+                                            >
+                                              View Photo
+                                            </a>
+                                          </td>
+                                          <td>
+                                            <a
+                                              href={item.attached_sign}
+                                              target="_blank"
+                                            >
+                                              View Sign
+                                            </a>
+                                          </td>
+                                          <td>
+                                            {item?.attached_kyc
+                                              ?.split(",")
+                                              ?.map((kycurl, kycindx) => (
+                                                <div key={kycindx}>
+                                                  <a
+                                                    href={kycurl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                  >
+                                                    View KYC {kycindx + 1}
+                                                  </a>
+                                                </div>
+                                              ))}
+                                          </td>
+                                          <td>{item.status}</td>
+                                          <td>{item.note}</td>
+                                          <td>
+                                            {(item.status === "Pending" ||
+                                              item.status === "Mark Edit") && (
+                                              <Dropdown>
+                                                <Dropdown.Toggle
+                                                  variant="success"
+                                                  // id={`dropdown-${user.id}`}
+                                                  as="span"
+                                                  style={{
+                                                    border: "none",
+                                                    background: "none",
+                                                    cursor: "pointer",
+                                                  }}
+                                                  className="custom-dropdown-toggle"
+                                                >
+                                                  <PiDotsThreeOutlineVerticalBold />
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu>
+                                                  <Dropdown.Item
+                                                    onClick={() => {
+                                                      // setSelectedUser(user);
+                                                      setShowMarkEditModel(
+                                                        true
+                                                      );
+                                                      setSelectedItem(item);
+                                                      //   deactivateUser(user.UserId)
+                                                    }}
+                                                  >
+                                                    <span className="">
+                                                      {" "}
+                                                      <CiViewList />
+                                                    </span>{" "}
+                                                    Edit
+                                                  </Dropdown.Item>
+                                                </Dropdown.Menu>
+                                              </Dropdown>
+                                            )}
+                                          </td>
+                                        </tr>
+                                      ))
+                                    ) : (
+                                      <tr>
+                                        <td colSpan="19">No data available</td>{" "}
+                                        {/* Updated colSpan to match table columns */}
+                                      </tr>
+                                    )}
+                                  </tbody>
+                                </table>
+                              </>
+                            )}
                           </div>
                           {/* <div className="float-end">
                             <nav aria-label="Page navigation example">
@@ -391,32 +414,32 @@ const AllPanForm = () => {
           </div>
         </div>
 
-         {/* Mark Edit Model  start*/}
-        
-                <Modal
-                  // size="lg"
-                  show={showMarkEditModel}
-                    fullscreen={true}
-                  onHide={() => setShowMarkEditModel(false)}
-                  aria-labelledby="packageDetail-modal-sizes-title-lg"
-                >
-                  <Modal.Header closeButton>
-                    <Modal.Title id="packageDetail-modal-sizes-title-lg">
-                      Edit Form
-                    </Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    {selectedItem && (
-                      <PanFormEditModel
-                        item={selectedItem}
-                        setShowMarkEditModel={setShowMarkEditModel}
-                        setIsRefresh={setIsRefresh}
-                      />
-                    )}
-                  </Modal.Body>
-                </Modal>
-        
-                {/*  Mark Edit Model  end*/}
+        {/* Mark Edit Model  start*/}
+
+        <Modal
+          // size="lg"
+          show={showMarkEditModel}
+          fullscreen={true}
+          onHide={() => setShowMarkEditModel(false)}
+          aria-labelledby="packageDetail-modal-sizes-title-lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="packageDetail-modal-sizes-title-lg">
+              Edit Form
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {selectedItem && (
+              <PanFormEditModel
+                item={selectedItem}
+                setShowMarkEditModel={setShowMarkEditModel}
+                setIsRefresh={setIsRefresh}
+              />
+            )}
+          </Modal.Body>
+        </Modal>
+
+        {/*  Mark Edit Model  end*/}
       </Wrapper>
     </>
   );

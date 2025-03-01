@@ -48,7 +48,6 @@
 
 //                                                 </div>
 
-
 //                                                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
 //                                                     <div class="table-responsive">
 //                                                         <table class="table table-striped">
@@ -124,15 +123,15 @@
 //     width: 100%;
 //   }
 //   .button {
-   
+
 //    background: #6d70ff;
 //    border-color: #6d70ff;
-  
+
 //  }
 //  .button:hover{
 //    background: #5356fa;
 //    border-color: #5356fa;
-   
+
 //  }
 //   .form-container {
 //     width: 50%;
@@ -141,26 +140,25 @@
 //   th{
 //     font-weight: 500;
 //     font-size: 14px;
-   
+
 //   }
 //   td{
 //    font-size: 14px;
-   
+
 //   }
 //   @media (min-width: 1025px) and (max-width : 1500px){
 //     .formdata {
-     
+
 //       padding-left: 15rem;
 //     }
 //   }
 //   @media (min-width: 1500px) {
 //     .formdata {
-     
+
 //       padding-left: 13rem;
 //     }
 //   }
 // `;
-
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -191,7 +189,13 @@ const AddWalletSummary = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAddMoneyToWalletOnline/${userID}`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAddMoneyToWalletOnline/${userID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = response.data.data;
       console.log(data);
@@ -264,7 +268,7 @@ const AddWalletSummary = () => {
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                        Add Money To Wallet
+                          Add Money To Wallet
                         </h4>
                         <h6 className="mx-lg-5">
                           <BiHomeAlt /> &nbsp;/ &nbsp; Add Money To Wallet
@@ -311,7 +315,7 @@ const AddWalletSummary = () => {
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
-                          {loading ? (
+                            {loading ? (
                               <div className="d-flex justify-content-center">
                                 <Spinner animation="border" role="status">
                                   <span className="visually-hidden ">
@@ -321,38 +325,44 @@ const AddWalletSummary = () => {
                               </div>
                             ) : (
                               <>
-                            <table class="table table-striped">
-                              <thead className="table-dark">
-                                <tr>
-                                  <th scope="col">Date</th>
-                                  <th scope="col">Order ID</th>
-                                  <th scope="col">Transaction Id</th>
-                                  {/* <th scope="col">User ID</th>
+                                <table class="table table-striped">
+                                  <thead className="table-dark">
+                                    <tr>
+                                      <th scope="col">#</th>
+                                      <th scope="col">Date</th>
+                                      <th scope="col">Order ID</th>
+                                      <th scope="col">Transaction Id</th>
+                                      {/* <th scope="col">User ID</th>
                                   <th scope="col">User Type</th>
                                   <th scope="col">Full Name</th> */}
-                                  <th scope="col">Amount</th>
-                                  {/* <th scope="col">Payment Mode</th> */}
-                                  <th scope="col">Transaction Reference</th>
-                                  {/* <th scope="col">Receiept Attechment</th> */}
-                                  <th scope="col">Status</th>
-                                  <th scope="col">Remark</th>
-                                  <th scope="col">Process Date</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {displayData.length > 0 ? (
-                                  displayData.map((item) => (
-                                    <tr key={item.id}>
-                                      <td>{item.created_at}</td>
-                                      <td>{item.order_id}</td>
-                                      <td>{item.pg_Txn_Id}</td>
-                                      {/* <td>{item.user_id}</td>
+                                      <th scope="col">Amount</th>
+                                      {/* <th scope="col">Payment Mode</th> */}
+                                      <th scope="col">Transaction Reference</th>
+                                      {/* <th scope="col">Receiept Attechment</th> */}
+                                      <th scope="col">Status</th>
+                                      <th scope="col">Remark</th>
+                                      <th scope="col">Process Date</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {displayData.length > 0 ? (
+                                      displayData.map((item, index) => (
+                                        <tr key={(item.id, index)}>
+                                          <td>
+                                            {currentPage * complaintsPerPage +
+                                              index +
+                                              1}
+                                          </td>
+                                          <td>{item.created_at}</td>
+                                          <td>{item.order_id}</td>
+                                          <td>{item.pg_Txn_Id}</td>
+                                          {/* <td>{item.user_id}</td>
                                       <td>{item.userRole}</td>
                                       <td>{item.userName}</td> */}
-                                      <td>{item.amount}</td>
-                                      {/* <td>{item.Payment_Mode}</td> */}
-                                      <td>{item.Transaction_Reference}</td>
-                                      {/* <td>
+                                          <td>{item.amount}</td>
+                                          {/* <td>{item.Payment_Mode}</td> */}
+                                          <td>{item.Transaction_Reference}</td>
+                                          {/* <td>
                                         <Link
                                           to={item.Receiept_Attechment}
                                           target="blank"
@@ -360,21 +370,24 @@ const AddWalletSummary = () => {
                                           View
                                         </Link>
                                       </td> */}
-                                      <td>{item.status}</td>
-                                      <td>{item.remark}</td>
-                                      <td>{item.process_date}</td>
-                                    </tr>
-                                  ))
-                                ) : (
-                                  <tr>
-                                    <td colSpan="10" className="text-center">
-                                      No results found
-                                    </td>
-                                  </tr>
-                                )}
-                              </tbody>
-                            </table>
-                            </>
+                                          <td>{item.status}</td>
+                                          <td>{item.remark}</td>
+                                          <td>{item.process_date}</td>
+                                        </tr>
+                                      ))
+                                    ) : (
+                                      <tr>
+                                        <td
+                                          colSpan="10"
+                                          className="text-center"
+                                        >
+                                          No results found
+                                        </td>
+                                      </tr>
+                                    )}
+                                  </tbody>
+                                </table>
+                              </>
                             )}
                           </div>
                           <PaginationContainer>

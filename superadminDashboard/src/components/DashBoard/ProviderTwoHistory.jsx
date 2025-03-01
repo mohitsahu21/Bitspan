@@ -1,13 +1,12 @@
-
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { MdOutlineFormatListNumbered } from "react-icons/md";
-import { FaMobileAlt,FaRupeeSign  } from "react-icons/fa";
+import { FaMobileAlt, FaRupeeSign } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
-import { Dropdown,Modal, Spinner } from "react-bootstrap";
+import { Dropdown, Modal, Spinner } from "react-bootstrap";
 import { CiViewList } from "react-icons/ci";
 import { PiDotsThreeOutlineVerticalBold } from "react-icons/pi";
 import Swal from "sweetalert2";
@@ -16,107 +15,103 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
+const ProviderTwoHistory = ({ rechargeType }) => {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
+  const [users, setUsers] = useState([]);
+  const [keyword, setKeyword] = useState("");
+  const complaintsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(0);
+  const [formStatus, setFormStatus] = useState(""); // For user type filter
+  const [ShowApproveModel, setShowApproveModel] = useState(false);
+  const [ShowRejectModel, setShowRejectModel] = useState(false);
+  const [isRefresh, setIsRefresh] = useState(false);
+  const [selectedItem, setSelectedItem] = useState("");
+  const userID = currentUser.userId;
+  // const rechargeType = "Broadband"
 
-
-
-
-const ProviderTwoHistory = ({rechargeType}) => {
-
-    const [loading, setLoading] = useState(false);
- const navigate = useNavigate();
- const dispatch = useDispatch();
- const { token } = useSelector((state) => state.user);
- const { currentUser } = useSelector((state) => state.user);
-    const [users, setUsers] = useState([]);
-    const [keyword, setKeyword] = useState("");
-    const complaintsPerPage = 10;
-    const [currentPage, setCurrentPage] = useState(0);
-    const [formStatus, setFormStatus] = useState(""); // For user type filter
-    const [ShowApproveModel, setShowApproveModel] = useState(false);
-    const [ShowRejectModel, setShowRejectModel] = useState(false);
-    const [isRefresh, setIsRefresh] = useState(false);
-    const [selectedItem,setSelectedItem] = useState("")
-    const userID = currentUser.userId;
-    // const rechargeType = "Broadband"
-
-
-    const fetchOfflineForm = async () => {
-        setLoading(true);
-        try {
-          const { data } = await axios.get(
-           `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getOfflineRecharge/${userID}/${rechargeType}`,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          setUsers(data.data);
-          setLoading(false);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-          if (error?.response?.status == 401) {
-            // alert("Your token is expired please login again")
-            Swal.fire({
-                      icon: "error",
-                      title: "Your token is expired please login again",
-                    });
-            dispatch(clearUser());
-            navigate("/");
-          }
-          setLoading(false);
+  const fetchOfflineForm = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getOfflineRecharge/${userID}/${rechargeType}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
-      };
-
-      // useEffect(() => {
-      //   fetchOfflineForm();
-      // }, []);
-
-      useEffect(() => {
-        fetchOfflineForm();
-      }, [isRefresh]);
-
-      const filteredItems = users.filter(
-        (row) =>{ 
-          const matchesKeyword =
-          (row?.mobile_no && row.mobile_no.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.UserName &&
-              row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-            (row?.orderid &&
-              row.orderid.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-              (row?.created_by_userid &&
-                row.created_by_userid.toLowerCase().includes(keyword.trim().toLowerCase()))
-
-              const matchesType = !formStatus || formStatus === "---Select Form Status---" || row.status === formStatus;
-              return matchesKeyword && matchesType ;
-            }
       );
-    
-      const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
-    
-      const filterPagination = () => {
-        const startIndex = currentPage * complaintsPerPage;
-        const endIndex = startIndex + complaintsPerPage;
-        return filteredItems?.slice(startIndex, endIndex);
-      };
-    
-      const handlePageChange = ({ selected }) => {
-        setCurrentPage(selected);
-      };
-    
-      const showApiData = filterPagination();
+      setUsers(data.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      }
+      setLoading(false);
+    }
+  };
 
-      console.log(showApiData);
-   
-    
-    return (
-        <>
-            <Wrapper>
-                
-                                            <div className="row d-flex flex-column g-4">
+  // useEffect(() => {
+  //   fetchOfflineForm();
+  // }, []);
 
-                                                <div className="d-flex flex-column flex-xl-row gap-3">
-                                                    {/* <div className="col-12 col-md-4 col-lg-3">
+  useEffect(() => {
+    fetchOfflineForm();
+  }, [isRefresh]);
+
+  const filteredItems = users.filter((row) => {
+    const matchesKeyword =
+      (row?.mobile_no &&
+        row.mobile_no.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.UserName &&
+        row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.orderid &&
+        row.orderid.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.created_by_userid &&
+        row.created_by_userid
+          .toLowerCase()
+          .includes(keyword.trim().toLowerCase()));
+
+    const matchesType =
+      !formStatus ||
+      formStatus === "---Select Form Status---" ||
+      row.status === formStatus;
+    return matchesKeyword && matchesType;
+  });
+
+  const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
+
+  const filterPagination = () => {
+    const startIndex = currentPage * complaintsPerPage;
+    const endIndex = startIndex + complaintsPerPage;
+    return filteredItems?.slice(startIndex, endIndex);
+  };
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
+  const showApiData = filterPagination();
+
+  console.log(showApiData);
+
+  return (
+    <>
+      <Wrapper>
+        <div className="row d-flex flex-column g-4">
+          <div className="d-flex flex-column flex-xl-row gap-3">
+            {/* <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="fromDate" className="form-label">From</label>
                                                         <input id="fromDate" className="form-control" type="date" />
                                                     </div>
@@ -128,85 +123,75 @@ const ProviderTwoHistory = ({rechargeType}) => {
                                                         <button type="button" className="btn btn-primary button">Search</button>
                                                     </div> */}
 
-                                                    <div className="col-12 col-md-12 col-lg-12 col-xl-8">
-                                                        {/* <label for="fromDate" className="form-label">From</label> */}
-                                                        <input id="fromDate" 
-                                                        className="form-control"
-                                                         type="search"
-                                                         placeholder="Search By Number, Order Id"
-                                                         value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
-                                                         />
-                                                    </div>
-                                                    <div className="col-12 col-md-12 col-lg-12 col-xl-3">
-                                                        
-                                                  
-                                                        {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
-                                                        <select
-                                                          className="form-select"
-                                                          aria-label="Default select example"
-                                                          value={formStatus}
-                                                          onChange={(e) => setFormStatus(e.target.value)}
-                                                          
-                                                        >
-                                                          <option selected>---Select Form Status---</option>
-                                                          <option value="Pending">Pending</option>
-                                                          <option value="Approve">Approve</option>
-                                                          <option value="Reject">Reject</option>
-                                                      
-                                                        </select>
-                                                     
-                                                                                </div>
+            <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+              {/* <label for="fromDate" className="form-label">From</label> */}
+              <input
+                id="fromDate"
+                className="form-control"
+                type="search"
+                placeholder="Search By Number, Order Id"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+              />
+            </div>
+            <div className="col-12 col-md-12 col-lg-12 col-xl-3">
+              {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
+              <select
+                className="form-select"
+                aria-label="Default select example"
+                value={formStatus}
+                onChange={(e) => setFormStatus(e.target.value)}
+              >
+                <option selected>---Select Form Status---</option>
+                <option value="Pending">Pending</option>
+                <option value="Approve">Approve</option>
+                <option value="Reject">Reject</option>
+              </select>
+            </div>
+          </div>
 
-                                                </div>
-
-
-                                                <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                                    <div class="table-responsive">
-                                                    {loading  ? ( 
-                                                          <div className="d-flex justify-content-center">
-                                                               <Spinner animation="border" role="status">
-                                                               <span className="visually-hidden ">Loading...</span>
-                                                             </Spinner>
-                                                             </div>
-                                                        )
-                                                    :
-                                                    (
-                                                        <>
-                                                         <table class="table table-striped">
-                                                            <thead className="table-dark">
-                                                              <tr>
-                                                             <th scope="col">#</th>
-                                                             <th scope="col">Date</th>
-                                <th scope="col">Order Id</th>
-                                <th scope="col">Number</th>
-                                <th scope="col">Operator Name</th>
-                                  <th scope="col">Amount</th>
-                                  {/* <th scope="col">Recharge Type</th> */}
-                                  {/* <th scope="col">User Id</th>
+          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <div class="table-responsive">
+              {loading ? (
+                <div className="d-flex justify-content-center">
+                  <Spinner animation="border" role="status">
+                    <span className="visually-hidden ">Loading...</span>
+                  </Spinner>
+                </div>
+              ) : (
+                <>
+                  <table class="table table-striped">
+                    <thead className="table-dark">
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Order Id</th>
+                        <th scope="col">Number</th>
+                        <th scope="col">Operator Name</th>
+                        <th scope="col">Amount</th>
+                        {/* <th scope="col">Recharge Type</th> */}
+                        {/* <th scope="col">User Id</th>
                                   <th scope="col">User Name</th>
                                   <th scope="col">User Mobile</th> */}
-                                  <th scope="col">Status</th>
-                                  <th scope="col">Note</th>
-                                  
-                                  </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            
-                                                            {showApiData && showApiData.length > 0 ? (
-                                        showApiData?.map((item, index) => (
-                                          <tr key={index}>
-                                          <td>{(currentPage * complaintsPerPage) + index + 1}</td>
-                                          <td>{item.created_at}</td>
-                                          <td>{item.orderid}</td>
-                                          <td>{item.mobile_no}</td>
-                                          <td>{item.operator_name}</td>
-                                          <td>{item.amount}</td>
-                                          {/* <td>{item.recharge_Type}</td> */}
-                                         
-                                         
-                                         
-                                          {/* <td>
+                        <th scope="col">Status</th>
+                        <th scope="col">Note</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {showApiData && showApiData.length > 0 ? (
+                        showApiData?.map((item, index) => (
+                          <tr key={index}>
+                            <td>
+                              {currentPage * complaintsPerPage + index + 1}
+                            </td>
+                            <td>{item.created_at}</td>
+                            <td>{item.orderid}</td>
+                            <td>{item.mobile_no}</td>
+                            <td>{item.operator_name}</td>
+                            <td>{item.amount}</td>
+                            {/* <td>{item.recharge_Type}</td> */}
+
+                            {/* <td>
                                             <a
                                               href={item.attached_photo}
                                               target="_blank"
@@ -214,7 +199,7 @@ const ProviderTwoHistory = ({rechargeType}) => {
                                               View Photo
                                             </a>
                                           </td> */}
-                                          {/* <td>
+                            {/* <td>
                                             <a
                                               href={item.attached_sign}
                                               target="_blank"
@@ -222,7 +207,7 @@ const ProviderTwoHistory = ({rechargeType}) => {
                                               View Sign
                                             </a>
                                           </td> */}
-                                          {/* <td>
+                            {/* <td>
                                             {item.documentUpload	
                                               ?.split(",")
                                               ?.map((kycurl, kycindx) => (
@@ -237,7 +222,7 @@ const ProviderTwoHistory = ({rechargeType}) => {
                                                 </div>
                                               ))}
                                           </td> */}
-                                          {/* <td>
+                            {/* <td>
                                             <a
                                               href={item.bank_passbook}
                                               target="_blank"
@@ -261,56 +246,45 @@ const ProviderTwoHistory = ({rechargeType}) => {
                                               View Electricity Bill
                                             </a>
                                           </td> */}
-                                          {/* <td>{item.created_by_userid}</td>
+                            {/* <td>{item.created_by_userid}</td>
                                           <td>{item.UserName}</td>
                                           <td>{item.ContactNo}</td> */}
-                                          <td>{item.status}</td>
-                                          <td>{item.note}</td>
-                                        
-                                        </tr>
-                                        ))
-                                      ) : (
-                                        <tr>
-                                          <td colSpan="13">No data available</td>{" "}
-                                          {/* Updated colSpan to match table columns */}
-                                        </tr>
-                                      )}
-                                                                
-                                                        
-    
-                                                            </tbody>
-                                                           
-                                                        </table>
+                            <td>{item.status}</td>
+                            <td>{item.note}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="13">No data available</td>{" "}
+                          {/* Updated colSpan to match table columns */}
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </>
+              )}
+            </div>
+            <PaginationContainer>
+              <ReactPaginate
+                previousLabel={"Previous"}
+                nextLabel={"Next"}
+                breakLabel={"..."}
+                pageCount={totalPages}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={handlePageChange}
+                containerClassName={"pagination"}
+                activeClassName={"active"}
+              />
+            </PaginationContainer>
+          </div>
+        </div>
+      </Wrapper>
+    </>
+  );
+};
 
-                                                        </>
-                                                    )}
-                                                       
-                                                    </div>
-                                                        <PaginationContainer>
-                                                        <ReactPaginate
-                                                          previousLabel={"Previous"}
-                                                          nextLabel={"Next"}
-                                                          breakLabel={"..."}
-                                                          pageCount={totalPages}
-                                                          marginPagesDisplayed={2}
-                                                          pageRangeDisplayed={5}
-                                                          onPageChange={handlePageChange}
-                                                          containerClassName={"pagination"}
-                                                          activeClassName={"active"}
-                                                        />
-                                                      </PaginationContainer>
-                                                 
-                                                </div>
-                                            </div>
-
-
-                                       
-            </Wrapper>
-        </>
-    );
-}
-
-export default ProviderTwoHistory
+export default ProviderTwoHistory;
 
 const Wrapper = styled.div`
   .main {
@@ -325,31 +299,27 @@ const Wrapper = styled.div`
     width: 50%;
     margin: auto;
   }
-  th{
+  th {
     font-weight: 500;
     font-size: 14px;
-   
   }
-  td{
-   font-size: 14px;
-   white-space: nowrap;
-   
+  td {
+    font-size: 14px;
+    white-space: nowrap;
   }
-  @media (min-width: 1025px) and (max-width : 1500px){
+  @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
-     
       padding-left: 15rem;
     }
   }
   @media (min-width: 1500px) {
     .formdata {
-     
       padding-left: 13rem;
     }
   }
   .custom-dropdown-toggle::after {
-  display: none !important;
-}
+    display: none !important;
+  }
 `;
 
 const PaginationContainer = styled.div`

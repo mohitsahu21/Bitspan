@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -254,6 +254,15 @@ const LoginBitspan = () => {
   const navigate = useNavigate();
   const inputsRef = useRef([]);
 
+  useEffect(() => {
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", () => navigate("/"));
+  
+    return () => {
+      window.removeEventListener("popstate", () => navigate("/"));
+    };
+  }, [navigate]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -291,42 +300,59 @@ const LoginBitspan = () => {
             timer: 1500,
           });
           // navigate("/dashboard");
-        }
-        else if(response.data.message === "User is Invalid"){
+        } else if (response.data.message === "User is Invalid") {
           console.error("Login error:", response.data.message);
           Swal.fire({
             icon: "error",
             title: "Login Failed",
             text: "Something went wrong!",
           });
-        }
-        else if(response.data.message === "User is Deactivate"){
+        } else if (response.data.message === "User is Deactivate") {
           console.error("Login error:", response.data.message);
           Swal.fire({
             icon: "error",
             title: "User Deactivate",
             text: "Please Contact Admin",
           });
-        }
-        else if(response.data.message === "User Payment is Pending"){
+        } else if (response.data.message === "User Payment is Pending") {
           console.error("Login error:", response.data.message);
-          Swal.fire({
-            icon: "error",
-            title: "User Payment Pending",
-            text: "Please Make Payment First",
-          });
-        }
-        else if(response.data.message === "User KYC is Pending"){
+          // Swal.fire({
+          //         icon: "error",
+          //         title: "User Payment is Pending",
+          //         text: "Please Make Payment First Or Contact Admin if Payment Done",
+          //       });
+          //       // dispatch(clearUser());
+        
+          //       navigate("/payment" , { state: { user: response.data.user } });
+                  // Navigate to the success page and pass the response data
+                  Swal.fire({
+                    title: "User Payment is Pending",
+                    text: "Please Make Payment First Or Contact Admin if Payment Done",
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: "Pay Now",
+                   
+                  }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                      // Swal.fire("Saved!", "", "success");
+                      navigate("/payment" , { state: { user: response.data.user } });
+                    } else if (result.isDenied) {
+                      Swal.fire("Changes are not saved", "", "info");
+                    }
+                  });
+
+        } else if (response.data.message === "User KYC is Pending") {
           console.error("Login error:", response.data.message);
           const user = response.data.user;
           const token = response.data.token;
           dispatch(setUser({ user, token }));
-          Swal.fire({
-            icon: "error",
-            title: "User KYC Pending",
-            text: "Please Submit KYC to use Services",
-          });
-          navigate("/update-profile")
+          // Swal.fire({
+          //   icon: "error",
+          //   title: "User KYC Pending",
+          //   text: "Please Submit KYC to use Services",
+          // });
+          navigate("/update-profile");
         }
       } else {
         Swal.fire({
@@ -511,13 +537,22 @@ const LoginBitspan = () => {
           <div className="col-md-8 col-lg-8 col-xl-4">
             <div className="card">
               <div className="p-4">
-                <div className="text-center">
+                {/* <div className="text-center">
                   <h3>Bitspan.com</h3>
                   <h4 className="text-muted mt-2 text-center fs-5">
                     Welcome Back!
                   </h4>
                   <p className="mb-5 text-center">
                     Sign in to continue to Bitspan.
+                  </p>
+                </div> */}
+                <div className="text-center">
+                  <h3>Welcome Back!</h3>
+                  <h4 className="text-muted mt-2 text-center fs-5">
+                  Sign in to continue to Dashboard
+                  </h4>
+                  <p className="mb-5 text-center">
+                   
                   </p>
                 </div>
                 {/* <form onSubmit={(e) => e.preventDefault()}> */}
@@ -526,7 +561,7 @@ const LoginBitspan = () => {
                     <>
                       <div className="form-outline mb-4">
                         <label className="form-label" htmlFor="form2Example1">
-                          User Name
+                          User ID
                         </label>
                         <input
                           type="text"
@@ -536,6 +571,7 @@ const LoginBitspan = () => {
                           onChange={(e) => setUserName(e.target.value)}
                           onKeyDown={handlebutton}
                           required
+                          placeholder="Enter your User ID"
                         />
                       </div>
 
@@ -551,6 +587,7 @@ const LoginBitspan = () => {
                           onChange={(e) => setPassword(e.target.value)}
                           onKeyDown={handlebutton}
                           required
+                          placeholder="Enter your password"
                         />
                       </div>
 

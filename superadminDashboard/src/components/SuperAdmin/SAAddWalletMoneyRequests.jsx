@@ -205,7 +205,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 
             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
               <div className="text-center  m-5">
-                <button type="submit" className="btn p-2" disabled={loading}>
+                <button type="submit" className="btn btn-primary p-2" disabled={loading}>
                   {loading ? "Loading..." : "Submit"}
                 </button>
               </div>
@@ -406,7 +406,7 @@ return (
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button type="submit" className="btn btn-primary p-2" disabled={loading}>
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -630,7 +630,13 @@ const SAAddWalletMoneyRequests = () => {
                                                             {showApiData && showApiData.length > 0 ? (
                                         showApiData?.map((item, index) => (
                                           <tr key={index}>
-                                          <th scope="row">{index + 1}</th>
+                                          {/* <th scope="row">{index + 1}</th> */}
+                                          <td>
+                                                {currentPage *
+                                                  complaintsPerPage +
+                                                  index +
+                                                  1}
+                                              </td>
                                           <td>{item.created_at}</td>
                                           <td>{item.order_id}</td>
                                           <td>{item.amount}</td>

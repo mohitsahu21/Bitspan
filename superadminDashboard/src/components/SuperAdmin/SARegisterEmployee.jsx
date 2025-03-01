@@ -629,7 +629,7 @@ const SARegisterEmployee = () => {
 
                       <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                         <div className="text-start mb-3">
-                          <button className="btn btn-warning p-2" type="submit" disabled={loading}>
+                          <button className="btn btn-primary p-2" type="submit" disabled={loading}>
                             {loading ? "Loading..." : "Create"}
                           </button>
                         </div>

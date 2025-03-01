@@ -30,7 +30,13 @@ const VerifyDistrictHistory = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getVerifyEdistrict/${userID}`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getVerifyEdistrict/${userID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = response.data.data;
       console.log(data);
@@ -185,6 +191,7 @@ const VerifyDistrictHistory = () => {
                                 <table class="table table-striped">
                                   <thead className="table-dark">
                                     <tr>
+                                      <th scope="col">Sr.No</th>
                                       <th scope="col">Date</th>
                                       <th scope="col">Order ID</th>
                                       <th scope="col">Application Type</th>
@@ -200,8 +207,13 @@ const VerifyDistrictHistory = () => {
                                   </thead>
                                   <tbody>
                                     {displayData.length > 0 ? (
-                                      displayData.map((item) => (
-                                        <tr key={item.id}>
+                                      displayData.map((item, index) => (
+                                        <tr key={(item.id, index)}>
+                                          <th scope="row">
+                                            {currentPage * complaintsPerPage +
+                                              index +
+                                              1}
+                                          </th>
                                           <td>{item.created_at}</td>
                                           <td>{item.order_id}</td>
                                           <td>{item.applicationType}</td>

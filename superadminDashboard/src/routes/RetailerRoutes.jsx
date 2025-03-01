@@ -75,11 +75,15 @@
 // import NSDLPANCorrectionComponent from "../components/DashBoard/NSDLPANCorrectionComponent";
 // import { useSelector } from "react-redux";
 
-import React, { Suspense, lazy } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect, Suspense, lazy } from "react";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from "react-bootstrap";
 import styled from "styled-components";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { clearUser } from "../redux/user/userSlice";
+import Payment from "../pages/Payment";
 // import UTIRetailerIdActivateComponent from "../components/DashBoard/UTIRetailerIdActivateComponent";
 // import UTIPanLoginComponent from "../components/DashBoard/UTIPanLoginComponent";
 // import NSDLPanStatusComponent from "../components/DashBoard/NSDLPanStatusComponent";
@@ -92,13 +96,27 @@ const MultiStepForm = lazy(() =>
   import("../components/PanCardForm/MultiStepForm")
 );
 const Profile = lazy(() => import("../pages/Profile"));
-const DTHConnectionHistroy = lazy(() => import("../components/DashBoard/DTHConnectionHistroy"));
-const NSDLPanComponent = lazy(() => import("../components/DashBoard/NSDLPanComponent"));
-const NSDLPANCorrectionComponent = lazy(() => import("../components/DashBoard/NSDLPANCorrectionComponent"));
-const NSDLIncompletePanCompoent = lazy(() => import("../components/DashBoard/NSDLIncompletePanCompoent"));
-const NSDLPanStatusComponent = lazy(() => import("../components/DashBoard/NSDLPanStatusComponent"));
-const UTIPanLoginComponent = lazy(() => import("../components/DashBoard/UTIPanLoginComponent"));
-const UTIRetailerIdActivateComponent = lazy(() => import("../components/DashBoard/UTIRetailerIdActivateComponent"));
+const DTHConnectionHistroy = lazy(() =>
+  import("../components/DashBoard/DTHConnectionHistroy")
+);
+const NSDLPanComponent = lazy(() =>
+  import("../components/DashBoard/NSDLPanComponent")
+);
+const NSDLPANCorrectionComponent = lazy(() =>
+  import("../components/DashBoard/NSDLPANCorrectionComponent")
+);
+const NSDLIncompletePanCompoent = lazy(() =>
+  import("../components/DashBoard/NSDLIncompletePanCompoent")
+);
+const NSDLPanStatusComponent = lazy(() =>
+  import("../components/DashBoard/NSDLPanStatusComponent")
+);
+const UTIPanLoginComponent = lazy(() =>
+  import("../components/DashBoard/UTIPanLoginComponent")
+);
+const UTIRetailerIdActivateComponent = lazy(() =>
+  import("../components/DashBoard/UTIRetailerIdActivateComponent")
+);
 const MobileRecharge = lazy(() =>
   import("../components/DashBoard/MobileRecharge")
 );
@@ -266,12 +284,145 @@ const SambalHistory = lazy(() =>
   import("../components/DashBoard/SambalHistory")
 );
 const CoupanForm = lazy(() => import("../components/DashBoard/CoupanForm"));
+const RtAllCommissionHistory = lazy(() =>
+  import("../components/DashBoard/RtAllCommissionHistory")
+);
 
 const RetailerRoutes = () => {
   const { currentUser, token } = useSelector((state) => state.user);
   const userStatus = currentUser?.Status;
+
   // console.log(userStatus);
   // console.log(token);
+
+  const pathname = window.location.pathname;
+  const [status, setStatus] = useState(null);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState("");
+  const dispatch = useDispatch();
+  const [user, setUser] = useState("");
+  // const userStatus = currentUser?.Status;
+
+  // Logging the current user and token for debugging
+  console.log("Current User:", currentUser);
+  console.log("Token:", token);
+  console.log(status);
+  // UseEffect hook to call the API once when the component mounts
+  useEffect(() => {
+    if (currentUser?.userId && token) {
+      fetchUserData();
+    } else {
+      console.log("Missing userId or token, cannot fetch data.");
+    }
+  }, [currentUser, token, pathname]);
+
+  const fetchUserData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("User Details:", response.data?.data);
+      const userStatus = response.data?.data?.Status; // API response se status fetch kar rahe hain
+      const PaymentStatus = response.data?.data?.payment_status;
+      setUser(response.data?.data);
+      if (userStatus == "Deactive") {
+        Swal.fire({
+          icon: "error",
+          title: "User Deactive",
+          text: "Please contact Admin!",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else if (PaymentStatus == "Pending") {
+        Swal.fire({
+          icon: "error",
+          title: "User Payment is Pending",
+          text: "Please Make Payment First Or Contact Admin if Payment Done",
+        });
+        // dispatch(clearUser());
+
+        navigate("/payment");
+      } else if (userStatus == "Pending") {
+        Swal.fire({
+          icon: "error",
+          title: "User KYC is Pending",
+          text: "Please Update KYC details First Or Contact Admin if Already Submitted Kyc details",
+        });
+        // dispatch(clearUser());
+        navigate("/update-profile");
+      }
+
+      setStatus(userStatus); // Status ko state mein set karenge
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Session Expired",
+          text: "Your session has expired. Please log in again.",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong! Please try again later.",
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // ✅ Show Loading State Before Redirects
+  if (isLoading) {
+    return (
+      <Wrapper>
+        <div className="loading-container">
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </div>
+      </Wrapper>
+    );
+  }
+
+  console.log("Current User:", currentUser);
+
+  // const [userRelation, setUserRelation] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchUserRelation = async () => {
+  //     try {
+  //       const resposne = await axios.get(
+  //         `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${currentUser.userId}`,
+  //         {
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+  //       const userData = resposne.data.data;
+  //       setUserRelation(userData);
+  //       console.log(userData);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   fetchUserRelation();
+  // }, [currentUser.userId]);
+
+  // console.log(userRelation);
 
   return (
     <>
@@ -287,7 +438,7 @@ const RetailerRoutes = () => {
         >
           <Routes>
             <Route path="/" element={<LoginBitspan />} />
-
+            <Route path="/payment" element={<Payment user={user} />} />
             <Route path="/update-profile" element={<Profile />} />
             <Route
               path="/dashboard"
@@ -437,7 +588,7 @@ const RetailerRoutes = () => {
                 userStatus === "Pending" || userStatus === "Deactive" ? (
                   <Navigate to="/update-profile" />
                 ) : (
-                  <NSDLPanComponent/>
+                  <NSDLPanComponent />
                 )
               }
             />
@@ -695,7 +846,7 @@ const RetailerRoutes = () => {
                 )
               }
             />
-            <Route
+            {/* <Route
               path="/2-step-verification"
               element={
                 userStatus === "Pending" || userStatus === "Deactive" ? (
@@ -704,7 +855,7 @@ const RetailerRoutes = () => {
                   <StepVerification />
                 )
               }
-            />
+            /> */}
             <Route
               path="/uti-transaction-report"
               element={
@@ -865,7 +1016,7 @@ const RetailerRoutes = () => {
                 )
               }
             />
-            <Route
+            {/* <Route
               path="/recharge-refund-report"
               element={
                 userStatus === "Pending" || userStatus === "Deactive" ? (
@@ -874,7 +1025,7 @@ const RetailerRoutes = () => {
                   <RechargeRefundReport />
                 )
               }
-            />
+            /> */}
             <Route
               path="/my-commission"
               element={
@@ -933,10 +1084,12 @@ const RetailerRoutes = () => {
                 ) : (
                   <Certificate
                     user="RETAILER"
-                    name="Aashish Kumar"
-                    address="Jabalpur, BIHAR - 482001"
-                    date="02-Jul-2024"
-                    id="AASHISD29164"
+                    name={currentUser?.username}
+                    address={`${currentUser?.City}, ${currentUser?.State}, ${currentUser?.PinCode}`}
+                    date={
+                      new Date(currentUser?.CreateAt).toISOString().split("T")[0]
+                    }
+                    id={currentUser?.userId}
                   />
                 )
               }
@@ -1109,6 +1262,17 @@ const RetailerRoutes = () => {
                   <Navigate to="/update-profile" />
                 ) : (
                   <CoupanForm />
+                )
+              }
+            />
+
+            <Route
+              path="/View-All-Commission-History"
+              element={
+                userStatus === "Pending" || userStatus === "Deactive" ? (
+                  <Navigate to="/update-profile" />
+                ) : (
+                  <RtAllCommissionHistory />
                 )
               }
             />

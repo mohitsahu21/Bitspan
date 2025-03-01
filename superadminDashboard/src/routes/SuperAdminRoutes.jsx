@@ -8,8 +8,15 @@ import styled from "styled-components";
 import AadharLinkingStatus from "../components/DashBoard/AadharLinkingStatus";
 import TrainingVideo from "../components/DashBoard/TrainingVideo";
 import NotFound from "../components/NotFound.jsx";
+import SAUserIdTransferSummery from "../components/SuperAdmin/SAUserIdTransferSummery.jsx";
+// import SAWebsiteJoinUsers from "../components/SuperAdmin/SAWebsiteJoinUsers.jsx";
+// import SAWhiteLabelWebsiteJoinUsers from "../components/SuperAdmin/SAWhiteLabelWebsiteJoinUsers.jsx";
+// import SAContactUs from "../components/SuperAdmin/SAContactUs.jsx";
 // Lazy imports
 const SuperAdminDashboard = lazy(() => import("../pages/SuperAdminDashboard"));
+const SAContactUs = lazy(() => import("../components/SuperAdmin/SAContactUs.jsx"));
+const SAWebsiteJoinUsers = lazy(() => import("../components/SuperAdmin/SAWebsiteJoinUsers.jsx"));
+const SAWhiteLabelWebsiteJoinUsers = lazy(() => import("../components/SuperAdmin/SAWhiteLabelWebsiteJoinUsers.jsx"));
 const SAProfile = lazy(() => import("../components/SuperAdmin/SAProfile"));
 const SAWalletTransactionReport = lazy(() => import("../components/SuperAdmin/SAWalletTransactionReport"));
 const SAAllOfflineForm = lazy(() => import("../components/SuperAdmin/SAAllOfflineForm"));
@@ -88,6 +95,7 @@ const SuperAdminRoutes = () => {
     </div>}>
       <Routes>
         <Route path="/dashboard" element={<SuperAdminDashboard />} />
+        {/* <Route path="/" element={<Navigate to="/dashboard" />} /> */}
         <Route path="/update-profile" element={<SAProfile />} />
         {/* <Route
           path="/aadhar-linking-status"
@@ -174,6 +182,7 @@ const SuperAdminRoutes = () => {
         <Route path="/deactive-users" element={<SADeactiveUsersList />} />
         <Route path="/pending-kyc-user" element={<SAPendingKycUsers />} />
         <Route path="/users-joining-list" element={<SAAllUsersJoinedList />} />
+        <Route path="/whiteLabel-users-joining-list" element={<SAWhiteLabelWebsiteJoinUsers />} />
         <Route
           path="/pending-payment-users"
           element={<SAPendingPaymentUsers />}
@@ -254,7 +263,19 @@ const SuperAdminRoutes = () => {
           path="/uploaded-documents"
           element={<SAPanUploadedDocsList />}
         />
-         {/* <Route path="*" element={<NotFound />} /> */}
+        <Route
+          path="/contact-us-users"
+          element={<SAContactUs />}
+        />
+        <Route
+          path="/superAdmin-users-joining-list"
+          element={<SAWebsiteJoinUsers />}
+        />
+        <Route
+          path="/Transfer-User-Ids-Summery"
+          element={<SAUserIdTransferSummery />}
+        />
+         <Route path="*" element={<NotFound />} />
 
         {/* <Route path="/download-certificate-print" element={<Certificate user="WHITE LABEL" name="Aashish Kumar"
         address="Jabalpur, BIHAR - 482001"

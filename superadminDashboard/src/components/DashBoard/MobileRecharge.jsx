@@ -20,7 +20,7 @@ const MobileRecharge = () => {
   const [apiData, setApiData] = useState([]);
   const [isVerifying, setIsVerifying] = useState(false);
   // console.log(currentUser.userId);
-   const [services,setServices] = useState([]);
+  const [services, setServices] = useState([]);
   const fetchServices = async () => {
     // setLoading(true);
     try {
@@ -32,7 +32,6 @@ const MobileRecharge = () => {
             Authorization: `Bearer ${token}`,
           },
         }
-
       );
       setServices(data.data);
       // setLoading(false);
@@ -41,9 +40,9 @@ const MobileRecharge = () => {
       if (error?.response?.status == 401) {
         // alert("Your token is expired please login again")
         Swal.fire({
-                  icon: "error",
-                  title: "Your token is expired please login again",
-                });
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
         dispatch(clearUser());
         navigate("/");
       }
@@ -56,13 +55,12 @@ const MobileRecharge = () => {
   // };
 
   const handleTabClick = (tab) => {
-    if(tab == "tab2"){
-      if(services){
-               
+    if (tab == "tab2") {
+      if (services) {
         const purchaseBankIdService = services.find(
           (item) => item.service_name === "Provider 2 recharge"
         );
-      
+
         if (purchaseBankIdService?.status === "Deactive") {
           Swal.fire({
             title: "Provider 2 service is currently Not Available",
@@ -70,17 +68,13 @@ const MobileRecharge = () => {
             icon: "error",
           });
           // navigate("/prepaid-recharge");
-        }
-        else{
+        } else {
           setActiveTab(tab);
         }
       }
-    }
-    else{
+    } else {
       setActiveTab(tab);
     }
-    
-    
   };
 
   const [formData, setFormData] = useState({
@@ -187,7 +181,13 @@ const MobileRecharge = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
         const priceData = response.data.data[0];
@@ -351,7 +351,13 @@ const MobileRecharge = () => {
       try {
         const response = await axios.get(
           // `http://localhost:7777/api/auth/retailer/getAllRechargeApi`
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllRechargeApi`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllRechargeApi`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         if (response.data.status === "Success") {
           console.log(response.data.data);
@@ -369,42 +375,36 @@ const MobileRecharge = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if(name === "number" || name === "amount"){
-      
+    if (name === "number" || name === "amount") {
       if (/^\d*$/.test(value)) {
         setFormData((prevData) => ({
           ...prevData,
           [name]: value,
         }));
       }
-    }
-    else{
+    } else {
       setFormData({
         ...formData,
         [name]: value,
       });
     }
-    
   };
 
   const handleChangeForm = (e) => {
     const { name, value } = e.target;
-    if(name === "mobile_no" || name === "amount"){
-      
+    if (name === "mobile_no" || name === "amount") {
       if (/^\d*$/.test(value)) {
         setOfflineForm((prevData) => ({
           ...prevData,
           [name]: value,
         }));
       }
-    }
-    else{
+    } else {
       setOfflineForm({
         ...offlineForm,
         [name]: value,
       });
     }
-   
   };
 
   // const handleSubmit = async (e) => {
@@ -1158,8 +1158,10 @@ const MobileRecharge = () => {
           // Recharge Commission Credit WL SD D
 
           break;
-        } else if (rechargeResult.data &&
-          rechargeResult.data.message === "Recharge in process") {
+        } else if (
+          rechargeResult.data &&
+          rechargeResult.data.message === "Recharge in process"
+        ) {
           success = true;
           Swal.fire({
             icon: "info",
@@ -1281,7 +1283,13 @@ const MobileRecharge = () => {
       const result = await axios.post(
         // "http://localhost:7777/api/auth/wallet/offlineRechargeAndUpdateWallet",
         "https://bitspan.vimubds5.a2hosted.com/api/auth/wallet/offlineRechargeAndUpdateWallet",
-        offlineForm
+        offlineForm,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       setResponseForm(result.data);
@@ -1306,8 +1314,8 @@ const MobileRecharge = () => {
           recharge_Type: "Prepaid",
           userId: currentUser.userId,
         });
-        setSelectedCircle("")
-        setSelectedOperator("")
+        setSelectedCircle("");
+        setSelectedOperator("");
       }
     } catch (error) {
       console.error(
@@ -1317,7 +1325,9 @@ const MobileRecharge = () => {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: error?.response ? error?.response?.data?.message : "Something went wrong! Please try again later.",
+        text: error?.response
+          ? error?.response?.data?.message
+          : "Something went wrong! Please try again later.",
       });
       // setResponseForm(null);
     } finally {
@@ -1369,11 +1379,16 @@ const MobileRecharge = () => {
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: pin.join("") }
+        { user_id: currentUser.userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       console.log(response.data);
-
 
       if (response.data.success) {
         return true;
@@ -1382,7 +1397,8 @@ const MobileRecharge = () => {
         // return false;
         Swal.fire({
           title: "Error verifying PIN",
-          text: response?.data?.message || "Something went wrong! Please Try again",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
           icon: "error",
         });
         return false;
@@ -1392,7 +1408,9 @@ const MobileRecharge = () => {
       // alert("Error verifying PIN");
       Swal.fire({
         title: "Error verifying PIN",
-        text: error?.response?.data?.message || "Something went wrong! Please Try again",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
         icon: "error",
       });
 
@@ -1405,7 +1423,13 @@ const MobileRecharge = () => {
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: onlinePin.join("") }
+        { user_id: currentUser.userId || "", pin: onlinePin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (response.data.success) {
         return true;
@@ -1413,7 +1437,8 @@ const MobileRecharge = () => {
         // alert(response.data.message);
         Swal.fire({
           title: "Error verifying PIN",
-          text: response?.data?.message || "Something went wrong! Please Try again",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
           icon: "error",
         });
         return false;
@@ -1423,13 +1448,14 @@ const MobileRecharge = () => {
       // alert("Error verifying PIN");
       Swal.fire({
         title: "Error verifying PIN",
-        text: error?.response?.data?.message || "Something went wrong! Please Try again",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
         icon: "error",
       });
       return false;
     }
   };
-
 
   const handleModalSubmit = async (e) => {
     setIsVerifying(true);
@@ -1462,14 +1488,12 @@ const MobileRecharge = () => {
     e.preventDefault();
     setShowPinModal(true);
     console.log("Offlined PIN Integration");
-
   };
 
   const openOnlinePinModal = (e) => {
     e.preventDefault();
     setShowOnlinePinModal(true);
     console.log("Online PIN");
-
   };
 
   return (
@@ -1514,15 +1538,17 @@ const MobileRecharge = () => {
                     </div>
                     <div className="circle-nav">
                       <button
-                        className={`circle-btn ${activeTab === "tab1" ? "active" : ""
-                          }`}
+                        className={`circle-btn ${
+                          activeTab === "tab1" ? "active" : ""
+                        }`}
                         onClick={() => handleTabClick("tab1")}
                       >
                         Provider 1
                       </button>
                       <button
-                        className={`circle-btn ${activeTab === "tab2" ? "active" : ""
-                          }`}
+                        className={`circle-btn ${
+                          activeTab === "tab2" ? "active" : ""
+                        }`}
                         onClick={() => handleTabClick("tab2")}
                       >
                         Provider 2
@@ -1530,8 +1556,9 @@ const MobileRecharge = () => {
                     </div>
                     <div className="tab-content">
                       <div
-                        className={`tab-pane ${activeTab === "tab1" ? "active" : ""
-                          }`}
+                        className={`tab-pane ${
+                          activeTab === "tab1" ? "active" : ""
+                        }`}
                       >
                         <div className="container">
                           <div className="row justify-content-center">
@@ -1665,7 +1692,13 @@ const MobileRecharge = () => {
                                               backgroundColor: "#6d70ff",
                                             }}
                                             onClick={fetchPlanData}
-                                            disabled={loadingPlans || !selectedCircle || !selectedOperator || !formData.number || formData.number.length != 10}
+                                            disabled={
+                                              loadingPlans ||
+                                              !selectedCircle ||
+                                              !selectedOperator ||
+                                              !formData.number ||
+                                              formData.number.length != 10
+                                            }
                                           >
                                             {loadingPlans
                                               ? "Checking Plans..."
@@ -1924,7 +1957,14 @@ const MobileRecharge = () => {
                                             }}
                                             type="submit"
                                             onClick={() => setIsRecharge(true)}
-                                            disabled={loading || !formData.amount || !formData.number || !selectedCircle || !selectedOperator || formData.number.length != 10}
+                                            disabled={
+                                              loading ||
+                                              !formData.amount ||
+                                              !formData.number ||
+                                              !selectedCircle ||
+                                              !selectedOperator ||
+                                              formData.number.length != 10
+                                            }
                                           >
                                             {loading
                                               ? "Recharge Now..."
@@ -1942,8 +1982,9 @@ const MobileRecharge = () => {
                         </div>
                       </div>
                       <div
-                        className={`tab-pane ${activeTab === "tab2" ? "active" : ""
-                          }`}
+                        className={`tab-pane ${
+                          activeTab === "tab2" ? "active" : ""
+                        }`}
                       >
                         <div className="container">
                           <div className="row justify-content-center">
@@ -2068,7 +2109,13 @@ const MobileRecharge = () => {
                                             }}
                                             onClick={fetchPlanData}
                                             // disabled={loadingPlans}
-                                            disabled={loadingPlans || !selectedCircle || !selectedOperator || !offlineForm.mobile_no || offlineForm.mobile_no.length != 10}
+                                            disabled={
+                                              loadingPlans ||
+                                              !selectedCircle ||
+                                              !selectedOperator ||
+                                              !offlineForm.mobile_no ||
+                                              offlineForm.mobile_no.length != 10
+                                            }
                                           >
                                             {loadingPlans
                                               ? "Checking Plans..."
@@ -2322,12 +2369,19 @@ const MobileRecharge = () => {
                                           <button
                                             className="btn btn-none text-light"
                                             type="submit"
-                                            disabled={loading || !offlineForm.amount || !offlineForm.mobile_no || !selectedCircle || !selectedOperator || offlineForm.mobile_no.length != 10}
+                                            disabled={
+                                              loading ||
+                                              !offlineForm.amount ||
+                                              !offlineForm.mobile_no ||
+                                              !selectedCircle ||
+                                              !selectedOperator ||
+                                              offlineForm.mobile_no.length != 10
+                                            }
                                             style={{
                                               backgroundColor: "#6d70ff",
                                             }}
                                           >
-                                             {loading
+                                            {loading
                                               ? "Recharge Now..."
                                               : "Recharge Now"}
                                           </button>

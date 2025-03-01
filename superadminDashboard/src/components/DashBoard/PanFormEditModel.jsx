@@ -12,10 +12,10 @@ import { SlPeople } from "react-icons/sl";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 import Swal from "sweetalert2";
 
-const PanFormEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
+const PanFormEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
   const dispatch = useDispatch();
   console.log(item);
-  
+
   const { currentUser, token } = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
   const [fileError, setFileError] = useState("");
@@ -28,10 +28,10 @@ const PanFormEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
   const [eStampAmount, setEStampAmount] = useState("");
   const [totalAmount, setTotalAmount] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
-  const attachFormRef = useRef(null)
-  const attachPhotoRef = useRef(null)
-  const attachSignRef = useRef(null)
-  const attachKycRef = useRef(null)
+  const attachFormRef = useRef(null);
+  const attachPhotoRef = useRef(null);
+  const attachSignRef = useRef(null);
+  const attachKycRef = useRef(null);
   const [formData, setFormData] = useState({
     applicant_name: item.applicant_name,
     applicant_father: item.applicant_father,
@@ -39,35 +39,38 @@ const PanFormEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
     email: item.email,
     applicant_select_service: item.applicant_select_service,
     eStampAmount: item.eStampAmount,
-    amount : item.amount,
+    amount: item.amount,
     other: item.other,
     attached_form: item.attached_form || null,
     attached_photo: item.attached_photo || null,
     attached_sign: item.attached_sign || null,
     attached_kyc: item.attached_kyc || [],
     userId: currentUser?.userId,
-    order_id : item.order_id,
+    order_id: item.order_id,
     previous_attached_photo: item.attached_photo,
     previous_attached_kyc: item.attached_kyc,
     previous_attached_form: item.attached_form,
     previous_attached_sign: item.attached_sign,
-
-    
-    
   });
 
-   const [preveiewfiles, preveiewSetFiles] = useState({
+  const [preveiewfiles, preveiewSetFiles] = useState({
     attached_form: item.attached_form || null,
     attached_kyc: item.attached_kyc || [],
     attached_photo: item.attached_photo || null,
     attached_sign: item.attached_sign || null,
-    });
+  });
 
   useEffect(() => {
     const fetchPackage = async () => {
       try {
         const { data } = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         console.log(data.data);
         setPrices(data.data);
@@ -82,13 +85,13 @@ const PanFormEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
     const { name, value } = e.target;
 
     if (name === "eStampAmount") {
-      if(/^\d*$/.test(value)){
+      if (/^\d*$/.test(value)) {
         let parsedValue = parseInt(value, 10);
         parsedValue = isNaN(parsedValue) ? 0 : parsedValue; // Default to 0 if not a number
-  
+
         const parsedSelectedPrice = parseInt(selectedPrice, 10) || 0;
         const total = parsedValue + parsedSelectedPrice;
-  
+
         setEStampAmount(value); // Always update the input value to allow changes
         setFormData((prevFormData) => ({
           ...prevFormData,
@@ -96,18 +99,14 @@ const PanFormEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
           amount: total.toString(), // Calculate the total amount
         }));
       }
-   
-    }
-    else if(name === "applicant_number"){
-      
+    } else if (name === "applicant_number") {
       if (/^\d*$/.test(value)) {
         setFormData((prevData) => ({
           ...prevData,
           [name]: value,
         }));
       }
-    }
-     else {
+    } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
         [name]: value,
@@ -115,33 +114,33 @@ const PanFormEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
     }
   };
 
-//   useEffect(() => {
-//     let calculatedTotal = 0;
+  //   useEffect(() => {
+  //     let calculatedTotal = 0;
 
-//     if (selectOption && selectedPrice) {
-//       calculatedTotal =
-//         parseInt(eStampAmount, 10) + (parseInt(selectedPrice, 10) || 0);
-//     } else {
-//       calculatedTotal = parseInt(selectedPrice, 10) || 0;
-//     }
+  //     if (selectOption && selectedPrice) {
+  //       calculatedTotal =
+  //         parseInt(eStampAmount, 10) + (parseInt(selectedPrice, 10) || 0);
+  //     } else {
+  //       calculatedTotal = parseInt(selectedPrice, 10) || 0;
+  //     }
 
-//     const totalAsString = calculatedTotal.toString();
+  //     const totalAsString = calculatedTotal.toString();
 
-//     setTotalAmount(totalAsString);
+  //     setTotalAmount(totalAsString);
 
-//     setFormData((prevFormData) => ({
-//       ...prevFormData,
-//       amount: totalAsString,
-//     }));
-//   }, [selectedPrice, eStampAmount, selectOption]);
-useEffect(()=>{
-   if(item){
-    const selectedService = item.applicant_select_service;
-    if(selectedService == "E-Stamp"){
-        setSelectOption(true)
+  //     setFormData((prevFormData) => ({
+  //       ...prevFormData,
+  //       amount: totalAsString,
+  //     }));
+  //   }, [selectedPrice, eStampAmount, selectOption]);
+  useEffect(() => {
+    if (item) {
+      const selectedService = item.applicant_select_service;
+      if (selectedService == "E-Stamp") {
+        setSelectOption(true);
+      }
     }
-   }
-},[])
+  }, []);
 
   // const handleFileChange = (e) => {
   //   const { name, files } = e.target;
@@ -152,51 +151,53 @@ useEffect(()=>{
   //   }
   // };
 
-    const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
-    const allowedTypes = ["image/jpeg", "image/jpg", "image/png" , "application/pdf"];
-    const allowedPhoto = ["image/jpeg", "image/jpg", "image/png"];
-    const handleFileChange = (e) => {
-      const { name, files } = e.target;
-      if (name === "attached_kyc") {
-         for (const file of files) {
-              if (file.size > MAX_FILE_SIZE) {
-                Swal.fire({
-                  title: "File Too Large",
-                  text: `The file "${file.name}" exceeds the 2 MB size limit. Please select smaller files.`,
-                  icon: "error",
-                });
-                // Clear the file input
-                e.target.value = null;
-                return;
-              }
-              else if(!allowedTypes.includes(file.type)){
-        Swal.fire({
-                          icon: "error",
-                          title: "Invalid File Type",
-                          text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG , PDF are allowed.`,
-                        });
-                        e.target.value = null;
-                        return;
-              }
-             
-            }
-        setFormData({ ...formData, [name]: Array.from(files) });
-      } else if(name === "attached_photo" || name === "attached_sign"){
-       // For single file input
-       const file = files[0];
-       if (file) {
-         if (file.size > MAX_FILE_SIZE) {
-           Swal.fire({
-             title: "File Too Large",
-             text: `The file "${file.name}" exceeds the 2 MB size limit. Please select a smaller file.`,
-             icon: "error",
-           });
-      
-           // Clear the file input
-           e.target.value = null;
-           return;
-         }
-         else if(!allowedPhoto.includes(file.type)){
+  const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
+  const allowedTypes = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "application/pdf",
+  ];
+  const allowedPhoto = ["image/jpeg", "image/jpg", "image/png"];
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    if (name === "attached_kyc") {
+      for (const file of files) {
+        if (file.size > MAX_FILE_SIZE) {
+          Swal.fire({
+            title: "File Too Large",
+            text: `The file "${file.name}" exceeds the 2 MB size limit. Please select smaller files.`,
+            icon: "error",
+          });
+          // Clear the file input
+          e.target.value = null;
+          return;
+        } else if (!allowedTypes.includes(file.type)) {
+          Swal.fire({
+            icon: "error",
+            title: "Invalid File Type",
+            text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG , PDF are allowed.`,
+          });
+          e.target.value = null;
+          return;
+        }
+      }
+      setFormData({ ...formData, [name]: Array.from(files) });
+    } else if (name === "attached_photo" || name === "attached_sign") {
+      // For single file input
+      const file = files[0];
+      if (file) {
+        if (file.size > MAX_FILE_SIZE) {
+          Swal.fire({
+            title: "File Too Large",
+            text: `The file "${file.name}" exceeds the 2 MB size limit. Please select a smaller file.`,
+            icon: "error",
+          });
+
+          // Clear the file input
+          e.target.value = null;
+          return;
+        } else if (!allowedPhoto.includes(file.type)) {
           Swal.fire({
             icon: "error",
             title: "Invalid File Type",
@@ -204,30 +205,30 @@ useEffect(()=>{
           });
           e.target.value = null;
           return;
-         }
-         setFormData((prevFiles) => ({
-           ...prevFiles,
-           [name]: file,
-         }));
-       }
-        } else {
-          const file = files[0];
-          if (file) {
-            if (file.size > MAX_FILE_SIZE) {
-              Swal.fire({
-                title: "File Too Large",
-                text: `The file "${file.name}" exceeds the 2 MB size limit. Please select a smaller file.`,
-                icon: "error",
-              });
-         
-              // Clear the file input
-              e.target.value = null;
-              return;
-            }
-          }
-        setFormData({ ...formData, [name]: files[0] });
+        }
+        setFormData((prevFiles) => ({
+          ...prevFiles,
+          [name]: file,
+        }));
       }
-    };
+    } else {
+      const file = files[0];
+      if (file) {
+        if (file.size > MAX_FILE_SIZE) {
+          Swal.fire({
+            title: "File Too Large",
+            text: `The file "${file.name}" exceeds the 2 MB size limit. Please select a smaller file.`,
+            icon: "error",
+          });
+
+          // Clear the file input
+          e.target.value = null;
+          return;
+        }
+      }
+      setFormData({ ...formData, [name]: files[0] });
+    }
+  };
 
   const handleSelect = (e) => {
     // const selectItem = e.target.value;
@@ -278,7 +279,7 @@ useEffect(()=>{
     }
   }, [currentUser]);
 
-  const clearFileInput = ()=>{
+  const clearFileInput = () => {
     if (attachFormRef.current) {
       attachFormRef.current.value = null;
     }
@@ -291,9 +292,7 @@ useEffect(()=>{
     if (attachKycRef.current) {
       attachKycRef.current.value = null;
     }
-   
-   
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -328,41 +327,49 @@ useEffect(()=>{
     formDataObj.append("other", formData.other);
     formDataObj.append("eStampAmount", formData.eStampAmount);
     formDataObj.append("amount", formData.amount);
-    if(formData.previous_attached_photo){
-        formDataObj.append("previous_attached_photo", formData.previous_attached_photo);
+    if (formData.previous_attached_photo) {
+      formDataObj.append(
+        "previous_attached_photo",
+        formData.previous_attached_photo
+      );
     }
-    if(formData.previous_attached_kyc){
-        formDataObj.append("previous_attached_kyc", formData.previous_attached_kyc);
+    if (formData.previous_attached_kyc) {
+      formDataObj.append(
+        "previous_attached_kyc",
+        formData.previous_attached_kyc
+      );
     }
-    if(formData.previous_attached_form){
-   
-        formDataObj.append("previous_attached_form", formData.previous_attached_form);
+    if (formData.previous_attached_form) {
+      formDataObj.append(
+        "previous_attached_form",
+        formData.previous_attached_form
+      );
     }
-    if(formData.previous_attached_sign){
-   
-        formDataObj.append("previous_attached_sign", formData.previous_attached_sign);
+    if (formData.previous_attached_sign) {
+      formDataObj.append(
+        "previous_attached_sign",
+        formData.previous_attached_sign
+      );
     }
 
+    if (attachPhotoRef.current.value) {
+      // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
+      formDataObj.append("attached_photo", formData.attached_photo);
+    }
+    if (attachFormRef.current.value) {
+      // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
+      formDataObj.append("attached_form", formData.attached_form);
+    }
 
-
-    if(attachPhotoRef.current.value){
-        // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
-        formDataObj.append("attached_photo", formData.attached_photo);
+    if (attachSignRef.current.value) {
+      // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
+      formDataObj.append("attached_sign", formData.attached_sign);
     }
-    if(attachFormRef.current.value){
-        // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
-        formDataObj.append("attached_form", formData.attached_form);
-    }
-   
-    if(attachSignRef.current.value){
-        // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
-        formDataObj.append("attached_sign", formData.attached_sign);
-    }
-    if(attachKycRef.current.value){
-        // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
-        formData.attached_kyc.forEach((file) => {
-            formDataObj.append("attached_kyc", file);
-          });
+    if (attachKycRef.current.value) {
+      // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
+      formData.attached_kyc.forEach((file) => {
+        formDataObj.append("attached_kyc", file);
+      });
     }
     // if (formData.attached_form)
     //   formDataObj.append("attached_form", formData.attached_form);
@@ -382,20 +389,25 @@ useEffect(()=>{
         `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/update_applyOfflineForm`,
         formDataObj,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       // alert(response.data.message);
       console.log(response);
       const resData = response?.data?.message;
       setIsLoading(false);
-      if(response.data.status == "Success"){
+      if (response.data.status == "Success") {
         Swal.fire({
           title: "Form Sumitted Success",
-          text: `${resData}` ||  "Other Services processed and wallet updated successfully.",
+          text:
+            `${resData}` ||
+            "Other Services processed and wallet updated successfully.",
           icon: "success",
         });
-  
+
         setFormData({
           applicant_name: "",
           applicant_father: "",
@@ -412,7 +424,7 @@ useEffect(()=>{
           attached_kyc: [],
           userId: currentUser?.userId,
         });
-  
+
         setEStampAmount("");
         setTotalAmount("");
         setSelectedPrice("");
@@ -422,23 +434,23 @@ useEffect(()=>{
         // dispatch(toggleRefresh());
         setPin(["", "", "", ""]);
         pinRefs.current[0]?.focus();
-      }
-      else{
+      } else {
         Swal.fire({
           title: "Something went wrong!",
-          text: response?.data?.message || "Something went wrong! Please Try again",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
           icon: "error",
         });
       }
-     
-      
     } catch (error) {
       // alert("An error occurred. Please try again.");
       console.log(error);
       setIsLoading(false);
       Swal.fire({
         title: "Something went wrong!",
-        text: error?.response?.data?.message || "Something went wrong! Please Try again",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
         icon: "error",
       });
     }
@@ -482,7 +494,13 @@ useEffect(()=>{
       const response = await axios.post(
         // `http://localhost:7777/api/auth/log-reg/verify-pin`,
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: pin.join("") }
+        { user_id: currentUser.userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {
@@ -491,22 +509,24 @@ useEffect(()=>{
         // alert(response.data.message);
         Swal.fire({
           title: "Error verifying PIN",
-          text: response?.data?.message || "Something went wrong! Please Try again",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
           icon: "error",
         });
         return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
-      
+
       Swal.fire({
-              title: "Error verifying PIN",
-              text: error?.response?.data?.message || "Something went wrong! Please Try again",
-              icon: "error",
-            });
+        title: "Error verifying PIN",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
+        icon: "error",
+      });
       return false;
     }
-   
   };
 
   const handleModalSubmit = async (e) => {
@@ -603,9 +623,9 @@ useEffect(()=>{
                             className="form-control"
                             id="floatingInputGroup3"
                             pattern="[0-9]{10}"
-                    title="Mobile number should be 10 digits"
-                    maxLength={10}
-                    minLength={10}
+                            title="Mobile number should be 10 digits"
+                            maxLength={10}
+                            minLength={10}
                             name="applicant_number"
                             value={formData.applicant_number}
                             onChange={handleChange}
@@ -760,7 +780,7 @@ useEffect(()=>{
                           onChange={handleFileChange}
                           ref={attachFormRef}
                         />
-                         {preveiewfiles.attached_form && (
+                        {preveiewfiles.attached_form && (
                           <a
                             href={preveiewfiles.attached_form}
                             target="_blank"
@@ -788,7 +808,7 @@ useEffect(()=>{
                           onChange={handleFileChange}
                           ref={attachPhotoRef}
                         />
-                         {preveiewfiles.attached_photo && (
+                        {preveiewfiles.attached_photo && (
                           <a
                             href={preveiewfiles.attached_photo}
                             target="_blank"
@@ -813,7 +833,7 @@ useEffect(()=>{
                           onChange={handleFileChange}
                           ref={attachSignRef}
                         />
-                         {preveiewfiles.attached_sign && (
+                        {preveiewfiles.attached_sign && (
                           <a
                             href={preveiewfiles.attached_sign}
                             target="_blank"
@@ -839,25 +859,30 @@ useEffect(()=>{
                           onChange={handleFileChange}
                           ref={attachKycRef}
                         />
-                         {preveiewfiles.attached_kyc.length > 0 && preveiewfiles?.attached_kyc
-                                          ?.split(",")
-                                          ?.map((kycurl, kycindx) => (
-                                            <div key={kycindx}>
-                                              <a
-                                                href={kycurl}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                              >
-                                                View Existing File {kycindx + 1}
-                                              </a>
-                                            </div>
-                                          ))}
+                        {preveiewfiles.attached_kyc.length > 0 &&
+                          preveiewfiles?.attached_kyc
+                            ?.split(",")
+                            ?.map((kycurl, kycindx) => (
+                              <div key={kycindx}>
+                                <a
+                                  href={kycurl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  View Existing File {kycindx + 1}
+                                </a>
+                              </div>
+                            ))}
                       </div>
                     </div>
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="text-start mb-3">
-                        <button className="btn btn-primary p-2" type="submit"  disabled={isLoading}>
-                        {isLoading ? "Submit..." : "Submit"}
+                        <button
+                          className="btn btn-primary p-2"
+                          type="submit"
+                          disabled={isLoading}
+                        >
+                          {isLoading ? "Submit..." : "Submit"}
                         </button>
                       </div>
                     </div>

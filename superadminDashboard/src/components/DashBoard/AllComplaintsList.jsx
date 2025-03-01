@@ -25,7 +25,13 @@ const AllComplaintsList = () => {
     try {
       const response = await axios.get(
         // `http://localhost:7777/api/auth/retailer/complain-data`
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/complain-data/${currentUser?.userId}`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/complain-data/${currentUser?.userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setApiData(response.data.data);
       console.log(response.data.data);
@@ -53,17 +59,24 @@ const AllComplaintsList = () => {
   //   });
   // };
 
-  const filteredItems = apiData.filter(
-    (row) =>{ 
-      const matchesKeyword =  
-        (row?.id &&
-          row?.id.toString().toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.transactionNo && row?.transactionNo.toLowerCase().includes(keyword.trim().toLowerCase())) 
+  const filteredItems = apiData.filter((row) => {
+    const matchesKeyword =
+      (row?.id &&
+        row?.id
+          .toString()
+          .toLowerCase()
+          .includes(keyword.trim().toLowerCase())) ||
+      (row?.transactionNo &&
+        row?.transactionNo
+          .toLowerCase()
+          .includes(keyword.trim().toLowerCase()));
 
-          const matchesType = !complaintStatus || complaintStatus === "---Select Complaint Status---" || row.status === complaintStatus;
-          return matchesKeyword && matchesType;
-        }
-  );
+    const matchesType =
+      !complaintStatus ||
+      complaintStatus === "---Select Complaint Status---" ||
+      row.status === complaintStatus;
+    return matchesKeyword && matchesType;
+  });
   // const handleSearch = () => {
   //   const filteredDate = apiData.filter((item) => {
   //     const itemDate = new Date(item.createdAt);
@@ -175,51 +188,51 @@ const AllComplaintsList = () => {
                             </button>
                           </div> */}
 
-<div className="col-12 col-md-12 col-lg-12 col-xl-8">
-                                                        {/* <label for="fromDate" className="form-label">From</label> */}
-                                                        <input id="fromDate" 
-                                                        className="form-control"
-                                                         type="search"
-                                                         placeholder="Search By Complaint ID ,Transaction No."
-                                                         value={keyword}
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                            {/* <label for="fromDate" className="form-label">From</label> */}
+                            <input
+                              id="fromDate"
+                              className="form-control"
+                              type="search"
+                              placeholder="Search By Complaint ID ,Transaction No."
+                              value={keyword}
                               onChange={(e) => setKeyword(e.target.value)}
-                                                         />
-                                                    </div>
-                                                    <div className="col-12 col-md-12 col-lg-12 col-xl-3">
-                                                        
-                                                  
-                                                        {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
-                                                        <select
-                                                          className="form-select"
-                                                          aria-label="Default select example"
-                                                          value={complaintStatus}
-                                                          onChange={(e) => setComplaintStatus(e.target.value)}
-                                                          
-                                                        >
-                                                          <option selected>---Select Complaint Status---</option>
-                                                          <option value="Pending">Pending</option>
-                                                          <option value="Resolve">Resolve</option>
-                                                      
-                                                        </select>
-                                                     
-                                                                                </div>
+                            />
+                          </div>
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-3">
+                            {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              value={complaintStatus}
+                              onChange={(e) =>
+                                setComplaintStatus(e.target.value)
+                              }
+                            >
+                              <option selected>
+                                ---Select Complaint Status---
+                              </option>
+                              <option value="Pending">Pending</option>
+                              <option value="Resolve">Resolve</option>
+                            </select>
+                          </div>
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
                             {loading ? (
-                             <div className="d-flex justify-content-center">
-                             <Spinner animation="border" role="status">
-                               <span className="visually-hidden ">
-                                 Loading...
-                               </span>
-                             </Spinner>
-                           </div>
+                              <div className="d-flex justify-content-center">
+                                <Spinner animation="border" role="status">
+                                  <span className="visually-hidden ">
+                                    Loading...
+                                  </span>
+                                </Spinner>
+                              </div>
                             ) : (
                               <table class="table table-striped">
                                 <thead className="table-dark">
                                   <tr>
-                                    <th scope="col">Complaint ID</th>
+                                    <th scope="col">#</th>
                                     <th scope="col">Ticket Raised Date</th>
                                     <th scope="col">Complaint Type</th>
                                     <th scope="col">Complaint Mobile</th>
@@ -237,29 +250,31 @@ const AllComplaintsList = () => {
                                   {showApiData && showApiData.length > 0 ? (
                                     showApiData.map((item, index) => (
                                       <tr>
-                                        <th scope="row">{item.id}</th>
+                                        <th scope="row">
+                                          {currentPage * complaintsPerPage +
+                                            index +
+                                            1}
+                                        </th>
                                         <td>{item.createdAt}</td>
                                         <td>{item.complainType}</td>
                                         <td>{item.mobileNo}</td>
                                         <td>{item.remark}</td>
                                         <td>{item.transactionNo}</td>
                                         <td>
-                                              {
-                                               item.complainFile ? 
-                                               <a
-                                               href={item.complainFile}
-                                               target="_blank"
-                                               rel="noopener noreferrer"
-                                             >
-                                               View
-                                             </a> 
-                                             :
-                                             "Not Available"
-                                              }
-                                             
-                                            </td>
-                                            <td>{item.process_date}</td>
-                                            <td>{item.response}</td>
+                                          {item.complainFile ? (
+                                            <a
+                                              href={item.complainFile}
+                                              target="_blank"
+                                              rel="noopener noreferrer"
+                                            >
+                                              View
+                                            </a>
+                                          ) : (
+                                            "Not Available"
+                                          )}
+                                        </td>
+                                        <td>{item.process_date}</td>
+                                        <td>{item.response}</td>
                                         <td>{item.status}</td>
                                       </tr>
                                     ))
@@ -297,8 +312,8 @@ const AllComplaintsList = () => {
                           </div> */}
                           <PaginationContainer>
                             <ReactPaginate
-                              previousLabel={"previous"}
-                              nextLabel={"next"}
+                              previousLabel={"Previous"}
+                              nextLabel={"Next"}
                               breakLabel={"..."}
                               pageCount={totalPages}
                               marginPagesDisplayed={2}
@@ -400,5 +415,48 @@ const PaginationContainer = styled.div`
     color: white;
     border-radius: 5px;
     border: 1px solid #004aad;
+  }
+
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .pagination {
+      padding: 5px;
+      flex-wrap: wrap;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pagination {
+      padding: 5px;
+    }
+
+    .pagination li {
+      margin: 2px;
+    }
+
+    .pagination li a {
+      padding: 4px 8px;
+      font-size: 10px;
+    }
+
+    /* Hide the previous and next labels for extra-small screens */
+    .pagination li:first-child a::before {
+      content: "«";
+      margin-right: 5px;
+    }
+
+    .pagination li:last-child a::after {
+      content: "»";
+      margin-left: 5px;
+    }
   }
 `;

@@ -1,8 +1,5 @@
-
-
 // import React, { useEffect } from 'react';
 // import styled from 'styled-components';
-
 
 // const Certificate = ({user, name, address, date, id }) => {
 //       useEffect(()=>{
@@ -31,9 +28,9 @@
 //             <p><strong>BITS PAN</strong></p>
 //           </div>
 //         </div>
-        
+
 //       </div>
-      
+
 //     </Wrapper>
 //   );
 // };
@@ -68,7 +65,7 @@
 //     display: flex;
 //     justify-content: center;
 //     margin-bottom: 20px;
-    
+
 //   }
 
 //   .logo {
@@ -107,20 +104,68 @@
 //     margin-top: 20px;
 //     border-top: 1px solid #000;
 //     padding-top: 10px;
-//   }
+//
 // `;
 
 // export default Certificate;
 
-
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import logo from "../../assets/images/images.png"
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import logo from "../../assets/images/images.png";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const Certificate = ({ user, name, address, date, id }) => {
+  const { currentUser, token } = useSelector((state) => state.user);
+  // useEffect(() => {
+  //   window.print();
+  // }, []);
+
+  const [userRelation, setUserRelation] = useState([]);
+  const [apiData, setApiData] = useState(null);
+
   useEffect(() => {
-    window.print();
+    const fetchUserRelation = async () => {
+      try {
+        const resposne = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${currentUser.userId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const userData = resposne.data.data;
+        setUserRelation(userData);
+        console.log(userData);
+        const { superAdmin, white_lable } = userData;
+        if (white_lable) {
+          const whiteLabelResponse = await axios.get(
+            `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getWhiteLableData/${white_lable}`
+          );
+          setApiData(whiteLabelResponse.data);
+          console.log(whiteLabelResponse.data);
+        } else if (superAdmin) {
+          // Call Super Admin API
+          const superAdminResponse = await axios.get(
+            `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getSuperAdminData`
+          );
+          setApiData(superAdminResponse.data);
+          console.log(superAdminResponse.data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchUserRelation();
   }, []);
+
+  const signImage = apiData?.data[0]?.Signature_With_Stamp;
+
+  console.log(userRelation);
+  console.log(apiData);
+  console.log(apiData?.data[0]?.Company_Name);
 
   return (
     <Wrapper>
@@ -137,15 +182,42 @@ const Certificate = ({ user, name, address, date, id }) => {
             <h1 className="title">Certification of Authorization</h1>
           </div>
           <div className="body">
-            <p className="id"><strong>{user} ID - {id}</strong></p>
-            <p className="para">This is to certify that Mr. / Ms. / Smt. <strong className="strong">{name}</strong></p>
-            <p className="para">Address: <strong className="strong">{address}</strong></p>
-            <p className="para">Date of Issue: <strong className="strong">{date}</strong></p>
-            <p className="para">is an authorized as a <strong className="strong">{user} of BITS PAN</strong></p>
+            <p className="id">
+              <strong>
+                {user} ID - {id}
+              </strong>
+            </p>
+            <p className="para">
+              This is to certify that Mr. / Ms. / Smt.{" "}
+              <strong className="strong">{name}</strong>
+            </p>
+            <p className="para">
+              Address: <strong className="strong">{address}</strong>
+            </p>
+            <p className="para">
+              Date of Issue: <strong className="strong">{date}</strong>
+            </p>
+            <p className="para">
+              is an authorized as a{" "}
+              <strong className="strong">
+                {user} of {apiData?.data[0]?.Company_Name}
+              </strong>
+            </p>
           </div>
           <div className="footer">
             <p>Authorised sign</p>
-            <p className='sign'><strong>BITS PAN</strong></p>
+            <div>
+              {signImage && (
+                <img
+                  src={signImage}
+                  alt="Authorized Signature"
+                  className="signature-image"
+                />
+              )}
+            </div>
+            {/* <p className="sign">
+              <strong>BITS PAN</strong>
+            </p> */}
           </div>
         </div>
         <div className="colored-side right"></div>
@@ -168,11 +240,10 @@ const Wrapper = styled.div`
     max-width: 800px;
     padding: 20px;
     background-color: #fff;
-    border: 4px solid #8B0000;
+    border: 4px solid #8b0000;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     font-family: Arial, sans-serif;
-    
   }
 
   .colored-side {
@@ -184,14 +255,14 @@ const Wrapper = styled.div`
 
   .left {
     left: 0;
-    background: linear-gradient(to bottom, #0047AB, #8B0000);
+    background: linear-gradient(to bottom, #0047ab, #8b0000);
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
   }
 
   .right {
     right: 0;
-    background: linear-gradient(to bottom, #8B0000, #0047AB);
+    background: linear-gradient(to bottom, #8b0000, #0047ab);
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
   }
@@ -255,11 +326,17 @@ const Wrapper = styled.div`
     border-top: 1px solid #000;
     padding-top: 10px;
   }
-  .id{
+  .id {
     font-size: 20px;
   }
-  .sign{
+  .sign {
     font-size: 20px;
+  }
+  .signature-image {
+    display: block;
+    margin: 10px auto;
+    max-width: 150px; /* Adjust size as needed */
+    height: auto;
   }
 `;
 

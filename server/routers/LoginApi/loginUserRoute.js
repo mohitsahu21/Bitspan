@@ -16,8 +16,8 @@ const {
   verifyPin,
   superAdminEmployeeRegiser,
 } = require("../../controllers/LoginApi/loginUser");
-const authenticateToken = require("../../middleware/authenticateToken");
 const { userRegisterDumy } = require("../../controllers/LoginApi/DummyRegst");
+const authenticateToken = require("../../middleware/authenticateToken");
 
 const router = express.Router();
 
@@ -31,8 +31,16 @@ router.post("/verifyOTP", verifyOtpAndLogin);
 router.post("/forgot-password", forgotPassword);
 router.post("/verifyOTP-forgot", verifyOtpAndResetPassword);
 
-router.post("/change-password-request", changePasswordRequest);
-router.post("/verify-otp-change-password", verifyOtpAndChangePassword);
+router.post(
+  "/change-password-request",
+  authenticateToken,
+  changePasswordRequest
+);
+router.post(
+  "/verify-otp-change-password",
+  authenticateToken,
+  verifyOtpAndChangePassword
+);
 
 router.get("/home-page", authenticateToken, (req, res) => {
   res.json({
@@ -43,11 +51,11 @@ router.get("/home-page", authenticateToken, (req, res) => {
 });
 
 router.post("/user-pin", userPinGenerate); //this api work pin create and update
-router.post("/create-pin", createPin);
-router.post("/request-otp", requestOtpForPinChange);
-router.post("/verify-otp", verifyOtp);
-router.get("/check-user", getUserId);
-router.post("/verify-pin", verifyPin);
+router.post("/create-pin", authenticateToken, createPin);
+router.post("/request-otp", authenticateToken, requestOtpForPinChange);
+router.post("/verify-otp", authenticateToken, verifyOtp);
+router.get("/check-user", authenticateToken, getUserId);
+router.post("/verify-pin", authenticateToken, verifyPin);
 router.post("/superAdminEmployeeRegiser", superAdminEmployeeRegiser);
 
 router.post("/userRegisterDumy", userRegisterDumy);

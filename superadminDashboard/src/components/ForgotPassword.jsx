@@ -12,9 +12,12 @@ const ForgotPassword = () => {
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isloading, setIsLoading] = useState(false);
+   const navigate = useNavigate();
 
   // Function to send OTP request
-  const handleSendOtp = async () => {
+  const handleSendOtp = async (e) => {
+    e.preventDefault();
     setLoading(true);
     try {
       const response = await axios.post(
@@ -37,7 +40,9 @@ const ForgotPassword = () => {
   };
 
   // Function to verify OTP and reset password
-  const handleResetPassword = async () => {
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verifyOTP-forgot`,
@@ -50,12 +55,16 @@ const ForgotPassword = () => {
       if (response.data.status === "Success") {
         alert(response.data.message);
         setShowOtpModal(false); // Close the modal
+        navigate("/");
+        
       } else {
         alert(response.data.message);
       }
     } catch (error) {
       console.error("Error resetting password:", error);
       alert("Error resetting password");
+    }finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -66,7 +75,7 @@ const ForgotPassword = () => {
             <div className="card">
               <div className="p-4">
                 <div className="text-center">
-                  <h3>Bitspan.com</h3>
+                  {/* <h3>Bitspan.com</h3> */}
                   <h4 className="text-muted mt-2 text-center fs-5">
                     Forgot Your Password?
                   </h4>
@@ -75,27 +84,28 @@ const ForgotPassword = () => {
                     your password.
                   </p>
                 </div>
-                <form>
+                <form onSubmit={handleSendOtp}>
                   <>
                     <div className="form-outline mb-4">
                       <label className="form-label" htmlFor="form2Example1">
                         User ID
                       </label>
                       <input
-                        type="email"
+                        type="text"
                         id="form2Example1"
                         className="form-control"
                         value={userId}
                         onChange={(e) => setUserId(e.target.value)}
                         placeholder="Enter your User ID"
+                        required
                       />
                     </div>
 
                     <div className="d-grid gap-2">
                       <button
-                        type="button"
+                        type="submit"
                         className="btn btn-primary btn-block mb-4"
-                        onClick={handleSendOtp}
+                        // onClick={handleSendOtp}
                         disabled={loading}
                       >
                         {loading ? "Send OTP...." : "Send OTP"}
@@ -111,6 +121,7 @@ const ForgotPassword = () => {
               </Modal.Header>
               <Modal.Body>
                 {otpSent && (
+                  <form onSubmit={handleResetPassword}>
                   <div>
                     <div className="form-group">
                       <label htmlFor="otp">OTP</label>
@@ -121,6 +132,7 @@ const ForgotPassword = () => {
                         value={otp}
                         onChange={(e) => setOtp(e.target.value)}
                         placeholder="Enter the OTP"
+                        required
                       />
                     </div>
                     <div className="form-group">
@@ -132,15 +144,19 @@ const ForgotPassword = () => {
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         placeholder="Enter new password"
+                        required
                       />
                     </div>
                     <button
-                      onClick={handleResetPassword}
+                      // onClick={handleResetPassword}
+                      type="submit"
                       className="btn btn-success mt-3"
+                      disabled={isloading}
                     >
                       Reset Password
                     </button>
                   </div>
+                  </form>
                 )}
               </Modal.Body>
               <Modal.Footer>

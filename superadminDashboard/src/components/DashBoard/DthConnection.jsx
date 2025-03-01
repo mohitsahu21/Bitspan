@@ -11,7 +11,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../Loading";
 import { useDispatch, useSelector } from "react-redux";
-import { Modal, Button , Spinner  } from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -19,83 +19,77 @@ const DthConnection = () => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
   const [activeTab, setActiveTab] = useState("tab1");
-    const [isVerifying, setIsVerifying] = useState(false);
-const navigate = useNavigate();
-const [services,setServices] = useState([]);
-const fetchServices = async () => {
-  // setLoading(true);
-  try {
-    const { data } = await axios.get(
-      "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+  const [isVerifying, setIsVerifying] = useState(false);
+  const navigate = useNavigate();
+  const [services, setServices] = useState([]);
+  const fetchServices = async () => {
+    // setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setServices(data.data);
+      // setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
+        dispatch(clearUser());
+        navigate("/");
       }
-
-    );
-    setServices(data.data);
-    // setLoading(false);
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    if (error?.response?.status == 401) {
-      // alert("Your token is expired please login again")
-      Swal.fire({
-                icon: "error",
-                title: "Your token is expired please login again",
-              });
-      dispatch(clearUser());
-      navigate("/");
+      // setLoading(false);
     }
-    // setLoading(false);
-  }
-};
+  };
   // const handleTabClick = (tab) => {
   //   setActiveTab(tab);
   // };
-   const handleTabClick = (tab) => {
-          if(tab == "tab2"){
-            if(services){
-                     
-              const purchaseBankIdService = services.find(
-                (item) => item.service_name === "Provider 2 recharge"
-              );
-            
-              if (purchaseBankIdService?.status === "Deactive") {
-                Swal.fire({
-                  title: "Provider 2 service is currently Not Available",
-                  text: "Please try after some time",
-                  icon: "error",
-                });
-                // navigate("/prepaid-recharge");
-              }
-              else{
-                setActiveTab(tab);
-              }
-            }
-          }
-          else{
-            setActiveTab(tab);
-          }
-          
-          
-        };
+  const handleTabClick = (tab) => {
+    if (tab == "tab2") {
+      if (services) {
+        const purchaseBankIdService = services.find(
+          (item) => item.service_name === "Provider 2 recharge"
+        );
+
+        if (purchaseBankIdService?.status === "Deactive") {
+          Swal.fire({
+            title: "Provider 2 service is currently Not Available",
+            text: "Please try after some time",
+            icon: "error",
+          });
+          // navigate("/prepaid-recharge");
+        } else {
+          setActiveTab(tab);
+        }
+      }
+    } else {
+      setActiveTab(tab);
+    }
+  };
 
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     number: "",
-    opcode : "TPC",
-    operatorName : "Tata Sky",
+    opcode: "TPC",
+    operatorName: "Tata Sky",
     amount: "",
-    walletDeductAmt : "",
+    walletDeductAmt: "",
     plan_id: "",
     first_name: "",
     last_name: "",
     full_address: "",
     postal_code: "",
-    user_id: currentUser.userId
+    user_id: currentUser.userId,
   });
 
   const [plans, setPlan] = useState([]);
@@ -110,16 +104,14 @@ const fetchServices = async () => {
     // const { name, value } = e.target;
     // setFormData({ ...formData, [name]: value });
     const { name, value } = e.target;
-    if(name === "number" || name === "postal_code"){
-      
+    if (name === "number" || name === "postal_code") {
       if (/^\d*$/.test(value)) {
         setFormData((prevData) => ({
           ...prevData,
           [name]: value,
         }));
       }
-    }
-    else{
+    } else {
       setFormData({
         ...formData,
         [name]: value,
@@ -200,31 +192,44 @@ const fetchServices = async () => {
     let whiteLableCommAmount = 0;
 
     try {
-      if (retailerPackage.Online_New_DTH_Connection_Commission_Type == "Percentage") {
+      if (
+        retailerPackage.Online_New_DTH_Connection_Commission_Type ==
+        "Percentage"
+      ) {
         if (operatorName == "Dish TV") {
           retailerCommAmount =
             (amount *
-              parseFloat(retailerPackage.On_Dish_TV_New_DTH_Connection_Commission)) /
+              parseFloat(
+                retailerPackage.On_Dish_TV_New_DTH_Connection_Commission
+              )) /
             100;
         } else if (operatorName == "Tata Sky") {
           retailerCommAmount =
             (amount *
-              parseFloat(retailerPackage.On_Tata_Sky_New_DTH_Connection_Commission)) /
+              parseFloat(
+                retailerPackage.On_Tata_Sky_New_DTH_Connection_Commission
+              )) /
             100;
         } else if (operatorName == "Videocon") {
           retailerCommAmount =
-            (amount * parseFloat(retailerPackage.On_Videocon_New_DTH_Connection_Commission)) /
+            (amount *
+              parseFloat(
+                retailerPackage.On_Videocon_New_DTH_Connection_Commission
+              )) /
             100;
         } else if (operatorName == "Sun Direct") {
           retailerCommAmount =
             (amount *
-              parseFloat(retailerPackage.On_Sun_Direct_New_DTH_Connection_Commission)) /
+              parseFloat(
+                retailerPackage.On_Sun_Direct_New_DTH_Connection_Commission
+              )) /
             100;
-        }
-        else if (operatorName == "Airtel DTH") {
+        } else if (operatorName == "Airtel DTH") {
           retailerCommAmount =
             (amount *
-              parseFloat(retailerPackage.On_Airtel_New_DTH_Connection_Commission)) /
+              parseFloat(
+                retailerPackage.On_Airtel_New_DTH_Connection_Commission
+              )) /
             100;
         }
       } else {
@@ -244,21 +249,24 @@ const fetchServices = async () => {
           retailerCommAmount = parseFloat(
             retailerPackage.On_Sun_Direct_New_DTH_Connection_Commission
           );
-        }
-        else if (operatorName == "Airtel DTH") {
+        } else if (operatorName == "Airtel DTH") {
           retailerCommAmount = parseFloat(
             retailerPackage.On_Airtel_New_DTH_Connection_Commission
           );
         }
-        
       }
 
       if (distributor && distributorPackage) {
-        if (distributorPackage.Online_New_DTH_Connection_Commission_Type == "Percentage") {
+        if (
+          distributorPackage.Online_New_DTH_Connection_Commission_Type ==
+          "Percentage"
+        ) {
           if (operatorName == "Dish TV") {
             distributorCommAmount =
               (amount *
-                parseFloat(distributorPackage.On_Dish_TV_New_DTH_Connection_Commission)) /
+                parseFloat(
+                  distributorPackage.On_Dish_TV_New_DTH_Connection_Commission
+                )) /
               100;
           } else if (operatorName == "Tata Sky") {
             distributorCommAmount =
@@ -270,18 +278,23 @@ const fetchServices = async () => {
           } else if (operatorName == "Videocon") {
             distributorCommAmount =
               (amount *
-                parseFloat(distributorPackage.On_Videocon_New_DTH_Connection_Commission)) /
+                parseFloat(
+                  distributorPackage.On_Videocon_New_DTH_Connection_Commission
+                )) /
               100;
           } else if (operatorName == "Sun Direct") {
             distributorCommAmount =
               (amount *
-                parseFloat(distributorPackage.On_Sun_Direct_New_DTH_Connection_Commission)) /
+                parseFloat(
+                  distributorPackage.On_Sun_Direct_New_DTH_Connection_Commission
+                )) /
               100;
-          }
-          else if (operatorName == "Airtel DTH") {
+          } else if (operatorName == "Airtel DTH") {
             distributorCommAmount =
               (amount *
-                parseFloat(distributorPackage.On_Airtel_New_DTH_Connection_Commission)) /
+                parseFloat(
+                  distributorPackage.On_Airtel_New_DTH_Connection_Commission
+                )) /
               100;
           }
         } else {
@@ -301,8 +314,7 @@ const fetchServices = async () => {
             distributorCommAmount = parseFloat(
               distributorPackage.On_Sun_Direct_New_DTH_Connection_Commission
             );
-          }
-          else if (operatorName == "Airtel DTH") {
+          } else if (operatorName == "Airtel DTH") {
             distributorCommAmount = parseFloat(
               distributorPackage.On_Airtel_New_DTH_Connection_Commission
             );
@@ -311,7 +323,8 @@ const fetchServices = async () => {
       }
       if (superDistributor && superDistributorPackage) {
         if (
-          superDistributorPackage.Online_New_DTH_Connection_Commission_Type == "Percentage"
+          superDistributorPackage.Online_New_DTH_Connection_Commission_Type ==
+          "Percentage"
         ) {
           if (operatorName == "Dish TV") {
             superDistributorCommAmount =
@@ -341,8 +354,7 @@ const fetchServices = async () => {
                   superDistributorPackage.On_Sun_Direct_New_DTH_Connection_Commission
                 )) /
               100;
-          }
-          else if (operatorName == "Airtel DTH") {
+          } else if (operatorName == "Airtel DTH") {
             superDistributorCommAmount =
               (amount *
                 parseFloat(
@@ -367,8 +379,7 @@ const fetchServices = async () => {
             superDistributorCommAmount = parseFloat(
               superDistributorPackage.On_Sun_Direct_New_DTH_Connection_Commission
             );
-          }
-          else if (operatorName == "Airtel DTH") {
+          } else if (operatorName == "Airtel DTH") {
             superDistributorCommAmount = parseFloat(
               superDistributorPackage.On_Airtel_New_DTH_Connection_Commission
             );
@@ -376,32 +387,44 @@ const fetchServices = async () => {
         }
       }
       if (white_lable && whiteLablePackage) {
-        if (whiteLablePackage.Online_New_DTH_Connection_Commission_Type == "Percentage") {
+        if (
+          whiteLablePackage.Online_New_DTH_Connection_Commission_Type ==
+          "Percentage"
+        ) {
           if (operatorName == "Dish TV") {
             whiteLableCommAmount =
               (amount *
-                parseFloat(whiteLablePackage.On_Dish_TV_New_DTH_Connection_Commission)) /
+                parseFloat(
+                  whiteLablePackage.On_Dish_TV_New_DTH_Connection_Commission
+                )) /
               100;
           } else if (operatorName == "Tata Sky") {
             whiteLableCommAmount =
               (amount *
-                parseFloat(whiteLablePackage.On_Tata_Sky_New_DTH_Connection_Commission)) /
+                parseFloat(
+                  whiteLablePackage.On_Tata_Sky_New_DTH_Connection_Commission
+                )) /
               100;
           } else if (operatorName == "Videocon") {
             whiteLableCommAmount =
               (amount *
-                parseFloat(whiteLablePackage.On_Videocon_New_DTH_Connection_Commission)) /
+                parseFloat(
+                  whiteLablePackage.On_Videocon_New_DTH_Connection_Commission
+                )) /
               100;
           } else if (operatorName == "Sun Direct") {
             whiteLableCommAmount =
               (amount *
-                parseFloat(whiteLablePackage.On_Sun_Direct_New_DTH_Connection_Commission)) /
+                parseFloat(
+                  whiteLablePackage.On_Sun_Direct_New_DTH_Connection_Commission
+                )) /
               100;
-          }
-          else if (operatorName == "Airtel DTH") {
+          } else if (operatorName == "Airtel DTH") {
             whiteLableCommAmount =
               (amount *
-                parseFloat(whiteLablePackage.On_Airtel_New_DTH_Connection_Commission)) /
+                parseFloat(
+                  whiteLablePackage.On_Airtel_New_DTH_Connection_Commission
+                )) /
               100;
           }
         } else {
@@ -421,8 +444,7 @@ const fetchServices = async () => {
             whiteLableCommAmount = parseFloat(
               whiteLablePackage.On_Sun_Direct_New_DTH_Connection_Commission
             );
-          }
-          else if (operatorName == "Airtel DTH") {
+          } else if (operatorName == "Airtel DTH") {
             whiteLableCommAmount = parseFloat(
               whiteLablePackage.On_Airtel_New_DTH_Connection_Commission
             );
@@ -453,7 +475,7 @@ const fetchServices = async () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
     // const operatorName = "Tata Play";
     // const opcode = "TPC";
 
@@ -462,7 +484,7 @@ const fetchServices = async () => {
     //   operatorName,
     //   opcode,
     // };
-    
+
     let result = {};
     let usersId = {
       distributorId: "NA",
@@ -650,16 +672,17 @@ const fetchServices = async () => {
     //   // orderid: "4654747",
     // };
 
-
-
     try {
       const rechargeResult = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/api-dth-recharge`,
         updatedFormData
       );
-      setLoading(false)
+      setLoading(false);
       console.log(response.data);
-      if (rechargeResult.data && rechargeResult.data.message === "Recharge successful") {
+      if (
+        rechargeResult.data &&
+        rechargeResult.data.message === "Recharge successful"
+      ) {
         Swal.fire({
           title: "Done!",
           text: "Recharge Successful",
@@ -669,7 +692,7 @@ const fetchServices = async () => {
         success = true;
         console.log(rechargeResult.data);
         console.log(rechargeResult.data.orderId);
-       
+
         // Recharge Commission Credit WL SD D
         let allProcessesSuccessful = true;
         result.retailerFormData.Transaction_details = `Commission Credit for DTH Connection Order Id ${rechargeResult.data.orderId}`;
@@ -755,10 +778,7 @@ const fetchServices = async () => {
             super_Distributor_Commission =
               result.superDistributorFormData.amount;
           }
-          if (
-            result.distributorFormData &&
-            result.distributorFormData.amount
-          ) {
+          if (result.distributorFormData && result.distributorFormData.amount) {
             distributor_Commission = result.distributorFormData.amount;
           }
           if (result.retailerFormData && result.retailerFormData.amount) {
@@ -806,94 +826,96 @@ const fetchServices = async () => {
         // Recharge Commission Credit WL SD D
         setFormData({
           number: "",
-          opcode : "TPC",
-          operatorName : "Tata Sky",
+          opcode: "TPC",
+          operatorName: "Tata Sky",
           amount: "",
-          walletDeductAmt : "",
+          walletDeductAmt: "",
           plan_id: "",
           first_name: "",
           last_name: "",
           full_address: "",
           postal_code: "",
-          user_id: currentUser.userId
-        })
-      
-      }
-      else if (rechargeResult.data &&
-        rechargeResult.data.message === "Recharge in process"){
-          success = true;
-          Swal.fire({
-            icon: "info",
-            title: "Recharge in process",
-            text:  `Recharge Pending! Please wait for Sometime, Order ID: ${rechargeResult?.data?.orderId}`,
-          });
-          let allProcessesSuccessful = true;
-          result.retailerFormData.Transaction_details = `Commission Credit for DTH Recharge Order Id ${rechargeResult?.data?.orderId}`;
-          
-          if (result) {
-            let whiteLabel_Commission = 0;
-            let super_Distributor_Commission = 0;
-            let distributor_Commission = 0;
-            let retailer_Commission = 0;
-            if (result.retailerFormData && result.retailerFormData.amount) {
-              retailer_Commission = result.retailerFormData.amount;
-            }
-            console.log(userRelation);
+          user_id: currentUser.userId,
+        });
+      } else if (
+        rechargeResult.data &&
+        rechargeResult.data.message === "Recharge in process"
+      ) {
+        success = true;
+        Swal.fire({
+          icon: "info",
+          title: "Recharge in process",
+          text: `Recharge Pending! Please wait for Sometime, Order ID: ${rechargeResult?.data?.orderId}`,
+        });
+        let allProcessesSuccessful = true;
+        result.retailerFormData.Transaction_details = `Commission Credit for DTH Recharge Order Id ${rechargeResult?.data?.orderId}`;
 
-            const commissionFormData = {
-              order_id: result.Order_Id,
-              transaction_id: result.Transaction_Id,
-              amount: updatedFormData.amount,
-              whiteLabel_id: usersId.whiteLabelId ? usersId.whiteLabelId : "NA",
-              super_Distributor_id: usersId.superDistributorId
-                ? usersId.superDistributorId
-                : "NA",
-              distributor_id: usersId.distributorId
-                ? usersId.distributorId
-                : "NA",
-              retailer_id: currentUser.userId ? currentUser.userId : "NA",
-              whiteLabel_Commission: whiteLabel_Commission,
-              super_Distributor_Commission: super_Distributor_Commission,
-              distributor_Commission: distributor_Commission,
-              retailer_Commission: retailer_Commission,
-              transaction_type: updatedFormData.recharge_Type,
-              transaction_details: result.retailerFormData.Transaction_details,
-              status: "Success",
-            };
-            console.log(commissionFormData);
-            await axios
-              .post(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
-                // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-                commissionFormData,
-                {
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                  },
-                }
-              )
-              .catch(() => {
-                allProcessesSuccessful = false;
-              });
+        if (result) {
+          let whiteLabel_Commission = 0;
+          let super_Distributor_Commission = 0;
+          let distributor_Commission = 0;
+          let retailer_Commission = 0;
+          if (result.retailerFormData && result.retailerFormData.amount) {
+            retailer_Commission = result.retailerFormData.amount;
           }
-          // Recharge Commission Credit WL SD D
-          setFormData({
-            number: "",
-            opcode : "TPC",
-            operatorName : "Tata Sky",
-            amount: "",
-            walletDeductAmt : "",
-            plan_id: "",
-            first_name: "",
-            last_name: "",
-            full_address: "",
-            postal_code: "",
-            user_id: currentUser.userId
-          })
+          console.log(userRelation);
+
+          const commissionFormData = {
+            order_id: result.Order_Id,
+            transaction_id: result.Transaction_Id,
+            amount: updatedFormData.amount,
+            whiteLabel_id: usersId.whiteLabelId ? usersId.whiteLabelId : "NA",
+            super_Distributor_id: usersId.superDistributorId
+              ? usersId.superDistributorId
+              : "NA",
+            distributor_id: usersId.distributorId
+              ? usersId.distributorId
+              : "NA",
+            retailer_id: currentUser.userId ? currentUser.userId : "NA",
+            whiteLabel_Commission: whiteLabel_Commission,
+            super_Distributor_Commission: super_Distributor_Commission,
+            distributor_Commission: distributor_Commission,
+            retailer_Commission: retailer_Commission,
+            transaction_type: updatedFormData.recharge_Type,
+            transaction_details: result.retailerFormData.Transaction_details,
+            status: "Success",
+          };
+          console.log(commissionFormData);
+          await axios
+            .post(
+              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
+              // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+              commissionFormData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .catch(() => {
+              allProcessesSuccessful = false;
+            });
         }
-  
-      else if( rechargeResult.data.message == "Recharge failed" || rechargeResult.data.message == "Recharge failed but no money was deducted"){
+        // Recharge Commission Credit WL SD D
+        setFormData({
+          number: "",
+          opcode: "TPC",
+          operatorName: "Tata Sky",
+          amount: "",
+          walletDeductAmt: "",
+          plan_id: "",
+          first_name: "",
+          last_name: "",
+          full_address: "",
+          postal_code: "",
+          user_id: currentUser.userId,
+        });
+      } else if (
+        rechargeResult.data.message == "Recharge failed" ||
+        rechargeResult.data.message ==
+          "Recharge failed but no money was deducted"
+      ) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -911,27 +933,27 @@ const fetchServices = async () => {
         // })
       }
     } catch (error) {
-       console.error(
-                       "Error in recharge:",
-                       error.response ? error.response.data : error.message
-                     );
-                     if (error?.response?.status === 401) {
-                       Swal.fire({
-                         icon: "error",
-                         title: "Your token is expired. Please login again.",
-                       });
-                       dispatch(clearUser());
-                       navigate("/");
-                     }
-                     else{
-                      Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: `${error.response.data.error}` || "Something went wrong! Please try again later.",
-                      });
-                     }
-    }
-    finally {
+      console.error(
+        "Error in recharge:",
+        error.response ? error.response.data : error.message
+      );
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired. Please login again.",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text:
+            `${error.response.data.error}` ||
+            "Something went wrong! Please try again later.",
+        });
+      }
+    } finally {
       // Clear form data and stop loading
       // setFormData({
       //   number: "",
@@ -962,7 +984,6 @@ const fetchServices = async () => {
   //   //   operatorName,
   //   //   opcode,
   //   // };
-    
 
   //   try {
   //     const response = await axios.post(
@@ -1072,7 +1093,13 @@ const fetchServices = async () => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getDthConnectionPlan`
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getDthConnectionPlan`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         if (data.data) {
           console.log("Fetched plans:", data.data);
@@ -1103,7 +1130,6 @@ const fetchServices = async () => {
   //   });
   // };
   console.log(formData);
-  
 
   const handleOperatorChange = (e) => {
     const selectedOperator = e.target.value;
@@ -1139,16 +1165,14 @@ const fetchServices = async () => {
     // const { name, value } = e.target;
     // setOfflineForm({ ...offlineForm, [name]: value });
     const { name, value } = e.target;
-    if(name === "postal_code" || name === "number"){
-      
+    if (name === "postal_code" || name === "number") {
       if (/^\d*$/.test(value)) {
         setOfflineForm((prevData) => ({
           ...prevData,
           [name]: value,
         }));
       }
-    }
-    else{
+    } else {
       setOfflineForm({
         ...offlineForm,
         [name]: value,
@@ -1183,7 +1207,13 @@ const fetchServices = async () => {
       const result = await axios.post(
         // "http://localhost:7777/api/auth/wallet/dthConnectionAndUpdateWallet",
         "https://bitspan.vimubds5.a2hosted.com/api/auth/wallet/dthConnectionAndUpdateWallet",
-        offlineForm
+        offlineForm,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       // setResponseForm(result.data);
@@ -1257,7 +1287,13 @@ const fetchServices = async () => {
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: pin.join("") }
+        { user_id: currentUser.userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {
@@ -1267,28 +1303,29 @@ const fetchServices = async () => {
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: `${response.data.message}` || "Something went wrong! Please try again later.",
+          text:
+            `${response.data.message}` ||
+            "Something went wrong! Please try again later.",
         });
         return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
       // alert("Error verifying PIN");
-      if(!error.response.data.success){
+      if (!error.response.data.success) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
           text: `${error.response.data.message}` || "Error verifying PIN",
         });
-      }
-      else{
+      } else {
         Swal.fire({
           icon: "error",
           title: "Oops...",
           text: "Error verifying PIN",
         });
       }
-    
+
       return false;
     }
   };
@@ -1299,22 +1336,21 @@ const fetchServices = async () => {
     setIsVerifying(false);
     if (isPinValid) {
       setShowPinModal(false);
-      if(submitForm == "online"){
-        handleSubmit(e)
-      }
-      else if (submitForm == "offline"){
+      if (submitForm == "online") {
+        handleSubmit(e);
+      } else if (submitForm == "offline") {
         handleOfflineSubmit(e);
       }
-      
+
       setPin(["", "", "", ""]);
     } else {
       setPin(["", "", "", ""]);
     }
   };
 
-  const openPinModal = (e,item) => {
+  const openPinModal = (e, item) => {
     console.log(item);
-    
+
     e.preventDefault();
     setSubmitForm(item);
     setShowPinModal(true);
@@ -1392,7 +1428,11 @@ const fetchServices = async () => {
                                   <div className="text-center">
                                     <h3 className="mb-4">DTH Connection</h3>
                                     <div>
-                                      <form onSubmit={(e)=> openPinModal(e,"online")}>
+                                      <form
+                                        onSubmit={(e) =>
+                                          openPinModal(e, "online")
+                                        }
+                                      >
                                         <div class="input-group mb-3">
                                           <div class="form-floating">
                                             <select
@@ -1473,7 +1513,6 @@ const fetchServices = async () => {
                                               onChange={handleChange}
                                               required
                                               autoComplete="new-password"
-                                            
                                               maxLength={10}
                                               minLength={10}
                                             />
@@ -1610,7 +1649,6 @@ const fetchServices = async () => {
                                               onChange={handleChange}
                                               required
                                               autoComplete="new-password"
-                                              
                                               maxLength={6}
                                               minLength={6}
                                             />
@@ -1629,7 +1667,9 @@ const fetchServices = async () => {
                                             type="submit"
                                             disabled={loading}
                                           >
-                                            {loading ? "Submit Now..." : "Submit Now" }
+                                            {loading
+                                              ? "Submit Now..."
+                                              : "Submit Now"}
                                           </button>
                                         </div>
                                       </form>
@@ -1655,7 +1695,11 @@ const fetchServices = async () => {
                                   <div className="text-center">
                                     <h3 className="mb-4">DTH Connection 2</h3>
                                     <div>
-                                      <form onSubmit={(e)=> openPinModal(e,"offline")}>
+                                      <form
+                                        onSubmit={(e) =>
+                                          openPinModal(e, "offline")
+                                        }
+                                      >
                                         {/* <div class="input-group mb-3">
                                           <div class="form-floating">
                                             <select
@@ -1807,7 +1851,6 @@ const fetchServices = async () => {
                                               onChange={handleOfflineChange}
                                               required
                                               autoComplete="new-password"
-                                              
                                               maxLength={6}
                                               minLength={6}
                                             />
@@ -2008,9 +2051,12 @@ const fetchServices = async () => {
                 Cancel
               </Button>
 
-              <Button variant="primary" onClick={handleModalSubmit}
-              disabled={isVerifying}>
-               {isVerifying ? "Verifying..." : "Verify PIN"}
+              <Button
+                variant="primary"
+                onClick={handleModalSubmit}
+                disabled={isVerifying}
+              >
+                {isVerifying ? "Verifying..." : "Verify PIN"}
                 {isVerifying && (
                   <Spinner
                     as="span"

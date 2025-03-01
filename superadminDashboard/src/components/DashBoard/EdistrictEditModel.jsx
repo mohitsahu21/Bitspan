@@ -6,7 +6,7 @@ import { toggleRefresh } from "../../redux/user/userSlice";
 import { Modal, Button, Spinner } from "react-bootstrap";
 import Swal from "sweetalert2";
 
-const EdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
+const EdistrictEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
   const [showPinModal, setShowPinModal] = useState(false);
@@ -14,7 +14,7 @@ const EdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
   const pinRefs = useRef([]);
   const [isVerifying, setIsVerifying] = useState(false);
   const [formData, setFormData] = useState({
-    order_id : item.order_id,
+    order_id: item.order_id,
     application_type: item.application_type,
     samagar: item.samagar,
     gender: item.gender,
@@ -37,37 +37,36 @@ const EdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState({
-    documentUpload : item.documentUpload || [],
+    documentUpload: item.documentUpload || [],
   });
-    const [preveiewfiles, preveiewSetFiles] = useState({
-        documentUpload : item.documentUpload || [],
-      
-    });
+  const [preveiewfiles, preveiewSetFiles] = useState({
+    documentUpload: item.documentUpload || [],
+  });
   const [message, setMessage] = useState("");
   const [prices, setPrices] = useState([]);
-  const kycRef = useRef(null)
+  const kycRef = useRef(null);
   console.log(formData);
   console.log(files);
   console.log(kycRef);
-  
-//   useEffect(() => {
-//     const fetchPackage = async () => {
-//       try {
-//         const response = await axios.get(
-//           `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
-//         );
-//         // console.log(response.data.data);
-//         if (Array.isArray(response.data.data)) {
-//           setPrices(response.data.data);
-//         } else {
-//           console.error("Expected an array, received:", response.data.data);
-//         }
-//       } catch (error) {
-//         console.error("Fetching package data failed:", error);
-//       }
-//     };
-//     fetchPackage();
-//   }, []);
+
+  //   useEffect(() => {
+  //     const fetchPackage = async () => {
+  //       try {
+  //         const response = await axios.get(
+  //           `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+  //         );
+  //         // console.log(response.data.data);
+  //         if (Array.isArray(response.data.data)) {
+  //           setPrices(response.data.data);
+  //         } else {
+  //           console.error("Expected an array, received:", response.data.data);
+  //         }
+  //       } catch (error) {
+  //         console.error("Fetching package data failed:", error);
+  //       }
+  //     };
+  //     fetchPackage();
+  //   }, []);
 
   // console.log(prices[0]?.offline_kyc_eDistrict);
 
@@ -80,19 +79,22 @@ const EdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if(name === "mobile_no" || name === "aadhar_no" || name === "samagar_member_id" || name === "annual_income"){
-      
+    if (
+      name === "mobile_no" ||
+      name === "aadhar_no" ||
+      name === "samagar_member_id" ||
+      name === "annual_income"
+    ) {
       if (/^\d*$/.test(value)) {
         setFormData((prevData) => ({
           ...prevData,
           [name]: value,
         }));
       }
-    }
-    else{
+    } else {
       setFormData((prevFormData) => {
         const newFormData = { ...prevFormData, [name]: value };
-  
+
         if (name === "application_type" || name === "samagar") {
           let priceKey = "";
           if (newFormData.application_type === "income") {
@@ -119,46 +121,49 @@ const EdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
             newFormData.amount = "";
           }
         }
-  
+
         return newFormData;
       });
     }
-  
   };
 
   // const handleFileChange = (e) => {
   //   setFiles(e.target.files);
   // };
 
-   const handleFileChange = (e) => {
-      const { name, files } = e.target;
-      console.log(`File input changed - Name: ${name}, Files:`, files);
-      const allowedTypes = ["image/jpeg", "image/jpg", "image/png" , "application/pdf"];
-      const maxSize = 2 * 1024 * 1024; // 2MB in bytes
-       for (const file of files) {
-                       if (file.size > maxSize) {
-                         Swal.fire({
-                           title: "File Too Large",
-                           text: `The file "${file.name}" exceeds the 2 MB size limit. Please select smaller files.`,
-                           icon: "error",
-                         });
-                         // Clear the file input
-                         e.target.value = null;
-                         return;
-                       }
-                       else if(!allowedTypes.includes(file.type)){
-                 Swal.fire({
-                                   icon: "error",
-                                   title: "Invalid File Type",
-                                   text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG , PDF are allowed.`,
-                                 });
-                                 e.target.value = null;
-                                 return;
-                       }
-                      
-                     }
-      setFiles(e.target.files);
-    };
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    console.log(`File input changed - Name: ${name}, Files:`, files);
+    const allowedTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "application/pdf",
+    ];
+    const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+    for (const file of files) {
+      if (file.size > maxSize) {
+        Swal.fire({
+          title: "File Too Large",
+          text: `The file "${file.name}" exceeds the 2 MB size limit. Please select smaller files.`,
+          icon: "error",
+        });
+        // Clear the file input
+        e.target.value = null;
+        return;
+      } else if (!allowedTypes.includes(file.type)) {
+        Swal.fire({
+          icon: "error",
+          title: "Invalid File Type",
+          text: `Invalid file: ${file.name}. Only JPEG, JPG, PNG , PDF are allowed.`,
+        });
+        e.target.value = null;
+        return;
+      }
+    }
+    setFiles(e.target.files);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -167,13 +172,12 @@ const EdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
     // Append form data fields
     Object.keys(formData).forEach((key) => data.append(key, formData[key]));
 
-    if(kycRef.current.value){
-        // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
-        Array.from(files).forEach((file) => data.append("documentUpload", file));
+    if (kycRef.current.value) {
+      // submitForm.append('Electricity_bill', Electricity_bill_ref.current.files[0]);
+      Array.from(files).forEach((file) => data.append("documentUpload", file));
     }
-  
+
     // Append files to form data
-    
 
     try {
       const response = await axios.put(
@@ -181,62 +185,145 @@ const EdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
         "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/UpdateeDistrictFormData",
         data,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-      if(response?.data?.status == "Success"){
-      const resData = response?.data?.message;
-      Swal.fire({
-        title: "Form Sumitted Success",
-        text: `${resData}`,
-        icon: "success",
-      });
-      setFormData({
-        application_type: "",
-        samagar: "",
-        gender: "",
-        name: "",
-        father_husband_name: "",
-        dob: "",
-        address: "",
-        mobile_no: "",
-        cast: "",
-        aadhar_no: "",
-        samagar_member_id: "",
-        state: "",
-        annual_income: "",
-        previous_application: "",
-        amount: "",
-        userId: currentUser.userId,
-        status: "Pending",
-      });
-      setShowMarkEditModel(false);
-      setIsRefresh((value) => !value);
-      if(kycRef.current){
-        kycRef.current.value = null
+      if (response?.data?.status == "Success") {
+        const resData = response?.data?.message;
+        Swal.fire({
+          title: "Form Sumitted Success",
+          text: `${resData}`,
+          icon: "success",
+        });
+        setFormData({
+          application_type: "",
+          samagar: "",
+          gender: "",
+          name: "",
+          father_husband_name: "",
+          dob: "",
+          address: "",
+          mobile_no: "",
+          cast: "",
+          aadhar_no: "",
+          samagar_member_id: "",
+          state: "",
+          annual_income: "",
+          previous_application: "",
+          amount: "",
+          userId: currentUser.userId,
+          status: "Pending",
+        });
+        setShowMarkEditModel(false);
+        setIsRefresh((value) => !value);
+        if (kycRef.current) {
+          kycRef.current.value = null;
+        }
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: response?.data?.message || "Something went wrong!",
+          icon: "error",
+        });
       }
-    }
-     else{
-                Swal.fire({
-                  title: "Error",
-                  text: response?.data?.message || "Something went wrong!",
-                  icon: "error",
-                });
-              }
     } catch (error) {
       setMessage("Error submitting form");
       console.error("Error:", error);
-       Swal.fire({
-              title: "Error",
-              text: error?.response?.data?.message || "Something went wrong!",
-              icon: "error",
-            });
+      Swal.fire({
+        title: "Error",
+        text: error?.response?.data?.message || "Something went wrong!",
+        icon: "error",
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
   // Pin Verification Logic **
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+  //   const data = new FormData();
+
+  //   // Append form data fields
+  //   Object.keys(formData).forEach((key) => data.append(key, formData[key]));
+
+  //   // Append files to FormData
+  //   if (files.documentUpload.length > 0) {
+  //     files.documentUpload.forEach((file) => {
+  //       data.append("documentUpload", file);
+  //     });
+  //   }
+
+  //   try {
+  //     const response = await axios.put(
+  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/UpdateeDistrictFormData",
+  //       data,
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+
+  //     if (response?.data?.status === "Success") {
+  //       Swal.fire({
+  //         title: "Form Submitted Successfully",
+  //         text: response?.data?.message,
+  //         icon: "success",
+  //       });
+
+  //       // Reset form state
+  //       setFormData({
+  //         application_type: "",
+  //         samagar: "",
+  //         gender: "",
+  //         name: "",
+  //         father_husband_name: "",
+  //         dob: "",
+  //         address: "",
+  //         mobile_no: "",
+  //         cast: "",
+  //         aadhar_no: "",
+  //         samagar_member_id: "",
+  //         state: "",
+  //         annual_income: "",
+  //         previous_application: "",
+  //         amount: "",
+  //         userId: currentUser.userId,
+  //         status: "Pending",
+  //       });
+
+  //       setFiles({ documentUpload: [] }); // Clear files state
+  //       preveiewSetFiles({ documentUpload: [] }); // Clear preview files
+  //       setShowMarkEditModel(false);
+  //       setIsRefresh((value) => !value);
+  //       if (kycRef.current) {
+  //         kycRef.current.value = null;
+  //       }
+  //     } else {
+  //       Swal.fire({
+  //         title: "Error",
+  //         text: response?.data?.message || "Something went wrong!",
+  //         icon: "error",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     Swal.fire({
+  //       title: "Error",
+  //       text: error?.response?.data?.message || "Something went wrong!",
+  //       icon: "error",
+  //     });
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const handlePinChange = (index, value) => {
     if (/^\d?$/.test(value)) {
@@ -262,27 +349,36 @@ const EdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: pin.join("") }
+        { user_id: currentUser.userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {
         return true;
       } else {
-         Swal.fire({
-                                 title: "Error verifying PIN",
-                                 text: response?.data?.message || "Something went wrong! Please Try again",
-                                 icon: "error",
-                               });
-                       return false;
+        Swal.fire({
+          title: "Error verifying PIN",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
+          icon: "error",
+        });
+        return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
       Swal.fire({
-                               title: "Error verifying PIN",
-                               text: error?.response?.data?.message || "Something went wrong! Please Try again",
-                               icon: "error",
-                             });
-                 return false;
+        title: "Error verifying PIN",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
+        icon: "error",
+      });
+      return false;
     }
   };
 
@@ -316,7 +412,10 @@ const EdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
                     <h2 className="text-center m-0 px-5 py-3">E District</h2>
                   </div>
                 </div>
-                <form onSubmit={openPinModal} className="shadow p-3 mb-5 bg-body rounded">
+                <form
+                  onSubmit={openPinModal}
+                  className="shadow p-3 mb-5 bg-body rounded"
+                >
                   <div className="row mb-3">
                     <div className="col-md-6 mb-3">
                       <label>Select Application</label>
@@ -481,10 +580,12 @@ const EdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
                         className="form-control"
                         name="samagar_member_id"
                         maxLength={9}
-                        
                         value={formData.samagar_member_id}
                         onChange={handleChange}
-                        required={formData.samagar == "ekyc" || formData.samagar == "non-ekyc"}
+                        required={
+                          formData.samagar == "ekyc" ||
+                          formData.samagar == "non-ekyc"
+                        }
                         disabled={formData.samagar == "non"}
                       />
                     </div>
@@ -509,22 +610,22 @@ const EdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
                         className="form-control"
                         multiple
                         onChange={handleFileChange}
-                        
                         ref={kycRef}
                       />
-                        {preveiewfiles.documentUpload.length > 0 && preveiewfiles?.documentUpload
-                                          ?.split(",")
-                                          ?.map((kycurl, kycindx) => (
-                                            <div key={kycindx}>
-                                              <a
-                                                href={kycurl}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                              >
-                                                View Existing File {kycindx + 1}
-                                              </a>
-                                            </div>
-                                          ))}
+                      {preveiewfiles.documentUpload.length > 0 &&
+                        preveiewfiles?.documentUpload
+                          ?.split(",")
+                          ?.map((kycurl, kycindx) => (
+                            <div key={kycindx}>
+                              <a
+                                href={kycurl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                View Existing File {kycindx + 1}
+                              </a>
+                            </div>
+                          ))}
                     </div>
                   </div>
 
@@ -553,7 +654,6 @@ const EdistrictEditModel = ({item,setShowMarkEditModel,setIsRefresh}) => {
                         onChange={handleChange}
                         required
                         disabled={formData.application_type === "domicile"}
-                        
                       />
                     </div>
                     <div className="col-md-4 mb-3">

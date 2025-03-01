@@ -1,85 +1,803 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
-import SuperDistributerDashboard from "../pages/SuperDistributerDashboard";
-import SdWalletTransactionReport from "../components/SuperDistributer/SdWalletTransactionReport";
-import SdStepVerification from "../components/SuperDistributer/SdStepVerification";
-import CreateDistributor from "../components/SuperDistributer/CreateDistributor";
-import SdUTIPanTransactionReport from "../components/SuperDistributer/SdUTIPanTransactionReport";
-import SdDistributeCoupon from "../components/SuperDistributer/SdDistributeCoupon";
-import SdUTICouponHistory from "../components/SuperDistributer/SdUTICouponHistory";
-import SdPanTransactionReport from "../components/SuperDistributer/SdPanTransactionReport";
-import AadharLinkingStatus from "../components/DashBoard/AadharLinkingStatus";
-import TrainingVideo from "../components/DashBoard/TrainingVideo";
-import SdAllOfflineForm from "../components/SuperDistributer/SdAllOfflineForm";
-import SdProfile from "../components/SuperDistributer/SdProfile";
-import SdActiveUsersList from "../components/SuperDistributer/SdActiveUsersList";
-import SdDeactiveUsersList from "../components/SuperDistributer/SdDeactiveUsersList";
-import SdAllUsersJoinedList from "../components/SuperDistributer/SdAllUsersJoinedList";
-import SdComplaints from "../components/SuperDistributer/SdComplaints";
-import SdAllComplaintsList from "../components/SuperDistributer/SdAllComplaintsList";
-import SdDownloadCertificate from "../components/SuperDistributer/SdDownloadCertificate";
-import SdChangePassword from "../components/SuperDistributer/SdChangePassword";
-import SdChangePrice from "../components/SuperDistributer/SdChangePrice";
-import SdBankAccountSetup from "../components/SuperDistributer/SdBankAccountSetup";
-import SdFundTransferStatus from "../components/SuperDistributer/SdFundTransferStatus";
-import Certificate from "../components/SuperDistributer/Certificate";
-import SdBankAccountVerify from "../components/SuperDistributer/SdBankAccountVerify";
-import SdWalletWithdraw from "../components/SuperDistributer/SdWalletWithdraw";
+import React, { Suspense, lazy, useEffect, useState } from "react";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import Spinner from "react-bootstrap/Spinner";
+import Swal from "sweetalert2";
+import axios from "axios";
+
+// Lazy-loaded components
+const SuperDistributerDashboard = lazy(() =>
+  import("../pages/SuperDistributerDashboard")
+);
+const SdWalletTransactionReport = lazy(() =>
+  import("../components/SuperDistributer/SdWalletTransactionReport")
+);
+const SdWalletWithdrawReport = lazy(() =>
+  import("../components/SuperDistributer/SdWalletWithdrawReport")
+);
+const SdStepVerification = lazy(() =>
+  import("../components/SuperDistributer/SdStepVerification")
+);
+const CreateDistributor = lazy(() =>
+  import("../components/SuperDistributer/CreateDistributor")
+);
+const AllDistributorList = lazy(() =>
+  import("../components/SuperDistributer/AllDistributorList")
+);
+const SdBuyDistributorId = lazy(() =>
+  import("../components/SuperDistributer/SdBuyDistributorId")
+);
+const SdBoughtSummery = lazy(() =>
+  import("../components/SuperDistributer/SdBoughtSummery")
+);
+const SdUTIPanTransactionReport = lazy(() =>
+  import("../components/SuperDistributer/SdUTIPanTransactionReport")
+);
+const SdDistributeCoupon = lazy(() =>
+  import("../components/SuperDistributer/SdDistributeCoupon")
+);
+const SdUTICouponHistory = lazy(() =>
+  import("../components/SuperDistributer/SdUTICouponHistory")
+);
+const SdPanTransactionReport = lazy(() =>
+  import("../components/SuperDistributer/SdPanTransactionReport")
+);
+const AadharLinkingStatus = lazy(() =>
+  import("../components/DashBoard/AadharLinkingStatus")
+);
+const TrainingVideo = lazy(() =>
+  import("../components/DashBoard/TrainingVideo")
+);
+const SdAllOfflineForm = lazy(() =>
+  import("../components/SuperDistributer/SdAllOfflineForm")
+);
+const SdAllCommissionHistory = lazy(() =>
+  import("../components/SuperDistributer/SdAllCommissionHistory")
+);
+const SdCoupanCommissionHistory = lazy(() =>
+  import("../components/SuperDistributer/SdCoupanCommissionHistory")
+);
+const SdSambalHistory = lazy(() =>
+  import("../components/SuperDistributer/SdSambalHistory")
+);
+const SdProfile = lazy(() =>
+  import("../components/SuperDistributer/SdProfile")
+);
+const SdActiveUsersList = lazy(() =>
+  import("../components/SuperDistributer/SdActiveUsersList")
+);
+const SdDeactiveUsersList = lazy(() =>
+  import("../components/SuperDistributer/SdDeactiveUsersList")
+);
+const SdPendingKycUsers = lazy(() =>
+  import("../components/SuperDistributer/SdPendingKycUsers")
+);
+const SdPendingPaymentUsers = lazy(() =>
+  import("../components/SuperDistributer/SdPendingPaymentUsers")
+);
+const SdAllUsersJoinedList = lazy(() =>
+  import("../components/SuperDistributer/SdAllUsersJoinedList")
+);
+const SdPrepaidRechargeHistory = lazy(() =>
+  import("../components/SuperDistributer/SdPrepaidRechargeHistory")
+);
+const SdPostpaidRechargeHistory = lazy(() =>
+  import("../components/SuperDistributer/SdPostpaidRechargeHistory")
+);
+
+const SdDTHRechargeHistory = lazy(() =>
+  import("../components/SuperDistributer/SdDTHRechargeHistory")
+);
+const SdElectricityHistory = lazy(() =>
+  import("../components/SuperDistributer/SdElectricityHistory")
+);
+
+const SdBroadbandHistory = lazy(() =>
+  import("../components/SuperDistributer/SdBroadbandHistory ")
+);
+const SdRechargeRefundReport = lazy(() =>
+  import("../components/SuperDistributer/SdRechargeRefundReport")
+);
+const SdMyCommission = lazy(() =>
+  import("../components/SuperDistributer/SdMyCommission")
+);
+const SdEdistrict = lazy(() =>
+  import("../components/SuperDistributer/SdEdistrict")
+);
+const SdVerifyDistrictHistory = lazy(() =>
+  import("../components/SuperDistributer/SdVerifyDistrictHistory")
+);
+const SdPanFourHistory = lazy(() =>
+  import("../components/SuperDistributer/SdPanFourHistory")
+);
+
+const SdPanCorrectionHistory = lazy(() =>
+  import("../components/SuperDistributer/SdPanCorrectionHistory")
+);
+const SdOfflineRechargeHistory = lazy(() =>
+  import("../components/SuperDistributer/SdOfflineRechargeHistory")
+);
+
+const SdOfflineDthConnection = lazy(() =>
+  import("../components/SuperDistributer/SdOfflineDthConnection")
+);
+const SdOnlineDthConnection = lazy(() =>
+  import("../components/SuperDistributer/SdOnlineDthConnection")
+);
+
+const SdOnlineRecharges = lazy(() =>
+  import("../components/SuperDistributer/SdOnlineRecharges")
+);
+const SdComplaints = lazy(() =>
+  import("../components/SuperDistributer/SdComplaints")
+);
+const SdAllComplaintsList = lazy(() =>
+  import("../components/SuperDistributer/SdAllComplaintsList")
+);
+const SdDownloadCertificate = lazy(() =>
+  import("../components/SuperDistributer/SdDownloadCertificate")
+);
+const SdChangePassword = lazy(() =>
+  import("../components/SuperDistributer/SdChangePassword")
+);
+const SdChangePrice = lazy(() =>
+  import("../components/SuperDistributer/SdChangePrice")
+);
+const SdBankAccountSetup = lazy(() =>
+  import("../components/SuperDistributer/SdBankAccountSetup")
+);
+const SdFundTransferStatus = lazy(() =>
+  import("../components/SuperDistributer/SdFundTransferStatus")
+);
+const SdCreatePin = lazy(() =>
+  import("../components/SuperDistributer/SdCreatePin")
+);
+const Certificate = lazy(() =>
+  import("../components/SuperDistributer/Certificate")
+);
+const SdBankAccountVerify = lazy(() =>
+  import("../components/SuperDistributer/SdBankAccountVerify")
+);
+const SdWalletWithdraw = lazy(() =>
+  import("../components/SuperDistributer/SdWalletWithdraw")
+);
+
+const SdWalletToWalletTransfer = lazy(() =>
+  import("../components/SuperDistributer/SdWalletToWalletTransfer")
+);
+const Profile = lazy(() => import("../pages/Profile"));
 
 const SuperDistributorRoutes = () => {
+  const { currentUser, token } = useSelector((state) => state.user);
+  const userStatus = currentUser?.Status;
+  const userId = currentUser?.userId;
+
+  const pathname = window.location.pathname;
+  const [status, setStatus] = useState(null);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState("");
+  const dispatch = useDispatch();
+  const [user, setUser] = useState("");
+  // const userStatus = currentUser?.Status;
+
+  // Logging the current user and token for debugging
+  console.log("Current User:", currentUser);
+  console.log("Token:", token);
+  console.log(status);
+  // UseEffect hook to call the API once when the component mounts
+  useEffect(() => {
+    if (currentUser?.userId && token) {
+      fetchUserData();
+    } else {
+      console.log("Missing userId or token, cannot fetch data.");
+    }
+  }, [currentUser, token, pathname]);
+
+  const fetchUserData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("User Details:", response.data?.data);
+      const userStatus = response.data?.data?.Status; // API response se status fetch kar rahe hain
+      const PaymentStatus = response.data?.data?.payment_status;
+      setUser(response.data?.data);
+      if (userStatus == "Deactive") {
+        Swal.fire({
+          icon: "error",
+          title: "User Deactive",
+          text: "Please contact Admin!",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else if (PaymentStatus == "Pending") {
+        Swal.fire({
+          icon: "error",
+          title: "User Payment is Pending",
+          text: "Please Make Payment First Or Contact Admin if Payment Done",
+        });
+        // dispatch(clearUser());
+
+        navigate("/payment");
+      } else if (userStatus == "Pending") {
+        Swal.fire({
+          icon: "error",
+          title: "User KYC is Pending",
+          text: "Please Update KYC details First Or Contact Admin if Already Submitted Kyc details",
+        });
+        // dispatch(clearUser());
+        navigate("/update-profile");
+      }
+
+      setStatus(userStatus); // Status ko state mein set karenge
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Session Expired",
+          text: "Your session has expired. Please log in again.",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong! Please try again later.",
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <React.Fragment>
+    <Suspense
+      fallback={
+        <div className="loading-container">
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </div>
+      }
+    >
       <Routes>
-        <Route path="/dashboard" element={<SuperDistributerDashboard />} />
-        <Route path="/update-profile" element={<SdProfile />} />
+        <Route
+          path="/dashboard"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SuperDistributerDashboard />
+            )
+          }
+        />
+        <Route path="/update-profile" element={<Profile />} />
         <Route
           path="/aadhar-linking-status"
-          element={<AadharLinkingStatus />}
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <AadharLinkingStatus />
+            )
+          }
         />
-        <Route path="/training-video" element={<TrainingVideo />} />
+        <Route
+          path="/training-video"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <TrainingVideo />
+            )
+          }
+        />
+        <Route
+          path="/prepaid-recharge-history"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdPrepaidRechargeHistory />
+            )
+          }
+        />
+        <Route
+          path="/postpaid-recharge-history"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdPostpaidRechargeHistory />
+            )
+          }
+        />
 
         <Route
+          path="/dth-recharge-history"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdDTHRechargeHistory />
+            )
+          }
+        />
+
+        <Route
+          path="/eletricity-recharge-history"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdElectricityHistory />
+            )
+          }
+        />
+        <Route
+          path="/broadband-recharge-history"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdBroadbandHistory />
+            )
+          }
+        />
+
+        <Route
+          path="/recharge-refund-report"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdRechargeRefundReport />
+            )
+          }
+        />
+        <Route
+          path="/my-commission"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdMyCommission />
+            )
+          }
+        />
+
+        <Route
+          path="/E-District-history"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdEdistrict />
+            )
+          }
+        />
+
+        <Route
+          path="/verify-Edistrict-History"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdVerifyDistrictHistory />
+            )
+          }
+        />
+
+        <Route
+          path="/pan-4.0-history"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdPanFourHistory />
+            )
+          }
+        />
+
+        <Route
+          path="/pan-correction-report"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdPanCorrectionHistory />
+            )
+          }
+        />
+
+        <Route
+          path="/Offline-Recharge-history"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdOfflineRechargeHistory />
+            )
+          }
+        />
+        <Route
           path="/wallet-transaction-report"
-          element={<SdWalletTransactionReport />}
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdWalletTransactionReport />
+            )
+          }
+        />
+        <Route
+          path="/wallet-withdraw-History"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdWalletWithdrawReport />
+            )
+          }
         />
         <Route
           path="/view-all-offline-history"
-          element={<SdAllOfflineForm />}
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdAllOfflineForm />
+            )
+          }
         />
-
-        <Route path="/2-step-verification" element={<SdStepVerification />} />
-
-        <Route path="/create-distributor" element={<CreateDistributor />} />
+        <Route
+          path="/View-All-Commission-History"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdAllCommissionHistory />
+            )
+          }
+        />
 
         <Route
-          path="/uti-transaction-report"
-          element={<SdUTIPanTransactionReport />}
+          path="/Pan-Coupan-History"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdCoupanCommissionHistory />
+            )
+          }
         />
 
-        <Route path="/distribute-uti-coupon" element={<SdDistributeCoupon />} />
+        <Route
+          path="/Sambal-History"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdSambalHistory />
+            )
+          }
+        />
+        <Route
+          path="/2-step-verification"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdStepVerification />
+            )
+          }
+        />
+        <Route
+          path="/create-distributor"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <CreateDistributor />
+            )
+          }
+        />
 
-        <Route path="/uti-coupon-history" element={<SdUTICouponHistory />} />
+        <Route
+          path="/All-Distributor-List"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <AllDistributorList />
+            )
+          }
+        />
+        <Route
+          path="/buy-distributor-id"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdBuyDistributorId />
+            )
+          }
+        />
+        <Route
+          path="/UserId-Bought-summary"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdBoughtSummery />
+            )
+          }
+        />
+        <Route
+          path="/uti-transaction-report"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdUTIPanTransactionReport />
+            )
+          }
+        />
 
-      <Route path="/pan-transaction-report" element={<SdPanTransactionReport />} />
-      <Route path="/active-users" element={<SdActiveUsersList />} />
-      <Route path="/deactive-users" element={<SdDeactiveUsersList />} />
-      <Route path="/users-joining-list" element={<SdAllUsersJoinedList />} />
-      <Route path="/change-price" element={<SdChangePrice />} />
-      <Route path="/raise-complaint" element={<SdComplaints />} />
-      <Route path="/complaint-raised-list" element={<SdAllComplaintsList />} />
-      <Route path="/download-certificate" element={<SdDownloadCertificate />} />
-      <Route path="/change-password" element={<SdChangePassword />} />
-      <Route path="/bank-account-setup" element={<SdBankAccountSetup />} />
-      <Route path="/bank-account-setup/:bank_id/:user_id" element={<SdBankAccountVerify />} />
-      <Route path="/wallet-withdraw" element={<SdWalletWithdraw/>} />
-      <Route path="/fund-transfer-status" element={<SdFundTransferStatus />} />
-      <Route path="/download-certificate-print" element={<Certificate user="SUPER DISTRIBUTOR" name="Aashish Kumar"
-        address="Jabalpur, BIHAR - 482001"
-        date="02-Jul-2024"
-        id="AASHISD29164"/>} />
-       
+        <Route
+          path="/Offline-dth-connection"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdOfflineDthConnection />
+            )
+          }
+        />
+
+        <Route
+          path="/online-dth-connection-history"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdOnlineDthConnection />
+            )
+          }
+        />
+        <Route
+          path="/online-recharge-history"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdOnlineRecharges />
+            )
+          }
+        />
+        <Route
+          path="/distribute-uti-coupon"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdDistributeCoupon />
+            )
+          }
+        />
+        <Route
+          path="/uti-coupon-history"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdUTICouponHistory />
+            )
+          }
+        />
+        <Route
+          path="/pan-transaction-report"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdPanTransactionReport />
+            )
+          }
+        />
+        <Route
+          path="/active-users"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdActiveUsersList />
+            )
+          }
+        />
+        <Route
+          path="/deactive-users"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdDeactiveUsersList />
+            )
+          }
+        />
+        <Route
+          path="/pending-kyc-user"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdPendingKycUsers />
+            )
+          }
+        />
+        <Route
+          path="/pending-payment-users"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdPendingPaymentUsers />
+            )
+          }
+        />
+        <Route
+          path="/users-joining-list"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdAllUsersJoinedList />
+            )
+          }
+        />
+        <Route
+          path="/change-price"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdChangePrice />
+            )
+          }
+        />
+        <Route
+          path="/raise-complaint"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdComplaints />
+            )
+          }
+        />
+        <Route
+          path="/complaint-raised-list"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdAllComplaintsList />
+            )
+          }
+        />
+        <Route
+          path="/download-certificate"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdDownloadCertificate />
+            )
+          }
+        />
+        <Route
+          path="/change-password"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdChangePassword />
+            )
+          }
+        />
+        <Route
+          path="/bank-account-setup"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdBankAccountSetup />
+            )
+          }
+        />
+        <Route
+          path="/bank-account-setup/verify/:bid"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdBankAccountVerify />
+            )
+          }
+        />
+        <Route
+          path="/wallet-withdraw"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdWalletWithdraw />
+            )
+          }
+        />
+
+        <Route
+          path="/wallet-to-wallet-transfer"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdWalletToWalletTransfer />
+            )
+          }
+        />
+        <Route
+          // path="/fund-transfer-status"
+          // path="/fund-transfer-status"
+          path="/Wallet-TO-Wallet-Transfer-History"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdFundTransferStatus />
+            )
+          }
+        />
+        <Route
+          path="/generate-pin"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <SdCreatePin />
+            )
+          }
+        />
+        <Route
+          path="/download-certificate-print"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <Certificate
+                user="SUPER DISTRIBUTOR"
+                name={currentUser?.username}
+                address={`${currentUser?.City}, ${currentUser?.State}, ${currentUser?.PinCode}`}
+                date={
+                  new Date(currentUser?.CreateAt).toISOString().split("T")[0]
+                }
+                id={currentUser?.userId}
+              />
+            )
+          }
+        />
       </Routes>
-    </React.Fragment>
+    </Suspense>
   );
 };
 

@@ -1,149 +1,513 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Genral = () => {
-    return (
-        <Wrapper>
-            <div className="main">
-                <div className="container-fluid">
-                    <div className="row flex-wrap justify-content-center mb-4">
+  const [data, setData] = useState([]);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
+  const qrCodeRef = useRef(null);
+  const [qrCodeError, setQrCodeError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const userId = useSelector((state) => state.user.currentUser?.userId);
 
-                        <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                            <div className="main shadow-none">
+  const [formData, setFormData] = useState({
+    id: "",
+    whiteLabel_id: userId,
+    Home_Page_1st_Paragraph: "",
+    Home_Page_2nd_Paragraph: "",
+    Email_Id: "",
+    Calling_No: "",
+    Whatsapp_No: "",
+    App_Link: "",
+    Bank_Holder_Name: "",
+    Bank_Account_Number: "",
+    IFSC_Code: "",
+    Bank_Name: "",
+    UPI_ID: "",
+    QR_Code: null, // For file input
+    QR_Code_Preview: null, // For preview URL
+    Address: "",
+  });
 
-                                <div className="row g-4 shadow bg-body-tertiary rounded m-1 px-3 pb-4">
-                                    <div className="text-center">
-                                        <h4>Enter All Correct Details For Update</h4>
-                                    </div>
-                                    <div className=" col-sm-12">
-                                        <div class="mb-2">
-                                            <label for="homePara1" className="form-label">Home Page 1st Paragraph</label>
-                                            <textarea placeholder="Enter Home Page 1st Paragraph" className="form-control" id="homePara1" rows="2"></textarea>
-                                        </div>
-                                    </div>
-                                    <div className=" col-sm-12">
-                                        <div class="mb-2">
-                                            <label for="homePara2" className="form-label">Home Page 2nd Paragraph</label>
-                                            <textarea placeholder="Enter Home Page 2nd Paragraph" className="form-control" id="homePara2" rows="2"></textarea>
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-12">
-                                        <label for="name" class="form-label">
-                                            Email Id
-                                        </label>
-                                        <div class="input-group flex-nowrap">
-                                           
-                                            <input
-                                                type="text"
-                                                id="name"
-                                                class="form-control"
-                                                placeholder="Enter Email Id"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-12">
-                                        <label for="name" class="form-label">
-                                            Calling No
-                                        </label>
-                                        <div class="input-group flex-nowrap">
-                                          
-                                            <input
-                                                type="text"
-                                                id="name"
-                                                class="form-control"
-                                                placeholder="Enter Calling No"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-12">
-                                        <label for="name" class="form-label">
-                                            Whatsapp No
-                                        </label>
-                                        <div class="input-group flex-nowrap">
-                                           
-                                            <input
-                                                type="text"
-                                                id="name"
-                                                class="form-control"
-                                                placeholder="Enter Whatsapp No"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-12">
-                                        <label for="name" class="form-label">
-                                            App Link
-                                        </label>
-                                        <div class="input-group flex-nowrap">
-                                          
-                                            <input
-                                                type="text"
-                                                id="name"
-                                                class="form-control"
-                                                placeholder="Enter App Link"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-12">
-                                    <div class="mb-2">
-                                            <label for="bankDetails" className="form-label">Bank Details</label>
-                                            <textarea placeholder="Enter Bank Details" className="form-control" id="bankDetails" rows="2"></textarea>
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-12">
-                                        <label for="name" class="form-label">
-                                            UPI ID
-                                        </label>
-                                        <div class="input-group flex-nowrap">
-                                           
-                                            <input
-                                                type="text"
-                                                id="name"
-                                                class="form-control"
-                                                placeholder="Enter UPI ID"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-12">
-                                        <label for="name" class="form-label">
-                                            QR Code
-                                        </label>
-                                        <div class="input-group flex-nowrap">
-                                           
-                                            <input
-                                                type="file"
-                                                id="name"
-                                                class="form-control"
-                                                placeholder="Enter Name"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-12">
-                                    <div class="mb-2">
-                                            <label for="bankDetails" className="form-label">Enter Address</label>
-                                            <textarea placeholder="Enter Address" className="form-control" id="bankDetails" rows="2"></textarea>
-                                        </div>
-                                    </div>
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWhitelabelSettings/${userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Add token to the request header
+          },
+        }
+        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
+      );
+      setData(data.data);
+      setFormData({
+        id: data.data.id,
+        whiteLabel_id: userId,
+        Home_Page_1st_Paragraph: data.data.Home_Page_1st_Paragraph,
+        Home_Page_2nd_Paragraph: data.data.Home_Page_2nd_Paragraph,
+        Email_Id: data.data.Email_Id,
+        Calling_No: data.data.Calling_No,
+        Whatsapp_No: data.data.Whatsapp_No,
+        App_Link: data.data.App_Link,
+        Bank_Holder_Name: data.data.Bank_Holder_Name,
+        Bank_Account_Number: data.data.Bank_Account_Number,
+        IFSC_Code: data.data.IFSC_Code,
+        Bank_Name: data.data.Bank_Name,
+        UPI_ID: data.data.UPI_ID,
+        QR_Code: data.data.QR_Code,
+        QR_Code_Preview: data.data.QR_Code, // For preview URL
+        Address: data.data.Address,
+      });
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Session Expired",
+          text: "Your token is expired. Please login again.",
+        });
 
+        dispatch(clearUser()); // Clear user data
+        navigate("/"); // Redirect to login page
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error Fetching Data",
+          text:
+            error.response?.data?.message ||
+            "An error occurred while fetching data. Please try again.",
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+  console.log(data);
 
+  useEffect(() => {
+    if (userId) {
+      fetchData();
+    }
+  }, [userId]);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
+  const handleFileChange = (e) => {
+    const { name } = e.target;
+    const file = e.target.files[0];
+    const maxSize = 5 * 1024 * 1024; // 5MB limit
+    const requiredWidth = 200; // Required width
+    const requiredHeight = 200; // Required height
 
-                                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                        <div className="text-center mb-2">
-                                            <button className="btn p-2">UPDATE</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+    // Reset error message
+    setQrCodeError("");
+
+    if (file) {
+      // Check file type
+      const validImageTypes = ["image/jpeg", "image/png"];
+      if (!validImageTypes.includes(file.type)) {
+        setQrCodeError("Please upload a valid image (JPEG or PNG).");
+        if (qrCodeRef?.current) qrCodeRef.current.value = ""; // Clear input field
+        e.target.value = ""; // Fallback clearing
+        return;
+      }
+
+      // Check file size
+      if (file.size > maxSize) {
+        Swal.fire({
+          icon: "error",
+          title: "File Too Large",
+          text: `File ${file.type} exceeds the 5MB limit.`,
+        });
+        e.target.value = ""; // Clear input
+        return;
+      }
+
+      // Check image resolution only for QR Code
+      if (name === "QR_Code") {
+        const img = new Image();
+        img.src = URL.createObjectURL(file);
+        img.onload = () => {
+          if (img.width !== requiredWidth || img.height !== requiredHeight) {
+            Swal.fire({
+              icon: "error",
+              title: "Invalid Image Resolution",
+              text: `Image must be exactly ${requiredWidth}x${requiredHeight} pixels.`,
+            });
+            if (qrCodeRef?.current) qrCodeRef.current.value = ""; // Clear input field
+            e.target.value = ""; // Fallback clearing
+            return;
+          }
+
+          // Process the file after resolution check
+          const reader = new FileReader();
+          reader.onload = () => {
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              [name]: file, // Store the file
+              QR_Code_Preview: reader.result, // Store the preview URL (Base64)
+            }));
+          };
+          reader.readAsDataURL(file); // Convert file to Base64 URL
+        };
+      }
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formDataSend = new FormData();
+
+    Object.entries(formData).forEach(([key, value]) => {
+      if (key !== "QR_Code_Preview") {
+        // Exclude the preview URL and id from submission
+        formDataSend.append(key, value);
+        console.log(key, value);
+      }
+    });
+    formDataSend.append("QR_Code_Preview", data.QR_Code);
+    console.log(formDataSend);
+
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/UpdateGenralSetting",
+        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateGenralSetting",
+        formDataSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setLoading(false);
+      if (response.data.success) {
+        Swal.fire({
+          icon: "success",
+          title: "Details updated successfully!",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Failed to update details. Please try again.",
+        });
+      }
+      console.log(response.data);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error updating details:", error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again")
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      }
+      Swal.fire({
+        icon: "error",
+        title: "Failed to update details. Please try again.",
+      });
+    }
+  };
+  console.log(formData);
+
+  return (
+    <Wrapper>
+      <form onSubmit={handleSubmit}>
+        <div className="main">
+          <div className="container-fluid">
+            <div className="row flex-wrap justify-content-center mb-4">
+              <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <div className="main shadow-none">
+                  <div className="row g-4 shadow bg-body-tertiary rounded m-1 px-3 pb-4">
+                    {loading ? (
+                      <div className="d-flex justify-content-center">
+                        <Spinner animation="border" role="status">
+                          <span className="visually-hidden ">Loading...</span>
+                        </Spinner>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="text-center">
+                          <h4>Enter All Correct Details For Update</h4>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </Wrapper>
-    )
-}
+                        <div className=" col-sm-12">
+                          <div class="mb-2">
+                            <label for="homePara1" className="form-label">
+                              Home Page 1st Paragraph
+                            </label>
+                            <textarea
+                              placeholder="Enter Home Page 1st Paragraph"
+                              className="form-control"
+                              id="homePara1"
+                              name="Home_Page_1st_Paragraph"
+                              rows="2"
+                              value={formData.Home_Page_1st_Paragraph || ""}
+                              onChange={handleChange}
+                            ></textarea>
+                          </div>
+                        </div>
+                        <div className=" col-sm-12">
+                          <div class="mb-2">
+                            <label for="homePara2" className="form-label">
+                              Home Page 2nd Paragraph
+                            </label>
+                            <textarea
+                              placeholder="Enter Home Page 2nd Paragraph"
+                              name="Home_Page_2nd_Paragraph"
+                              className="form-control"
+                              id="homePara2"
+                              rows="2"
+                              value={formData.Home_Page_2nd_Paragraph || ""}
+                              onChange={handleChange}
+                            ></textarea>
+                          </div>
+                        </div>
+                        <div className="col-sm-12">
+                          <label for="name" class="form-label">
+                            Email Id
+                          </label>
+                          <div class="input-group flex-nowrap">
+                            <input
+                              type="email"
+                              id="name"
+                              name="Email_Id"
+                              class="form-control"
+                              placeholder="Enter Email Id"
+                              value={formData.Email_Id || ""}
+                              onChange={handleChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-12">
+                          <label for="name" class="form-label">
+                            Calling No
+                          </label>
+                          <div class="input-group flex-nowrap">
+                            <input
+                              type="text"
+                              id="name"
+                              name="Calling_No"
+                              class="form-control"
+                              value={formData.Calling_No || ""}
+                              onChange={handleChange}
+                              placeholder="Enter 10-digit mobile number"
+                              pattern="[0-9]{10}"
+                              title="Mobile number should be 10 digits"
+                              maxLength={10}
+                              minLength={10}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-12">
+                          <label for="name" class="form-label">
+                            Whatsapp No
+                          </label>
+                          <div class="input-group flex-nowrap">
+                            <input
+                              type="text"
+                              id="name"
+                              name="Whatsapp_No"
+                              class="form-control"
+                              value={formData.Whatsapp_No || ""}
+                              onChange={handleChange}
+                              placeholder="Enter 10-digit mobile number"
+                              pattern="[0-9]{10}"
+                              title="Mobile number should be 10 digits"
+                              maxLength={10}
+                              minLength={10}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-12">
+                          <label for="name" class="form-label">
+                            App Link
+                          </label>
+                          <div class="input-group flex-nowrap">
+                            <input
+                              type="text"
+                              id="name"
+                              name="App_Link"
+                              class="form-control"
+                              placeholder="Enter App Link"
+                              value={formData.App_Link || ""}
+                              onChange={handleChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-12">
+                          <div class="mb-2">
+                            <label for="bankDetails" className="form-label">
+                              Bank Account Name
+                            </label>
+                            <input
+                              placeholder="Enter Bank Details"
+                              className="form-control"
+                              id="bankDetails"
+                              name="Bank_Holder_Name"
+                              value={formData.Bank_Holder_Name || ""}
+                              onChange={handleChange}
+                              pattern="[A-Za-z\s]*"
+                              title="Text should contain only letters"
+                              autocomplete="off"
+                              maxLength={100}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-12">
+                          <div class="mb-2">
+                            <label for="bankDetails" className="form-label">
+                              Bank Account Number
+                            </label>
+                            <input
+                              placeholder="Enter Bank Details"
+                              className="form-control"
+                              id="bankDetails"
+                              name="Bank_Account_Number"
+                              value={formData.Bank_Account_Number || ""}
+                              onChange={handleChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-12">
+                          <div class="mb-2">
+                            <label for="bankDetails" className="form-label">
+                              IFSC Code
+                            </label>
+                            <input
+                              placeholder="Enter Bank Details"
+                              className="form-control"
+                              id="bankDetails"
+                              name="IFSC_Code"
+                              value={formData.IFSC_Code || ""}
+                              onChange={handleChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-12">
+                          <div class="mb-2">
+                            <label for="bankDetails" className="form-label">
+                              Bank Name
+                            </label>
+                            <input
+                              placeholder="Enter Bank Details"
+                              className="form-control"
+                              id="bankDetails"
+                              name="Bank_Name"
+                              value={formData.Bank_Name || ""}
+                              onChange={handleChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-12">
+                          <label for="name" class="form-label">
+                            UPI ID
+                          </label>
+                          <div class="input-group flex-nowrap">
+                            <input
+                              type="text"
+                              id="name"
+                              class="form-control"
+                              placeholder="Enter UPI ID"
+                              name="UPI_ID"
+                              value={formData.UPI_ID || ""}
+                              onChange={handleChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-12">
+                          <label for="name" class="form-label">
+                            QR Code (200 x 200)px
+                          </label>
+                          <div>
+                            <img
+                              src={formData.QR_Code_Preview}
+                              width={200}
+                              height={200}
+                              className="img-fluid"
+                            />
+                          </div>
+                          <div class="input-group flex-nowrap">
+                            <input
+                              type="file"
+                              id="name"
+                              name="QR_Code"
+                              class="form-control"
+                              placeholder="Enter Name"
+                              accept="image/png, image/jpeg"
+                              onChange={handleFileChange}
+                              ref={qrCodeRef}
+                            />
+                          </div>
+                          {qrCodeError && (
+                            <div className="text-danger mt-2">
+                              {qrCodeError}
+                            </div>
+                          )}
+                        </div>
+                        <div className="col-sm-12">
+                          <div class="mb-2">
+                            <label for="bankDetails" className="form-label">
+                              Enter Address
+                            </label>
+                            <textarea
+                              placeholder="Enter Address"
+                              className="form-control"
+                              id="bankDetails"
+                              name="Address"
+                              value={formData.Address || ""}
+                              onChange={handleChange}
+                            ></textarea>
+                          </div>
+                        </div>
 
-export default Genral
+                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                          <div className="text-center mb-2">
+                            <button
+                              type="submit"
+                              disabled={loading}
+                              className="btn p-2"
+                            >
+                              {loading ? "Loading..." : "UPDATE"}
+                            </button>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </Wrapper>
+  );
+};
+
+export default Genral;
 
 const Wrapper = styled.div`
   .main {
@@ -154,15 +518,13 @@ const Wrapper = styled.div`
     color: #fff;
     background: #6d70ff;
   }
-  @media (min-width: 1025px) and (max-width : 1500px){
+  @media (min-width: 1025px) and (max-width: 1500px) {
     .formdata {
-     
       padding-left: 15rem;
     }
   }
   @media (min-width: 1500px) {
     .formdata {
-     
       padding-left: 13rem;
     }
   }

@@ -8,27 +8,27 @@ import nsdlpan from "../../assets/images/nsdl-vector.png";
 import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { Modal, Button, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import {  fetchWalletBalance } from "../../redux/user/userSlice";
+import { fetchWalletBalance } from "../../redux/user/userSlice";
 import { FaMobileButton } from "react-icons/fa6";
-
 
 const NsdlPanCorrectionZlink = () => {
   const dispatch = useDispatch();
-       const navigate = useNavigate();
-       const { currentUser, token } = useSelector((state) => state.user);
-       const { walletBalance } = useSelector((state) => state.user);
-       const [prices, setPrices] = useState([]);
-       const [isVerifying, setIsVerifying] = useState(false);
+  const navigate = useNavigate();
+  const { currentUser, token } = useSelector((state) => state.user);
+  const { walletBalance } = useSelector((state) => state.user);
+  const [prices, setPrices] = useState([]);
+  const [isVerifying, setIsVerifying] = useState(false);
   const [formData, setFormData] = useState({
     app_mode: "",
-    redirect_url : "https://bitspan.vimubds5.a2hosted.com/easySmartNsdlPANCallback",
+    redirect_url:
+      "https://bitspan.vimubds5.a2hosted.com/easySmartNsdlPANCallback",
     selectType: "",
     first_name: "",
-    middle_name : "",
-    last_name : "",
+    middle_name: "",
+    last_name: "",
     dob: "",
     gender: "",
     mobile_no: "",
@@ -36,73 +36,77 @@ const NsdlPanCorrectionZlink = () => {
     phyPanIsReq: "",
     walletDeductAmt: "",
     userId: currentUser.userId,
-    branchCode : "Mohit001" ,
-    pan_no : ""
+    branchCode: "Mohit001",
+    pan_no: "",
   });
- console.log(formData)
- const [loading, setLoading] = useState(false);
- const [showPinModal, setShowPinModal] = useState(false);
-     const [pin, setPin] = useState(["", "", "", ""]);
-     const pinRefs = useRef([]);
-   console.log(prices);
- 
-   useEffect(() => {
-     const fetchPackage = async () => {
-       try {
-         const response = await axios.get(
-           `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
-         );
-         // console.log(response.data.data);
-         if (Array.isArray(response.data.data)) {
-           setPrices(response.data.data);
-         } else {
-           console.error("Expected an array, received:", response.data.data);
-         }
-       } catch (error) {
-         console.error("Fetching package data failed:", error);
-       }
-     };
-     fetchPackage();
-    
-   }, []);
-console.log(formData)
- // const handleChange = (e) => {
- //   const { name, value } = e.target;
- //   setFormData({
- //     ...formData,
- //     // [e.target.name]: e.target.value,
- //     [name] : name === "pan_no" ? value.toUpperCase() : value,
- //   });
- // };
+  console.log(formData);
+  const [loading, setLoading] = useState(false);
+  const [showPinModal, setShowPinModal] = useState(false);
+  const [pin, setPin] = useState(["", "", "", ""]);
+  const pinRefs = useRef([]);
+  console.log(prices);
 
-   const handleChange = (e) => {
-     const { name, value } = e.target;
- 
-     if(name === "mobile_no"){
-       
-       if (/^\d*$/.test(value)) {
-         setFormData((prevData) => ({
-           ...prevData,
-           [name]: value,
-         }));
-       }
-     }
-     else{
-         setFormData({
-     ...formData,
-     // [e.target.name]: e.target.value,
-     [name] : name === "pan_no" ? value.toUpperCase() : value,
-   });
-     }
- 
-   };
-     useEffect(()=>{
-        setFormData({
-         ...formData,
-         walletDeductAmt : formData.phyPanIsReq == "Yes" ? prices[0]?.P_PAN_Card_Price : prices[0]?.E_PAN_Card_Price
-        })
-     },[formData.phyPanIsReq])
- 
+  useEffect(() => {
+    const fetchPackage = async () => {
+      try {
+        const response = await axios.get(
+          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        // console.log(response.data.data);
+        if (Array.isArray(response.data.data)) {
+          setPrices(response.data.data);
+        } else {
+          console.error("Expected an array, received:", response.data.data);
+        }
+      } catch (error) {
+        console.error("Fetching package data failed:", error);
+      }
+    };
+    fetchPackage();
+  }, []);
+  console.log(formData);
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData({
+  //     ...formData,
+  //     // [e.target.name]: e.target.value,
+  //     [name] : name === "pan_no" ? value.toUpperCase() : value,
+  //   });
+  // };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "mobile_no") {
+      if (/^\d*$/.test(value)) {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+    } else {
+      setFormData({
+        ...formData,
+        // [e.target.name]: e.target.value,
+        [name]: name === "pan_no" ? value.toUpperCase() : value,
+      });
+    }
+  };
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      walletDeductAmt:
+        formData.phyPanIsReq == "Yes"
+          ? prices[0]?.P_PAN_Card_Price
+          : prices[0]?.E_PAN_Card_Price,
+    });
+  }, [formData.phyPanIsReq]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -110,56 +114,56 @@ console.log(formData)
     try {
       const apiResponse = await axios.post(
         // `http://localhost:7777/api/auth/zlink/zlinkCorrectionPanRequest`,
-         `https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/zlinkCorrectionPanRequest`,
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/zlinkCorrectionPanRequest`,
         formData
       );
       // setFormData(apiResponse.data);
       console.log(apiResponse.data);
-      if (apiResponse.data.nsdlData.status
-        == "Success") {
-       // Navigate to the success page and pass the response data
-      navigate('/nsdl-correction-pan-card-redirect', { state: { enc_data: apiResponse.data.nsdlData.enc_data } });
-      setFormData({
-        app_mode: "",
-        redirect_url : "https://bitspan.vimubds5.a2hosted.com/easySmartNsdlPANCallback",
-        selectType: "",
-        first_name: "",
-        middle_name : "",
-        last_name : "",
-        dob: "",
-        gender: "",
-        mobile_no: "",
-        email_id: "",
-        phyPanIsReq: "",
-        walletDeductAmt: "",
-        userId: currentUser.userId,
-        branchCode : "Mohit001" ,
-        pan_no : ""
-           })
-           dispatch(fetchWalletBalance(currentUser.userId))
-     
-     
-      // const encData = apiResponse.data.nsdlData.enc_data;
-  // Open a new tab using an anchor tag and the route
-  // window.open(`/nsdl-new-pan-card-redirect?enc_data=${encData}`, '_blank');
-        
+      if (apiResponse.data.nsdlData.status == "Success") {
+        // Navigate to the success page and pass the response data
+        navigate("/nsdl-correction-pan-card-redirect", {
+          state: { enc_data: apiResponse.data.nsdlData.enc_data },
+        });
+        setFormData({
+          app_mode: "",
+          redirect_url:
+            "https://bitspan.vimubds5.a2hosted.com/easySmartNsdlPANCallback",
+          selectType: "",
+          first_name: "",
+          middle_name: "",
+          last_name: "",
+          dob: "",
+          gender: "",
+          mobile_no: "",
+          email_id: "",
+          phyPanIsReq: "",
+          walletDeductAmt: "",
+          userId: currentUser.userId,
+          branchCode: "Mohit001",
+          pan_no: "",
+        });
+        dispatch(fetchWalletBalance(currentUser.userId));
 
+        // const encData = apiResponse.data.nsdlData.enc_data;
+        // Open a new tab using an anchor tag and the route
+        // window.open(`/nsdl-new-pan-card-redirect?enc_data=${encData}`, '_blank');
       } else if (apiResponse.data.nsdlData.status == "Failed") {
         Swal.fire({
-                                icon: "error",
-                                title: "Oops",
-                                text: apiResponse?.data?.nsdlData?.message || "Something went wrong! Please Try again",
-                              });
+          icon: "error",
+          title: "Oops",
+          text:
+            apiResponse?.data?.nsdlData?.message ||
+            "Something went wrong! Please Try again",
+        });
         setLoading(false);
+      } else {
+        setLoading(false);
+        Swal.fire({
+          icon: "error",
+          title: "Oops",
+          text: "Something went wrong! Please Try again",
+        });
       }
-       else{
-                          setLoading(false)
-                          Swal.fire({
-                            icon: "error",
-                            title: "Oops",
-                            text: "Something went wrong! Please Try again",
-                          });
-                        }
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -204,20 +208,23 @@ console.log(formData)
       if (response.data.success) {
         return true;
       } else {
-         Swal.fire({
-                                 title: "Error verifying PIN",
-                                 text: response?.data?.message || "Something went wrong! Please Try again",
-                                 icon: "error",
-                               });
-                       return false
+        Swal.fire({
+          title: "Error verifying PIN",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
+          icon: "error",
+        });
+        return false;
       }
     } catch (error) {
       console.error("Error verifying PIN:", error);
-       Swal.fire({
-                                title: "Error verifying PIN",
-                                text: error?.response?.data?.message || "Something went wrong! Please Try again",
-                                icon: "error",
-                              });
+      Swal.fire({
+        title: "Error verifying PIN",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
+        icon: "error",
+      });
       return false;
     }
   };
@@ -260,7 +267,7 @@ console.log(formData)
                       </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-0">
-                        NSDL Correction Apply
+                          NSDL Correction Apply
                         </h4>
                         <h6 className="mx-lg-5">
                           <BiHomeAlt /> &nbsp;/ &nbsp; NSDL Correction Apply
@@ -347,7 +354,7 @@ console.log(formData)
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="input-group">
                               <span class="input-group-text">
-                              <FaUser/>
+                                <FaUser />
                               </span>
                               <div class="form-floating">
                                 <input
@@ -359,8 +366,8 @@ console.log(formData)
                                   onChange={handleChange}
                                   placeholder="Enter Name"
                                   required
-                                   pattern="[A-Za-z\s]*"
-                    title="Text should contain only letters"
+                                  pattern="[A-Za-z\s]*"
+                                  title="Text should contain only letters"
                                 />
                                 <label for="floatingInputGroup2">
                                   Enter First Name
@@ -371,7 +378,7 @@ console.log(formData)
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="input-group">
                               <span class="input-group-text">
-                              <FaUser/>
+                                <FaUser />
                               </span>
                               <div class="form-floating">
                                 <input
@@ -382,9 +389,8 @@ console.log(formData)
                                   value={formData.middle_name}
                                   onChange={handleChange}
                                   placeholder="Enter Middle Name"
-                                   pattern="[A-Za-z\s]*"
-                    title="Text should contain only letters"
-                                  
+                                  pattern="[A-Za-z\s]*"
+                                  title="Text should contain only letters"
                                 />
                                 <label for="floatingInputGroup2">
                                   Enter Middle Name
@@ -395,7 +401,7 @@ console.log(formData)
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="input-group">
                               <span class="input-group-text">
-                              <FaUser/>
+                                <FaUser />
                               </span>
                               <div class="form-floating">
                                 <input
@@ -407,9 +413,8 @@ console.log(formData)
                                   onChange={handleChange}
                                   placeholder="Enter Last Name"
                                   required
-                                   pattern="[A-Za-z\s]*"
-                    title="Text should contain only letters"
-                                  
+                                  pattern="[A-Za-z\s]*"
+                                  title="Text should contain only letters"
                                 />
                                 <label for="floatingInputGroup2">
                                   Enter Last Name
@@ -421,7 +426,7 @@ console.log(formData)
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="input-group">
                               <span class="input-group-text">
-                              <FaIdCard />
+                                <FaIdCard />
                               </span>
                               <div class="form-floating">
                                 <input
@@ -465,7 +470,7 @@ console.log(formData)
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="input-group">
                               <span class="input-group-text">
-                              <FaMobileButton />
+                                <FaMobileButton />
                               </span>
                               <div class="form-floating">
                                 <input
@@ -479,7 +484,6 @@ console.log(formData)
                                   required
                                   maxLength={10}
                                   minLength={10}
-                                  
                                 />
                                 <label for="floatingInputGroup2">
                                   Mobile Number
@@ -491,7 +495,7 @@ console.log(formData)
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="input-group">
                               <span class="input-group-text">
-                              <MdEmail />
+                                <MdEmail />
                               </span>
                               <div class="form-floating">
                                 <input
@@ -513,7 +517,7 @@ console.log(formData)
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="input-group">
                               <span class="input-group-text">
-                              <FaIdCard />
+                                <FaIdCard />
                               </span>
                               <div class="form-floating">
                                 <input
@@ -525,7 +529,7 @@ console.log(formData)
                                   onChange={handleChange}
                                   placeholder="pan_no"
                                   required
-                                  style={{ textTransform: 'uppercase' }}
+                                  style={{ textTransform: "uppercase" }}
                                   pattern="[A-Za-z]{5}[0-9]{4}[A-Za-z]{1}"
                                   title="PAN card number should be in the format: 5 letters, 4 digits, 1 letter (e.g., ABCDE1234F)"
                                   maxLength={10}
@@ -549,7 +553,9 @@ console.log(formData)
                                 onChange={handleChange}
                                 required
                               >
-                                <option selected value="" disabled>Select</option>
+                                <option selected value="" disabled>
+                                  Select
+                                </option>
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
                               </select>
@@ -570,8 +576,12 @@ console.log(formData)
 
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div className="text-start mb-3">
-                              <button type="submit" className="btn btn-primary p-2" disabled={loading}>
-                              {loading ? "Submitting..." : "Submit"}
+                              <button
+                                type="submit"
+                                className="btn btn-primary p-2"
+                                disabled={loading}
+                              >
+                                {loading ? "Submitting..." : "Submit"}
                               </button>
                             </div>
                           </div>
@@ -585,69 +595,64 @@ console.log(formData)
             </div>
           </div>
         </div>
-         {/* pin Model start*/}
-                                 <Modal
-                                                    show={showPinModal}
-                                                    onHide={() => setShowPinModal(false)}
-                                                    centered
-                                                  >
-                                                    <Modal.Header closeButton>
-                                                      <Modal.Title>Enter 4-Digit PIN</Modal.Title>
-                                                    </Modal.Header>
-                                                    <Modal.Body>
-                                                      <div className="pin-inputs d-flex justify-content-center">
-                                                        {pin.map((digit, index) => (
-                                                          <input
-                                                            key={index}
-                                                            ref={(el) => (pinRefs.current[index] = el)}
-                                                            type="text"
-                                                            value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
-                                                            maxLength="1"
-                                                            onChange={(e) =>
-                                                              handlePinChange(index, e.target.value)
-                                                            }
-                                                            onKeyDown={(e) =>
-                                                              e.key === "Backspace" && handleBackspace(index)
-                                                            }
-                                                            className="pin-digit form-control mx-1"
-                                                            style={{
-                                                              width: "50px",
-                                                              textAlign: "center",
-                                                              fontSize: "1.5rem",
-                                                              borderRadius: "8px",
-                                                              border: "1px solid #ced4da",
-                                                              boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
-                                                            }}
-                                                          />
-                                                        ))}
-                                                      </div>
-                                                    </Modal.Body>
-                                                    <Modal.Footer>
-                                                      <Button
-                                                        variant="secondary"
-                                                        onClick={() => setShowPinModal(false)}
-                                                      >
-                                                        Cancel
-                                                      </Button>
-                                                      <Button
-                                                        variant="primary"
-                                                        onClick={handleModalSubmit}
-                                                        disabled={isVerifying}
-                                                      >
-                                                        {isVerifying ? "Verifying..." : "Verify PIN"}
-                                                        {isVerifying && (
-                                                          <Spinner
-                                                            as="span"
-                                                            animation="border"
-                                                            size="sm"
-                                                            role="status"
-                                                            aria-hidden="true"
-                                                          />
-                                                        )}
-                                                      </Button>
-                                                    </Modal.Footer>
-                                                  </Modal>
-                                                   {/* pin Model end*/}
+        {/* pin Model start*/}
+        <Modal
+          show={showPinModal}
+          onHide={() => setShowPinModal(false)}
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Enter 4-Digit PIN</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="pin-inputs d-flex justify-content-center">
+              {pin.map((digit, index) => (
+                <input
+                  key={index}
+                  ref={(el) => (pinRefs.current[index] = el)}
+                  type="text"
+                  value={digit ? "●" : ""} // Show a dot if digit is entered, otherwise empty
+                  maxLength="1"
+                  onChange={(e) => handlePinChange(index, e.target.value)}
+                  onKeyDown={(e) =>
+                    e.key === "Backspace" && handleBackspace(index)
+                  }
+                  className="pin-digit form-control mx-1"
+                  style={{
+                    width: "50px",
+                    textAlign: "center",
+                    fontSize: "1.5rem",
+                    borderRadius: "8px",
+                    border: "1px solid #ced4da",
+                    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                  }}
+                />
+              ))}
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowPinModal(false)}>
+              Cancel
+            </Button>
+            <Button
+              variant="primary"
+              onClick={handleModalSubmit}
+              disabled={isVerifying}
+            >
+              {isVerifying ? "Verifying..." : "Verify PIN"}
+              {isVerifying && (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              )}
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        {/* pin Model end*/}
       </Wrapper>
     </>
   );

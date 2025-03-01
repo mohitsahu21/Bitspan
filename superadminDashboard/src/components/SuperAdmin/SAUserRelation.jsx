@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { MdDelete, MdOutlineFormatListNumbered } from "react-icons/md";
+import { MdDelete, MdGrid3X3, MdOutlineFormatListNumbered } from "react-icons/md";
 import { FaEdit, FaMobileAlt, FaRupeeSign } from "react-icons/fa";
 import { RiMarkPenLine } from "react-icons/ri";
 import { BiHomeAlt } from "react-icons/bi";
@@ -193,7 +193,7 @@ const SAChangeWhiteLabel = ({ user, setWhiteLabelModel, setIsRefresh }) => {
                 <div class="input-group flex-nowrap">
                   <span class="input-group-text" id="addon-wrapping">
                     {" "}
-                    <FaRupeeSign />
+                    <MdGrid3X3 />
                   </span>
                   <input
                     type="text"
@@ -214,7 +214,7 @@ const SAChangeWhiteLabel = ({ user, setWhiteLabelModel, setIsRefresh }) => {
                 <div class="input-group flex-nowrap">
                   <span class="input-group-text" id="addon-wrapping">
                     {" "}
-                    <FaRupeeSign />
+                    <MdGrid3X3 />
                   </span>
                   <input
                     type="text"
@@ -235,7 +235,7 @@ const SAChangeWhiteLabel = ({ user, setWhiteLabelModel, setIsRefresh }) => {
                 <div class="input-group flex-nowrap">
                   <span class="input-group-text" id="addon-wrapping">
                     {" "}
-                    <FaRupeeSign />
+                    <MdGrid3X3 />
                   </span>
                   <input
                     type="text"
@@ -303,7 +303,7 @@ const SAChangeWhiteLabel = ({ user, setWhiteLabelModel, setIsRefresh }) => {
   
               <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div className="text-center  m-5">
-                  <button type="submit" className="btn p-2" disabled={loading}>
+                  <button type="submit" className="btn btn-primary p-2" disabled={loading}>
                     {loading ? "Loading..." : "Submit"}
                   </button>
                 </div>
@@ -493,7 +493,7 @@ const SAChangeSuperDistributor = ({ user, setSuperDistributorModel, setIsRefresh
                 <div class="input-group flex-nowrap">
                   <span class="input-group-text" id="addon-wrapping">
                     {" "}
-                    <FaRupeeSign />
+                    <MdGrid3X3 />
                   </span>
                   <input
                     type="text"
@@ -514,7 +514,7 @@ const SAChangeSuperDistributor = ({ user, setSuperDistributorModel, setIsRefresh
                 <div class="input-group flex-nowrap">
                   <span class="input-group-text" id="addon-wrapping">
                     {" "}
-                    <FaRupeeSign />
+                    <MdGrid3X3 />
                   </span>
                   <input
                     type="text"
@@ -535,7 +535,7 @@ const SAChangeSuperDistributor = ({ user, setSuperDistributorModel, setIsRefresh
                 <div class="input-group flex-nowrap">
                   <span class="input-group-text" id="addon-wrapping">
                     {" "}
-                    <FaRupeeSign />
+                    <MdGrid3X3 />
                   </span>
                   <input
                     type="text"
@@ -571,7 +571,7 @@ const SAChangeSuperDistributor = ({ user, setSuperDistributorModel, setIsRefresh
   
               <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div className="text-center  m-5">
-                  <button type="submit" className="btn p-2" disabled={loading}>
+                  <button type="submit" className="btn btn-primary p-2" disabled={loading}>
                     {loading ? "Loading..." : "Submit"}
                   </button>
                 </div>
@@ -760,7 +760,7 @@ const SAChangeDistributor = ({ user, setDistributorModel, setIsRefresh }) => {
                 <div class="input-group flex-nowrap">
                   <span class="input-group-text" id="addon-wrapping">
                     {" "}
-                    <FaRupeeSign />
+                    <MdGrid3X3 />
                   </span>
                   <input
                     type="text"
@@ -781,7 +781,7 @@ const SAChangeDistributor = ({ user, setDistributorModel, setIsRefresh }) => {
                 <div class="input-group flex-nowrap">
                   <span class="input-group-text" id="addon-wrapping">
                     {" "}
-                    <FaRupeeSign />
+                    <MdGrid3X3 />
                   </span>
                   <input
                     type="text"
@@ -802,7 +802,7 @@ const SAChangeDistributor = ({ user, setDistributorModel, setIsRefresh }) => {
                 <div class="input-group flex-nowrap">
                   <span class="input-group-text" id="addon-wrapping">
                     {" "}
-                    <FaRupeeSign />
+                    <MdGrid3X3 />
                   </span>
                   <input
                     type="text"
@@ -838,7 +838,7 @@ const SAChangeDistributor = ({ user, setDistributorModel, setIsRefresh }) => {
   
               <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div className="text-center  m-5">
-                  <button type="submit" className="btn p-2" disabled={loading}>
+                  <button type="submit" className="btn btn-primary p-2" disabled={loading}>
                     {loading ? "Loading..." : "Submit"}
                   </button>
                 </div>
@@ -999,7 +999,7 @@ const SARejectUser = ({ user, setShowRejectModel, setIsRefresh }) => {
 
             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
               <div className="text-center  m-5">
-                <button type="submit" className="btn p-2" disabled={loading}>
+                <button type="submit" className="btn btn-primary p-2" disabled={loading}>
                   {loading ? "Loading..." : "Submit"}
                 </button>
               </div>
@@ -1235,7 +1235,13 @@ const SAUserRelation = () => {
                                   {showApiData && showApiData.length > 0 ? (
                                     showApiData?.map((user, index) => (
                                       <tr key={user.ur_id }>
-                                        <th scope="row">{index + 1}</th>
+                                        {/* <th scope="row">{index + 1}</th> */}
+                                        <td>
+                                                {currentPage *
+                                                  complaintsPerPage +
+                                                  index +
+                                                  1}
+                                              </td>
                                       
 
                                         <td>{user.UserId}</td>

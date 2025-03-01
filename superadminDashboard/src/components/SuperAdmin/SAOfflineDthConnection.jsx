@@ -22,11 +22,13 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
  const dispatch = useDispatch();
+ const { currentUser } = useSelector((state) => state.user);
  const { token } = useSelector((state) => state.user);
     const [formData, setFormData] = useState({
       order_id: item.orderid,
       note : "",
-      status : "Under Process"
+      status : "Under Process",
+      process_by_userId	: currentUser.userId
     });
   
     const handleChange = (e) => {
@@ -136,7 +138,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
   
               <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div className="text-center  m-5">
-                  <button type="submit" className="btn p-2" disabled={loading}>
+                  <button type="submit" className="btn btn-primary p-2" disabled={loading}>
                     {loading ? "Loading..." : "Submit"}
                   </button>
                 </div>
@@ -155,6 +157,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 // Mark for edit Model start // 
 const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
+  const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
  const dispatch = useDispatch();
  const { token } = useSelector((state) => state.user);
@@ -162,6 +165,7 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     order_id: item.orderid,
     note: "",
     status: "Mark Edit",
+    process_by_userId	: currentUser.userId
   });
 
   const handleChange = (e) => {
@@ -268,7 +272,7 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button type="submit" className="btn btn-primary p-2" disabled={loading}>
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -286,13 +290,15 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.user);
    const [userRelation,setUserRelation] = useState([]);
   const { token } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     order_id: item.orderid,
     note: "",
     status: "Success",
-    user_id : item.user_id
+    user_id : item.user_id,
+    process_by_userId	: currentUser.userId
   });
 
   const handleChange = (e) => {
@@ -917,7 +923,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button type="submit" className="btn btn-primary p-2" disabled={loading}>
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -934,6 +940,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
 const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { currentUser } = useSelector((state) => state.user);
  const dispatch = useDispatch();
  const { token } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
@@ -944,7 +951,8 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     chargeAmount : "",
     refundAmount : "",
     Transaction_details : `Refund Credit for DTH Connection Order Id ${item.orderid}`,
-    user_id : item.user_id
+    user_id : item.user_id,
+    process_by_userId	: currentUser.userId
   });
 
   // const handleChange = (e) => {
@@ -1136,7 +1144,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 
             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
               <div className="text-center  m-5">
-                <button type="submit" className="btn p-2" disabled={loading}>
+                <button type="submit" className="btn btn-primary p-2" disabled={loading}>
                   {loading ? "Loading..." : "Submit"}
                 </button>
               </div>
@@ -1367,7 +1375,7 @@ const SAOfflineDthConnection = () => {
                                                           <option selected>---Select Form Status---</option>
                                                           <option value="Pending">Pending</option>
                               <option value="Success">Success</option>
-                              <option value="Mark Edit">Mark Edit</option>
+                              {/* <option value="Mark Edit">Mark Edit</option> */}
                               <option value="Reject">Reject</option>
                                                       
                                                         </select>
@@ -1421,6 +1429,8 @@ const SAOfflineDthConnection = () => {
                                   <th scope="col">User Name</th>
                                   <th scope="col">User Mobile</th>
                                   <th scope="col">Status</th>
+                                  <th scope="col">Process By</th>
+                                  <th scope="col">Process Date</th>
                                   <th scope="col">Note</th>
                                   <th scope="col">Action</th>
                                   </tr>
@@ -1430,7 +1440,13 @@ const SAOfflineDthConnection = () => {
                                                             {showApiData && showApiData.length > 0 ? (
                                         showApiData?.map((item, index) => (
                                           <tr key={index}>
-                                          <th scope="row">{index + 1}</th>
+                                          {/* <th scope="row">{index + 1}</th> */}
+                                          <td>
+                                                {currentPage *
+                                                  complaintsPerPage +
+                                                  index +
+                                                  1}
+                                              </td>
                                           <td>{item.created_at}</td>
                                           <td>{item.orderid}</td>
                                           <td>{item.first_name}</td>
@@ -1447,6 +1463,8 @@ const SAOfflineDthConnection = () => {
                                           <td>{item.UserName}</td>
                                           <td>{item.ContactNo}</td>
                                           <td>{item.status}</td>
+                                          <td>{item.process_by_userId}</td>
+                                          <td>{item.updated_at}</td>
                                           <td>{item.note}</td>
                                           <td>
                                             { (item.status === "Pending" || item.status === "Mark Edit") && 
@@ -1475,7 +1493,7 @@ const SAOfflineDthConnection = () => {
                                                     </span>{" "}
                                                     Approve
                                                   </Dropdown.Item>
-                                                  <Dropdown.Item
+                                                  {/* <Dropdown.Item
                                                     onClick={() => {
                                                       // setSelectedUser(user);
                                                       setShowMarkEditModel(true);
@@ -1488,7 +1506,21 @@ const SAOfflineDthConnection = () => {
                                                       <CiViewList />
                                                     </span>{" "}
                                                     Mark for Edit
-                                                  </Dropdown.Item>
+                                                  </Dropdown.Item> */}
+                                                   <Dropdown.Item
+    onClick={() => {
+      // setSelectedUser(user);
+      setShowRejectModel(true)
+      setSelectedItem(item)
+    //   deactivateUser(user.UserId)
+    }}
+  >
+    <span className="">
+      {" "}
+      <CiViewList />
+    </span>{" "}
+    Reject
+  </Dropdown.Item>
                                                 
                                              
                                                 </Dropdown.Menu>
@@ -1612,6 +1644,8 @@ onChange={(e) => setKeyword(e.target.value)}
 <th scope="col">User Name</th>
 <th scope="col">User Mobile</th>
 <th scope="col">Status</th>
+<th scope="col">Process By</th>
+<th scope="col">Process Date</th>
 <th scope="col">Note</th>
 <th scope="col">Action</th>
 </tr>
@@ -1621,7 +1655,13 @@ onChange={(e) => setKeyword(e.target.value)}
             {showUnderProcessData && showUnderProcessData.length > 0 ? (
 showUnderProcessData?.map((item, index) => (
 <tr key={index}>
-<th scope="row">{index + 1}</th>
+{/* <th scope="row">{index + 1}</th> */}
+<td>
+                                                {currentPage *
+                                                  complaintsPerPage +
+                                                  index +
+                                                  1}
+                                              </td>
 <td>{item.created_at}</td>
 <td>{item.orderid}</td>
 <td>{item.first_name}</td>
@@ -1638,6 +1678,8 @@ showUnderProcessData?.map((item, index) => (
 <td>{item.UserName}</td>
 <td>{item.ContactNo}</td>
 <td>{item.status}</td>
+<td>{item.process_by_userId}</td>
+<td>{item.updated_at}</td>
 <td>{item.note}</td>
 <td>
 { (item.status === "Under Process") && 

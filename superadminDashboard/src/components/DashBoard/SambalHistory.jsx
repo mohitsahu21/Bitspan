@@ -19,10 +19,10 @@ const SambalHistory = () => {
   const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
   const [dataLoading, setDataLoading] = useState(false);
-   const [isRefresh, setIsRefresh] = useState(false);
-    const [selectedItem, setSelectedItem] = useState("");
-     const [showMarkEditModel, setShowMarkEditModel] = useState(false);
-      const [formStatus, setFormStatus] = useState(""); // For user type filter
+  const [isRefresh, setIsRefresh] = useState(false);
+  const [selectedItem, setSelectedItem] = useState("");
+  const [showMarkEditModel, setShowMarkEditModel] = useState(false);
+  const [formStatus, setFormStatus] = useState(""); // For user type filter
 
   const userID = currentUser.userId;
 
@@ -30,7 +30,13 @@ const SambalHistory = () => {
     setDataLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getSambalHistory/${userID}`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getSambalHistory/${userID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = response.data.data;
       console.log(data);
@@ -44,24 +50,28 @@ const SambalHistory = () => {
   };
   console.log(allData);
 
-  
-    const filteredItems = allData?.filter((row) => {
-      // const searchValue = filterValue.toLowerCase();
-      // const orderID = item.order_id ? item.order_id.toLowerCase() : "";
-      // const mobileNO = item.mobile_number
-      //   ? item.mobile_number.toLowerCase()
-      //   : "";
+  const filteredItems = allData?.filter((row) => {
+    // const searchValue = filterValue.toLowerCase();
+    // const orderID = item.order_id ? item.order_id.toLowerCase() : "";
+    // const mobileNO = item.mobile_number
+    //   ? item.mobile_number.toLowerCase()
+    //   : "";
 
-      // return orderID.includes(searchValue) || mobileNO.includes(searchValue);
+    // return orderID.includes(searchValue) || mobileNO.includes(searchValue);
 
-      const matchesKeyword = (row?.samagra_id &&
-        row.samagra_id.toLowerCase().includes(filterValue.trim().toLowerCase())) ||
+    const matchesKeyword =
+      (row?.samagra_id &&
+        row.samagra_id
+          .toLowerCase()
+          .includes(filterValue.trim().toLowerCase())) ||
       (row?.mobile_number &&
         row.mobile_number
           .toLowerCase()
           .includes(filterValue.trim().toLowerCase())) ||
       (row?.family_id &&
-        row.family_id.toLowerCase().includes(filterValue.trim().toLowerCase())) ||
+        row.family_id
+          .toLowerCase()
+          .includes(filterValue.trim().toLowerCase())) ||
       (row?.order_id &&
         row.order_id.toLowerCase().includes(filterValue.trim().toLowerCase()));
 
@@ -70,9 +80,8 @@ const SambalHistory = () => {
       formStatus === "---Select Form Status---" ||
       row.status === formStatus;
     return matchesKeyword && matchesType;
-    });
-    // setFilteredData(filteredItems);
-  
+  });
+  // setFilteredData(filteredItems);
 
   useEffect(() => {
     fetchRechargeData();
@@ -96,230 +105,237 @@ const SambalHistory = () => {
       <Wrapper>
         <div className="main">
           <div className="container-fluid">
-          
-              <div className="row flex-wrap justify-content-lg-center justify-content-center ">
-                <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
-                  {/* <Sider /> */}
-                </div>
-                <div
-                  className="col-xxl-12 col-xl-12 col-lg-12 col-md-10  col-sm-10  col-11
+            <div className="row flex-wrap justify-content-lg-center justify-content-center ">
+              <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
+                {/* <Sider /> */}
+              </div>
+              <div
+                className="col-xxl-12 col-xl-12 col-lg-12 col-md-10  col-sm-10  col-11
                              mt-5 formdata "
-                >
-                  <div className="main shadow-none ">
-                    <div className="row shadow-none ">
-                      <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                        {/* <div className="text-center">
+              >
+                <div className="main shadow-none ">
+                  <div className="row shadow-none ">
+                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                      {/* <div className="text-center">
                                                 <h3>Prepaid Recharge History</h3>
                                             </div> */}
-                        <div className="d-flex justify-content-between align-items-center flex-wrap">
-                          <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                            Sambal History
-                          </h4>
-                          <h6 className="mx-lg-5">
-                            <BiHomeAlt /> &nbsp;/ &nbsp; Sambal History
-                          </h6>
-                        </div>
+                      <div className="d-flex justify-content-between align-items-center flex-wrap">
+                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
+                          Sambal History
+                        </h4>
+                        <h6 className="mx-lg-5">
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Sambal History
+                        </h6>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
-                      <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
-                        <div className="row d-flex flex-column g-4">
-                          <div className="d-flex flex-column flex-xl-row gap-3">
-                            {/* <div className="col-12 col-md-4 col-lg-3"> */}
-                            <div className="col-12 col-md-12 col-lg-12 col-xl-8">
-                              <input
-                                className="form-control"
-                                type="search"
-                                id="floatingInputGroup1"
-                                placeholder="Enter Samagra Id/Family Id/Mobile/Order Id"
-                                value={filterValue}
-                                onChange={(e) => {
-                                  setFilterValue(e.target.value);
-                                  if (e.target.value === "") {
-                                    setCurrentPage(0);
-                                  }
-                                }}
-                                onKeyDown={(e) => {
-                                  if (e.key === "Escape") {
-                                    setFilterValue("");
-                                    setCurrentPage(0);
-                                  }
-                                }}
-                              />
-                            </div>
-                            <div className="col-12 col-md-12 col-lg-12 col-xl-3">
-                                {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
-                                <select
-                                  className="form-select"
-                                  aria-label="Default select example"
-                                  value={formStatus}
-                                  onChange={(e) =>
-                                    setFormStatus(e.target.value)
-                                  }
-                                >
-                                  <option selected>
-                                    ---Select Form Status---
-                                  </option>
-                                  <option value="Pending">Pending</option>
-                                  <option value="Under Process">Under Process</option>
+                  <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
+                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
+                      <div className="row d-flex flex-column g-4">
+                        <div className="d-flex flex-column flex-xl-row gap-3">
+                          {/* <div className="col-12 col-md-4 col-lg-3"> */}
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                            <input
+                              className="form-control"
+                              type="search"
+                              id="floatingInputGroup1"
+                              placeholder="Enter Samagra Id/Family Id/Mobile/Order Id"
+                              value={filterValue}
+                              onChange={(e) => {
+                                setFilterValue(e.target.value);
+                                if (e.target.value === "") {
+                                  setCurrentPage(0);
+                                }
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === "Escape") {
+                                  setFilterValue("");
+                                  setCurrentPage(0);
+                                }
+                              }}
+                            />
+                          </div>
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-3">
+                            {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              value={formStatus}
+                              onChange={(e) => setFormStatus(e.target.value)}
+                            >
+                              <option selected>---Select Form Status---</option>
+                              <option value="Pending">Pending</option>
+                              <option value="Under Process">
+                                Under Process
+                              </option>
                               <option value="Success">Success</option>
                               <option value="Mark Edit">Mark Edit</option>
                               <option value="Reject">Reject</option>
-                                </select>
-                              </div>
+                            </select>
                           </div>
+                        </div>
 
-                          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                            <div class="table-responsive">
-                                {dataLoading ? (
-                                                                <div className="d-flex justify-content-center">
-                                                                  <Spinner animation="border" role="status">
-                                                                    <span className="visually-hidden ">
-                                                                      Loading...
-                                                                    </span>
-                                                                  </Spinner>
-                                                                </div>
-                                                              ) : (
-                                                                <>
-                              <table class="table table-striped">
-                                <thead className="table-dark">
-                                  <tr>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Order ID</th>
-                                    <th scope="col">Samagra ID</th>
-                                    <th scope="col">Family ID</th>
-                                    <th scope="col">Applicant Type</th>
-                                    <th scope="col">Education</th>
-                                    <th scope="col">Occupation</th>
-                                    <th scope="col">SMS Notification</th>
-                                    <th scope="col">Income Tax Payer</th>
-                                    <th scope="col">Land Ownership</th>
-                                    <th scope="col">Govt Service</th>
-                                    <th scope="col">Mobile Number</th>
-                                    <th scope="col">Note</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Action</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {displayData.length > 0 ? (
-                                    displayData.map((item) => (
-                                      <tr key={item.id}>
-                                        <td>{item.created_at}</td>
-                                        <td>{item.order_id}</td>
-                                        <td>{item.samagra_id}</td>
-                                        <td>{item.family_id}</td>
-                                        <td>{item.applicant_type}</td>
-                                        <td>{item.education}</td>
-                                        <td>{item.occupation}</td>
-                                        <td>{item.sms_notification}</td>
-                                        <td>{item.income_tax_payer}</td>
-                                        <td>{item.land_ownership}</td>
-                                        <td>{item.govt_service}</td>
-                                        <td>{item.mobile_number}</td>
-                                        <td>{item.note}</td>
-                                        <td>{item.status}</td>
-                                        <td>
-                                                {(item.status === "Pending" || item.status === "Mark Edit") && (
-                                                  <Dropdown>
-                                                    <Dropdown.Toggle
-                                                      variant="success"
-                                                      // id={`dropdown-${user.id}`}
-                                                      as="span"
-                                                      style={{
-                                                        border: "none",
-                                                        background: "none",
-                                                        cursor: "pointer",
-                                                      }}
-                                                      className="custom-dropdown-toggle"
-                                                    >
-                                                      <PiDotsThreeOutlineVerticalBold />
-                                                    </Dropdown.Toggle>
-                                                    <Dropdown.Menu>
-                                                      
-                                                      <Dropdown.Item
-                                                        onClick={() => {
-                                                          // setSelectedUser(user);
-                                                          setShowMarkEditModel(true);
-                                                          setSelectedItem(item);
-                                                          //   deactivateUser(user.UserId)
-                                                        }}
-                                                      >
-                                                        <span className="">
-                                                          {" "}
-                                                          <CiViewList />
-                                                        </span>{" "}
-                                                      Edit
-                                                      </Dropdown.Item>
-                                                    </Dropdown.Menu>
-                                                  </Dropdown>
-                                                )}
-                                              </td>
-                                      </tr>
-                                    ))
-                                  ) : (
+                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                          <div class="table-responsive">
+                            {dataLoading ? (
+                              <div className="d-flex justify-content-center">
+                                <Spinner animation="border" role="status">
+                                  <span className="visually-hidden ">
+                                    Loading...
+                                  </span>
+                                </Spinner>
+                              </div>
+                            ) : (
+                              <>
+                                <table class="table table-striped">
+                                  <thead className="table-dark">
                                     <tr>
-                                      <td colSpan="10" className="text-center">
-                                        No results found
-                                      </td>
+                                      <th scope="col">Sr.No</th>
+                                      <th scope="col">Date</th>
+                                      <th scope="col">Order ID</th>
+                                      <th scope="col">Samagra ID</th>
+                                      <th scope="col">Family ID</th>
+                                      <th scope="col">Applicant Type</th>
+                                      <th scope="col">Education</th>
+                                      <th scope="col">Occupation</th>
+                                      <th scope="col">SMS Notification</th>
+                                      <th scope="col">Income Tax Payer</th>
+                                      <th scope="col">Land Ownership</th>
+                                      <th scope="col">Govt Service</th>
+                                      <th scope="col">Mobile Number</th>
+                                      <th scope="col">Note</th>
+                                      <th scope="col">Status</th>
+                                      <th scope="col">Action</th>
                                     </tr>
-                                  )}
-                                </tbody>
-                              </table>
+                                  </thead>
+                                  <tbody>
+                                    {displayData.length > 0 ? (
+                                      displayData.map((item, index) => (
+                                        <tr key={(item.id, index)}>
+                                          <th scope="row">
+                                            {currentPage * complaintsPerPage +
+                                              index +
+                                              1}
+                                          </th>
+                                          <td>{item.created_at}</td>
+                                          <td>{item.order_id}</td>
+                                          <td>{item.samagra_id}</td>
+                                          <td>{item.family_id}</td>
+                                          <td>{item.applicant_type}</td>
+                                          <td>{item.education}</td>
+                                          <td>{item.occupation}</td>
+                                          <td>{item.sms_notification}</td>
+                                          <td>{item.income_tax_payer}</td>
+                                          <td>{item.land_ownership}</td>
+                                          <td>{item.govt_service}</td>
+                                          <td>{item.mobile_number}</td>
+                                          <td>{item.note}</td>
+                                          <td>{item.status}</td>
+                                          <td>
+                                            {(item.status === "Pending" ||
+                                              item.status === "Mark Edit") && (
+                                              <Dropdown>
+                                                <Dropdown.Toggle
+                                                  variant="success"
+                                                  // id={`dropdown-${user.id}`}
+                                                  as="span"
+                                                  style={{
+                                                    border: "none",
+                                                    background: "none",
+                                                    cursor: "pointer",
+                                                  }}
+                                                  className="custom-dropdown-toggle"
+                                                >
+                                                  <PiDotsThreeOutlineVerticalBold />
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu>
+                                                  <Dropdown.Item
+                                                    onClick={() => {
+                                                      // setSelectedUser(user);
+                                                      setShowMarkEditModel(
+                                                        true
+                                                      );
+                                                      setSelectedItem(item);
+                                                      //   deactivateUser(user.UserId)
+                                                    }}
+                                                  >
+                                                    <span className="">
+                                                      {" "}
+                                                      <CiViewList />
+                                                    </span>{" "}
+                                                    Edit
+                                                  </Dropdown.Item>
+                                                </Dropdown.Menu>
+                                              </Dropdown>
+                                            )}
+                                          </td>
+                                        </tr>
+                                      ))
+                                    ) : (
+                                      <tr>
+                                        <td
+                                          colSpan="10"
+                                          className="text-center"
+                                        >
+                                          No results found
+                                        </td>
+                                      </tr>
+                                    )}
+                                  </tbody>
+                                </table>
                               </>
-                                )}
-                            </div>
-                            <PaginationContainer>
-                              <ReactPaginate
-                                previousLabel={"Previous"}
-                                nextLabel={"Next"}
-                                breakLabel={"..."}
-                                pageCount={totalPages}
-                                marginPagesDisplayed={2}
-                                pageRangeDisplayed={3}
-                                onPageChange={handlePageChange}
-                                containerClassName={"pagination"}
-                                activeClassName={"active"}
-                              />
-                            </PaginationContainer>
+                            )}
                           </div>
+                          <PaginationContainer>
+                            <ReactPaginate
+                              previousLabel={"Previous"}
+                              nextLabel={"Next"}
+                              breakLabel={"..."}
+                              pageCount={totalPages}
+                              marginPagesDisplayed={2}
+                              pageRangeDisplayed={3}
+                              onPageChange={handlePageChange}
+                              containerClassName={"pagination"}
+                              activeClassName={"active"}
+                            />
+                          </PaginationContainer>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-           
+            </div>
           </div>
         </div>
-                      {/* Mark Edit Model  start*/}
-        
-                      <Modal
-                  // size="lg"
-                  // centered
-                  show={showMarkEditModel}
-                    fullscreen={true}
-                  onHide={() => setShowMarkEditModel(false)}
-                  aria-labelledby="packageDetail-modal-sizes-title-lg"
-                >
-                  <Modal.Header closeButton>
-                    <Modal.Title id="packageDetail-modal-sizes-title-lg">
-                      Edit Sambal Form
-                    </Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    {selectedItem && (
-                      <SambalFormEditModel
-                        item={selectedItem}
-                        setShowMarkEditModel={setShowMarkEditModel}
-                        setIsRefresh={setIsRefresh}
-                      />
-                    )}
-                  </Modal.Body>
-                </Modal>
-        
-                {/*  Mark Edit Model  end*/}
+        {/* Mark Edit Model  start*/}
+
+        <Modal
+          // size="lg"
+          // centered
+          show={showMarkEditModel}
+          fullscreen={true}
+          onHide={() => setShowMarkEditModel(false)}
+          aria-labelledby="packageDetail-modal-sizes-title-lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="packageDetail-modal-sizes-title-lg">
+              Edit Sambal Form
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {selectedItem && (
+              <SambalFormEditModel
+                item={selectedItem}
+                setShowMarkEditModel={setShowMarkEditModel}
+                setIsRefresh={setIsRefresh}
+              />
+            )}
+          </Modal.Body>
+        </Modal>
+
+        {/*  Mark Edit Model  end*/}
       </Wrapper>
     </>
   );

@@ -30,7 +30,13 @@ const Edistrict = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getEdistrictData/${userData}`
+        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getEdistrictData/${userData}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setFormData(response.data);
       console.log(response.data);
@@ -227,7 +233,7 @@ const Edistrict = () => {
                                 <table class="table table-striped">
                                   <thead className="table-dark">
                                     <tr>
-                                      <th scope="col">Sr.No</th>
+                                      <th scope="col">#</th>
                                       <th scope="col">Order ID</th>
                                       <th scope="col">Applicant For</th>
                                       <th scope="col">Applicant Type</th>
@@ -252,88 +258,98 @@ const Edistrict = () => {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                        {displayData.length > 0 ? ( displayData?.map((item, index) => (
-                                          <tr key={index}>
-                                            <th scope="row">{index + 1}</th>
-                                            <td>{item.order_id}</td>
-                                            <td>{item.application_type}</td>
-                                            <td>{item.samagar}</td>
-                                            <td>{item.name}</td>
-                                            <td>{item.father_husband_name}</td>
-                                            <td>{item.mobile_no}</td>
-                                            <td>{item.dob}</td>
-                                            <td>{item.gender}</td>
-                                            <td>{item.cast}</td>
-                                            <td>{item.aadhar_no}</td>
-                                            <td>{item.samagar_member_id}</td>
-                                            <td>{item.address}</td>
-                                            <td>{item.state}</td>
-                                            <td>{item.previous_application}</td>
-                                            <td>{item.annual_income}</td>
-                                            <td>
-                                              {item?.documentUpload
-                                                ?.split(",")
-                                                ?.map((kycurl, kycindx) => (
-                                                  <div key={kycindx}>
-                                                    <a
-                                                      href={kycurl}
-                                                      target="_blank"
-                                                      rel="noopener noreferrer"
-                                                    >
-                                                      View {kycindx + 1}
-                                                    </a>
-                                                  </div>
-                                                ))}
-                                            </td>
-                                            <td>{item.charge_amount}</td>
-                                            <td>{item.created_at}</td>
-                                            <td>{item.note}</td>
-                                            <td>{item.status}</td>
-                                             <td>
-                                                                                            {(item.status === "Pending" || item.status === "Mark Edit") && (
-                                                                                              <Dropdown>
-                                                                                                <Dropdown.Toggle
-                                                                                                  variant="success"
-                                                                                                  // id={`dropdown-${user.id}`}
-                                                                                                  as="span"
-                                                                                                  style={{
-                                                                                                    border: "none",
-                                                                                                    background: "none",
-                                                                                                    cursor: "pointer",
-                                                                                                  }}
-                                                                                                  className="custom-dropdown-toggle"
-                                                                                                >
-                                                                                                  <PiDotsThreeOutlineVerticalBold />
-                                                                                                </Dropdown.Toggle>
-                                                                                                <Dropdown.Menu>
-                                                                                                  
-                                                                                                  <Dropdown.Item
-                                                                                                    onClick={() => {
-                                                                                                      // setSelectedUser(user);
-                                                                                                      setShowMarkEditModel(true);
-                                                                                                      setSelectedItem(item);
-                                                                                                      //   deactivateUser(user.UserId)
-                                                                                                    }}
-                                                                                                  >
-                                                                                                    <span className="">
-                                                                                                      {" "}
-                                                                                                      <CiViewList />
-                                                                                                    </span>{" "}
-                                                                                                  Edit
-                                                                                                  </Dropdown.Item>
-                                                                                                </Dropdown.Menu>
-                                                                                              </Dropdown>
-                                                                                            )}
-                                                                                          </td>
-                                          </tr>
-                                         ))
-                                        ) : (
-                                          <tr>
-                                            <td colSpan="10" className="text-center">
-                                              No results found
-                                            </td>
-                                          </tr>
-                                        )}
+                                    {displayData.length > 0 ? (
+                                      displayData?.map((item, index) => (
+                                        <tr key={index}>
+                                          <th scope="row">
+                                            {currentPage * complaintsPerPage +
+                                              index +
+                                              1}
+                                          </th>
+                                          <td>{item.order_id}</td>
+                                          <td>{item.application_type}</td>
+                                          <td>{item.samagar}</td>
+                                          <td>{item.name}</td>
+                                          <td>{item.father_husband_name}</td>
+                                          <td>{item.mobile_no}</td>
+                                          <td>{item.dob}</td>
+                                          <td>{item.gender}</td>
+                                          <td>{item.cast}</td>
+                                          <td>{item.aadhar_no}</td>
+                                          <td>{item.samagar_member_id}</td>
+                                          <td>{item.address}</td>
+                                          <td>{item.state}</td>
+                                          <td>{item.previous_application}</td>
+                                          <td>{item.annual_income}</td>
+                                          <td>
+                                            {item?.documentUpload
+                                              ?.split(",")
+                                              ?.map((kycurl, kycindx) => (
+                                                <div key={kycindx}>
+                                                  <a
+                                                    href={kycurl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                  >
+                                                    View {kycindx + 1}
+                                                  </a>
+                                                </div>
+                                              ))}
+                                          </td>
+                                          <td>{item.charge_amount}</td>
+                                          <td>{item.created_at}</td>
+                                          <td>{item.note}</td>
+                                          <td>{item.status}</td>
+                                          <td>
+                                            {(item.status === "Pending" ||
+                                              item.status === "Mark Edit") && (
+                                              <Dropdown>
+                                                <Dropdown.Toggle
+                                                  variant="success"
+                                                  // id={`dropdown-${user.id}`}
+                                                  as="span"
+                                                  style={{
+                                                    border: "none",
+                                                    background: "none",
+                                                    cursor: "pointer",
+                                                  }}
+                                                  className="custom-dropdown-toggle"
+                                                >
+                                                  <PiDotsThreeOutlineVerticalBold />
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu>
+                                                  <Dropdown.Item
+                                                    onClick={() => {
+                                                      // setSelectedUser(user);
+                                                      setShowMarkEditModel(
+                                                        true
+                                                      );
+                                                      setSelectedItem(item);
+                                                      //   deactivateUser(user.UserId)
+                                                    }}
+                                                  >
+                                                    <span className="">
+                                                      {" "}
+                                                      <CiViewList />
+                                                    </span>{" "}
+                                                    Edit
+                                                  </Dropdown.Item>
+                                                </Dropdown.Menu>
+                                              </Dropdown>
+                                            )}
+                                          </td>
+                                        </tr>
+                                      ))
+                                    ) : (
+                                      <tr>
+                                        <td
+                                          colSpan="10"
+                                          className="text-center"
+                                        >
+                                          No results found
+                                        </td>
+                                      </tr>
+                                    )}
                                   </tbody>
                                 </table>
                               </>
@@ -361,33 +377,33 @@ const Edistrict = () => {
             </div>
           </div>
         </div>
-                    {/* Mark Edit Model  start*/}
-        
-                    <Modal
-                  // size="lg"
-                  // centered
-                  show={showMarkEditModel}
-                    fullscreen={true}
-                  onHide={() => setShowMarkEditModel(false)}
-                  aria-labelledby="packageDetail-modal-sizes-title-lg"
-                >
-                  <Modal.Header closeButton>
-                    <Modal.Title id="packageDetail-modal-sizes-title-lg">
-                      Edit E-District Form
-                    </Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    {selectedItem && (
-                      <EdistrictEditModel
-                        item={selectedItem}
-                        setShowMarkEditModel={setShowMarkEditModel}
-                        setIsRefresh={setIsRefresh}
-                      />
-                    )}
-                  </Modal.Body>
-                </Modal>
-        
-                {/*  Mark Edit Model  end*/}
+        {/* Mark Edit Model  start*/}
+
+        <Modal
+          // size="lg"
+          // centered
+          show={showMarkEditModel}
+          fullscreen={true}
+          onHide={() => setShowMarkEditModel(false)}
+          aria-labelledby="packageDetail-modal-sizes-title-lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="packageDetail-modal-sizes-title-lg">
+              Edit E-District Form
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {selectedItem && (
+              <EdistrictEditModel
+                item={selectedItem}
+                setShowMarkEditModel={setShowMarkEditModel}
+                setIsRefresh={setIsRefresh}
+              />
+            )}
+          </Modal.Body>
+        </Modal>
+
+        {/*  Mark Edit Model  end*/}
       </Wrapper>
     </>
   );

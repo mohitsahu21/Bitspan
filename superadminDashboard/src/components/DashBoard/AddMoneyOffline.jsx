@@ -47,7 +47,7 @@ const AddMoneyOffline = () => {
   const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-  
+
     if (file) {
       if (file.size > MAX_FILE_SIZE) {
         Swal.fire({
@@ -91,7 +91,10 @@ const AddMoneyOffline = () => {
         "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/add-money-wallet",
         data,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -112,10 +115,10 @@ const AddMoneyOffline = () => {
         Transaction_Reference: "",
       });
       setReceiptAttachment(null);
-         // Reset file input
-         if (fileInputRef.current) {
-          fileInputRef.current.value = null;
-        }
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = null;
+      }
     } catch (error) {
       console.error("Error submitting form:", error.response.data);
       alert("Failed to submit form. Please try again.");
@@ -251,7 +254,10 @@ const AddMoneyOffline = () => {
 
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div className="text-start mb-3">
-                              <button className="btn btn-primary p-2" disabled={isLoading}>
+                              <button
+                                className="btn btn-primary p-2"
+                                disabled={isLoading}
+                              >
                                 {isLoading
                                   ? "Processing..."
                                   : "Add Wallet Amount Request"}
