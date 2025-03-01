@@ -394,7 +394,7 @@ const getPendingUsers = (req, res) => {
   try {
     // const sql = "SELECT * FROM userprofile WHERE Status = 'Pending'";
     const sql =
-      "SELECT * FROM userprofile WHERE Status = 'Pending' AND payment_status = 'Complete' AND role != 'SuperAdmin_Employee'";
+      "SELECT * FROM userprofile WHERE Status = 'Pending' AND payment_status = 'Complete' AND role != 'SuperAdmin_Employee' ORDER BY id DESC";
 
     db.query(sql, (err, result) => {
       if (err) {
@@ -435,7 +435,7 @@ const getPendingUsers = (req, res) => {
 const getPendingPaymentUsers = (req, res) => {
   try {
     const sql =
-      "SELECT * FROM userprofile WHERE payment_status = 'Pending' AND role != 'SuperAdmin_Employee'";
+      "SELECT * FROM userprofile WHERE payment_status = 'Pending' AND role != 'SuperAdmin_Employee' ORDER BY id DESC";
 
     db.query(sql, (err, result) => {
       if (err) {
@@ -475,7 +475,7 @@ const getPendingPaymentUsers = (req, res) => {
 const getActiveUsers = (req, res) => {
   try {
     const sql =
-      "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE u.Status = 'Active' AND role != 'SuperAdmin_Employee'";
+      "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE u.Status = 'Active' AND role != 'SuperAdmin_Employee' ORDER BY id DESC";
 
     db.query(sql, (err, result) => {
       if (err) {
@@ -516,7 +516,7 @@ const getActiveUsers = (req, res) => {
 const getdeactiveUsers = (req, res) => {
   try {
     const sql =
-      "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE u.Status = 'Deactive' AND role != 'SuperAdmin_Employee'";
+      "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE u.Status = 'Deactive' AND role != 'SuperAdmin_Employee' ORDER BY id DESC";
 
     db.query(sql, (err, result) => {
       if (err) {
@@ -556,7 +556,7 @@ const getdeactiveUsers = (req, res) => {
 const getAllUsers = (req, res) => {
   try {
     const sql =
-      "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE role NOT IN ('SuperAdmin_Employee', 'SuperAdmin')";
+      "SELECT  u.*, p.package_name FROM userprofile u LEFT JOIN packagestable p ON u.package_Id = p.id WHERE role NOT IN ('SuperAdmin_Employee', 'SuperAdmin') ORDER BY id DESC";
 
     db.query(sql, (err, result) => {
       if (err) {
@@ -8353,6 +8353,112 @@ const rejectNSDLCorrectionForm = (req, res) => {
   }
 };
 
+const getSuperAdminWebsiteJoinUsers = (req, res) => {
+  try {
+    const sql =
+      "SELECT * FROM userprofile WHERE paymentMode = 'Online Payment' AND created_By_User_Role = 'SuperAdmin' ORDER BY id DESC";
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error fetching  users from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error fetching users" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No users found",
+          });
+        } else {
+          // Remove the password field from each user object
+          const sanitizedResult = result.map(({ password, ...rest }) => rest);
+
+          return res.status(200).json({
+            success: true,
+            data: sanitizedResult,
+            message: "Users fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching users from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching users",
+      error: error.message,
+    });
+  }
+};
+const getWalletToWalletTransfer = (req, res) => {
+
+  // SQL query to fetch wallet-to-wallet transfer records for the user
+  const sql = `SELECT * FROM wallet_to_wallet_transfer ORDER BY id DESC`;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Error fetching wallet-to-wallet transfer records:", err);
+      return res.status(500).json({
+        success: false,
+        error: `Error fetching data: ${err.message}`,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: results,
+    }); // Return the transfer records for the given user
+  });
+};
+
+const getShareIdsSummary = async (req, res) => {
+  // const { userId } = req.params;
+
+  // if (!userId) {
+  //   return res.status(400).json({
+  //     success: false,
+  //     message: "User ID is required",
+  //   });
+  // }
+
+  try {
+    const sql = "SELECT * FROM id_transfer_log ORDER BY id DESC";
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error fetching data from MySQL:", err);
+        return res.status(500).json({
+          success: false,
+          error: "Database query error",
+        });
+      }
+
+      if (!result || result.length === 0) {
+        return res.status(404).json({
+          success: false,
+          data: [],
+          message: "No data found for this user ID",
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        data: result, // âœ… Saari rows return kar raha hai
+        message: "Data fetched successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Unexpected server error occurred",
+      error: error.message,
+    });
+  }
+};
 module.exports = {
   addPackage,
   getPackages,
@@ -8487,5 +8593,8 @@ module.exports = {
   SuccessNSDLForm,
   rejectNSDLForm,
   SuccessNSDLCorrectionForm,
-  rejectNSDLCorrectionForm
+  rejectNSDLCorrectionForm,
+  getSuperAdminWebsiteJoinUsers,
+  getWalletToWalletTransfer,
+  getShareIdsSummary
 };

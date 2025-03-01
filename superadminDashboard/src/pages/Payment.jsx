@@ -15,10 +15,10 @@ const Payment = () => {
     
   console.log(fullUrl)
   const [formData, setFormData] = useState({
-    userId: user.userId + "_" + Date.now(),
-    total_amount: user.amount,
-    userPhone: user.ContactNo,
-  payment_method: user.paymentMode,
+    userId: user?.userId + "_" + Date.now(),
+    total_amount: user?.amount,
+    userPhone: user?.ContactNo,
+  payment_method: user?.paymentMode,
   website: fullUrl,
 });
 
@@ -107,7 +107,10 @@ useEffect(()=>{
             navigate('/')
           })
   }
-handleSubmit()
+  else{
+    handleSubmit()
+  }
+
 },[])
   return (
     <div>Payment Processing...</div>

@@ -230,7 +230,13 @@ onChange={(e) => setKeyword(e.target.value)}
                                                             {showApiData && showApiData.length > 0 ? (
                                         showApiData?.map((item, index) => (
                                           <tr key={index}>
-                                          <th scope="row">{index + 1}</th>
+                                          {/* <th scope="row">{index + 1}</th> */}
+                                          <td>
+                                                {currentPage *
+                                                  complaintsPerPage +
+                                                  index +
+                                                  1}
+                                              </td>
                                           <td>{item.bought_date}</td>
                                           <td>{item.orderId}</td>
                                           <td>{item.transactionId}</td>

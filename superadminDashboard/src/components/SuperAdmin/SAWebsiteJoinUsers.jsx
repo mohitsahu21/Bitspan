@@ -244,7 +244,7 @@ const SAApproveModel = ({ item, setShowApproveModel, amount,packageAmount,setIsR
   );
 };
 
-const SAWhiteLabelWebsiteJoinUsers = () => {
+const SAWebsiteJoinUsers = () => {
   const [loading, setLoading] = useState(false);
   const [ShowApproveModel, setShowApproveModel] = useState(false);
   const [isRefresh, setIsRefresh] = useState(false);
@@ -265,7 +265,7 @@ const [status, setStatus] = useState(""); // For status filter
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getWhiteLabelWebisiteJoinUsers",
+        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminWebsiteJoinUsers",
         {
           headers: {
             "Content-Type": "application/json",
@@ -295,24 +295,7 @@ const [status, setStatus] = useState(""); // For status filter
     fetchActiveUsers();
   }, [isRefresh]);
 
-  const findPackagePrice = (user)=>{
-    if(user.role == "Retailer"){
-      return parseInt(user?.retailer_Package_price)
-    }
-    else if(user.role == "WhiteLabel"){
-     return parseInt(user?.whiteLabel_Package_price)
-    }
-    else if(user.role == "Distributor"){
-     return parseInt(user?.distributor_Package_price)
-    }
-    else if(user.role == "SuperDistributor"){
-     return parseInt(user?.superDistributor_Package_price)
-    }
-  }
 
-  const findCommissionAmount = (user) =>{
-    
-  }
 
   const filteredItems = users.filter((row) => {
     const matchesKeyword =  (row?.UserName &&
@@ -347,7 +330,6 @@ const [status, setStatus] = useState(""); // For status filter
   };
 
   const showApiData = filterPagination();
-
 
   const markPaymentComplete = async (id) => {
     const swalWithBootstrapButtons = Swal.mixin({
@@ -446,7 +428,7 @@ const [status, setStatus] = useState(""); // For status filter
                                                 <h3>Wallet Transaction Report</h3>
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
-                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">WhiteLabel Website Join Users</h4>
+                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Super Admin Website Join Users</h4>
                         <p className="mx-lg-5">
                           {" "}
                           <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
@@ -455,7 +437,7 @@ const [status, setStatus] = useState(""); // For status filter
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            WhiteLabel Website Join Users
+                            Super Admin Website Join Users
                           </span>{" "}
                         </p>
                       </div>
@@ -584,8 +566,8 @@ const [status, setStatus] = useState(""); // For status filter
                                       <th scope="col">Created By</th>
                                       <th scope="col">Website Name</th>
                                       <th scope="col">Joining Amount</th>
-                                      <th scope="col">Package Amount</th>
-                                      <th scope="col">WhiteLabel Commission Amount</th>
+                                      {/* <th scope="col">Package Amount</th>
+                                      <th scope="col">WhiteLabel Commission Amount</th> */}
 
                                       <th scope="col">Payment Status</th>
                                       {/* <th scope="col">Aadhar Front</th>
@@ -593,7 +575,7 @@ const [status, setStatus] = useState(""); // For status filter
                                     <th scope="col">Pan Card Front</th> */}
                                       {/* <th scope="col">View KYC</th> */}
                                       <th scope="col">KYC Status</th>
-                                      <th scope="col">Commission Credit Status</th>
+                                      {/* <th scope="col">Commission Credit Status</th> */}
                                       {/* <th scope="col">Note</th> */}
                                       <th scope="col">Action</th>
                                     </tr>
@@ -634,8 +616,8 @@ const [status, setStatus] = useState(""); // For status filter
                                           {/* <td>{user?.role == "WhiteLabel" ? user?.White_Label_Website_URL :  user?.created_By_Website}</td> */}
                                           <td>{user?.created_By_Website}</td>
                                           <td>{user?.amount ? user?.amount : "NA"}</td>
-                                          <td>{findPackagePrice(user) ? findPackagePrice(user) : "NA"}</td>
-                                          <td>{parseInt(user?.amount) - findPackagePrice(user) ? parseInt(user?.amount) - findPackagePrice(user) : "NA"}</td>
+                                          {/* <td>{findPackagePrice(user) ? findPackagePrice(user) : "NA"}</td>
+                                          <td>{parseInt(user?.amount) - findPackagePrice(user) ? parseInt(user?.amount) - findPackagePrice(user) : "NA"}</td> */}
 
                                           <td>{user?.payment_status}</td>
 
@@ -684,7 +666,7 @@ const [status, setStatus] = useState(""); // For status filter
                                           <td>{user.Status}</td>
                                           {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
                                           {/* <td>{user?.Note}</td> */}
-                                          <td>{user.White_Label_Commission_Status}</td>
+                                          {/* <td>{user.White_Label_Commission_Status}</td> */}
                                           <td>
                                           <Dropdown>
                                             <Dropdown.Toggle
@@ -696,14 +678,11 @@ const [status, setStatus] = useState(""); // For status filter
                                              <PiDotsThreeOutlineVerticalBold />
                                             </Dropdown.Toggle>
                                             <Dropdown.Menu>
-                                              { (user.payment_status === "Complete" && user.White_Label_Commission_Status != "Credit") && 
+                                              { (user.payment_status === "Pending") && 
                                                 <Dropdown.Item
                                                 onClick={() => {
                                                   // setSelectedUser(user);
-                                                  setShowApproveModel(true);
-                                                  setSelectedItem(user)
-                                                  setPackageAmount(findPackagePrice(user))
-                                                  setcommissionAmount(parseInt(user?.amount) - findPackagePrice(user))
+                                                  markPaymentComplete(user.UserId)
                                                   // deactivateUser(user.UserId)
                                                 }}
                                               >
@@ -711,24 +690,9 @@ const [status, setStatus] = useState(""); // For status filter
                                                   {" "}
                                                   <CiViewList />
                                                 </span>{" "}
-                                                Credit Commission
+                                                Mark Payment Complete
                                               </Dropdown.Item>
                                               }
-                                               { (user.payment_status === "Pending") && 
-                                                                                              <Dropdown.Item
-                                                                                              onClick={() => {
-                                                                                                // setSelectedUser(user);
-                                                                                                markPaymentComplete(user.UserId)
-                                                                                                // deactivateUser(user.UserId)
-                                                                                              }}
-                                                                                            >
-                                                                                              <span className="">
-                                                                                                {" "}
-                                                                                                <CiViewList />
-                                                                                              </span>{" "}
-                                                                                              Mark Payment Complete
-                                                                                            </Dropdown.Item>
-                                                                                            }
                                             
                                          
                                             </Dropdown.Menu>
@@ -794,7 +758,7 @@ const [status, setStatus] = useState(""); // For status filter
   );
 };
 
-export default SAWhiteLabelWebsiteJoinUsers;
+export default SAWebsiteJoinUsers;
 
 const Wrapper = styled.div`
   .main {

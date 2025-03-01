@@ -2073,6 +2073,11 @@ const SuperAdminData = [
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
+        title: "Super Admin Website Users Joined List",
+        path: "/superAdmin-users-joining-list",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
         title: "Super Admin Employee List",
         path: "/super-admin-employee-list",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
@@ -2085,6 +2090,11 @@ const SuperAdminData = [
       {
         title: "Buy User ID Summary",
         path: "/buy-user-id-summary",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Transfer User ID Summary",
+        path: "/Transfer-User-Ids-Summery",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],

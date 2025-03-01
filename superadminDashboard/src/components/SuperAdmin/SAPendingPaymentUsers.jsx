@@ -331,7 +331,13 @@ const SAPendingPaymentUsers = () => {
                                   {showApiData && showApiData.length > 0 ? (
                                     showApiData?.map((user, index) => (
                                       <tr key={user.id}>
-                                        <th scope="row">{index + 1}</th>
+                                        {/* <th scope="row">{index + 1}</th> */}
+                                        <td>
+                                                {currentPage *
+                                                  complaintsPerPage +
+                                                  index +
+                                                  1}
+                                              </td>
                                         <td>{user.CreateAt}</td>
 
                                         <td>{user.UserId}</td>

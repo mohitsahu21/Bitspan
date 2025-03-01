@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { MdOutlineFormatListNumbered } from "react-icons/md";
+import { MdGrid3X3, MdOutlineFormatListNumbered } from "react-icons/md";
 import { FaMobileAlt ,FaRupeeSign} from "react-icons/fa";
 import { LuTextSelect } from "react-icons/lu";
 import { RiMarkPenLine } from "react-icons/ri";
@@ -182,7 +182,7 @@ const handlePackageSelect = (e) => {
               <div class="input-group flex-nowrap">
                 <span class="input-group-text" id="addon-wrapping">
                   {" "}
-                  <FaRupeeSign />
+                  <MdGrid3X3 />
                 </span>
                 <input
                   type="text"
@@ -203,7 +203,7 @@ const handlePackageSelect = (e) => {
               <div class="input-group flex-nowrap">
                 <span class="input-group-text" id="addon-wrapping">
                   {" "}
-                  <FaRupeeSign />
+                  <MdGrid3X3 />
                 </span>
                 <input
                   type="text"
@@ -224,7 +224,7 @@ const handlePackageSelect = (e) => {
               <div class="input-group flex-nowrap">
                 <span class="input-group-text" id="addon-wrapping">
                   {" "}
-                  <FaRupeeSign />
+                  <MdGrid3X3 />
                 </span>
                 <input
                   type="text"
@@ -245,7 +245,7 @@ const handlePackageSelect = (e) => {
               <div class="input-group flex-nowrap">
                 <span class="input-group-text" id="addon-wrapping">
                   {" "}
-                  <FaRupeeSign />
+                  <MdGrid3X3 />
                 </span>
                 <input
                   type="email"
@@ -266,7 +266,7 @@ const handlePackageSelect = (e) => {
               <div class="input-group flex-nowrap">
                 <span class="input-group-text" id="addon-wrapping">
                   {" "}
-                  <FaRupeeSign />
+                  <MdGrid3X3 />
                 </span>
                 <input
                   type="text"
@@ -294,7 +294,7 @@ const handlePackageSelect = (e) => {
             <div class="input-group flex-nowrap">
               <span class="input-group-text" id="addon-wrapping">
                 {" "}
-                <FaRupeeSign />
+                <MdGrid3X3 />
               </span>
               <input
                 type="text"
@@ -341,7 +341,7 @@ const handlePackageSelect = (e) => {
   
             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
               <div className="text-center  m-5">
-                <button type="submit" className="btn p-2" disabled={loading}>
+                <button type="submit" className="btn btn-primary p-2" disabled={loading}>
                   {loading ? "Loading..." : "Submit"}
                 </button>
               </div>
@@ -643,7 +643,13 @@ const SAActiveUsersList = () => {
                                                         {showApiData && showApiData.length > 0 ? (
                                     showApiData?.map((user, index) => (
                                       <tr key={user.id}>
-                                        <th scope="row">{index + 1}</th>
+                                        {/* <th scope="row">{index + 1}</th> */}
+                                        <td>
+                                                {currentPage *
+                                                  complaintsPerPage +
+                                                  index +
+                                                  1}
+                                              </td>
                                         <td>{user.CreateAt}</td>
 
                                         <td>{user.UserId}</td>

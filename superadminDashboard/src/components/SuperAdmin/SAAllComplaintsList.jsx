@@ -138,7 +138,7 @@ const SAResolveComplaint = ({ complaint, setShowResolveModel, setIsRefresh }) =>
   
               <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div className="text-center  m-5">
-                  <button type="submit" className="btn p-2" disabled={loading}>
+                  <button type="submit" className="btn btn-primary p-2" disabled={loading}>
                     {loading ? "Loading..." : "Submit"}
                   </button>
                 </div>

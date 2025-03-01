@@ -8,11 +8,14 @@ import styled from "styled-components";
 import AadharLinkingStatus from "../components/DashBoard/AadharLinkingStatus";
 import TrainingVideo from "../components/DashBoard/TrainingVideo";
 import NotFound from "../components/NotFound.jsx";
+import SAUserIdTransferSummery from "../components/SuperAdmin/SAUserIdTransferSummery.jsx";
+// import SAWebsiteJoinUsers from "../components/SuperAdmin/SAWebsiteJoinUsers.jsx";
 // import SAWhiteLabelWebsiteJoinUsers from "../components/SuperAdmin/SAWhiteLabelWebsiteJoinUsers.jsx";
 // import SAContactUs from "../components/SuperAdmin/SAContactUs.jsx";
 // Lazy imports
 const SuperAdminDashboard = lazy(() => import("../pages/SuperAdminDashboard"));
 const SAContactUs = lazy(() => import("../components/SuperAdmin/SAContactUs.jsx"));
+const SAWebsiteJoinUsers = lazy(() => import("../components/SuperAdmin/SAWebsiteJoinUsers.jsx"));
 const SAWhiteLabelWebsiteJoinUsers = lazy(() => import("../components/SuperAdmin/SAWhiteLabelWebsiteJoinUsers.jsx"));
 const SAProfile = lazy(() => import("../components/SuperAdmin/SAProfile"));
 const SAWalletTransactionReport = lazy(() => import("../components/SuperAdmin/SAWalletTransactionReport"));
@@ -263,6 +266,14 @@ const SuperAdminRoutes = () => {
         <Route
           path="/contact-us-users"
           element={<SAContactUs />}
+        />
+        <Route
+          path="/superAdmin-users-joining-list"
+          element={<SAWebsiteJoinUsers />}
+        />
+        <Route
+          path="/Transfer-User-Ids-Summery"
+          element={<SAUserIdTransferSummery />}
         />
          <Route path="*" element={<NotFound />} />
 
