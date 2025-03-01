@@ -61,6 +61,12 @@ const WLAllUsersJoinedList = lazy(() =>
   import("../components/WhiteLabel/WLAllUsersJoinedList")
 );
 
+const WLWebUsersJoinedList = lazy(() =>
+  import("../components/WhiteLabel/WLWebUsersJoinedList")
+);
+
+const WLContactUs = lazy(() => import("../components/WhiteLabel/WLContactUs"));
+
 const WLChangePrice = lazy(() =>
   import("../components/WhiteLabel/WLChangePrice")
 );
@@ -701,6 +707,29 @@ const WhiteLabelRoutes = () => {
             )
           }
         />
+
+        <Route
+          path="/website-users-joining-list"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <WLWebUsersJoinedList />
+            )
+          }
+        />
+
+        <Route
+          path="/Contact-Us"
+          element={
+            userStatus === "Pending" || userStatus === "Deactive" ? (
+              <Navigate to="/update-profile" />
+            ) : (
+              <WLContactUs />
+            )
+          }
+        />
+
         <Route
           path="/pending-payment-users"
           element={

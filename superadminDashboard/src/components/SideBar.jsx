@@ -2782,6 +2782,11 @@ const WhiteLabelData = [
         path: "/users-joining-list",
         icon: <HiUserGroup color="#fe662b" />,
       },
+      {
+        title: "Website Users Joined List",
+        path: "/website-users-joining-list",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
       // {
       //   title: "White Label Joined List",
       //   path: "/white-label-joining-list",
@@ -2875,6 +2880,11 @@ const WhiteLabelData = [
       {
         title: "Create Pin",
         path: "/generate-pin",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Contact Us ",
+        path: "/Contact-Us",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],
