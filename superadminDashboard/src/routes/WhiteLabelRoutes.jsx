@@ -958,9 +958,7 @@ const WhiteLabelRoutes = () => {
                 // name={currentUser?.username}
                 name={currentUser?.username?.toUpperCase()}
                 address={`${currentUser?.City}, ${currentUser?.State}, ${currentUser?.PinCode}`}
-                date={
-                  new Date(currentUser?.CreateAt).toISOString().split("T")[0]
-                }
+                date={currentUser?.CreateAt}
                 id={currentUser?.userId}
               />
             )

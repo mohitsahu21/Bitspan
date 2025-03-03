@@ -664,7 +664,8 @@ const Distributor = () => {
               user="DISTRIBUTOR"
               name={currentUser?.username}
               address={`${currentUser?.City}, ${currentUser?.State}, ${currentUser?.PinCode}`}
-              date={new Date(currentUser?.CreateAt).toISOString().split("T")[0]}
+              date={currentUser?.CreateAt}
+              // date={new Date(currentUser?.CreateAt).toISOString().split("T")[0]}
               id={currentUser?.userId}
             />
             // )
