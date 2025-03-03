@@ -152,9 +152,9 @@ const webhook = (req, res) => {
   const createOrder = async (req, res) => {
     const { customer_mobile, amount, remark1, remark2 } = req.body;
     const order_id = `OR${Date.now()}`; // Dynamic order ID based on timestamp
-    const user_token = "4654407eb1b965763bcfcb9ae8cc87ec"; // Security token from environment
+    const user_token = process.env.UPIWF_KEY; // Security token from environment
     const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-    const redirect_url = `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/webhooktwo?order_id=${order_id}&website=${remark1}`
+    const redirect_url = `https://2kadam.co.in/api/auth/superAdmin/webhooktwo?order_id=${order_id}&website=${remark1}`
     const status = "Pending"
   
     const sql = `
@@ -249,7 +249,7 @@ const webhook = (req, res) => {
     const Transaction_Reference = `Pay Online Payment Gateway Order ID ${order_id}`
     const user_token = process.env.UPIWF_KEY // Security token from environment
     const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-    const redirect_url = `https://bitspan.vimubds5.a2hosted.com/api/auth/upiwf/addWalletMoneyUsingPG?order_id=${order_id}&website=${website}`
+    const redirect_url = `https://2kadam.co.in/api/auth/upiwf/addWalletMoneyUsingPG?order_id=${order_id}&website=${website}`
     const status = "Pending"
   
     // const sql = `
@@ -489,7 +489,7 @@ const webhook = (req, res) => {
     const Transaction_Reference = `Buy ${userId_type} User Id Payment Gateway Order ID ${order_id}`
     const user_token = process.env.UPIWF_KEY // Security token from environment
     const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-    const redirect_url = `https://bitspan.vimubds5.a2hosted.com/api/auth/upiwf/BuyUserIdUsingPGVerify?order_id=${order_id}&website=${website}`
+    const redirect_url = `https://2kadam.co.in/api/auth/upiwf/BuyUserIdUsingPGVerify?order_id=${order_id}&website=${website}`
     const status = "Pending"
   
     // const sql = `
@@ -903,7 +903,7 @@ const webhook = (req, res) => {
     const Transaction_Reference = `Pay Online Payment Gateway Order ID ${order_id}`
     const user_token = process.env.UPIWF_KEY // Security token from environment
     const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-    const redirect_url = `https://bitspan.vimubds5.a2hosted.com/api/auth/upiwf/addWalletMoneyUsingPG?order_id=${order_id}&website=${website}`
+    const redirect_url = `https://2kadam.co.in/api/auth/upiwf/addWalletMoneyUsingPG?order_id=${order_id}&website=${website}`
     const status = "Pending"
   
     // const sql = `
@@ -1331,7 +1331,7 @@ const webhook = (req, res) => {
 
                             // **Make external API call AFTER user registration is complete**
                             try {
-                                const redirect_url = `https://bitspan.vimubds5.a2hosted.com/api/auth/upiwf/userRegiserOnlinePGVerify?order_id=${userId}&website=${created_By_Website}`;
+                                const redirect_url = `https://2kadam.co.in/api/auth/upiwf/userRegiserOnlinePGVerify?order_id=${userId}&website=${created_By_Website}`;
                                 const postData = { customer_mobile: ContactNo, user_token, amount, order_id: userId, redirect_url };
 
                                 const response = await axios.post('https://upi.wf/api/create-order', postData);
@@ -1470,7 +1470,7 @@ const {
   // const Transaction_Reference = `Buy ${userId_type} User Id Payment Gateway Order ID ${userId}`
   const user_token = process.env.UPIWF_KEY // Security token from environment
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-  const redirect_url = `https://bitspan.vimubds5.a2hosted.com/api/auth/upiwf/MakeUserPaymentINPortalPGVerify?order_id=${userId}&website=${website}`
+  const redirect_url = `https://2kadam.co.in/api/auth/upiwf/MakeUserPaymentINPortalPGVerify?order_id=${userId}&website=${website}`
   const status = "Pending"
 
   // const sql = `
