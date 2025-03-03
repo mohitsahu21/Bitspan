@@ -6,8 +6,12 @@ import { BiHomeAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const DChangePassword = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [userId, setUserId] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -15,7 +19,7 @@ const DChangePassword = () => {
   const [message, setMessage] = useState("");
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, token } = useSelector((state) => state.user);
 
   const userID = currentUser?.userId;
   console.log(userID);
@@ -33,6 +37,12 @@ const DChangePassword = () => {
           UserId: userID,
           oldPassword: oldPassword,
           newPassword: newPassword,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -47,24 +57,34 @@ const DChangePassword = () => {
             response.data.message ||
             "OTP sent to your email. Please verify it.",
           showConfirmButton: true,
-          // timer: 1500,
         });
+
         setNewPassword("");
         setOldPassword("");
         setStep(2); // Move to OTP verification step
       }
     } catch (error) {
-      console.log(error);
-      console.log(error.response?.data?.message);
-      Swal.fire({
-        position: "center",
-        icon: "error",
-        title: error.response?.data?.message || "An error occurred.",
-        showConfirmButton: true,
-        // timer: 1500,
-      });
+      console.error("Error fetching data:", error);
 
-      setMessage(error.response?.data?.message || "An error occurred.");
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired, please login again",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        console.log(error);
+        console.log(error.response?.data?.message);
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: error.response?.data?.message || "An error occurred.",
+          showConfirmButton: true,
+        });
+
+        setMessage(error.response?.data?.message || "An error occurred.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -82,34 +102,52 @@ const DChangePassword = () => {
         {
           UserId: userID,
           otp: otp,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
       setMessage(response.data.message);
       console.log(response.data);
+
       if (response.data.status === "Success") {
         // Password successfully changed, reset form or navigate to another page
         Swal.fire({
           position: "center",
           icon: "success",
-          title: "Password Change Successfully",
+          title: "Password Changed Successfully",
           showConfirmButton: false,
           timer: 1500,
         });
+
         setOtp("");
-        setStep(1); // Move to OTP verification step
+        setStep(1); // Reset to initial step after OTP verification
       }
     } catch (error) {
-      console.log(error);
-      console.log(error.response?.data?.message);
-      Swal.fire({
-        position: "center",
-        icon: "error",
-        title: error.response?.data?.message || "An error occurred.",
-        showConfirmButton: true,
-        // timer: 1500,
-      });
-      setMessage(error.response?.data?.message || "An error occurred.");
+      console.log("Error:", error);
+
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired, please login again",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        console.log(error.response?.data?.message);
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: error.response?.data?.message || "An error occurred.",
+          showConfirmButton: true,
+        });
+
+        setMessage(error.response?.data?.message || "An error occurred.");
+      }
     } finally {
       setIsLoading(false);
     }

@@ -35,7 +35,13 @@ const CreatePin = () => {
       try {
         const response = await axios.get(
           `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/check-user`,
-          { params: { user_id: currentUser.userId } }
+          {
+            params: { user_id: currentUser.userId },
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Token sahi pass ho raha hai
+            },
+          }
         );
         console.log("API response:", response.data); // Log API response
         setIsUserAvailable(response.data.exits); // Change `exists` to `exits`
@@ -66,14 +72,20 @@ const CreatePin = () => {
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/create-pin`,
-        createPinData
+        createPinData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Add token to the request header
+          },
+        }
       );
       console.log(response.data);
       if (response.data.status === "Failure") {
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: result.data.message || "PIN failed!",
+          text: result.data.message || "PIN creation failed!",
         });
       } else if (response.data.status === "Success") {
         Swal.fire({
@@ -88,11 +100,25 @@ const CreatePin = () => {
       const errorMessage =
         error.response?.data?.message || "Something went wrong!";
       console.log(errorMessage);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: errorMessage,
-      });
+
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Session Expired",
+          text: "Your token is expired. Please login again.",
+        });
+
+        dispatch(clearUser()); // Logout user
+        navigate("/"); // Redirect to login
+      } else {
+        const errorMessage =
+          error.response?.data?.message || "Something went wrong!";
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: errorMessage,
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -104,7 +130,13 @@ const CreatePin = () => {
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/request-otp`,
-        changePinData
+        changePinData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Add token to the request header
+          },
+        }
       );
       setOtpSent(true);
       // alert(response.data.message);
@@ -145,7 +177,13 @@ const CreatePin = () => {
     try {
       const response = await axios.post(
         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-otp`,
-        { user_id: changePinData.user_id, otp: changePinData.otp }
+        { user_id: changePinData.user_id, otp: changePinData.otp },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response.data.message);
       if (response.data.status === "Failure") {

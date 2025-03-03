@@ -14,6 +14,7 @@ import DChangePrice from "../components/Distributor/DChangePrice";
 
 import Certificate from "../components/Distributor/Certificate";
 import Swal from "sweetalert2";
+import { clearUser } from "../redux/user/userSlice";
 
 // Lazy-loaded components
 const DistributorDashboard = lazy(() =>
