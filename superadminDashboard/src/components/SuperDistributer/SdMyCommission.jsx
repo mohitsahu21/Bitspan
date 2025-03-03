@@ -28,7 +28,7 @@ const SdMyCommission = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getPackageData/${package_Id}`, // PackageId dynamically use kar rahe hain
+        `https://2kadam.co.in/api/auth/superDistributor/getPackageData/${package_Id}`, // PackageId dynamically use kar rahe hain
         {
           headers: {
             "Content-Type": "application/json",

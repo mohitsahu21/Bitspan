@@ -47,7 +47,7 @@ const SdBuyDistributorId = () => {
       try {
         const response = await axios.get(
           // `http://localhost:7777/api/auth/superDistributor/getPackageData/${package_Id}`,
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getPackageData/${package_Id}`,
+          `https://2kadam.co.in/api/auth/superDistributor/getPackageData/${package_Id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -98,7 +98,7 @@ const SdBuyDistributorId = () => {
     try {
       const response = await axios.get(
         // `http://localhost:7777/api/auth/superDistributor/getWalletBalance/${userId}`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletBalance/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getWalletBalance/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -140,7 +140,7 @@ const SdBuyDistributorId = () => {
     try {
       const response = await axios.get(
         // `http://localhost:7777/api/auth/superDistributor/getRemainingIds/${userId}`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getRemainingIds/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getRemainingIds/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -263,7 +263,7 @@ const SdBuyDistributorId = () => {
     try {
       const response = await axios.post(
         // "http://localhost:7777/api/auth/superDistributor/buyId",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/buyId",
+        "https://2kadam.co.in/api/auth/superDistributor/buyId",
         payload
       );
 
@@ -342,7 +342,7 @@ const SdBuyDistributorId = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/upiwf/createOrderToBuyUserId",
+        "https://2kadam.co.in/api/auth/upiwf/createOrderToBuyUserId",
         payload
       );
 

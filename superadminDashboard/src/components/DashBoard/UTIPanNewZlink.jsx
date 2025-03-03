@@ -26,8 +26,8 @@ const UTIPanNewZlink = () => {
         try {
           const {data} = await axios.post(
             // `http://localhost:7777/api/auth/nsdlpan/easySmartUtiLogin`,
-            // `https://bitspan.vimubds5.a2hosted.com/api/auth/nsdlpan/easySmartUtiLogin`,
-            'https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/ZlinkUtiLogin',
+            // `https://2kadam.co.in/api/auth/nsdlpan/easySmartUtiLogin`,
+            'https://2kadam.co.in/api/auth/zlink/ZlinkUtiLogin',
             formData
           );
         //   setFormData(apiResponse.data);

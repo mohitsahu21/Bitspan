@@ -39,8 +39,8 @@ const SdVerifyDistrictHistory = () => {
   const fetchRechargeData = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getVerifyEDistrictHistory/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getVerifyEdistrict/${userID}`
+        `https://2kadam.co.in/api/auth/superDistributor/getVerifyEDistrictHistory/${userId}`,
+        // `https://2kadam.co.in/api/auth/retailer/getVerifyEdistrict/${userID}`
         {
           headers: {
             "Content-Type": "application/json",

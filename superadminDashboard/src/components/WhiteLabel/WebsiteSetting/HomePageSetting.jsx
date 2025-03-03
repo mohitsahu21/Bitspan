@@ -102,8 +102,8 @@ const HomePageSetting = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWhitelabelSettings/${userId}`,
+        // "https://2kadam.co.in/api/auth/superAdmin/getSuperAdminSettings"
+        `https://2kadam.co.in/api/auth/whiteLabel/getWhitelabelSettings/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -230,8 +230,8 @@ const HomePageSetting = () => {
 
     try {
       const response = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/UpdateHomePageSetting",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateHomePageSetting",
+        "https://2kadam.co.in/api/auth/whiteLabel/UpdateHomePageSetting",
+        // "https://2kadam.co.in/api/auth/superAdmin/UpdateHomePageSetting",
         formDataSend,
         {
           headers: {

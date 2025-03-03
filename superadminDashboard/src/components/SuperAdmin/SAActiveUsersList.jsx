@@ -62,7 +62,7 @@ const handlePackageSelect = (e) => {
     setPackagesLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPackage",
+        "https://2kadam.co.in/api/auth/superAdmin/getPackage",
         
 {
   headers: {
@@ -123,8 +123,8 @@ const handlePackageSelect = (e) => {
       setLoading(true);
      
       const response = await axios.put(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ChangeUserInfo",
+        // "https://2kadam.co.in/api/auth/superAdmin/approveUser",
+        "https://2kadam.co.in/api/auth/superAdmin/ChangeUserInfo",
         formData,
         {
           headers: {
@@ -373,7 +373,7 @@ const SAActiveUsersList = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getActiveUsers",
+            "https://2kadam.co.in/api/auth/superAdmin/getActiveUsers",
             {
               headers: {
                 "Content-Type": "application/json",
@@ -454,7 +454,7 @@ const SAActiveUsersList = () => {
             setLoading(true);
             try {
               const { data } = await axios.put(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser", 
+                "https://2kadam.co.in/api/auth/superAdmin/deactivateUser", 
                 {
                    userId: id 
                 },

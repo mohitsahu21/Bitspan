@@ -33,7 +33,7 @@ const SdBankAccountVerify = () => {
     console.log("Fetching bank details for bid:", bid); // Log bid before request
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getBankAccountDetails/${bid}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getBankAccountDetails/${bid}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -107,7 +107,7 @@ const SdBankAccountVerify = () => {
 
     try {
       const response = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/changeBankStatus",
+        "https://2kadam.co.in/api/auth/superDistributor/changeBankStatus",
         { UserId, bid },
         {
           headers: {
@@ -163,7 +163,7 @@ const SdBankAccountVerify = () => {
 
     try {
       const response = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/verifyOtpAndChangeBankStatus",
+        "https://2kadam.co.in/api/auth/superDistributor/verifyOtpAndChangeBankStatus",
         { UserId, otp },
         {
           headers: {

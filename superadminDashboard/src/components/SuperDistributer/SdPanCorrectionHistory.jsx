@@ -32,8 +32,8 @@ const SAPanCorrectionHistory = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getOnlinePanCorrectionData",
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getNsdlPanCorrectionHistory/${userId}`,
+        // "https://2kadam.co.in/api/auth/superAdmin/getOnlinePanCorrectionData",
+        `https://2kadam.co.in/api/auth/superDistributor/getNsdlPanCorrectionHistory/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

@@ -35,8 +35,8 @@ const DDeactiveUsersList = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getActiveUsers",
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getDeactiveUsers/${userId}`,
+        // "https://2kadam.co.in/api/auth/superDistributor/getActiveUsers",
+        `https://2kadam.co.in/api/auth/Distributor/getDeactiveUsers/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -125,7 +125,7 @@ const DDeactiveUsersList = () => {
           setLoading(true);
           try {
             const { data } = await axios.put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser",
+              "https://2kadam.co.in/api/auth/superAdmin/deactivateUser",
               {
                 userId: id,
               },

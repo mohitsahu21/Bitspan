@@ -41,8 +41,8 @@ const DActiveUsersList = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getActiveUsers",
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getActiveUsers/${userId}`,
+        // "https://2kadam.co.in/api/auth/superDistributor/getActiveUsers",
+        `https://2kadam.co.in/api/auth/Distributor/getActiveUsers/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

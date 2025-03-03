@@ -42,7 +42,7 @@ const DCreateDistributor = () => {
   const fetchNoOfIds = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getRemainingIds/${userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/getRemainingIds/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -81,7 +81,7 @@ const DCreateDistributor = () => {
   const updateNoOfIds = async () => {
     try {
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/updateUserProfile",
+        "https://2kadam.co.in/api/auth/Distributor/updateUserProfile",
         updatedFormData,
         {
           headers: {
@@ -166,9 +166,9 @@ const DCreateDistributor = () => {
       setLoading(true);
 
       const response = await axios.post(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
+        // "https://2kadam.co.in/api/auth/superAdmin/approveUser",
+        // "https://2kadam.co.in/api/auth/log-reg/user-register",
+        "https://2kadam.co.in/api/auth/log-reg/user-register",
         formData,
 
         {

@@ -25,7 +25,7 @@ const RtAllCommissionHistory = () => {
     setLoading(true); // Start loading
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllCommission/${userId}`,
+        `https://2kadam.co.in/api/auth/retailer/getAllCommission/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

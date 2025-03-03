@@ -28,8 +28,8 @@ const AllPanForm = () => {
     try {
       const response = await axios.get(
         // `http://localhost:7777/api/auth/retailer/getApplyOfflineForm`
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApplyOfflineForm`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApplyOfflineFormByid/${currentUser?.userId}`,
+        // `https://2kadam.co.in/api/auth/retailer/getApplyOfflineForm`,
+        `https://2kadam.co.in/api/auth/retailer/getApplyOfflineFormByid/${currentUser?.userId}`,
         {
           headers: {
             "Content-Type": "application/json",

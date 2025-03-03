@@ -39,8 +39,8 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/markForEditOfflineDTHConnection",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/markForEditOfflineDTHConnection",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -168,7 +168,7 @@ const ProviderTwoDTHConnectionHistory = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getOfflineDTHConnection/${userID}`,
+        `https://2kadam.co.in/api/auth/retailer/getOfflineDTHConnection/${userID}`,
         {
           headers: {
             "Content-Type": "application/json",

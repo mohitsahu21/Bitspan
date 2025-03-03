@@ -55,8 +55,8 @@ const BuyUserId = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getPackageData/${package_Id}`,
-          // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getPackageData/${package_Id}`,
+          `https://2kadam.co.in/api/auth/whiteLabel/getPackageData/${package_Id}`,
+          // `https://2kadam.co.in/api/auth/superDistributor/getPackageData/${package_Id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -113,8 +113,8 @@ const BuyUserId = () => {
   const fetchWalletBalance = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWalletBalance/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletBalance/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getWalletBalance/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getWalletBalance/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -155,7 +155,7 @@ const BuyUserId = () => {
   const fetchNoOfIds = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getRemainingIds/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getRemainingIds/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -288,8 +288,8 @@ const BuyUserId = () => {
 
     try {
       const response = await axios.post(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/buyId",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/buyId",
+        // "https://2kadam.co.in/api/auth/superDistributor/buyId",
+        "https://2kadam.co.in/api/auth/whiteLabel/buyId",
         payload,
         {
           headers: {
@@ -376,7 +376,7 @@ const BuyUserId = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/upiwf/createOrderToBuyUserId",
+        "https://2kadam.co.in/api/auth/upiwf/createOrderToBuyUserId",
         payload
       );
 

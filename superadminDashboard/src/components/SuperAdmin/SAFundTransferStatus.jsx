@@ -215,8 +215,8 @@ const SAFundTransferStatus = () => {
     setLoading(true); // Start loading
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getWalletToWalletTransfer`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletToWalletTransfer/${userId}`,
+        `https://2kadam.co.in/api/auth/superAdmin/getWalletToWalletTransfer`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getWalletToWalletTransfer/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

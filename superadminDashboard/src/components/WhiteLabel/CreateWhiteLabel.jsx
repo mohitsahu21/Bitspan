@@ -43,8 +43,8 @@ const CreateWhiteLabel = () => {
   const fetchNoOfIds = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getRemainingIds/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getRemainingIds/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getRemainingIds/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getRemainingIds/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -83,8 +83,8 @@ const CreateWhiteLabel = () => {
   const updateNoOfIds = async () => {
     try {
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/updateUserProfile",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/updateUserProfile",
+        "https://2kadam.co.in/api/auth/whiteLabel/updateUserProfile",
+        // "https://2kadam.co.in/api/auth/superDistributor/updateUserProfile",
         updatedFormData,
         {
           headers: {
@@ -169,9 +169,9 @@ const CreateWhiteLabel = () => {
       setLoading(true);
 
       const response = await axios.post(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
+        // "https://2kadam.co.in/api/auth/superAdmin/approveUser",
+        "https://2kadam.co.in/api/auth/log-reg/user-register",
+        // "https://2kadam.co.in/api/auth/log-reg/user-register",
         formData,
 
         {

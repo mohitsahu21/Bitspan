@@ -48,8 +48,8 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveWalletAddMoneyRequests",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/ApproveWalletAddMoneyRequests",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -247,8 +247,8 @@ const handlesubmit = async (e) => {
   try {
     setLoading(true);
     const response = await axios.put(
-      "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectWalletAddMoneyRequests",
-      // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+      "https://2kadam.co.in/api/auth/superAdmin/rejectWalletAddMoneyRequests",
+      // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
       formData,
       {
         headers: {
@@ -445,7 +445,7 @@ const SAAddWalletMoneyRequests = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletAddMoneyRequests",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingWalletAddMoneyRequests",
         {
           headers: {
             "Content-Type": "application/json",

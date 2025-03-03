@@ -33,8 +33,8 @@ const WLBankAccountVerify = () => {
     console.log("Fetching bank details for bid:", bid); // Log bid before request
     try {
       const response = await axios.get(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getBankAccountDetails/${bid}`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getBankAccountDetails/${bid}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getBankAccountDetails/${bid}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getBankAccountDetails/${bid}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -96,8 +96,8 @@ const WLBankAccountVerify = () => {
 
     try {
       const response = await axios.post(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/changeBankStatus",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/changeBankStatus",
+        // "https://2kadam.co.in/api/auth/superDistributor/changeBankStatus",
+        "https://2kadam.co.in/api/auth/whiteLabel/changeBankStatus",
         { UserId, bid },
 
         {
@@ -154,8 +154,8 @@ const WLBankAccountVerify = () => {
 
     try {
       const response = await axios.post(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/verifyOtpAndChangeBankStatus",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/verifyOtpAndChangeBankStatus",
+        // "https://2kadam.co.in/api/auth/superDistributor/verifyOtpAndChangeBankStatus",
+        "https://2kadam.co.in/api/auth/whiteLabel/verifyOtpAndChangeBankStatus",
         { UserId, otp },
 
         {

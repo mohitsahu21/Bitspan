@@ -37,8 +37,8 @@ const WLOnlineDthConnection = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getOnlineDTHConnection/${userId}`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getOnlineDTHConnection/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getOnlineDTHConnection/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getOnlineDTHConnection/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

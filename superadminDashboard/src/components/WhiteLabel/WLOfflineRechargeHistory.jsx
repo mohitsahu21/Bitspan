@@ -45,8 +45,8 @@ const WLOfflineRechargeHistory = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getSpecificUserTransactions/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getSpecificUserTransactions/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getSpecificUserTransactions/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getSpecificUserTransactions/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

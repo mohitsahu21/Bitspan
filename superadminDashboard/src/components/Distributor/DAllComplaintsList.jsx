@@ -26,8 +26,8 @@ const DAllComplaintsList = () => {
     try {
       const response = await axios.get(
         // `http://localhost:7777/api/auth/retailer/complain-data`
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getAllComplaintsData/${currentUser?.userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/complain-data/${currentUser?.userId}`
+        `https://2kadam.co.in/api/auth/Distributor/getAllComplaintsData/${currentUser?.userId}`,
+        // `https://2kadam.co.in/api/auth/retailer/complain-data/${currentUser?.userId}`
         {
           headers: {
             "Content-Type": "application/json",

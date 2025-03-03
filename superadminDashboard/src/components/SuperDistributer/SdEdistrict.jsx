@@ -35,7 +35,7 @@ const SdEdistrict = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getEDistrictHistory/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getEDistrictHistory/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

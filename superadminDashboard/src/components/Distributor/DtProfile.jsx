@@ -75,7 +75,7 @@ const DtProfile = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getUserDetails/${currentUser?.userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/getUserDetails/${currentUser?.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -140,7 +140,7 @@ const DtProfile = () => {
 
     try {
       const response = await axios.put(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/user-profile/${currentUser?.userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/user-profile/${currentUser?.userId}`,
         formData,
         {
           headers: {

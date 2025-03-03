@@ -58,7 +58,7 @@ const SuperAdminDashboard = () => {
      Retailer : 0
   }
 
-  if(users.length > 0){
+  if(users?.length > 0){
       users.map((item)=>{
         // if(item.role === "WhiteLabel"){
         //   TotalUsers.WhiteLabel += 1
@@ -70,7 +70,7 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
+        "https://2kadam.co.in/api/auth/superAdmin/getAllUsers",
         {
           headers: {
             "Content-Type": "application/json",
@@ -90,7 +90,7 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/cgonepay/cgonePayBalance"
+        "https://2kadam.co.in/api/auth/cgonepay/cgonePayBalance"
       );
       setCgOnePayBalance(data.MESSAGE);
       setLoading(false);
@@ -103,7 +103,7 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/get-balance"
+        "https://2kadam.co.in/api/auth/instpay/get-balance"
       );
       setInstPayBalance(data.balance);
       setLoading(false);
@@ -116,7 +116,7 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/ezytm/get-balance-ezytm"
+        "https://2kadam.co.in/api/auth/ezytm/get-balance-ezytm"
       );
       setEzytmBalance(data.BALANCE);
       setLoading(false);
@@ -129,7 +129,7 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/deeperweb/deeperwebBalance"
+        "https://2kadam.co.in/api/auth/deeperweb/deeperwebBalance"
       );
       setDeeperWebBalance(data.totalBalance);
       setLoading(false);
@@ -142,7 +142,7 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/nsdlpan/easysmartBalance"
+        "https://2kadam.co.in/api/auth/nsdlpan/easysmartBalance"
       );
       seteasySmartBalance(data.user_balance);
       setLoading(false);
@@ -155,7 +155,7 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/sizarpay/sizarpayBalance"
+        "https://2kadam.co.in/api/auth/sizarpay/sizarpayBalance"
       );
       setSizarpayBalance(data.bal);
       setLoading(false);
@@ -168,7 +168,7 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/zlinkBalance"
+        "https://2kadam.co.in/api/auth/zlink/zlinkBalance"
       );
       setZlinkBalance(data.user_balance);
       setLoading(false);
@@ -181,7 +181,7 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletWithdrawRequests" ,
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingWalletWithdrawRequests" ,
         {
           headers: {
             "Content-Type": "application/json",
@@ -210,7 +210,7 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletAddMoneyRequests",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingWalletAddMoneyRequests",
         {
           headers: {
             "Content-Type": "application/json",
@@ -230,7 +230,7 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingComplaintData",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingComplaintData",
         {
           headers: {
             "Content-Type": "application/json",
@@ -249,7 +249,7 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingOfflineRecharge",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingOfflineRecharge",
         {
           headers: {
             "Content-Type": "application/json",
@@ -268,7 +268,7 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingApplyOfflineForm",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingApplyOfflineForm",
         {
           headers: {
             "Content-Type": "application/json",
@@ -287,7 +287,7 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingPANOfflineForm",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingPANOfflineForm",
         {
           headers: {
             "Content-Type": "application/json",
@@ -306,7 +306,7 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingBankIdForm",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingBankIdForm",
         {
           headers: {
             "Content-Type": "application/json",
@@ -325,7 +325,7 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingEdistrictForms",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingEdistrictForms",
         {
           headers: {
             "Content-Type": "application/json",
@@ -344,7 +344,7 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingVerifyEdistrictForms",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingVerifyEdistrictForms",
         {
           headers: {
             "Content-Type": "application/json",
@@ -363,7 +363,7 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingSambalForms",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingSambalForms",
         {
           headers: {
             "Content-Type": "application/json",
@@ -382,7 +382,7 @@ const SuperAdminDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingPanCouponRequests",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingPanCouponRequests",
         {
           headers: {
             "Content-Type": "application/json",
@@ -420,11 +420,6 @@ const SuperAdminDashboard = () => {
     fetchZlinkBalance()
   }, []);
 
-  console.log(pendingComplaints)
-  console.log(instPayBalance );
-  console.log(sizarpayBalance.toString().length );
-  console.log(pendingOfflineRecharge);
-  console.log(users);
   
   
   
@@ -545,7 +540,7 @@ const CustomTooltip = styled(Tooltip)`
                           <div></div>
                           <div className="d-flex flex-column cardtext">
                             <p className="mb-0 px-2 my-0 fs-6">Total Users</p>
-                            <h4 className="px-2 my-0">{users.length ? users?.length : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">{users?.length ? users?.length : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -580,7 +575,7 @@ const CustomTooltip = styled(Tooltip)`
                             INS PAY Wallet Balance
 
                             </p>
-                            <h4 className="px-2 my-0">{instPayBalance.length ? instPayBalance : "..." }</h4>{" "}
+                            <h4 className="px-2 my-0">{instPayBalance?.length ? instPayBalance : "..." }</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -596,7 +591,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Ezytm Wallet Balance
                             </p>
-                            <h4 className="px-2 my-0">{ezytmBalance.length ? ezytmBalance : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">{ezytmBalance?.length ? ezytmBalance : "..."}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -612,7 +607,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             CGONE PAY Wallet Balance
                             </p>
-                            <h4 className="px-2 my-0">{cgOnePayBalance.length ? cgOnePayBalance : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">{cgOnePayBalance?.length ? cgOnePayBalance : "..."}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -628,7 +623,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                            Deeper Web Wallet Balance
                             </p>
-                            <h4 className="px-2 my-0">{deeperWebBalance.length ? deeperWebBalance : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">{deeperWebBalance?.length ? deeperWebBalance : "..."}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -644,7 +639,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                            Easy Smart Wallet Balance
                             </p>
-                            <h4 className="px-2 my-0">{easySmartBalance.length ? easySmartBalance : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">{easySmartBalance?.length ? easySmartBalance : "..."}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -660,7 +655,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                            Sizar Pay Wallet Balance
                             </p>
-                            <h4 className="px-2 my-0">{sizarpayBalance.toString().length ? sizarpayBalance : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">{sizarpayBalance?.toString()?.length ? sizarpayBalance : "..."}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -676,7 +671,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                            ZLink Wallet Balance
                             </p>
-                            <h4 className="px-2 my-0">{zlinkBalance.length ? zlinkBalance : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">{zlinkBalance?.length ? zlinkBalance : "..."}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -693,7 +688,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Pending Offline Recharge
                             </p>
-                            <h4 className="px-2 my-0">{pendingOfflineRecharge.toString().length ? pendingOfflineRecharge : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">{pendingOfflineRecharge?.toString()?.length ? pendingOfflineRecharge : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -711,7 +706,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Pending Offline Form
                             </p>
-                            <h4 className="px-2 my-0">{pendingOfflineForm.toString().length ? pendingOfflineForm : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">{pendingOfflineForm.toString()?.length ? pendingOfflineForm : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -729,7 +724,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Pending PAN Offline Form
                             </p>
-                            <h4 className="px-2 my-0">{pendingPanOfflineForm.toString().length ? pendingPanOfflineForm : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">{pendingPanOfflineForm?.toString()?.length ? pendingPanOfflineForm : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -747,7 +742,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Pending Bank Id Form
                             </p>
-                            <h4 className="px-2 my-0">{pendingBankIdForm.toString().length ? pendingBankIdForm : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">{pendingBankIdForm?.toString()?.length ? pendingBankIdForm : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -765,7 +760,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Pending E-district Form
                             </p>
-                            <h4 className="px-2 my-0">{pendingEdistrictForm.toString().length ? pendingEdistrictForm : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">{pendingEdistrictForm?.toString()?.length ? pendingEdistrictForm : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -783,7 +778,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Pending Verify E-district Form
                             </p>
-                            <h4 className="px-2 my-0">{pendingVerifyEdistrictForm.toString().length ? pendingVerifyEdistrictForm : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">{pendingVerifyEdistrictForm?.toString()?.length ? pendingVerifyEdistrictForm : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -801,7 +796,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Pending Sambal Form
                             </p>
-                            <h4 className="px-2 my-0">{pendingSmabalForm.toString().length ? pendingSmabalForm : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">{pendingSmabalForm?.toString()?.length ? pendingSmabalForm : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -819,7 +814,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Pending Pan Coupon Request
                             </p>
-                            <h4 className="px-2 my-0">{pendingPanCouponRequest.toString().length ? pendingPanCouponRequest : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">{pendingPanCouponRequest?.toString()?.length ? pendingPanCouponRequest : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -837,7 +832,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Total Pending Complaints
                             </p>
-                            <h4 className="px-2 my-0">{pendingComplaints.toString().length ?  pendingComplaints : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">{pendingComplaints?.toString()?.length ?  pendingComplaints : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -855,7 +850,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                             Wallet Withdraw Requests
                             </p>
-                            <h4 className="px-2 my-0">{walletWithdrawalRequests.toString().length ?  walletWithdrawalRequests : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">{walletWithdrawalRequests?.toString()?.length ?  walletWithdrawalRequests : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>
@@ -873,7 +868,7 @@ const CustomTooltip = styled(Tooltip)`
                             <p className="mb-0 px-2 my-0 fs-6">
                            Add Wallet Money Requests
                             </p>
-                            <h4 className="px-2 my-0">{addWalletMoneyRequests.toString().length ? addWalletMoneyRequests : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">{addWalletMoneyRequests?.toString()?.length ? addWalletMoneyRequests : "..."}</h4>{" "}
                           </div>
                         </div>
                         </Link>

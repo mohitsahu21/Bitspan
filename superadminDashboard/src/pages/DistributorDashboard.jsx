@@ -95,8 +95,8 @@ const DistributorDashboard = () => {
   const fetchAllUsers = async () => {
     try {
       const { data } = await axios.get(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getDistributorUsersData/${userId}`,
+        // "https://2kadam.co.in/api/auth/superAdmin/getAllUsers",
+        `https://2kadam.co.in/api/auth/Distributor/getDistributorUsersData/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -130,7 +130,7 @@ const DistributorDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getUserNotification/${userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/getUserNotification/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -171,7 +171,7 @@ const DistributorDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getAllMonthCommission/${userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/getAllMonthCommission/${userId}`,
 
         {
           headers: {
@@ -222,7 +222,7 @@ const DistributorDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getTodaysCommission/${userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/getTodaysCommission/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

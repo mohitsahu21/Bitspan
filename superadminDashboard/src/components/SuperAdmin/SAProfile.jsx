@@ -43,8 +43,8 @@ const SAProfile = () => {
       setLoading(true);
      
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserDetails/${user.userId}`,
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
+        `https://2kadam.co.in/api/auth/superAdmin/getUserDetails/${user.userId}`,
+        // "https://2kadam.co.in/api/auth/log-reg/user-register",
         
   {
   headers: {
@@ -125,8 +125,8 @@ useEffect(()=>{
     setLoading(true);
    
     const response = await axios.put(
-      "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/EditSuperAdminProfile",
-      // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
+      "https://2kadam.co.in/api/auth/superAdmin/EditSuperAdminProfile",
+      // "https://2kadam.co.in/api/auth/log-reg/user-register",
       formData,
       
 {

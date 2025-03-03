@@ -93,9 +93,9 @@ const webhook = (req, res) => {
   //           });
   //         });
   
-  //         return res.send('<script>alert(\'Recharge Successful\'); window.location.replace(\'https://bitspan.vimubds5.a2hosted.com\');</script>');
+  //         return res.send('<script>alert(\'Recharge Successful\'); window.location.replace(\'https://2kadam.co.in\');</script>');
   //       } else {
-  //         return res.send('<script>alert(\'Already Added Balance\'); window.location.replace(\'https://bitspan.vimubds5.a2hosted.com\');</script>');
+  //         return res.send('<script>alert(\'Already Added Balance\'); window.location.replace(\'https://2kadam.co.in\');</script>');
   //       }
   //     }
   //   } catch (error) {
@@ -1189,7 +1189,7 @@ const webhook = (req, res) => {
   //       );
   //     });
   //     try {
-  //        const redirect_url = `https://bitspan.vimubds5.a2hosted.com/api/auth/upiwf/addWalletMoneyUsingPG?order_id=${userId}&website=${created_By_Website}`;
+  //        const redirect_url = `https://2kadam.co.in/api/auth/upiwf/addWalletMoneyUsingPG?order_id=${userId}&website=${created_By_Website}`;
 
   //       const postData = { customer_mobile : ContactNo,
   //         user_token,

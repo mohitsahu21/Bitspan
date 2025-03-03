@@ -30,7 +30,7 @@ const SAEmployeeList = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminEmployee",
+            "https://2kadam.co.in/api/auth/superAdmin/getSuperAdminEmployee",
             {
               headers: {
                 "Content-Type": "application/json",
@@ -110,7 +110,7 @@ const SAEmployeeList = () => {
             setLoading(true);
             try {
               const { data } = await axios.put(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/activateUser", 
+                "https://2kadam.co.in/api/auth/superAdmin/activateUser", 
                 {
                    userId: id 
                 },
@@ -187,7 +187,7 @@ const SAEmployeeList = () => {
             setLoading(true);
             try {
               const { data } = await axios.put(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser", 
+                "https://2kadam.co.in/api/auth/superAdmin/deactivateUser", 
                 {
                    userId: id 
                 },

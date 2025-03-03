@@ -26,7 +26,7 @@ const DFundTransferStatus = () => {
     setLoading(true); // Start loading
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getWalletToWalletTransfer/${userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/getWalletToWalletTransfer/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

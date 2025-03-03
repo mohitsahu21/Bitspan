@@ -29,7 +29,7 @@ const DAllDistributorList = () => {
     try {
       const response = await axios.get(
         // `http://localhost:7777/api/auth/superDistributor/getBoughtUserId/${userId}`
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getAllPartner/${userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/getAllPartner/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

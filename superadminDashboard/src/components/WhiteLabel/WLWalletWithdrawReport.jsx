@@ -36,8 +36,8 @@ const WLWalletWithdrawReport = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWalletWithdrawHistory/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletWithdrawHistory/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getWalletWithdrawHistory/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getWalletWithdrawHistory/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

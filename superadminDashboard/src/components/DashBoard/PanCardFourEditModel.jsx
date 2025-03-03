@@ -87,7 +87,7 @@ const PanCardFourEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
   //     const fetchPrices = async () => {
   //       try {
   //         const response = await axios.get(
-  //           `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+  //           `https://2kadam.co.in/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
   //         );
   //         if (response.data?.data?.length > 0) {
   //           const packageData = response.data.data[0];
@@ -297,8 +297,8 @@ const PanCardFourEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
 
     try {
       const response = await axios.put(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/pan-4.0",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/UpdatePanFromData",
+        // "https://2kadam.co.in/api/auth/retailer/pan-4.0",
+        "https://2kadam.co.in/api/auth/retailer/UpdatePanFromData",
         // "http://localhost:7777/api/auth/retailer/UpdatePanFromData",
         form,
         {
@@ -412,7 +412,7 @@ const PanCardFourEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {
           headers: {

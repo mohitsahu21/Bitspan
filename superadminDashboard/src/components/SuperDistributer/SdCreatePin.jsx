@@ -34,7 +34,7 @@ const CreatePin = () => {
     const checkUserAvailable = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/check-user`,
+          `https://2kadam.co.in/api/auth/log-reg/check-user`,
           {
             params: { user_id: currentUser.userId },
             headers: {
@@ -71,7 +71,7 @@ const CreatePin = () => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/create-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/create-pin`,
         createPinData,
         {
           headers: {
@@ -129,7 +129,7 @@ const CreatePin = () => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/request-otp`,
+        `https://2kadam.co.in/api/auth/log-reg/request-otp`,
         changePinData,
         {
           headers: {
@@ -176,7 +176,7 @@ const CreatePin = () => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-otp`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-otp`,
         { user_id: changePinData.user_id, otp: changePinData.otp },
         {
           headers: {
@@ -218,7 +218,7 @@ const CreatePin = () => {
   //   setIsLoading(true);
   //   try {
   //     const response = await axios.post(
-  //       `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-otp`,
+  //       `https://2kadam.co.in/api/auth/log-reg/verify-otp`,
   //       { user_id: changePinData.user_id, otp: changePinData.otp }
   //     );
   //     alert(response.data.message);

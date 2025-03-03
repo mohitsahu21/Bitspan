@@ -4962,7 +4962,7 @@ const UpdateGenralSetting = (req, res) => {
 
     // const QR_Code = req.files['QR_Code']?.[0];
 
-    const domain = "https://bitspan.vimubds5.a2hosted.com";
+    const domain = "https://2kadam.co.in";
     const QR_Code = req.files.QR_Code
       ? `${domain}/uploads/${req.files.QR_Code[0].filename}`
       : QR_Code_Preview;
@@ -5102,7 +5102,7 @@ const UpdateLogoImageSetting = (req, res) => {
 
     // const QR_Code = req.files['QR_Code']?.[0];
 
-    const domain = "https://bitspan.vimubds5.a2hosted.com";
+    const domain = "https://2kadam.co.in";
     const Home_Page_Background = req.files.Home_Page_Background
       ? `${domain}/uploads/${req.files.Home_Page_Background[0].filename}`
       : Home_Page_Background_Preview;
@@ -5175,7 +5175,7 @@ const UpdateHomePageSetting = (req, res) => {
     } = req.body;
     console.log(req.body);
 
-    const domain = "https://bitspan.vimubds5.a2hosted.com";
+    const domain = "https://2kadam.co.in";
     const Offer_Banner = req.files.Offer_Banner
       ? `${domain}/uploads/${req.files.Offer_Banner[0].filename}`
       : Offer_Banner_Preview;

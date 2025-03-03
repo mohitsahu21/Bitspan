@@ -38,7 +38,7 @@ const SdPanFourHistory = () => {
     try {
       const response = await axios.get(
         // `http://localhost:7777/api/auth/retailer/pan-4.0/${userData}`
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getOfflinePan/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getOfflinePan/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

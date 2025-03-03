@@ -43,8 +43,8 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveEdistrictForm",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/ApproveEdistrictForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -175,8 +175,8 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/markForEditEdistrictForm",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/markForEditEdistrictForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -307,8 +307,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
   //   try {
   //     setLoading(true);
   //     const response = await axios.put(
-  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessEdistrictForm",
-  //       // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+  //       "https://2kadam.co.in/api/auth/superAdmin/SuccessEdistrictForm",
+  //       // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
   //       formData,
   //       {
   //         headers: {
@@ -516,7 +516,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
       setLoading(true);
   
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${item.user_id}`,
+        `https://2kadam.co.in/api/auth/superAdmin/getUserRelations/${item.user_id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -542,7 +542,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
 
       const retailerPromise = axios
         .get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
+          `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -558,7 +558,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         if (distributor) {
           const distributorPromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -575,7 +575,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         if (superDistributor) {
           const superDistributorPromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -592,7 +592,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         if (white_lable) {
           const whiteLablePromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -628,8 +628,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         
         if(result && result.retailerFormData && result.retailerFormData.amount){
           const response = await axios.put(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-            // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+            "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+            // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
             result.retailerFormData,
             {
               headers: {
@@ -643,8 +643,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         }
         if( result && result.distributorFormData && result.distributorFormData.amount){
           const response = await axios.put(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-            // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+            "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+            // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
             result.distributorFormData,
             {
               headers: {
@@ -658,8 +658,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         }
         if( result && result.superDistributorFormData && result.superDistributorFormData.amount){
           const response = await axios.put(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-            // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+            "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+            // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
             result.superDistributorFormData,
             {
               headers: {
@@ -673,8 +673,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         }
         if( result && result.whiteLableFormData && result.whiteLableFormData.amount){
           const response = await axios.put(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-            // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+            "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+            // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
             result.whiteLableFormData,
             {
               headers: {
@@ -727,8 +727,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
             status : "Success",
           }
           await axios.post(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
-            // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+            "https://2kadam.co.in/api/auth/superAdmin/addCommissionEntry",
+            // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
             commissionFormData,
             {
               headers: {
@@ -742,8 +742,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         }
 
           await axios.put(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessEdistrictForm",
-                // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+                "https://2kadam.co.in/api/auth/superAdmin/SuccessEdistrictForm",
+                // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
                 formData,
                 {
                   headers: {
@@ -912,8 +912,8 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectEdistrictForm",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/rejectEdistrictForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -1105,7 +1105,7 @@ const SAEdistrictHistory = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getEdistrictForms",
+        "https://2kadam.co.in/api/auth/superAdmin/getEdistrictForms",
         {
           headers: {
             "Content-Type": "application/json",
@@ -1202,7 +1202,7 @@ const SAEdistrictHistory = () => {
   //         setLoading(true);
   //         try {
   //           const { data } = await axios.put(
-  //             "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser",
+  //             "https://2kadam.co.in/api/auth/superAdmin/deactivateUser",
   //             {
   //                userId: id
   //             }

@@ -20,8 +20,8 @@ const PanTransactionReport = () => {
   const [toDate, setToDate] = useState(""); // To date filter
   const [PaymentMode, setPaymentMode] = useState("");
 
-  const api1Url = `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/nsdl-trans-new-requst`;
-  const api2Url = `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/nsdl-trans-correction`;
+  const api1Url = `https://2kadam.co.in/api/auth/retailer/nsdl-trans-new-requst`;
+  const api2Url = `https://2kadam.co.in/api/auth/retailer/nsdl-trans-correction`;
 
   const fetchData = async (url) => {
     setLoading(true);

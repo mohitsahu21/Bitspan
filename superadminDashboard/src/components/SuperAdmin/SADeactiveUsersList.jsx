@@ -31,7 +31,7 @@ const SADeactiveUsersList = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getdeactiveUsers",
+            "https://2kadam.co.in/api/auth/superAdmin/getdeactiveUsers",
             {
               headers: {
                 "Content-Type": "application/json",
@@ -120,7 +120,7 @@ const SADeactiveUsersList = () => {
             setLoading(true);
             try {
               const { data } = await axios.put(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/activateUser", 
+                "https://2kadam.co.in/api/auth/superAdmin/activateUser", 
                 {
                    userId: id 
                 },

@@ -35,8 +35,8 @@ const WLDeactiveUsersList = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getDeactiveUsers/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getDeactiveUsers/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getDeactiveUsers/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getDeactiveUsers/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -125,7 +125,7 @@ const WLDeactiveUsersList = () => {
           setLoading(true);
           try {
             const { data } = await axios.put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser",
+              "https://2kadam.co.in/api/auth/superAdmin/deactivateUser",
               {
                 userId: id,
               },

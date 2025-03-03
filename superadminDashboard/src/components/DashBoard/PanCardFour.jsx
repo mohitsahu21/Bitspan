@@ -65,7 +65,7 @@ const PanCardFour = () => {
     // setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+        "https://2kadam.co.in/api/auth/retailer/getAllServicesList",
         {
           headers: {
             "Content-Type": "application/json",
@@ -94,7 +94,7 @@ const PanCardFour = () => {
     const fetchPrices = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          `https://2kadam.co.in/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -319,8 +319,8 @@ const PanCardFour = () => {
 
     try {
       const response = await axios.post(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/pan-4.0",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/pan-4.0-form",
+        // "https://2kadam.co.in/api/auth/retailer/pan-4.0",
+        "https://2kadam.co.in/api/auth/retailer/pan-4.0-form",
         form,
         {
           headers: {
@@ -431,7 +431,7 @@ const PanCardFour = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {
           headers: {

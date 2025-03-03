@@ -46,7 +46,7 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          `https://2kadam.co.in/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -287,7 +287,7 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
   const getServices = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getSelectedServices/${currentUser.userId}`,
+        `https://2kadam.co.in/api/auth/retailer/getSelectedServices/${currentUser.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -369,7 +369,7 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     try {
       const response = await axios.put(
         // "http://localhost:7777/api/auth/retailer/update_bankidForm",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/update_bankidForm",
+        "https://2kadam.co.in/api/auth/retailer/update_bankidForm",
         submitForm,
         {
           headers: {
@@ -454,7 +454,7 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {
           headers: {

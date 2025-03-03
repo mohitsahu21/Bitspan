@@ -46,8 +46,8 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveBankIdForm",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/ApproveBankIdForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -181,8 +181,8 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/markForEditBankIdForm",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/markForEditBankIdForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -313,8 +313,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessBankIdForm",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/SuccessBankIdForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -472,8 +472,8 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectBankIdForm",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/rejectBankIdForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -673,7 +673,7 @@ const SABankIdForms = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getBankIdForm",
+        "https://2kadam.co.in/api/auth/superAdmin/getBankIdForm",
         {
           headers: {
             "Content-Type": "application/json",
@@ -763,7 +763,7 @@ const SABankIdForms = () => {
   //         setLoading(true);
   //         try {
   //           const { data } = await axios.put(
-  //             "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser", 
+  //             "https://2kadam.co.in/api/auth/superAdmin/deactivateUser", 
   //             {
   //                userId: id 
   //             }

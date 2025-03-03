@@ -75,7 +75,7 @@ const PanDocumentUpload = () => {
 
     try {
       const response = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/panDocument",
+        "https://2kadam.co.in/api/auth/retailer/panDocument",
         formDataToSend,
         {
           headers: {

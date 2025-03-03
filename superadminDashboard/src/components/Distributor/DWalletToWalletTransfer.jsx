@@ -73,9 +73,9 @@ const DWalletToWalletTransfer = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
+        // "https://2kadam.co.in/api/auth/superAdmin/getAllUsers",
         // `http://localhost:7777/api/auth/Distributor/getActiveUsers/${userId}`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getActiveUsers/${userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/getActiveUsers/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -112,8 +112,8 @@ const DWalletToWalletTransfer = () => {
     // setLoading(true);
     try {
       const { data } = await axios.get(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getWalletBalance/${formData.userId}`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getWalletBalance/${formData.userId}`,
+        // `https://2kadam.co.in/api/auth/superAdmin/getWalletBalance/${formData.userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/getWalletBalance/${formData.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -158,7 +158,7 @@ const DWalletToWalletTransfer = () => {
   const fetchWalletBalance = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getWalletBalance/${userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/getWalletBalance/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -260,7 +260,7 @@ const DWalletToWalletTransfer = () => {
       setButtonLoading(true);
 
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/walletToWalletTransfer`,
+        `https://2kadam.co.in/api/auth/superDistributor/walletToWalletTransfer`,
         updatedFormData,
         {
           headers: {
@@ -341,7 +341,7 @@ const DWalletToWalletTransfer = () => {
     try {
       const response = await axios.post(
         // http://localhost:7777/api/auth/log-reg/verify-pin,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: userId || "", pin: pin.join("") }
       );
 

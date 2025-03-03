@@ -27,7 +27,7 @@ const SAPanUploadedDocsList = () => {
     try {
         setLoading(true);
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUploadedDocuments`,
+        `https://2kadam.co.in/api/auth/superAdmin/getUploadedDocuments`,
         {
             headers: {
               "Content-Type": "application/json",

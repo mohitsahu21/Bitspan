@@ -52,8 +52,8 @@ const SAResolveComplaint = ({
     try {
       setLoading(true);
       const response = await axios.put(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectUser",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        // "https://2kadam.co.in/api/auth/superAdmin/rejectUser",
+        "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -175,7 +175,7 @@ const SAEAllComplaintsList = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/complainGetData",
+        "https://2kadam.co.in/api/auth/superAdmin/complainGetData",
         {
           headers: {
             "Content-Type": "application/json",
@@ -267,7 +267,7 @@ const SAEAllComplaintsList = () => {
   //         setLoading(true);
   //         try {
   //           const { data } = await axios.put(
-  //             "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser",
+  //             "https://2kadam.co.in/api/auth/superAdmin/deactivateUser",
   //             {
   //                userId: id
   //             }

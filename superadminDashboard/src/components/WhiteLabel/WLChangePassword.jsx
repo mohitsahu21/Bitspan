@@ -32,7 +32,7 @@ const WLChangePassword = () => {
 
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/change-password-request`,
+        `https://2kadam.co.in/api/auth/log-reg/change-password-request`,
         {
           UserId: userID,
           oldPassword: oldPassword,
@@ -98,7 +98,7 @@ const WLChangePassword = () => {
 
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-otp-change-password`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-otp-change-password`,
         {
           UserId: userID,
           otp: otp,

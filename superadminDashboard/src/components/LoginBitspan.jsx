@@ -19,7 +19,7 @@ import axios from "axios";
 //   const handleLogin = async () => {
 //     try {
 //       const response = await axios.post(
-//         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/loginWithOTP`,
+//         `https://2kadam.co.in/api/auth/log-reg/loginWithOTP`,
 //         {
 //           UserId: userName,
 //           password,
@@ -103,7 +103,7 @@ import axios from "axios";
 //     setLoading(true); // Set loading to true before API call
 //     try {
 //       const response = await axios.post(
-//         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verifyOTP`,
+//         `https://2kadam.co.in/api/auth/log-reg/verifyOTP`,
 //         {
 //           UserId: userName,
 //           otp,
@@ -268,7 +268,7 @@ const LoginBitspan = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/loginWithOTP`,
+        `https://2kadam.co.in/api/auth/log-reg/loginWithOTP`,
         {
           UserId: userName,
           password,
@@ -427,7 +427,7 @@ const LoginBitspan = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verifyOTP`,
+        `https://2kadam.co.in/api/auth/log-reg/verifyOTP`,
         { UserId: userName, otp: otpValue }
       );
 
@@ -494,7 +494,7 @@ const LoginBitspan = () => {
   //   setLoading(true); // Set loading to true before the API call
   //   try {
   //     const response = await axios.post(
-  //       `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verifyOTP`,
+  //       `https://2kadam.co.in/api/auth/log-reg/verifyOTP`,
   //       {
   //         UserId: userName,
   //         otp,

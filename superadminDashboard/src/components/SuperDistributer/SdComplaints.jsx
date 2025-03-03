@@ -52,8 +52,8 @@ const SdComplaints = () => {
 
     try {
       const res = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/complain-query`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/complain-query`,
+        `https://2kadam.co.in/api/auth/superDistributor/complain-query`,
+        // `https://2kadam.co.in/api/auth/retailer/complain-query`,
         data,
         {
           headers: {

@@ -37,8 +37,8 @@ const WLPanTransactionReport = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getOnlinePan/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getOnlinePan/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getOnlinePan/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getOnlinePan/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

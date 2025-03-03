@@ -493,7 +493,7 @@ const RetailerSidebarData = [
   },
   {
     title: "Recharge",
-    // path: "/training-video",
+    path: "#",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -752,7 +752,7 @@ const RetailerSidebarData = [
   // },
   {
     title: "Pan Card Services",
-    // path: "/training-video",
+    path: "#",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -869,7 +869,7 @@ const RetailerSidebarData = [
   // },
   {
     title: "PAN Coupon",
-    // path: "/training-video",
+    path: "#",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -949,7 +949,7 @@ const RetailerSidebarData = [
   // },
   {
     title: "PAN Document",
-    // path: "/training-video",
+    path: "#",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -970,7 +970,7 @@ const RetailerSidebarData = [
 
   {
     title: "Complaint",
-    // path: "/training-video",
+    path: "#",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -990,7 +990,7 @@ const RetailerSidebarData = [
   },
   {
     title: "Other Settings",
-    // path: "/training-video",
+    path: "#",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -1192,7 +1192,7 @@ const SuperDisData = [
 
   {
     title: "Online Services",
-    // path: "/training-video",
+    path: "#",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -1342,7 +1342,7 @@ const SuperDisData = [
   },
   {
     title: "Pan Card Services",
-    // path: "/training-video",
+    path: "#",
     icon: <FaAddressCard color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -1438,7 +1438,7 @@ const SuperDisData = [
   // },
   {
     title: "Create A Partner",
-    // path: "/training-video",
+    path: "#",
     icon: <FaHandsHelping color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -1518,7 +1518,7 @@ const SuperDisData = [
   // },
   {
     title: "User List",
-    // path: "/training-video",
+    path: "#",
     icon: <BiSolidUserDetail color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -1553,7 +1553,7 @@ const SuperDisData = [
   },
   {
     title: "Complaint",
-    // path: "/training-video",
+    path: "#",
     icon: <HiDocumentReport color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -1573,7 +1573,7 @@ const SuperDisData = [
   },
   {
     title: "Other Settings",
-    // path: "/training-video",
+    path: "#",
     icon: <MdAdminPanelSettings color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -1946,7 +1946,7 @@ const SuperAdminData = [
   },
   {
     title: "Create A Parter",
-    // path: "/training-video",
+    path: "#",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -2036,7 +2036,7 @@ const SuperAdminData = [
   // },
   {
     title: "User List",
-    // path: "/training-video",
+    path: "#",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -2101,7 +2101,7 @@ const SuperAdminData = [
   },
   {
     title: "Complaint",
-    // path: "/training-video",
+    path: "#",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -2121,7 +2121,7 @@ const SuperAdminData = [
   },
   {
     title: "Other Settings",
-    // path: "/training-video",
+    path: "#",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -2424,7 +2424,7 @@ const WhiteLabelData = [
 
   {
     title: "Online Services",
-    // path: "/training-video",
+    path: "#",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -2570,7 +2570,7 @@ const WhiteLabelData = [
   },
   {
     title: "Pan Card Services",
-    // path: "/training-video",
+    path: "#",
     icon: <FaAddressCard color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -2661,7 +2661,7 @@ const WhiteLabelData = [
   },
   {
     title: "Create A Parter",
-    // path: "/training-video",
+    path: "#",
     icon: <FaHandsHelping color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -2716,7 +2716,7 @@ const WhiteLabelData = [
   },
   {
     title: "UTI 2.0",
-    // path: "/training-video",
+    path: "#",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -2736,7 +2736,7 @@ const WhiteLabelData = [
   },
   {
     title: "UTI New",
-    // path: "/training-video",
+    path: "#",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -2766,7 +2766,7 @@ const WhiteLabelData = [
   // },
   {
     title: "User List",
-    // path: "/training-video",
+    path: "#",
     icon: <BiSolidUserDetail color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -2816,7 +2816,7 @@ const WhiteLabelData = [
   },
   {
     title: "Complaint",
-    // path: "/training-video",
+    path: "#",
     icon: <HiDocumentReport color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -2836,7 +2836,7 @@ const WhiteLabelData = [
   },
   {
     title: "Other Settings",
-    // path: "/training-video",
+    path: "#",
     icon: <MdAdminPanelSettings color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -3041,7 +3041,7 @@ const DistributorData = [
   },
   {
     title: "Online Services",
-    // path: "/training-video",
+    path: "#",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -3096,7 +3096,7 @@ const DistributorData = [
   },
   {
     title: "Create A Partner",
-    // path: "/training-video",
+    path: "#",
     icon: <FaHandsHelping color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -3172,7 +3172,7 @@ const DistributorData = [
 
   {
     title: "User List",
-    // path: "/training-video",
+    path: "#",
     icon: <BiSolidUserDetail color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -3208,7 +3208,7 @@ const DistributorData = [
 
   {
     title: "Pan Card Services",
-    // path: "/training-video",
+    path: "#",
     icon: <FaAddressCard color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -3234,7 +3234,7 @@ const DistributorData = [
 
   {
     title: "Complaint",
-    // path: "/training-video",
+    path: "#",
     icon: <HiDocumentReport color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -3254,7 +3254,7 @@ const DistributorData = [
   },
   {
     title: "Other Settings",
-    // path: "/training-video",
+    path: "#",
     icon: <MdAdminPanelSettings color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
@@ -3417,7 +3417,7 @@ const Sider = () => {
     const fetchProfileImage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getProfileImage/${userId}`
+          `https://2kadam.co.in/api/auth/superDistributor/getProfileImage/${userId}`
         );
         if (response.data.success) {
           setProfileImage(response.data.data.profileImage); // Update the state with the profile image URL

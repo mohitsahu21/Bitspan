@@ -35,7 +35,7 @@ const SATodayAllTransaction = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getTodayWalletTransactions",
+        "https://2kadam.co.in/api/auth/superAdmin/getTodayWalletTransactions",
         {
           headers: {
             "Content-Type": "application/json",

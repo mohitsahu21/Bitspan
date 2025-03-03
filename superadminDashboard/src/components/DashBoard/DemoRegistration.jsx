@@ -394,7 +394,7 @@ const DemoRegistration = () => {
     const fetchDthPlans = async () => {
       try {
         const response = await axios.get(
-          'https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getDthConnectionPlan'
+          'https://2kadam.co.in/api/auth/retailer/getDthConnectionPlan'
         );
         if (response.data.status === 'Success') {
           setPlans(response.data.data);

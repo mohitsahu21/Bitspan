@@ -38,7 +38,7 @@ const Genral = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
+            "https://2kadam.co.in/api/auth/superAdmin/getSuperAdminSettings"
           );
           setData(data.data);
           setFormData({
@@ -144,7 +144,7 @@ const Genral = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post("https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateGenralSetting", formDataSend, {
+            const response = await axios.post("https://2kadam.co.in/api/auth/superAdmin/UpdateGenralSetting", formDataSend, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     Authorization: `Bearer ${token}`

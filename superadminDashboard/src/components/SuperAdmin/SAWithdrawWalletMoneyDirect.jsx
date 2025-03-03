@@ -48,7 +48,7 @@ const SAWithdrawWalletMoneyDirect = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
+        "https://2kadam.co.in/api/auth/superAdmin/getAllUsers",
         {
           headers: {
             "Content-Type": "application/json",
@@ -86,7 +86,7 @@ const SAWithdrawWalletMoneyDirect = () => {
     // setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getWalletBalance/${formData.userId}`,
+        `https://2kadam.co.in/api/auth/superAdmin/getWalletBalance/${formData.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -181,8 +181,8 @@ const SAWithdrawWalletMoneyDirect = () => {
     //   setIsRefresh(true)
      
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/WithdrawWalletAddMoneyDirect",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+        "https://2kadam.co.in/api/auth/superAdmin/WithdrawWalletAddMoneyDirect",
+        // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
         formData,
         {
           headers: {

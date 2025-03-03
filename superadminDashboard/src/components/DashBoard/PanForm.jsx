@@ -52,7 +52,7 @@ const PanForm = () => {
     // setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+        "https://2kadam.co.in/api/auth/retailer/getAllServicesList",
         {
           headers: {
             "Content-Type": "application/json",
@@ -81,7 +81,7 @@ const PanForm = () => {
     const fetchPackage = async () => {
       try {
         const { data } = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          `https://2kadam.co.in/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -359,7 +359,7 @@ const PanForm = () => {
     try {
       const response = await axios.post(
         // `http://localhost:7777/api/auth/retailer/applyOfflineForm`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/applyOfflineForm`,
+        `https://2kadam.co.in/api/auth/retailer/applyOfflineForm`,
         formDataObj,
         {
           headers: {
@@ -472,7 +472,7 @@ const PanForm = () => {
     try {
       const response = await axios.post(
         // `http://localhost:7777/api/auth/log-reg/verify-pin`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {
           headers: {

@@ -40,8 +40,8 @@ const SAActiveApi = ({ complaint, setShowActiveModel, setIsRefresh }) => {
       try {
         setLoading(true);
         const response = await axios.put(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ActiveServices",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+          "https://2kadam.co.in/api/auth/superAdmin/ActiveServices",
+          // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
           formData,
           {
             headers: {
@@ -192,8 +192,8 @@ const SADeactiveApi = ({ complaint, setShowDeactiveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/DeactiveServices",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/DeactiveServices",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -345,7 +345,7 @@ const SAActiveDeactiveServices = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllServicesList",
+            "https://2kadam.co.in/api/auth/superAdmin/getAllServicesList",
             {
               headers: {
                 "Content-Type": "application/json",
@@ -426,7 +426,7 @@ const SAActiveDeactiveServices = () => {
     //         setLoading(true);
     //         try {
     //           const { data } = await axios.put(
-    //             "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser", 
+    //             "https://2kadam.co.in/api/auth/superAdmin/deactivateUser", 
     //             {
     //                userId: id 
     //             }

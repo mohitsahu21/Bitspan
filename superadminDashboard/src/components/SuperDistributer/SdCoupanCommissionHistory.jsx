@@ -25,7 +25,7 @@ const SdCoupanCommissionHistory = () => {
     setLoading(true); // Start loading
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getCoupanHistory/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getCoupanHistory/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

@@ -36,7 +36,7 @@ const SAUserIdTransferSummery = () => {
       console.log("Fetching API..."); // ✅ Step 1: Check if API call is triggered
 
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getShareIdsSummary`,
+        `https://2kadam.co.in/api/auth/superAdmin/getShareIdsSummary`,
         {
           headers: {
             "Content-Type": "application/json",

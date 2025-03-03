@@ -25,8 +25,8 @@ const WLAllOfflineForm = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getApplyOfflineFormById/${userId}`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getApplyOfflineFormById/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getApplyOfflineFormById/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getApplyOfflineFormById/${userId}`,
 
         {
           headers: {

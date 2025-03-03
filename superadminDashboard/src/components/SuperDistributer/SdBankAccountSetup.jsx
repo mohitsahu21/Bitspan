@@ -47,8 +47,8 @@ const SdBankAccountSetup = () => {
   const fetchBankAccounts = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getBankDetails/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getBankDetails/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getBankDetails/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getBankDetails/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -114,7 +114,7 @@ const SdBankAccountSetup = () => {
     // Proceed with the form submission if validation is passed
     axios
       .post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/addBankDetails/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/addBankDetails/${userId}`,
         {
           userId: userId, // Ensure userId is passed to the backend
           bankholder_name: bankData.holderName,
@@ -187,7 +187,7 @@ const SdBankAccountSetup = () => {
     if (confirm.isConfirmed) {
       try {
         const response = await axios.delete(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/deleteBankDetails/${bid}`,
+          `https://2kadam.co.in/api/auth/superDistributor/deleteBankDetails/${bid}`,
           {
             headers: {
               "Content-Type": "application/json",

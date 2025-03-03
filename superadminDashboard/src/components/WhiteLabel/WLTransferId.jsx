@@ -65,7 +65,7 @@ const WLTransferId = () => {
   const fetchNoOfIds = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getRemainingIds/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getRemainingIds/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -101,8 +101,8 @@ const WLTransferId = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getActiveUsers/${userId}`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getActiveUsers/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getActiveUsers/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getActiveUsers/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -139,8 +139,8 @@ const WLTransferId = () => {
     // setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getRemainingIds/${formData.userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletBalance/${formData.userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getRemainingIds/${formData.userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getWalletBalance/${formData.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -280,7 +280,7 @@ const WLTransferId = () => {
       setButtonLoading(true);
 
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/idTransfer`,
+        `https://2kadam.co.in/api/auth/whiteLabel/idTransfer`,
         updatedFormData,
         {
           headers: {
@@ -394,7 +394,7 @@ const WLTransferId = () => {
     try {
       const response = await axios.post(
         // http://localhost:7777/api/auth/log-reg/verify-pin,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: userId || "", pin: pin.join("") }
       );
 

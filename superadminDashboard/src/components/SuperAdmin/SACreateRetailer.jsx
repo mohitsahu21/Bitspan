@@ -73,8 +73,8 @@ const SACreateRetailer = () => {
       setLoading(true);
      
       const response = await axios.post(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
+        // "https://2kadam.co.in/api/auth/superAdmin/approveUser",
+        "https://2kadam.co.in/api/auth/log-reg/user-register",
         formData,
         
 {

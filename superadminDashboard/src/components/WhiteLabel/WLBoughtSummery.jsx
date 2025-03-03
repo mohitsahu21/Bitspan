@@ -26,8 +26,8 @@ const WLBoughtSummery = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getBoughtUserId/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getBoughtUserId/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getBoughtUserId/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getBoughtUserId/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

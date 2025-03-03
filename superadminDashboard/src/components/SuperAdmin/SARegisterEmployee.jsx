@@ -66,7 +66,7 @@ const SARegisterEmployee = () => {
     setLoading(true);
     try {
       const res = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/superAdminEmployeeRegiser",
+        "https://2kadam.co.in/api/auth/log-reg/superAdminEmployeeRegiser",
         formData,
         
 {

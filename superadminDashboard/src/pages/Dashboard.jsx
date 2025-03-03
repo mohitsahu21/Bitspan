@@ -51,7 +51,7 @@ const Dashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getUserNotification/${userId}`,
+        `https://2kadam.co.in/api/auth/retailer/getUserNotification/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -87,7 +87,7 @@ const Dashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllMonthCommission/${userId}`,
+        `https://2kadam.co.in/api/auth/retailer/getAllMonthCommission/${userId}`,
 
         {
           headers: {
@@ -134,7 +134,7 @@ const Dashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getTodaysCommission/${userId}`,
+        `https://2kadam.co.in/api/auth/retailer/getTodaysCommission/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -190,7 +190,7 @@ const Dashboard = () => {
       setLoading(true);
       try {
         const { data } = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllMonthRecharge/${userId}`,
+          `https://2kadam.co.in/api/auth/retailer/getAllMonthRecharge/${userId}`,
   
           {
             headers: {
@@ -232,7 +232,7 @@ const Dashboard = () => {
       setLoading(true);
       try {
         const { data } = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllMonthRechargeOffline/${userId}`,
+          `https://2kadam.co.in/api/auth/retailer/getAllMonthRechargeOffline/${userId}`,
   
           {
             headers: {
@@ -275,7 +275,7 @@ const Dashboard = () => {
       setLoading(true);
       try {
         const { data } = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getTodaysRecharge/${userId}`,
+          `https://2kadam.co.in/api/auth/retailer/getTodaysRecharge/${userId}`,
   
           {
             headers: {
@@ -317,7 +317,7 @@ const Dashboard = () => {
       setLoading(true);
       try {
         const { data } = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getTodaysRechargeOffline/${userId}`,
+          `https://2kadam.co.in/api/auth/retailer/getTodaysRechargeOffline/${userId}`,
   
           {
             headers: {

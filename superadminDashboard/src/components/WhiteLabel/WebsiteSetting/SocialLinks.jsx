@@ -28,9 +28,9 @@ const SocialLinks = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWhitelabelSettings/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getWhitelabelSettings/${userId}`,
 
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
+        // "https://2kadam.co.in/api/auth/superAdmin/getSuperAdminSettings"
 
         {
           headers: {
@@ -101,8 +101,8 @@ const SocialLinks = () => {
     setLoading(true);
     try {
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/UpdateSocialLinkSetting",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateSocialLinkSetting",
+        "https://2kadam.co.in/api/auth/whiteLabel/UpdateSocialLinkSetting",
+        // "https://2kadam.co.in/api/auth/superAdmin/UpdateSocialLinkSetting",
         formData,
 
         {

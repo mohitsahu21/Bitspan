@@ -48,8 +48,8 @@ const UTIRetailerIdActivate = () => {
     try {
       const { data } = await axios.post(
         // 'http://localhost:7777/api/auth/nsdlpan/easySmartUtiAgentOnbording',
-        'https://bitspan.vimubds5.a2hosted.com/api/auth/nsdlpan/easySmartUtiAgentOnbording',
-        // 'https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/zlinkUtiAgentOnbording',
+        'https://2kadam.co.in/api/auth/nsdlpan/easySmartUtiAgentOnbording',
+        // 'https://2kadam.co.in/api/auth/zlink/zlinkUtiAgentOnbording',
 
         formdata);
       setLoading(false);

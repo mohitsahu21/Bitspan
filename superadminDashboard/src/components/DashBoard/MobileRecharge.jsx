@@ -25,7 +25,7 @@ const MobileRecharge = () => {
     // setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+        "https://2kadam.co.in/api/auth/retailer/getAllServicesList",
         {
           headers: {
             "Content-Type": "application/json",
@@ -181,7 +181,7 @@ const MobileRecharge = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          `https://2kadam.co.in/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -212,7 +212,7 @@ const MobileRecharge = () => {
 
   //   try {
   //     const response = await axios.get(
-  //       `https://bitspan.vimubds5.a2hosted.com/api/auth/fetch/plan/getMobilePlans?operatorCode=${selectedOperator}&circleCode=${selectedCircle}`
+  //       `https://2kadam.co.in/api/auth/fetch/plan/getMobilePlans?operatorCode=${selectedOperator}&circleCode=${selectedCircle}`
   //     );
   //     const data = response.data;
 
@@ -270,7 +270,7 @@ const MobileRecharge = () => {
 
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/fetch/plan/getMobilePlans?operatorCode=${selectedOperator}&circleCode=${selectedCircle}`
+        `https://2kadam.co.in/api/auth/fetch/plan/getMobilePlans?operatorCode=${selectedOperator}&circleCode=${selectedCircle}`
       );
       const data = response.data;
 
@@ -313,7 +313,7 @@ const MobileRecharge = () => {
 
   //   try {
   //     const response = await axios.get(
-  //       `https://bitspan.vimubds5.a2hosted.com/api/auth/fetch/plan/getMobilePlans?operatorCode=${selectedOperator}&circleCode=${selectedCircle}`
+  //       `https://2kadam.co.in/api/auth/fetch/plan/getMobilePlans?operatorCode=${selectedOperator}&circleCode=${selectedCircle}`
   //     );
   //     const data = response.data;
 
@@ -351,7 +351,7 @@ const MobileRecharge = () => {
       try {
         const response = await axios.get(
           // `http://localhost:7777/api/auth/retailer/getAllRechargeApi`
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllRechargeApi`,
+          `https://2kadam.co.in/api/auth/retailer/getAllRechargeApi`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -464,7 +464,7 @@ const MobileRecharge = () => {
   //   setLoading(true);
   //   try {
   //     const result = await axios.post(
-  //       // "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/offline-recharge",
+  //       // "https://2kadam.co.in/api/auth/retailer/offline-recharge",
   //       "http://localhost:7777/api/auth/wallet/offlineRechargeAndUpdateWallet",
   //       offlineForm
   //     );
@@ -827,7 +827,7 @@ const MobileRecharge = () => {
       // setLoading(true);
 
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${currentUser.userId}`,
+        `https://2kadam.co.in/api/auth/superAdmin/getUserRelations/${currentUser.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -856,7 +856,7 @@ const MobileRecharge = () => {
 
         const retailerPromise = axios
           .get(
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
+            `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -872,7 +872,7 @@ const MobileRecharge = () => {
         if (distributor) {
           const distributorPromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -889,7 +889,7 @@ const MobileRecharge = () => {
         if (superDistributor) {
           const superDistributorPromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -906,7 +906,7 @@ const MobileRecharge = () => {
         if (white_lable) {
           const whiteLablePromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -1035,8 +1035,8 @@ const MobileRecharge = () => {
           ) {
             const response = await axios
               .put(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-                // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+                "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+                // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
                 result.distributorFormData,
                 {
                   headers: {
@@ -1056,8 +1056,8 @@ const MobileRecharge = () => {
           ) {
             const response = await axios
               .put(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-                // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+                "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+                // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
                 result.superDistributorFormData,
                 {
                   headers: {
@@ -1077,8 +1077,8 @@ const MobileRecharge = () => {
           ) {
             const response = await axios
               .put(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-                // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+                "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+                // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
                 result.whiteLableFormData,
                 {
                   headers: {
@@ -1141,8 +1141,8 @@ const MobileRecharge = () => {
             console.log(commissionFormData);
             await axios
               .post(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
-                // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+                "https://2kadam.co.in/api/auth/superAdmin/addCommissionEntry",
+                // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
                 commissionFormData,
                 {
                   headers: {
@@ -1204,8 +1204,8 @@ const MobileRecharge = () => {
             console.log(commissionFormData);
             await axios
               .post(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
-                // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+                "https://2kadam.co.in/api/auth/superAdmin/addCommissionEntry",
+                // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
                 commissionFormData,
                 {
                   headers: {
@@ -1282,7 +1282,7 @@ const MobileRecharge = () => {
       // Make the API call
       const result = await axios.post(
         // "http://localhost:7777/api/auth/wallet/offlineRechargeAndUpdateWallet",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/wallet/offlineRechargeAndUpdateWallet",
+        "https://2kadam.co.in/api/auth/wallet/offlineRechargeAndUpdateWallet",
         offlineForm,
         {
           headers: {
@@ -1378,7 +1378,7 @@ const MobileRecharge = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {
           headers: {
@@ -1422,7 +1422,7 @@ const MobileRecharge = () => {
   const verifyOnlinePin = async () => {
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: onlinePin.join("") },
         {
           headers: {
@@ -2674,8 +2674,8 @@ const Wrapper = styled.div`
 //   setLoading(true);
 //   try {
 //     const result = await axios.post(
-//       // "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/recharge-instpy",
-//       "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/api-recharge",
+//       // "https://2kadam.co.in/api/auth/instpay/recharge-instpy",
+//       "https://2kadam.co.in/api/auth/instpay/api-recharge",
 //       formData
 //     );
 //     setResponse(result.data); // Update the response state with the received data

@@ -34,7 +34,7 @@ const SAPendingPaymentUsers = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingPaymentUsers",
+            "https://2kadam.co.in/api/auth/superAdmin/getPendingPaymentUsers",
             {
               headers: {
                 "Content-Type": "application/json",
@@ -127,7 +127,7 @@ const SAPendingPaymentUsers = () => {
             setLoading(true);
             try {
               const { data } = await axios.put(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/markPaymentComplete", 
+                "https://2kadam.co.in/api/auth/superAdmin/markPaymentComplete", 
                 {
                    userId: id 
                 },

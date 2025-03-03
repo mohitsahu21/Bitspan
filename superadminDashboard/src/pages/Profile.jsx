@@ -37,7 +37,7 @@
 
 //     try {
 //       const response = await axios.put(
-//         `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/user-profile/${currentUser?.userId}`,
+//         `https://2kadam.co.in/api/auth/retailer/user-profile/${currentUser?.userId}`,
 //         formData,
 //         {
 //           headers: {
@@ -471,7 +471,7 @@ const Profile = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -536,7 +536,7 @@ const Profile = () => {
 
     try {
       const response = await axios.put(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/user-profile/${currentUser?.userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/user-profile/${currentUser?.userId}`,
         formData,
         {
           headers: {

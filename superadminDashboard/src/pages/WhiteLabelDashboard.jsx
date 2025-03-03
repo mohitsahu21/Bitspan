@@ -97,8 +97,8 @@ const WhiteLabelDashboard = () => {
   const fetchAllUsers = async () => {
     try {
       const { data } = await axios.get(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getSuperDistributorUsersData/${userId}`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWhiteLabelUsersData/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getSuperDistributorUsersData/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getWhiteLabelUsersData/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -132,8 +132,8 @@ const WhiteLabelDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getUserNotification/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getUserNotification/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getUserNotification/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getUserNotification/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -174,7 +174,7 @@ const WhiteLabelDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getAllMonthCommission/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getAllMonthCommission/${userId}`,
 
         {
           headers: {
@@ -225,7 +225,7 @@ const WhiteLabelDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getTodaysCommission/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getTodaysCommission/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

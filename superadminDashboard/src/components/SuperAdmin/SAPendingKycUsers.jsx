@@ -181,7 +181,7 @@ const handlePackageSelect = (e) => {
     
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${user.created_By_User_Id}`,
+        `https://2kadam.co.in/api/auth/superAdmin/getUserRelations/${user.created_By_User_Id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -214,7 +214,7 @@ const handlePackageSelect = (e) => {
     setPackagesLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPackage",
+        "https://2kadam.co.in/api/auth/superAdmin/getPackage",
         {
           headers: {
             "Content-Type": "application/json",
@@ -274,8 +274,8 @@ const handlePackageSelect = (e) => {
       setLoading(true);
      
       const response = await axios.put(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
+        // "https://2kadam.co.in/api/auth/superAdmin/approveUser",
+        "https://2kadam.co.in/api/auth/superAdmin/approveUser",
         formDataToSend,
         {
           headers: {
@@ -576,8 +576,8 @@ const SARejectUser = ({ user, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectUser",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectUser",
+        // "https://2kadam.co.in/api/auth/superAdmin/rejectUser",
+        "https://2kadam.co.in/api/auth/superAdmin/rejectUser",
         formData,
         {
           headers: {
@@ -724,7 +724,7 @@ const SAPendingKycUsers = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingUsers",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingUsers",
         {
           headers: {
             "Content-Type": "application/json",

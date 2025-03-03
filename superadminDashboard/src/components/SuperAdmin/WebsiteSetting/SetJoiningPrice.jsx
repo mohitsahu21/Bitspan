@@ -26,7 +26,7 @@ const SetJoiningPrice = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
+            "https://2kadam.co.in/api/auth/superAdmin/getSuperAdminSettings"
           );
           setData(data.data);
           setFormData({
@@ -73,7 +73,7 @@ const SetJoiningPrice = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.put("https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateSAWebsiteJoiningPrice", formData,
+            const response = await axios.put("https://2kadam.co.in/api/auth/superAdmin/UpdateSAWebsiteJoiningPrice", formData,
                 
 {
     headers: {

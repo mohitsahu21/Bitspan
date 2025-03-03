@@ -32,8 +32,8 @@ const DAllUsersJoinedList = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getDistributorUsersData/${userId}`,
+        // "https://2kadam.co.in/api/auth/superAdmin/getAllUsers",
+        `https://2kadam.co.in/api/auth/Distributor/getDistributorUsersData/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

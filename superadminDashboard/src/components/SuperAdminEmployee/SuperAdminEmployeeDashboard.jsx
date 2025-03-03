@@ -72,7 +72,7 @@ const SuperAdminEmployeeDashboard = () => {
   //   setLoading(true);
   //   try {
   //     const { data } = await axios.get(
-  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
+  //       "https://2kadam.co.in/api/auth/superAdmin/getAllUsers",
   //       {
   //         headers: {
   //           "Content-Type": "application/json",
@@ -92,7 +92,7 @@ const SuperAdminEmployeeDashboard = () => {
   //   setLoading(true);
   //   try {
   //     const { data } = await axios.get(
-  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/cgonepay/cgonePayBalance"
+  //       "https://2kadam.co.in/api/auth/cgonepay/cgonePayBalance"
   //     );
   //     setCgOnePayBalance(data.MESSAGE);
   //     setLoading(false);
@@ -105,7 +105,7 @@ const SuperAdminEmployeeDashboard = () => {
   //   setLoading(true);
   //   try {
   //     const { data } = await axios.get(
-  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/get-balance"
+  //       "https://2kadam.co.in/api/auth/instpay/get-balance"
   //     );
   //     setInstPayBalance(data.balance);
   //     setLoading(false);
@@ -118,7 +118,7 @@ const SuperAdminEmployeeDashboard = () => {
   //   setLoading(true);
   //   try {
   //     const { data } = await axios.get(
-  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/ezytm/get-balance-ezytm"
+  //       "https://2kadam.co.in/api/auth/ezytm/get-balance-ezytm"
   //     );
   //     setEzytmBalance(data.BALANCE);
   //     setLoading(false);
@@ -131,7 +131,7 @@ const SuperAdminEmployeeDashboard = () => {
   //   setLoading(true);
   //   try {
   //     const { data } = await axios.get(
-  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/deeperweb/deeperwebBalance"
+  //       "https://2kadam.co.in/api/auth/deeperweb/deeperwebBalance"
   //     );
   //     setDeeperWebBalance(data.totalBalance);
   //     setLoading(false);
@@ -144,7 +144,7 @@ const SuperAdminEmployeeDashboard = () => {
   //   setLoading(true);
   //   try {
   //     const { data } = await axios.get(
-  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/nsdlpan/easysmartBalance"
+  //       "https://2kadam.co.in/api/auth/nsdlpan/easysmartBalance"
   //     );
   //     seteasySmartBalance(data.user_balance);
   //     setLoading(false);
@@ -157,7 +157,7 @@ const SuperAdminEmployeeDashboard = () => {
   //   setLoading(true);
   //   try {
   //     const { data } = await axios.get(
-  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/sizarpay/sizarpayBalance"
+  //       "https://2kadam.co.in/api/auth/sizarpay/sizarpayBalance"
   //     );
   //     setSizarpayBalance(data.bal);
   //     setLoading(false);
@@ -170,7 +170,7 @@ const SuperAdminEmployeeDashboard = () => {
   //   setLoading(true);
   //   try {
   //     const { data } = await axios.get(
-  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/zlinkBalance"
+  //       "https://2kadam.co.in/api/auth/zlink/zlinkBalance"
   //     );
   //     setZlinkBalance(data.user_balance);
   //     setLoading(false);
@@ -183,7 +183,7 @@ const SuperAdminEmployeeDashboard = () => {
   //   setLoading(true);
   //   try {
   //     const { data } = await axios.get(
-  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletWithdrawRequests",
+  //       "https://2kadam.co.in/api/auth/superAdmin/getPendingWalletWithdrawRequests",
   //       {
   //         headers: {
   //           "Content-Type": "application/json",
@@ -212,7 +212,7 @@ const SuperAdminEmployeeDashboard = () => {
   //   setLoading(true);
   //   try {
   //     const { data } = await axios.get(
-  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletAddMoneyRequests",
+  //       "https://2kadam.co.in/api/auth/superAdmin/getPendingWalletAddMoneyRequests",
   //       {
   //         headers: {
   //           "Content-Type": "application/json",
@@ -232,7 +232,7 @@ const SuperAdminEmployeeDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingComplaintData",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingComplaintData",
         {
           headers: {
             "Content-Type": "application/json",
@@ -251,7 +251,7 @@ const SuperAdminEmployeeDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingOfflineRecharge",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingOfflineRecharge",
         {
           headers: {
             "Content-Type": "application/json",
@@ -270,7 +270,7 @@ const SuperAdminEmployeeDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingApplyOfflineForm",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingApplyOfflineForm",
         {
           headers: {
             "Content-Type": "application/json",
@@ -289,7 +289,7 @@ const SuperAdminEmployeeDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingPANOfflineForm",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingPANOfflineForm",
         {
           headers: {
             "Content-Type": "application/json",
@@ -308,7 +308,7 @@ const SuperAdminEmployeeDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingBankIdForm",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingBankIdForm",
         {
           headers: {
             "Content-Type": "application/json",
@@ -327,7 +327,7 @@ const SuperAdminEmployeeDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingEdistrictForms",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingEdistrictForms",
         {
           headers: {
             "Content-Type": "application/json",
@@ -346,7 +346,7 @@ const SuperAdminEmployeeDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingVerifyEdistrictForms",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingVerifyEdistrictForms",
         {
           headers: {
             "Content-Type": "application/json",
@@ -365,7 +365,7 @@ const SuperAdminEmployeeDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingSambalForms",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingSambalForms",
         {
           headers: {
             "Content-Type": "application/json",
@@ -384,7 +384,7 @@ const SuperAdminEmployeeDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingPanCouponRequests",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingPanCouponRequests",
         {
           headers: {
             "Content-Type": "application/json",

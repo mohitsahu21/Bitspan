@@ -44,7 +44,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
       setLoading(true);
       const response = await axios.put(
         // "http://localhost:7777/api/auth/superAdmin/ApproveSambalForm",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveSambalForm",
+        "https://2kadam.co.in/api/auth/superAdmin/ApproveSambalForm",
         formData,
         {
           headers: {
@@ -174,8 +174,8 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/markForEditSambalForm",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/markForEditSambalForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -305,8 +305,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
 //     try {
 //       setLoading(true);
 //       const response = await axios.put(
-//         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessSambalForm",
-//         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+//         "https://2kadam.co.in/api/auth/superAdmin/SuccessSambalForm",
+//         // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
 //         formData,
 //         {
 //   headers: {
@@ -480,7 +480,7 @@ const handlesubmit = async (e) => {
     setLoading(true);
 
     const { data } = await axios.get(
-      `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${item.user_id}`,
+      `https://2kadam.co.in/api/auth/superAdmin/getUserRelations/${item.user_id}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -506,7 +506,7 @@ const handlesubmit = async (e) => {
 
     const retailerPromise = axios
       .get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
+        `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -522,7 +522,7 @@ const handlesubmit = async (e) => {
       if (distributor) {
         const distributorPromise = axios
           .get(
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+            `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -539,7 +539,7 @@ const handlesubmit = async (e) => {
       if (superDistributor) {
         const superDistributorPromise = axios
           .get(
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+            `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -556,7 +556,7 @@ const handlesubmit = async (e) => {
       if (white_lable) {
         const whiteLablePromise = axios
           .get(
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+            `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -592,8 +592,8 @@ const handlesubmit = async (e) => {
       
       if(result && result.retailerFormData && result.retailerFormData.amount){
         const response = await axios.put(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+          "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+          // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
           result.retailerFormData,
           {
             headers: {
@@ -607,8 +607,8 @@ const handlesubmit = async (e) => {
       }
       if( result && result.distributorFormData && result.distributorFormData.amount){
         const response = await axios.put(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+          "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+          // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
           result.distributorFormData,
           {
             headers: {
@@ -622,8 +622,8 @@ const handlesubmit = async (e) => {
       }
       if( result && result.superDistributorFormData && result.superDistributorFormData.amount){
         const response = await axios.put(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+          "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+          // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
           result.superDistributorFormData,
           {
             headers: {
@@ -637,8 +637,8 @@ const handlesubmit = async (e) => {
       }
       if( result && result.whiteLableFormData && result.whiteLableFormData.amount){
         const response = await axios.put(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+          "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+          // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
           result.whiteLableFormData,
           {
             headers: {
@@ -691,8 +691,8 @@ const handlesubmit = async (e) => {
           status : "Success",
         }
         await axios.post(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+          "https://2kadam.co.in/api/auth/superAdmin/addCommissionEntry",
+          // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
           commissionFormData,
           {
             headers: {
@@ -706,8 +706,8 @@ const handlesubmit = async (e) => {
       }
 
         await axios.put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessSambalForm",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+              "https://2kadam.co.in/api/auth/superAdmin/SuccessSambalForm",
+              // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
               formData,
               {
                 headers: {
@@ -874,7 +874,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectSambalForm",
+        "https://2kadam.co.in/api/auth/superAdmin/rejectSambalForm",
         // "http://localhost:7777/api/auth/superAdmin/rejectSambalForm",
         formData,
         {
@@ -1067,7 +1067,7 @@ const SASambalHistory = () => {
     try {
       const { data } = await axios.get(
         // "http://localhost:7777/api/auth/superAdmin/getSambalForms"
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSambalForms",
+        "https://2kadam.co.in/api/auth/superAdmin/getSambalForms",
         {
   headers: {
     "Content-Type": "application/json",
@@ -1166,7 +1166,7 @@ const SASambalHistory = () => {
   //         setLoading(true);
   //         try {
   //           const { data } = await axios.put(
-  //             "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser",
+  //             "https://2kadam.co.in/api/auth/superAdmin/deactivateUser",
   //             {
   //                userId: id
   //             }

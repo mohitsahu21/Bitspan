@@ -48,8 +48,8 @@ const SdOfflineDthConnection = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getOfflineDTHConnection/${userId}`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getOfflineDTHConnection/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getOfflineDTHConnection/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getOfflineDTHConnection/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

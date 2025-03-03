@@ -95,8 +95,8 @@ const SuperDistributerDashboard = () => {
   const fetchAllUsers = async () => {
     try {
       const { data } = await axios.get(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getSuperDistributorUsersData/${userId}`,
+        // "https://2kadam.co.in/api/auth/superAdmin/getAllUsers",
+        `https://2kadam.co.in/api/auth/superDistributor/getSuperDistributorUsersData/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -130,7 +130,7 @@ const SuperDistributerDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getUserNotification/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getUserNotification/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -171,7 +171,7 @@ const SuperDistributerDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getAllMonthCommission/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getAllMonthCommission/${userId}`,
 
         {
           headers: {
@@ -222,7 +222,7 @@ const SuperDistributerDashboard = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getTodaysCommission/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getTodaysCommission/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

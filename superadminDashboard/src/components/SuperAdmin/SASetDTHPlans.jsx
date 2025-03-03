@@ -38,8 +38,8 @@ const SAActiveApi = ({ complaint, setShowActiveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ActiveApi",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/ActiveApi",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -186,8 +186,8 @@ const SADeactiveApi = ({ complaint, setShowEditModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/EditDTHConnetionPlans",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/EditDTHConnetionPlans",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -358,8 +358,8 @@ const SACreatePlan = ({  setShowCreatePlanModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreateDTHConnectionPlans",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/CreateDTHConnectionPlans",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -508,7 +508,7 @@ const SASetDTHPlans = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getDTHConnectionPlans",
+        "https://2kadam.co.in/api/auth/superAdmin/getDTHConnectionPlans",
         {
           headers: {
             "Content-Type": "application/json",
@@ -565,7 +565,7 @@ const SASetDTHPlans = () => {
         setLoading(true);
         try {
           const { data } = await axios.delete(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/DeleteDTHConnetionPlans", 
+            "https://2kadam.co.in/api/auth/superAdmin/DeleteDTHConnetionPlans", 
             {
               data: { id }
             },
@@ -669,7 +669,7 @@ const SASetDTHPlans = () => {
   //         setLoading(true);
   //         try {
   //           const { data } = await axios.put(
-  //             "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser",
+  //             "https://2kadam.co.in/api/auth/superAdmin/deactivateUser",
   //             {
   //                userId: id
   //             }

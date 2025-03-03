@@ -81,8 +81,8 @@ import { MdGrid3X3 } from "react-icons/md";
 //     try {
 //       setLoading(true);
 //       const response = await axios.post(
-//         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/AddCommisionForWhiteLabelJoinUser",
-//         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+//         "https://2kadam.co.in/api/auth/superAdmin/AddCommisionForWhiteLabelJoinUser",
+//         // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
 //         formData,
 //         {
 //           headers: {
@@ -270,8 +270,8 @@ const WLWebUsersJoinedList = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getWhiteLabelWebisiteJoinUsers",
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWhiteLabelWebisiteJoinUsers/${userId}`,
+        // "https://2kadam.co.in/api/auth/superAdmin/getWhiteLabelWebisiteJoinUsers",
+        `https://2kadam.co.in/api/auth/whiteLabel/getWhiteLabelWebisiteJoinUsers/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

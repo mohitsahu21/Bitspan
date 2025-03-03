@@ -28,7 +28,7 @@ const BankHistory = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllBranchId/${userData}`,
+          `https://2kadam.co.in/api/auth/retailer/getAllBranchId/${userData}`,
           {
             headers: {
               "Content-Type": "application/json",

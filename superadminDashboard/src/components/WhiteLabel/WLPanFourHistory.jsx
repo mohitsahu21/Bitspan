@@ -37,8 +37,8 @@ const WLPanFourHistory = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getOfflinePan/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getOfflinePan/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getOfflinePan/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getOfflinePan/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

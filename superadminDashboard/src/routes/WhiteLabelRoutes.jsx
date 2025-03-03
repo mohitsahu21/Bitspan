@@ -239,6 +239,7 @@ const WhiteLabelRoutes = () => {
   const userId = currentUser?.userId;
 
   const pathname = window.location.pathname;
+  const fullUrl = window.location.href;
   const [status, setStatus] = useState(null);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState("");
@@ -257,13 +258,13 @@ const WhiteLabelRoutes = () => {
     } else {
       console.log("Missing userId or token, cannot fetch data.");
     }
-  }, [currentUser, token, pathname]);
+  }, [currentUser, token, fullUrl]);
 
   const fetchUserData = async () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
         {
           headers: {
             "Content-Type": "application/json",

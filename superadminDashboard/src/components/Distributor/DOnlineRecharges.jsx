@@ -38,8 +38,8 @@ const DOnlineRecharges = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getOnlineRecharge",
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getSdOnlineRecharges/${userId}`,
+        // "https://2kadam.co.in/api/auth/superAdmin/getOnlineRecharge",
+        `https://2kadam.co.in/api/auth/Distributor/getSdOnlineRecharges/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
