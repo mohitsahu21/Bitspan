@@ -84,6 +84,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { clearUser } from "../redux/user/userSlice";
 import Payment from "../pages/Payment";
+import NotFound from "../components/NotFound";
 // import UTIRetailerIdActivateComponent from "../components/DashBoard/UTIRetailerIdActivateComponent";
 // import UTIPanLoginComponent from "../components/DashBoard/UTIPanLoginComponent";
 // import NSDLPanStatusComponent from "../components/DashBoard/NSDLPanStatusComponent";
@@ -306,7 +307,7 @@ const RetailerRoutes = () => {
   // Logging the current user and token for debugging
   console.log("Current User:", currentUser);
   console.log("Token:", token);
-  console.log(status);
+  // console.log(currentUser.Status);
   // UseEffect hook to call the API once when the component mounts
   useEffect(() => {
     if (currentUser?.userId && token) {
@@ -1086,9 +1087,7 @@ const RetailerRoutes = () => {
                     user="RETAILER"
                     name={currentUser?.username}
                     address={`${currentUser?.City}, ${currentUser?.State}, ${currentUser?.PinCode}`}
-                    date={
-                      new Date(currentUser?.CreateAt).toISOString().split("T")[0]
-                    }
+                    date={new Date(currentUser?.CreateAt)}
                     id={currentUser?.userId}
                   />
                 )
@@ -1276,6 +1275,8 @@ const RetailerRoutes = () => {
                 )
               }
             />
+
+            <Route path="*" element={<NotFound />} />
 
             <Route path="/registration-page" element={<DemoRegistration />} />
           </Routes>

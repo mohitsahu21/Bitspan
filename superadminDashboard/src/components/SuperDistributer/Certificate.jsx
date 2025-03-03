@@ -195,7 +195,10 @@ const Certificate = ({ user, name, address, date, id }) => {
               Address: <strong className="strong">{address}</strong>
             </p>
             <p className="para">
-              Date of Issue: <strong className="strong">{date}</strong>
+              Date of Issue:{" "}
+              <strong className="strong">
+                {new Date(currentUser?.CreateAt)?.toISOString()?.split("T")[0]}
+              </strong>
             </p>
             <p className="para">
               is an authorized as a{" "}
