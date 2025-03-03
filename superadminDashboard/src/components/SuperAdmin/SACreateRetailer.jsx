@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 const SACreateRetailer = () => {
 
   const [loading, setLoading] = useState(false);
+  const fullUrl = window.location.origin;
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -36,7 +37,7 @@ const SACreateRetailer = () => {
     payment_status: "Complete",
     created_By_User_Id: currentUser.userId,
     created_By_User_Role: currentUser.role,
-    created_By_Website: "www.bitspan.in"
+    created_By_Website: fullUrl
   });
 
   // const handleChange = (e) => {
@@ -107,7 +108,7 @@ const SACreateRetailer = () => {
             payment_status: "Complete",
             created_By_User_Id: currentUser.userId,
             created_By_User_Role: currentUser.role,
-            created_By_Website: "www.bitspan.in"
+            created_By_Website: fullUrl
 
         })
         

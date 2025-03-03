@@ -21,6 +21,7 @@ const SACreateSuperDistributor = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.user);
+  const fullUrl = window.location.origin;
   const [formData, setFormData] = useState({
 
     UserName: "",
@@ -37,7 +38,7 @@ const SACreateSuperDistributor = () => {
     payment_status: "Complete",
     created_By_User_Id: currentUser.userId,
     created_By_User_Role: currentUser.role,
-    created_By_Website: "www.bitspan.in"
+    created_By_Website: fullUrl
   });
 
   // const handleChange = (e) => {
@@ -108,7 +109,7 @@ const SACreateSuperDistributor = () => {
             payment_status: "Complete",
             created_By_User_Id: currentUser.userId,
             created_By_User_Role: currentUser.role,
-            created_By_Website: "www.bitspan.in"
+            created_By_Website: fullUrl
 
         })
         
