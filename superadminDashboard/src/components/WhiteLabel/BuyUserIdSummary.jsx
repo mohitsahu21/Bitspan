@@ -27,7 +27,7 @@ const BuyUserIdSummary = () => {
     try {
       const response = await axios.get(
         // `https://2kadam.co.in/api/auth/superDistributor/getBoughtUserId/${userId}`,
-        `https://2kadam.co.in/api/auth/whiteLabel//getBoughtUserId/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getBoughtUserId/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

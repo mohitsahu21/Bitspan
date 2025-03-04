@@ -162,7 +162,7 @@ const WLWalletWithdraw = () => {
       // Submit the form data to the server
       const response = await axios.post(
         // `https://2kadam.co.in/api/auth/superDistributor/WalletWithdraw/${userId}`,
-        `https://2kadam.co.in/api/auth/whiteLabel//WalletWithdraw/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/WalletWithdraw/${userId}`,
         formData,
         {
           headers: {
