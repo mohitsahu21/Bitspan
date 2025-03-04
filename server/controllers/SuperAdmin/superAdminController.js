@@ -4962,7 +4962,7 @@ const UpdateGenralSetting = (req, res) => {
 
     // const QR_Code = req.files['QR_Code']?.[0];
 
-    const domain = "https://2kadam.co.in";
+    const domain = process.env.domain;
     const QR_Code = req.files.QR_Code
       ? `${domain}/uploads/${req.files.QR_Code[0].filename}`
       : QR_Code_Preview;
@@ -5102,7 +5102,7 @@ const UpdateLogoImageSetting = (req, res) => {
 
     // const QR_Code = req.files['QR_Code']?.[0];
 
-    const domain = "https://2kadam.co.in";
+    const domain = process.env.domain;
     const Home_Page_Background = req.files.Home_Page_Background
       ? `${domain}/uploads/${req.files.Home_Page_Background[0].filename}`
       : Home_Page_Background_Preview;
@@ -5175,7 +5175,7 @@ const UpdateHomePageSetting = (req, res) => {
     } = req.body;
     console.log(req.body);
 
-    const domain = "https://2kadam.co.in";
+    const domain = process.env.domain;
     const Offer_Banner = req.files.Offer_Banner
       ? `${domain}/uploads/${req.files.Offer_Banner[0].filename}`
       : Offer_Banner_Preview;
@@ -7303,6 +7303,7 @@ const getUploadedDocuments = (req, res) => {
 
 const EditSuperAdminProfile = (req, res) => {
   try {
+    const domain = process.env.domain;
     const {
       userId,
       username,
@@ -7316,13 +7317,27 @@ const EditSuperAdminProfile = (req, res) => {
       PinCode,
     } = req.body;
 
+    const profileImage = req.files?.profileImage?.[0]?.filename
+      ? `${domain}/profile-data/${req.files.profileImage[0].filename}`
+      : null;
+    console.log("Extracted profileImage:", profileImage);
+
+    // Check if at least one file is uploaded
+    if (!profileImage) {
+      console.log("No files uploaded");
+      return res.status(400).json({
+        status: "Failure",
+        error: "No files were uploaded",
+      });
+    }
+
     if (!userId) {
       return res
         .status(200)
         .json({ success: false, message: "All fields are required" });
     }
 
-    const Sql = `UPDATE userprofile SET UserName = ? , ContactNo = ? , Email = ? , PanCardNumber	 = ?, AadharNumber = ?, BusinessName = ?, City = ?, State = ?, PinCode = ?  WHERE UserId = ?`;
+    const Sql = `UPDATE userprofile SET UserName = ? , ContactNo = ? , Email = ? , PanCardNumber	 = ?, AadharNumber = ?, BusinessName = ?, City = ?, State = ?, PinCode = ? , profileImage = ? WHERE UserId = ?`;
     db.query(
       Sql,
       [
@@ -7335,6 +7350,7 @@ const EditSuperAdminProfile = (req, res) => {
         City,
         State,
         PinCode,
+        profileImage,
         userId,
       ],
       (Error, Results) => {

@@ -1298,17 +1298,17 @@ const webhook = (req, res) => {
                         }
 
                         const transporter = nodemailer.createTransport({
-                            host: "bitspan.vimubds5.a2hosted.com",
-                            port: 465,
-                            secure: true,
-                            auth: {
-                                user: "info@bitspan.vimubds5.a2hosted.com",
-                                pass: "bitspan@",
-                            },
+                          host: process.env.HOST, 
+                          port: 465,  
+                          secure: true, 
+                          auth: {
+                            user: process.env.EMAILSENDER,
+                            pass: process.env.EMAILPASSWORD,
+                          },
                         });
 
                         const mailOptions = {
-                            from: "info@bitspan.vimubds5.a2hosted.com",
+                            from: process.env.EMAILSENDER,
                             to: Email,
                             subject: "Your Account Details",
                             html: `

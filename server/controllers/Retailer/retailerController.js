@@ -4,6 +4,8 @@ const moment = require("moment-timezone");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const dotenv = require("dotenv");
+dotenv.config();
 
 // const applyOfflineForm = (req, res) => {
 //   const {
@@ -302,7 +304,7 @@ const applyOfflineForm = (req, res) => {
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
   const attached_form = req.files.attached_form
     ? `${domain}/uploads/${req.files.attached_form[0].filename}`
     : null;
@@ -524,7 +526,7 @@ const update_applyOfflineForm = (req, res) => {
 
   const updated_at = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
   const attached_form = req.files.attached_form
     ? `${domain}/uploads/${req.files.attached_form[0].filename}`
     : previous_attached_form;
@@ -930,7 +932,7 @@ const bankidForm = (req, res) => {
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
   const attached_photo = req.files.attached_photo
     ? `${domain}/uploads/${req.files.attached_photo[0].filename}`
     : null;
@@ -1169,7 +1171,7 @@ const update_bankidForm = (req, res) => {
   // console.log(req.files.electric_bill)
   const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
   const attached_photo = req.files.attached_photo
     ? `${domain}/uploads/${req.files.attached_photo[0].filename}`
     : previous_attached_photo;
@@ -1796,7 +1798,7 @@ const panFromData = (req, res) => {
   let { amount } = req.body;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
 
   // Handle file uploads
   const documentUpload =
@@ -2017,7 +2019,7 @@ const UpdatePanFromData = (req, res) => {
   } = req.body;
 
   const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
 
   // Handle file uploads
   const documentUpload =
@@ -2144,7 +2146,7 @@ const complainInsertApi = (req, res) => {
   const { complainType, transactionNo, mobileNo, remark, userID } = req.body;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
 
   const complainFile =
     req.files && req.files.complainFile
@@ -2209,7 +2211,7 @@ const complainGetData = (req, res) => {
 
 const profileInfo = (req, res) => {
   try {
-    const domain = "http://localhost:7777";
+    const domain = process.env.domain;
 
     // Extract uploaded file paths
     const aadharFront = req.files?.aadharFront?.[0]?.filename
@@ -2368,7 +2370,7 @@ const profileUserKyc = (req, res) => {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
   const aadharFront = req.files.aadharFront
     ? `${domain}/profile-data/${req.files.aadharFront[0].filename}`
     : null;
@@ -2688,7 +2690,7 @@ const eDistrictFormData = (req, res) => {
   let { amount } = req.body;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
 
   // Handle multiple file uploads
   const documentUpload = req.files
@@ -2888,7 +2890,7 @@ const UpdateeDistrictFormData = (req, res) => {
   // console.log(req.body);
 
   const updated_at = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
 
   // Handling multiple file uploads
   // const documentUpload = req.files.documentUpload
@@ -4038,7 +4040,7 @@ const PanDocumentUpload = (req, res) => {
     const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
     const orderId = `PDOC${Date.now()}`;
     const userStatus = "Success";
-    const domain = "http://localhost:7777";
+    const domain = process.env.domain;
 
     const podfile =
       req.files && req.files.podfile
@@ -4124,7 +4126,7 @@ const walletOffline = (req, res) => {
     const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
     const orderId = `WOR${Date.now()}`;
     const userStatus = "Pending";
-    const domain = "http://localhost:7777";
+    const domain = process.env.domain;
 
     const Receiept_Attechment =
       req.files && req.files.Receiept_Attechment
@@ -4875,7 +4877,7 @@ const getAllCommission = (req, res) => {
   const sql = `
     SELECT * 
     FROM commission_table 
-    WHERE distributor_id = ?
+    WHERE retailer_id = ?
     ORDER BY created_at DESC
   `;
 

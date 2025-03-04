@@ -33,6 +33,16 @@ const uploadGenralSetting = upload.fields([
     { name: 'Offer_Banner', maxCount: 1 }, 
   ]);
 
+  const profileDataStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, "profile-data/"); // Folder where files will be saved
+    },
+    filename: (req, file, cb) => {
+      cb(null, `${Date.now()}-${file.originalname}`); // Save file with timestamp
+    },
+  });
+  
+  const profileDataUpload = multer({ storage: profileDataStorage });
 
 router.post("/addPackage" , authenticateToken, addPackage );
 router.get('/getPackage', authenticateToken,  getPackages);
@@ -174,7 +184,9 @@ router.put("/CreditCommission" ,authenticateToken, CreditCommission)
 router.post("/addCommissionEntry", authenticateToken, addCommissionEntry)
 router.get("/getCommissionEntry" , authenticateToken , getCommissionEntry)
 router.get("/getUploadedDocuments" , authenticateToken , getUploadedDocuments)
-router.put("/EditSuperAdminProfile" , authenticateToken , EditSuperAdminProfile)
+router.put("/EditSuperAdminProfile" , authenticateToken ,  profileDataUpload.fields([
+  { name: "profileImage", maxCount: 1 },
+]), EditSuperAdminProfile)
 router.get("/getUserDetails/:userId" , authenticateToken ,getUserDetails )
 router.get("/getSpecificUserTransactions/:userId" , authenticateToken ,getSpecificUserTransactions )
 router.get("/getWalletBalance/:userId" , authenticateToken ,getWalletBalance )
