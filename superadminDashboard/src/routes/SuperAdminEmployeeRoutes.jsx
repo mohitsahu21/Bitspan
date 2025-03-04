@@ -167,148 +167,64 @@ const SuperAdminEmployeeRoutes = () => {
           <Routes>
             <Route
               path="/dashboard"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SuperAdminEmployeeDashboard />
-                )
-              }
+              element={<SuperAdminEmployeeDashboard />}
             />
 
             <Route path="/update-profile" element={<SAEProfile />} />
 
             <Route
               path="/Offline-Recharge-history"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEOfflineRechargeHistory />
-                )
-              }
+              element={<SAEOfflineRechargeHistory />}
             />
             <Route
               path="/Offline-dth-connection"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEOfflineDthConnection />
-                )
-              }
+              element={<SAEOfflineDthConnection />}
             />
 
             <Route
               path="/view-all-offline-history"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEAllOfflineForm />
-                )
-              }
+              element={<SAEAllOfflineForm />}
             />
 
             <Route
               path="/Pan-offline-history"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEPanOfflineHistory />
-                )
-              }
+              element={<SAEPanOfflineHistory />}
             />
 
             <Route
               path="/pan-transaction-report"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEPanTransactionReport />
-                )
-              }
+              element={<SAEPanTransactionReport />}
             />
 
             <Route
               path="/pan-correction-report"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEPanCorrectionReport />
-                )
-              }
+              element={<SAEPanCorrectionReport />}
             />
 
             <Route path="/Bank-Id-history" element={<SAEBankIdForms />} />
 
             <Route
               path="/E-district-history"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEEdistrictHistory />
-                )
-              }
+              element={<SAEEdistrictHistory />}
             />
 
             <Route
               path="/verify-E-district-form-history"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEVerifyEdistrictHistory />
-                )
-              }
+              element={<SAEVerifyEdistrictHistory />}
             />
 
-            <Route
-              path="/sambal-form-history"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAESambalHistory />
-                )
-              }
-            />
+            <Route path="/sambal-form-history" element={<SAESambalHistory />} />
 
-            <Route
-              path="/change-password"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEChangePassword />
-                )
-              }
-            />
+            <Route path="/change-password" element={<SAEChangePassword />} />
 
             <Route
               path="/complaint-raised-list"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEAllComplaintsList />
-                )
-              }
+              element={<SAEAllComplaintsList />}
             />
 
             <Route
               path="/pan-coupon-requests"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEPanCouponRequests />
-                )
-              }
+              element={<SAEPanCouponRequests />}
             />
           </Routes>
         </Suspense>

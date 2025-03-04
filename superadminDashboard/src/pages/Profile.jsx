@@ -356,7 +356,6 @@
 //   }
 // `;
 
-
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FaUser } from "react-icons/fa";
@@ -396,24 +395,24 @@ const Profile = () => {
     const requiredWidth = 50; // Required width
     const requiredHeight = 75; // Required height
 
-     if (!allowedTypes.includes(files[0].type)) {
-            Swal.fire({
-              icon: "error",
-              title: "Invalid File Type",
-              text: `Invalid file: ${files[0].name}. Only JPEG, JPG, PNG are allowed.`,
-            });
-            e.target.value = "";
-            return;
-          }
-             if (files[0].size > maxSize) {
-                  Swal.fire({
-                    icon: "error",
-                    title: "File Too Large",
-                    text: `File ${files[0].name} exceeds the 5MB limit.`,
-                  });
-                  e.target.value = "";
-                  return;
-                }
+    if (!allowedTypes.includes(files[0].type)) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid File Type",
+        text: `Invalid file: ${files[0].name}. Only JPEG, JPG, PNG are allowed.`,
+      });
+      e.target.value = "";
+      return;
+    }
+    if (files[0].size > maxSize) {
+      Swal.fire({
+        icon: "error",
+        title: "File Too Large",
+        text: `File ${files[0].name} exceeds the 5MB limit.`,
+      });
+      e.target.value = "";
+      return;
+    }
     if (name === "aadharFront") {
       setAadharFront(files[0]);
       console.log("Updated aadharFront:", files[0]);
@@ -442,30 +441,30 @@ const Profile = () => {
       );
     }
     if (name === "profileImage") {
-        // Check image resolution
-  const img = new Image();
-  img.src = URL.createObjectURL(files[0]);
-  img.onload = () => {
-    if (img.width !== requiredWidth || img.height !== requiredHeight) {
-      Swal.fire({
-        icon: "error",
-        title: "Invalid Image Resolution",
-        text: `Image must be exactly ${requiredWidth}x${requiredHeight} pixels.`,
-      });
-      e.target.value = "";
-      return;
-    }
-      
-      setprofileImage(files[0]);
-      console.log("Updated profileImage:", files[0]);
-      Swal.fire(
-        "File Selected",
-        "Profile Image file selected successfully!",
-        "success"
-      );
+      // Check image resolution
+      const img = new Image();
+      img.src = URL.createObjectURL(files[0]);
+      img.onload = () => {
+        if (img.width !== requiredWidth || img.height !== requiredHeight) {
+          Swal.fire({
+            icon: "error",
+            title: "Invalid Image Resolution",
+            text: `Image must be exactly ${requiredWidth}x${requiredHeight} pixels.`,
+          });
+          e.target.value = "";
+          return;
+        }
+
+        setprofileImage(files[0]);
+        console.log("Updated profileImage:", files[0]);
+        Swal.fire(
+          "File Selected",
+          "Profile Image file selected successfully!",
+          "success"
+        );
+      };
     }
   };
-}
 
   const fetchUserData = async () => {
     setIsLoading(true);
@@ -541,6 +540,7 @@ const Profile = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
