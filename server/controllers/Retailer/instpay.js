@@ -1383,12 +1383,10 @@ const nsdlNewRequest = (req, res) => {
       })
       .catch((error) => {
         console.error("Caught an error in the promise chain:", error);
-        res
-          .status(error.status || 500)
-          .json({
-            error: error.error || "Request failed",
-            message: error.message || "Unknown error",
-          });
+        res.status(error.status || 500).json({
+          error: error.error || "Request failed",
+          message: error.message || "Unknown error",
+        });
       });
   });
 };
@@ -1747,12 +1745,10 @@ const nsdlCorrection = (req, res) => {
       })
       .catch((error) => {
         console.error("Caught an error in the promise chain:", error);
-        res
-          .status(error.status || 500)
-          .json({
-            error: error.error || "Request failed",
-            message: error.message || "Unknown error",
-          });
+        res.status(error.status || 500).json({
+          error: error.error || "Request failed",
+          message: error.message || "Unknown error",
+        });
       });
   });
 };

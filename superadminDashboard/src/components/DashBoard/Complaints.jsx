@@ -23,9 +23,11 @@ const Complaints = () => {
   const [response, setResponse] = useState(null);
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+    const newValue = name === "mobileNo" ? value.replace(/\D/g, "") : value;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: newValue,
     });
   };
 
@@ -207,6 +209,9 @@ const Complaints = () => {
                               value={formData.mobileNo}
                               onChange={handleChange}
                               required
+                              autoComplete="off"
+                              maxLength={10}
+                              minLength={10}
                             />
                             <label for="floatingInputGroup1">
                               Mobile Number

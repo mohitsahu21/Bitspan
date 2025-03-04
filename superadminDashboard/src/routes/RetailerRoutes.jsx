@@ -304,7 +304,7 @@ const RetailerRoutes = () => {
   const dispatch = useDispatch();
   const [user, setUser] = useState("");
   // const userStatus = currentUser?.Status;
-console.log(fullUrl);
+  console.log(fullUrl);
 
   // Logging the current user and token for debugging
   console.log("Current User:", currentUser);
@@ -313,7 +313,7 @@ console.log(fullUrl);
   // UseEffect hook to call the API once when the component mounts
   useEffect(() => {
     if (currentUser?.userId && token) {
-      console.log("api call")
+      console.log("api call");
       fetchUserData();
     } else {
       console.log("Missing userId or token, cannot fetch data.");
@@ -444,110 +444,35 @@ console.log(fullUrl);
             <Route path="/" element={<LoginBitspan />} />
             <Route path="/payment" element={<Payment user={user} />} />
             <Route path="/update-profile" element={<Profile />} />
-            <Route
-              path="/dashboard"
-              element={
-                
-                  <Dashboard />
-                
-              }
-            />
-            <Route
-              path="/pan-card-apply"
-              element={
-
-                  <MultiStepForm /> 
-              }
-            />
-            <Route
-              path="/prepaid-recharge"
-              element={
-               
-                  <MobileRecharge />
-                
-              }
-            />
-            <Route
-              path="/postpaid-recharge"
-              element={
-               
-                  <PostPaidRecharge />
-                
-              }
-            />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/pan-card-apply" element={<MultiStepForm />} />
+            <Route path="/prepaid-recharge" element={<MobileRecharge />} />
+            <Route path="/postpaid-recharge" element={<PostPaidRecharge />} />
             <Route
               path="/electricity-recharge"
-              element={
-               
-                  <ElectricityRecharge />
-               
-              }
+              element={<ElectricityRecharge />}
             />
-            <Route
-              path="/broadband-recharge"
-              element={
-               
-                  <BroadbandRecharge />
-               
-              }
-            />
-            <Route
-              path="/raise-complaint"
-              element={
-                
-                  <Complaints />
-                
-              }
-            />
-            <Route
-              path="/uti-login"
-              element={
-               
-                  <UtiPan />
-                
-              }
-            />
-            <Route
-              path="/add-money"
-              element={
-               
-                  <AddMoney />
-                
-              }
-            />
+            <Route path="/broadband-recharge" element={<BroadbandRecharge />} />
+            <Route path="/raise-complaint" element={<Complaints />} />
+            <Route path="/uti-login" element={<UtiPan />} />
+            <Route path="/add-money" element={<AddMoney />} />
             <Route
               path="/add-wallet-money-offline"
-              element={
-                
-                  <AddMoneyOffline />
-                
-              }
+              element={<AddMoneyOffline />}
             />
             <Route
               path="/add-money-transaction-report"
-              element={
-                
-                  <AddWalletSummary />
-                
-              }
+              element={<AddWalletSummary />}
             />
 
             <Route
               path="/wallet-offline-request"
-              element={
-               
-                  <AddWalletOfflineSummary />
-                
-              }
+              element={<AddWalletOfflineSummary />}
             />
 
             <Route
               path="/wallet-transaction-report"
-              element={
-                
-                  <WalletTransactionReport />
-                
-              }
+              element={<WalletTransactionReport />}
             />
             {/* <Route
               path="/pan-apply-49"
@@ -559,14 +484,7 @@ console.log(fullUrl);
                 )
               }
             /> */}
-            <Route
-              path="/pan-apply-49"
-              element={
-               
-                  <NSDLPanComponent />
-                
-              }
-            />
+            <Route path="/pan-apply-49" element={<NSDLPanComponent />} />
             {/* <Route
               path="/pan-apply-cr"
               element={
@@ -579,11 +497,7 @@ console.log(fullUrl);
             /> */}
             <Route
               path="/pan-apply-cr"
-              element={
-               
-                  <NSDLPANCorrectionComponent />
-                
-              }
+              element={<NSDLPANCorrectionComponent />}
             />
             {/* <Route
               path="/pan-status"
@@ -595,56 +509,26 @@ console.log(fullUrl);
                 )
               }
             /> */}
-            <Route
-              path="/pan-status"
-              element={
-                
-                  <NSDLPanStatusComponent />
-                
-              }
-            />
+            <Route path="/pan-status" element={<NSDLPanStatusComponent />} />
 
             {/* easy smart route */}
             <Route
               path="/nsdl-new-pan-card"
-              element={
-               
-                  <NsdlNewPanCardEasySmart />
-                
-              }
+              element={<NsdlNewPanCardEasySmart />}
             />
             <Route
               path="/nsdl-new-pan-card-redirect"
-              element={
-               
-                  <RedirectPanForm />
-                
-              }
+              element={<RedirectPanForm />}
             />
-            <Route
-              path="/easySmartNsdlPANCallback"
-              element={
-                
-                  <Dashboard />
-                
-              }
-            />
+            <Route path="/easySmartNsdlPANCallback" element={<Dashboard />} />
 
             <Route
               path="/nsdl-correction-pan-card"
-              element={
-                
-                  <NsdlPanCorrectionEasySmart />
-                
-              }
+              element={<NsdlPanCorrectionEasySmart />}
             />
             <Route
               path="/nsdl-correction-pan-card-redirect"
-              element={
-                
-                  <RedirectionCorrectionPanForm />
-                
-              }
+              element={<RedirectionCorrectionPanForm />}
             />
 
             {/* easy smart route */}
@@ -652,22 +536,14 @@ console.log(fullUrl);
             {/* Zlink Pan route */}
             <Route
               path="/nsdl-new-pan-card-2"
-              element={
-                
-                  <NsdlNewPanCardZlink />
-                
-              }
+              element={<NsdlNewPanCardZlink />}
             />
             {/* <Route path="/nsdl-new-pan-card-redirect" element={<RedirectPanForm />} /> */}
             {/* <Route path="/easySmartNsdlPANCallback" element={<Dashboard />} /> */}
 
             <Route
               path="/nsdl-correction-pan-card-2"
-              element={
-                
-                  <NsdlPanCorrectionZlink />
-                
-              }
+              element={<NsdlPanCorrectionZlink />}
             />
             {/* <Route path="/nsdl-correction-pan-card-redirect" element={<RedirectionCorrectionPanForm />} />  */}
 
@@ -675,19 +551,11 @@ console.log(fullUrl);
 
             <Route
               path="/pan-transaction-report"
-              element={
-               
-                  <PanTransactionReport />
-                
-              }
+              element={<PanTransactionReport />}
             />
             <Route
               path="/pan-transaction-refund-report"
-              element={
-               
-                  <PanTransactionRefundReport />
-                
-              }
+              element={<PanTransactionRefundReport />}
             />
             {/* <Route
               path="/pan-transaction-resume-report"
@@ -699,30 +567,9 @@ console.log(fullUrl);
                 )
               }
             /> */}
-            <Route
-              path="/raise-complaint"
-              element={
-                
-                  <Complaints />
-                
-              }
-            />
-            <Route
-              path="/add-money"
-              element={
-                
-                  <AddMoney />
-                
-              }
-            />
-            <Route
-              path="/uti-login"
-              element={
-                
-                  <UtiPan />
-                
-              }
-            />
+            <Route path="/raise-complaint" element={<Complaints />} />
+            <Route path="/add-money" element={<AddMoney />} />
+            <Route path="/uti-login" element={<UtiPan />} />
             {/* <Route
               path="/uti-login-new"
               element={
@@ -733,54 +580,18 @@ console.log(fullUrl);
                 )
               }
             /> */}
-            <Route
-              path="/uti-login-new"
-              element={
-                
-                  <UTIPanLoginComponent />
-                
-              }
-            />
-            <Route
-              path="/dth-recharge"
-              element={
-               
-                  <DthRecharge />
-                
-              }
-            />
-            <Route
-              path="/dth-connection"
-              element={
-               
-                  <DthConnection />
-                
-              }
-            />
+            <Route path="/uti-login-new" element={<UTIPanLoginComponent />} />
+            <Route path="/dth-recharge" element={<DthRecharge />} />
+            <Route path="/dth-connection" element={<DthConnection />} />
             <Route
               path="/apply-dth-connection-history"
-              element={
-               
-                  <DTHConnectionHistroy />
-                
-              }
+              element={<DTHConnectionHistroy />}
             />
             <Route
               path="/aadhar-linking-status"
-              element={
-                
-                  <AadharLinkingStatus />
-                
-              }
+              element={<AadharLinkingStatus />}
             />
-            <Route
-              path="/training-video"
-              element={
-                
-                  <TrainingVideo />
-                
-              }
-            />
+            <Route path="/training-video" element={<TrainingVideo />} />
             {/* <Route
               path="/2-step-verification"
               element={
@@ -793,11 +604,7 @@ console.log(fullUrl);
             /> */}
             <Route
               path="/uti-transaction-report"
-              element={
-                
-                  <UTIPanTransactionReport />
-                
-              }
+              element={<UTIPanTransactionReport />}
             />
             {/* <Route
               path="/retailer-id-revamp-activate"
@@ -811,115 +618,44 @@ console.log(fullUrl);
             /> */}
             <Route
               path="/retailer-id-revamp-activate"
-              element={
-                
-                  <UTIRetailerIdActivateComponent />
-                
-              }
+              element={<UTIRetailerIdActivateComponent />}
             />
-            <Route
-              path="/password-reset"
-              element={
-                
-                  <UTIPasswordReset />
-                
-              }
-            />
-            <Route
-              path="/uti-coupon-history"
-              element={
-                
-                  <UTICouponHistory />
-                
-              }
-            />
+            <Route path="/password-reset" element={<UTIPasswordReset />} />
+            <Route path="/uti-coupon-history" element={<UTICouponHistory />} />
             <Route
               path="/pan-document-upload"
-              element={
-                
-                  <PanDocumentUpload />
-                
-              }
+              element={<PanDocumentUpload />}
             />
-            <Route
-              path="/pan-document"
-              element={
-                
-                  <PanUploadedDocsList />
-                
-              }
-            />
-            <Route
-              path="/important-links"
-              element={
-                
-                  <ImportantLink />
-                
-              }
-            />
+            <Route path="/pan-document" element={<PanUploadedDocsList />} />
+            <Route path="/important-links" element={<ImportantLink />} />
             <Route
               path="/complaint-raised-list"
-              element={
-                
-                  <AllComplaintsList />
-                
-              }
+              element={<AllComplaintsList />}
             />
             <Route
               path="/download-certificate"
-              element={
-               
-                  <DownloadCertificate />
-                
-              }
+              element={<DownloadCertificate />}
             />
-            <Route
-              path="/change-password"
-              element={
-                
-                  <ChangePassword />
-                
-              }
-            />
+            <Route path="/change-password" element={<ChangePassword />} />
             <Route
               path="/prepaid-recharge-history"
-              element={
-                
-                  <PrepaidRechargeHistory />
-                
-              }
+              element={<PrepaidRechargeHistory />}
             />
             <Route
               path="/postpaid-recharge-history"
-              element={
-                
-                  <PostpaidRechargeHistory />
-                
-              }
+              element={<PostpaidRechargeHistory />}
             />
             <Route
               path="/dth-recharge-history"
-              element={
-               
-                  <DTHRechargeHistory />
-                
-              }
+              element={<DTHRechargeHistory />}
             />
             <Route
               path="/eletricity-recharge-history"
-              element={
-                
-                  <ElectricityHistory />
-                
-              }
+              element={<ElectricityHistory />}
             />
             <Route
               path="/broadband-recharge-history"
-              element={
-                
-                  <BroadbandHistory />
-                
-              }
+              element={<BroadbandHistory />}
             />
             {/* <Route
               path="/recharge-refund-report"
@@ -931,76 +667,28 @@ console.log(fullUrl);
                 )
               }
             /> */}
-            <Route
-              path="/my-commission"
-              element={
-                
-                  <MyCommission />
-                
-              }
-            />
-            <Route
-              path="/crop-tool"
-              element={
-               
-                  <Tool />
-                
-              }
-            />
+            <Route path="/my-commission" element={<MyCommission />} />
+            <Route path="/crop-tool" element={<Tool />} />
             <Route
               path="/download-offline-forms"
-              element={
-               
-                  <OffilnePanCard />
-                
-              }
+              element={<OffilnePanCard />}
             />
-            <Route
-              path="/apply-offline"
-              element={
-                
-                  <PanForm />
-                
-              }
-            />
-            <Route
-              path="/view-all-offline-history"
-              element={
-                
-                  <AllPanForm />
-                
-              }
-            />
+            <Route path="/apply-offline" element={<PanForm />} />
+            <Route path="/view-all-offline-history" element={<AllPanForm />} />
             <Route
               path="/download-certificate-print"
               element={
-                
-                  <Certificate
-                    user="RETAILER"
-                    name={currentUser?.username}
-                    address={`${currentUser?.City}, ${currentUser?.State}, ${currentUser?.PinCode}`}
-                    date={new Date(currentUser?.CreateAt)}
-                    id={currentUser?.userId}
-                  />
-                
+                <Certificate
+                  user="RETAILER"
+                  name={currentUser?.username}
+                  address={`${currentUser?.City}, ${currentUser?.State}, ${currentUser?.PinCode}`}
+                  date={new Date(currentUser?.CreateAt)}
+                  id={currentUser?.userId}
+                />
               }
             />
-            <Route
-              path="/bank-id"
-              element={
-                
-                  <NewBankID />
-                
-              }
-            />
-            <Route
-              path="/pan-card-4.0"
-              element={
-                
-                  <PanCardFour />
-                
-              }
-            />
+            <Route path="/bank-id" element={<NewBankID />} />
+            <Route path="/pan-card-4.0" element={<PanCardFour />} />
             {/* <Route
               path="/incomplete-request"
               element={
@@ -1013,127 +701,44 @@ console.log(fullUrl);
             /> */}
             <Route
               path="/incomplete-request"
-              element={
-                
-                  <NSDLIncompletePanCompoent />
-                
-              }
+              element={<NSDLIncompletePanCompoent />}
             />
 
             <Route
               path="/incomplete-request-zlink"
-              element={
-               
-                  <NsdlIncompletePanZlink />
-                
-              }
+              element={<NsdlIncompletePanZlink />}
             />
             <Route
               path="/redirect-incomplete-pan-zlink"
-              element={
-                
-                  <IncompletePanFormZlink />
-                
-              }
+              element={<IncompletePanFormZlink />}
             />
 
-            <Route
-              path="/pan-4.0-history"
-              element={
-                
-                  <PanFourHistory />
-                
-              }
-            />
+            <Route path="/pan-4.0-history" element={<PanFourHistory />} />
 
-            <Route
-              path="/E-District-Form"
-              element={
-                
-                  <EdistrictForm />
-                
-              }
-            />
+            <Route path="/E-District-Form" element={<EdistrictForm />} />
 
-            <Route
-              path="/generate-pin"
-              element={
-               
-                  <CreatePin />
-                
-              }
-            />
+            <Route path="/generate-pin" element={<CreatePin />} />
 
-            <Route
-              path="/bank-history"
-              element={
-               
-                  <BankHistory />
-                
-              }
-            />
+            <Route path="/bank-history" element={<BankHistory />} />
 
-            <Route
-              path="/E-District-history"
-              element={
-                
-                  <Edistrict />
-                
-              }
-            />
+            <Route path="/E-District-history" element={<Edistrict />} />
 
-            <Route
-              path="/SambalForm"
-              element={
-               
-                  <SambalForm />
-                
-              }
-            />
+            <Route path="/SambalForm" element={<SambalForm />} />
 
-            <Route
-              path="/verify-Edistrict"
-              element={
-               
-                  <VerifyEdistrict />
-                
-              }
-            />
+            <Route path="/verify-Edistrict" element={<VerifyEdistrict />} />
 
             <Route
               path="/verify-Edistrict-History"
-              element={
-                
-                  <VerifyDistrictHistory />
-                
-              }
+              element={<VerifyDistrictHistory />}
             />
 
-            <Route
-              path="/Sambal-History"
-              element={
-                
-                  <SambalHistory />
-                
-              }
-            />
+            <Route path="/Sambal-History" element={<SambalHistory />} />
 
-            <Route
-              path="/buy-coupon"
-              element={
-               
-                  <CoupanForm />
-                
-              }
-            />
+            <Route path="/buy-coupon" element={<CoupanForm />} />
 
             <Route
               path="/View-All-Commission-History"
-              element={
-                
-                  <RtAllCommissionHistory />
-                
-              }
+              element={<RtAllCommissionHistory />}
             />
 
             <Route path="*" element={<NotFound />} />

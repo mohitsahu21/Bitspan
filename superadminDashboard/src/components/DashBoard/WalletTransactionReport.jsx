@@ -84,6 +84,10 @@ const WalletTransactionReport = () => {
     return matchesKeyword && matchesDate;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword]);
+
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
   const filterPagination = () => {

@@ -68,6 +68,7 @@ const PrepaidRechargeHistory = () => {
       );
     });
     setFilteredData(filtered);
+    setCurrentPage(0);
   }, [filterValue, allData]);
 
   useEffect(() => {
@@ -131,6 +132,7 @@ const PrepaidRechargeHistory = () => {
                                   value={filterValue}
                                   onChange={(e) => {
                                     setFilterValue(e.target.value);
+                                    setCurrentPage(0);
                                     // if (e.target.value === "") {
                                     //   setCurrentPage(0);
                                     // }

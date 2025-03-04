@@ -90,6 +90,10 @@ const ProviderTwoHistory = ({ rechargeType }) => {
     return matchesKeyword && matchesType;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword, formStatus]);
+
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
   const filterPagination = () => {
