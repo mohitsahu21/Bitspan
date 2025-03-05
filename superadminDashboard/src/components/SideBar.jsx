@@ -3410,10 +3410,25 @@ const Sider = () => {
   const showSidebar = () => setSidebar(!sidebar);
   const [profileImage, setProfileImage] = useState(null);
   const [error, setError] = useState(null);
-
+  const [data,setData] = useState([]);
   const userId = useSelector((state) => state.user.currentUser?.userId);
+
+  const fetchData = async () => {
+    // setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://2kadam.co.in/api/auth/superAdmin/getSuperAdminSettings"
+      );
+      setData(data.data);
+      // setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // setLoading(false);
+    }
+  };
   useEffect(() => {
     // Call the API to get the profile image
+    fetchData()
     const fetchProfileImage = async () => {
       try {
         const response = await axios.get(
@@ -3528,7 +3543,8 @@ const Sider = () => {
                   <div className="d-flex">
                     <img
                       className="img-fluid p-3 logo"
-                      src={Logo}
+                      // src={Logo}
+                      src={data?.Logo}
                       width={180}
                       height={60}
                     ></img>
@@ -3542,7 +3558,8 @@ const Sider = () => {
                 ) : (
                   <img
                     className="img-fluid p-3 logo"
-                    src={Logo}
+                    // src={Logo}
+                    src={data?.Logo}
                     width={180}
                     height={60}
                   ></img>

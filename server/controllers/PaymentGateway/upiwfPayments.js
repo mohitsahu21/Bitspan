@@ -495,7 +495,7 @@ const webhook = (req, res) => {
     // const sql = `
     //   INSERT INTO orders (customer_mobile, amount, order_id, remark1, remark2, status, created_at)
     //   VALUES (?, ?, ?, ?, ?, ?, ?)`;
-    const sql = `INSERT INTO userId_bought_summary (userId, number_of_userId, userId_amount, userId_type, orderId, bought_date, total_amount, payment_method, status)
+    const sql = `INSERT INTO userid_bought_summary (userId, number_of_userId, userId_amount, userId_type, orderId, bought_date, total_amount, payment_method, status)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
   
     const values = [
@@ -598,7 +598,7 @@ const webhook = (req, res) => {
   
       // Query to insert data into userid_bought_summary table
       const insertQuery = `
-        INSERT INTO userId_bought_summary (userId, number_of_userId, userId_amount, userId_type, orderId, transactionId, bought_date, total_amount, payment_method)
+        INSERT INTO userid_bought_summary (userId, number_of_userId, userId_amount, userId_type, orderId, transactionId, bought_date, total_amount, payment_method)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
   
@@ -774,7 +774,7 @@ const webhook = (req, res) => {
     try {
       // Fetch transaction details from the database
       const [dbData] = await new Promise((resolve, reject) => {
-        db.query('SELECT * FROM userId_bought_summary WHERE orderId = ?', [clientTxnId], (err, results) => {
+        db.query('SELECT * FROM userid_bought_summary WHERE orderId = ?', [clientTxnId], (err, results) => {
           if (err) reject(err);
           resolve(results);
         });
@@ -801,7 +801,7 @@ const webhook = (req, res) => {
         if (dbData.status === 'Pending') {
           // Update the order status to 'Success'
           await new Promise((resolve, reject) => {
-            db.query('UPDATE userId_bought_summary SET status = ? , transactionId = ?  WHERE orderId = ?', ['Success',utr, clientTxnId], (err) => {
+            db.query('UPDATE userid_bought_summary SET status = ? , transactionId = ?  WHERE orderId = ?', ['Success',utr, clientTxnId], (err) => {
               if (err) reject(err);
               resolve();
             });
