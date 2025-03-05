@@ -194,12 +194,23 @@ const Certificate = ({ user, name, address, date, id }) => {
             <p className="para">
               Address: <strong className="strong">{address}</strong>
             </p>
-            <p className="para">
+            {/* <p className="para">
               Date of Issue:{" "}
               <strong className="strong">
                 {new Date(currentUser?.CreateAt)?.toISOString()?.split("T")[0]}
               </strong>
+            </p> */}
+
+            <p className="para">
+              Date of Issue:{" "}
+              <strong className="strong">
+                {currentUser?.CreateAt &&
+                !isNaN(new Date(currentUser.CreateAt).getTime())
+                  ? new Date(currentUser.CreateAt).toISOString().split("T")[0]
+                  : "N/A"}
+              </strong>
             </p>
+
             <p className="para">
               is an authorized as a{" "}
               <strong className="strong">
