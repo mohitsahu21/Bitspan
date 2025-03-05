@@ -1945,7 +1945,7 @@ const SuperAdminData = [
     icon: <IoIcons.IoIosPaper color="#fe662b" />,
   },
   {
-    title: "Create A Parter",
+    title: "Create A Partner",
     path: "#",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
@@ -2660,7 +2660,7 @@ const WhiteLabelData = [
     ],
   },
   {
-    title: "Create A Parter",
+    title: "Create A Partner",
     path: "#",
     icon: <FaHandsHelping color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,

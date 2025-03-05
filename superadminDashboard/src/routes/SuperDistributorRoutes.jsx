@@ -272,527 +272,160 @@ const SuperDistributorRoutes = () => {
       }
     >
       <Routes>
-        <Route
-          path="/dashboard"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SuperDistributerDashboard />
-            )
-          }
-        />
+        <Route path="/dashboard" element={<SuperDistributerDashboard />} />
         <Route path="/update-profile" element={<Profile />} />
         <Route
           path="/aadhar-linking-status"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <AadharLinkingStatus />
-            )
-          }
+          element={<AadharLinkingStatus />}
         />
-        <Route
-          path="/training-video"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <TrainingVideo />
-            )
-          }
-        />
+        <Route path="/training-video" element={<TrainingVideo />} />
         <Route
           path="/prepaid-recharge-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdPrepaidRechargeHistory />
-            )
-          }
+          element={<SdPrepaidRechargeHistory />}
         />
         <Route
           path="/postpaid-recharge-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdPostpaidRechargeHistory />
-            )
-          }
+          element={<SdPostpaidRechargeHistory />}
         />
 
         <Route
           path="/dth-recharge-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdDTHRechargeHistory />
-            )
-          }
+          element={<SdDTHRechargeHistory />}
         />
 
         <Route
           path="/eletricity-recharge-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdElectricityHistory />
-            )
-          }
+          element={<SdElectricityHistory />}
         />
         <Route
           path="/broadband-recharge-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdBroadbandHistory />
-            )
-          }
+          element={<SdBroadbandHistory />}
         />
 
         <Route
           path="/recharge-refund-report"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdRechargeRefundReport />
-            )
-          }
+          element={<SdRechargeRefundReport />}
         />
-        <Route
-          path="/my-commission"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdMyCommission />
-            )
-          }
-        />
+        <Route path="/my-commission" element={<SdMyCommission />} />
 
-        <Route
-          path="/E-District-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdEdistrict />
-            )
-          }
-        />
+        <Route path="/E-District-history" element={<SdEdistrict />} />
 
         <Route
           path="/verify-Edistrict-History"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdVerifyDistrictHistory />
-            )
-          }
+          element={<SdVerifyDistrictHistory />}
         />
 
-        <Route
-          path="/pan-4.0-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdPanFourHistory />
-            )
-          }
-        />
+        <Route path="/pan-4.0-history" element={<SdPanFourHistory />} />
 
         <Route
           path="/pan-correction-report"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdPanCorrectionHistory />
-            )
-          }
+          element={<SdPanCorrectionHistory />}
         />
 
         <Route
           path="/Offline-Recharge-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdOfflineRechargeHistory />
-            )
-          }
+          element={<SdOfflineRechargeHistory />}
         />
         <Route
           path="/wallet-transaction-report"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdWalletTransactionReport />
-            )
-          }
+          element={<SdWalletTransactionReport />}
         />
         <Route
           path="/wallet-withdraw-History"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdWalletWithdrawReport />
-            )
-          }
+          element={<SdWalletWithdrawReport />}
         />
         <Route
           path="/view-all-offline-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdAllOfflineForm />
-            )
-          }
+          element={<SdAllOfflineForm />}
         />
         <Route
           path="/View-All-Commission-History"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdAllCommissionHistory />
-            )
-          }
+          element={<SdAllCommissionHistory />}
         />
 
         <Route
           path="/Pan-Coupan-History"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdCoupanCommissionHistory />
-            )
-          }
+          element={<SdCoupanCommissionHistory />}
         />
 
-        <Route
-          path="/Sambal-History"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdSambalHistory />
-            )
-          }
-        />
-        <Route
-          path="/2-step-verification"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdStepVerification />
-            )
-          }
-        />
-        <Route
-          path="/create-distributor"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <CreateDistributor />
-            )
-          }
-        />
+        <Route path="/Sambal-History" element={<SdSambalHistory />} />
+        <Route path="/2-step-verification" element={<SdStepVerification />} />
+        <Route path="/create-distributor" element={<CreateDistributor />} />
 
-        <Route
-          path="/All-Distributor-List"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <AllDistributorList />
-            )
-          }
-        />
-        <Route
-          path="/buy-distributor-id"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdBuyDistributorId />
-            )
-          }
-        />
-        <Route
-          path="/UserId-Bought-summary"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdBoughtSummery />
-            )
-          }
-        />
+        <Route path="/All-Distributor-List" element={<AllDistributorList />} />
+        <Route path="/buy-distributor-id" element={<SdBuyDistributorId />} />
+        <Route path="/UserId-Bought-summary" element={<SdBoughtSummery />} />
         <Route
           path="/uti-transaction-report"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdUTIPanTransactionReport />
-            )
-          }
+          element={<SdUTIPanTransactionReport />}
         />
 
         <Route
           path="/Offline-dth-connection"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdOfflineDthConnection />
-            )
-          }
+          element={<SdOfflineDthConnection />}
         />
 
         <Route
           path="/online-dth-connection-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdOnlineDthConnection />
-            )
-          }
+          element={<SdOnlineDthConnection />}
         />
         <Route
           path="/online-recharge-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdOnlineRecharges />
-            )
-          }
+          element={<SdOnlineRecharges />}
         />
-        <Route
-          path="/distribute-uti-coupon"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdDistributeCoupon />
-            )
-          }
-        />
-        <Route
-          path="/uti-coupon-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdUTICouponHistory />
-            )
-          }
-        />
+        <Route path="/distribute-uti-coupon" element={<SdDistributeCoupon />} />
+        <Route path="/uti-coupon-history" element={<SdUTICouponHistory />} />
         <Route
           path="/pan-transaction-report"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdPanTransactionReport />
-            )
-          }
+          element={<SdPanTransactionReport />}
         />
-        <Route
-          path="/active-users"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdActiveUsersList />
-            )
-          }
-        />
-        <Route
-          path="/deactive-users"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdDeactiveUsersList />
-            )
-          }
-        />
-        <Route
-          path="/pending-kyc-user"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdPendingKycUsers />
-            )
-          }
-        />
+        <Route path="/active-users" element={<SdActiveUsersList />} />
+        <Route path="/deactive-users" element={<SdDeactiveUsersList />} />
+        <Route path="/pending-kyc-user" element={<SdPendingKycUsers />} />
         <Route
           path="/pending-payment-users"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdPendingPaymentUsers />
-            )
-          }
+          element={<SdPendingPaymentUsers />}
         />
-        <Route
-          path="/users-joining-list"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdAllUsersJoinedList />
-            )
-          }
-        />
-        <Route
-          path="/change-price"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdChangePrice />
-            )
-          }
-        />
-        <Route
-          path="/raise-complaint"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdComplaints />
-            )
-          }
-        />
+        <Route path="/users-joining-list" element={<SdAllUsersJoinedList />} />
+        <Route path="/change-price" element={<SdChangePrice />} />
+        <Route path="/raise-complaint" element={<SdComplaints />} />
         <Route
           path="/complaint-raised-list"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdAllComplaintsList />
-            )
-          }
+          element={<SdAllComplaintsList />}
         />
         <Route
           path="/download-certificate"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdDownloadCertificate />
-            )
-          }
+          element={<SdDownloadCertificate />}
         />
-        <Route
-          path="/change-password"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdChangePassword />
-            )
-          }
-        />
-        <Route
-          path="/bank-account-setup"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdBankAccountSetup />
-            )
-          }
-        />
+        <Route path="/change-password" element={<SdChangePassword />} />
+        <Route path="/bank-account-setup" element={<SdBankAccountSetup />} />
         <Route
           path="/bank-account-setup/verify/:bid"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdBankAccountVerify />
-            )
-          }
+          element={<SdBankAccountVerify />}
         />
-        <Route
-          path="/wallet-withdraw"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdWalletWithdraw />
-            )
-          }
-        />
+        <Route path="/wallet-withdraw" element={<SdWalletWithdraw />} />
 
         <Route
           path="/wallet-to-wallet-transfer"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdWalletToWalletTransfer />
-            )
-          }
+          element={<SdWalletToWalletTransfer />}
         />
         <Route
           // path="/fund-transfer-status"
           // path="/fund-transfer-status"
           path="/Wallet-TO-Wallet-Transfer-History"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdFundTransferStatus />
-            )
-          }
+          element={<SdFundTransferStatus />}
         />
-        <Route
-          path="/generate-pin"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <SdCreatePin />
-            )
-          }
-        />
+        <Route path="/generate-pin" element={<SdCreatePin />} />
         <Route
           path="/download-certificate-print"
           element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <Certificate
-                user="SUPER DISTRIBUTOR"
-                name={currentUser?.username}
-                address={`${currentUser?.City}, ${currentUser?.State}, ${currentUser?.PinCode}`}
-                date={currentUser?.CreateAt}
-                id={currentUser?.userId}
-              />
-            )
+            <Certificate
+              user="SUPER DISTRIBUTOR"
+              name={currentUser?.username}
+              address={`${currentUser?.City}, ${currentUser?.State}, ${currentUser?.PinCode}`}
+              date={currentUser?.CreateAt}
+              id={currentUser?.userId}
+            />
           }
         />
       </Routes>

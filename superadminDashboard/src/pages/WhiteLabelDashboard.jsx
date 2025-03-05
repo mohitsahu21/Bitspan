@@ -381,7 +381,11 @@ const WhiteLabelDashboard = () => {
                           <div></div>
                           <div className="d-flex flex-column cardtext">
                             <p className="mb-0 px-2 my-0 fs-6">Wallet Amount</p>
-                            <h4 className="px-2 my-0">{`₹${walletBalance}`}</h4>{" "}
+                            <h4 className="px-2 my-0">{`₹${
+                              walletBalance === null || undefined
+                                ? "0.00"
+                                : walletBalance
+                            }`}</h4>{" "}
                           </div>
                         </div>
                       </div>
