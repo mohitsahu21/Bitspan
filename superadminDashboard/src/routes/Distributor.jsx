@@ -130,7 +130,8 @@ const DPanCorrectionHistory = lazy(() =>
 );
 const DCreatePin = lazy(() => import("../components/Distributor/DCreatePin"));
 
-const DtProfile = lazy(() => import("../components/Distributor/DtProfile"));
+// const DtProfile = lazy(() => import("../components/Distributor/DtProfile"));
+const Profile = lazy(() => import("../pages/Profile"));
 
 const Distributor = () => {
   const { currentUser, token } = useSelector((state) => state.user);
@@ -239,7 +240,7 @@ const Distributor = () => {
       ></Suspense>
       <Routes>
         <Route path="/dashboard" element={<DistributorDashboard />} />
-        <Route path="/update-profile" element={<DtProfile />} />
+        <Route path="/update-profile" element={<Profile />} />
         {/* <Route
           path="/aadhar-linking-status"
           element={<AadharLinkingStatus />}

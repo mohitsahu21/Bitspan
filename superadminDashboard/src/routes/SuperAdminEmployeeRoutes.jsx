@@ -12,9 +12,11 @@ const SuperAdminEmployeeDashboard = lazy(() =>
   import("../components/SuperAdminEmployee/SuperAdminEmployeeDashboard")
 );
 
-const SAEProfile = lazy(() =>
-  import("../components/SuperAdminEmployee/SAEProfile")
-);
+// const SAEProfile = lazy(() =>
+//   import("../components/SuperAdminEmployee/SAEProfile")
+// );
+
+const Profile = lazy(() => import("../pages/Profile"));
 
 const SAEOfflineRechargeHistory = lazy(() =>
   import("../components/SuperAdminEmployee/SAEOfflineRechargeHistory")
@@ -170,7 +172,8 @@ const SuperAdminEmployeeRoutes = () => {
               element={<SuperAdminEmployeeDashboard />}
             />
 
-            <Route path="/update-profile" element={<SAEProfile />} />
+            {/* <Route path="/update-profile" element={<SAEProfile />} /> */}
+            <Route path="/update-profile" element={<Profile />} />
 
             <Route
               path="/Offline-Recharge-history"

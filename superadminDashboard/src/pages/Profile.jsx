@@ -385,6 +385,7 @@ const Profile = () => {
   const [panCardFront, setPanCardFront] = useState(null);
   const [profileImage, setprofileImage] = useState(null);
   const [status, setStatus] = useState(null);
+  const [user, setUser] = useState(null);
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
@@ -482,6 +483,7 @@ const Profile = () => {
       console.log("User Details:", response.data?.data);
       const userStatus = response.data?.data?.Status; // API response se status fetch kar rahe hain
       setStatus(userStatus); // Status ko state mein set karenge
+      setUser(response.data?.data);
       console.log(userStatus);
     } catch (error) {
       console.error("Error fetching user details:", error);
@@ -840,15 +842,12 @@ const Profile = () => {
                       </>
                     </div>
                   </form>
-                  {currentUser?.status === "Pending" &&
-                    currentUser?.Note?.trim() && (
-                      <div className="col-12">
-                        <label>Note</label>
-                        <div className="alert alert-warning">
-                          {currentUser.Note}
-                        </div>
-                      </div>
-                    )}
+                  {status === "Pending" && user?.Note?.trim() && (
+                    <div className="col-12">
+                      <label>Note</label>
+                      <div className="alert alert-warning">{user?.Note}</div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

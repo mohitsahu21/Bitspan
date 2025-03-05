@@ -3,7 +3,7 @@ import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
-import WLProfile from "../components/WhiteLabel/WLProfile";
+
 import Swal from "sweetalert2";
 
 // Lazy-loaded components
@@ -15,6 +15,8 @@ const AadharLinkingStatus = lazy(() =>
 const TrainingVideo = lazy(() =>
   import("../components/DashBoard/TrainingVideo")
 );
+
+const Profile = lazy(() => import("../pages/Profile"));
 
 const WLTrainingVideo = lazy(() =>
   import("../components/WhiteLabel/WLTrainingVideo")
@@ -330,92 +332,35 @@ const WhiteLabelRoutes = () => {
   return (
     <React.Fragment>
       <Routes>
-        <Route
-          path="/dashboard"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WhiteLabelDashboard />
-            )
-          }
-        />
-        <Route path="/update-profile" element={<WLProfile />} />
+        <Route path="/dashboard" element={<WhiteLabelDashboard />} />
+        <Route path="/update-profile" element={<Profile />} />
 
         <Route
           path="/aadhar-linking-status"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <AadharLinkingStatus />
-            )
-          }
+          element={<AadharLinkingStatus />}
         />
-        <Route
-          path="/training-video"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <TrainingVideo />
-            )
-          }
-        />
+        <Route path="/training-video" element={<TrainingVideo />} />
 
-        <Route
-          path="/WL-training-video"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLTrainingVideo />
-            )
-          }
-        />
+        <Route path="/WL-training-video" element={<WLTrainingVideo />} />
 
         <Route
           path="/wallet-transaction-report"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLWalletTransactionReport />
-            )
-          }
+          element={<WLWalletTransactionReport />}
         />
 
         <Route
           path="/wallet-to-wallet-transfer"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLWalletToWalletTransfer />
-            )
-          }
+          element={<WLWalletToWalletTransfer />}
         />
 
         <Route
           path="/Wallet-TO-Wallet-Transfer-History"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLFundTransferStatus />
-            )
-          }
+          element={<WLFundTransferStatus />}
         />
 
         <Route
           path="/view-all-offline-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLAllOfflineForm />
-            )
-          }
+          element={<WLAllOfflineForm />}
         />
 
         <Route
@@ -425,544 +370,147 @@ const WhiteLabelRoutes = () => {
 
         <Route
           path="/Offline-Recharge-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLOfflineRechargeHistory />
-            )
-          }
+          element={<WLOfflineRechargeHistory />}
         />
 
-        <Route
-          path="/Sambal-History"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLSambalHistory />
-            )
-          }
-        />
+        <Route path="/Sambal-History" element={<WLSambalHistory />} />
 
-        <Route
-          path="/2-step-verification"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLStepVerification />
-            )
-          }
-        />
-        <Route
-          path="/website-setting"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WebsiteSetting />
-            )
-          }
-        />
+        <Route path="/2-step-verification" element={<WLStepVerification />} />
+        <Route path="/website-setting" element={<WebsiteSetting />} />
 
-        <Route
-          path="/my-commission"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLMyCommission />
-            )
-          }
-        />
+        <Route path="/my-commission" element={<WLMyCommission />} />
 
         <Route
           path="/View-All-Commission-History"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLAllCommissionHistory />
-            )
-          }
+          element={<WLAllCommissionHistory />}
         />
 
         <Route
           path="/online-dth-connection-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLOnlineDthConnection />
-            )
-          }
+          element={<WLOnlineDthConnection />}
         />
 
         <Route
           path="/online-recharge-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLOnlineRecharges />
-            )
-          }
+          element={<WLOnlineRecharges />}
         />
 
-        <Route
-          path="/E-District-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLEdistrict />
-            )
-          }
-        />
+        <Route path="/E-District-history" element={<WLEdistrict />} />
 
         <Route
           path="/verify-Edistrict-History"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLVerifyDistrictHistory />
-            )
-          }
+          element={<WLVerifyDistrictHistory />}
         />
 
         <Route
           path="/Pan-Coupan-History"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLCoupanCommissionHistory />
-            )
-          }
+          element={<WLCoupanCommissionHistory />}
         />
 
-        <Route
-          path="/pan-4.0-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLPanFourHistory />
-            )
-          }
-        />
+        <Route path="/pan-4.0-history" element={<WLPanFourHistory />} />
 
         <Route
           path="/create-super-distributor"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <CreateSuperDistributor />
-            )
-          }
+          element={<CreateSuperDistributor />}
         />
-        <Route
-          path="/create-white-label"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <CreateWhiteLabel />
-            )
-          }
-        />
-        <Route
-          path="/Transfer-IDs"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLTransferId />
-            )
-          }
-        />
-        <Route
-          path="/Transfer-IDs-Summary"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLShareIDsSummary />
-            )
-          }
-        />
-        <Route
-          path="/create-retailer"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLCreateRetailer />
-            )
-          }
-        />
-        <Route
-          path="/create-distributor"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLCreateDistributor />
-            )
-          }
-        />
-        <Route
-          path="/Created-Users"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLCreatedUsers />
-            )
-          }
-        />
-        <Route
-          path="/buy-id"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <BuyUserId />
-            )
-          }
-        />
-        <Route
-          path="/UserId-Bought-summary"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLBoughtSummery />
-            )
-          }
-        />
+        <Route path="/create-white-label" element={<CreateWhiteLabel />} />
+        <Route path="/Transfer-IDs" element={<WLTransferId />} />
+        <Route path="/Transfer-IDs-Summary" element={<WLShareIDsSummary />} />
+        <Route path="/create-retailer" element={<WLCreateRetailer />} />
+        <Route path="/create-distributor" element={<WLCreateDistributor />} />
+        <Route path="/Created-Users" element={<WLCreatedUsers />} />
+        <Route path="/buy-id" element={<BuyUserId />} />
+        <Route path="/UserId-Bought-summary" element={<WLBoughtSummery />} />
 
         <Route
           path="/uti-transaction-report"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLUTIPanTransactionReport />
-            )
-          }
+          element={<WLUTIPanTransactionReport />}
         />
 
-        <Route
-          path="/distribute-uti-coupon"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLDistributeCoupon />
-            )
-          }
-        />
+        <Route path="/distribute-uti-coupon" element={<WLDistributeCoupon />} />
 
-        <Route
-          path="/uti-coupon-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLUTICouponHistory />
-            )
-          }
-        />
+        <Route path="/uti-coupon-history" element={<WLUTICouponHistory />} />
 
-        <Route
-          path="/active-users"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLActiveUsersList />
-            )
-          }
-        />
-        <Route
-          path="/deactive-users"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLDeactiveUsersList />
-            )
-          }
-        />
-        <Route
-          path="/users-joining-list"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLAllUsersJoinedList />
-            )
-          }
-        />
+        <Route path="/active-users" element={<WLActiveUsersList />} />
+        <Route path="/deactive-users" element={<WLDeactiveUsersList />} />
+        <Route path="/users-joining-list" element={<WLAllUsersJoinedList />} />
 
         <Route
           path="/website-users-joining-list"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLWebUsersJoinedList />
-            )
-          }
+          element={<WLWebUsersJoinedList />}
         />
 
-        <Route
-          path="/Contact-Us"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLContactUs />
-            )
-          }
-        />
+        <Route path="/Contact-Us" element={<WLContactUs />} />
 
         <Route
           path="/pending-payment-users"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLPendingPaymentUsers />
-            )
-          }
+          element={<WLPendingPaymentUsers />}
         />
         <Route
           path="/white-label-joining-list"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WhiteLabelJoiningList />
-            )
-          }
+          element={<WhiteLabelJoiningList />}
         />
 
-        <Route
-          path="/pending-kyc-user"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLPendingKycUsers />
-            )
-          }
-        />
+        <Route path="/pending-kyc-user" element={<WLPendingKycUsers />} />
 
-        <Route
-          path="/buy-user-id-summary"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <BuyUserIdSummary />
-            )
-          }
-        />
+        <Route path="/buy-user-id-summary" element={<BuyUserIdSummary />} />
         <Route
           path="/pan-transaction-report"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLPanTransactionReport />
-            )
-          }
+          element={<WLPanTransactionReport />}
         />
 
         <Route
           path="/pan-correction-report"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLPanCorrectionHistory />
-            )
-          }
+          element={<WLPanCorrectionHistory />}
         />
 
-        <Route
-          path="/change-price"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLChangePrice />
-            )
-          }
-        />
-        <Route
-          path="/raise-complaint"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLComplaints />
-            )
-          }
-        />
+        <Route path="/change-price" element={<WLChangePrice />} />
+        <Route path="/raise-complaint" element={<WLComplaints />} />
         <Route
           path="/complaint-raised-list"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLAllComplaintsList />
-            )
-          }
+          element={<WLAllComplaintsList />}
         />
         <Route
           path="/download-certificate"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLDownloadCertificate />
-            )
-          }
+          element={<WLDownloadCertificate />}
         />
-        <Route
-          path="/change-coupon-price"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <ChangeIdSetRate />
-            )
-          }
-        />
-        <Route
-          path="/change-nsdl-price"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <ChangeNSDLPrice />
-            )
-          }
-        />
-        <Route
-          path="/change-uti-price"
-          eelement={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <ChangeUTIPanPrice />
-            )
-          }
-        />
+        <Route path="/change-coupon-price" element={<ChangeIdSetRate />} />
+        <Route path="/change-nsdl-price" element={<ChangeNSDLPrice />} />
+        <Route path="/change-uti-price" element={<ChangeUTIPanPrice />} />
         <Route
           path="/change-uti-new-price"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <ChangeUTINewCouponPrice />
-            )
-          }
+          element={<ChangeUTINewCouponPrice />}
         />
-        <Route
-          path="/change-password"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLChangePassword />
-            )
-          }
-        />
-        <Route
-          path="/bank-account-setup"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLBankAccountSetup />
-            )
-          }
-        />
+        <Route path="/change-password" element={<WLChangePassword />} />
+        <Route path="/bank-account-setup" element={<WLBankAccountSetup />} />
         <Route
           path="/bank-account-setup/:bank_id/:bid"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLBankAccountVerify />
-            )
-          }
+          element={<WLBankAccountVerify />}
         />
-        <Route
-          path="/wallet-withdraw"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLWalletWithdraw />
-            )
-          }
-        />
+        <Route path="/wallet-withdraw" element={<WLWalletWithdraw />} />
 
         <Route
           path="/wallet-withdraw-History"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLWalletWithdrawReport />
-            )
-          }
+          element={<WLWalletWithdrawReport />}
         />
 
         <Route
           path="/fund-transfer-status"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLFundTransferStatus />
-            )
-          }
+          element={<WLFundTransferStatus />}
         />
 
-        <Route
-          path="/generate-pin"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <WLCreatePin />
-            )
-          }
-        />
+        <Route path="/generate-pin" element={<WLCreatePin />} />
         <Route
           path="/download-certificate-print"
           element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <Certificate
-                user="WHITE LABEL"
-                // name={currentUser?.username}
-                name={currentUser?.username?.toUpperCase()}
-                address={`${currentUser?.City}, ${currentUser?.State}, ${currentUser?.PinCode}`}
-                date={currentUser?.CreateAt}
-                id={currentUser?.userId}
-              />
-            )
+            <Certificate
+              user="WHITE LABEL"
+              // name={currentUser?.username}
+              name={currentUser?.username?.toUpperCase()}
+              address={`${currentUser?.City}, ${currentUser?.State}, ${currentUser?.PinCode}`}
+              date={currentUser?.CreateAt}
+              id={currentUser?.userId}
+            />
           }
         />
       </Routes>
