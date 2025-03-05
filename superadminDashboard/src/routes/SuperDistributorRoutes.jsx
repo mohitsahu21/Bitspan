@@ -273,6 +273,7 @@ const SuperDistributorRoutes = () => {
     >
       <Routes>
         <Route path="/dashboard" element={<SuperDistributerDashboard />} />
+        <Route path="/" element={<SuperDistributerDashboard />} />
         <Route path="/update-profile" element={<Profile />} />
         <Route
           path="/aadhar-linking-status"
@@ -428,6 +429,7 @@ const SuperDistributorRoutes = () => {
             />
           }
         />
+         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Suspense>
   );

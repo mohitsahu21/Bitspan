@@ -171,6 +171,10 @@ const SuperAdminEmployeeRoutes = () => {
               path="/dashboard"
               element={<SuperAdminEmployeeDashboard />}
             />
+            <Route
+              path="/"
+              element={<SuperAdminEmployeeDashboard />}
+            />
 
             {/* <Route path="/update-profile" element={<SAEProfile />} /> */}
             <Route path="/update-profile" element={<Profile />} />
@@ -229,6 +233,7 @@ const SuperAdminEmployeeRoutes = () => {
               path="/pan-coupon-requests"
               element={<SAEPanCouponRequests />}
             />
+             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Suspense>
       </Wrapper>

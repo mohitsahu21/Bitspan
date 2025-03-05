@@ -7,13 +7,15 @@ import styled from "styled-components";
 
 import AadharLinkingStatus from "../components/DashBoard/AadharLinkingStatus";
 import TrainingVideo from "../components/DashBoard/TrainingVideo";
-import NotFound from "../components/NotFound.jsx";
-import SAUserIdTransferSummery from "../components/SuperAdmin/SAUserIdTransferSummery.jsx";
+// import NotFound from "../components/NotFound.jsx";
+// import SAUserIdTransferSummery from "../components/SuperAdmin/SAUserIdTransferSummery.jsx";
 // import SAWebsiteJoinUsers from "../components/SuperAdmin/SAWebsiteJoinUsers.jsx";
 // import SAWhiteLabelWebsiteJoinUsers from "../components/SuperAdmin/SAWhiteLabelWebsiteJoinUsers.jsx";
 // import SAContactUs from "../components/SuperAdmin/SAContactUs.jsx";
 // Lazy imports
 const SuperAdminDashboard = lazy(() => import("../pages/SuperAdminDashboard"));
+const NotFound = lazy(() => import("../components/NotFound.jsx"));
+const SAUserIdTransferSummery = lazy(() => import("../components/SuperAdmin/SAUserIdTransferSummery.jsx"));
 const SAContactUs = lazy(() => import("../components/SuperAdmin/SAContactUs.jsx"));
 const SAWebsiteJoinUsers = lazy(() => import("../components/SuperAdmin/SAWebsiteJoinUsers.jsx"));
 const SAWhiteLabelWebsiteJoinUsers = lazy(() => import("../components/SuperAdmin/SAWhiteLabelWebsiteJoinUsers.jsx"));
@@ -95,6 +97,7 @@ const SuperAdminRoutes = () => {
     </div>}>
       <Routes>
         <Route path="/dashboard" element={<SuperAdminDashboard />} />
+        <Route path="/" element={<SuperAdminDashboard />} />
         {/* <Route path="/" element={<Navigate to="/dashboard" />} /> */}
         <Route path="/update-profile" element={<SAProfile />} />
         {/* <Route
@@ -275,7 +278,8 @@ const SuperAdminRoutes = () => {
           path="/Transfer-User-Ids-Summery"
           element={<SAUserIdTransferSummery />}
         />
-         <Route path="*" element={<NotFound />} />
+         {/* <Route path="*" element={<NotFound />} /> */}
+         <Route path="*" element={<Navigate to="/" />} />
 
         {/* <Route path="/download-certificate-print" element={<Certificate user="WHITE LABEL" name="Aashish Kumar"
         address="Jabalpur, BIHAR - 482001"

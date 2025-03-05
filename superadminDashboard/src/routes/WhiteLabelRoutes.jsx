@@ -333,6 +333,7 @@ const WhiteLabelRoutes = () => {
     <React.Fragment>
       <Routes>
         <Route path="/dashboard" element={<WhiteLabelDashboard />} />
+        <Route path="/" element={<WhiteLabelDashboard />} />
         <Route path="/update-profile" element={<Profile />} />
 
         <Route
@@ -513,6 +514,7 @@ const WhiteLabelRoutes = () => {
             />
           }
         />
+         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </React.Fragment>
   );

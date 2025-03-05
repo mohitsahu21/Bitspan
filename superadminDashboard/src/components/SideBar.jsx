@@ -2384,11 +2384,11 @@ const WhiteLabelData = [
     // 	},
     // ],
   },
-  {
-    title: "Set PIN and 2 Step",
-    path: "/2-step-verification",
-    icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
-  },
+  // {
+  //   title: "Set PIN and 2 Step",
+  //   path: "/2-step-verification",
+  //   icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
+  // },
   {
     title: "Web Settings",
     path: "/website-setting",
@@ -2722,11 +2722,11 @@ const WhiteLabelData = [
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
-      {
-        title: "Wallet Full Summary",
-        path: "/wallet-transaction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
+      // {
+      //   title: "Wallet Full Summary",
+      //   path: "/wallet-transaction-report",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
       {
         title: "UTI Transaction History",
         path: "/uti-transaction-report",
@@ -2734,31 +2734,31 @@ const WhiteLabelData = [
       },
     ],
   },
-  {
-    title: "UTI New",
-    path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+  // {
+  //   title: "UTI New",
+  //   path: "#",
+  //   icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+  //   iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+  //   iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
-    subNav: [
-      {
-        title: "Buy Coupon",
-        path: "/buy-uti-coupon",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Distribute UTI Coupon",
-        path: "/distribute-uti-coupon",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "UTI Coupon History",
-        path: "/uti-coupon-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-    ],
-  },
+  //   subNav: [
+  //     {
+  //       title: "Buy Coupon",
+  //       path: "/buy-uti-coupon",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //     {
+  //       title: "Distribute UTI Coupon",
+  //       path: "/distribute-uti-coupon",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //     {
+  //       title: "UTI Coupon History",
+  //       path: "/uti-coupon-history",
+  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  //     },
+  //   ],
+  // },
   // {
   //   title: "PAN Transaction History",
   //   path: "pan-transaction-report",

@@ -160,6 +160,7 @@ headers: {
         icon: "success",
         title: response.data.message ,
       });
+     window.location.reload();
    
     } else {
       Swal.fire({
@@ -568,7 +569,7 @@ headers: {
                     </div> */}
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="text-start m-3">
-                        <button className="btn p-2">Update</button>
+                        <button className="btn btn-primary p-2">Update</button>
                       </div>
                     </div>
                   </div>

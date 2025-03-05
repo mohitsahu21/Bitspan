@@ -631,7 +631,7 @@ const SAActiveUsersList = () => {
                                     <th scope="col">Aadhar Front</th>
                                     <th scope="col">Aadhar Back</th>
                                     <th scope="col">Pan Card Front</th>
-                                    {/* <th scope="col">View KYC</th> */}
+                                    <th scope="col">Photo</th>
                                     <th scope="col">Status</th>
                                     {/* <th scope="col">Note</th> */}
                                     <th scope="col">Action</th>
@@ -718,6 +718,21 @@ const SAActiveUsersList = () => {
                                             user.PanCardFront ?
                                             <a
                                             href={user.PanCardFront}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                          >
+                                            View
+                                          </a>
+                                             :
+                                             "Not Available"
+                                          }
+                                         
+                                        </td>
+                                        <td>
+                                          {
+                                            user.profileImage ?
+                                            <a
+                                            href={user.profileImage}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                           >

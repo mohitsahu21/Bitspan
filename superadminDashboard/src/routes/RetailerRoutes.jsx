@@ -441,7 +441,8 @@ const RetailerRoutes = () => {
           }
         >
           <Routes>
-            <Route path="/" element={<LoginBitspan />} />
+            {/* <Route path="/" element={<LoginBitspan />} /> */}
+            <Route path="/" element={<Dashboard />} />
             <Route path="/payment" element={<Payment user={user} />} />
             <Route path="/update-profile" element={<Profile />} />
             <Route path="/dashboard" element={<Dashboard />} />
@@ -741,7 +742,8 @@ const RetailerRoutes = () => {
               element={<RtAllCommissionHistory />}
             />
 
-            <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<Navigate to="/" />} />
+            {/* <Route path="*" element={<NotFound />} /> */}
 
             <Route path="/registration-page" element={<DemoRegistration />} />
           </Routes>
