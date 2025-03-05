@@ -250,7 +250,7 @@ const SdPendingKycUsers = () => {
                                       <th scope="col">Payment Status</th>
                                       <th scope="col">Status</th>
                                       <th scope="col">Note</th>
-                                      <th scope="col">Action</th>
+                                      {/* <th scope="col">Action</th> */}
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -346,7 +346,7 @@ const SdPendingKycUsers = () => {
                                           <td>{user.Status}</td>
                                           {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
                                           <td>{user?.Note}</td>
-                                          <td>
+                                          {/* <td>
                                             <Dropdown>
                                               <Dropdown.Toggle
                                                 variant="success"
@@ -384,7 +384,7 @@ const SdPendingKycUsers = () => {
                                                 </Dropdown.Item>
                                               </Dropdown.Menu>
                                             </Dropdown>
-                                          </td>
+                                          </td> */}
                                         </tr>
                                       ))
                                     ) : (
