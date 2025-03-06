@@ -166,7 +166,11 @@ const SAContactUs = () => {
                                                          type="search"
                                                          placeholder="Search By User Name , Email , Mobile"
                                                          value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              // onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                                                          />
                                                           </div>
                                                     </div>
@@ -254,6 +258,7 @@ const SAContactUs = () => {
                                                           onPageChange={handlePageChange}
                                                           containerClassName={"pagination"}
                                                           activeClassName={"active"}
+                                                          forcePage={currentPage}
                                                         />
                                                       </PaginationContainer>
                                                   

@@ -258,7 +258,11 @@ const SAViewPackages = () => {
                               type="search"
                               placeholder="Search Packages"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              // onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
                           {/* <div className="col-12 col-md-4 col-lg-3">
@@ -402,6 +406,7 @@ const SAViewPackages = () => {
                                       onPageChange={handlePageChange}
                                       containerClassName={"pagination"}
                                       activeClassName={"active"}
+                                      forcePage={currentPage}
                                     />
                                   </PaginationContainer>
                       </div>

@@ -160,17 +160,21 @@ const SAPanUploadedDocsList = () => {
                               id="floatingInputGroup1"
                               placeholder="Search by TRK No, Ord ID"
                               value={filterValue}
+                              // onChange={(e) => {
+                              //   setFilterValue(e.target.value);
+                              //   if (e.target.value === "") {
+                              //     setCurrentPage(0);
+                              //   }
+                              // }}
+                              // onKeyDown={(e) => {
+                              //   if (e.key === "Escape") {
+                              //     setFilterValue("");
+                              //     setCurrentPage(0);
+                              //   }
+                              // }}
                               onChange={(e) => {
                                 setFilterValue(e.target.value);
-                                if (e.target.value === "") {
-                                  setCurrentPage(0);
-                                }
-                              }}
-                              onKeyDown={(e) => {
-                                if (e.key === "Escape") {
-                                  setFilterValue("");
-                                  setCurrentPage(0);
-                                }
+                                setCurrentPage(0);
                               }}
                             />
                           </div>
@@ -252,6 +256,7 @@ const SAPanUploadedDocsList = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

@@ -184,7 +184,11 @@ const SAOnlineRecharges = () => {
                                                          type="search"
                                                          placeholder="Enter Order Id/Txn ID/Operator/Mo. No./Number/User Name/User Id"
                                                          value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              // onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                                                          />
                                                     </div>
                                                     
@@ -289,6 +293,7 @@ const SAOnlineRecharges = () => {
                                                           onPageChange={handlePageChange}
                                                           containerClassName={"pagination"}
                                                           activeClassName={"active"}
+                                                          forcePage={currentPage}
                                                         />
                                                       </PaginationContainer>
                                                   

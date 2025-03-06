@@ -1341,7 +1341,11 @@ const SAEdistrictHistory = () => {
                                   type="search"
                                   placeholder="Enter Applicant Name/Mobile/Aadhaar/Order Id"
                                   value={keyword}
-                                  onChange={(e) => setKeyword(e.target.value)}
+                                  // onChange={(e) => setKeyword(e.target.value)}
+                                  onChange={(e) => {
+                                    setKeyword(e.target.value)
+                                    setCurrentPage(0);
+                                  }}
                                 />
                               </div>
                               <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -1553,6 +1557,7 @@ const SAEdistrictHistory = () => {
                                         onPageChange={handlePageChange}
                                         containerClassName={"pagination"}
                                         activeClassName={"active"}
+                                        forcePage={currentPage}
                                       />
                                     </PaginationContainer>
                             </div>
@@ -1581,7 +1586,11 @@ const SAEdistrictHistory = () => {
                                   type="search"
                                   placeholder="Enter Applicant Name/Mobile/Aadhaar/Order Id"
                                   value={keyword}
-                                  onChange={(e) => setKeyword(e.target.value)}
+                                  // onChange={(e) => setKeyword(e.target.value)}
+                                  onChange={(e) => {
+                                    setKeyword(e.target.value)
+                                    setCurrentPage(0);
+                                  }}
                                 />
                               </div>
                               {/* <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -1792,6 +1801,7 @@ const SAEdistrictHistory = () => {
                                         onPageChange={handleUnderProcessPageChange}
                                         containerClassName={"pagination"}
                                         activeClassName={"active"}
+                                        forcePage={currentPage}
                                       />
                                     </PaginationContainer>
                             </div>

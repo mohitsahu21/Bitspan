@@ -1302,7 +1302,11 @@ const SAVerifyEdistrictHistory = () => {
                               type="search"
                               placeholder="Enter Applicant Name/Mobile/RS Number/Order Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              // onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -1466,6 +1470,7 @@ const SAVerifyEdistrictHistory = () => {
                                     onPageChange={handlePageChange}
                                     containerClassName={"pagination"}
                                     activeClassName={"active"}
+                                    forcePage={currentPage}
                                   />
                                 </PaginationContainer>
                         </div>
@@ -1494,7 +1499,11 @@ const SAVerifyEdistrictHistory = () => {
                               type="search"
                               placeholder="Enter Applicant Name/Mobile/RS Number/Order Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              // onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
                           {/* <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -1657,6 +1666,7 @@ const SAVerifyEdistrictHistory = () => {
                                     onPageChange={handleUnderProcessPageChange}
                                     containerClassName={"pagination"}
                                     activeClassName={"active"}
+                                    forcePage={currentPage}
                                   />
                                 </PaginationContainer>
                         </div>

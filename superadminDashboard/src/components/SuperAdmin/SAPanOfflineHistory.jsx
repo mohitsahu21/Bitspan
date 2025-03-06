@@ -1340,7 +1340,11 @@ const SAPanOfflineHistory = () => {
                                   type="search"
                                   placeholder="Enter Applicant Name/Mobile/Email Id/Order Id"
                                   value={keyword}
-                                  onChange={(e) => setKeyword(e.target.value)}
+                                  // onChange={(e) => setKeyword(e.target.value)}
+                                  onChange={(e) => {
+                                    setKeyword(e.target.value)
+                                    setCurrentPage(0);
+                                  }}
                                 />
                               </div>
                               <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -1620,6 +1624,7 @@ const SAPanOfflineHistory = () => {
                                         onPageChange={handlePageChange}
                                         containerClassName={"pagination"}
                                         activeClassName={"active"}
+                                        forcePage={currentPage}
                                       />
                                     </PaginationContainer>
                             </div>
@@ -1648,7 +1653,11 @@ const SAPanOfflineHistory = () => {
                                   type="search"
                                   placeholder="Enter Applicant Name/Mobile/Email Id/Order Id"
                                   value={keyword}
-                                  onChange={(e) => setKeyword(e.target.value)}
+                                  // onChange={(e) => setKeyword(e.target.value)}
+                                  onChange={(e) => {
+                                    setKeyword(e.target.value)
+                                    setCurrentPage(0);
+                                  }}
                                 />
                               </div>
                               {/* <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -1931,6 +1940,7 @@ const SAPanOfflineHistory = () => {
                                         }
                                         containerClassName={"pagination"}
                                         activeClassName={"active"}
+                                        forcePage={currentPage}
                                       />
                                     </PaginationContainer>
                             </div>

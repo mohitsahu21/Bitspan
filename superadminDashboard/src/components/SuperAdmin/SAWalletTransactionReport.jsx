@@ -163,7 +163,9 @@ const SAWalletWithdrawSummary = () => {
                                                          type="search"
                                                          placeholder="Enter User Name/User Id/Order Id"
                                                          value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {setKeyword(e.target.value)
+                                                setCurrentPage(0);
+                              }}
                                                          />
                                                           </div>
                                                     </div>
@@ -265,6 +267,7 @@ const SAWalletWithdrawSummary = () => {
                                                           marginPagesDisplayed={2}
                                                           pageRangeDisplayed={5}
                                                           onPageChange={handlePageChange}
+                                                          forcePage={currentPage}
                                                           containerClassName={"pagination"}
                                                           activeClassName={"active"}
                                                         />

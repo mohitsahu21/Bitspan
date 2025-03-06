@@ -990,7 +990,11 @@ const SAPanCorrectionHistory = () => {
          type="search"
          placeholder="Enter Name/Mobile/Email/Order Id/Txn Id/Retailer Name/Id"
          value={keyword}
-onChange={(e) => setKeyword(e.target.value)}
+// onChange={(e) => setKeyword(e.target.value)}
+onChange={(e) => {
+  setKeyword(e.target.value)
+  setCurrentPage(0);
+}}
          />
     </div>
     
@@ -1159,6 +1163,7 @@ onChange={(e) => setKeyword(e.target.value)}
                                                           onPageChange={handlePageChange}
                                                           containerClassName={"pagination"}
                                                           activeClassName={"active"}
+                                                          forcePage={currentPage}
                                                         />
                                                       </PaginationContainer>
                                                  

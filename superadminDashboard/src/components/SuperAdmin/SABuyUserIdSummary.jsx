@@ -180,7 +180,11 @@ const SABuyUserIdSummary = () => {
          type="search"
          placeholder="Enter User Name/User Id/Order Id"
          value={keyword}
-onChange={(e) => setKeyword(e.target.value)}
+// onChange={(e) => setKeyword(e.target.value)}
+onChange={(e) => {
+  setKeyword(e.target.value)
+  setCurrentPage(0);
+}}
          />
     </div>
     
@@ -279,6 +283,7 @@ onChange={(e) => setKeyword(e.target.value)}
                                                           onPageChange={handlePageChange}
                                                           containerClassName={"pagination"}
                                                           activeClassName={"active"}
+                                                          forcePage={currentPage}
                                                         />
                                                       </PaginationContainer>
                                                  
