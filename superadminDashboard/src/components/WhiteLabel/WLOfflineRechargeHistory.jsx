@@ -137,10 +137,7 @@ const WLOfflineRechargeHistory = () => {
               <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
                 {/* <Sider /> */}
               </div>
-              <div
-                className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
-                             mt-5 formdata "
-              >
+              <div className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11 mt-5 formdata ">
                 <div className="main shadow-none ">
                   <div className="row shadow-none ">
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -227,6 +224,9 @@ const WLOfflineRechargeHistory = () => {
                               <option selected>---Select Form Status---</option>
                               <option value="Pending">Pending</option>
                               <option value="Approve">Approve</option>
+                              <option value="Under Process">
+                                Under Process
+                              </option>
                               <option value="Reject">Reject</option>
                             </select>
                           </div>

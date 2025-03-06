@@ -230,6 +230,9 @@ const WLSambalHistory = () => {
                                 <option selected>---Select---</option>
                                 <option value="Success">Success</option>
                                 <option value="Pending">Pending</option>
+                                <option value="Under Process">
+                                  Under Process
+                                </option>
                                 <option value="Reject">Reject</option>
                               </select>
                             </div>

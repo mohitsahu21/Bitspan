@@ -445,7 +445,7 @@ const LogoAndImages = () => {
                             <button
                               type="submit"
                               disabled={loading}
-                              className="btn p-2"
+                              className="btn btn-primary p-2"
                             >
                               {loading ? "Loading..." : "UPDATE"}
                             </button>

@@ -514,7 +514,7 @@ const WhiteLabelRoutes = () => {
             />
           }
         />
-         <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </React.Fragment>
   );

@@ -5,7 +5,7 @@ import { FaAddressCard, FaUser } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { BiHomeAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom"; // Import useParams for fetching bid from URL
+import { Navigate, useParams } from "react-router-dom"; // Import useParams for fetching bid from URL
 import Swal from "sweetalert2";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
@@ -172,7 +172,8 @@ const WLBankAccountVerify = () => {
           text: "Your OTP has been verified and status updated.",
           willClose: () => {
             // Navigate to another page once SweetAlert closes
-            window.location.href = "/bank-account-setup"; // Replace '/success' with your desired route
+            // window.location.href = "/bank-account-setup";
+            navigate("/bank-account-setup");
           },
         });
         setOtpSent(true); // OTP has been sent
@@ -386,7 +387,7 @@ const WLBankAccountVerify = () => {
                   <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     <div className="text-start mb-3">
                       <button
-                        className="btn p-2"
+                        className="btn btn-primary p-2"
                         onClick={SubmitBankOtp}
                         disabled={!otpSent} // Disable the button if OTP has not been sent
                       >

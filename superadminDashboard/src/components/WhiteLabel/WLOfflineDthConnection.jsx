@@ -57,15 +57,18 @@ const WLOfflineDthConnection = () => {
           },
         }
       );
-      const applicationData = data?.data?.filter(
-        (item) => item.status !== "Under Process"
-      );
-      setUsers(applicationData);
+      // const applicationData = data?.data?.filter(
+      //   (item) => item.status !== "Under Process"
+      // );
+      // setUsers(applicationData);
 
-      const filterData = data?.data?.filter(
-        (item) => item.status === "Under Process"
-      );
-      setUnderProcessForms(filterData);
+      // const filterData = data?.data?.filter(
+      //   (item) => item.status === "Under Process"
+      // );
+      // setUnderProcessForms(filterData);
+
+      setUsers(data?.data || []);
+
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -262,7 +265,9 @@ const WLOfflineDthConnection = () => {
                                   </option>
                                   <option value="Pending">Pending</option>
                                   <option value="Success">Success</option>
-                                  <option value="Mark Edit">Mark Edit</option>
+                                  <option value="Under Process">
+                                    Under Process
+                                  </option>
                                   <option value="Reject">Reject</option>
                                 </select>
                               </div>
