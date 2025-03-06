@@ -7,8 +7,10 @@ import axios from "axios"; // Make sure axios is imported
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { clearUser } from "../../redux/user/userSlice";
+import { Spinner } from "react-bootstrap";
 
 const WLWalletWithdraw = () => {
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const [bankAccounts, setBankAccounts] = useState([]);
   const userId = useSelector((state) => state.user.currentUser?.userId);
@@ -54,6 +56,7 @@ const WLWalletWithdraw = () => {
   };
 
   const fetchBankAccounts = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(
         `https://2kadam.co.in/api/auth/whiteLabel/getActiveBankDetails/${userId}`,
@@ -66,6 +69,7 @@ const WLWalletWithdraw = () => {
         }
       );
       setBankAccounts(Array.isArray(response.data) ? response.data : []);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching bank accounts:", error);
       if (error?.response?.status === 401) {
@@ -86,6 +90,8 @@ const WLWalletWithdraw = () => {
             "An error occurred while fetching bank details. Please try again.",
         });
       }
+    } finally {
+      setLoading(false); // Ensures loading is set to false in both success and error cases
     }
   };
 
@@ -319,77 +325,91 @@ const WLWalletWithdraw = () => {
                     </div>
                   </div>
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
-                    <div className="text-center">
-                      <h5></h5>
-                    </div>
-
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        User ID
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <FaUser />
-                        </span>
-                        <input
-                          type="text"
-                          id="name"
-                          class="form-control"
-                          placeholder="Enter Name"
-                          value={userId}
-                          disabled
-                        />
+                    {loading ? (
+                      <div className="d-flex justify-content-center">
+                        <Spinner animation="border" role="status">
+                          <span className="visually-hidden ">Loading...</span>
+                        </Spinner>
                       </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Full Name
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <FaUser />
-                        </span>
-                        <input
-                          type="text"
-                          id="name"
-                          class="form-control"
-                          placeholder="UserName"
-                          value={username}
-                          disabled
-                        />
-                      </div>
-                    </div>
+                    ) : (
+                      <>
+                        <div className="text-center">
+                          <h5></h5>
+                        </div>
 
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label htmlFor="walletBalance" className="form-label">
-                        Your Wallet Balance
-                      </label>
-                      <div className="input-group flex-nowrap">
-                        <span className="input-group-text" id="addon-wrapping">
-                          <FaRupeeSign />
-                        </span>
-                        <input
-                          type="text"
-                          id="walletBalance"
-                          className="form-control"
-                          placeholder="Wallet Balance"
-                          value={walletBalance || "0"}
-                          disabled
-                        />
-                      </div>
-                    </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label for="name" class="form-label">
+                            User ID
+                          </label>
+                          <div class="input-group flex-nowrap">
+                            <span class="input-group-text" id="addon-wrapping">
+                              {" "}
+                              <FaUser />
+                            </span>
+                            <input
+                              type="text"
+                              id="name"
+                              class="form-control"
+                              placeholder="Enter Name"
+                              value={userId}
+                              disabled
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label for="name" class="form-label">
+                            Full Name
+                          </label>
+                          <div class="input-group flex-nowrap">
+                            <span class="input-group-text" id="addon-wrapping">
+                              {" "}
+                              <FaUser />
+                            </span>
+                            <input
+                              type="text"
+                              id="name"
+                              class="form-control"
+                              placeholder="UserName"
+                              value={username}
+                              disabled
+                            />
+                          </div>
+                        </div>
 
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label htmlFor="amount" className="form-label">
-                        Amount
-                      </label>
-                      <div className="input-group flex-nowrap">
-                        <span className="input-group-text" id="addon-wrapping">
-                          <FaRupeeSign />
-                        </span>
-                        {/* <input
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label htmlFor="walletBalance" className="form-label">
+                            Your Wallet Balance
+                          </label>
+                          <div className="input-group flex-nowrap">
+                            <span
+                              className="input-group-text"
+                              id="addon-wrapping"
+                            >
+                              <FaRupeeSign />
+                            </span>
+                            <input
+                              type="text"
+                              id="walletBalance"
+                              className="form-control"
+                              placeholder="Wallet Balance"
+                              value={walletBalance || "0"}
+                              disabled
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label htmlFor="amount" className="form-label">
+                            Amount
+                          </label>
+                          <div className="input-group flex-nowrap">
+                            <span
+                              className="input-group-text"
+                              id="addon-wrapping"
+                            >
+                              <FaRupeeSign />
+                            </span>
+                            {/* <input
                           type="number"
                           id="amount"
                           className="form-control"
@@ -398,85 +418,96 @@ const WLWalletWithdraw = () => {
                           onChange={(e) => setAmount(e.target.value)}
                           max={walletBalance}
                         /> */}
-                        <input
-                          type="number"
-                          placeholder="Enter amount"
-                          className="form-control"
-                          value={inputAmount}
-                          onChange={handleInputChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label htmlFor="payoutCharges" className="form-label">
-                        Payout Charges
-                      </label>
-                      <div className="input-group flex-nowrap">
-                        <span className="input-group-text" id="addon-wrapping">
-                          <FaRupeeSign />
-                        </span>
-                        <input
-                          type="number"
-                          id="payoutCharges"
-                          className="form-control"
-                          placeholder="Payout Charges"
-                          value={payoutCharges}
-                          disabled
-                        />
-                      </div>
-                    </div>
+                            <input
+                              type="number"
+                              placeholder="Enter amount"
+                              className="form-control"
+                              value={inputAmount}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label htmlFor="payoutCharges" className="form-label">
+                            Payout Charges
+                          </label>
+                          <div className="input-group flex-nowrap">
+                            <span
+                              className="input-group-text"
+                              id="addon-wrapping"
+                            >
+                              <FaRupeeSign />
+                            </span>
+                            <input
+                              type="number"
+                              id="payoutCharges"
+                              className="form-control"
+                              placeholder="Payout Charges"
+                              value={payoutCharges}
+                              disabled
+                            />
+                          </div>
+                        </div>
 
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label htmlFor="finalAmount" className="form-label">
-                        Final Amount
-                      </label>
-                      <div className="input-group flex-nowrap">
-                        <span className="input-group-text" id="addon-wrapping">
-                          <FaRupeeSign />
-                        </span>
-                        <input
-                          type="number"
-                          id="finalAmount"
-                          className="form-control"
-                          placeholder="Final Amount"
-                          value={finalAmount}
-                          disabled
-                          min={500}
-                        />
-                      </div>
-                      <span
-                        className="text-danger fw-bold"
-                        style={{
-                          fontSize: "0.85rem",
-                          marginTop: "5px",
-                          display: "block",
-                        }}
-                      >
-                        Minimum withdraw amount should be 500
-                      </span>
-                    </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label htmlFor="finalAmount" className="form-label">
+                            Final Amount
+                          </label>
+                          <div className="input-group flex-nowrap">
+                            <span
+                              className="input-group-text"
+                              id="addon-wrapping"
+                            >
+                              <FaRupeeSign />
+                            </span>
+                            <input
+                              type="number"
+                              id="finalAmount"
+                              className="form-control"
+                              placeholder="Final Amount"
+                              value={finalAmount}
+                              disabled
+                              min={500}
+                            />
+                          </div>
+                          <span
+                            className="text-danger fw-bold"
+                            style={{
+                              fontSize: "0.85rem",
+                              marginTop: "5px",
+                              display: "block",
+                            }}
+                          >
+                            Minimum withdraw amount should be 500
+                          </span>
+                        </div>
 
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Reason
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          <MdEdit />
-                        </span>
-                        <input
-                          type="text"
-                          id="name"
-                          name="reason"
-                          value={formData.reason}
-                          onChange={(e) =>
-                            setFormData({ ...formData, reason: e.target.value })
-                          }
-                          class="form-control"
-                          placeholder="Enter Reason"
-                        />
-                      </div>
-                    </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label for="name" class="form-label">
+                            Reason
+                          </label>
+                          <div class="input-group flex-nowrap">
+                            <span class="input-group-text" id="addon-wrapping">
+                              <MdEdit />
+                            </span>
+                            <input
+                              type="text"
+                              id="name"
+                              name="reason"
+                              value={formData.reason}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  reason: e.target.value,
+                                })
+                              }
+                              class="form-control"
+                              placeholder="Enter Reason"
+                            />
+                          </div>
+                        </div>
+                      </>
+                    )}
 
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       {/* <div className="text-start mb-3">
@@ -484,55 +515,13 @@ const WLWalletWithdraw = () => {
                                             </div> */}
                     </div>
                   </div>
+
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
                     <div className="text-center">
                       <h5>All Your Listed Bank Account</h5>
                     </div>
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="table-responsive">
-                        {/* <table className="table table-striped">
-                          <thead className="table-dark">
-                            <tr>
-                              <th scope="col">#</th>
-                              <th scope="col">A/c Holder Name</th>
-                              <th scope="col">Bank Account Number</th>
-                              <th scope="col">IFSC Code</th>
-                              <th scope="col">Bank Name</th>
-                              <th scope="col">Status</th>
-                              <th scope="col">Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {bankAccounts.map((account, index) => (
-                              <tr key={index}>
-                                <th scope="row">{index + 1}</th>
-                                <td>{account.bankholder_name}</td>
-                                <td>{account.bankaccount_number}</td>
-                                <td>{account.IFSC_code}</td>
-                                <td>{account.bank_name}</td>
-                                <td>{account.status}</td>
-                                <td>
-                                  <div className="form-check">
-                                    <input
-                                      className="form-check-input"
-                                      type="radio"
-                                      name="flexRadioDefault"
-                                      id={`flexCheckDefault${index}`}
-                                      checked={
-                                        selectedAccount?.bankaccount_number ===
-                                        account.bankaccount_number
-                                      }
-                                      onClick={() =>
-                                        handleSelectAccount(account)
-                                      }
-                                    />
-                                  </div>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table> */}
-
                         <table className="table table-striped">
                           <thead className="table-dark">
                             <tr>

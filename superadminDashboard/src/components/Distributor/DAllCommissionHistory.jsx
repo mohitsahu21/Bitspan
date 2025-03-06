@@ -271,7 +271,7 @@ const DAllCommissionHistory = () => {
                                   {/* <th scope="col">White Label ID</th> */}
                                   {/* <th scope="col">Super Distributor ID</th> */}
                                   {/* <th scope="col">Distributor ID</th> */}
-                                  <th scope="col">Retailer ID</th>
+                                  {/* <th scope="col">Retailer ID</th> */}
                                   {/* <th scope="col">White Label Commission</th> */}
                                   {/* <th scope="col">
                                     Super Distributor Commission
@@ -302,7 +302,7 @@ const DAllCommissionHistory = () => {
                                       {/* <td>{item.whiteLabel_id}</td> */}
                                       {/* <td>{item.super_Distributor_id}</td> */}
                                       {/* <td>{item.distributor_id}</td> */}
-                                      <td>{item.retailer_id}</td>
+                                      {/* <td>{item.retailer_id}</td> */}
                                       {/* <td>{item.whiteLabel_Commission}</td> */}
                                       {/* <td>
                                         {item.super_Distributor_Commission}

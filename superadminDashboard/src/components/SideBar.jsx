@@ -2693,7 +2693,7 @@ const WhiteLabelData = [
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
-        title: "Buy User ID Limit",
+        title: "Buy User ID ",
         path: "/buy-id",
         icon: <FiShoppingBag color="#fe662b" />,
       },
@@ -2807,11 +2807,11 @@ const WhiteLabelData = [
         path: "/pending-kyc-user",
         icon: <MdPendingActions color="#fe662b" />,
       },
-      {
-        title: "Buy User ID Summary",
-        path: "/buy-user-id-summary",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
+      // {
+      //   title: "Buy User ID Summary",
+      //   path: "/buy-user-id-summary",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
     ],
   },
   {
@@ -3410,7 +3410,7 @@ const Sider = () => {
   const showSidebar = () => setSidebar(!sidebar);
   const [profileImage, setProfileImage] = useState(null);
   const [error, setError] = useState(null);
-  const [data,setData] = useState([]);
+  const [data, setData] = useState([]);
   const userId = useSelector((state) => state.user.currentUser?.userId);
 
   const fetchData = async () => {
@@ -3428,7 +3428,7 @@ const Sider = () => {
   };
   useEffect(() => {
     // Call the API to get the profile image
-    fetchData()
+    fetchData();
     const fetchProfileImage = async () => {
       try {
         const response = await axios.get(

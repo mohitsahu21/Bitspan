@@ -431,19 +431,26 @@ const BuyUserId = () => {
       <div className="main">
         <div className="container-fluid">
           <div className="row flex-wrap justify-content-lg-end justify-content-center">
+            <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
+              {/* <Sider /> */}
+            </div>
             <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-10 col-12 mt-5">
               <div className="main shadow-none">
-                <div className="d-flex justify-content-between align-items-center flex-wrap">
-                  <h4>Buy User ID</h4>
-                  <p>
-                    <BiHomeAlt /> &nbsp;/ &nbsp;
-                    <span
-                      className="text-body-secondary"
-                      style={{ fontSize: "13px" }}
-                    >
-                      Buy User ID
-                    </span>
-                  </p>
+                <div className="row shadow-none ">
+                  <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                    <div className="d-flex justify-content-between align-items-center flex-wrap">
+                      <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Buy User ID</h4>
+                      <p className="mx-lg-5">
+                        <BiHomeAlt /> &nbsp;/ &nbsp;
+                        <span
+                          className="text-body-secondary"
+                          style={{ fontSize: "13px" }}
+                        >
+                          Buy User ID
+                        </span>
+                      </p>
+                    </div>
+                  </div>
                 </div>
                 <div className="row justify-content-center pe-4">
                   <div className="col-xxl-9 col-xl-9 col-lg-10 col-md-12 col-sm-12 rounded px-3">
@@ -629,7 +636,7 @@ const BuyUserId = () => {
 
                         <div className="col-xl-12 text-center mt-4">
                           <button
-                            className="btn p-2"
+                            className="btn btn-primary p-2"
                             type="submit"
                             disabled={loading}
                           >

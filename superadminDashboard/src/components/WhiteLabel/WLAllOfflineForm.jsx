@@ -77,6 +77,11 @@ const WLAllOfflineForm = () => {
     const fromDateObj = fromDate ? new Date(fromDate) : null;
     const toDateObj = toDate ? new Date(toDate) : null;
 
+    // Ensure toDate includes the full day (23:59:59)
+    if (toDateObj) {
+      toDateObj.setHours(23, 59, 59, 999);
+    }
+
     const matchesSearch =
       item.applicant_name
         ?.toLowerCase()
@@ -91,6 +96,14 @@ const WLAllOfflineForm = () => {
     const matchesDate =
       (!fromDateObj || (createdAtDate && createdAtDate >= fromDateObj)) &&
       (!toDateObj || (createdAtDate && createdAtDate <= toDateObj));
+
+    // const matchesDate =
+    //   (!fromDate ||
+    //     new Date(item.transaction_date).setHours(0, 0, 0, 0) >=
+    //       new Date(fromDate).setHours(0, 0, 0, 0)) &&
+    //   (!toDate ||
+    //     new Date(item.transaction_date).setHours(23, 59, 59, 999) <=
+    //       new Date(toDate).setHours(23, 59, 59, 999));
 
     return matchesSearch && matchesStatus && matchesDate;
   });
