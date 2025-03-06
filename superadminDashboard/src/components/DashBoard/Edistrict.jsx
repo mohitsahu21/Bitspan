@@ -84,6 +84,10 @@ const Edistrict = () => {
   //   }
   // });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [searchQuery, formStatus]);
+
   const totalPages = Math.ceil(filteredData?.length / complaintsPerPage);
 
   const paginateData = () => {
@@ -163,11 +167,14 @@ const Edistrict = () => {
                               Search
                             </label> */}
                             <input
-                              type="text"
+                              type="search"
                               className="form-control"
                               placeholder="Search by Name, Mobile, Order id , samagra id , aadhar no."
                               value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
+                              onChange={(e) => (
+                                setSearchQuery(e.target.value),
+                                setCurrentPage(0)
+                              )}
                             />
                           </div>
                           {/* <div className="d-flex align-items-end">
@@ -281,7 +288,7 @@ const Edistrict = () => {
                                           <td>{item.state}</td>
                                           <td>{item.previous_application}</td>
                                           <td>{item.annual_income}</td>
-                                          <td>
+                                          {/* <td>
                                             {item?.documentUpload
                                               ?.split(",")
                                               ?.map((kycurl, kycindx) => (
@@ -295,7 +302,31 @@ const Edistrict = () => {
                                                   </a>
                                                 </div>
                                               ))}
+                                          </td> */}
+                                          <td>
+                                            {item?.documentUpload ? (
+                                              item.documentUpload
+                                                .split(",")
+                                                .filter(
+                                                  (kycurl) =>
+                                                    kycurl.trim() !== ""
+                                                ) // Remove empty values
+                                                .map((kycurl, kycindx) => (
+                                                  <div key={kycindx}>
+                                                    <a
+                                                      href={kycurl}
+                                                      target="_blank"
+                                                      rel="noopener noreferrer"
+                                                    >
+                                                      View {kycindx + 1}
+                                                    </a>
+                                                  </div>
+                                                ))
+                                            ) : (
+                                              <span>Not Available</span>
+                                            )}
                                           </td>
+
                                           <td>{item.charge_amount}</td>
                                           <td>{item.created_at}</td>
                                           <td>{item.note}</td>
@@ -366,6 +397,7 @@ const Edistrict = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

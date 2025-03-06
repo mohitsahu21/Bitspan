@@ -57,6 +57,7 @@ const PanUploadedDocsList = () => {
       );
     });
     setFilteredData(filtered);
+    setCurrentPage(0);
   }, [filterValue, allData]);
 
   useEffect(() => {
@@ -150,9 +151,10 @@ const PanUploadedDocsList = () => {
                               value={filterValue}
                               onChange={(e) => {
                                 setFilterValue(e.target.value);
-                                if (e.target.value === "") {
-                                  setCurrentPage(0);
-                                }
+                                setCurrentPage(0);
+                                // if (e.target.value === "") {
+                                //   setCurrentPage(0);
+                                // }
                               }}
                               onKeyDown={(e) => {
                                 if (e.key === "Escape") {
@@ -249,6 +251,7 @@ const PanUploadedDocsList = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

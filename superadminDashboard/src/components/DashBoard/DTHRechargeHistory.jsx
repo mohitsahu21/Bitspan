@@ -255,6 +255,7 @@ const DTHRechargeHistory = () => {
                                   onPageChange={handlePageChange}
                                   containerClassName={"pagination"}
                                   activeClassName={"active"}
+                                  forcePage={currentPage}
                                 />
                               </PaginationContainer>
                             </div>

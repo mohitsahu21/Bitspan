@@ -85,6 +85,7 @@ const PrepaidRechargeHistory = () => {
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
+    // window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const displayData = paginateData();
@@ -133,9 +134,6 @@ const PrepaidRechargeHistory = () => {
                                   onChange={(e) => {
                                     setFilterValue(e.target.value);
                                     setCurrentPage(0);
-                                    // if (e.target.value === "") {
-                                    //   setCurrentPage(0);
-                                    // }
                                   }}
                                   // onKeyDown={(e) => {
                                   //   if (e.key === "Escape") {
@@ -255,6 +253,7 @@ const PrepaidRechargeHistory = () => {
                                   onPageChange={handlePageChange}
                                   containerClassName={"pagination"}
                                   activeClassName={"active"}
+                                  forcePage={currentPage}
                                 />
                               </PaginationContainer>
                             </div>

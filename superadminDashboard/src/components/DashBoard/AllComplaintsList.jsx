@@ -97,6 +97,10 @@ const AllComplaintsList = () => {
     setCurrentPage(0); // Reset pagination to the first page
   };
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, []);
+
   const totalPages = Math.ceil(apiData.length / complaintsPerPage);
 
   const filterPagination = () => {
@@ -196,7 +200,9 @@ const AllComplaintsList = () => {
                               type="search"
                               placeholder="Search By Complaint ID ,Transaction No."
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => (
+                                setKeyword(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
                           <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -321,6 +327,7 @@ const AllComplaintsList = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

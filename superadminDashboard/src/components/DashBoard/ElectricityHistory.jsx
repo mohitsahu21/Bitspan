@@ -63,6 +63,7 @@ const ElectricityHistory = () => {
       );
     });
     setFilteredData(filtered);
+    setCurrentPage(0);
   }, [filterValue, allData]);
 
   useEffect(() => {
@@ -132,6 +133,7 @@ const ElectricityHistory = () => {
                                   value={filterValue}
                                   onChange={(e) => {
                                     setFilterValue(e.target.value);
+                                    setCurrentPage(0);
                                     // if (e.target.value === "") {
                                     //   setCurrentPage(0);
                                     // }
@@ -251,6 +253,7 @@ const ElectricityHistory = () => {
                                   onPageChange={handlePageChange}
                                   containerClassName={"pagination"}
                                   activeClassName={"active"}
+                                  forcePage={currentPage}
                                 />
                               </PaginationContainer>
                             </div>

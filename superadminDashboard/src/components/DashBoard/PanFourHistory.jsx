@@ -73,6 +73,10 @@ const PanFourHistory = () => {
     return matchesKeyword && matchesType;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword, formStatus]);
+
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
   const filterPagination = () => {
@@ -131,7 +135,9 @@ const PanFourHistory = () => {
                               type="search"
                               placeholder="Search by Name, Mobile no , Aadhar no, Email , Order Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => (
+                                setKeyword(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
                           <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -413,6 +419,7 @@ const PanFourHistory = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

@@ -85,6 +85,7 @@ const SambalHistory = () => {
 
   useEffect(() => {
     fetchRechargeData();
+    setCurrentPage(0);
   }, [isRefresh]);
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
@@ -144,9 +145,10 @@ const SambalHistory = () => {
                               value={filterValue}
                               onChange={(e) => {
                                 setFilterValue(e.target.value);
-                                if (e.target.value === "") {
-                                  setCurrentPage(0);
-                                }
+                                setCurrentPage(0);
+                                // if (e.target.value === "") {
+                                //   setCurrentPage(0);
+                                // }
                               }}
                               onKeyDown={(e) => {
                                 if (e.key === "Escape") {
@@ -298,6 +300,7 @@ const SambalHistory = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

@@ -120,6 +120,7 @@ const DTHConnectionHistroy = () => {
   });
   useEffect(() => {
     fetchRechargeData();
+    setCurrentPage(0);
   }, []);
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
@@ -185,6 +186,7 @@ const DTHConnectionHistroy = () => {
                                   value={keyword}
                                   onChange={(e) => {
                                     setKeyword(e.target.value);
+                                    setCurrentPage(0);
                                     // if (e.target.value === "") {
                                     //   setCurrentPage(0);
                                     // }
@@ -318,6 +320,7 @@ const DTHConnectionHistroy = () => {
                                   onPageChange={handlePageChange}
                                   containerClassName={"pagination"}
                                   activeClassName={"active"}
+                                  forcePage={currentPage}
                                 />
                               </PaginationContainer>
                             </div>

@@ -4815,7 +4815,6 @@ const getAllMonthRechargeOffline = (req, res) => {
 
 const getTodaysRecharge = (req, res) => {
   const { userId } = req.params;
-
   // SQL query to fetch commission records for the user for the current day
   const sql = `
     SELECT * 
@@ -4841,6 +4840,7 @@ const getTodaysRecharge = (req, res) => {
     }); // Return the commission records for the current day
   });
 };
+
 const getTodaysRechargeOffline = (req, res) => {
   const { userId } = req.params;
 

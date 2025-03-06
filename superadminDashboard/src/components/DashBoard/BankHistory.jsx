@@ -61,6 +61,10 @@ const BankHistory = () => {
     return matchesKeyword && matchesType;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword, formStatus]);
+
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
   const filterPagination = () => {
@@ -329,6 +333,7 @@ const BankHistory = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

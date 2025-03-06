@@ -124,6 +124,10 @@ const RtAllCommissionHistory = () => {
     return matchesKeyword && matchesDate && matchesSearch && matchesStatus;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword, fromDate, toDate]);
+
   const totalPages = Math.ceil(filteredData.length / complaintsPerPage);
 
   const paginateData = () => {
@@ -178,12 +182,15 @@ const RtAllCommissionHistory = () => {
                               Search
                             </label>
                             <input
-                              type="text"
+                              type="search"
                               className="form-control responsive-input"
                               // placeholder="Search by Name, Mobile, or Order ID"
                               placeholder="Search by  Order ID"
                               value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
+                              onChange={(e) => (
+                                setSearchQuery(e.target.value),
+                                setCurrentPage(0)
+                              )}
                             />
                           </div>
 

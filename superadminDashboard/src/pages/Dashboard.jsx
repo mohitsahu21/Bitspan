@@ -32,10 +32,10 @@ const Dashboard = () => {
   const [commissionData, setCommissionData] = useState(0); // Default commission to 0
   const [todayCommission, setTodayCommission] = useState(0);
   const [notificationData, setNotificationData] = useState("");
-  const [monthlyRecharge,setMonthlyRecharge] = useState(0)
-  const [monthlyRechargeAmt,setMonthlyRechargeAmt] = useState(0)
-  const [TodayRecharge,setTodayRecharge] = useState(0)
-  const [TodayRechargeAmt,setTodayRechargeAmt] = useState(0)
+  const [monthlyRecharge, setMonthlyRecharge] = useState(0);
+  const [monthlyRechargeAmt, setMonthlyRechargeAmt] = useState(0);
+  const [TodayRecharge, setTodayRecharge] = useState(0);
+  const [TodayRechargeAmt, setTodayRechargeAmt] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -99,7 +99,7 @@ const Dashboard = () => {
 
       if (data.success && data.data.length > 0) {
         const totalCommission = data.data.reduce((total, item) => {
-          return total + parseFloat(item.super_Distributor_Commission);
+          return total + parseFloat(item.retailer_Commission);
         }, 0);
         setCommissionData(totalCommission); // Convert from cents to the correct format (if needed)
       } else {
@@ -123,12 +123,12 @@ const Dashboard = () => {
     }
   };
 
-   // Format commission to limit decimals to 2
-   const formattedCommission = commissionData
-   ? parseFloat(commissionData).toFixed(2) // Limit to 2 decimal places
-   : "0.00"; // Default to "0.00" if commissionData is 0
+  // Format commission to limit decimals to 2
+  const formattedCommission = commissionData
+    ? parseFloat(commissionData).toFixed(2) // Limit to 2 decimal places
+    : "0.00"; // Default to "0.00" if commissionData is 0
 
- //fetch Todays commission
+  //fetch Todays commission
 
   const fetchTodaysCommission = async () => {
     setLoading(true);
@@ -144,9 +144,9 @@ const Dashboard = () => {
       );
 
       if (data.success && data.data.length > 0) {
-        // Assuming `super_Distributor_Commission` is the field you want to display
+        // Assuming `retailer_Commission` is the field you want to display
         const totalCommission = data.data.reduce((total, item) => {
-          return total + parseFloat(item.super_Distributor_Commission);
+          return total + parseFloat(item.retailer_Commission);
         }, 0);
 
         setTodayCommission(totalCommission); // Convert to decimal if needed
@@ -176,185 +176,185 @@ const Dashboard = () => {
     ? parseFloat(todayCommission).toFixed(2) // Limit to 2 decimal places
     : "0.00"; // Default to "0.00" if commissionData is 0
 
-    useEffect(()=>{
-      fetchTodaysCommission()
-      fetchMonthCommission()
-      fetchUserNotifications()
-      fetchMonthRecharge()
-      fetchMonthRechargeOffline()
-      fetchTodayRecharge()
-      fetchTodayRechargeOffline()
-    },[userId])
+  useEffect(() => {
+    fetchTodaysCommission();
+    fetchMonthCommission();
+    fetchUserNotifications();
+    fetchMonthRecharge();
+    fetchMonthRechargeOffline();
+    fetchTodayRecharge();
+    fetchTodayRechargeOffline();
+  }, [userId]);
 
-    const fetchMonthRecharge = async () => {
-      setLoading(true);
-      try {
-        const { data } = await axios.get(
-          `https://2kadam.co.in/api/auth/retailer/getAllMonthRecharge/${userId}`,
-  
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-  
-        if (data.success && data.data.length > 0) {
-          setMonthlyRecharge((pre)=>  pre + data.total);
-          const totalAmt = data.data.reduce((total, item) => {
-            return total + parseFloat(item.amount);
-          }, 0);
-          setMonthlyRechargeAmt((pre)=> pre+totalAmt); // Convert from cents to the correct format (if needed)
-        } else {
-          // setMonthlyRechargeAmt(0); 
-          // setMonthlyRecharge(0)
-        }
-      } catch (error) {
-        console.error("Error fetching commission data:", error);
-        if (error?.response?.status === 401) {
-          // Alert for expired token
-          Swal.fire({
-            icon: "error",
-            title: "Your token is expired. Please login again.",
-          });
-          dispatch(clearUser());
-          navigate("/");
-        } else {
-          // setMonthlyRechargeAmt(0); 
-          // setMonthlyRecharge(0)
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-    const fetchMonthRechargeOffline = async () => {
-      setLoading(true);
-      try {
-        const { data } = await axios.get(
-          `https://2kadam.co.in/api/auth/retailer/getAllMonthRechargeOffline/${userId}`,
-  
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-  
-        if (data.success && data.data.length > 0) {
-          setMonthlyRecharge((pre)=>  pre + data.total);
-          const totalAmt = data.data.reduce((total, item) => {
-            return total + parseFloat(item.amount);
-          }, 0);
-          setMonthlyRechargeAmt((pre)=> pre+totalAmt); // Convert from cents to the correct format (if needed)
-        } else {
-          // setMonthlyRechargeAmt(0); 
-          // setMonthlyRecharge(0)
-        }
-      } catch (error) {
-        console.error("Error fetching commission data:", error);
-        if (error?.response?.status === 401) {
-          // Alert for expired token
-          Swal.fire({
-            icon: "error",
-            title: "Your token is expired. Please login again.",
-          });
-          dispatch(clearUser());
-          navigate("/");
-        } else {
-          // setMonthlyRechargeAmt(0); 
-          // setMonthlyRecharge(0)
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchMonthRecharge = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        `https://2kadam.co.in/api/auth/retailer/getAllMonthRecharge/${userId}`,
 
-    const fetchTodayRecharge = async () => {
-      setLoading(true);
-      try {
-        const { data } = await axios.get(
-          `https://2kadam.co.in/api/auth/retailer/getTodaysRecharge/${userId}`,
-  
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-  
-        if (data.success && data.data.length > 0) {
-          setTodayRecharge((pre)=>  pre + data.total);
-          const totalAmt = data.data.reduce((total, item) => {
-            return total + parseFloat(item.amount);
-          }, 0);
-          setTodayRechargeAmt((pre)=> pre+totalAmt); // Convert from cents to the correct format (if needed)
-        } else {
-          // setMonthlyRechargeAmt(0); 
-          // setMonthlyRecharge(0)
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
-      } catch (error) {
-        console.error("Error fetching commission data:", error);
-        if (error?.response?.status === 401) {
-          // Alert for expired token
-          Swal.fire({
-            icon: "error",
-            title: "Your token is expired. Please login again.",
-          });
-          dispatch(clearUser());
-          navigate("/");
-        } else {
-          // setMonthlyRechargeAmt(0); 
-          // setMonthlyRecharge(0)
-        }
-      } finally {
-        setLoading(false);
+      );
+
+      if (data.success && data.data.length > 0) {
+        setMonthlyRecharge((pre) => pre + data.total);
+        const totalAmt = data.data.reduce((total, item) => {
+          return total + parseFloat(item.amount);
+        }, 0);
+        setMonthlyRechargeAmt((pre) => pre + totalAmt); // Convert from cents to the correct format (if needed)
+      } else {
+        // setMonthlyRechargeAmt(0);
+        // setMonthlyRecharge(0)
       }
-    };
-    const fetchTodayRechargeOffline = async () => {
-      setLoading(true);
-      try {
-        const { data } = await axios.get(
-          `https://2kadam.co.in/api/auth/retailer/getTodaysRechargeOffline/${userId}`,
-  
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-  
-        if (data.success && data.data.length > 0) {
-          setTodayRecharge((pre)=>  pre + data.total);
-          const totalAmt = data.data.reduce((total, item) => {
-            return total + parseFloat(item.amount);
-          }, 0);
-          setTodayRechargeAmt((pre)=> pre+totalAmt); // Convert from cents to the correct format (if needed)
-        } else {
-          // setMonthlyRechargeAmt(0); 
-          // setMonthlyRecharge(0)
-        }
-      } catch (error) {
-        console.error("Error fetching commission data:", error);
-        if (error?.response?.status === 401) {
-          // Alert for expired token
-          Swal.fire({
-            icon: "error",
-            title: "Your token is expired. Please login again.",
-          });
-          dispatch(clearUser());
-          navigate("/");
-        } else {
-          // setMonthlyRechargeAmt(0); 
-          // setMonthlyRecharge(0)
-        }
-      } finally {
-        setLoading(false);
+    } catch (error) {
+      console.error("Error fetching commission data:", error);
+      if (error?.response?.status === 401) {
+        // Alert for expired token
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired. Please login again.",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        // setMonthlyRechargeAmt(0);
+        // setMonthlyRecharge(0)
       }
-    };
+    } finally {
+      setLoading(false);
+    }
+  };
+  const fetchMonthRechargeOffline = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        `https://2kadam.co.in/api/auth/retailer/getAllMonthRechargeOffline/${userId}`,
+
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (data.success && data.data.length > 0) {
+        setMonthlyRecharge((pre) => pre + data.total);
+        const totalAmt = data.data.reduce((total, item) => {
+          return total + parseFloat(item.amount);
+        }, 0);
+        setMonthlyRechargeAmt((pre) => pre + totalAmt); // Convert from cents to the correct format (if needed)
+      } else {
+        // setMonthlyRechargeAmt(0);
+        // setMonthlyRecharge(0)
+      }
+    } catch (error) {
+      console.error("Error fetching commission data:", error);
+      if (error?.response?.status === 401) {
+        // Alert for expired token
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired. Please login again.",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        // setMonthlyRechargeAmt(0);
+        // setMonthlyRecharge(0)
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchTodayRecharge = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        `https://2kadam.co.in/api/auth/retailer/getTodaysRecharge/${userId}`,
+
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (data.success && data.data.length > 0) {
+        setTodayRecharge((pre) => pre + data.total);
+        const totalAmt = data.data.reduce((total, item) => {
+          return total + parseFloat(item.amount);
+        }, 0);
+        setTodayRechargeAmt((pre) => pre + totalAmt); // Convert from cents to the correct format (if needed)
+      } else {
+        // setMonthlyRechargeAmt(0);
+        // setMonthlyRecharge(0)
+      }
+    } catch (error) {
+      console.error("Error fetching commission data:", error);
+      if (error?.response?.status === 401) {
+        // Alert for expired token
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired. Please login again.",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        // setMonthlyRechargeAmt(0);
+        // setMonthlyRecharge(0)
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+  const fetchTodayRechargeOffline = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        `https://2kadam.co.in/api/auth/retailer/getTodaysRechargeOffline/${userId}`,
+
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (data.success && data.data.length > 0) {
+        setTodayRecharge((pre) => pre + data.total);
+        const totalAmt = data.data.reduce((total, item) => {
+          return total + parseFloat(item.amount);
+        }, 0);
+        setTodayRechargeAmt((pre) => pre + totalAmt); // Convert from cents to the correct format (if needed)
+      } else {
+        // setMonthlyRechargeAmt(0);
+        // setMonthlyRecharge(0)
+      }
+    } catch (error) {
+      console.error("Error fetching commission data:", error);
+      if (error?.response?.status === 401) {
+        // Alert for expired token
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired. Please login again.",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        // setMonthlyRechargeAmt(0);
+        // setMonthlyRecharge(0)
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -396,17 +396,15 @@ const Dashboard = () => {
                         </p>
                       </div> */}
 
-<div className="notifications-container">
+                      <div className="notifications-container">
                         {loading ? (
                           // <p>Loading notifications...</p>
-                         <div className="news d-flex align-items-center">
-                        <span className="p-3 bg-info news-icon">
-                          <BsInfoSquare />
-                        </span>
-                        <p className="d-flex align-items-center mb-0 ms-2">
-                         
-                        </p>
-                      </div> 
+                          <div className="news d-flex align-items-center">
+                            <span className="p-3 bg-info news-icon">
+                              <BsInfoSquare />
+                            </span>
+                            <p className="d-flex align-items-center mb-0 ms-2"></p>
+                          </div>
                         ) : notificationData.length > 0 ? (
                           notificationData.map((notification, index) => (
                             <div
@@ -440,13 +438,11 @@ const Dashboard = () => {
                         ) : (
                           // <p>No notifications available</p>
                           <div className="news d-flex align-items-center">
-                        <span className="p-3 bg-info news-icon">
-                          <BsInfoSquare />
-                        </span>
-                        <p className="d-flex align-items-center mb-0 ms-2">
-                         
-                        </p>
-                      </div> 
+                            <span className="p-3 bg-info news-icon">
+                              <BsInfoSquare />
+                            </span>
+                            <p className="d-flex align-items-center mb-0 ms-2"></p>
+                          </div>
                         )}
                       </div>
                     </div>
@@ -585,7 +581,7 @@ const Dashboard = () => {
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">Add Monet to</p>
+                            <p className="mb-0 px-2 my-0 fs-6">Add Money to</p>
                             <h4 className="px-2 my-0">Wallet</h4>{" "}
                           </div>
                         </div>
@@ -621,7 +617,9 @@ const Dashboard = () => {
                             <p className="mb-0 px-2 my-0 fs-6">
                               Recharge Today
                             </p>
-                            <h4 className="px-2 my-0">{TodayRecharge} - (Rs. {TodayRechargeAmt})</h4>{" "}
+                            <h4 className="px-2 my-0">
+                              {TodayRecharge} - (Rs. {TodayRechargeAmt})
+                            </h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -637,7 +635,9 @@ const Dashboard = () => {
                             <p className="mb-0 px-2 my-0 fs-6">
                               Recharge Month
                             </p>
-                            <h4 className="px-2 my-0">{monthlyRecharge} - (Rs. {monthlyRechargeAmt})</h4>{" "}
+                            <h4 className="px-2 my-0">
+                              {monthlyRecharge} - (Rs. {monthlyRechargeAmt})
+                            </h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -646,13 +646,17 @@ const Dashboard = () => {
                       <div className="card card-4">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                           <LuIndianRupee />
+                            <LuIndianRupee />
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
                             <p className="mb-0 px-2 my-0 fs-6">Wallet Amount</p>
                             {/* <h4 className="px-2 my-0">(Rs. 250/-)</h4>{" "} */}
-                            <h4 className="px-2 my-0">{`₹${walletBalance === null || undefined ? "0.00" : walletBalance}`}</h4>{" "}
+                            <h4 className="px-2 my-0">{`₹${
+                              walletBalance === null || undefined
+                                ? "0.00"
+                                : walletBalance
+                            }`}</h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -677,16 +681,18 @@ const Dashboard = () => {
                       <div className="card card-2">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <LuIndianRupee/>
+                            <LuIndianRupee />
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
                             <p className="mb-0 px-2 my-0 fs-6">
                               Today Commission
                             </p>
-                            <h4 className="px-2 my-0">{TodaysformattedCommission
-                                  ? `₹${TodaysformattedCommission}`
-                                  : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">
+                              {TodaysformattedCommission
+                                ? `₹${TodaysformattedCommission}`
+                                : "..."}
+                            </h4>{" "}
                           </div>
                         </div>
                       </div>
@@ -702,8 +708,11 @@ const Dashboard = () => {
                             <p className="mb-0 px-2 my-0 fs-6">
                               Month Commission
                             </p>
-                            <h4 className="px-2 my-0">{formattedCommission
-                                  ?  `₹${formattedCommission}` : "..."}</h4>{" "}
+                            <h4 className="px-2 my-0">
+                              {formattedCommission
+                                ? `₹${formattedCommission}`
+                                : "..."}
+                            </h4>{" "}
                           </div>
                         </div>
                       </div>

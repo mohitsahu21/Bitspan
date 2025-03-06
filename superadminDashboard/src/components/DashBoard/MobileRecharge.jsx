@@ -263,7 +263,12 @@ const MobileRecharge = () => {
     setIsRecharge(false);
     setLoadingPlans(true);
     if (!selectedOperator || !selectedCircle) {
-      alert("Please select both operator and circle!");
+      Swal.fire({
+        icon: "info",
+        title: "Select Circle",
+        text: "Please select both operator and circle!",
+      });
+      // alert("Please select both operator and circle!");
       // setLoadingPlans(false);
       return;
     }
@@ -288,16 +293,31 @@ const MobileRecharge = () => {
           setPlans(allPlans); // Store all plans with their categories
           setIsModalOpen(true); // Open modal to display plans
         } else {
-          alert("No plans available for the selected operator and circle.");
+          Swal.fire({
+            icon: "info",
+            title: "No plans",
+            text: "No plans available for the selected operator and circle.",
+          });
+          // alert("No plans available for the selected operator and circle.");
           setPlans([]);
         }
       } else {
-        alert("No plans available or an error occurred!");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "No plans available or an error occurred!",
+        });
+        // alert("No plans available or an error occurred!");
         setPlans([]);
       }
     } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Failed to fetch plans. Please try again.",
+      });
       console.error("An error occurred while fetching plans:", error);
-      alert("Failed to fetch plans. Please try again.");
+      // alert("Failed to fetch plans. Please try again.");
     } finally {
       setLoadingPlans(false);
     }

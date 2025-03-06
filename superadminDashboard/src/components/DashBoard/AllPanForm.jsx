@@ -83,6 +83,10 @@ const AllPanForm = () => {
     return matchesSearch && matchesStatus;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [searchQuery, selectedStatus]);
+
   // const filteredData = formData.filter((item) => {
   //   if (selectedStatus === "All") {
   //     return true;
@@ -178,7 +182,7 @@ const AllPanForm = () => {
                               Search
                             </label> */}
                             <input
-                              type="text"
+                              type="search"
                               className="form-control responsive-input"
                               placeholder="Search by Name, Mobile, or Order ID"
                               value={searchQuery}
@@ -277,31 +281,53 @@ const AllPanForm = () => {
                                             {item.applicant_select_service}
                                           </td>
                                           <td>{item.other}</td>
-                                          <td>
+                                          {/* <td>
                                             <a
                                               href={item.attached_form}
                                               target="_blank"
                                             >
                                               View Form
                                             </a>
+                                          </td> */}
+                                          <td>
+                                            {item.attached_form ? (
+                                              <a
+                                                href={item.attached_form}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                              >
+                                                View Form
+                                              </a>
+                                            ) : (
+                                              "Not Available"
+                                            )}
+                                          </td>
+
+                                          <td>
+                                            {item.attached_photo ? (
+                                              <a
+                                                href={item.attached_photo}
+                                                target="_blank"
+                                              >
+                                                View Photo
+                                              </a>
+                                            ) : (
+                                              "Not Available"
+                                            )}
                                           </td>
                                           <td>
-                                            <a
-                                              href={item.attached_photo}
-                                              target="_blank"
-                                            >
-                                              View Photo
-                                            </a>
+                                            {item.attached_sign ? (
+                                              <a
+                                                href={item.attached_sign}
+                                                target="_blank"
+                                              >
+                                                View Sign
+                                              </a>
+                                            ) : (
+                                              "Not Available"
+                                            )}
                                           </td>
-                                          <td>
-                                            <a
-                                              href={item.attached_sign}
-                                              target="_blank"
-                                            >
-                                              View Sign
-                                            </a>
-                                          </td>
-                                          <td>
+                                          {/* <td>
                                             {item?.attached_kyc
                                               ?.split(",")
                                               ?.map((kycurl, kycindx) => (
@@ -315,7 +341,31 @@ const AllPanForm = () => {
                                                   </a>
                                                 </div>
                                               ))}
+                                          </td> */}
+                                          <td>
+                                            {item?.attached_kyc
+                                              ? item.attached_kyc.split(",")
+                                                  .length > 0
+                                                ? item.attached_kyc
+                                                    .split(",")
+                                                    .map((kycurl, kycindx) =>
+                                                      kycurl.trim() ? (
+                                                        <div key={kycindx}>
+                                                          <a
+                                                            href={kycurl}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                          >
+                                                            View KYC{" "}
+                                                            {kycindx + 1}
+                                                          </a>
+                                                        </div>
+                                                      ) : null
+                                                    )
+                                                : "Not Available"
+                                              : "Not Available"}
                                           </td>
+
                                           <td>{item.status}</td>
                                           <td>{item.note}</td>
                                           <td>
@@ -402,6 +452,7 @@ const AllPanForm = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

@@ -230,6 +230,10 @@ const ProviderTwoDTHConnectionHistory = () => {
     return matchesKeyword && matchesType && matchesOperator;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword, formStatus]);
+
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
   const filterPagination = () => {
@@ -334,7 +338,7 @@ const ProviderTwoDTHConnectionHistory = () => {
               type="search"
               placeholder="Search By Name,Mobile,Order Id"
               value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
+              onChange={(e) => (setKeyword(e.target.value), setCurrentPage(0))}
             />
           </div>
 
@@ -467,6 +471,7 @@ const ProviderTwoDTHConnectionHistory = () => {
                 onPageChange={handlePageChange}
                 containerClassName={"pagination"}
                 activeClassName={"active"}
+                forcePage={currentPage}
               />
             </PaginationContainer>
           </div>

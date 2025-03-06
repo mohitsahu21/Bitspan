@@ -279,6 +279,7 @@ const ProviderTwoHistory = ({ rechargeType }) => {
                 onPageChange={handlePageChange}
                 containerClassName={"pagination"}
                 activeClassName={"active"}
+                forcePage={currentPage}
               />
             </PaginationContainer>
           </div>
