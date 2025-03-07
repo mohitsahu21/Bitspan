@@ -140,7 +140,11 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -281,7 +285,11 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -1079,7 +1087,11 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -1306,7 +1318,11 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -1553,7 +1569,7 @@ const SAEOfflineDthConnection = () => {
                                   </option>
                                   <option value="Pending">Pending</option>
                                   <option value="Success">Success</option>
-                                  <option value="Mark Edit">Mark Edit</option>
+                                  {/* <option value="Mark Edit">Mark Edit</option> */}
                                   <option value="Reject">Reject</option>
                                 </select>
                               </div>
@@ -1567,7 +1583,10 @@ const SAEOfflineDthConnection = () => {
                                 type="search"
                                 placeholder="Enter Applicant Name/Mobile/Order Id/User Name"
                                 value={keyword}
-                                onChange={(e) => setKeyword(e.target.value)}
+                                onChange={(e) => {
+                                  setKeyword(e.target.value);
+                                  setCurrentPage(0);
+                                }}
                               />
                             </div>
 
@@ -1733,6 +1752,7 @@ const SAEOfflineDthConnection = () => {
                                   onPageChange={handlePageChange}
                                   containerClassName={"pagination"}
                                   activeClassName={"active"}
+                                  forcePage={currentPage}
                                 />
                               </PaginationContainer>
                             </div>
@@ -1761,7 +1781,10 @@ const SAEOfflineDthConnection = () => {
                                   type="search"
                                   placeholder="Enter Applicant Name/Mobile/Order Id/User Name"
                                   value={keyword}
-                                  onChange={(e) => setKeyword(e.target.value)}
+                                  onChange={(e) => {
+                                    setKeyword(e.target.value);
+                                    setCurrentPage(0);
+                                  }}
                                 />
                               </div>
                               {/* <div className="col-12 col-md-12 col-lg-12 col-xl-3">

@@ -361,7 +361,7 @@ const SAEProfile = () => {
                             />
                           </div>
                         </div>
-                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                           <label>Aadhar Front</label>
                           <div className="input-group">
                             <input
@@ -399,7 +399,7 @@ const SAEProfile = () => {
                               onChange={handleFileChange}
                             />
                           </div>
-                        </div>
+                        </div> */}
 
                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                           <label>Profile Image</label>

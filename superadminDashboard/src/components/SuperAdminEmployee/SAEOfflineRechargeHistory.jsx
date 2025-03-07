@@ -1974,7 +1974,11 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -2158,7 +2162,11 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -2239,7 +2247,8 @@ const SAEOfflineRechargeHistory = () => {
     const matchesType =
       !formStatus ||
       formStatus === "---Select Form Status---" ||
-      row.status === formStatus;
+      (row.status &&
+        row.status.trim().toLowerCase() === formStatus.trim().toLowerCase());
     return matchesKeyword && matchesType;
   });
 
@@ -2382,7 +2391,10 @@ const SAEOfflineRechargeHistory = () => {
                               type="search"
                               placeholder="Enter Number/Order Id/User Name/User Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value);
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-12 col-lg-12 col-xl-3">
