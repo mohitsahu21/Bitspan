@@ -836,7 +836,7 @@ const Wrapper = styled.div`
     right: 0;
   }
   .news-icon {
-    z-index: 100;
+    z-index: 1;
     font-size: large;
   }
 `;

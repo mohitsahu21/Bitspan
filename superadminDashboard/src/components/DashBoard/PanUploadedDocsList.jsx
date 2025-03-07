@@ -218,12 +218,16 @@ const PanUploadedDocsList = () => {
                                         <td>{item.confirmAddress}</td>
                                         <td>{item.remark}</td>
                                         <td>
-                                          <Link
-                                            to={item.podfile}
-                                            target="_blank"
-                                          >
-                                            View
-                                          </Link>
+                                          {item.podfile ? (
+                                            <Link
+                                              to={item.podfile}
+                                              target="_blank"
+                                            >
+                                              View
+                                            </Link>
+                                          ) : (
+                                            "Not Available"
+                                          )}
                                         </td>
                                         <td>{item.status}</td>
                                         <td>{item.note}</td>

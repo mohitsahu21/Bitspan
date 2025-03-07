@@ -315,9 +315,9 @@ const PanFourHistory = () => {
                                                     </a>
                                                   </div>
                                                 ))
-                                            : "No KYC available"}
+                                            : "Not Available"}
                                         </td>
-                                        <td>
+                                        {/* <td>
                                           {" "}
                                           <a
                                             href={item.attachment_form}
@@ -325,37 +325,63 @@ const PanFourHistory = () => {
                                           >
                                             View
                                           </a>
+                                        </td> */}
+                                        <td>
+                                          {item.attachment_form ? (
+                                            <a
+                                              href={item.attachment_form}
+                                              target="_blank"
+                                            >
+                                              View
+                                            </a>
+                                          ) : (
+                                            "Not Available"
+                                          )}
                                         </td>
                                         <td>
                                           {" "}
-                                          <a
+                                          {item.attachment_signature ? (
+                                            <a
+                                              href={item.attachment_signature}
+                                              target="_blank"
+                                            >
+                                              View
+                                            </a>
+                                          ) : (
+                                            "Not Available"
+                                          )}
+                                          {/* <a
                                             href={item.attachment_signature}
                                             target="_blank"
                                           >
                                             View
-                                          </a>
+                                          </a> */}
                                         </td>
                                         <td>
                                           {" "}
-                                          <a
-                                            href={item.attachment_photo}
-                                            target="_blank"
-                                          >
-                                            View
-                                          </a>
+                                          {item.attachment_photo ? (
+                                            <a
+                                              href={item.attachment_photo}
+                                              target="_blank"
+                                            >
+                                              View
+                                            </a>
+                                          ) : (
+                                            "Not Available"
+                                          )}
                                         </td>
                                         <td>{item.Charge_Amount}</td>
                                         <td
-                                          style={{
-                                            color:
-                                              item.status === "Pending"
-                                                ? "#FFC107"
-                                                : item.status === "Reject"
-                                                ? "#DC3545"
-                                                : item.status === "Success"
-                                                ? "#28A745"
-                                                : "black",
-                                          }}
+                                        // style={{
+                                        //   color:
+                                        //     item.status === "Pending"
+                                        //       ? "#FFC107"
+                                        //       : item.status === "Reject"
+                                        //       ? "#DC3545"
+                                        //       : item.status === "Success"
+                                        //       ? "#28A745"
+                                        //       : "black",
+                                        // }}
                                         >
                                           {item.status}
                                         </td>
