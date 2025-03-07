@@ -97,6 +97,7 @@ const WLPanFourHistory = () => {
       !PaymentMode ||
       PaymentMode === "---Select---" ||
       row.status === PaymentMode;
+
     // return matchesKeyword && matchesType ;
     const matchesDate =
       (!fromDate ||
@@ -195,7 +196,12 @@ const WLPanFourHistory = () => {
                             >
                               <option selected>---Select---</option>
                               <option value="Success">Success</option>
-                              <option value="Failed">Failed</option>
+                              <option value="Under Process">
+                                Under Process
+                              </option>
+                              <option value="Pending">Pending</option>
+                              <option value="Reject">Reject</option>
+                              <option value="Mark Edit">Mark Edit</option>
                             </select>
                           </div>
 

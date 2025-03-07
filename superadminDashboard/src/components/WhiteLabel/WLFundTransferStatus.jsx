@@ -183,7 +183,7 @@ const WLFundTransferStatus = () => {
                               onChange={(e) => setToDate(e.target.value)}
                             />
                           </div>
-                          <div className="col-12 col-md-4 col-lg-3">
+                          {/* <div className="col-12 col-md-4 col-lg-3">
                             <label for="toDate" className="form-label">
                               Select Status
                             </label>
@@ -196,9 +196,9 @@ const WLFundTransferStatus = () => {
                               <option selected>---Select---</option>
                               <option value="Success">Success</option>
                               <option value="Pending">Pending</option>
-                              {/* <option value="Reject">Reject</option> */}
+                              <option value="Reject">Reject</option>
                             </select>
-                          </div>
+                          </div> */}
                         </div>
                         <div className="d-flex flex-column flex-xl-row gap-3">
                           <div className="col-12 col-md-12 col-lg-12 col-xl-8">

@@ -190,7 +190,7 @@ const WLPanCorrectionHistory = () => {
                             >
                               <option selected>---Select---</option>
                               <option value="Success">Success</option>
-                              <option value="Failed">Failed</option>
+                              <option value="Reject">Reject</option>
                             </select>
                           </div>
 
