@@ -27,11 +27,11 @@ const WLPanFourHistory = () => {
   // Fetch userId and token from Redux store
   const userId = useSelector((state) => state.user.currentUser?.userId);
 
-  const maskSensitiveInfo = (value, maskLength, revealLength) => {
-    const maskedValue = "*".repeat(maskLength);
-    const revealedValue = value.slice(-revealLength);
-    return maskedValue + revealedValue;
-  };
+  // const maskSensitiveInfo = (value, maskLength, revealLength) => {
+  //   const maskedValue = "*".repeat(maskLength);
+  //   const revealedValue = value.slice(-revealLength);
+  //   return maskedValue + revealedValue;
+  // };
 
   const fetchData = async () => {
     setLoading(true);
@@ -246,11 +246,11 @@ const WLPanFourHistory = () => {
                                     <th scope="col">Gender</th>
                                     <th scope="col">Office Address</th>
                                     <th scope="col">Aadhar Details</th> */}
-                                    <th scope="col">Mobile No</th>
+                                    {/* <th scope="col">Mobile No</th> */}
                                     {/* <th scope="col">Email</th>
                                     <th scope="col">Pincode</th>
                                     <th scope="col">State</th> */}
-                                    <th scope="col">Change Request</th>
+                                    {/* <th scope="col">Change Request</th> */}
                                     {/* <th scope="col">KYC </th>
                                     <th scope="col">Form </th>
                                     <th scope="col">Signature</th>
@@ -281,17 +281,17 @@ const WLPanFourHistory = () => {
                                         <td>{item.office_address}</td>
                                         <td>{item.aadhar_details}</td> */}
                                         {/* <td>{item.mobile_no}</td> */}
-                                        <td>
+                                        {/* <td>
                                           {maskSensitiveInfo(
                                             item.mobile_no,
                                             6,
                                             4
                                           )}
-                                        </td>
+                                        </td> */}
                                         {/* <td>{item.email_id}</td>
                                         <td>{item.pin_code}</td>
                                         <td>{item.state}</td> */}
-                                        <td>{item.Change_Request}</td>
+                                        {/* <td>{item.Change_Request}</td> */}
                                         {/* <td>
                                           {item.documentUpload
                                             ? item.documentUpload
@@ -375,6 +375,7 @@ const WLPanFourHistory = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

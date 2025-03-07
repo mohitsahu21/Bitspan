@@ -1758,6 +1758,7 @@ const SAEVerifyEdistrictHistory = () => {
                                   onPageChange={handleUnderProcessPageChange}
                                   containerClassName={"pagination"}
                                   activeClassName={"active"}
+                                  forcePage={currentPage}
                                 />
                               </PaginationContainer>
                             </div>
