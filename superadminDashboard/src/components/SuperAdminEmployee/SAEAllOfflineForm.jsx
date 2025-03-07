@@ -2082,7 +2082,7 @@ const SAAllOfflineForm = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          View All Offline History
+                          View All Offline Form History
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -2092,7 +2092,7 @@ const SAAllOfflineForm = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            View All Offline History
+                            View All Offline Form History
                           </span>{" "}
                         </p>
                       </div>
