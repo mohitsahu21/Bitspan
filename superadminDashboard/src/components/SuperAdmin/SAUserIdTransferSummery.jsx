@@ -97,8 +97,10 @@ const SAUserIdTransferSummery = () => {
           row.receiverId.toLowerCase().includes(searchKeyword));
 
       const matchesDate =
-        (!fromDate || new Date(row.transferDate) >= new Date(fromDate)) &&
-        (!toDate || new Date(row.transferDate) <= new Date(toDate));
+        // (!fromDate || new Date(row.transferDate) >= new Date(fromDate)) &&
+        // (!toDate || new Date(row.transferDate) <= new Date(toDate));
+        (!fromDate || new Date(row.transferDate).toISOString().split("T")[0] >= new Date(fromDate).toISOString().split("T")[0] ) &&
+        (!toDate || new Date(row.transferDate).toISOString().split("T")[0]  <= new Date(toDate).toISOString().split("T")[0] );
 
       return matchesKeyword && matchesDate;
     });
@@ -200,7 +202,7 @@ const SAUserIdTransferSummery = () => {
                               onChange={(e) => setToDate(e.target.value)}
                             />
                           </div>
-                          <div className="d-flex align-items-end">
+                          {/* <div className="d-flex align-items-end">
                             <button
                               type="button"
                               className="btn btn-primary button"
@@ -208,7 +210,7 @@ const SAUserIdTransferSummery = () => {
                             >
                               Search
                             </button>
-                          </div>
+                          </div> */}
                         </div>
 
                         <div className="d-flex flex-column flex-xl-row gap-3">

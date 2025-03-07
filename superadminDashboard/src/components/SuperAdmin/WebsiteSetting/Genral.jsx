@@ -433,7 +433,7 @@ const Genral = () => {
 
                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                         <div className="text-center mb-2">
-                                            <button type="submit" disabled={loading} className="btn p-2">{loading ? "Loading..." :  "UPDATE"}</button>
+                                            <button type="submit" disabled={loading} className="btn btn-primary p-2">{loading ? "Loading..." :  "UPDATE"}</button>
                                         </div>
                                     </div>
                                     </>

@@ -354,7 +354,9 @@ const LoginBitspan = () => {
           // });
           navigate("/update-profile");
         }
-      } else {
+      }
+      
+      else {
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -363,11 +365,22 @@ const LoginBitspan = () => {
       }
     } catch (error) {
       console.error("Login error:", error.message);
-      Swal.fire({
-        icon: "error",
+      console.log(error)
+     if(error?.response?.data?.status === "Failure" && (error?.response?.data?.message === "User not found" || error?.response?.data?.message === "Invalid password")) {
+        Swal.fire({
+          icon: "error",
         title: "Login Failed",
-        text: "Something went wrong!",
-      });
+        text: "The User Id or Password you entered is incorrect.",
+        });
+      }
+      else{
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: "Something went wrong!",
+        });
+      }
+     
     } finally {
       setLoading(false); // Set loading to false after the API call
     }
