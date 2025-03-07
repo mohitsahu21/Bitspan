@@ -2128,7 +2128,7 @@ const SAAllOfflineForm = () => {
                                   id="fromDate"
                                   className="form-control"
                                   type="search"
-                                  placeholder="Enter Applicant Name/Mobile/Email Id/Order Id"
+                                  placeholder="Enter Applicant Name/Mobile/Order Id"
                                   value={keyword}
                                   onChange={(e) => {
                                     setKeyword(e.target.value);

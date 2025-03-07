@@ -1581,7 +1581,7 @@ const SAEOfflineDthConnection = () => {
                                 id="fromDate"
                                 className="form-control"
                                 type="search"
-                                placeholder="Enter Applicant Name/Mobile/Order Id/User Name"
+                                placeholder="Enter First Name/Mobile/Order Id/User Name"
                                 value={keyword}
                                 onChange={(e) => {
                                   setKeyword(e.target.value);
@@ -1608,14 +1608,14 @@ const SAEOfflineDthConnection = () => {
                                           <th scope="col">Sr.No</th>
                                           <th scope="col">Created Date</th>
                                           <th scope="col">Order Id</th>
-                                          <th scope="col">first_name</th>
-                                          <th scope="col">last_name</th>
-                                          <th scope="col">full_address</th>
-                                          <th scope="col">postal_code</th>
-                                          <th scope="col">number</th>
+                                          <th scope="col">First Name</th>
+                                          <th scope="col">Last Name</th>
+                                          <th scope="col">Full Address</th>
+                                          <th scope="col">Postal Code</th>
+                                          <th scope="col">Number</th>
                                           <th scope="col">Operator Name</th>
                                           <th scope="col">Validity</th>
-                                          <th scope="col">amount</th>
+                                          <th scope="col">Amount</th>
                                           <th scope="col">Description</th>
                                           <th scope="col">User Id</th>
                                           <th scope="col">User Name</th>

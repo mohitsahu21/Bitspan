@@ -2389,7 +2389,7 @@ const SAEOfflineRechargeHistory = () => {
                               id="fromDate"
                               className="form-control"
                               type="search"
-                              placeholder="Enter Number/Order Id/User Name/User Id"
+                              placeholder="Search By Mobile Number/Order Id/User Name/User Id"
                               value={keyword}
                               onChange={(e) => {
                                 setKeyword(e.target.value);

@@ -1064,7 +1064,7 @@ const SAEPanCorrectionReport = () => {
                               id="fromDate"
                               className="form-control"
                               type="search"
-                              placeholder="Enter Name/Mobile/Email/Order Id/Txn Id/Retailer Name/Id"
+                              placeholder="Enter Name/Mobile/Email/Order Id/Txn Id/Retailer Name"
                               value={keyword}
                               onChange={(e) => {
                                 setKeyword(e.target.value);

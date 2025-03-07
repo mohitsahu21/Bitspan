@@ -1206,8 +1206,8 @@ const SAEVerifyEdistrictHistory = () => {
     const matchesKeyword =
       (row?.name &&
         row.name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.mobile_no &&
-        row.mobile_no.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.mobileNo &&
+        row.mobileNo.toLowerCase().includes(keyword.trim().toLowerCase())) ||
       (row?.rsNumber &&
         row.rsNumber.toLowerCase().includes(keyword.trim().toLowerCase())) ||
       (row?.order_id &&

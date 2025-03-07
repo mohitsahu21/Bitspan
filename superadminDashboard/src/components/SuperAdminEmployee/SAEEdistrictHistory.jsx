@@ -1510,7 +1510,7 @@ const SAEEdistrictHistory = () => {
                                           <th scope="col">Mobile Number</th>
                                           <th scope="col">Address</th>
                                           <th scope="col">Cast</th>
-                                          <th scope="col">Aadhaar Card</th>
+                                          <th scope="col">Aadhaar Card No.</th>
                                           <th scope="col">Samagar Member Id</th>
 
                                           <th scope="col">State</th>
