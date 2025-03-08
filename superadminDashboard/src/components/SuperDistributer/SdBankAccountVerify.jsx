@@ -179,7 +179,7 @@ const SdBankAccountVerify = () => {
           text: "Your OTP has been verified and status updated.",
           willClose: () => {
             // Navigate to another page once SweetAlert closes
-            window.location.href = "/bank-account-setup"; // Replace '/success' with your desired route
+            navigate("/bank-account-setup");
           },
         });
         setOtpSent(true); // OTP has been sent
