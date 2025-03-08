@@ -31,7 +31,8 @@ const CreateWhiteLabel = () => {
   const { token } = useSelector((state) => state.user);
   const userId = useSelector((state) => state.user.currentUser?.userId);
 
-  const host = window.location.host;
+  // const host = window.location.host;
+  const host = window.location.origin;
 
   const [remainingIds, setRemainingIds] = useState({
     remaining_whitelable_id: 0,
@@ -597,7 +598,7 @@ const CreateWhiteLabel = () => {
                           <div className="text-start mb-3">
                             <button
                               type="submit"
-                              className="btn p-2"
+                              className="btn btn-primary p-2"
                               disabled={loading}
                             >
                               {loading ? "Loading..." : "Create"}

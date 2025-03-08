@@ -124,7 +124,8 @@ const SdBuyDistributorId = () => {
         dispatch(clearUser()); // Clear user session
         navigate("/"); // Redirect to login page
       } else {
-        alert("Failed to load wallet balance.");
+        // alert("Failed to load wallet balance.");
+        console.log("Failed to load wallet balance.");
       }
     }
   };

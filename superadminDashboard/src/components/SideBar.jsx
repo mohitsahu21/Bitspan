@@ -1539,16 +1539,16 @@ const SuperDisData = [
         path: "/users-joining-list",
         icon: <HiUserGroup color="#fe662b" />,
       },
-      {
-        title: "Pending KYC Users",
-        path: "/pending-kyc-user",
-        icon: <MdPendingActions color="#fe662b" />,
-      },
-      {
-        title: "Pending Payment Users",
-        path: "/pending-payment-users",
-        icon: <CiMoneyCheck1 color="#fe662b" />,
-      },
+      // {
+      //   title: "Pending KYC Users",
+      //   path: "/pending-kyc-user",
+      //   icon: <MdPendingActions color="#fe662b" />,
+      // },
+      // {
+      //   title: "Pending Payment Users",
+      //   path: "/pending-payment-users",
+      //   icon: <CiMoneyCheck1 color="#fe662b" />,
+      // },
     ],
   },
   {
@@ -3193,16 +3193,16 @@ const DistributorData = [
         path: "/users-joining-list",
         icon: <HiUserGroup color="#fe662b" />,
       },
-      {
-        title: "Pending KYC Users",
-        path: "/pending-kyc-user",
-        icon: <MdPendingActions color="#fe662b" />,
-      },
-      {
-        title: "Pending Payment Users",
-        path: "/pending-payment-users",
-        icon: <CiMoneyCheck1 color="#fe662b" />,
-      },
+      // {
+      //   title: "Pending KYC Users",
+      //   path: "/pending-kyc-user",
+      //   icon: <MdPendingActions color="#fe662b" />,
+      // },
+      // {
+      //   title: "Pending Payment Users",
+      //   path: "/pending-payment-users",
+      //   icon: <CiMoneyCheck1 color="#fe662b" />,
+      // },
     ],
   },
 

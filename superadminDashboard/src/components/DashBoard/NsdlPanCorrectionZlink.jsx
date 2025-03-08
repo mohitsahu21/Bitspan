@@ -202,7 +202,13 @@ const NsdlPanCorrectionZlink = () => {
       const response = await axios.post(
         // `http://localhost:7777/api/auth/log-reg/verify-pin`,
         `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: pin.join("") }
+        { user_id: currentUser.userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {

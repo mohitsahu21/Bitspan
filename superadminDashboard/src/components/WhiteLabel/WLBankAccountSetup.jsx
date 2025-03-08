@@ -111,6 +111,7 @@ const WLBankAccountSetup = () => {
       return; // Prevent form submission
     }
 
+    setLoading(true);
     // Proceed with the form submission if validation is passed
     axios
       .post(
@@ -171,6 +172,9 @@ const WLBankAccountSetup = () => {
             text: "An error occurred while adding the bank account. Please try again later.",
           });
         }
+      })
+      .finally(() => {
+        setLoading(false); // ✅ Stop loading after API call completes
       });
   };
 
@@ -351,12 +355,12 @@ const WLBankAccountSetup = () => {
                   </div>
 
                   <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                    <div className="text-start mb-3">
-                      <button
+                  <button
                         className="btn btn-primary p-2"
                         onClick={handleSubmit}
+                        disabled={loading}
                       >
-                        Submit
+                        {loading ? "Processing..." : "Submit"}
                       </button>
                     </div>
                   </div>
@@ -467,7 +471,7 @@ const WLBankAccountSetup = () => {
                         </ul>
                       </nav>
                     </div> */}
-                  </div>
+                  {/* </div> */}
                 </div>
               </div>
             </div>

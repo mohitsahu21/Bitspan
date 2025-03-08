@@ -83,13 +83,18 @@ const SdAllCommissionHistory = () => {
   console.log(formData);
 
   const filteredData = formData?.filter((row) => {
+    const trimmedSearchQuery = searchQuery?.trim().toLowerCase(); // Trim whitespace from search query
+    // const trimmedKeyword = keyword?.trim().toLowerCase(); // Trim whitespace from keyword
+
     const matchesSearch =
-      row.applicant_name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
-      row.applicant_number
+      row.order_id
         ?.toLowerCase()
-        ?.includes(searchQuery?.toLowerCase()) ||
-      row.transaction_id?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
-      row.order_id?.toLowerCase()?.includes(searchQuery?.toLowerCase());
+        .replace(/\s+/g, "")
+        .includes(trimmedSearchQuery.replace(/\s+/g, "")) ||
+      row.transaction_id
+        ?.toLowerCase()
+        .replace(/\s+/g, "")
+        .includes(trimmedSearchQuery.replace(/\s+/g, ""));
     const matchesStatus =
       selectedStatus === "All" ||
       row.status?.toLowerCase() === selectedStatus?.toLowerCase();
@@ -141,7 +146,13 @@ const SdAllCommissionHistory = () => {
     setCurrentPage(selected);
   };
 
-  const displayData = paginateData();
+  // const displayData = paginateData();
+
+  const displayData = paginateData().map((row) => ({
+    ...row,
+    order_id: row.order_id?.replace(/\s+/g, ""), // Removes all spaces
+    transaction_id: row.transaction_id?.replace(/\s+/g, ""),
+  }));
 
   return (
     <>
@@ -188,7 +199,11 @@ const SdAllCommissionHistory = () => {
                               // placeholder="Search by Name, Mobile, or Order ID"
                               placeholder="Search by  Order ID"
                               value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
+                              // onChange={(e) => setSearchQuery(e.target.value)}
+                              onChange={(e) => (
+                                setSearchQuery(e.target.value),
+                                setCurrentPage(0)
+                              )}
                             />
                           </div>
 
