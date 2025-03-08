@@ -597,7 +597,7 @@ const CreateWhiteLabel = () => {
                           <div className="text-start mb-3">
                             <button
                               type="submit"
-                              className="btn p-2"
+                              className="btn btn-primary p-2"
                               disabled={loading}
                             >
                               {loading ? "Loading..." : "Create"}

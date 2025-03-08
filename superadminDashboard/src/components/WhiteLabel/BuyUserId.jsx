@@ -287,6 +287,7 @@ const BuyUserId = () => {
       payment_method: formData.paymentMethod,
     };
 
+    setLoading(true);
     try {
       const response = await axios.post(
         // "https://2kadam.co.in/api/auth/superDistributor/buyId",
@@ -340,11 +341,11 @@ const BuyUserId = () => {
         Swal.fire({
           icon: "error",
           title: "Error!",
-          text:
-            error.response?.data?.message ||
-            "An error occurred while submitting your request.",
+          text: "An error occurred while submitting your request.",
         });
       }
+    } finally {
+      setLoading(false); // ✅ Stop loading
     }
   };
 
