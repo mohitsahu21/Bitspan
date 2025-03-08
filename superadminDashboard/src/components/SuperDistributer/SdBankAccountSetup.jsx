@@ -11,6 +11,7 @@ import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
 const SdBankAccountSetup = () => {
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
@@ -111,6 +112,8 @@ const SdBankAccountSetup = () => {
       return; // Prevent form submission
     }
 
+    setLoading(true);
+
     // Proceed with the form submission if validation is passed
     axios
       .post(
@@ -170,6 +173,9 @@ const SdBankAccountSetup = () => {
             text: "An error occurred while adding the bank account. Please try again later.",
           });
         }
+      })
+      .finally(() => {
+        setLoading(false); // ✅ Stop loading after API call completes
       });
   };
 
@@ -350,8 +356,19 @@ const SdBankAccountSetup = () => {
 
                   <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     <div className="text-start mb-3">
-                      <button className="btn p-2" onClick={handleSubmit}>
+                      {/* <button
+                        className="btn btn-primary p-2"
+                        onClick={handleSubmit}
+                      >
                         Submit
+                      </button> */}
+
+                      <button
+                        className="btn btn-primary p-2"
+                        onClick={handleSubmit}
+                        disabled={loading}
+                      >
+                        {loading ? "Processing..." : "Submit"}
                       </button>
                     </div>
                   </div>

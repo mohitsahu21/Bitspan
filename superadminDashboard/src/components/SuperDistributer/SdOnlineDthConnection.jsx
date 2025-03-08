@@ -254,11 +254,11 @@ const SdOnlineDthConnection = () => {
                                       <th scope="col">Last Name</th>
                                       <th scope="col">Full Address</th>
                                       <th scope="col">Postal Code</th> */}
-                                      <th scope="col">Plan Id</th>
+                                      {/* <th scope="col">Plan Id</th> */}
                                       <th scope="col">Amount</th>
                                       <th scope="col">Operator Name</th>
                                       <th scope="col">Mo. Number</th>
-                                      <th scope="col">Message</th>
+                                      {/* <th scope="col">Message</th> */}
                                       {/* <th scope="col">API Provider Name</th> */}
                                       <th scope="col">User Id</th>
                                       <th scope="col">Status</th>
@@ -280,7 +280,7 @@ const SdOnlineDthConnection = () => {
                                           <td>{item.last_name}</td>
                                           <td>{item.full_address}</td>
                                           <td>{item.postal_code}</td> */}
-                                          <td>{item.plan_id}</td>
+                                          {/* <td>{item.plan_id}</td> */}
                                           <td>{item.amount}</td>
                                           <td>{item.operatorName}</td>
                                           <td>
@@ -290,7 +290,7 @@ const SdOnlineDthConnection = () => {
                                               4
                                             )}
                                           </td>
-                                          <td>{item.message}</td>
+                                          {/* <td>{item.message}</td> */}
                                           {/* <td>{item.providerName}</td> */}
                                           <td>{item.user_id}</td>
                                           <td>{item.status}</td>

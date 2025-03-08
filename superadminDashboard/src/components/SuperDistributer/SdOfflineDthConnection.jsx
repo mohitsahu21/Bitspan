@@ -262,7 +262,7 @@ const SdOfflineDthConnection = () => {
                                   </option>
                                   <option value="Pending">Pending</option>
                                   <option value="Success">Success</option>
-                                  <option value="Mark Edit">Mark Edit</option>
+                                  {/* <option value="Mark Edit">Mark Edit</option> */}
                                   <option value="Reject">Reject</option>
                                 </select>
                               </div>

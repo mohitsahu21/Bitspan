@@ -249,7 +249,7 @@ const SdPanTransactionReport = () => {
                                 <thead className="table-dark">
                                   <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">ID</th>
+                                    {/* <th scope="col">ID</th> */}
                                     <th scope="col">Application Mode</th>
                                     <th scope="col">Select Type</th>
                                     {/* <th scope="col">Name</th>
@@ -281,7 +281,7 @@ const SdPanTransactionReport = () => {
                                             index +
                                             1}
                                         </td>
-                                        <td>{item.id}</td>
+                                        {/* <td>{item.id}</td> */}
                                         <td>{item.applicationMode}</td>
                                         <td>{item.selectType}</td>
                                         {/* <td>{item.name}</td>

@@ -250,8 +250,8 @@ const SAPanCorrectionHistory = () => {
                                       {/* <th scope="col">No Of User Id</th> */}
 
                                       <th scope="col">Amount</th>
-                                      <th scope="col">Message</th>
-                                      <th scope="col">API Provider Name</th>
+                                      {/* <th scope="col">Message</th> */}
+                                      {/* <th scope="col">API Provider Name</th> */}
 
                                       <th scope="col">Status</th>
                                     </tr>
@@ -280,8 +280,8 @@ const SAPanCorrectionHistory = () => {
                                           <td>{item.userId}</td>
                                           {/* <td>{item.UserName}</td> */}
                                           <td>{item.amount}</td>
-                                          <td>{item.message}</td>
-                                          <td>{item.providerName}</td>
+                                          {/* <td>{item.message}</td>
+                                          <td>{item.providerName}</td> */}
                                           <td>{item.status}</td>
                                         </tr>
                                       ))

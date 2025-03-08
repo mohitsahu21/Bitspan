@@ -250,14 +250,14 @@ const SdPanFourHistory = () => {
                                     {/* <th scope="col">Email</th>
                                     <th scope="col">Pincode</th>
                                     <th scope="col">State</th> */}
-                                    <th scope="col">Change Request</th>
+                                    {/* <th scope="col">Change Request</th> */}
                                     {/* <th scope="col">KYC </th>
                                     <th scope="col">Form </th>
                                     <th scope="col">Signature</th>
                                     <th scope="col">Photo</th> */}
                                     <th scope="col">Amount</th>
                                     <th scope="col">Status</th>
-                                    <th scope="col">Message</th>
+                                    <th scope="col">Note</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -291,7 +291,7 @@ const SdPanFourHistory = () => {
                                         {/* <td>{item.email_id}</td>
                                         <td>{item.pin_code}</td>
                                         <td>{item.state}</td> */}
-                                        <td>{item.Change_Request}</td>
+                                        {/* <td>{item.Change_Request}</td> */}
                                         {/* <td>
                                           {item.documentUpload
                                             ? item.documentUpload

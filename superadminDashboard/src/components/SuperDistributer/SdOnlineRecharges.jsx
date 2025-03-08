@@ -252,12 +252,12 @@ const SdOnlineRecharges = () => {
                                       <th scope="col">Order Id</th>
                                       <th scope="col">Transaction Id</th>
                                       <th scope="col">recharge_Type</th>
-                                      <th scope="col">OP Id</th>
+                                      {/* <th scope="col">OP Id</th> */}
                                       <th scope="col">Number</th>
                                       <th scope="col">Amount</th>
                                       <th scope="col">Operator Name</th>
-                                      <th scope="col">Message</th>
-                                      <th scope="col">API Provider Name</th>
+                                      {/* <th scope="col">Message</th> */}
+                                      {/* <th scope="col">API Provider Name</th> */}
                                       <th scope="col">User Id</th>
                                       {/* <th scope="col">User Name</th> */}
                                       {/* <th scope="col">User Role</th> */}
@@ -278,7 +278,7 @@ const SdOnlineRecharges = () => {
                                           <td>{item.orderid}</td>
                                           <td>{item.transaction_id}</td>
                                           <td>{item.recharge_Type}</td>
-                                          <td>{item.opid}</td>
+                                          {/* <td>{item.opid}</td> */}
                                           {/* <td>{item.mobile_no}</td> */}
                                           <td>
                                             {maskSensitiveInfo(
@@ -290,8 +290,8 @@ const SdOnlineRecharges = () => {
                                           <td>{item.amount}</td>
 
                                           <td>{item.operator_name}</td>
-                                          <td>{item.message}</td>
-                                          <td>{item.providerName}</td>
+                                          {/* <td>{item.message}</td> */}
+                                          {/* <td>{item.providerName}</td> */}
                                           <td>{item.created_by_userid}</td>
                                           {/* <td>{item.UserName}</td> */}
                                           {/* <td>{item.ContactNo}</td> */}

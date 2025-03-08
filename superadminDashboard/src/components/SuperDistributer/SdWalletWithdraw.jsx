@@ -6,8 +6,12 @@ import { BiHomeAlt } from "react-icons/bi";
 import axios from "axios"; // Make sure axios is imported
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const SdWalletWithdraw = () => {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [bankAccounts, setBankAccounts] = useState([]);
   const userId = useSelector((state) => state.user.currentUser?.userId);
   const username = useSelector((state) => state.user.currentUser?.username);
@@ -146,6 +150,8 @@ const SdWalletWithdraw = () => {
       return;
     }
 
+    setLoading(true);
+
     try {
       // Submit the form data to the server
       const response = await axios.post(
@@ -228,29 +234,65 @@ const SdWalletWithdraw = () => {
           title: "Error!",
           text: "An error occurred while submitting your request.",
         }).then(() => {
-          // Reset form after error
-          setSelectedAccount(null); // Reset selected bank account
-          setFormData({
-            userId: userId,
-            username: username,
-            userPhone: ContactNo,
-            userEmail: email,
-            userRole: role,
-            amount: "",
-            reason: "",
-            bankaccount_number: "",
-            bankholder_name: "",
-            IFSC_code: "",
-            bank_name: "",
-            status: "Pending",
-            Transaction_Type: "Offline",
-          });
-          setInputAmount(""); // Clear input amount field
-          setFinalAmount(0); // Reset final amount
+          resetForm();
         });
       }
+    } finally {
+      setLoading(false); // ✅ Stop loading when request is complete
     }
   };
+
+  // ✅ Form Reset Function (To avoid repetition)
+  const resetForm = () => {
+    setSelectedAccount(null);
+    setFormData({
+      userId: userId,
+      username: username,
+      userPhone: ContactNo,
+      userEmail: email,
+      userRole: role,
+      amount: "",
+      reason: "",
+      bankaccount_number: "",
+      bankholder_name: "",
+      IFSC_code: "",
+      bank_name: "",
+      status: "Pending",
+      Transaction_Type: "Offline",
+    });
+    setInputAmount("");
+    setFinalAmount(0);
+  };
+
+  //     } else {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Error!",
+  //         text: "An error occurred while submitting your request.",
+  //       }).then(() => {
+  //         // Reset form after error
+  //         setSelectedAccount(null); // Reset selected bank account
+  //         setFormData({
+  //           userId: userId,
+  //           username: username,
+  //           userPhone: ContactNo,
+  //           userEmail: email,
+  //           userRole: role,
+  //           amount: "",
+  //           reason: "",
+  //           bankaccount_number: "",
+  //           bankholder_name: "",
+  //           IFSC_code: "",
+  //           bank_name: "",
+  //           status: "Pending",
+  //           Transaction_Type: "Offline",
+  //         });
+  //         setInputAmount(""); // Clear input amount field
+  //         setFinalAmount(0); // Reset final amount
+  //       });
+  //     }
+  //   }
+  // };
 
   useEffect(() => {
     if (userId) {
@@ -550,11 +592,19 @@ const SdWalletWithdraw = () => {
                     </div>
 
                     <div className="col-12 text-start mt-4 mb-4">
-                      <button
+                      {/* <button
                         className="btn btn-primary"
                         onClick={submitHandler}
                       >
                         Submit
+                      </button> */}
+
+                      <button
+                        className="btn btn-primary"
+                        onClick={submitHandler}
+                        disabled={loading} // ❌ Isko hata do
+                      >
+                        {loading ? "Loading..." : "Submit"}
                       </button>
                     </div>
                   </div>

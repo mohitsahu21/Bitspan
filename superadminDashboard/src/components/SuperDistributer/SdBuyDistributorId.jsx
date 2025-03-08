@@ -260,6 +260,7 @@ const SdBuyDistributorId = () => {
       payment_method: formData.paymentMethod,
     };
 
+    setLoading(true);
     try {
       const response = await axios.post(
         // "http://localhost:7777/api/auth/superDistributor/buyId",
@@ -310,7 +311,20 @@ const SdBuyDistributorId = () => {
           text: "An error occurred while submitting your request.",
         });
       }
+    } finally {
+      setLoading(false); // ✅ Stop loading
     }
+  };
+
+  // ✅ Function to Reset Form
+  const resetForm = () => {
+    setFormData({
+      userId: userId,
+      userId_type: "",
+      idPrice: "",
+      noOfId: "",
+      paymentMethod: "",
+    });
   };
 
   const host = window.location.href;
@@ -575,7 +589,7 @@ const SdBuyDistributorId = () => {
 
                         <div className="col-xl-12 text-center mt-4">
                           <button
-                            className="btn p-2"
+                            className="btn btn-primary p-2"
                             type="submit"
                             disabled={loading}
                           >
