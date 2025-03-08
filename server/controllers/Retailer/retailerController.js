@@ -635,7 +635,7 @@ const getApplyOfflineFormByid = (req, res) => {
   //   return res.status(400).json({ error: "Invalid user ID" });
   // }
 
-  const query = `SELECT * FROM apply_offline_form WHERE user_id = ?`;
+  const query = `SELECT * FROM apply_offline_form WHERE user_id = ? ORDER BY id DESC`;
 
   db.query(query, [userId], (err, results) => {
     if (err) {

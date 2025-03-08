@@ -340,16 +340,116 @@ created_By_User_Role,created_By_Website , CreateAt) VALUES (?, ?, ?, ?, ?, ?, ? 
                 to: Email,
                 subject: "Your Account Details",
                 html: `
-              <p>Hello ${UserName},</p>
-              <p>Your account has been successfully created.</p>
-              <p>User ID: <span style="color: #333333; font-weight: bold;">${userId}</span></p>
-              <p>Password: <span style="color: #333333; font-weight: bold;">${password}</span></p>
-              <p>Please keep this information secure.</p>
-              <p>Please log in using this ID and password, and complete the KYC process to activate your account.</p>
-              <br>
-              <p>Regards,<br>Bitspan.com</p>
-            `,
+       <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f4f4f4;
+          color: #333333;
+        }
+        .container {
+          max-width: 600px;
+          margin: 20px auto;
+          background-color: #ffffff;
+          border-radius: 8px;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+          overflow: hidden;
+        }
+        .header {
+          background-color: #2c3e50;
+          padding: 20px;
+          text-align: center;
+          color: #ffffff;
+        }
+        .content {
+          padding: 30px;
+          line-height: 1.6;
+        }
+        .credentials {
+          background-color: #f8f9fa;
+          padding: 15px;
+          border-radius: 5px;
+          margin: 20px 0;
+        }
+        .credentials span {
+          color: #2c3e50;
+          font-weight: bold;
+        }
+        .footer {
+          background-color: #ecf0f1;
+          padding: 20px;
+          text-align: center;
+          font-size: 12px;
+          color: #666666;
+        }
+        .button {
+          display: inline-block;
+          padding: 12px 25px;
+          background-color: #3498db;
+          color: #ffffff;
+          text-decoration: none;
+          border-radius: 5px;
+          margin-top: 20px;
+        }
+        .warning {
+          color: #e74c3c;
+          font-size: 14px;
+          margin-top: 15px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h2>Welcome to Bitspan!</h2>
+        </div>
+        <div class="content">
+          <p>Hello ${UserName},</p>
+          <p>Congratulations! Your account has been successfully created. Below are your login credentials:</p>
+          
+          <div class="credentials">
+            <p>User ID: <span>${userId}</span></p>
+            <p>Password: <span>${password}</span></p>
+          </div>
+
+          <p>Please follow these next steps:</p>
+          <ol>
+            <li>Login using the credentials above</li>
+            <li>If payment is not completed, please make the payment</li>
+            <li>Complete the KYC verification process</li>
+            <li>Start using your account</li>
+          </ol>
+
+          <a href="${created_By_Website}" class="button">Login Now</a>
+          
+          <p class="warning">Important: Please keep your credentials secure and do not share them with anyone.</p>
+        </div>
+        
+      </div>
+    </body>
+    </html>
+  `,
+                //     html: `
+                //   <p>Hello ${UserName},</p>
+                //   <p>Your account has been successfully created.</p>
+                //   <p>User ID: <span style="color: #333333; font-weight: bold;">${userId}</span></p>
+                //   <p>Password: <span style="color: #333333; font-weight: bold;">${password}</span></p>
+                //   <p>Please keep this information secure.</p>
+                //   <p>Please log in using this ID and password, and complete the KYC process to activate your account.</p>
+                //   <br>
+                //   <p>Regards,<br>Bitspan.com</p>
+                // `,
                 // text: `Hello ${UserName},\n\nYour account has been successfully created.\n\nUser ID: ${userId}\nPassword: ${password}\n\nPlease keep this information secure.\n\nPlease login using this ID and password, and complete the KYC process to activate your account.\n\nRegards,\nBitspan.com`,
+                //         <div class="footer">
+                //   <p>Regards,<br>The Bitspan Team</p>
+                //   <p>Support: support@bitspan.com | © ${new Date().getFullYear()} Bitspan.com</p>
+                // </div>
               };
 
               transporter.sendMail(mailOptions, (emailErr, info) => {
@@ -1081,62 +1181,74 @@ const loginUserWithOTP = async (req, res) => {
           .status(401)
           .json({ status: "Failure", message: "Invalid password" });
       }
-      if(!user.role || !user.Status){
-        return res.status(401).json({ status: "Failure", message: "User is Invalid" });
+      if (!user.role || !user.Status) {
+        return res
+          .status(401)
+          .json({ status: "Failure", message: "User is Invalid" });
       }
 
       const payload = {
-                  userId: user.UserId,
-                  role: user.role,
-                  email: user.Email,
-                  username: user.UserName,
-                  Status: user.Status,
-                  ContactNo: user.ContactNo,
-                    PanCardNumber: user.PanCardNumber,
-                    AadharNumber: user.AadharNumber,
-                    BusinessName: user.BusinessName,
-                    City: user.City,
-                    State: user.State,
-                    PinCode: user.PinCode,
-                    package_Id: user.package_Id,
-                    Note: user.Note
-                };
-        
-                const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "6h" });
-        
-                // return res.json({
-                //   status: "Success",
-                //   message: "Login successful",
-                //   token,
-                //   user: {
-                //     userId: user.UserId,
-                //     role: user.role,
-                //     email: user.Email,
-                //     username: user.UserName,
-                //     Status: user.Status,
-                //     ContactNo: user.ContactNo,
-                //     PanCardNumber: user.PanCardNumber,
-                //     AadharNumber: user.AadharNumber,
-                //     BusinessName: user.BusinessName,
-                //     City: user.City,
-                //     State: user.State,
-                //     PinCode: user.PinCode,
-                //     package_Id: user.package_Id,
-                //     Note: user.Note
-                //   },
-                // });
+        userId: user.UserId,
+        role: user.role,
+        email: user.Email,
+        username: user.UserName,
+        Status: user.Status,
+        ContactNo: user.ContactNo,
+        PanCardNumber: user.PanCardNumber,
+        AadharNumber: user.AadharNumber,
+        BusinessName: user.BusinessName,
+        City: user.City,
+        State: user.State,
+        PinCode: user.PinCode,
+        package_Id: user.package_Id,
+        Note: user.Note,
+      };
 
-     
-      if (user.role === "SuperDistributor" || user.role === "Retailer" ||  user.role === "SuperAdmin_Employee" || user.role === "Distributor" || user.role === "WhiteLabel" ) {
-        
-        if(user.Status == "Deactive"){
-          return res.status(200).json({ status: "Success", message: "User is Deactivate" });
+      const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "6h" });
+
+      // return res.json({
+      //   status: "Success",
+      //   message: "Login successful",
+      //   token,
+      //   user: {
+      //     userId: user.UserId,
+      //     role: user.role,
+      //     email: user.Email,
+      //     username: user.UserName,
+      //     Status: user.Status,
+      //     ContactNo: user.ContactNo,
+      //     PanCardNumber: user.PanCardNumber,
+      //     AadharNumber: user.AadharNumber,
+      //     BusinessName: user.BusinessName,
+      //     City: user.City,
+      //     State: user.State,
+      //     PinCode: user.PinCode,
+      //     package_Id: user.package_Id,
+      //     Note: user.Note
+      //   },
+      // });
+
+      if (
+        user.role === "SuperDistributor" ||
+        user.role === "Retailer" ||
+        user.role === "SuperAdmin_Employee" ||
+        user.role === "Distributor" ||
+        user.role === "WhiteLabel"
+      ) {
+        if (user.Status == "Deactive") {
+          return res
+            .status(200)
+            .json({ status: "Success", message: "User is Deactivate" });
         }
       }
 
-      if (user.role === "SuperDistributor" || user.role === "Retailer" ||  user.role === "Distributor" || user.role === "WhiteLabel" ) {
-        
-        if(user.payment_status == "Pending"){
+      if (
+        user.role === "SuperDistributor" ||
+        user.role === "Retailer" ||
+        user.role === "Distributor" ||
+        user.role === "WhiteLabel"
+      ) {
+        if (user.payment_status == "Pending") {
           // return res.status(200).json({ status: "Success", message: "User Payment is Pending" });
           return res.status(200).json({
             status: "Success",
@@ -1156,11 +1268,11 @@ const loginUserWithOTP = async (req, res) => {
               State: user.State,
               PinCode: user.PinCode,
               package_Id: user.package_Id,
-              Note: user.Note
+              Note: user.Note,
             },
           });
         }
-        if(user.Status == "Pending"){
+        if (user.Status == "Pending") {
           // return res.status(200).json({ status: "Success", message: "User KYC is Pending" });
           return res.status(200).json({
             status: "Success",
@@ -1180,35 +1292,34 @@ const loginUserWithOTP = async (req, res) => {
               State: user.State,
               PinCode: user.PinCode,
               package_Id: user.package_Id,
-              Note: user.Note
+              Note: user.Note,
             },
           });
         }
       }
 
-        const otp = crypto.randomInt(100000, 999999).toString();
+      const otp = crypto.randomInt(100000, 999999).toString();
 
-        const otpHash = await bcrypt.hash(otp, 10);
+      const otpHash = await bcrypt.hash(otp, 10);
 
-        otpStore.set(user.UserId, {
-          otpHash,
-          expiresAt: Date.now() + 5 * 60 * 1000, // OTP expires in 5 minutes
-        });
+      otpStore.set(user.UserId, {
+        otpHash,
+        expiresAt: Date.now() + 5 * 60 * 1000, // OTP expires in 5 minutes
+      });
 
-        try {
-          await sendOtpEmail(user.Email, otp);
-        } catch (emailError) {
-          console.error("Error sending email:", emailError);
-          return res
-            .status(500)
-            .json({ status: "Failure", message: "Failed to send OTP email" });
-        }
+      try {
+        await sendOtpEmail(user.Email, otp);
+      } catch (emailError) {
+        console.error("Error sending email:", emailError);
+        return res
+          .status(500)
+          .json({ status: "Failure", message: "Failed to send OTP email" });
+      }
 
-        return res.status(200).json({
-          status: "Success",
-          message: "OTP sent to your registered email",
-        });
-      
+      return res.status(200).json({
+        status: "Success",
+        message: "OTP sent to your registered email",
+      });
     });
   } catch (error) {
     console.error("Error processing login request:", error);
