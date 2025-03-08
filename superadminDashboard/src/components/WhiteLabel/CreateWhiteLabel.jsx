@@ -31,7 +31,8 @@ const CreateWhiteLabel = () => {
   const { token } = useSelector((state) => state.user);
   const userId = useSelector((state) => state.user.currentUser?.userId);
 
-  const host = window.location.host;
+  // const host = window.location.host;
+  const host = window.location.origin;
 
   const [remainingIds, setRemainingIds] = useState({
     remaining_whitelable_id: 0,
