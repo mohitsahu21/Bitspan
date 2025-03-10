@@ -259,7 +259,7 @@ const DAllUsersJoinedList = () => {
                                       <th scope="col">Pincode</th>
 
                                       {/* <th scope="col">P-Coupon <br/>Price</th>
-                                                                      <th scope="col">E-Coupon <br/>Price</th> */}
+                                    <th scope="col">E-Coupon <br/>Price</th> */}
 
                                       <th scope="col">Created By</th>
                                       <th scope="col">Website Name</th>
