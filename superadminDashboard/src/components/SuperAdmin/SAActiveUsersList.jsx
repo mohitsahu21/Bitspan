@@ -570,7 +570,9 @@ const SAActiveUsersList = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={userType}
-                              onChange={(e) => setUserType(e.target.value)}
+                              onChange={(e) => {setUserType(e.target.value)
+                                 setCurrentPage(0)
+                                }}
                               
                             >
                               <option selected>---Select User Type---</option>

@@ -469,7 +469,9 @@ const [status, setStatus] = useState(""); // For status filter
                               className="form-select"
                               aria-label="Default select example"
                               value={userType}
-                              onChange={(e) => setUserType(e.target.value)}
+                              onChange={(e) => {setUserType(e.target.value)
+                                setCurrentPage(0);
+                              }}
                               
                             >
                               <option selected>---Select User Type---</option>
@@ -485,7 +487,9 @@ const [status, setStatus] = useState(""); // For status filter
                               className="form-select"
                               aria-label="Default select example"
                               value={status}
-    onChange={(e) => setStatus(e.target.value)}
+    onChange={(e) => {setStatus(e.target.value)
+      setCurrentPage(0);
+    }}
                             >
                               <option selected>---Select Payment Status---</option>
                               <option value="Pending">Pending</option>
@@ -499,7 +503,10 @@ const [status, setStatus] = useState(""); // For status filter
                               className="form-select"
                               aria-label="Default select example"
                               value={complaintsPerPage}
-                              onChange={(e) => setComplaintsPerPage(e.target.value)}
+                              onChange={(e) => {
+                                setComplaintsPerPage(Number(e.target.value))
+                                setCurrentPage(0);
+                              }}
                             >
                               {/* <option selected>--Row Per Page---</option> */}
                               <option value="10">10</option>

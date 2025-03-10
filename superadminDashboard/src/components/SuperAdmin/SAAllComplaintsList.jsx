@@ -375,7 +375,9 @@ const SAAllComplaintsList = () => {
                                                           className="form-select"
                                                           aria-label="Default select example"
                                                           value={complaintStatus}
-                                                          onChange={(e) => setComplaintStatus(e.target.value)}
+                                                          onChange={(e) => {setComplaintStatus(e.target.value)
+                                                            setCurrentPage(0);
+                                                          }}
                                                           
                                                         >
                                                           <option selected>---Select Complaint Status---</option>

@@ -540,7 +540,9 @@ console.log(showApiData);
                                                           className="form-select"
                                                           aria-label="Default select example"
                                                           value={Status}
-                                                          onChange={(e) => setStatus(e.target.value)}
+                                                          onChange={(e) => {setStatus(e.target.value)
+                                                            setCurrentPage(0);
+                                                          }}
                                                           
                                                         >
                                                           <option selected>---Select Status---</option>
