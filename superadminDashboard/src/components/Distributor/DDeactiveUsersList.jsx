@@ -235,8 +235,8 @@ const DDeactiveUsersList = () => {
                               onChange={(e) => setKeyword(e.target.value)}
                             />
                           </div>
-                          <div className="col-12 col-md-12 col-lg-12 col-xl-3">
-                            {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
+                          {/* <div className="col-12 col-md-12 col-lg-12 col-xl-3">
+                            <label for="toDate" className="form-label fw-bold">PAN Mode</label>
                             <select
                               className="form-select"
                               aria-label="Default select example"
@@ -246,12 +246,12 @@ const DDeactiveUsersList = () => {
                               <option selected>---Select User Type---</option>
                               <option value="Retailer">Retailer</option>
                               <option value="Distributor">Distributor</option>
-                              {/* <option value="SuperDistributor">
+                              <option value="SuperDistributor">
                                 Super Distributor
                               </option>
-                              <option value="WhiteLabel">White Label</option> */}
+                              <option value="WhiteLabel">White Label</option>
                             </select>
-                          </div>
+                          </div> */}
                           {/* <div className="d-flex align-items-end">
                                                         <button type="button" className="btn btn-primary button">Search</button>
                                                     </div> */}
@@ -282,8 +282,8 @@ const DDeactiveUsersList = () => {
                                       <th scope="col">Role</th>
                                       <th scope="col">Email</th>
                                       <th scope="col">Mobile</th>
-                                      <th scope="col">Package Id</th>
-                                      <th scope="col">Package Name</th>
+                                      {/* <th scope="col">Package Id</th>
+                                      <th scope="col">Package Name</th> */}
                                       {/* <th scope="col">Address</th> */}
                                       <th scope="col">PAN No</th>
                                       <th scope="col">AAdhaar No</th>
@@ -325,8 +325,8 @@ const DDeactiveUsersList = () => {
                                           <td>{user.role}</td>
                                           <td>{user.Email}</td>
                                           <td>{user.ContactNo}</td>
-                                          <td>{user.package_Id}</td>
-                                          <td>{user.package_name}</td>
+                                          {/* <td>{user.package_Id}</td>
+                                          <td>{user.package_name}</td> */}
                                           <td>{user.PanCardNumber}</td>
                                           <td>{user.AadharNumber}</td>
                                           <td>{user.BusinessName}</td>
