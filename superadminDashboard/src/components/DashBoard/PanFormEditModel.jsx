@@ -559,9 +559,9 @@ const PanFormEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
                   <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     <div className="col-12 d-flex justify-content-center">
                       <div className="border border-danger rounded shadow-sm mb-3">
-                        <h2 className="text-center m-0 px-5 py-3">
+                        {/* <h2 className="text-center m-0 px-5 py-3">
                           Other Services
-                        </h2>
+                        </h2> */}
                       </div>
                     </div>
                   </div>

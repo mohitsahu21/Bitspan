@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { FaRupeeSign } from "react-icons/fa";
 import { TbTransactionRupee } from "react-icons/tb";
@@ -21,6 +21,10 @@ const AddMoneyOffline = () => {
   });
   const [receiptAttachment, setReceiptAttachment] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [paymentDetails, setPaymentDetails] = useState({
+    upiId: "",
+    qrCode: "",
+  });
   const fileInputRef = useRef(null); // Ref for file input
 
   const handleChange = (e) => {
@@ -133,6 +137,33 @@ const AddMoneyOffline = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchPaymentDetails = async () => {
+      try {
+        const response = await axios.get(
+          "https://2kadam.co.in/api/auth/retailer/getSuperAdminData",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const { data } = response.data;
+        setPaymentDetails({
+          upiId: data[0].UPI_ID,
+          qrCode: data[0].QR_Code,
+        });
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching details:", error);
+      }
+    };
+    fetchPaymentDetails();
+  }, []);
+
+  console.log(paymentDetails);
+
   return (
     <>
       <Wrapper>
@@ -189,6 +220,36 @@ const AddMoneyOffline = () => {
                               </label>
                             </div>
                           </div>
+
+                          {formData.Payment_Mode === "UPI ID" &&
+                            paymentDetails.upiId && (
+                              <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                <div class="input-group">
+                                  <span class="input-group-text">UPI ID</span>
+                                  <div class="form-floating">
+                                    <input
+                                      type="text"
+                                      className="form-control"
+                                      value={paymentDetails.upiId}
+                                      readOnly
+                                    />
+                                    <label for="floatingInput">UPI ID</label>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+
+                          {formData.Payment_Mode === "QR Code" &&
+                            paymentDetails.qrCode && (
+                              <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 text-center">
+                                {/* <div className="qr-code-container"> */}
+                                <img
+                                  src={paymentDetails.qrCode}
+                                  alt="QR Code"
+                                  className="qr-code"
+                                />
+                              </div>
+                            )}
 
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="input-group">
@@ -302,5 +363,21 @@ const Wrapper = styled.div`
     .formdata {
       padding-left: 13rem;
     }
+  }
+  .qr-code-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .qr-code {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 5px;
+    background-color: #fff;
   }
 `;

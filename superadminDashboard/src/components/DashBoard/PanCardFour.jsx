@@ -501,11 +501,11 @@ const PanCardFour = () => {
                   </div>
                 </div>
                 <div className="container p-3">
-                  <div className="d-flex justify-content-center align-items-center">
+                  {/* <div className="d-flex justify-content-center align-items-center">
                     <div className="col-6 mb-4 border border-danger rounded shadow-sm">
                       <h5 className="text-center m-0 p-3">PAN 4.0</h5>
                     </div>
-                  </div>
+                  </div> */}
                   <form onSubmit={openPinModal}>
                     <div className="row">
                       <div className="col-md-6 mb-3">

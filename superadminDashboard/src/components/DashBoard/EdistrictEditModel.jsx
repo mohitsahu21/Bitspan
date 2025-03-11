@@ -407,11 +407,11 @@ const EdistrictEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
           <div className="row flex-wrap justify-content-center">
             <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11 mt-5 formdata ">
               <div className="container mt-4">
-                <div className="col-12 d-flex justify-content-center">
+                {/* <div className="col-12 d-flex justify-content-center">
                   <div className="border border-danger rounded shadow-sm mb-3">
                     <h2 className="text-center m-0 px-5 py-3">E District</h2>
                   </div>
-                </div>
+                </div> */}
                 <form
                   onSubmit={openPinModal}
                   className="shadow p-3 mb-5 bg-body rounded"

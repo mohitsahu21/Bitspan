@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import pancard from "../../assets/Form_49A (1).pdf";
+import Domicile_Declaration_From from "../../assets/Domicile_Declaration_From.pdf";
+import MOOLNIVASI from "../../assets/MOOLNIVASI.pdf";
+import Aay_New_Form from "../../assets/Aay_New_Form.pdf";
 import { Link } from "react-router-dom";
 import { BiHomeAlt } from "react-icons/bi";
 
@@ -33,7 +36,9 @@ const OffilnePanCard = () => {
       link: "http://udyog.ezeeportal.in/",
       download: false,
     },
-    // { title: "New Bank ID", link: "#", download: false },
+    { title: "E-district", link: Domicile_Declaration_From, download: true },
+    { title: "Domicile", link: MOOLNIVASI, download: true },
+    { title: "Income", link: Aay_New_Form, download: true },
   ];
   return (
     <>

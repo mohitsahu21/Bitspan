@@ -304,11 +304,11 @@ const RetailerRoutes = () => {
   const dispatch = useDispatch();
   const [user, setUser] = useState("");
   // const userStatus = currentUser?.Status;
-  console.log(fullUrl);
+  // console.log(fullUrl);
 
   // Logging the current user and token for debugging
-  console.log("Current User:", currentUser);
-  console.log("Token:", token);
+  // console.log("Current User:", currentUser);
+  // console.log("Token:", token);
   // console.log(currentUser.Status);
   // UseEffect hook to call the API once when the component mounts
   useEffect(() => {

@@ -92,6 +92,10 @@ const PanTransactionReport = () => {
     return matchesKeyword && matchesDate && matchesType;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [PaymentMode, fromDate, toDate, keyword]);
+
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
   const filterPagination = () => {
@@ -242,7 +246,9 @@ const PanTransactionReport = () => {
                               type="search"
                               placeholder="Search By Name/Mobile/Email/Order Id/Txn Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => (
+                                setKeyword(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
                           <div className="d-flex align-items-end">
@@ -377,6 +383,7 @@ const PanTransactionReport = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

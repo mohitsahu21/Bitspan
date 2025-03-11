@@ -536,13 +536,19 @@ const PanForm = () => {
               <div className="main shadow-none">
                 <div className="row shadow-none">
                   <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                    <div className="col-12 d-flex justify-content-center">
+                    <div className="d-flex justify-content-between align-items-center flex-wrap">
+                      <h4 className="mx-lg-5 px-lg-3">Other Services</h4>
+                      <h6 className="mx-lg-5">
+                        <BiHomeAlt /> &nbsp;/ &nbsp; Other Services
+                      </h6>
+                    </div>
+                    {/* <div className="col-12 d-flex justify-content-center">
                       <div className="border border-danger rounded shadow-sm mb-3">
                         <h2 className="text-center m-0 px-5 py-3">
                           Other Services
                         </h2>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 <form onSubmit={openPinModal}>

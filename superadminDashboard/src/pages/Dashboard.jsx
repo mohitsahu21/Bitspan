@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUser, fetchWalletBalance } from "../redux/user/userSlice";
 import axios from "axios";
 import { LuIndianRupee } from "react-icons/lu";
+import { FaIdCard } from "react-icons/fa";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -554,6 +555,23 @@ const Dashboard = () => {
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div
                         className="card card-3"
+                        onClick={() => navigate("/aadhar-linking-status")}
+                      >
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                            <FaIdCard />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">Status</p>
+                            <h4 className="px-2 my-0">Aadhar Linking </h4>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      <div
+                        className="card card-3"
                         onClick={() => navigate("/crop-tool")}
                       >
                         <div className="d-flex">
@@ -607,6 +625,25 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                      <div className="card card-4">
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                            <LuIndianRupee />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">Wallet Amount</p>
+                            {/* <h4 className="px-2 my-0">(Rs. 250/-)</h4>{" "} */}
+                            <h4 className="px-2 my-0">{`₹${
+                              walletBalance === null || undefined
+                                ? "0.00"
+                                : walletBalance
+                            }`}</h4>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-2">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
@@ -642,25 +679,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-4">
-                        <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <LuIndianRupee />
-                          </div>
-                          <div></div>
-                          <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">Wallet Amount</p>
-                            {/* <h4 className="px-2 my-0">(Rs. 250/-)</h4>{" "} */}
-                            <h4 className="px-2 my-0">{`₹${
-                              walletBalance === null || undefined
-                                ? "0.00"
-                                : walletBalance
-                            }`}</h4>{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+
                     {/* <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-1">
                         <div className="d-flex">

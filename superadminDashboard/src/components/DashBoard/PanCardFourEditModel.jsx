@@ -471,7 +471,7 @@ const PanCardFourEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
           <div className="row flex-wrap justify-content-center">
             <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11 mt-5 formdata">
               <div className="main shadow-none">
-                <div className="row shadow-none">
+                {/* <div className="row shadow-none">
                   <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     <div className="d-flex justify-content-between align-items-center flex-wrap">
                       <h4 className="px-lg-3">Edit Pan Card Offline</h4>
@@ -480,7 +480,7 @@ const PanCardFourEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
                       </h6>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div className="container p-3 shadow bg-body-tertiary rounded">
                   {/* <div className="d-flex justify-content-center align-items-center">
                     <div className="col-6 mb-4 border border-danger rounded shadow-sm">

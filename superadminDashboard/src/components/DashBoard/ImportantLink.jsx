@@ -31,93 +31,131 @@ const ImportantLink = () => {
                   <div className="row raisecomp">
                     <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
                       <Link to="/crop-tool" className="link">
-                      <div
-                        className="p-3 border rounded"
-                        style={{ background: "#706fff", color: "#fff" }}
-                      >
-                        Photo & Sign Croping Tool{" "}
-                      </div>
+                        <div
+                          className="p-3 border rounded"
+                          style={{ background: "#706fff", color: "#fff" }}
+                        >
+                          Photo & Sign Croping Tool{" "}
+                        </div>
                       </Link>
                     </div>
-                   
+
                     <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
-                    <Link to="https://www.ilovepdf.com/jpg_to_pdf" target="_blank">
-                      <div
-                        className="p-3 border rounded"
-                        style={{ background: "#4aa821", color: "#fff" }}
+                      <Link
+                        to="https://www.ilovepdf.com/jpg_to_pdf"
+                        target="_blank"
                       >
-                        Convert JPG to PDF
-                      </div>
-                      </Link>
-                    </div>
-                    <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
-                    <Link to='https://www.trackpan.utiitsl.com/PANONLINE/forms/TrackPan/trackApp#forward' target="_blank">
-                      <div
-                        className="p-3 border rounded"
-                        style={{ background: "#ff4763", color: "#fff" }}
-                      >
-                        PAN Track
-                      </div>
+                        <div
+                          className="p-3 border rounded"
+                          style={{ background: "#4aa821", color: "#fff" }}
+                        >
+                          Convert JPG to PDF
+                        </div>
                       </Link>
                     </div>
                     <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
-                      <Link to="https://www.psaonline.utiitsl.com/psaonline/showLogin" target="_blank"> 
-                      <div
-                        className="p-3 border rounded"
-                        style={{ background: "#2d323f", color: "#fff" }}
+                      <Link
+                        to="https://www.trackpan.utiitsl.com/PANONLINE/forms/TrackPan/trackApp#forward"
+                        target="_blank"
                       >
-                        PSA Login
-                      </div>
+                        <div
+                          className="p-3 border rounded"
+                          style={{ background: "#ff4763", color: "#fff" }}
+                        >
+                          PAN Track
+                        </div>
                       </Link>
                     </div>
                     <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
-                    <Link to='https://www.trackpan.utiitsl.com/PANONLINE/forms/TrackPan/trackApp#forward' target="_blank">
-                      <div
-                        className="p-3 border rounded"
-                        style={{ background: "#ff4763", color: "#fff" }}
+                      <Link
+                        to="https://www.psaonline.utiitsl.com/psaonline/showLogin"
+                        target="_blank"
                       >
-                        PSA Application Status
-                      </div>
+                        <div
+                          className="p-3 border rounded"
+                          style={{ background: "#2d323f", color: "#fff" }}
+                        >
+                          PSA Login
+                        </div>
                       </Link>
                     </div>
                     <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
-                      <Link to="https://www.utiitsl.com/aocodedetails" target="_blank">
-                      <div
-                        className="p-3 border rounded"
-                        style={{ background: "#706fff", color: "#fff" }}
+                      <Link
+                        to="https://www.trackpan.utiitsl.com/PANONLINE/forms/TrackPan/trackApp#forward"
+                        target="_blank"
                       >
-                        PSA Aocode
-                      </div>
+                        <div
+                          className="p-3 border rounded"
+                          style={{ background: "#ff4763", color: "#fff" }}
+                        >
+                          PSA Application Status
+                        </div>
                       </Link>
                     </div>
                     <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
-                      <Link to="https://download.mantratecapp.com/StaticDownload/MantraRDService_1.0.6.exe" >
-                      <div
-                        className="p-3 border rounded"
-                        style={{ background: "#2d323f", color: "#fff" }}
+                      <Link
+                        to="https://www.utiitsl.com/aocodedetails"
+                        target="_blank"
                       >
-                        Download MFS100 RD Services (1.0.6)
-                      </div>
+                        <div
+                          className="p-3 border rounded"
+                          style={{ background: "#706fff", color: "#fff" }}
+                        >
+                          PSA Aocode
+                        </div>
+                      </Link>
+                    </div>
+                    <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
+                      <Link to="https://download.mantratecapp.com/StaticDownload/MantraRDService_1.0.6.exe">
+                        <div
+                          className="p-3 border rounded"
+                          style={{ background: "#2d323f", color: "#fff" }}
+                        >
+                          Download MFS100 RD Services (1.0.6)
+                        </div>
                       </Link>
                     </div>
                     <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
                       <Link to="https://download.mantratecapp.com/StaticDownload/MFS100ClientService_9.0.3.8.exe">
-                      <div
-                        className="p-3 border rounded"
-                        style={{ background: "#4aa821", color: "#fff" }}
-                      >
-                        Download MFS100 Client Services (9.0.3.8)
-                      </div>
+                        <div
+                          className="p-3 border rounded"
+                          style={{ background: "#4aa821", color: "#fff" }}
+                        >
+                          Download MFS100 Client Services (9.0.3.8)
+                        </div>
                       </Link>
                     </div>
                     <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
                       <Link to="https://download.mantratecapp.com/StaticDownload/MFS100Driver_9.2.0.0.exe">
-                      <div
-                        className="p-3 border rounded"
-                        style={{ background: "#2d323f", color: "#fff" }}
+                        <div
+                          className="p-3 border rounded"
+                          style={{ background: "#2d323f", color: "#fff" }}
+                        >
+                          Download MFS100 Client Services (9.2.0.0)
+                        </div>
+                      </Link>
+                    </div>
+                    <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
+                      <Link to="https://www.trackpan.utiitsl.com/PANONLINE/#forward">
+                        <div
+                          className="p-3 border rounded"
+                          style={{ background: "#4aa821", color: "#fff" }}
+                        >
+                          UTI 2.4 PAN Track
+                        </div>
+                      </Link>
+                    </div>
+                    <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
+                      <Link
+                        to="https://tin.tin.nsdl.com/pantan/StatusTrack.html"
+                        target="_blank"
                       >
-                        Download MFS100 Client Services (9.2.0.0)
-                      </div>
+                        <div
+                          className="p-3 border rounded"
+                          style={{ background: "#ff4763", color: "#fff" }}
+                        >
+                          NSDL PAN Track Status
+                        </div>
                       </Link>
                     </div>
                   </div>
@@ -186,10 +224,7 @@ const ImportantLink = () => {
                         className="p-3 border rounded"
                         style={{ background: "#706fff", color: "#fff" }}
                       >
-                        <div
-                          className="text-start fs-5 fw-bold"
-                          
-                        >
+                        <div className="text-start fs-5 fw-bold">
                           North (New Delhi) Zone Jurisdiction (State under the
                           zone)
                         </div>
@@ -445,7 +480,7 @@ const Wrapper = styled.div`
   .contxt {
     font-size: 14px;
   }
-  a{
+  a {
     text-decoration: none;
   }
 `;

@@ -86,7 +86,7 @@ const SambalHistory = () => {
   useEffect(() => {
     fetchRechargeData();
     setCurrentPage(0);
-  }, [isRefresh]);
+  }, [isRefresh, formStatus]);
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 

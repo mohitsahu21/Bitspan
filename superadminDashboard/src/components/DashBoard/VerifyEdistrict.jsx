@@ -320,11 +320,11 @@ const VerifyEdistrict = () => {
                   </div>
                 </div>
                 <div className="container p-3">
-                  <div className="d-flex justify-content-center align-items-center">
+                  {/* <div className="d-flex justify-content-center align-items-center">
                     <div className="col-6 mb-4 border border-danger rounded shadow-sm">
                       <h5 className="text-center m-0 p-3">Verify E-District</h5>
                     </div>
-                  </div>
+                  </div> */}
                   <form
                     onSubmit={openPinModal}
                     className="shadow p-3 mb-5 bg-body-tertiary rounded"
