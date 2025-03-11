@@ -23,6 +23,7 @@ const SAWalletWithdrawSummary = () => {
   const { token } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
   const [keyword, setKeyword] = useState("");
+   const [formStatus, setFormStatus] = useState(""); // For user type filter
   const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
   const [isRefresh, setIsRefresh] = useState(false);
@@ -78,13 +79,13 @@ const SAWalletWithdrawSummary = () => {
           (row?.order_id &&
             row.order_id.toLowerCase().includes(keyword.trim().toLowerCase()))
            
-          // const matchesType = !formStatus || formStatus === "---Select Form Status---" || row.status === formStatus;
+          const matchesType = !formStatus || formStatus === "---Select---" || row.status === formStatus;
           // return matchesKeyword && matchesType ;
           const matchesDate =
       (!fromDate || new Date(row.created_at).toISOString().split("T")[0] >= new Date(fromDate).toISOString().split("T")[0] ) &&
       (!toDate || new Date(row.created_at).toISOString().split("T")[0]  <= new Date(toDate).toISOString().split("T")[0] );
       console.log(matchesKeyword)
-          return matchesKeyword && matchesDate;
+          return matchesKeyword && matchesDate && matchesType;
           
         }
        
@@ -158,6 +159,22 @@ const SAWalletWithdrawSummary = () => {
                               onChange={(e) => {setToDate(e.target.value)
                                 setCurrentPage(0);
                               }}/>
+                                                    </div>
+                                                    <div className="col-12 col-md-4 col-lg-3">
+                                                        <label for="toDate" className="form-label">Select Status</label>
+                                                        <select className="form-select" aria-label="Default select example"
+                                                         value={formStatus}
+                                                         onChange={(e) => {
+                                                          setFormStatus(e.target.value)
+                                                          setCurrentPage(0);
+                                                          }}>
+                                                             <option selected>---Select---</option>
+                                                            <option value="Approve">Approve</option>
+                                                            <option value="Pending">Pending</option>
+                                                            <option value="Reject">Reject</option>
+
+
+                                                        </select>
                                                     </div>
                                                 </div>
 

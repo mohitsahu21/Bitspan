@@ -567,13 +567,11 @@ const SASetDTHPlans = () => {
           const { data } = await axios.delete(
             "https://2kadam.co.in/api/auth/superAdmin/DeleteDTHConnetionPlans", 
             {
-              data: { id }
-            },
-            {
               headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
               },
+              data: { id }, // Pass data correctly in the second argument
             }
     
           );

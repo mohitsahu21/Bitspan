@@ -193,6 +193,7 @@ const SAPanUploadedDocsList = () => {
                             <table class="table table-striped">
                               <thead className="table-dark">
                                 <tr>
+                                <th scope="col">Sr.No</th>
                                   <th scope="col">Date</th>
                                   <th scope="col">Order ID</th>
                                   <th scope="col">Application Detail</th>
@@ -206,13 +207,19 @@ const SAPanUploadedDocsList = () => {
                                   <th scope="col">Remark</th>
                                   <th scope="col">File</th>
                                   <th scope="col">Status</th>
-                                  <th scope="col">Note</th>
+                                  {/* <th scope="col">Note</th> */}
                                 </tr>
                               </thead>
                               <tbody>
                                 {displayData.length > 0 ? (
-                                  displayData.map((item) => (
+                                  displayData.map((item,index) => (
                                     <tr key={item.id}>
+                                      <td>
+                                                {currentPage *
+                                                  complaintsPerPage +
+                                                  index +
+                                                  1}
+                                              </td>
                                       <td>{item.created_at}</td>
                                       <td>{item.order_id}</td>
                                       <td>{item.applicationDetails}</td>
@@ -230,7 +237,7 @@ const SAPanUploadedDocsList = () => {
                                         </Link>
                                       </td>
                                       <td>{item.status}</td>
-                                      <td>{item.note}</td>
+                                      {/* <td>{item.note}</td> */}
                                     </tr>
                                   ))
                                 ) : (

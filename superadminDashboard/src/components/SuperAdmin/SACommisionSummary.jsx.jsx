@@ -170,7 +170,18 @@ const SACommisionSummary = () => {
                                                               <option value="Electricity">Electricity</option>
                                                               <option value="Insurance">Insurance</option>
                                                               <option value="Landline">Landline</option>
+                                                              <option value="PAN">PAN</option>
+                                                              <option value="NSDL PAN">NSDL PAN</option>
                                                               <option value="PAN Coupon">PAN Coupon</option>
+                                                              <option value="New DTH Connection">New DTH Connection</option>
+                                                              <option value="Edistrict">Edistrict</option>
+                                                              <option value="Verify Edistrict">Verify Edistrict</option>
+                                                              <option value="Birth Certificate">Birth Certificate</option>
+                                                              <option value="Death Certificate">Death Certificate</option>
+                                                              <option value="Sambal">Sambal</option>
+                                                              <option value="Pan Find">Pan Find</option>
+                                                              <option value="GST Registration">GST Registration</option>
+                                                              <option value="Udyog Aadhar">Udyog Aadhar</option>
   
   
                                                           </select>
