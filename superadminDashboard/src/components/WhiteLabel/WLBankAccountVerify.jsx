@@ -25,6 +25,7 @@ const WLBankAccountVerify = () => {
   const [error, setError] = useState(""); // To hold validation error messages
   const [timer, setTimer] = useState(0); // Timer state
   const [loading, setLoading] = useState(false); // State for loading effect
+  const [isloading, isSetLoading] = useState(false); // State for loading effect
 
   const { bid } = useParams(); // Fetch bid from URL params
 
@@ -153,6 +154,7 @@ const WLBankAccountVerify = () => {
     }
 
     try {
+      isSetLoading(true); // Start loading
       const response = await axios.post(
         // "https://2kadam.co.in/api/auth/superDistributor/verifyOtpAndChangeBankStatus",
         "https://2kadam.co.in/api/auth/whiteLabel/verifyOtpAndChangeBankStatus",
@@ -205,6 +207,8 @@ const WLBankAccountVerify = () => {
             "An error occurred while submitting the OTP. Please try again.",
         });
       }
+    }finally{
+      isSetLoading(false); // ✅ Stop loading after API call completes
     }
   };
 
@@ -389,9 +393,9 @@ const WLBankAccountVerify = () => {
                       <button
                         className="btn btn-primary p-2"
                         onClick={SubmitBankOtp}
-                        disabled={!otpSent} // Disable the button if OTP has not been sent
+                        disabled={!otpSent || isloading} // Disable the button if OTP has not been sent
                       >
-                        Submit
+                       {isloading ? "Processing..." : "Submit"}
                       </button>
                     </div>
                   </div>

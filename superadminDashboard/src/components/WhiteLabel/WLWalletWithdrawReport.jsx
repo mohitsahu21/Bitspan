@@ -7,6 +7,7 @@ import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
 
 const WLWalletWithdrawReport = () => {
   const dispatch = useDispatch();
@@ -222,7 +223,13 @@ const WLWalletWithdrawReport = () => {
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
                             {loading ? (
-                              <p>Loading...</p>
+                               <div className="d-flex justify-content-center">
+                               <Spinner animation="border" role="status">
+                                 <span className="visually-hidden">
+                                   Loading...
+                                 </span>
+                               </Spinner>
+                             </div>
                             ) : (
                               <table className="table table-striped">
                                 <thead className="table-dark">
@@ -242,7 +249,7 @@ const WLWalletWithdrawReport = () => {
                                     <th scope="col">Status</th>
                                     <th scope="col">Process Date</th>
                                     <th scope="col">UTR/Txn No.</th>
-                                    <th scope="col">Transaction Type</th>
+                                    {/* <th scope="col">Transaction Type</th> */}
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -282,7 +289,7 @@ const WLWalletWithdrawReport = () => {
                                         </td>
                                         <td>{item.process_date}</td>
                                         <td>{item.transaction_Id}</td>
-                                        <td>{item.Transactoion_Type}</td>
+                                        {/* <td>{item.Transactoion_Type}</td> */}
                                       </tr>
                                     ))
                                   ) : (

@@ -211,7 +211,7 @@ const DBuyDistributorId = () => {
     const selectedPaymentMethod = e.target.value;
 
     if (
-      selectedPaymentMethod === "Offline" &&
+      selectedPaymentMethod === "Wallet" &&
       calculateTotalAmount() > walletBalance
     ) {
       Swal.fire({
@@ -554,7 +554,7 @@ const DBuyDistributorId = () => {
                           >
                             <option value="">Select Payment Method</option>
                             <option value="Online">Online</option>
-                            <option value="Offline">Wallet</option>
+                            <option value="Wallet">Wallet</option>
                           </select>
                         </div>
 

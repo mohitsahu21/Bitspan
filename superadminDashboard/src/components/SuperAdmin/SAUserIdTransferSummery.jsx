@@ -166,10 +166,10 @@ const SAUserIdTransferSummery = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Transfer User Ids Summery
+                          Transfer User Ids Summary
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; Transfer User Ids Summery
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Transfer User Ids Summary
                         </h6>
                       </div>
                     </div>

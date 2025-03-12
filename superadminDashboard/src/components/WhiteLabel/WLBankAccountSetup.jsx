@@ -13,6 +13,8 @@ import { useNavigate } from "react-router-dom";
 const WLBankAccountSetup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+   const [loading, setLoading] = useState(false);
+    const [delLoading, delSetLoading] = useState(false);
   const { currentUser, token } = useSelector((state) => state.user);
   // States to hold the form data
   const [bankData, setBankData] = useState({
@@ -190,6 +192,7 @@ const WLBankAccountSetup = () => {
     });
 
     if (confirm.isConfirmed) {
+      delSetLoading(true);
       try {
         const response = await axios.delete(
           // `https://2kadam.co.in/api/auth/superDistributor/deleteBankDetails/${bid}`,
@@ -240,6 +243,8 @@ const WLBankAccountSetup = () => {
             confirmButtonText: "Okay",
           });
         }
+      }finally{
+        delSetLoading(false); // ✅ Stop loading after API call completes
       }
     }
   };
@@ -355,6 +360,7 @@ const WLBankAccountSetup = () => {
                   </div>
 
                   <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                  <div className="text-start mb-3">
                   <button
                         className="btn btn-primary p-2"
                         onClick={handleSubmit}
@@ -364,7 +370,8 @@ const WLBankAccountSetup = () => {
                       </button>
                     </div>
                   </div>
-                </div>
+                  </div>
+               
 
                 {/* All Listed Bank Accounts */}
                 <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
@@ -406,9 +413,9 @@ const WLBankAccountSetup = () => {
                                         >
                                           <button
                                             className="btn btn-primary btn-sm"
-                                            onClick={() =>
-                                              fetchBankDetails(account.bid)
-                                            }
+                                            // onClick={() =>
+                                            //   fetchBankDetails(account.bid)
+                                            // }
                                           >
                                             Verify
                                           </button>
@@ -429,6 +436,7 @@ const WLBankAccountSetup = () => {
                                       className="btn btn-danger btn-sm"
                                       style={{ marginLeft: "10px" }}
                                       onClick={() => handleDelete(account.bid)}
+                                      disabled={delLoading}
                                     >
                                       <MdDeleteForever />
                                     </button>
@@ -474,6 +482,7 @@ const WLBankAccountSetup = () => {
                   {/* </div> */}
                 </div>
               </div>
+            </div>
             </div>
           </div>
         </div>

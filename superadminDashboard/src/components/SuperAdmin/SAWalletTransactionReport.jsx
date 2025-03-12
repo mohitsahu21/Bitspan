@@ -121,7 +121,7 @@ const SAWalletWithdrawSummary = () => {
                                                 <h3>Wallet Transaction Report</h3>
                                             </div> */}
                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Wallet Transaction Report</h4>
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Wallet Full Summary</h4>
                                                 <p className="mx-lg-5">
                                                     {" "}
                                                     <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
@@ -130,7 +130,7 @@ const SAWalletWithdrawSummary = () => {
                                                         style={{ fontSize: "13px" }}
                                                     >
                                                         {" "}
-                                                        Wallet Transaction Report
+                                                        Wallet Full Summary
                                                     </span>{" "}
                                                 </p>
                                             </div>

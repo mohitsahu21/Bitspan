@@ -223,7 +223,9 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 //  reject model component start//
 const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 const [loading, setLoading] = useState(false);
-
+const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
 const [formData, setFormData] = useState({
   user_id : item.user_id ,
 

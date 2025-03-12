@@ -3,7 +3,8 @@ import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
-
+import styled from "styled-components";
+import { clearUser } from "../redux/user/userSlice";
 import Swal from "sweetalert2";
 
 // Lazy-loaded components
@@ -331,6 +332,14 @@ const WhiteLabelRoutes = () => {
 
   return (
     <React.Fragment>
+       <Wrapper>
+      <Suspense fallback={ 
+        <div className="loading-container">
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    </div>
+  }>
       <Routes>
         <Route path="/dashboard" element={<WhiteLabelDashboard />} />
         <Route path="/" element={<WhiteLabelDashboard />} />
@@ -516,8 +525,28 @@ const WhiteLabelRoutes = () => {
         />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
+      </Suspense>
+      </Wrapper>
     </React.Fragment>
   );
 };
 
 export default WhiteLabelRoutes;
+
+const Wrapper = styled.div`
+.loading-container {
+  position: fixed; /* Sticks to the viewport */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center; /* Horizontally centers the content */
+  align-items: center; /* Vertically centers the content */
+  /* background-color: rgba(255, 255, 255, 0.8); */
+   /* Optional: Add a semi-transparent background */
+  z-index: 9999; /* Ensures it stays above other content */
+  background-color: transparent;
+}
+
+`

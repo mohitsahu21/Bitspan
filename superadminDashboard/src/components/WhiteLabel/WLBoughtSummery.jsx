@@ -17,6 +17,10 @@ const WLBoughtSummery = () => {
   const [keyword, setKeyword] = useState("");
   const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
+   const [fromDate, setFromDate] = useState(""); // From date filter
+      const [toDate, setToDate] = useState(""); // To date filter
+      const [PaymentMode, setPaymentMode] = useState("")
+
 
   // const userData = currentUser.userId;
   // Fetch userId and token from Redux store
@@ -60,10 +64,22 @@ const WLBoughtSummery = () => {
   }, []);
 
   const filteredItems = apiData.filter(
-    (row) =>
-      // (row?.userId && row.userId.includes(keyword.trim())) ||
-      (row?.userId_type && row.userId_type.includes(keyword.trim())) ||
-      (row?.orderId && row.orderId.includes(keyword.trim()))
+
+      (row) =>{ 
+        const matchesKeyword =  (row?.userId_type &&
+          row.userId_type.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+        (row?.UserName && row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) || (row?.orderId &&
+            row.orderId.toLowerCase().includes(keyword.trim().toLowerCase())) 
+             
+            const matchesType = !PaymentMode || PaymentMode === "---Select---" || row.payment_method === PaymentMode;
+            // return matchesKeyword && matchesType ;
+            const matchesDate =
+        (!fromDate || new Date(row.bought_date).toISOString().split("T")[0] >= new Date(fromDate).toISOString().split("T")[0] ) &&
+        (!toDate || new Date(row.bought_date).toISOString().split("T")[0]  <= new Date(toDate).toISOString().split("T")[0] );
+        console.log(matchesKeyword)
+            return matchesKeyword && matchesDate && matchesType;
+            
+          }
   );
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
@@ -114,8 +130,43 @@ const WLBoughtSummery = () => {
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
                       <div className="row d-flex flex-column g-4">
+                      <div className="d-flex flex-column flex-md-row gap-3">
+                                                    <div className="col-12 col-md-4 col-lg-3">
+                                                        <label for="fromDate" className="form-label">From</label>
+                                                        <input id="fromDate" className="form-control" type="date" value={fromDate}
+                              onChange={(e) => {setFromDate(e.target.value)
+                                setCurrentPage(0);
+                              }}/>
+                                                    </div>
+                                                    <div className="col-12 col-md-4 col-lg-3">
+                                                        <label for="toDate" className="form-label">To</label>
+                                                        <input id="toDate" className="form-control " type="date" value={toDate}
+                              onChange={(e) => {setToDate(e.target.value)
+                                setCurrentPage(0);
+                              }}/>
+                                                    </div>
+                                                    <div className="col-12 col-md-4 col-lg-3">
+                                                        <label for="toDate" className="form-label">Select Payment Method</label>
+                                                        <select className="form-select" aria-label="Default select example"
+                                                         value={PaymentMode}
+                                                         onChange={(e) => {setPaymentMode(e.target.value)
+                                                          setCurrentPage(0);
+                                                         }}>
+                                                             <option selected>---Select---</option>
+                                                            <option value="Online">Online</option>
+                                                            <option value="Wallet">Wallet</option>
+
+
+                                                        </select>
+                                                    </div>
+                                                    
+                                                    {/* <div className="d-flex align-items-end">
+                                                        <button type="button" className="btn btn-primary button">Search</button>
+                                                    </div> */}
+
+                                                </div>
                         <div className="d-flex flex-column flex-md-row gap-3">
-                          <div className="col-12 col-md-4 col-lg-3">
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
                             <input
                               className="form-control"
                               type="search"
@@ -145,13 +196,13 @@ const WLBoughtSummery = () => {
                                 <tr>
                                   <th scope="col">Sr.No</th>
 
+                                  <th scope="col"> Date</th>
                                   <th scope="col">User ID</th>
                                   <th scope="col">Number of buy's ID</th>
                                   <th scope="col"> Amount per ID</th>
                                   <th scope="col">ID Type</th>
                                   <th scope="col">Order ID</th>
                                   <th scope="col">Transaction ID</th>
-                                  <th scope="col"> Date</th>
                                   <th scope="col">Total Amount</th>
                                   <th scope="col">Payment Method</th>
                                   <th scope="col">Status</th>
@@ -167,13 +218,13 @@ const WLBoughtSummery = () => {
                                           1}
                                       </td>
 
+                                      <td>{item.bought_date}</td>
                                       <td>{item.userId}</td>
                                       <td>{item.number_of_userId}</td>
                                       <td>{item.userId_amount}</td>
                                       <td>{item.userId_type}</td>
                                       <td>{item.orderId}</td>
                                       <td>{item.transactionId}</td>
-                                      <td>{item.bought_date}</td>
                                       <td>{item.total_amount}</td>
                                       <td>{item.payment_method}</td>
                                       <td>{item.status}</td>

@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 const SdBankAccountSetup = () => {
   const [loading, setLoading] = useState(false);
+  const [delLoading, delSetLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
@@ -191,6 +192,7 @@ const SdBankAccountSetup = () => {
     });
 
     if (confirm.isConfirmed) {
+      delSetLoading(true);
       try {
         const response = await axios.delete(
           `https://2kadam.co.in/api/auth/superDistributor/deleteBankDetails/${bid}`,
@@ -240,6 +242,8 @@ const SdBankAccountSetup = () => {
             confirmButtonText: "Okay",
           });
         }
+      }finally{
+        delSetLoading(false); // ✅ Stop loading after API call completes
       }
     }
   };
@@ -431,6 +435,7 @@ const SdBankAccountSetup = () => {
                                     className="btn btn-danger btn-sm"
                                     style={{ marginLeft: "10px" }}
                                     onClick={() => handleDelete(account.bid)}
+                                    disabled={delLoading}
                                   >
                                     <MdDeleteForever />
                                   </button>
