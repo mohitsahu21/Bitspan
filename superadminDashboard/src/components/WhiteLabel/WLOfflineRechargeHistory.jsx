@@ -200,26 +200,45 @@ const WLOfflineRechargeHistory = () => {
                               Search
                             </button>
                           </div> */}
+  <div className="col-12 col-md-4 col-lg-3">
+                            <label for="fromDate" className="form-label">
+                              From
+                            </label>
 
-                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
-                            {/* <label for="fromDate" className="form-label">From</label> */}
                             <input
                               id="fromDate"
                               className="form-control"
-                              type="search"
-                              // placeholder="Enter Number/Order Id/User Name/User Id"
-                              placeholder="Order Id/User Id"
-                              value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              type="date"
+                              value={fromDate}
+                              onChange={(e) => {setFromDate(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             />
                           </div>
+                          <div className="col-12 col-md-4 col-lg-3">
+                            <label for="toDate" className="form-label">
+                              To
+                            </label>
+                            <input
+                              id="toDate"
+                              className="form-control "
+                              type="date"
+                              value={toDate}
+                              onChange={(e) => {setToDate(e.target.value)
+                                setCurrentPage(0)
+                              }}
+                            />
+                          </div>
+                          
                           <div className="col-12 col-md-12 col-lg-12 col-xl-3">
-                            {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
+                            <label for="toDate" className="form-label">Select Status</label>
                             <select
                               className="form-select"
                               aria-label="Default select example"
                               value={formStatus}
-                              onChange={(e) => setFormStatus(e.target.value)}
+                              onChange={(e) => {setFormStatus(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             >
                               <option selected>---Select Form Status---</option>
                               <option value="Pending">Pending</option>
@@ -233,29 +252,18 @@ const WLOfflineRechargeHistory = () => {
                         </div>
 
                         <div className="d-flex flex-column flex-xl-row gap-3">
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="fromDate" className="form-label">
-                              From
-                            </label>
-
+                        <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                            {/* <label for="fromDate" className="form-label">From</label> */}
                             <input
                               id="fromDate"
                               className="form-control"
-                              type="date"
-                              value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
-                            />
-                          </div>
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="toDate" className="form-label">
-                              To
-                            </label>
-                            <input
-                              id="toDate"
-                              className="form-control "
-                              type="date"
-                              value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              type="search"
+                              // placeholder="Enter Number/Order Id/User Name/User Id"
+                              placeholder="Search By Order Id"
+                              value={keyword}
+                              onChange={(e) => {setKeyword(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             />
                           </div>
                         </div>

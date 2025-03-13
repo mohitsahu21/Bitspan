@@ -166,7 +166,10 @@ const WLWalletWithdrawReport = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {
+                                setFromDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -178,7 +181,10 @@ const WLWalletWithdrawReport = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => {
+                                setToDate(e.target.value)
+                              setCurrentPage(0)
+                            }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -189,7 +195,9 @@ const WLWalletWithdrawReport = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={status}
-                              onChange={(e) => setStatus(e.target.value)}
+                              onChange={(e) => {setStatus(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             >
                               <option selected>---Select---</option>
                               <option value="Approve">Approve</option>
@@ -211,7 +219,9 @@ const WLWalletWithdrawReport = () => {
                               type="search"
                               placeholder="search By Order Id "
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {setKeyword(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
 

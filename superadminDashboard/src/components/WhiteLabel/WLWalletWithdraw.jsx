@@ -432,6 +432,7 @@ const WLWalletWithdraw = () => {
                               className="form-control"
                               value={inputAmount}
                               onChange={handleInputChange}
+                              min={1}
                             />
                           </div>
                         </div>

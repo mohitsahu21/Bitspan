@@ -154,9 +154,9 @@ const WLFundTransferStatus = () => {
                   </div>
                   <div className="row justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded p-5 m-4">
-                      <div className="text-center">
+                      {/* <div className="text-center">
                         <h5>All Wallet Transfer Request Status</h5>
-                      </div>
+                      </div> */}
                       <div className="row d-flex flex-column g-4">
                         <div className="d-flex flex-column flex-md-row gap-3">
                           <div className="col-12 col-md-4 col-lg-3">
@@ -168,7 +168,9 @@ const WLFundTransferStatus = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {setFromDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -180,7 +182,9 @@ const WLFundTransferStatus = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => {setToDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           {/* <div className="col-12 col-md-4 col-lg-3">
@@ -209,7 +213,9 @@ const WLFundTransferStatus = () => {
                               type="search"
                               placeholder="search By Order Id Or Txn Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {setKeyword(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
 
