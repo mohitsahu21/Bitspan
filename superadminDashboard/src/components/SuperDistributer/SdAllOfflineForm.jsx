@@ -69,9 +69,15 @@ const SdAllOfflineForm = () => {
   console.log(formData);
 
   const filteredData = formData?.filter((item) => {
-    const createdAtDate = item.created_at ? new Date(item.created_at) : null;
-    const fromDateObj = fromDate ? new Date(fromDate) : null;
-    const toDateObj = toDate ? new Date(toDate) : null;
+    const createdAtDate = item.created_at
+      ? new Date(item.created_at).toISOString().split("T")[0]
+      : null;
+    const fromDateObj = fromDate
+      ? new Date(fromDate).toISOString().split("T")[0]
+      : null;
+    const toDateObj = toDate
+      ? new Date(toDate).toISOString().split("T")[0]
+      : null;
 
     const matchesSearch =
       item.applicant_name
@@ -90,6 +96,10 @@ const SdAllOfflineForm = () => {
 
     return matchesSearch && matchesStatus && matchesDate;
   });
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [searchQuery, selectedStatus, fromDate, toDate]);
 
   const totalPages = Math.ceil(filteredData.length / complaintsPerPage);
 
@@ -144,19 +154,25 @@ const SdAllOfflineForm = () => {
                               Search
                             </label>
                             <input
-                              type="text"
+                              type="search"
                               className="form-control responsive-input"
                               // placeholder="Search by Name, Mobile, or Order ID"
                               placeholder="Search by  Order ID"
                               value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
+                              onChange={(e) => (
+                                setSearchQuery(e.target.value),
+                                setCurrentPage(0)
+                              )}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3 d-flex align-items-end">
                             <DropdownButton
                               id="dropdown-basic-button"
                               title={selectedStatus}
-                              onSelect={(e) => setSelectedStatus(e)}
+                              // onSelect={(e) => setSelectedStatus(e)}
+                              onSelect={(e) => (
+                                setSelectedStatus(e), setCurrentPage(0)
+                              )}
                             >
                               <Dropdown.Item eventKey="All">All</Dropdown.Item>
                               <Dropdown.Item eventKey="Success">

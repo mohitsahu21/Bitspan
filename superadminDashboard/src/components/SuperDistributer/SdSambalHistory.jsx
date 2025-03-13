@@ -116,6 +116,10 @@ const SdSambalHistory = () => {
     return matchesKeyword && matchesDate && matchesType;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword]);
+
   // const totalPages = Math.ceil(filteredData.length / complaintsPerPage);
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);

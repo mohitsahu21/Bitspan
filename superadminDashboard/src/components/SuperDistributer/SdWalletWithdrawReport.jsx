@@ -264,16 +264,16 @@ const SdWalletWithdrawReport = () => {
 
                                         <td>{item.remark}</td>
                                         <td
-                                          style={{
-                                            color:
-                                              item.status === "Pending"
-                                                ? "#FFC107"
-                                                : item.status === "Reject"
-                                                ? "#DC3545"
-                                                : item.status === "Success"
-                                                ? "#28A745"
-                                                : "black",
-                                          }}
+                                        // style={{
+                                        //   color:
+                                        //     item.status === "Pending"
+                                        //       ? "#FFC107"
+                                        //       : item.status === "Reject"
+                                        //       ? "#DC3545"
+                                        //       : item.status === "Success"
+                                        //       ? "#28A745"
+                                        //       : "black",
+                                        // }}
                                         >
                                           {item.status}
                                         </td>
@@ -293,8 +293,8 @@ const SdWalletWithdrawReport = () => {
                           </div>
                           <PaginationContainer>
                             <ReactPaginate
-                              previousLabel={"previous"}
-                              nextLabel={"next"}
+                              previousLabel={"Previous"}
+                              nextLabel={"Next"}
                               breakLabel={"..."}
                               pageCount={totalPages}
                               marginPagesDisplayed={2}

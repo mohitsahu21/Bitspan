@@ -591,6 +591,16 @@ const RetailerSidebarData = [
         path: "/dth-recharge-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
+    ],
+  },
+  {
+    title: "Bill History",
+    path: "#",
+    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
       {
         title: "Apply DTH Connection History",
         path: "/apply-dth-connection-history",
@@ -1200,7 +1210,7 @@ const SuperDisData = [
     ],
   },
   {
-    title: "Offline Services",
+    title: "Other Services",
     path: "#",
     icon: <MdFilterListOff color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,

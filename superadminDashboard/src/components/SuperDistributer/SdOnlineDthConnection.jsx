@@ -112,6 +112,10 @@ const SdOnlineDthConnection = () => {
     return matchesKeyword && matchesDate && matchesType;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword, OperatorName, fromDate, toDate]);
+
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
   const filterPagination = () => {
@@ -250,16 +254,9 @@ const SdOnlineDthConnection = () => {
                                       <th scope="col">Date</th>
                                       <th scope="col">Order Id</th>
                                       <th scope="col">Transaction Id</th>
-                                      {/* <th scope="col">First Name</th>
-                                      <th scope="col">Last Name</th>
-                                      <th scope="col">Full Address</th>
-                                      <th scope="col">Postal Code</th> */}
-                                      {/* <th scope="col">Plan Id</th> */}
                                       <th scope="col">Amount</th>
                                       <th scope="col">Operator Name</th>
                                       <th scope="col">Mo. Number</th>
-                                      {/* <th scope="col">Message</th> */}
-                                      {/* <th scope="col">API Provider Name</th> */}
                                       <th scope="col">User Id</th>
                                       <th scope="col">Status</th>
                                     </tr>
@@ -276,11 +273,6 @@ const SdOnlineDthConnection = () => {
                                           <td>{item.created_at}</td>
                                           <td>{item.orderid}</td>
                                           <td>{item.txid}</td>
-                                          {/* <td>{item.first_name}</td>
-                                          <td>{item.last_name}</td>
-                                          <td>{item.full_address}</td>
-                                          <td>{item.postal_code}</td> */}
-                                          {/* <td>{item.plan_id}</td> */}
                                           <td>{item.amount}</td>
                                           <td>{item.operatorName}</td>
                                           <td>

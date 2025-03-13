@@ -79,8 +79,12 @@ const SdWalletTransactionReport = () => {
         (row?.Order_Id && row.Order_Id.toLowerCase().includes(searchKeyword));
 
       const matchesDate =
-        (!fromDate || new Date(row.transaction_date) >= new Date(fromDate)) &&
-        (!toDate || new Date(row.transaction_date) <= new Date(toDate));
+        (!fromDate ||
+          new Date(row.transaction_date).toISOString().split("T")[0] >=
+            new Date(fromDate).toISOString().split("T")[0]) &&
+        (!toDate ||
+          new Date(row.transaction_date).toISOString().split("T")[0] <=
+            new Date(toDate).toISOString().split("T")[0]);
 
       return matchesKeyword && matchesDate;
     });
@@ -167,7 +171,9 @@ const SdWalletTransactionReport = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => (
+                                setFromDate(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -179,10 +185,12 @@ const SdWalletTransactionReport = () => {
                               className="form-control"
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => (
+                                setToDate(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
-                          <div className="d-flex align-items-end">
+                          {/* <div className="d-flex align-items-end">
                             <button
                               type="button"
                               className="btn btn-primary button"
@@ -190,7 +198,7 @@ const SdWalletTransactionReport = () => {
                             >
                               Search
                             </button>
-                          </div>
+                          </div> */}
                         </div>
 
                         <div className="d-flex flex-column flex-xl-row gap-3">

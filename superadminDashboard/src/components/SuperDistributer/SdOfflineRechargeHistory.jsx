@@ -107,6 +107,10 @@ const SdOfflineRechargeHistory = () => {
     return matchesKeyword && matchesDate && matchesType;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword, formStatus]);
+
   console.log(filteredItems);
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
@@ -212,7 +216,9 @@ const SdOfflineRechargeHistory = () => {
                               // placeholder="Enter Number/Order Id/User Name/User Id"
                               placeholder="Order Id/User Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => (
+                                setKeyword(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
                           <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -221,7 +227,9 @@ const SdOfflineRechargeHistory = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={formStatus}
-                              onChange={(e) => setFormStatus(e.target.value)}
+                              onChange={(e) => (
+                                setFormStatus(e.target.value), setCurrentPage(0)
+                              )}
                             >
                               <option selected>---Select Form Status---</option>
                               <option value="Pending">Pending</option>

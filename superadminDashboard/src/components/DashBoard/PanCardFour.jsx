@@ -493,9 +493,9 @@ const PanCardFour = () => {
                 <div className="row shadow-none">
                   <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     <div className="d-flex justify-content-between align-items-center flex-wrap">
-                      <h4 className="px-lg-3">Apply Pan Card Offline</h4>
+                      <h4 className="px-lg-3">Apply Pan Card</h4>
                       <h6 className="mx-lg-5">
-                        <BiHomeAlt /> &nbsp;/ &nbsp; Apply Pan Card Offline
+                        <BiHomeAlt /> &nbsp;/ &nbsp; Apply Pan Card
                       </h6>
                     </div>
                   </div>
