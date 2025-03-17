@@ -8,6 +8,7 @@ import React, { useState, useEffect } from "react";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { use } from "react";
 
 const SdPanTransactionReport = () => {
   const dispatch = useDispatch();
@@ -23,15 +24,7 @@ const SdPanTransactionReport = () => {
   const [PaymentMode, setPaymentMode] = useState("---Select---"); // Missing initialization
   const [status, setStatus] = useState("---Select---"); // Missing initialization
 
-  // const userData = currentUser.userId;
-  // Fetch userId and token from Redux store
   const userId = useSelector((state) => state.user.currentUser?.userId);
-
-  // const maskSensitiveInfo = (value, maskLength, revealLength) => {
-  //   const maskedValue = "*".repeat(maskLength);
-  //   const revealedValue = value.slice(-revealLength);
-  //   return maskedValue + revealedValue;
-  // };
 
   const fetchData = async () => {
     setLoading(true);
@@ -97,6 +90,10 @@ const SdPanTransactionReport = () => {
     return matchesKeyword && matchesDate && matchesType; // Return combined conditions
   });
 
+  useEffect(() => {
+    setCurrentPage(0); // Reset page to 0 when filters change
+  }, [keyword, fromDate, toDate]);
+
   // Pagination logic
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
   const filterPagination = () => {
@@ -145,37 +142,6 @@ const SdPanTransactionReport = () => {
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow bg-body-tertiary rounded  p-5 m-4">
                       <div className="row d-flex flex-column g-4">
-                        {/* <div className="d-flex flex-column flex-md-row gap-3">
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="fromDate" className="form-label">
-                              From
-                            </label>
-                            <input
-                              id="fromDate"
-                              className="form-control"
-                              type="date"
-                            />
-                          </div>
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="toDate" className="form-label">
-                              To
-                            </label>
-                            <input
-                              id="toDate"
-                              className="form-control "
-                              type="date"
-                            />
-                          </div>
-                          <div className="d-flex align-items-end">
-                            <button
-                              type="button"
-                              className="btn btn-primary button"
-                            >
-                              Search
-                            </button>
-                          </div>
-                        </div> */}
-
                         <div className="d-flex flex-column flex-md-row gap-3">
                           <div className="col-12 col-md-4 col-lg-3">
                             <label for="fromDate" className="form-label">
@@ -186,7 +152,9 @@ const SdPanTransactionReport = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => (
+                                setFromDate(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -198,28 +166,11 @@ const SdPanTransactionReport = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => (
+                                setToDate(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
-                          {/* <div className="col-12 col-md-4 col-lg-3">
-                            <label for="toDate" className="form-label">
-                              Select Status
-                            </label>
-                            <select
-                              className="form-select"
-                              aria-label="Default select example"
-                              value={status}
-                              onChange={(e) => setStatus(e.target.value)}
-                            >
-                              <option selected>---Select---</option>
-                              <option value="Success">Success</option>
-                              <option value="Failed">Failed</option>
-                            </select>
-                          </div> */}
-
-                          {/* <div className="d-flex align-items-end">
-                                                        <button type="button" className="btn btn-primary button">Search</button>
-                                                    </div> */}
                         </div>
 
                         <div className="d-flex flex-column flex-xl-row gap-3">
@@ -231,7 +182,9 @@ const SdPanTransactionReport = () => {
                               type="search"
                               placeholder="search By Order Id Or Txn Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => (
+                                setKeyword(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
 
@@ -292,35 +245,11 @@ const SdPanTransactionReport = () => {
                                         <td>{item.physicalPan}</td>
                                         <td>{item.walletDeductAmt}</td>
                                         <td>{item.txid}</td>
-                                        <td
-                                          style={{
-                                            color:
-                                              item.status === "Pending"
-                                                ? "#FFC107"
-                                                : item.status === "Reject"
-                                                ? "#DC3545"
-                                                : item.status === "Success"
-                                                ? "#28A745"
-                                                : "black",
-                                          }}
-                                        >
-                                          {item.status}
-                                        </td>
-                                        {/* <td>{item.opid}</td>
-                                        <td>{item.message}</td> */}
-                                        {/* <td>
-                                          <a
-                                            href={item.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                          >
-                                            View
-                                          </a>
-                                        </td>
-                                        <td>{item.number}</td> */}
+                                        <td>{item.status}</td>
+
                                         <td>{item.amount}</td>
                                         <td>{item.orderid}</td>
-                                        {/* <td>{item.providerName}</td> */}
+
                                         <td>{item.userId}</td>
                                         <td>{item.created_at}</td>
                                       </tr>

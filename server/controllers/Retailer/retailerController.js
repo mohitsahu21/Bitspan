@@ -2147,13 +2147,14 @@ const complainInsertApi = (req, res) => {
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const domain = process.env.domain;
+  const status = "Pending";
 
   const complainFile =
     req.files && req.files.complainFile
       ? `${domain}/complainUpload/${req.files.complainFile[0].filename}`
       : null;
 
-  const insertquery = `INSERT INTO complaindata (complainType, transactionNo, mobileNo, remark, complainFile, userID, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+  const insertquery = `INSERT INTO complaindata (complainType, transactionNo, mobileNo, remark, complainFile, userID, createdAt, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
   const values = [
     complainType,
@@ -2163,6 +2164,7 @@ const complainInsertApi = (req, res) => {
     complainFile,
     userID,
     createdAt,
+    status,
   ];
 
   db.query(insertquery, values, (err, result) => {

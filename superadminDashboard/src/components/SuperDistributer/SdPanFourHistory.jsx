@@ -8,11 +8,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { use } from "react";
 
 const SdPanFourHistory = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { token } = useSelector((state) => state.user);
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -109,6 +109,10 @@ const SdPanFourHistory = () => {
     return matchesKeyword && matchesDate && matchesType;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword, fromDate, toDate, PaymentMode]);
+
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
   const filterPagination = () => {
@@ -158,35 +162,22 @@ const SdPanFourHistory = () => {
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow bg-body-tertiary rounded  p-5 m-4">
                       <div className="row d-flex flex-column g-4">
-                        <div className="d-flex flex-column flex-md-row gap-3">
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="fromDate" className="form-label">
-                              From
-                            </label>
+                        <div className="d-flex flex-column flex-xl-row gap-3">
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                            {/* <label for="fromDate" className="form-label">From</label> */}
                             <input
                               id="fromDate"
                               className="form-control"
-                              type="date"
-                              value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              type="search"
+                              placeholder="search By Order Id "
+                              value={keyword}
+                              onChange={(e) => (
+                                setKeyword(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="toDate" className="form-label">
-                              To
-                            </label>
-                            <input
-                              id="toDate"
-                              className="form-control "
-                              type="date"
-                              value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
-                            />
-                          </div>
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="toDate" className="form-label">
-                              Select Status
-                            </label>
+
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-3">
                             <select
                               className="form-select"
                               aria-label="Default select example"
@@ -198,29 +189,37 @@ const SdPanFourHistory = () => {
                               <option value="Failed">Failed</option>
                             </select>
                           </div>
-
-                          {/* <div className="d-flex align-items-end">
-                                                        <button type="button" className="btn btn-primary button">Search</button>
-                                                    </div> */}
                         </div>
                         <div className="d-flex flex-column flex-xl-row gap-3">
-                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
-                            {/* <label for="fromDate" className="form-label">From</label> */}
+                          <div className="col-12 col-md-4 col-lg-3">
+                            <label for="fromDate" className="form-label">
+                              From
+                            </label>
                             <input
                               id="fromDate"
                               className="form-control"
-                              type="search"
-                              placeholder="search By Order Id "
-                              value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              type="date"
+                              value={fromDate}
+                              onChange={(e) => (
+                                setFromDate(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
-
-                          {/* <div className="d-flex align-items-end">
-        <button type="button" className="btn btn-primary button">Search</button>
-    </div> */}
+                          <div className="col-12 col-md-4 col-lg-3">
+                            <label for="toDate" className="form-label">
+                              To
+                            </label>
+                            <input
+                              id="toDate"
+                              className="form-control "
+                              type="date"
+                              value={toDate}
+                              onChange={(e) => (
+                                setToDate(e.target.value), setCurrentPage(0)
+                              )}
+                            />
+                          </div>
                         </div>
-
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
                             {loading ? (
@@ -235,26 +234,7 @@ const SdPanFourHistory = () => {
                                     <th scope="col">
                                       Application <br /> Type
                                     </th>
-                                    {/* <th scope="col">Category</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Father Name</th>
-                                    <th scope="col">Mother Name</th>
-                                    <th scope="col">
-                                      Date of <br />
-                                      Birth
-                                    </th>
-                                    <th scope="col">Gender</th>
-                                    <th scope="col">Office Address</th>
-                                    <th scope="col">Aadhar Details</th> */}
                                     <th scope="col">Mobile No</th>
-                                    {/* <th scope="col">Email</th>
-                                    <th scope="col">Pincode</th>
-                                    <th scope="col">State</th> */}
-                                    {/* <th scope="col">Change Request</th> */}
-                                    {/* <th scope="col">KYC </th>
-                                    <th scope="col">Form </th>
-                                    <th scope="col">Signature</th>
-                                    <th scope="col">Photo</th> */}
                                     <th scope="col">Amount</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Note</th>
@@ -272,15 +252,6 @@ const SdPanFourHistory = () => {
                                         <td>{item.created_at}</td>
                                         <td>{item.order_id}</td>
                                         <td>{item.application_type}</td>
-                                        {/* <td>{item.select_title}</td>
-                                        <td>{item.name}</td>
-                                        <td>{item.father_name}</td>
-                                        <td>{item.mother_name}</td>
-                                        <td>{item.dob}</td>
-                                        <td>{item.gender}</td>
-                                        <td>{item.office_address}</td>
-                                        <td>{item.aadhar_details}</td> */}
-                                        {/* <td>{item.mobile_no}</td> */}
                                         <td>
                                           {maskSensitiveInfo(
                                             item.mobile_no,
@@ -288,69 +259,8 @@ const SdPanFourHistory = () => {
                                             4
                                           )}
                                         </td>
-                                        {/* <td>{item.email_id}</td>
-                                        <td>{item.pin_code}</td>
-                                        <td>{item.state}</td> */}
-                                        {/* <td>{item.Change_Request}</td> */}
-                                        {/* <td>
-                                          {item.documentUpload
-                                            ? item.documentUpload
-                                                .split(",")
-                                                .map((kycurl, kycindx) => (
-                                                  <div key={kycindx}>
-                                                    <a
-                                                      href={kycurl}
-                                                      target="_blank"
-                                                      rel="noopener noreferrer"
-                                                    >
-                                                      View {kycindx + 1}
-                                                    </a>
-                                                  </div>
-                                                ))
-                                            : "No KYC available"}
-                                        </td>
-                                        <td>
-                                          {" "}
-                                          <a
-                                            href={item.attachment_form}
-                                            target="_blank"
-                                          >
-                                            View
-                                          </a>
-                                        </td>
-                                        <td>
-                                          {" "}
-                                          <a
-                                            href={item.attachment_signature}
-                                            target="_blank"
-                                          >
-                                            View
-                                          </a>
-                                        </td>
-                                        <td>
-                                          {" "}
-                                          <a
-                                            href={item.attachment_photo}
-                                            target="_blank"
-                                          >
-                                            View
-                                          </a>
-                                        </td> */}
                                         <td>{item.Charge_Amount}</td>
-                                        <td
-                                          style={{
-                                            color:
-                                              item.status === "Pending"
-                                                ? "#FFC107"
-                                                : item.status === "Reject"
-                                                ? "#DC3545"
-                                                : item.status === "Success"
-                                                ? "#28A745"
-                                                : "black",
-                                          }}
-                                        >
-                                          {item.status}
-                                        </td>
+                                        <td>{item.status}</td>
                                         <td>{item.note}</td>
                                       </tr>
                                     ))
@@ -366,8 +276,8 @@ const SdPanFourHistory = () => {
                           </div>
                           <PaginationContainer>
                             <ReactPaginate
-                              previousLabel={"previous"}
-                              nextLabel={"next"}
+                              previousLabel={"Previous"}
+                              nextLabel={"Next"}
                               breakLabel={"..."}
                               pageCount={totalPages}
                               marginPagesDisplayed={2}

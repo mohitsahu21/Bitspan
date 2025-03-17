@@ -133,6 +133,10 @@ const SdVerifyDistrictHistory = () => {
     return matchesKeyword && matchesDate && matchesSearch;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [searchQuery, fromDate, toDate]);
+
   const totalPages = Math.ceil(filteredData.length / complaintsPerPage);
 
   const paginateData = () => {
@@ -181,35 +185,18 @@ const SdVerifyDistrictHistory = () => {
                       <div className="row d-flex flex-column g-4">
                         <div className="d-flex flex-column flex-md-row gap-3">
                           <div className="col-12 col-md-4 col-lg-3">
-                            {/* <input
-                              className="form-control"
-                              type="search"
-                              id="floatingInputGroup1"
-                              placeholder="Search by Ord ID"
-                              value={filterValue}
-                              onChange={(e) => {
-                                setFilterValue(e.target.value);
-                                if (e.target.value === "") {
-                                  setCurrentPage(0);
-                                }
-                              }}
-                              onKeyDown={(e) => {
-                                if (e.key === "Escape") {
-                                  setFilterValue("");
-                                  setCurrentPage(0);
-                                }
-                              }}
-                            /> */}
-
                             <label for="fromDate" className="form-label">
                               Search
                             </label>
                             <input
-                              type="text"
+                              type="search"
                               className="form-control "
                               placeholder="Search by  Order ID"
                               value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
+                              onChange={(e) => (
+                                setSearchQuery(e.target.value),
+                                setCurrentPage(0)
+                              )}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -221,7 +208,9 @@ const SdVerifyDistrictHistory = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => (
+                                setFromDate(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -233,7 +222,9 @@ const SdVerifyDistrictHistory = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => (
+                                setToDate(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
                         </div>

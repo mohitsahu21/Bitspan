@@ -148,7 +148,7 @@ const SdOnlineRecharges = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Online Recharge History
+                          Provider 1 Recharge
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -158,7 +158,7 @@ const SdOnlineRecharges = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Online Recharge History
+                            Provider 1 Recharge
                           </span>{" "}
                         </p>
                       </div>
@@ -167,7 +167,40 @@ const SdOnlineRecharges = () => {
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
                       <div className="row d-flex flex-column g-4">
-                        <div className="d-flex flex-column flex-md-row gap-3">
+                        <div className="d-flex flex-column flex-xl-row gap-3">
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                            <input
+                              id="fromDate"
+                              className="form-control"
+                              type="search"
+                              placeholder="Enter Order Id/Txn ID/Operator/User Id"
+                              value={keyword}
+                              onChange={(e) => setKeyword(e.target.value)}
+                            />
+                          </div>
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-3">
+                            {/* <label for="toDate" className="form-label">
+                              Select Type
+                            </label> */}
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              value={rechargeType}
+                              onChange={(e) => setRechargeType(e.target.value)}
+                            >
+                              <option selected>---Select---</option>
+                              <option value="Prepaid">Prepaid</option>
+                              <option value="Postpaid">Postpaid</option>
+                              <option value="DTH">DTH</option>
+                              <option value="Broadband">Broadband</option>
+                              <option value="Electricity">Electricity</option>
+                              <option value="Insurance">Insurance</option>
+                              <option value="Landline">Landline</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div className="d-flex flex-column flex-xl-row gap-3">
                           <div className="col-12 col-md-4 col-lg-3">
                             <label for="fromDate" className="form-label">
                               From
@@ -192,44 +225,6 @@ const SdOnlineRecharges = () => {
                               onChange={(e) => setToDate(e.target.value)}
                             />
                           </div>
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="toDate" className="form-label">
-                              Select Type
-                            </label>
-                            <select
-                              className="form-select"
-                              aria-label="Default select example"
-                              value={rechargeType}
-                              onChange={(e) => setRechargeType(e.target.value)}
-                            >
-                              <option selected>---Select---</option>
-                              <option value="Prepaid">Prepaid</option>
-                              <option value="Postpaid">Postpaid</option>
-                              <option value="DTH">DTH</option>
-                              <option value="Broadband">Broadband</option>
-                              <option value="Electricity">Electricity</option>
-                              <option value="Insurance">Insurance</option>
-                              <option value="Landline">Landline</option>
-                            </select>
-                          </div>
-                        </div>
-
-                        <div className="d-flex flex-column flex-xl-row gap-3">
-                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
-                            {/* <label for="fromDate" className="form-label">From</label> */}
-                            <input
-                              id="fromDate"
-                              className="form-control"
-                              type="search"
-                              placeholder="Enter Order Id/Txn ID/Operator/User Id"
-                              value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
-                            />
-                          </div>
-
-                          {/* <div className="d-flex align-items-end">
-                                                        <button type="button" className="btn btn-primary button">Search</button>
-                                                    </div> */}
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">

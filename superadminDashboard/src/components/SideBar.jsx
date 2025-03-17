@@ -1218,7 +1218,7 @@ const SuperDisData = [
 
     subNav: [
       {
-        title: "View All History",
+        title: "Other Services History",
         path: "/view-all-offline-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
@@ -1230,14 +1230,14 @@ const SuperDisData = [
         // cName: "sub-nav",
       },
       {
-        title: "View Offline DTH Connection Request",
-        path: "/Offline-dth-connection",
+        title: "Provider 2 Recharge",
+        path: "/Offline-Recharge-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
       },
       {
-        title: "View Offline Recharge Request",
-        path: "/Offline-Recharge-history",
+        title: "Provider 2 DTH Connection",
+        path: "/Offline-dth-connection",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
       },
@@ -1352,13 +1352,13 @@ const SuperDisData = [
       //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
       // },
       {
-        title: "View DTH Connection History",
+        title: "Provider 1 DTH Connection",
         path: "/online-dth-connection-history",
         icon: <FaRegListAlt color="#fe662b" />,
         // cName: "sub-nav",
       },
       {
-        title: "View Recharge History",
+        title: "Provider 1 Recharge",
         path: "/online-recharge-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
@@ -2400,7 +2400,7 @@ const WhiteLabelData = [
     ],
   },
   {
-    title: "Offline Services",
+    title: "Other Services",
     path: "#",
     icon: <MdFilterListOff color="#fe662b" />,
     iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
@@ -2420,7 +2420,7 @@ const WhiteLabelData = [
       //   // cName: "sub-nav",
       // },
       {
-        title: "View All History",
+        title: "Other Services History",
         path: "/view-all-offline-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
@@ -2432,14 +2432,14 @@ const WhiteLabelData = [
         // cName: "sub-nav",
       },
       {
-        title: "View Offline DTH Connection Request",
-        path: "/Offline-dth-connection",
+        title: "Provider 2 Recharge",
+        path: "/Offline-Recharge-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
       },
       {
-        title: "View Offline Recharge Request",
-        path: "/Offline-Recharge-history",
+        title: "Provider 2 DTH Connection",
+        path: "/Offline-dth-connection",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
       },
@@ -2584,13 +2584,13 @@ const WhiteLabelData = [
       //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
       // },
       {
-        title: "View DTH Connection History",
+        title: "Provider 1 DTH Connection",
         path: "/online-dth-connection-history",
         icon: <FaRegListAlt color="#fe662b" />,
         // cName: "sub-nav",
       },
       {
-        title: "View Recharge History",
+        title: "Provider 1 Recharge",
         path: "/online-recharge-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",

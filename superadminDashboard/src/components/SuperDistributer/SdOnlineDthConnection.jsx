@@ -153,7 +153,7 @@ const SdOnlineDthConnection = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Online DTH Connection History
+                          Provider 1 DTH Connection
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -163,7 +163,7 @@ const SdOnlineDthConnection = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Online DTH Connection History
+                            Provider 1 DTH Connection
                           </span>{" "}
                         </p>
                       </div>
@@ -172,35 +172,24 @@ const SdOnlineDthConnection = () => {
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
                       <div className="row d-flex flex-column g-4">
-                        <div className="d-flex flex-column flex-md-row gap-3">
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="fromDate" className="form-label">
-                              From
-                            </label>
+                        <div className="d-flex flex-column flex-xl-row gap-3">
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
                             <input
                               id="fromDate"
                               className="form-control"
-                              type="date"
-                              value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              type="search"
+                              placeholder="Enter Order Id/Txn ID/Operator/User Id"
+                              value={keyword}
+                              onChange={(e) => (
+                                setKeyword(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="toDate" className="form-label">
-                              To
-                            </label>
-                            <input
-                              id="toDate"
-                              className="form-control "
-                              type="date"
-                              value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
-                            />
-                          </div>
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="toDate" className="form-label">
+
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-3">
+                            {/* <label for="toDate" className="form-label">
                               Select Operator
-                            </label>
+                            </label> */}
                             <select
                               className="form-select"
                               aria-label="Default select example"
@@ -218,21 +207,34 @@ const SdOnlineDthConnection = () => {
                         </div>
 
                         <div className="d-flex flex-column flex-xl-row gap-3">
-                          <div className="col-12 col-md-12 col-lg-12 col-xl-10">
-                            {/* <label for="fromDate" className="form-label">From</label> */}
+                          <div className="col-12 col-md-4 col-lg-3">
+                            <label for="fromDate" className="form-label">
+                              From
+                            </label>
                             <input
                               id="fromDate"
                               className="form-control"
-                              type="search"
-                              placeholder="Enter Order Id/Txn ID/Operator/User Id"
-                              value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              type="date"
+                              value={fromDate}
+                              onChange={(e) => (
+                                setFromDate(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
-
-                          {/* <div className="d-flex align-items-end">
-                                                        <button type="button" className="btn btn-primary button">Search</button>
-                                                    </div> */}
+                          <div className="col-12 col-md-4 col-lg-3">
+                            <label for="toDate" className="form-label">
+                              To
+                            </label>
+                            <input
+                              id="toDate"
+                              className="form-control "
+                              type="date"
+                              value={toDate}
+                              onChange={(e) => (
+                                setToDate(e.target.value), setCurrentPage(0)
+                              )}
+                            />
+                          </div>
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
