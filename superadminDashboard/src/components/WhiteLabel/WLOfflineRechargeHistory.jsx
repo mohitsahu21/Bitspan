@@ -146,7 +146,7 @@ const WLOfflineRechargeHistory = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Offline Recharge Requests
+                          Provider 2 Recharge
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -156,7 +156,7 @@ const WLOfflineRechargeHistory = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Offline Recharge Requests
+                            Provider 2 Recharge
                           </span>{" "}
                         </p>
                       </div>

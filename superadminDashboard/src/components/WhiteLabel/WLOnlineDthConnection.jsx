@@ -149,7 +149,7 @@ const WLOnlineDthConnection = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Online DTH Connection History
+                        Provider 1 DTH Connection
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -159,7 +159,7 @@ const WLOnlineDthConnection = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Online DTH Connection History
+                            Provider 1 DTH Connection
                           </span>{" "}
                         </p>
                       </div>
@@ -178,7 +178,9 @@ const WLOnlineDthConnection = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {setFromDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -190,7 +192,9 @@ const WLOnlineDthConnection = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => {setToDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -201,7 +205,9 @@ const WLOnlineDthConnection = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={OperatorName}
-                              onChange={(e) => setOperatorName(e.target.value)}
+                              onChange={(e) => {setOperatorName(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             >
                               <option selected>---Select---</option>
                               <option value="Dish TV">Dish TV</option>
@@ -222,7 +228,9 @@ const WLOnlineDthConnection = () => {
                               type="search"
                               placeholder="Enter Order Id/Txn ID/Operator/User Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {setKeyword(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
 

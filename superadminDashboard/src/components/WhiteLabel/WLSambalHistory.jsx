@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
 
 const WLSambalHistory = () => {
   const [allData, setAllData] = useState([]);
@@ -139,9 +140,7 @@ const WLSambalHistory = () => {
       <Wrapper>
         <div className="main">
           <div className="container-fluid">
-            {dataLoading ? (
-              <div className="loader">Loading data, please wait...</div>
-            ) : (
+           
               <div className="row flex-wrap justify-content-lg-center justify-content-center ">
                 <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
                   {/* <Sider /> */}
@@ -266,6 +265,15 @@ const WLSambalHistory = () => {
 
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="table-responsive">
+                            {dataLoading ? (
+                                  <div className="d-flex justify-content-center">
+                                    <Spinner animation="border" role="status">
+                                      <span className="visually-hidden ">
+                                        Loading...
+                                      </span>
+                                    </Spinner>
+                                  </div>
+                                ) :
                               <table class="table table-striped">
                                 <thead className="table-dark">
                                   <tr>
@@ -329,6 +337,7 @@ const WLSambalHistory = () => {
                                   )}
                                 </tbody>
                               </table>
+}
                             </div>
                             <PaginationContainer>
                               <ReactPaginate
@@ -351,7 +360,7 @@ const WLSambalHistory = () => {
                   </div>
                 </div>
               </div>
-            )}
+            
           </div>
         </div>
       </Wrapper>

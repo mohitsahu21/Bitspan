@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BiHomeAlt } from "react-icons/bi";
 import styled from "styled-components";
-import { Dropdown, DropdownButton } from "react-bootstrap";
+import { Dropdown, DropdownButton, Spinner } from "react-bootstrap";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
@@ -280,6 +280,15 @@ const SdAllCommissionHistory = () => {
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div className="table-responsive">
+                          {loading ? (
+                                  <div className="d-flex justify-content-center">
+                                    <Spinner animation="border" role="status">
+                                      <span className="visually-hidden ">
+                                        Loading...
+                                      </span>
+                                    </Spinner>
+                                  </div>
+                                ) :
                             <table className="table table-striped">
                               <thead className="table-dark">
                                 <tr>
@@ -303,9 +312,7 @@ const SdAllCommissionHistory = () => {
                                 </tr>
                               </thead>
                               <tbody>
-                                {loading ? (
-                                  <p>Loading...</p>
-                                ) : displayData.length > 0 ? (
+                               {   displayData.length > 0 ? (
                                   displayData.map((item, index) => (
                                     <tr key={index}>
                                       <td>
@@ -343,6 +350,7 @@ const SdAllCommissionHistory = () => {
                                 )}
                               </tbody>
                             </table>
+}
                           </div>
                           <PaginationContainer>
                             <ReactPaginate

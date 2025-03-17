@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BiHomeAlt } from "react-icons/bi";
 import styled from "styled-components";
-import { Dropdown, DropdownButton } from "react-bootstrap";
+import { Dropdown, DropdownButton, Spinner } from "react-bootstrap";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +14,7 @@ const WLAllOfflineForm = () => {
   const [formData, setFormData] = useState([]);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("All");
+  const [selectedStatus, setSelectedStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const complaintsPerPage = 10; // Set items per page
   const [currentPage, setCurrentPage] = useState(0);
@@ -23,6 +23,7 @@ const WLAllOfflineForm = () => {
   const { token } = useSelector((state) => state.user);
 
   const fetchData = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(
         // `https://2kadam.co.in/api/auth/superDistributor/getApplyOfflineFormById/${userId}`,
@@ -60,6 +61,9 @@ const WLAllOfflineForm = () => {
         });
       }
     }
+    finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -90,8 +94,8 @@ const WLAllOfflineForm = () => {
         ?.toLowerCase()
         ?.includes(searchQuery?.toLowerCase()) ||
       item.order_id?.toLowerCase()?.includes(searchQuery?.toLowerCase());
-    const matchesStatus =
-      selectedStatus === "---Select---" ||
+    const matchesStatus = !selectedStatus ||
+      selectedStatus ===  "---Select---" ||
       item.status?.toLowerCase() === selectedStatus?.toLowerCase();
     const matchesDate =
       (!fromDateObj || (createdAtDate && createdAtDate >= fromDateObj)) &&
@@ -143,10 +147,10 @@ const WLAllOfflineForm = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          View All Offline History
+                           Other Services History
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; View All Offline History{" "}
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Other Services History{" "}
                         </h6>
                       </div>
                     </div>
@@ -259,101 +263,105 @@ const WLAllOfflineForm = () => {
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
-                            <table class="table table-striped">
-                              <thead className="table-dark">
-                                <tr>
-                                  <th scope="col">Sr.No</th>
-                                  <th scope="col">Date</th>
-                                  <th scope="col">Order ID</th>
-                                  <th scope="col">User ID</th>
-                                  {/* <th scope="col">Applicant Name</th>
-                                  <th scope="col">Applicant Father Name</th>
-                                  <th scope="col">Applicant Number</th> */}
-                                  <th scope="col">Service</th>
-                                  <th scope="col">other</th>
-                                  {/* <th scope="col">View Form</th>
-                                  <th scope="col">View Photo</th>
-                                  <th scope="col">View Signature</th>
-                                  <th scope="col">View KYC</th> */}
-                                  <th scope="col">Status</th>
-                                  <th scope="col">Note</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {loading ? (
+                          {loading ? (
+                                  <div className="d-flex justify-content-center">
+                                    <Spinner animation="border" role="status">
+                                      <span className="visually-hidden ">
+                                        Loading...
+                                      </span>
+                                    </Spinner>
+                                  </div>
+                                ) : 
+                                <table class="table table-striped">
+                                <thead className="table-dark">
                                   <tr>
-                                    <td colSpan="7" className="text-center">
-                                      Loading...
-                                    </td>
+                                    <th scope="col">Sr.No</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Order ID</th>
+                                    <th scope="col">User ID</th>
+                                    {/* <th scope="col">Applicant Name</th>
+                                    <th scope="col">Applicant Father Name</th>
+                                    <th scope="col">Applicant Number</th> */}
+                                    <th scope="col">Service</th>
+                                    <th scope="col">other</th>
+                                    {/* <th scope="col">View Form</th>
+                                    <th scope="col">View Photo</th>
+                                    <th scope="col">View Signature</th>
+                                    <th scope="col">View KYC</th> */}
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Note</th>
                                   </tr>
-                                ) : displayData.length > 0 ? (
-                                  displayData.map((item, index) => (
-                                    <tr key={index}>
-                                      <td>
-                                        {currentPage * complaintsPerPage +
-                                          index +
-                                          1}
+                                </thead>
+                                <tbody>
+                                {displayData &&  displayData.length > 0 ? (
+                                    displayData.map((item, index) => (
+                                      <tr key={index}>
+                                        <td>
+                                          {currentPage * complaintsPerPage +
+                                            index +
+                                            1}
+                                        </td>
+                                        <td>{item.created_at}</td>
+                                        <td>{item.order_id}</td>
+                                        <td>{item.user_id}</td>
+                                        {/* <td>{item.applicant_name}</td>
+                                          <td>{item.applicant_father}</td>
+                                          <td>{item.applicant_number}</td> */}
+                                        <td>{item.applicant_select_service}</td>
+                                        <td>{item.other}</td>
+                                        {/* <td>
+                                            <a
+                                              href={item.attached_form}
+                                              target="_blank"
+                                            >
+                                              View Form
+                                            </a>
+                                          </td>
+                                          <td>
+                                            <a
+                                              href={item.attached_photo}
+                                              target="_blank"
+                                            >
+                                              View Photo
+                                            </a>
+                                          </td>
+                                          <td>
+                                            <a
+                                              href={item.attached_sign}
+                                              target="_blank"
+                                            >
+                                              View Sign
+                                            </a>
+                                          </td>
+                                          <td>
+                                            {item?.attached_kyc
+                                              ?.split(",")
+                                              ?.map((kycurl, kycindx) => (
+                                                <div key={kycindx}>
+                                                  <a
+                                                    href={kycurl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                  >
+                                                    View KYC {kycindx + 1}
+                                                  </a>
+                                                </div>
+                                              ))}
+                                          </td> */}
+                                        <td>{item.status}</td>
+                                        <td>{item.note}</td>
+                                      </tr>
+                                    ))
+                                  ) : (
+                                    <tr>
+                                      <td colSpan="7" className="text-center">
+                                        No data available
                                       </td>
-                                      <td>{item.created_at}</td>
-                                      <td>{item.order_id}</td>
-                                      <td>{item.user_id}</td>
-                                      {/* <td>{item.applicant_name}</td>
-                                        <td>{item.applicant_father}</td>
-                                        <td>{item.applicant_number}</td> */}
-                                      <td>{item.applicant_select_service}</td>
-                                      <td>{item.other}</td>
-                                      {/* <td>
-                                          <a
-                                            href={item.attached_form}
-                                            target="_blank"
-                                          >
-                                            View Form
-                                          </a>
-                                        </td>
-                                        <td>
-                                          <a
-                                            href={item.attached_photo}
-                                            target="_blank"
-                                          >
-                                            View Photo
-                                          </a>
-                                        </td>
-                                        <td>
-                                          <a
-                                            href={item.attached_sign}
-                                            target="_blank"
-                                          >
-                                            View Sign
-                                          </a>
-                                        </td>
-                                        <td>
-                                          {item?.attached_kyc
-                                            ?.split(",")
-                                            ?.map((kycurl, kycindx) => (
-                                              <div key={kycindx}>
-                                                <a
-                                                  href={kycurl}
-                                                  target="_blank"
-                                                  rel="noopener noreferrer"
-                                                >
-                                                  View KYC {kycindx + 1}
-                                                </a>
-                                              </div>
-                                            ))}
-                                        </td> */}
-                                      <td>{item.status}</td>
-                                      <td>{item.note}</td>
                                     </tr>
-                                  ))
-                                ) : (
-                                  <tr>
-                                    <td colSpan="7" className="text-center">
-                                      No data available
-                                    </td>
-                                  </tr>
-                                )}
-                              </tbody>
-                            </table>
+                                  )}
+                                </tbody>
+                              </table>
+}
                           </div>
                           {/* <div className="float-end">
                             <nav aria-label="Page navigation example">

@@ -148,7 +148,7 @@ const WLOnlineRecharges = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Online Recharge History
+                          Provider 1 Recharge
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -158,7 +158,7 @@ const WLOnlineRecharges = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Online Recharge History
+                            Provider 1 Recharge
                           </span>{" "}
                         </p>
                       </div>
@@ -177,7 +177,9 @@ const WLOnlineRecharges = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {setFromDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -189,7 +191,9 @@ const WLOnlineRecharges = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => {setToDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -200,7 +204,9 @@ const WLOnlineRecharges = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={rechargeType}
-                              onChange={(e) => setRechargeType(e.target.value)}
+                              onChange={(e) => {setRechargeType(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             >
                               <option selected>---Select---</option>
                               <option value="Prepaid">Prepaid</option>
@@ -223,7 +229,9 @@ const WLOnlineRecharges = () => {
                               type="search"
                               placeholder="Enter Order Id/Txn ID/Operator/User Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {setKeyword(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             />
                           </div>
 
@@ -252,12 +260,12 @@ const WLOnlineRecharges = () => {
                                       <th scope="col">Order Id</th>
                                       <th scope="col">Transaction Id</th>
                                       <th scope="col">recharge_Type</th>
-                                      <th scope="col">OP Id</th>
+                                      {/* <th scope="col">OP Id</th> */}
                                       <th scope="col">Number</th>
                                       <th scope="col">Amount</th>
                                       <th scope="col">Operator Name</th>
-                                      <th scope="col">Message</th>
-                                      <th scope="col">API Provider Name</th>
+                                      {/* <th scope="col">Message</th> */}
+                                      {/* <th scope="col">API Provider Name</th> */}
                                       <th scope="col">User Id</th>
                                       {/* <th scope="col">User Name</th> */}
                                       {/* <th scope="col">User Role</th> */}
@@ -278,7 +286,7 @@ const WLOnlineRecharges = () => {
                                           <td>{item.orderid}</td>
                                           <td>{item.transaction_id}</td>
                                           <td>{item.recharge_Type}</td>
-                                          <td>{item.opid}</td>
+                                          {/* <td>{item.opid}</td> */}
                                           {/* <td>{item.mobile_no}</td> */}
                                           <td>
                                             {maskSensitiveInfo(
@@ -290,8 +298,8 @@ const WLOnlineRecharges = () => {
                                           <td>{item.amount}</td>
 
                                           <td>{item.operator_name}</td>
-                                          <td>{item.message}</td>
-                                          <td>{item.providerName}</td>
+                                          {/* <td>{item.message}</td> */}
+                                          {/* <td>{item.providerName}</td> */}
                                           <td>{item.created_by_userid}</td>
                                           {/* <td>{item.UserName}</td> */}
                                           {/* <td>{item.ContactNo}</td> */}

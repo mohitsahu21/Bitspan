@@ -8,6 +8,7 @@ import ReactPaginate from "react-paginate";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { Spinner } from "react-bootstrap";
 
 const WLVerifyDistrictHistory = () => {
   const [allData, setAllData] = useState([]);
@@ -37,6 +38,7 @@ const WLVerifyDistrictHistory = () => {
   };
 
   const fetchRechargeData = async () => {
+    setLoading(true); // Start loading
     try {
       const response = await axios.get(
         // `https://2kadam.co.in/api/auth/superDistributor/getVerifyEDistrictHistory/${userId}`,
@@ -121,7 +123,7 @@ const WLVerifyDistrictHistory = () => {
       // item.mobile_no
       //   ?.toLowerCase()
       //   ?.includes(searchQuery?.toLowerCase()) ||
-      row.order_id?.toLowerCase()?.includes(searchQuery?.toLowerCase());
+      row.order_id?.toLowerCase()?.includes(searchQuery?.trim()?.toLowerCase());
 
     const matchesDate =
       (!fromDate ||
@@ -168,10 +170,10 @@ const WLVerifyDistrictHistory = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Verify E-District History
+                          Verify E-District
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; Verify E-District History
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Verify E-District
                         </h6>
                       </div>
                     </div>
@@ -206,11 +208,13 @@ const WLVerifyDistrictHistory = () => {
                               Search
                             </label>
                             <input
-                              type="text"
+                              type="search"
                               className="form-control "
                               placeholder="Search by  Order ID"
                               value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
+                              onChange={(e) => {setSearchQuery(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -222,7 +226,9 @@ const WLVerifyDistrictHistory = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {setFromDate(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -234,17 +240,28 @@ const WLVerifyDistrictHistory = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => {setToDate(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
+                          {loading ? (
+                                  <div className="d-flex justify-content-center">
+                                    <Spinner animation="border" role="status">
+                                      <span className="visually-hidden ">
+                                        Loading...
+                                      </span>
+                                    </Spinner>
+                                  </div>
+                                ) :
                             <table class="table table-striped">
                               <thead className="table-dark">
                                 <tr>
-                                  <th scope="col">#</th>
+                                  <th scope="col">Sr.No</th>
                                   <th scope="col">Date</th>
                                   <th scope="col">Order ID</th>
                                   <th scope="col">Application Type</th>
@@ -256,7 +273,7 @@ const WLVerifyDistrictHistory = () => {
                                 </tr>
                               </thead>
                               <tbody>
-                                {displayData.length > 0 ? (
+                                {displayData && displayData.length > 0 ? (
                                   displayData.map((item, index) => (
                                     <tr key={item.id}>
                                       <td>
@@ -286,6 +303,7 @@ const WLVerifyDistrictHistory = () => {
                                 )}
                               </tbody>
                             </table>
+}
                           </div>
                           <PaginationContainer>
                             <ReactPaginate

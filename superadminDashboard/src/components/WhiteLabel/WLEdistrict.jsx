@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BiHomeAlt } from "react-icons/bi";
 import styled from "styled-components";
-import { Dropdown, DropdownButton } from "react-bootstrap";
+import { Dropdown, DropdownButton, Spinner } from "react-bootstrap";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,6 +33,7 @@ const WLEdistrict = () => {
   };
 
   const fetchData = async () => {
+    setLoading(true); // Start loading
     try {
       const response = await axios.get(
         `https://2kadam.co.in/api/auth/whiteLabel/getEDistrictHistory/${userId}`,
@@ -85,7 +86,7 @@ const WLEdistrict = () => {
             // item.mobile_no
             //   ?.toLowerCase()
             //   ?.includes(searchQuery?.toLowerCase()) ||
-            row.order_id?.toLowerCase()?.includes(searchQuery?.toLowerCase());
+            row.order_id?.toLowerCase()?.includes(searchQuery?.trim()?.toLowerCase());
           const matchesStatus =
             selectedStatus === "All" ||
             row.status?.toLowerCase() === selectedStatus?.toLowerCase();
@@ -157,10 +158,10 @@ const WLEdistrict = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          E-District History
+                          E-District
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; E-District History{" "}
+                          <BiHomeAlt /> &nbsp;/ &nbsp; E-District{" "}
                         </h6>
                       </div>
                     </div>
@@ -175,11 +176,13 @@ const WLEdistrict = () => {
                               Search
                             </label>
                             <input
-                              type="text"
+                              type="search"
                               className="form-control "
-                              placeholder="Search by Name or Order ID"
+                              placeholder="Search by Order ID"
                               value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
+                              onChange={(e) => {setSearchQuery(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             />
                           </div>
 
@@ -211,7 +214,9 @@ const WLEdistrict = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {setFromDate(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -223,7 +228,9 @@ const WLEdistrict = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => {setToDate(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             />
                           </div>
                         </div>
@@ -243,6 +250,7 @@ const WLEdistrict = () => {
                                 <thead className="table-dark">
                                   <tr>
                                     <th scope="col">Sr.No</th>
+                                    <th scope="col">Date</th>
                                     <th scope="col">Order ID</th>
                                     <th scope="col">Applicant Type</th>
                                     {/* <th scope="col">Applicant Name</th>
@@ -255,13 +263,12 @@ const WLEdistrict = () => {
                                     <th scope="col">Samagra ID</th>
                                     <th scope="col">Address</th>
                                     <th scope="col">State</th> */}
-                                    <th scope="col">Prev Application</th>
-                                    <th scope="col">Annual inc</th>
-                                    <th scope="col">View Document</th>
+                                    {/* <th scope="col">Prev Application</th> */}
+                                    {/* <th scope="col">Annual inc</th> */}
+                                    {/* <th scope="col">View Document</th> */}
                                     <th scope="col">Amount</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Status</th>
                                     <th scope="col">Note</th>
+                                    <th scope="col">Status</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -273,6 +280,7 @@ const WLEdistrict = () => {
                                             index +
                                             1}
                                         </td>
+                                        <td>{item.created_at}</td>
                                         <td>{item.order_id}</td>
                                         <td>{item.application_type}</td>
                                         {/* <td>{item.name}</td>
@@ -297,9 +305,9 @@ const WLEdistrict = () => {
                                         <td>{item.samagar_member_id}</td>
                                         <td>{item.address}</td>
                                         <td>{item.state}</td> */}
-                                        <td>{item.previous_application}</td>
-                                        <td>{item.annual_income}</td>
-                                        <td>
+                                        {/* <td>{item.previous_application}</td> */}
+                                        {/* <td>{item.annual_income}</td> */}
+                                        {/* <td>
                                           {item?.documentUpload
                                             ?.split(",")
                                             .map((kycurl, kycindx) => (
@@ -313,11 +321,10 @@ const WLEdistrict = () => {
                                                 </a>
                                               </div>
                                             ))}
-                                        </td>
+                                        </td> */}
                                         <td>{item.charge_amount}</td>
-                                        <td>{item.created_at}</td>
-                                        <td>{item.status}</td>
                                         <td>{item.note}</td>
+                                        <td>{item.status}</td>
                                       </tr>
                                     ))
                                   ) : (
