@@ -280,7 +280,13 @@ const PanCardFour = () => {
 
     if (formData.application_type == "Correction") {
       if (Object.keys(filteredChangeRequest).length === 0) {
-        alert("Please select at least one change request");
+        // alert("Please select at least one change request");
+        Swal.fire({
+          icon: "warning",
+          title: "Validation Error",
+          text: "Please select at least one change request field for Correction.",
+        });
+        setIsLoading(false);
         return;
       }
     }
