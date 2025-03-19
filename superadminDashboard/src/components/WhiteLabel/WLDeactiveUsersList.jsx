@@ -232,7 +232,9 @@ const WLDeactiveUsersList = () => {
                               type="search"
                               placeholder="Enter User Name/User Id/Mobile/Email Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {setKeyword(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -241,7 +243,9 @@ const WLDeactiveUsersList = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={userType}
-                              onChange={(e) => setUserType(e.target.value)}
+                              onChange={(e) => {setUserType(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             >
                               <option selected>---Select User Type---</option>
                               <option value="Retailer">Retailer</option>
@@ -282,11 +286,11 @@ const WLDeactiveUsersList = () => {
                                       <th scope="col">Role</th>
                                       <th scope="col">Email</th>
                                       <th scope="col">Mobile</th>
-                                      <th scope="col">Package Id</th>
-                                      <th scope="col">Package Name</th>
+                                      {/* <th scope="col">Package Id</th>
+                                      <th scope="col">Package Name</th> */}
                                       {/* <th scope="col">Address</th> */}
                                       <th scope="col">PAN No</th>
-                                      <th scope="col">AAdhaar No</th>
+                                      {/* <th scope="col">AAdhaar No</th> */}
                                       <th scope="col">Business Name</th>
                                       <th scope="col">City</th>
                                       <th scope="col">State</th>
@@ -296,16 +300,16 @@ const WLDeactiveUsersList = () => {
                                                                       <th scope="col">E-Coupon <br/>Price</th> */}
 
                                       <th scope="col">Created By</th>
-                                      <th scope="col">Website Name</th>
+                                      {/* <th scope="col">Website Name</th> */}
 
-                                      <th scope="col">Payment Status</th>
+                                      {/* <th scope="col">Payment Status</th>
                                       <th scope="col">Aadhar Front</th>
                                       <th scope="col">Aadhar Back</th>
-                                      <th scope="col">Pan Card Front</th>
+                                      <th scope="col">Pan Card Front</th> */}
                                       {/* <th scope="col">View KYC</th> */}
                                       <th scope="col">Status</th>
                                       {/* <th scope="col">Note</th> */}
-                                      <th scope="col">Action</th>
+                                      {/* <th scope="col">Action</th> */}
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -325,10 +329,10 @@ const WLDeactiveUsersList = () => {
                                           <td>{user.role}</td>
                                           <td>{user.Email}</td>
                                           <td>{user.ContactNo}</td>
-                                          <td>{user.package_Id}</td>
-                                          <td>{user.package_name}</td>
+                                          {/* <td>{user.package_Id}</td>
+                                          <td>{user.package_name}</td> */}
                                           <td>{user.PanCardNumber}</td>
-                                          <td>{user.AadharNumber}</td>
+                                          {/* <td>{user.AadharNumber}</td> */}
                                           <td>{user.BusinessName}</td>
                                           <td>{user.City}</td>
 
@@ -339,14 +343,14 @@ const WLDeactiveUsersList = () => {
                                               " " +
                                               user?.created_By_User_Role}
                                           </td>
-                                          <td>
+                                          {/* <td>
                                             {user?.role == "WhiteLabel"
                                               ? user?.White_Label_Website_URL
                                               : user?.created_By_Website}
-                                          </td>
-                                          <td>{user?.PaymentStatus}</td>
+                                          </td> */}
+                                          {/* <td>{user?.PaymentStatus}</td> */}
 
-                                          <td>
+                                          {/* <td>
                                             {user.AadharFront ? (
                                               <a
                                                 href={user.AadharFront}
@@ -384,11 +388,11 @@ const WLDeactiveUsersList = () => {
                                             ) : (
                                               "Not Available"
                                             )}
-                                          </td>
+                                          </td> */}
                                           <td>{user.Status}</td>
                                           {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
                                           {/* <td>{user?.Note}</td> */}
-                                          <td>
+                                          {/* <td>
                                             <Dropdown>
                                               <Dropdown.Toggle
                                                 variant="success"
@@ -438,7 +442,7 @@ const WLDeactiveUsersList = () => {
                                                 </Dropdown.Item>
                                               </Dropdown.Menu>
                                             </Dropdown>
-                                          </td>
+                                          </td> */}
                                         </tr>
                                       ))
                                     ) : (

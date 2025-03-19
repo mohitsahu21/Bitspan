@@ -166,10 +166,10 @@ const WLShareIDsSummary = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Transfer Ids Report
+                          Transfer IDs Summary
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; Transfer Ids Report
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Transfer IDs Summary
                         </h6>
                       </div>
                     </div>
@@ -187,7 +187,9 @@ const WLShareIDsSummary = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {setFromDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -199,7 +201,9 @@ const WLShareIDsSummary = () => {
                               className="form-control"
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => {setToDate(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             />
                           </div>
                           {/* <div className="d-flex align-items-end">
@@ -222,7 +226,9 @@ const WLShareIDsSummary = () => {
                               type="search"
                               placeholder="search By Sender Id Or Reciever Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {setKeyword(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             />
                           </div>
 

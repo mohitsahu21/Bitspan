@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BiHomeAlt } from "react-icons/bi";
 import styled from "styled-components";
-import { Dropdown, DropdownButton } from "react-bootstrap";
+import { Dropdown, DropdownButton, Spinner } from "react-bootstrap";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
@@ -61,9 +61,9 @@ const WLContactUs = () => {
 
   const filteredItems = apiData.filter(
     (row) =>
-      // (row?.userId && row.userId.includes(keyword.trim())) ||
-      row?.name && row.name.includes(keyword.trim())
-    // (row?.orderId && row.orderId.includes(keyword.trim()))
+      (row?.email  && row.email.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      row?.name && row.name.toLowerCase().includes(keyword.trim().toLowerCase()) ||
+    (row?.mobile_no  && row.mobile_no.includes(keyword.trim()))
   );
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
@@ -114,15 +114,16 @@ const WLContactUs = () => {
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
                       <div className="row d-flex flex-column g-4">
                         <div className="d-flex flex-column flex-md-row gap-3">
-                          <div className="col-12 col-md-4 col-lg-3">
+                          <div className="col-12 col-md-8 col-lg-8">
                             <input
                               className="form-control"
                               type="search"
                               id="floatingInputGroup1"
-                              placeholder="Search by Name"
+                              placeholder="Search by Name , Email Id, Mobile No."
                               value={keyword}
                               onChange={(e) => {
                                 setKeyword(e.target.value);
+                                setCurrentPage(0);
                                 if (e.target.value === "") {
                                   setCurrentPage(0);
                                 }
@@ -139,18 +140,27 @@ const WLContactUs = () => {
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div className="table-responsive">
+                            {loading ? (
+                                                          <div className="d-flex justify-content-center">
+                                                            <Spinner animation="border" role="status">
+                                                              <span className="visually-hidden ">
+                                                                Loading...
+                                                              </span>
+                                                            </Spinner>
+                                                          </div>
+                                                        ) : (
                             <table className="table table-striped">
                               <thead className="table-dark">
                                 <tr>
                                   <th scope="col">Sr.No</th>
+                                  <th scope="col"> Date</th>
 
                                   <th scope="col">Name</th>
                                   <th scope="col">Email Id</th>
-                                  <th scope="col"> Address</th>
                                   <th scope="col">Mobile No.</th>
+                                  <th scope="col"> Address</th>
                                   <th scope="col">Message</th>
                                   {/* <th scope="col">Transaction ID</th> */}
-                                  <th scope="col"> Date</th>
                                   {/* <th scope="col">Total Amount</th>
                                   <th scope="col">Payment Method</th>
                                   <th scope="col">Status</th> */}
@@ -166,13 +176,13 @@ const WLContactUs = () => {
                                           1}
                                       </td>
 
+                                      <td>{item.CreatedAt}</td>
                                       <td>{item.name}</td>
                                       <td>{item.email}</td>
-                                      <td>{item.address}</td>
                                       <td>{item.mobile_no}</td>
+                                      <td>{item.address}</td>
                                       <td>{item.message}</td>
                                       {/* <td>{item.transactionId}</td> */}
-                                      <td>{item.CreatedAt}</td>
                                       {/* <td>{item.total_amount}</td>
                                       <td>{item.payment_method}</td>
                                       <td>{item.status}</td> */}
@@ -185,6 +195,7 @@ const WLContactUs = () => {
                                 )}
                               </tbody>
                             </table>
+                            )}
                           </div>
                           <PaginationContainer>
                             <ReactPaginate

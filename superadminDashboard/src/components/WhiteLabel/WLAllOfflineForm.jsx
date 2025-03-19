@@ -231,6 +231,9 @@ const WLAllOfflineForm = () => {
                                 <option value="Under Process">
                                   Under Process
                                 </option>
+                                <option value="Mark Edit">
+                                Mark Edit
+                                </option>
                                 <option value="Reject">Reject</option>
                               </select>
                             </div>

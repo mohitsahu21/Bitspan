@@ -2864,11 +2864,11 @@ const WhiteLabelData = [
         path: "/deactive-users",
         icon: <PiUserCircleMinusDuotone color="#fe662b" />,
       },
-      {
-        title: "Pending Payment Users",
-        path: "/pending-payment-users",
-        icon: <CiMoneyCheck1 color="#fe662b" />,
-      },
+      // {
+      //   title: "Pending Payment Users",
+      //   path: "/pending-payment-users",
+      //   icon: <CiMoneyCheck1 color="#fe662b" />,
+      // },
       {
         title: "All Users Joined List",
         path: "/users-joining-list",

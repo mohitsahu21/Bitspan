@@ -406,7 +406,9 @@ const WLWebUsersJoinedList = () => {
                               type="search"
                               placeholder="Enter User Name/User Id/Mobile/Email Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {setKeyword(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             />
                           </div>
 
@@ -416,7 +418,9 @@ const WLWebUsersJoinedList = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={userType}
-                              onChange={(e) => setUserType(e.target.value)}
+                              onChange={(e) => {setUserType(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             >
                               <option selected>---Select User Type---</option>
                               <option value="Retailer">Retailer</option>
@@ -433,7 +437,9 @@ const WLWebUsersJoinedList = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={status}
-                              onChange={(e) => setStatus(e.target.value)}
+                              onChange={(e) => {setStatus(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             >
                               <option selected>
                                 ---Select Payment Status---
@@ -450,7 +456,9 @@ const WLWebUsersJoinedList = () => {
                               aria-label="Default select example"
                               value={complaintsPerPage}
                               onChange={(e) =>
-                                setComplaintsPerPage(e.target.value)
+                                {setComplaintsPerPage(e.target.value)
+                                setCurrentPage(0)
+                                }
                               }
                             >
                               {/* <option selected>--Row Per Page---</option> */}
@@ -519,13 +527,13 @@ const WLWebUsersJoinedList = () => {
                                       {/* <th scope="col">P-Coupon <br/>Price</th>
                                                                       <th scope="col">E-Coupon <br/>Price</th> */}
 
-                                      <th scope="col">Created By</th>
-                                      <th scope="col">Website Name</th>
+                                      {/* <th scope="col">Created By</th>
+                                      <th scope="col">Website Name</th> */}
                                       <th scope="col">Joining Amount</th>
-                                      <th scope="col">Package Amount</th>
+                                      {/* <th scope="col">Package Amount</th>
                                       <th scope="col">
                                         WhiteLabel Commission Amount
-                                      </th>
+                                      </th> */}
 
                                       <th scope="col">Payment Status</th>
                                       {/* <th scope="col">Aadhar Front</th>
@@ -566,17 +574,17 @@ const WLWebUsersJoinedList = () => {
 
                                           <td>{user.State}</td>
                                           <td>{user.PinCode}</td>
-                                          <td>
+                                          {/* <td>
                                             {user?.created_By_User_Id +
                                               " " +
                                               user?.created_By_User_Role}
-                                          </td>
+                                          </td> */}
                                           {/* <td>{user?.role == "WhiteLabel" ? user?.White_Label_Website_URL :  user?.created_By_Website}</td> */}
-                                          <td>{user?.created_By_Website}</td>
+                                          {/* <td>{user?.created_By_Website}</td> */}
                                           <td>
                                             {user?.amount ? user?.amount : "NA"}
                                           </td>
-                                          <td>
+                                          {/* <td>
                                             {findPackagePrice(user)
                                               ? findPackagePrice(user)
                                               : "NA"}
@@ -587,7 +595,7 @@ const WLWebUsersJoinedList = () => {
                                               ? parseInt(user?.amount) -
                                                 findPackagePrice(user)
                                               : "NA"}
-                                          </td>
+                                          </td> */}
 
                                           <td>{user?.payment_status}</td>
 
