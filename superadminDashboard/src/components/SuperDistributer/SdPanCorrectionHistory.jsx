@@ -95,6 +95,10 @@ const SAPanCorrectionHistory = () => {
     return matchesKeyword && matchesDate && matchesType;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword, users, fromDate, toDate, PaymentMode]);
+
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
   const filterPagination = () => {
@@ -152,7 +156,42 @@ const SAPanCorrectionHistory = () => {
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
                       <div className="row d-flex flex-column g-4">
-                        <div className="d-flex flex-column flex-md-row gap-3">
+                        <div className="d-flex flex-column flex-xl-row gap-3">
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                            {/* <label for="fromDate" className="form-label">From</label> */}
+                            <input
+                              id="fromDate"
+                              className="form-control"
+                              type="search"
+                              placeholder="search By Order Id Or Txn Id"
+                              value={keyword}
+                              onChange={(e) => (
+                                setKeyword(e.target.value), setCurrentPage(0)
+                              )}
+                            />
+                          </div>
+
+                          <div className="col-12 col-md-4 col-lg-3">
+                            {/* <label for="toDate" className="form-label">
+                              Select Status
+                            </label> */}
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              value={PaymentMode}
+                              onChange={(e) => (
+                                setPaymentMode(e.target.value),
+                                setCurrentPage(0)
+                              )}
+                            >
+                              <option selected>---Select---</option>
+                              <option value="Success">Success</option>
+                              <option value="Failure">Failure</option>
+                              <option value="Reject"> Reject</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="d-flex flex-column flex-xl-row gap-3">
                           <div className="col-12 col-md-4 col-lg-3">
                             <label for="fromDate" className="form-label">
                               From
@@ -162,7 +201,9 @@ const SAPanCorrectionHistory = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => (
+                                setFromDate(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -174,39 +215,9 @@ const SAPanCorrectionHistory = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
-                            />
-                          </div>
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="toDate" className="form-label">
-                              Select Status
-                            </label>
-                            <select
-                              className="form-select"
-                              aria-label="Default select example"
-                              value={PaymentMode}
-                              onChange={(e) => setPaymentMode(e.target.value)}
-                            >
-                              <option selected>---Select---</option>
-                              <option value="Success">Success</option>
-                              <option value="Failed">Failed</option>
-                            </select>
-                          </div>
-
-                          {/* <div className="d-flex align-items-end">
-                                                        <button type="button" className="btn btn-primary button">Search</button>
-                                                    </div> */}
-                        </div>
-                        <div className="d-flex flex-column flex-xl-row gap-3">
-                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
-                            {/* <label for="fromDate" className="form-label">From</label> */}
-                            <input
-                              id="fromDate"
-                              className="form-control"
-                              type="search"
-                              placeholder="search By Order Id Or Txn Id"
-                              value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => (
+                                setToDate(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
 

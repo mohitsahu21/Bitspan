@@ -25,6 +25,14 @@ const SdComplaints = () => {
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState(null);
 
+  const initialFormState = {
+    complainType: "",
+    transactionNo: "",
+    mobileNo: "",
+    remark: "",
+    userID: currentUser.userId,
+  };
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -34,6 +42,14 @@ const SdComplaints = () => {
 
   const handleFileChange = (e) => {
     setComplainFile(e.target.files[0]);
+  };
+
+  const resetForm = () => {
+    setFormData(initialFormState);
+    setComplainFile(null);
+    // Reset file input
+    const fileInput = document.getElementById("formFileLg");
+    if (fileInput) fileInput.value = "";
   };
 
   const handleSubmit = async (e) => {
@@ -70,6 +86,8 @@ const SdComplaints = () => {
         icon: "success",
         title: "Complaint Registered Successfully!",
         text: "Your complaint has been recorded. We will get back to you shortly.",
+      }).then(() => {
+        resetForm(); // Reset form after successful submission
       });
     } catch (err) {
       console.error("Error submitting the form", err);

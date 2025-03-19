@@ -158,6 +158,19 @@ const ImportantLink = () => {
                         </div>
                       </Link>
                     </div>
+                    <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
+                      <Link
+                        to="https://image-converter.index.wf/"
+                        target="_blank"
+                      >
+                        <div
+                          className="p-3 border rounded"
+                          style={{ background: "#706fff", color: "#fff" }}
+                        >
+                          Image Converter
+                        </div>
+                      </Link>
+                    </div>
                   </div>
                   <div className="row raisecomp">
                     <div className="col-lg-6 col-md-12 col-sm-12 mb-2">

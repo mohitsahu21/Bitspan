@@ -167,7 +167,9 @@ const DWalletTransactionReport = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => (
+                                setFromDate(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -179,7 +181,9 @@ const DWalletTransactionReport = () => {
                               className="form-control"
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => (
+                                setToDate(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
                           <div className="d-flex align-items-end">

@@ -143,6 +143,22 @@ const SdPanTransactionReport = () => {
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow bg-body-tertiary rounded  p-5 m-4">
                       <div className="row d-flex flex-column g-4">
                         <div className="d-flex flex-column flex-md-row gap-3">
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                            {/* <label for="fromDate" className="form-label">From</label> */}
+                            <input
+                              id="fromDate"
+                              className="form-control"
+                              type="search"
+                              placeholder="search By Order Id Or Txn Id"
+                              value={keyword}
+                              onChange={(e) => (
+                                setKeyword(e.target.value), setCurrentPage(0)
+                              )}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="d-flex flex-column flex-xl-row gap-3">
                           <div className="col-12 col-md-4 col-lg-3">
                             <label for="fromDate" className="form-label">
                               From
@@ -168,22 +184,6 @@ const SdPanTransactionReport = () => {
                               value={toDate}
                               onChange={(e) => (
                                 setToDate(e.target.value), setCurrentPage(0)
-                              )}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="d-flex flex-column flex-xl-row gap-3">
-                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
-                            {/* <label for="fromDate" className="form-label">From</label> */}
-                            <input
-                              id="fromDate"
-                              className="form-control"
-                              type="search"
-                              placeholder="search By Order Id Or Txn Id"
-                              value={keyword}
-                              onChange={(e) => (
-                                setKeyword(e.target.value), setCurrentPage(0)
                               )}
                             />
                           </div>

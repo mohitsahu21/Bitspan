@@ -222,7 +222,7 @@ const SdAllComplaintsList = () => {
                                                     </div>
                                                   )
                                                 )
-                                            : "No Complaint file available"}
+                                            : "Not Available"}
                                         </td>
                                         {/* <td>
                                           {item.attachment_form ? (
