@@ -8,6 +8,7 @@ import React, { useState, useEffect } from "react";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { Spinner } from "react-bootstrap";
 
 const WLPanTransactionReport = () => {
   const dispatch = useDispatch();
@@ -84,8 +85,10 @@ const WLPanTransactionReport = () => {
       (row?.txid && row.txid.includes(keyword.trim()));
 
     const matchesType =
-      !status || status === "---Select---" || row.status === status;
-
+      // !status || status === "---Select---" || row.status === status;
+      !status || status === "---Select---" ||
+      (status === "Failed" && (row.status === "Failed" || row.status === "Failure")) ||
+      row.status === status;    
     const matchesDate =
       (!fromDate ||
         new Date(row.created_at).toISOString().split("T")[0] >=
@@ -133,10 +136,10 @@ const WLPanTransactionReport = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          PAN Transaction Report
+                        NSDL New PAN History
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; PAN Transaction Report
+                          <BiHomeAlt /> &nbsp;/ &nbsp;NSDL New PAN History
                         </h6>
                       </div>
                     </div>
@@ -186,7 +189,9 @@ const WLPanTransactionReport = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {setFromDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -198,10 +203,12 @@ const WLPanTransactionReport = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => {setToDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
-                          {/* <div className="col-12 col-md-4 col-lg-3">
+                          <div className="col-12 col-md-4 col-lg-3">
                             <label for="toDate" className="form-label">
                               Select Status
                             </label>
@@ -209,13 +216,16 @@ const WLPanTransactionReport = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={status}
-                              onChange={(e) => setStatus(e.target.value)}
+                              onChange={(e) => {setStatus(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             >
                               <option selected>---Select---</option>
                               <option value="Success">Success</option>
                               <option value="Failed">Failed</option>
+                              <option value="Reject">Reject</option>
                             </select>
-                          </div> */}
+                          </div>
 
                           {/* <div className="d-flex align-items-end">
                                                         <button type="button" className="btn btn-primary button">Search</button>
@@ -229,9 +239,11 @@ const WLPanTransactionReport = () => {
                               id="fromDate"
                               className="form-control"
                               type="search"
-                              placeholder="search By Order Id Or Txn Id"
+                              placeholder="search By Order Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {setKeyword(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
 
@@ -243,33 +255,39 @@ const WLPanTransactionReport = () => {
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
                             {loading ? (
-                              <p>Loading...</p>
+                             <div className="d-flex justify-content-center">
+                             <Spinner animation="border" role="status">
+                               <span className="visually-hidden">
+                                 Loading...
+                               </span>
+                             </Spinner>
+                           </div>
                             ) : (
                               <table class="table table-striped">
                                 <thead className="table-dark">
                                   <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">ID</th>
+                                    {/* <th scope="col">ID</th> */}
+                                <th scope="col">Date</th>
+                                    <th scope="col">Order ID</th>
                                     <th scope="col">Application Mode</th>
-                                    <th scope="col">Select Type</th>
+                                    {/* <th scope="col">Select Type</th> */}
                                     {/* <th scope="col">Name</th>
                                     <th scope="col">Date of Birth</th>
                                     <th scope="col">Gender</th>
                                     <th scope="col">Mobile</th>
                                     <th scope="col">Email</th> */}
                                     <th scope="col">Physical PAN</th>
-                                    <th scope="col">Wallet Deduction Amount</th>
-                                    <th scope="col">Transaction ID</th>
+                                    <th scope="col">Amount</th>
+                                    {/* <th scope="col">Transaction ID</th> */}
                                     <th scope="col">Status</th>
                                     {/* <th scope="col">OP ID</th>
                                     <th scope="col">Message</th> */}
                                     {/* <th scope="col">URL</th>
                                     <th scope="col">Number</th> */}
-                                    <th scope="col">Amount</th>
-                                    <th scope="col">Order ID</th>
+                                    {/* <th scope="col">Amount</th> */}
                                     {/* <th scope="col">Provider Name</th> */}
                                     <th scope="col">User ID</th>
-                                    <th scope="col">Created At</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -281,9 +299,11 @@ const WLPanTransactionReport = () => {
                                             index +
                                             1}
                                         </td>
-                                        <td>{item.id}</td>
+                                        {/* <td>{item.id}</td> */}
+                                        <td>{item.created_at}</td>
+                                        <td>{item.orderid}</td>
                                         <td>{item.applicationMode}</td>
-                                        <td>{item.selectType}</td>
+                                        {/* <td>{item.selectType}</td> */}
                                         {/* <td>{item.name}</td>
                                         <td>{item.dob}</td>
                                         <td>{item.gender}</td>
@@ -291,18 +311,18 @@ const WLPanTransactionReport = () => {
                                         <td>{item.email}</td> */}
                                         <td>{item.physicalPan}</td>
                                         <td>{item.walletDeductAmt}</td>
-                                        <td>{item.txid}</td>
+                                        {/* <td>{item.txid}</td> */}
                                         <td
-                                          style={{
-                                            color:
-                                              item.status === "Pending"
-                                                ? "#FFC107"
-                                                : item.status === "Reject"
-                                                ? "#DC3545"
-                                                : item.status === "Success"
-                                                ? "#28A745"
-                                                : "black",
-                                          }}
+                                          // style={{
+                                          //   color:
+                                          //     item.status === "Pending"
+                                          //       ? "#FFC107"
+                                          //       : item.status === "Reject"
+                                          //       ? "#DC3545"
+                                          //       : item.status === "Success"
+                                          //       ? "#28A745"
+                                          //       : "black",
+                                          // }}
                                         >
                                           {item.status}
                                         </td>
@@ -318,11 +338,9 @@ const WLPanTransactionReport = () => {
                                           </a>
                                         </td>
                                         <td>{item.number}</td> */}
-                                        <td>{item.amount}</td>
-                                        <td>{item.orderid}</td>
+                                        {/* <td>{item.amount}</td> */}
                                         {/* <td>{item.providerName}</td> */}
                                         <td>{item.userId}</td>
-                                        <td>{item.created_at}</td>
                                       </tr>
                                     ))
                                   ) : (

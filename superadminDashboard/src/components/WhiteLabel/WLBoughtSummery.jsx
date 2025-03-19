@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BiHomeAlt } from "react-icons/bi";
 import styled from "styled-components";
-import { Dropdown, DropdownButton } from "react-bootstrap";
+import { Dropdown, DropdownButton, Spinner } from "react-bootstrap";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
@@ -117,11 +117,10 @@ const WLBoughtSummery = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          View All Bought Id's History
+                        Buy User ID Summary
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; View All Bought Id's
-                          History{" "}
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Buy User ID Summary
                         </h6>
                       </div>
                     </div>
@@ -175,6 +174,7 @@ const WLBoughtSummery = () => {
                               value={keyword}
                               onChange={(e) => {
                                 setKeyword(e.target.value);
+                                setCurrentPage(0);
                                 if (e.target.value === "") {
                                   setCurrentPage(0);
                                 }
@@ -191,18 +191,27 @@ const WLBoughtSummery = () => {
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div className="table-responsive">
+                          {loading ? (
+                              <div className="d-flex justify-content-center">
+                                <Spinner animation="border" role="status">
+                                  <span className="visually-hidden ">
+                                    Loading...
+                                  </span>
+                                </Spinner>
+                              </div>
+                            ) : (
                             <table className="table table-striped">
                               <thead className="table-dark">
                                 <tr>
                                   <th scope="col">Sr.No</th>
 
                                   <th scope="col"> Date</th>
-                                  <th scope="col">User ID</th>
+                                  <th scope="col">Order ID</th>
+                                  <th scope="col">Transaction ID</th>
+                                  {/* <th scope="col">User ID</th> */}
                                   <th scope="col">Number of buy's ID</th>
                                   <th scope="col"> Amount per ID</th>
                                   <th scope="col">ID Type</th>
-                                  <th scope="col">Order ID</th>
-                                  <th scope="col">Transaction ID</th>
                                   <th scope="col">Total Amount</th>
                                   <th scope="col">Payment Method</th>
                                   <th scope="col">Status</th>
@@ -219,12 +228,12 @@ const WLBoughtSummery = () => {
                                       </td>
 
                                       <td>{item.bought_date}</td>
-                                      <td>{item.userId}</td>
+                                      <td>{item.orderId}</td>
+                                      <td>{item.transactionId}</td>
+                                      {/* <td>{item.userId}</td> */}
                                       <td>{item.number_of_userId}</td>
                                       <td>{item.userId_amount}</td>
                                       <td>{item.userId_type}</td>
-                                      <td>{item.orderId}</td>
-                                      <td>{item.transactionId}</td>
                                       <td>{item.total_amount}</td>
                                       <td>{item.payment_method}</td>
                                       <td>{item.status}</td>
@@ -237,6 +246,7 @@ const WLBoughtSummery = () => {
                                 )}
                               </tbody>
                             </table>
+                            )}
                           </div>
                           <PaginationContainer>
                             <ReactPaginate

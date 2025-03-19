@@ -2714,7 +2714,7 @@ const WhiteLabelData = [
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
-        title: "NSDL Pan History",
+        title: "NSDL New Pan History",
         path: "/pan-transaction-report",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
@@ -2780,7 +2780,7 @@ const WhiteLabelData = [
         icon: <FiShoppingBag color="#fe662b" />,
       },
       {
-        title: "UserId Bought summary",
+        title: "Buy User ID  summary",
         path: "/UserId-Bought-summary",
         icon: <FaUsersBetweenLines color="#fe662b" />,
       },

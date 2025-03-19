@@ -153,7 +153,9 @@ const WLCreatedUsers = () => {
                               type="search"
                               placeholder="Enter User Name/User Id/Mobile/Email Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
 
@@ -163,7 +165,9 @@ const WLCreatedUsers = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={userType}
-                              onChange={(e) => setUserType(e.target.value)}
+                              onChange={(e) => {setUserType(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             >
                               <option selected>---Select User Type---</option>
                               <option value="Retailer">Retailer</option>
@@ -180,7 +184,9 @@ const WLCreatedUsers = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={status}
-                              onChange={(e) => setStatus(e.target.value)}
+                              onChange={(e) => {setStatus(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             >
                               <option selected>---Select Status---</option>
                               <option value="Active">Active</option>
@@ -195,7 +201,8 @@ const WLCreatedUsers = () => {
                               aria-label="Default select example"
                               value={complaintsPerPage}
                               onChange={(e) =>
-                                setComplaintsPerPage(e.target.value)
+                               { setComplaintsPerPage(e.target.value)
+                                setCurrentPage(0)}
                               }
                             >
                               {/* <option selected>--Row Per Page---</option> */}
@@ -251,7 +258,7 @@ const WLCreatedUsers = () => {
                                       <th scope="col">Role</th>
                                       <th scope="col">Email</th>
                                       <th scope="col">Mobile</th>
-                                      <th scope="col">Package Id</th>
+                                      {/* <th scope="col">Package Id</th> */}
                                       {/* <th scope="col">Package Name</th> */}
                                       {/* <th scope="col">Address</th> */}
                                       {/* <th scope="col">PAN No</th>
@@ -260,8 +267,8 @@ const WLCreatedUsers = () => {
                                       <th scope="col">City</th>
                                       <th scope="col">State</th>
                                       <th scope="col">Pincode</th>
-                                      <th scope="col">Payment Mode</th>
-                                      <th scope="col">Source</th>
+                                      {/* <th scope="col">Payment Mode</th>
+                                      <th scope="col">Source</th> */}
                                       <th scope="col">Website URL</th>
 
                                       <th scope="col">Status</th>
@@ -284,7 +291,7 @@ const WLCreatedUsers = () => {
                                           <td>{user.role}</td>
                                           <td>{user.Email}</td>
                                           <td>{user.ContactNo}</td>
-                                          <td>{user.package_Id}</td>
+                                          {/* <td>{user.package_Id}</td> */}  
                                           {/* <td>{user.package_name}</td>
                                         <td>{user.PanCardNumber}</td>
                                         <td>{user.AadharNumber}</td> */}
@@ -293,8 +300,8 @@ const WLCreatedUsers = () => {
 
                                           <td>{user.State}</td>
                                           <td>{user.PinCode}</td>
-                                          <td>{user.paymentMode}</td>
-                                          <td>{user.source}</td>
+                                          {/* <td>{user.paymentMode}</td>
+                                          <td>{user.source}</td> */}
                                           <td>
                                             {user.White_Label_Website_URL}
                                           </td>
