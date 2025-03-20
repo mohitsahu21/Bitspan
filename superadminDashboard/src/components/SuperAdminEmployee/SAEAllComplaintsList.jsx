@@ -384,8 +384,9 @@ const SAEAllComplaintsList = () => {
                               aria-label="Default select example"
                               value={complaintStatus}
                               onChange={(e) =>
-                                setComplaintStatus(e.target.value)
-                              }
+                                {setComplaintStatus(e.target.value)
+                                setCurrentPage(0)
+                                }}
                             >
                               <option selected>
                                 ---Select Complaint Status---
@@ -411,7 +412,8 @@ const SAEAllComplaintsList = () => {
                                 <table class="table table-striped">
                                   <thead className="table-dark">
                                     <tr>
-                                      <th scope="col">#</th>
+                                      {/* <th scope="col">#</th> */}
+                                      <th scope="col">Complaint ID</th>
                                       <th scope="col">Ticket Raised Date</th>
 
                                       <th scope="col">Complaint Type</th>
@@ -426,9 +428,9 @@ const SAEAllComplaintsList = () => {
                                       <th scope="col">User Mobile</th>
                                       <th scope="col">Complaint File</th>
                                       <th scope="col">Response</th>
-                                      <th scope="col">Status</th>
                                       <th scope="col">Process By</th>
                                       <th scope="col">Process Date</th>
+                                      <th scope="col">Status</th>
                                       <th scope="col">Action</th>
                                     </tr>
                                   </thead>
@@ -437,11 +439,12 @@ const SAEAllComplaintsList = () => {
                                       showApiData?.map((user, index) => (
                                         <tr key={user.id}>
                                           {/* <th scope="row">{index + 1}</th> */}
-                                          <td>
+                                          {/* <td>
                                             {currentPage * complaintsPerPage +
                                               index +
                                               1}
-                                          </td>
+                                          </td> */}
+                                          <td>{user.id}</td>
                                           <td>{user.createdAt}</td>
                                           <td>{user.complainType}</td>
                                           <td>{user.mobileNo}</td>
@@ -470,7 +473,7 @@ const SAEAllComplaintsList = () => {
                                                   </div>
                                                 ))}
                                           </td> */}
-                                          <td>
+                                          {/* <td>
                                             <a
                                               href={user.complainFile}
                                               target="_blank"
@@ -478,7 +481,22 @@ const SAEAllComplaintsList = () => {
                                             >
                                               View
                                             </a>
-                                          </td>
+                                          </td> */}
+                                             <td>
+                                              {
+                                               user.complainFile ? 
+                                               <a
+                                               href={user.complainFile}
+                                               target="_blank"
+                                               rel="noopener noreferrer"
+                                             >
+                                               View
+                                             </a> 
+                                             :
+                                             "Not Available"
+                                              }
+                                             
+                                            </td>
                                           {/* <td>
                                               <a
                                                 href={user.AadharBack}
@@ -501,9 +519,10 @@ const SAEAllComplaintsList = () => {
                                           {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
                                           {/* <td>{user?.Note}</td> */}
                                           <td>{user.response}</td>
-                                          <td>{user.status}</td>
+                                          
                                           <td>{user.process_by_userId}</td>
-                                          <td>{user.updated_at}</td>
+                                          <td>{user.process_date}</td>
+                                          <td>{user.status}</td>
                                           <td>
                                             {user.status === "Pending" && (
                                               <Dropdown>

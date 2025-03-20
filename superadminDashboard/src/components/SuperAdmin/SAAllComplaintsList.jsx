@@ -421,8 +421,9 @@ const SAAllComplaintsList = () => {
                                                                     <th scope="col">User Email</th>
                                                                     <th scope="col">User Mobile</th>
                                                                     <th scope="col">Complaint File</th>
-                                                                    <th scope="col">Resolve Date</th>
                                                                     <th scope="col">Response</th>
+                                                                    <th scope="col">Process By</th>
+                                                                    <th scope="col">Process Date</th>
                                                                     <th scope="col">Status</th>
                                                                     <th scope="col">Action</th>
 
@@ -501,8 +502,10 @@ const SAAllComplaintsList = () => {
                                            
                                             {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
                                             {/* <td>{user?.Note}</td> */}
-                                            <td>{user.process_date}</td>
                                             <td>{user.response}</td>
+                                            <td>{user.process_by_userId}</td>
+                                            <td>{user.process_date}</td>
+                                            {/* <td>{user.response}</td> */}
                                             <td>{user.status}</td>
                                             <td>
                                             { user.status === "Pending" && 

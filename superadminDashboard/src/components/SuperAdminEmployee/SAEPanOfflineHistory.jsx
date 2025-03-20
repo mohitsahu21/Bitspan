@@ -1454,7 +1454,9 @@ const SAEPanOfflineHistory = () => {
                                   aria-label="Default select example"
                                   value={formStatus}
                                   onChange={(e) =>
-                                    setFormStatus(e.target.value)
+                                    {setFormStatus(e.target.value)
+                                    setCurrentPage(0)
+                                    }
                                   }
                                 >
                                   <option selected>
@@ -1486,6 +1488,7 @@ const SAEPanOfflineHistory = () => {
                                           <th scope="col">Sr.No</th>
                                           <th scope="col">Created Date</th>
                                           <th scope="col">Order Id</th>
+                                          <th scope="col">Application Type</th>
                                           <th scope="col">Applicant Type</th>
                                           <th scope="col">PAN Type</th>
                                           <th scope="col">Title</th>
@@ -1536,6 +1539,7 @@ const SAEPanOfflineHistory = () => {
                                               <td>{item.created_at}</td>
                                               <td>{item.order_id}</td>
                                               <td>{item.application_type}</td>
+                                              <td>{item.applicant_type}</td>
                                               <td>{item.pantype}</td>
                                               <td>{item.select_title}</td>
                                               <td>{item.name}</td>
@@ -1559,7 +1563,26 @@ const SAEPanOfflineHistory = () => {
                                               </td>
                                               <td>{item.pin_code}</td>
                                               <td>{item.state}</td>
-                                              <td>{item.Change_Request}</td>
+                                              {/* <td>{item.Change_Request}</td> */}
+                                              <td>
+  {(() => {
+    let parsedChangeRequest = {};
+
+    try {
+      parsedChangeRequest = JSON.parse(item.Change_Request); // Parse JSON string
+    } catch (error) {
+      console.error("Invalid JSON format:", error);
+      return "No Changes";
+    }
+
+    // Get keys where value is true
+    const trueKeys = Object.keys(parsedChangeRequest).filter(
+      (key) => parsedChangeRequest[key]
+    );
+
+    return trueKeys.length > 0 ? trueKeys.join(", ").replace(/_/g, " ").toUpperCase() : "No Changes";
+  })()}
+</td>
                                               <td>
                                                 {item.attachment_form ? (
                                                   <a
@@ -1780,6 +1803,7 @@ const SAEPanOfflineHistory = () => {
                                           <th scope="col">Sr.No</th>
                                           <th scope="col">Created Date</th>
                                           <th scope="col">Order Id</th>
+                                          <th scope="col">Application Type</th>
                                           <th scope="col">Applicant Type</th>
                                           <th scope="col">PAN Type</th>
                                           <th scope="col">Title</th>
@@ -1831,6 +1855,7 @@ const SAEPanOfflineHistory = () => {
                                                 <td>{item.created_at}</td>
                                                 <td>{item.order_id}</td>
                                                 <td>{item.application_type}</td>
+                                                <td>{item.applicant_type}</td>
                                                 <td>{item.pantype}</td>
                                                 <td>{item.select_title}</td>
                                                 <td>{item.name}</td>
@@ -1854,7 +1879,26 @@ const SAEPanOfflineHistory = () => {
                                                 </td>
                                                 <td>{item.pin_code}</td>
                                                 <td>{item.state}</td>
-                                                <td>{item.Change_Request}</td>
+                                                {/* <td>{item.Change_Request}</td> */}
+                                                <td>
+  {(() => {
+    let parsedChangeRequest = {};
+
+    try {
+      parsedChangeRequest = JSON.parse(item.Change_Request); // Parse JSON string
+    } catch (error) {
+      console.error("Invalid JSON format:", error);
+      return "No Changes";
+    }
+
+    // Get keys where value is true
+    const trueKeys = Object.keys(parsedChangeRequest).filter(
+      (key) => parsedChangeRequest[key]
+    );
+
+    return trueKeys.length > 0 ? trueKeys.join(", ").replace(/_/g, " ").toUpperCase() : "No Changes";
+  })()}
+</td>
                                                 <td>
                                                   {item.attachment_form ? (
                                                     <a

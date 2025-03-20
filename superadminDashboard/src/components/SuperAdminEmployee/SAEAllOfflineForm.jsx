@@ -2128,7 +2128,7 @@ const SAAllOfflineForm = () => {
                                   id="fromDate"
                                   className="form-control"
                                   type="search"
-                                  placeholder="Enter Applicant Name/Mobile/Order Id"
+                                  placeholder="Enter Applicant Name/Mobile/Email Id/Order Id"
                                   value={keyword}
                                   onChange={(e) => {
                                     setKeyword(e.target.value);
@@ -2143,8 +2143,9 @@ const SAAllOfflineForm = () => {
                                   aria-label="Default select example"
                                   value={formStatus}
                                   onChange={(e) =>
-                                    setFormStatus(e.target.value)
-                                  }
+                                    {setFormStatus(e.target.value)
+                                    setCurrentPage(0)
+                                     }}
                                 >
                                   <option selected>
                                     ---Select Form Status---
@@ -2181,6 +2182,7 @@ const SAAllOfflineForm = () => {
                                             Applicant Father Name
                                           </th>
                                           <th scope="col">Applicant Number</th>
+                                          <th scope="col">Applicant Email</th>
                                           <th scope="col">Service</th>
                                           <th scope="col">E-Stamp Type</th>
                                           <th scope="col">E-Stamp Amount</th>
@@ -2215,6 +2217,7 @@ const SAAllOfflineForm = () => {
                                               <td>{item.applicant_name}</td>
                                               <td>{item.applicant_father}</td>
                                               <td>{item.applicant_number}</td>
+                                              <td>{item.email}</td>
                                               <td>
                                                 {item.applicant_select_service}
                                               </td>
@@ -2441,6 +2444,7 @@ const SAAllOfflineForm = () => {
                                             Applicant Father Name
                                           </th>
                                           <th scope="col">Applicant Number</th>
+                                          <th scope="col">Applicant Email</th>
                                           <th scope="col">Service</th>
                                           <th scope="col">E-Stamp Type</th>
                                           <th scope="col">E-Stamp Amount</th>
@@ -2476,6 +2480,7 @@ const SAAllOfflineForm = () => {
                                                 <td>{item.applicant_name}</td>
                                                 <td>{item.applicant_father}</td>
                                                 <td>{item.applicant_number}</td>
+                                                <td>{item.email}</td>
                                                 <td>
                                                   {
                                                     item.applicant_select_service

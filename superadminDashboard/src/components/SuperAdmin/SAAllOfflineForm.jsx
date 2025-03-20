@@ -1979,6 +1979,7 @@ const SAAllOfflineForm = () => {
                                       <th scope="col">Applicant Name</th>
                                       <th scope="col">Applicant Father Name</th>
                                       <th scope="col">Applicant Number</th>
+                                      <th scope="col">Applicant Email</th>
                                       <th scope="col">Service</th>
                                       <th scope="col">E-Stamp Type</th>
                                       <th scope="col">E-Stamp Amount</th>
@@ -2013,6 +2014,7 @@ const SAAllOfflineForm = () => {
                                           <td>{item.applicant_name}</td>
                                           <td>{item.applicant_father}</td>
                                           <td>{item.applicant_number}</td>
+                                          <td>{item.email}</td>
                                           <td>
                                             {item.applicant_select_service}
                                           </td>
@@ -2228,6 +2230,7 @@ const SAAllOfflineForm = () => {
                                       <th scope="col">Applicant Name</th>
                                       <th scope="col">Applicant Father Name</th>
                                       <th scope="col">Applicant Number</th>
+                                      <th scope="col">Applicant Email</th>
                                       <th scope="col">Service</th>
                                       <th scope="col">E-Stamp Type</th>
                                       <th scope="col">E-Stamp Amount</th>
@@ -2262,6 +2265,7 @@ const SAAllOfflineForm = () => {
                                           <td>{item.applicant_name}</td>
                                           <td>{item.applicant_father}</td>
                                           <td>{item.applicant_number}</td>
+                                          <td>{item.email}</td>
                                           <td>
                                             {item.applicant_select_service}
                                           </td>

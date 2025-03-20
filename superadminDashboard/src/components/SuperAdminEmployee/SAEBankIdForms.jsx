@@ -952,8 +952,9 @@ const SAEBankIdForms = () => {
                                   aria-label="Default select example"
                                   value={formStatus}
                                   onChange={(e) =>
-                                    setFormStatus(e.target.value)
-                                  }
+                                    {setFormStatus(e.target.value)
+                                    setCurrentPage(0)
+                                     } }
                                 >
                                   <option selected>
                                     ---Select Form Status---
@@ -1015,6 +1016,7 @@ const SAEBankIdForms = () => {
                                           <th scope="col">Amount</th>
                                           <th scope="col">Status</th>
                                           <th scope="col">Process By</th>
+                                          <th scope="col">Process Date</th>
                                           <th scope="col">Note</th>
                                           <th scope="col">Action</th>
                                         </tr>
@@ -1140,6 +1142,7 @@ View Form
                                               <td>{item.amount}</td>
                                               <td>{item.status}</td>
                                               <td>{item.process_by_userId}</td>
+                                              <td>{item.updated_at}</td>
                                               <td>{item.note}</td>
                                               <td>
                                                 {(item.status === "Pending" ||

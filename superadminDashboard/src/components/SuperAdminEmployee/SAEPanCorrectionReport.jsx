@@ -1021,7 +1021,9 @@ const SAEPanCorrectionReport = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {setFromDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -1033,7 +1035,9 @@ const SAEPanCorrectionReport = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => {setToDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -1044,7 +1048,9 @@ const SAEPanCorrectionReport = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={PaymentMode}
-                              onChange={(e) => setPaymentMode(e.target.value)}
+                              onChange={(e) => {setPaymentMode(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             >
                               <option selected>---Select---</option>
                               <option value="Success">Success</option>
@@ -1064,7 +1070,7 @@ const SAEPanCorrectionReport = () => {
                               id="fromDate"
                               className="form-control"
                               type="search"
-                              placeholder="Enter Name/Mobile/Email/Order Id/Txn Id/Retailer Name"
+                              placeholder="Enter Name/Mobile/Email/Order Id/Txn Id/Retailer Name/Id"
                               value={keyword}
                               onChange={(e) => {
                                 setKeyword(e.target.value);

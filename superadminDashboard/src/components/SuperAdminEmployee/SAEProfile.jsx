@@ -28,10 +28,74 @@ const SAEProfile = () => {
   const [profileImage, setprofileImage] = useState(null);
   const [status, setStatus] = useState(null);
 
-  const handleFileChange = (e) => {
+  // const handleFileChange = (e) => {
+  //   const { name, files } = e.target;
+  //   console.log(`File input changed - Name: ${name}, Files:`, files);
+
+  //   if (name === "aadharFront") {
+  //     setAadharFront(files[0]);
+  //     console.log("Updated aadharFront:", files[0]);
+  //     Swal.fire(
+  //       "File Selected",
+  //       "Aadhar Front file selected successfully!",
+  //       "success"
+  //     );
+  //   }
+  //   if (name === "aadharBack") {
+  //     setAadharBack(files[0]);
+  //     console.log("Updated aadharBack:", files[0]);
+  //     Swal.fire(
+  //       "File Selected",
+  //       "Aadhar Back file selected successfully!",
+  //       "success"
+  //     );
+  //   }
+  //   if (name === "panCardFront") {
+  //     setPanCardFront(files[0]);
+  //     console.log("Updated panCardFront:", files[0]);
+  //     Swal.fire(
+  //       "File Selected",
+  //       "Pan Card Front file selected successfully!",
+  //       "success"
+  //     );
+  //   }
+  //   if (name === "profileImage") {
+  //     setprofileImage(files[0]);
+  //     console.log("Updated profileImage:", files[0]);
+  //     Swal.fire(
+  //       "File Selected",
+  //       "Profile Image file selected successfully!",
+  //       "success"
+  //     );
+  //   }
+  // };
+ const handleFileChange = (e) => {
     const { name, files } = e.target;
     console.log(`File input changed - Name: ${name}, Files:`, files);
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+    const maxSize = 5 * 1024 * 1024; // 5MB in bytes
 
+    const requiredWidth = 50; // Required width
+    const requiredHeight = 75; // Required height
+
+    if (!allowedTypes.includes(files[0].type)) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid File Type",
+        text: `Invalid file: ${files[0].name}. Only JPEG, JPG, PNG are allowed.`,
+      });
+      e.target.value = "";
+      return;
+    }
+    if (files[0].size > maxSize) {
+      Swal.fire({
+        icon: "error",
+        title: "File Too Large",
+        text: `File ${files[0].name} exceeds the 5MB limit.`,
+      });
+      e.target.value = "";
+      return;
+    }
     if (name === "aadharFront") {
       setAadharFront(files[0]);
       console.log("Updated aadharFront:", files[0]);
@@ -60,16 +124,30 @@ const SAEProfile = () => {
       );
     }
     if (name === "profileImage") {
-      setprofileImage(files[0]);
-      console.log("Updated profileImage:", files[0]);
-      Swal.fire(
-        "File Selected",
-        "Profile Image file selected successfully!",
-        "success"
-      );
+      // Check image resolution
+      const img = new Image();
+      img.src = URL.createObjectURL(files[0]);
+      img.onload = () => {
+        if (img.width !== requiredWidth || img.height !== requiredHeight) {
+          Swal.fire({
+            icon: "error",
+            title: "Invalid Image Resolution",
+            text: `Image must be exactly ${requiredWidth}x${requiredHeight} pixels.`,
+          });
+          e.target.value = "";
+          return;
+        }
+
+        setprofileImage(files[0]);
+        console.log("Updated profileImage:", files[0]);
+        Swal.fire(
+          "File Selected",
+          "Profile Image file selected successfully!",
+          "success"
+        );
+      };
     }
   };
-
   const fetchUserData = async () => {
     setIsLoading(true);
     try {
@@ -116,7 +194,7 @@ const SAEProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submission started");
-
+    setIsLoading(true);
     const formData = new FormData();
     if (aadharFront) {
       formData.append("aadharFront", aadharFront);
@@ -155,6 +233,7 @@ const SAEProfile = () => {
         response.data.message || "Upload successful!",
         "success"
       );
+      window.location.reload();
     } catch (error) {
       console.log("Error occurred during API call");
       console.error("Full error object:", error);
@@ -162,6 +241,8 @@ const SAEProfile = () => {
         error.response?.data?.error || "An error occurred. Please try again.";
       console.log(errorMessage);
       Swal.fire("Error", errorMessage, "error");
+    }finally{
+      setIsLoading(false);
     }
   };
 
@@ -301,7 +382,7 @@ const SAEProfile = () => {
                             />
                           </div>
                         </div>
-                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                           <label>Company / Shop Name</label>
                           <div className="input-group">
                             <span className="input-group-text">
@@ -315,7 +396,7 @@ const SAEProfile = () => {
                               readOnly
                             />
                           </div>
-                        </div>
+                        </div> */}
                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                           <label>City</label>
                           <div className="input-group">
@@ -437,7 +518,7 @@ const SAEProfile = () => {
                             )}
                           </div> */}
                           <div className="text-start m-3">
-                            <button className="btn p-2" type="submit">
+                            <button className="btn  btn-primary p-2" type="submit" disabled={isLoading}>
                               {isLoading
                                 ? "Update Profile..."
                                 : "Update Profile"}

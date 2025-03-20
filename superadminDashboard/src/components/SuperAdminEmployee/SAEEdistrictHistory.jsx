@@ -1467,8 +1467,9 @@ const SAEEdistrictHistory = () => {
                                   aria-label="Default select example"
                                   value={formStatus}
                                   onChange={(e) =>
-                                    setFormStatus(e.target.value)
-                                  }
+                                    {setFormStatus(e.target.value)
+                                    setCurrentPage(0)
+                                    }}
                                 >
                                   <option selected>
                                     ---Select Form Status---
