@@ -208,11 +208,6 @@ const SdActiveUsersList = () => {
                                       <th scope="col">Role</th>
                                       <th scope="col">Email</th>
                                       <th scope="col">Mobile</th>
-                                      {/* <th scope="col">Package Id</th>
-                                      <th scope="col">Package Name</th> */}
-                                      {/* <th scope="col">Address</th> */}
-                                      {/* <th scope="col">PAN No</th>
-                                      <th scope="col">AAdhaar No</th> */}
                                       <th scope="col">Business Name</th>
                                       <th scope="col">City</th>
                                       <th scope="col">State</th>
@@ -237,17 +232,15 @@ const SdActiveUsersList = () => {
                                           <td>{user.UserName}</td>
                                           <td>{user.role}</td>
                                           <td>{user.Email}</td>
-                                          <td>
+                                          <td>{user.ContactNo}</td>
+                                          {/* <td>
                                             {maskSensitiveInfo(
                                               user.ContactNo,
                                               6,
                                               4
                                             )}
-                                          </td>
-                                          {/* <td>{user.package_Id}</td> */}
-                                          {/* <td>{user.package_name}</td>
-                                          <td>{user.PanCardNumber}</td>
-                                          <td>{user.AadharNumber}</td> */}
+                                          </td> */}
+
                                           <td>{user.BusinessName}</td>
                                           <td>{user.City}</td>
 

@@ -79,8 +79,14 @@ const DWalletTransactionReport = () => {
         (row?.Order_Id && row.Order_Id.toLowerCase().includes(searchKeyword));
 
       const matchesDate =
-        (!fromDate || new Date(row.transaction_date) >= new Date(fromDate)) &&
-        (!toDate || new Date(row.transaction_date) <= new Date(toDate));
+        // (!fromDate || new Date(row.transaction_date) >= new Date(fromDate)) &&
+        // (!toDate || new Date(row.transaction_date) <= new Date(toDate));
+        (!fromDate ||
+          new Date(row.transaction_date).toISOString().split("T")[0] >=
+            new Date(fromDate).toISOString().split("T")[0]) &&
+        (!toDate ||
+          new Date(row.transaction_date).toISOString().split("T")[0] <=
+            new Date(toDate).toISOString().split("T")[0]);
 
       return matchesKeyword && matchesDate;
     });
@@ -158,6 +164,29 @@ const DWalletTransactionReport = () => {
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
                       <div className="row d-flex flex-column g-4">
                         <div className="d-flex flex-column flex-md-row gap-3">
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                            {/* <label for="fromDate" className="form-label">From</label> */}
+                            <input
+                              id="fromDate"
+                              className="form-control"
+                              type="search"
+                              placeholder="search By Order Id Or Txn Id"
+                              value={keyword}
+                              onChange={(e) => setKeyword(e.target.value)}
+                            />
+                          </div>
+                          {/* <div className="d-flex align-items-end">
+                            <button
+                              type="button"
+                              className="btn btn-primary button"
+                              onClick={applyFilters}
+                            >
+                              Search
+                            </button>
+                          </div> */}
+                        </div>
+
+                        <div className="d-flex flex-column flex-xl-row gap-3">
                           <div className="col-12 col-md-4 col-lg-3">
                             <label for="fromDate" className="form-label">
                               From
@@ -184,29 +213,6 @@ const DWalletTransactionReport = () => {
                               onChange={(e) => (
                                 setToDate(e.target.value), setCurrentPage(0)
                               )}
-                            />
-                          </div>
-                          <div className="d-flex align-items-end">
-                            <button
-                              type="button"
-                              className="btn btn-primary button"
-                              onClick={applyFilters}
-                            >
-                              Search
-                            </button>
-                          </div>
-                        </div>
-
-                        <div className="d-flex flex-column flex-xl-row gap-3">
-                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
-                            {/* <label for="fromDate" className="form-label">From</label> */}
-                            <input
-                              id="fromDate"
-                              className="form-control"
-                              type="search"
-                              placeholder="search By Order Id Or Txn Id"
-                              value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
                             />
                           </div>
 
