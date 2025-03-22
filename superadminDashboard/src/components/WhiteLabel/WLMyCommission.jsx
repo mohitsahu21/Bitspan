@@ -851,7 +851,7 @@ const WLMyCommission = () => {
 
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
                     <div className="text-center  my-5">
-                      <h2>Offline Services Commission</h2>
+                      <h2>Other Services Commission</h2>
                     </div>
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
@@ -899,7 +899,7 @@ const WLMyCommission = () => {
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        Offline E PAN Card Commission
+                        PAN 4.0 E PAN Card Commission
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -919,7 +919,7 @@ const WLMyCommission = () => {
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        Offline P PAN Card Commission
+                      PAN 4.0 P PAN Card Commission
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -2381,7 +2381,7 @@ const WLMyCommission = () => {
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        Offline Broadband Bill Pay Commission
+                        Provider 2 Broadband Bill Pay Commission
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -2489,7 +2489,7 @@ const WLMyCommission = () => {
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        Offline Electricity Bill Pay Commission
+                      Provider 2 Electricity Bill Pay Commission
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">

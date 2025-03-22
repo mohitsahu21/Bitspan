@@ -2082,7 +2082,7 @@ const SAAllOfflineForm = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          View All Offline Form History
+                          View All Offline Forms Request
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -2092,7 +2092,7 @@ const SAAllOfflineForm = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            View All Offline Form History
+                            View All Offline Forms Request
                           </span>{" "}
                         </p>
                       </div>
@@ -2152,7 +2152,7 @@ const SAAllOfflineForm = () => {
                                   </option>
                                   <option value="Pending">Pending</option>
                                   <option value="Success">Success</option>
-                                  {/* <option value="Mark Edit">Mark Edit</option> */}
+                                  <option value="Mark Edit">Mark Edit</option>
                                   <option value="Reject">Reject</option>
                                 </select>
                               </div>

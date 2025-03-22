@@ -1406,7 +1406,7 @@ const SAEEdistrictHistory = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          E-district-history
+                          E-district Forms Request
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -1416,7 +1416,7 @@ const SAEEdistrictHistory = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            E-district-history
+                            E-district Forms Request
                           </span>{" "}
                         </p>
                       </div>

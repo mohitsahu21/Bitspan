@@ -1337,7 +1337,7 @@ const SAESambalHistory = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Sambal Form history
+                          Sambal Forms Request
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -1347,7 +1347,7 @@ const SAESambalHistory = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Sambal Form history
+                            Sambal Forms Request
                           </span>{" "}
                         </p>
                       </div>

@@ -891,7 +891,7 @@ const SAEBankIdForms = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Bank-Id-history
+                          Bank-Id Forms Request
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -901,7 +901,7 @@ const SAEBankIdForms = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Bank-Id-history
+                            Bank-Id Forms Request
                           </span>{" "}
                         </p>
                       </div>

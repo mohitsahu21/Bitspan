@@ -1494,7 +1494,7 @@ const SAEOfflineDthConnection = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Offline DTH Connection history
+                          Offline DTH Connection Request
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -1504,7 +1504,7 @@ const SAEOfflineDthConnection = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Offline DTH Connection history
+                            Offline DTH Connection Request
                           </span>{" "}
                         </p>
                       </div>

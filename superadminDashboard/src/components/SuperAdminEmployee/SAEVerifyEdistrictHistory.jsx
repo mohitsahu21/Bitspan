@@ -1350,7 +1350,7 @@ const SAEVerifyEdistrictHistory = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Verify E-district Form history
+                          Verify E-district Form Request
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -1360,7 +1360,7 @@ const SAEVerifyEdistrictHistory = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Verify E-district Form history
+                            Verify E-district Form Request
                           </span>{" "}
                         </p>
                       </div>
