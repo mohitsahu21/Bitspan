@@ -268,11 +268,10 @@ const AddWalletSummary = () => {
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Add Money To Wallet
+                          Add Wallet Summary
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; Add Money To Wallet
-                          Status
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Add Wallet Summary Status
                         </h6>
                       </div>
                     </div>

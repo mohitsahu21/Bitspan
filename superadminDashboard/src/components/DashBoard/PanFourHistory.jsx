@@ -112,10 +112,10 @@ const PanFourHistory = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          PAN Transaction Report
+                          PAN 4.0 History
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; PAN Transaction Report
+                          <BiHomeAlt /> &nbsp;/ &nbsp; PAN 4.0 History
                         </h6>
                       </div>
                     </div>

@@ -747,6 +747,46 @@ const RetailerSidebarData = [
     ],
   },
   {
+    title: "History",
+    path: "#",
+    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+      {
+        title: "Apply Other Services History",
+        path: "/view-all-offline-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Sambal History",
+        path: "/Sambal-History",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "E-District History",
+        path: "/E-District-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Verify E-District History",
+        path: "/verify-Edistrict-History",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      // {
+      //   title: "PAN 4.0 History",
+      //   path: "/pan-4.0-history",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
+      // {
+      //   title: "NSDL PAN Transaction History",
+      //   path: "/pan-transaction-report",
+      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      // },
+    ],
+  },
+  {
     title: "Training Video",
     path: "/training-video",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
@@ -837,7 +877,7 @@ const RetailerSidebarData = [
       //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
       // },
       {
-        title: "User ID Activate",
+        title: "UTI User ID Activate",
         path: "/retailer-id-revamp-activate",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
@@ -909,46 +949,7 @@ const RetailerSidebarData = [
       },
     ],
   },
-  {
-    title: "History",
-    path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
-    subNav: [
-      {
-        title: "Apply Other Services History",
-        path: "/view-all-offline-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Sambal History",
-        path: "/Sambal-History",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "E-District History",
-        path: "/E-District-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      {
-        title: "Verify E-District History",
-        path: "/verify-Edistrict-History",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      },
-      // {
-      //   title: "PAN 4.0 History",
-      //   path: "/pan-4.0-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "NSDL PAN Transaction History",
-      //   path: "/pan-transaction-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-    ],
-  },
   {
     title: "PAN Coupon",
     path: "#",

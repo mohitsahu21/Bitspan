@@ -172,24 +172,15 @@ const AllDistributorList = () => {
                                   <th scope="col">City</th>
                                   <th scope="col">State</th>
                                   <th scope="col">Pin Code</th>
-                                  {/* <th scope="col">Aadhar Front</th>
-                                  <th scope="col">Aadhar Back</th>
-                                  <th scope="col">Pan Card Front</th>
-                                  <th scope="col">White Label Website URL</th> */}
                                   <th scope="col">Status</th>
                                   <th scope="col">Payment Status</th>
-                                  <th scope="col">Package ID</th>
+                                  {/* <th scope="col">Package ID</th> */}
                                   {/* <th scope="col">Created By User ID</th>
                                   <th scope="col">Created By User Role</th> */}
                                   <th scope="col">Created By Website</th>
-                                  {/* <th scope="col">Two-Step Pin</th>
-                                  <th scope="col">Remaining White Label ID</th>
-                                  <th scope="col">
-                                    Remaining Super Distributor ID
-                                  </th> */}
-                                  <th scope="col">Remaining Distributor ID</th>
+                                  {/* <th scope="col">Remaining Distributor ID</th> */}
                                   {/* <th scope="col">Remaining Retailer ID</th> */}
-                                  <th scope="col">Note</th>
+                                  {/* <th scope="col">Note</th> */}
                                   <th scope="col">Created At</th>
                                 </tr>
                               </thead>
@@ -219,7 +210,7 @@ const AllDistributorList = () => {
                                       <td>{item.White_Label_Website_URL}</td> */}
                                       <td>{item.Status}</td>
                                       <td>{item.payment_status}</td>
-                                      <td>{item.package_Id}</td>
+                                      {/* <td>{item.package_Id}</td> */}
                                       {/* <td>{item.created_By_User_Id}</td>
                                       <td>{item.created_By_User_Role}</td> */}
                                       <td>{item.created_By_Website}</td>
@@ -228,9 +219,9 @@ const AllDistributorList = () => {
                                       <td>
                                         {item.remaining_superDistributor_id}
                                       </td> */}
-                                      <td>{item.remaining_distributor_id}</td>
+                                      {/* <td>{item.remaining_distributor_id}</td> */}
                                       {/* <td>{item.remaining_retailer_id}</td> */}
-                                      <td>{item.Note}</td>
+                                      {/* <td>{item.Note}</td> */}
                                       <td>{item.CreateAt}</td>
                                     </tr>
                                   ))

@@ -184,6 +184,12 @@ const SdAllOfflineForm = () => {
                               <Dropdown.Item eventKey="Pending">
                                 Pending
                               </Dropdown.Item>
+                              <Dropdown.Item eventKey="Mark Edit">
+                                Mark Edit
+                              </Dropdown.Item>
+                              <Dropdown.Item eventKey="Under Process">
+                                Under Process
+                              </Dropdown.Item>
                             </DropdownButton>
                           </div>
                         </div>

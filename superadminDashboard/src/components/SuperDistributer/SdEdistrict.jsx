@@ -121,6 +121,10 @@ const SdEdistrict = () => {
         })
       : []; // Ensure it's an empty array if formData is empty or not loaded yet
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [searchQuery, fromDate, toDate]);
+
   const totalPages = Math.ceil(filteredData?.length / complaintsPerPage);
 
   const paginateData = () => {
@@ -174,7 +178,7 @@ const SdEdistrict = () => {
                               Search
                             </label>
                             <input
-                              type="text"
+                              type="search"
                               className="form-control "
                               placeholder="Search by Name or Order ID"
                               value={searchQuery}
