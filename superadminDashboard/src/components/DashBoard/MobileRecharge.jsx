@@ -1326,7 +1326,25 @@ const MobileRecharge = () => {
           title: "Done!",
           text: `Recharge Successful! Order ID: ${result.data.details.recharge.orderId}`,
           icon: "success",
+        }).then(() => {
+          // Prepare receipt data
+          const receiptData = {
+            rechargeType: "Prepaid",
+            receiptNumber: result.data.details.recharge.orderId,
+            mobile_no: offlineForm.mobile_no,
+            operator: offlineForm.operator_name,
+            circle: selectedCircle,
+            amount: offlineForm.amount,
+          };
+
+          // Save to localStorage
+          localStorage.setItem("receiptData", JSON.stringify(receiptData));
+
+          // Open blank tab and navigate to receipt route
+          navigate("/recharge-receipt");
+          // window.open("/recharge-receipt", "_blank");
         });
+
         setOfflineForm({
           mobile_no: "",
           operator_name: "",

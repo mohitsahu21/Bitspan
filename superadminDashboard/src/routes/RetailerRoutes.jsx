@@ -85,6 +85,7 @@ import Swal from "sweetalert2";
 import { clearUser } from "../redux/user/userSlice";
 import Payment from "../pages/Payment";
 import NotFound from "../components/NotFound";
+
 // import UTIRetailerIdActivateComponent from "../components/DashBoard/UTIRetailerIdActivateComponent";
 // import UTIPanLoginComponent from "../components/DashBoard/UTIPanLoginComponent";
 // import NSDLPanStatusComponent from "../components/DashBoard/NSDLPanStatusComponent";
@@ -287,6 +288,10 @@ const SambalHistory = lazy(() =>
 const CoupanForm = lazy(() => import("../components/DashBoard/CoupanForm"));
 const RtAllCommissionHistory = lazy(() =>
   import("../components/DashBoard/RtAllCommissionHistory")
+);
+
+const RechargeReceipt = lazy(() =>
+  import("../components/DashBoard/RechargeReceipt")
 );
 
 const RetailerRoutes = () => {
@@ -744,6 +749,8 @@ const RetailerRoutes = () => {
 
             <Route path="*" element={<Navigate to="/" />} />
             {/* <Route path="*" element={<NotFound />} /> */}
+
+            <Route path="/recharge-receipt" element={<RechargeReceipt />} />
 
             <Route path="/registration-page" element={<DemoRegistration />} />
           </Routes>
