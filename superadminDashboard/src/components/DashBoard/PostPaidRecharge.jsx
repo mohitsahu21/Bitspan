@@ -8,6 +8,7 @@ import Loading from "../Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal, Button, Spinner } from "react-bootstrap";
 import { clearUser } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const PostPaidRecharge = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const PostPaidRecharge = () => {
   const [apiData, setApiData] = useState([]);
 
   const [services, setServices] = useState([]);
+  const navigate = useNavigate();
   const fetchServices = async () => {
     // setLoading(true);
     try {
@@ -659,6 +661,19 @@ const PostPaidRecharge = () => {
             title: "Done!",
             text: "Recharge Successful",
             icon: "success",
+          }).then(() => {
+            // Prepare receipt data
+            const receiptData = {
+              rechargeType: "Postpaid",
+              receiptNumber: rechargeResult.data.orderId,
+              mobile_no: formData.number,
+              // operator: formData.operator_name,
+              amount: formData.amount,
+            };
+
+            localStorage.setItem("receiptData", JSON.stringify(receiptData));
+
+            navigate("/recharge-receipt");
           });
           setResponse(rechargeResult.data);
           success = true;
@@ -1020,7 +1035,24 @@ const PostPaidRecharge = () => {
           title: "Done!",
           text: `Recharge Successful! Order ID: ${result.data.details.recharge.orderId}`,
           icon: "success",
+        }).then(() => {
+          // Postpaid receipt data
+          const receiptData = {
+            rechargeType: "Postpaid",
+            receiptNumber: result.data.details.recharge.orderId,
+            mobile_no: offlineForm.mobile_no,
+            operator: offlineForm.operator_name,
+            amount: offlineForm.amount,
+          };
+
+          // Save to localStorage
+          localStorage.setItem("receiptData", JSON.stringify(receiptData));
+
+          // Open blank tab and navigate to receipt route
+          navigate("/recharge-receipt");
+          // window.open("/recharge-receipt", "_blank");
         });
+
         setOfflineForm({
           mobile_no: "",
           operator_name: "",

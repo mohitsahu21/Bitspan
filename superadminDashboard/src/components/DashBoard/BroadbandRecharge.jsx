@@ -526,6 +526,19 @@ const BroadbandRecharge = () => {
             title: "Done!",
             text: "Recharge Successful",
             icon: "success",
+          }).then(() => {
+            // Prepare receipt data
+            const receiptData = {
+              rechargeType: "Broadband",
+              receiptNumber: rechargeResult.data.orderId,
+              mobile_no: formData.number,
+              // operator: formData.operator_name,
+              amount: formData.amount,
+            };
+
+            localStorage.setItem("receiptData", JSON.stringify(receiptData));
+
+            navigate("/recharge-receipt");
           });
           setResponse(result.data);
           success = true;
@@ -806,6 +819,19 @@ const BroadbandRecharge = () => {
           title: "Done!",
           text: `Recharge Successful! Order ID: ${result.data.details.recharge.orderId}`,
           icon: "success",
+        }).then(() => {
+          // Prepare receipt data
+          const receiptData = {
+            rechargeType: "Broadband",
+            receiptNumber: result.data.details.recharge.orderId,
+            mobile_no: offlineForm.mobile_no,
+            // operator: formData.operator_name,
+            amount: offlineForm.amount,
+          };
+
+          localStorage.setItem("receiptData", JSON.stringify(receiptData));
+
+          navigate("/recharge-receipt");
         });
         setOfflineForm({
           mobile_no: "",

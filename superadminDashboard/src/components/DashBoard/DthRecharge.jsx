@@ -795,6 +795,20 @@ const DthRecharge = () => {
             title: "Done!",
             text: "Recharge Successful",
             icon: "success",
+          }).then(() => {
+            // Prepare receipt data
+            const receiptData = {
+              rechargeType: "DTH Recharge",
+              receiptNumber: result.data.details.recharge.orderId,
+              mobile_no: formData.number,
+              operator: formData.operatorName,
+              // circle: selectedCircle,
+              amount: formData.amount,
+            };
+
+            localStorage.setItem("receiptData", JSON.stringify(receiptData));
+
+            navigate("/recharge-receipt");
           });
           setResponse(rechargeResult.data);
           success = true;
@@ -1142,6 +1156,20 @@ const DthRecharge = () => {
           title: "Done!",
           text: `Recharge Successful! Order ID: ${result.data.details.recharge.orderId}`,
           icon: "success",
+        }).then(() => {
+          // Prepare receipt data
+          const receiptData = {
+            rechargeType: "DTH Recharge",
+            receiptNumber: result.data.details.recharge.orderId,
+            mobile_no: offlineForm.mobile_no,
+            operator: offlineForm.operator_name,
+            // circle: selectedCircle,
+            amount: offlineForm.amount,
+          };
+
+          localStorage.setItem("receiptData", JSON.stringify(receiptData));
+
+          navigate("/recharge-receipt");
         });
         setOfflineForm({
           mobile_no: "",

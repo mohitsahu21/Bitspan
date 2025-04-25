@@ -332,9 +332,8 @@ const rechargeMobile = (req, res) => {
               return "Unknown Status";
           }
         };
-        
+
         const status = getStatus();
-        
 
         const updateValues = [
           rechargeData.opcode || "",
@@ -374,9 +373,9 @@ const rechargeMobile = (req, res) => {
         console.log("Recharge Data: ", rechargeData);
         if (rechargeData.STATUS == 1 || rechargeData.STATUS == 2) {
           let rechargeMessage = "Recharge in process";
-          if(rechargeData.STATUS == 1){
-            rechargeMessage = "Recharge successful"
-          } else if(rechargeData.STATUS == 2){
+          if (rechargeData.STATUS == 1) {
+            rechargeMessage = "Recharge successful";
+          } else if (rechargeData.STATUS == 2) {
             rechargeMessage = "Recharge in process";
           }
           const transactionId = `TXNW${Date.now()}`;

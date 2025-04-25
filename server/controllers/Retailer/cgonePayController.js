@@ -350,12 +350,15 @@ const cgonepayRecharge = (req, res) => {
         });
       })
       .then(({ rechargeData, orderId }) => {
-        if (rechargeData.STATUS === "SUCCESS"  || rechargeData.STATUS === "IN PROCESS") {
+        if (
+          rechargeData.STATUS === "SUCCESS" ||
+          rechargeData.STATUS === "IN PROCESS"
+        ) {
           // const rechargeMessage = rechargeData.STATUS === "SUCCESS" ? "Recharge successful" : rechargeData.STATUS === "IN PROCESS" ? ""
           let rechargeMessage = "Recharge in process";
-          if(rechargeData.STATUS === "SUCCESS"){
-            rechargeMessage = "Recharge successful"
-          } else if(rechargeData.STATUS === "IN PROCESS"){
+          if (rechargeData.STATUS === "SUCCESS") {
+            rechargeMessage = "Recharge successful";
+          } else if (rechargeData.STATUS === "IN PROCESS") {
             rechargeMessage = "Recharge in process";
           }
           const newWalletBalance = (currentBalance - walletDeductAmt).toFixed(
