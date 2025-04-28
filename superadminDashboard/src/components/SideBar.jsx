@@ -747,6 +747,26 @@ const RetailerSidebarData = [
     ],
   },
   {
+    title: "Digital Signature",
+    path: "#",
+    icon: <MdDisplaySettings color="#fe662b" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+
+    subNav: [
+      {
+        title: "Apply DSC",
+        path: "#",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Buy Token DSC",
+        path: "#",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+    ],
+  },
+  {
     title: "History",
     path: "#",
     icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
@@ -2218,6 +2238,11 @@ const SuperAdminData = [
       {
         title: "Active/Deactive Api",
         path: "/active-deactive-api",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Active/Deactive Operator",
+        path: "/active-deactive-operator",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
