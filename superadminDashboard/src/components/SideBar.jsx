@@ -756,12 +756,12 @@ const RetailerSidebarData = [
     subNav: [
       {
         title: "Apply DSC",
-        path: "#",
+        path: "/Apply-DSC",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       {
         title: "Buy Token DSC",
-        path: "#",
+        path: "/DSC-Token",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
     ],
@@ -1727,34 +1727,6 @@ const SuperAdminData = [
     // 	},
     // ],
   },
-  // {
-  //   title: "Aadhar Linking Status",
-  //   path: "/aadhar-linking-status",
-  //   // icon: <IoIcons.IoIosPaper color="black" />,
-  //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //   // iconClosed: <RiIcons.RiArrowDownSFill color="black"/>,
-  //   // iconOpened: <RiIcons.RiArrowUpSFill color="black"/>,
-
-  //   // subNav: [
-  //   // 	{
-  //   // 		title: "Service 1",
-  //   // 		path: "/services/services1",
-  //   // 		icon: <IoIcons.IoIosPaper />,
-  //   // 		cName: "sub-nav",
-  //   // 	},
-  //   // 	{
-  //   // 		title: "Service 2",
-  //   // 		path: "/services/services2",
-  //   // 		icon: <IoIcons.IoIosPaper />,
-  //   // 		cName: "sub-nav",
-  //   // 	},
-  //   // 	{
-  //   // 		title: "Service 3",
-  //   // 		path: "/services/services3",
-  //   // 		icon: <IoIcons.IoIosPaper />,
-  //   // 	},
-  //   // ],
-  // },
   {
     title: "Wallet",
     path: "#",
@@ -1973,32 +1945,6 @@ const SuperAdminData = [
       },
     ],
   },
-  // {
-  //   title: "Training Video",
-  //   path: "/training-video",
-  //   icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-
-  //   // iconClosed: <RiIcons.RiArrowDownSFill />,
-  //   // iconOpened: <RiIcons.RiArrowUpSFill />,
-
-  //   // subNav: [
-  //   // 	{
-  //   // 		title: "Event 1",
-  //   // 		path: "/events/events1",
-  //   // 		icon: <IoIcons.IoIosPaper />,
-  //   // 	},
-  //   // 	{
-  //   // 		title: "Event 2",
-  //   // 		path: "/events/events2",
-  //   // 		icon: <IoIcons.IoIosPaper />,
-  //   // 	},
-  //   // ],
-  // },
-  // {
-  //   title: "Set PIN and 2 Step",
-  //   path: "/2-step-verification",
-  //   icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
-  // },
   {
     title: "Online Services",
     path: "#",
@@ -2041,7 +1987,6 @@ const SuperAdminData = [
     path: "/website-setting",
     icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
   },
-
   {
     title: "PAN Coupon Requests",
     path: "/pan-coupon-requests",
@@ -2087,56 +2032,6 @@ const SuperAdminData = [
       // },
     ],
   },
-  // {
-  //   title: "UTI 2.0",
-  //   // path: "/training-video",
-  //   icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-  //   iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-  //   iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
-
-  //   subNav: [
-  //     {
-  //       title: "Wallet Full Summary",
-  //       path: "/wallet-transaction-report",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "UTI Transaction History",
-  //       path: "/uti-transaction-report",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //   ],
-  // },
-  // {
-  //   title: "UTI New",
-  //   // path: "/training-video",
-  //   icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-  //   iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-  //   iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
-
-  //   subNav: [
-  //     {
-  //       title: "Buy Coupon",
-  //       path: "/buy-uti-coupon",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "Distribute UTI Coupon",
-  //       path: "/distribute-uti-coupon",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "UTI Coupon History",
-  //       path: "/uti-coupon-history",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //   ],
-  // },
-  // {
-  //   title: "PAN Transaction History",
-  //   path: "pan-transaction-report",
-  //   icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
-  // },
   {
     title: "User List",
     path: "#",
@@ -2248,6 +2143,11 @@ const SuperAdminData = [
       {
         title: "Active/Deactive Services",
         path: "/active-deactive-services",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
+      {
+        title: "Digital Signature",
+        path: "/digital-signature-plan",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
       // {

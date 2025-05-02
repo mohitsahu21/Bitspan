@@ -148,6 +148,253 @@ const operatorMapping = {
   },
 };
 
+// const sizarpayRecharge = (req, res) => {
+//   let responseSent = false;
+//   const randomOutletID = Math.floor(100000 + Math.random() * 900000).toString();
+//   const GEOCode = "21.1466,79.0888";
+//   const Pincode = "482002";
+//   const CustomerNumber = "9926054551";
+//   const {
+//     number,
+//     amount,
+//     walletDeductAmt,
+//     operatorName,
+//     recharge_Type,
+//     created_by_userid,
+//   } = req.body;
+
+//   if (
+//     !number ||
+//     !amount ||
+//     !walletDeductAmt ||
+//     !operatorName ||
+//     !recharge_Type
+//   ) {
+//     return res.status(400).json({ error: "All fields are required" });
+//   }
+
+//   const providerName = "SizarPay";
+//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+//   const updatedAt = createdAt;
+
+//   const queryBalance = `
+//     SELECT Closing_Balance
+//     FROM user_wallet
+//     WHERE userId = ?
+//     ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
+//     LIMIT 1
+//   `;
+
+//   db.query(queryBalance, [created_by_userid], (err, balanceResult) => {
+//     if (err) {
+//       return res.status(500).json({
+//         error: "Error fetching wallet balance",
+//         message: err.message,
+//       });
+//     }
+
+//     if (
+//       balanceResult.length === 0 ||
+//       parseFloat(balanceResult[0].Closing_Balance) < amount
+//     ) {
+//       return res.status(400).json({ error: "Insufficient wallet balance" });
+//     }
+
+//     const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+//     const orderId = `SIZ${Date.now()}`;
+
+//     const operatorDetails = operatorMapping[operatorName];
+
+//     // Check provider balance and initiate recharge
+//     getDataFromSizarPayClientApi("/Balance", {
+//       Format: "1",
+//       OutletID: randomOutletID,
+//     })
+//       .then((balanceData) => {
+//         if (balanceData?.bal < amount) {
+//           if (!responseSent) {
+//             responseSent = true; // Ensure only one response is sent
+//             return res.status(400).json({
+//               message: "Recharge failed",
+//               error: "Insufficient balance in Recharge Api",
+//             });
+//           }
+//         }
+
+//         if (!operatorMapping[operatorName]) {
+//           return res.status(400).json({
+//             error: "Invalid operator name",
+//             message: `Operator ${operatorName} is not supported.`,
+//           });
+//         }
+
+//         const insertQuery = `
+//           INSERT INTO recharges (mobile_no, amount, walletDeductAmt, operator_name, providerName, recharge_Type, created_by_userid, created_at, orderid)
+//           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+//         `;
+//         const values = [
+//           number,
+//           amount,
+//           walletDeductAmt,
+//           operatorName,
+//           providerName,
+//           recharge_Type,
+//           created_by_userid,
+//           createdAt,
+//           orderId,
+//         ];
+
+//         return new Promise((resolve, reject) => {
+//           db.query(insertQuery, values, (err, result) => {
+//             if (err) {
+//               reject({
+//                 status: 500,
+//                 error: "Database insertion error",
+//                 message: err.message,
+//               });
+//             } else {
+//               resolve({ orderId, operatorDetails, id: result.insertId });
+//             }
+//           });
+//         });
+//       })
+//       .then(({ orderId, operatorDetails, id }) => {
+//         return getDataFromSizarPayClientApi("/TransactionAPI", {
+//           Account: number,
+//           Amount: amount,
+//           SPKey: operatorDetails.code,
+//           ApiRequestID: orderId,
+//           Format: "1",
+//           GEOCode: GEOCode,
+//           Pincode: Pincode,
+//           CustomerNumber: CustomerNumber,
+//         }).then((rechargeData) => {
+//           return { rechargeData, orderId, id };
+//         });
+//       })
+//       .then(({ rechargeData, orderId, id }) => {
+//         const Status =
+//           rechargeData?.status == 1
+//             ? "Pending"
+//             : rechargeData?.status == 2
+//             ? "Success"
+//             : "Failure";
+
+//         const updateQuery = `
+//           UPDATE recharges
+//           SET opcode = ?, status = ?, transaction_id = ?, opid = ?, orderid = ?, message = ?, errorcode = ?, updated_at = ?
+//           WHERE id = ?
+//         `;
+
+//         const updateValues = [
+//           operatorDetails.code,
+//           Status,
+//           rechargeData.rpid,
+//           rechargeData.opid,
+//           orderId,
+//           rechargeData.msg,
+//           rechargeData.errorcode,
+//           updatedAt,
+//           id,
+//         ];
+
+//         return new Promise((resolve, reject) => {
+//           db.query(updateQuery, updateValues, (err) => {
+//             if (err) {
+//               return reject({
+//                 status: 500,
+//                 error: "Database update error",
+//                 message: err.message,
+//               });
+//             }
+//             resolve({ rechargeData, Status });
+//           });
+//         });
+//       })
+//       .then(({ rechargeData, Status }) => {
+//         if (Status === "Success" || Status === "Pending") {
+//           let rechargeMessage = "Recharge in process";
+//           if (Status === "Success") {
+//             rechargeMessage = "Recharge successful";
+//           } else if (Status === "Pending") {
+//             rechargeMessage = "Recharge in process";
+//           }
+//           const newWalletBalance = (currentBalance - walletDeductAmt).toFixed(
+//             2
+//           );
+
+//           const updateWalletQuery = `
+//             INSERT INTO user_wallet
+//             (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status)
+//             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+//           `;
+
+//           const transactionDetails = `Recharge Deduction ${number}`;
+//           const transactionId = `TXNW${Date.now()}`;
+
+//           return new Promise((resolve, reject) => {
+//             db.query(
+//               updateWalletQuery,
+//               [
+//                 created_by_userid,
+//                 updatedAt,
+//                 orderId,
+//                 transactionId,
+//                 currentBalance.toFixed(2),
+//                 newWalletBalance,
+//                 "Debit",
+//                 0,
+//                 walletDeductAmt,
+//                 transactionDetails,
+//                 "Success",
+//               ],
+//               (err) => {
+//                 if (err) {
+//                   reject({
+//                     status: 500,
+//                     error: "Failed to update wallet balance",
+//                     message: err.message,
+//                   });
+//                 } else {
+//                   resolve({
+//                     // message: "Recharge successful",
+//                     message: rechargeMessage,
+//                     rechargeData,
+//                     wallet: {
+//                       previousBalance: currentBalance.toFixed(2),
+//                       newBalance: newWalletBalance,
+//                     },
+//                     orderId,
+//                   });
+//                 }
+//               }
+//             );
+//           });
+//         } else {
+//           return {
+//             message: "Recharge failed but no money was deducted",
+//             rechargeData,
+//           };
+//         }
+//       })
+//       .then((finalResult) => {
+//         if (!responseSent) {
+//           responseSent = true;
+//           res.json(finalResult);
+//         }
+//       })
+//       .catch((error) => {
+//         if (!responseSent) {
+//           responseSent = true;
+//           res.status(error.status || 500).json({
+//             error: error.error || "Recharge failed",
+//             message: error.message || "Unknown error",
+//           });
+//         }
+//       });
+//   });
+// };
+
 const sizarpayRecharge = (req, res) => {
   let responseSent = false;
   const randomOutletID = Math.floor(100000 + Math.random() * 900000).toString();
@@ -177,291 +424,37 @@ const sizarpayRecharge = (req, res) => {
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const updatedAt = createdAt;
 
-  const queryBalance = `
+  const operatorQuery = `
+  SELECT *
+  FROM api_operator_map 
+  WHERE api_name = 'SizarPay' AND operator_name = ? AND status = 'Active' 
+  LIMIT 1
+`;
+
+  db.query(operatorQuery, [operatorName], (err, operatorResult) => {
+    if (err) {
+      return res.status(500).json({
+        error: "Error fetching operator code",
+        message: err.message,
+      });
+    }
+
+    if (operatorResult.length === 0) {
+      return res.status(400).json({
+        error: "Invalid or inactive operator name",
+        message: `No active mapping found for '${operatorName}' in SizarPay`,
+      });
+    }
+
+    const operatorDetails = operatorResult[0];
+
+    const queryBalance = `
     SELECT Closing_Balance 
     FROM user_wallet 
     WHERE userId = ? 
     ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
     LIMIT 1
   `;
-
-  db.query(queryBalance, [created_by_userid], (err, balanceResult) => {
-    if (err) {
-      return res.status(500).json({
-        error: "Error fetching wallet balance",
-        message: err.message,
-      });
-    }
-
-    if (
-      balanceResult.length === 0 ||
-      parseFloat(balanceResult[0].Closing_Balance) < amount
-    ) {
-      return res.status(400).json({ error: "Insufficient wallet balance" });
-    }
-
-    const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
-    const orderId = `SIZ${Date.now()}`;
-
-    const operatorDetails = operatorMapping[operatorName];
-
-    // Check provider balance and initiate recharge
-    getDataFromSizarPayClientApi("/Balance", {
-      Format: "1",
-      OutletID: randomOutletID,
-    })
-      .then((balanceData) => {
-        if (balanceData?.bal < amount) {
-          if (!responseSent) {
-            responseSent = true; // Ensure only one response is sent
-            return res.status(400).json({
-              message: "Recharge failed",
-              error: "Insufficient balance in Recharge Api",
-            });
-          }
-        }
-
-        if (!operatorMapping[operatorName]) {
-          return res.status(400).json({
-            error: "Invalid operator name",
-            message: `Operator ${operatorName} is not supported.`,
-          });
-        }
-
-        const insertQuery = `
-          INSERT INTO recharges (mobile_no, amount, walletDeductAmt, operator_name, providerName, recharge_Type, created_by_userid, created_at, orderid) 
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `;
-        const values = [
-          number,
-          amount,
-          walletDeductAmt,
-          operatorName,
-          providerName,
-          recharge_Type,
-          created_by_userid,
-          createdAt,
-          orderId,
-        ];
-
-        return new Promise((resolve, reject) => {
-          db.query(insertQuery, values, (err, result) => {
-            if (err) {
-              reject({
-                status: 500,
-                error: "Database insertion error",
-                message: err.message,
-              });
-            } else {
-              resolve({ orderId, operatorDetails, id: result.insertId });
-            }
-          });
-        });
-      })
-      .then(({ orderId, operatorDetails, id }) => {
-        return getDataFromSizarPayClientApi("/TransactionAPI", {
-          Account: number,
-          Amount: amount,
-          SPKey: operatorDetails.code,
-          ApiRequestID: orderId,
-          Format: "1",
-          GEOCode: GEOCode,
-          Pincode: Pincode,
-          CustomerNumber: CustomerNumber,
-        }).then((rechargeData) => {
-          return { rechargeData, orderId, id };
-        });
-      })
-      .then(({ rechargeData, orderId, id }) => {
-        const Status =
-          rechargeData?.status == 1
-            ? "Pending"
-            : rechargeData?.status == 2
-            ? "Success"
-            : "Failure";
-
-        const updateQuery = `
-          UPDATE recharges 
-          SET opcode = ?, status = ?, transaction_id = ?, opid = ?, orderid = ?, message = ?, errorcode = ?, updated_at = ? 
-          WHERE id = ?
-        `;
-
-        const updateValues = [
-          operatorDetails.code,
-          Status,
-          rechargeData.rpid,
-          rechargeData.opid,
-          orderId,
-          rechargeData.msg,
-          rechargeData.errorcode,
-          updatedAt,
-          id,
-        ];
-
-        return new Promise((resolve, reject) => {
-          db.query(updateQuery, updateValues, (err) => {
-            if (err) {
-              return reject({
-                status: 500,
-                error: "Database update error",
-                message: err.message,
-              });
-            }
-            resolve({ rechargeData, Status });
-          });
-        });
-      })
-      .then(({ rechargeData, Status }) => {
-        if (Status === "Success" || Status === "Pending") {
-          let rechargeMessage = "Recharge in process";
-          if (Status === "Success") {
-            rechargeMessage = "Recharge successful";
-          } else if (Status === "Pending") {
-            rechargeMessage = "Recharge in process";
-          }
-          const newWalletBalance = (currentBalance - walletDeductAmt).toFixed(
-            2
-          );
-
-          const updateWalletQuery = `
-            INSERT INTO user_wallet
-            (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-          `;
-
-          const transactionDetails = `Recharge Deduction ${number}`;
-          const transactionId = `TXNW${Date.now()}`;
-
-          return new Promise((resolve, reject) => {
-            db.query(
-              updateWalletQuery,
-              [
-                created_by_userid,
-                updatedAt,
-                orderId,
-                transactionId,
-                currentBalance.toFixed(2),
-                newWalletBalance,
-                "Debit",
-                0,
-                walletDeductAmt,
-                transactionDetails,
-                "Success",
-              ],
-              (err) => {
-                if (err) {
-                  reject({
-                    status: 500,
-                    error: "Failed to update wallet balance",
-                    message: err.message,
-                  });
-                } else {
-                  resolve({
-                    // message: "Recharge successful",
-                    message: rechargeMessage,
-                    rechargeData,
-                    wallet: {
-                      previousBalance: currentBalance.toFixed(2),
-                      newBalance: newWalletBalance,
-                    },
-                    orderId,
-                  });
-                }
-              }
-            );
-          });
-        } else {
-          return {
-            message: "Recharge failed but no money was deducted",
-            rechargeData,
-          };
-        }
-      })
-      .then((finalResult) => {
-        if (!responseSent) {
-          responseSent = true;
-          res.json(finalResult);
-        }
-      })
-      .catch((error) => {
-        if (!responseSent) {
-          responseSent = true;
-          res.status(error.status || 500).json({
-            error: error.error || "Recharge failed",
-            message: error.message || "Unknown error",
-          });
-        }
-      });
-  });
-};
-
-const sizarpayRechargeA = (req, res) => {
-  let responseSent = false;
-  const randomOutletID = Math.floor(100000 + Math.random() * 900000).toString();
-  const GEOCode = "21.1466,79.0888";
-  const Pincode = "482002";
-  const CustomerNumber = "9926054551";
-  const {
-    number,
-    amount,
-    walletDeductAmt,
-    operatorName,
-    recharge_Type,
-    created_by_userid,
-  } = req.body;
-
-  if (
-    !number ||
-    !amount ||
-    !walletDeductAmt ||
-    !operatorName ||
-    !recharge_Type
-  ) {
-    return res.status(400).json({ error: "All fields are required" });
-  }
-
-  const providerName = "SizarPay";
-  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-  const updatedAt = createdAt;
-
-  // Fetch operator mapping dynamically from the database
-  const queryOperatorMapping = `
-    SELECT operator_name, code, category 
-    FROM api_operator_map 
-    WHERE api_name = 'SizarPay' AND status = 'Active'`;
-
-  db.query(queryOperatorMapping, (err, operatorMappingResult) => {
-    if (err) {
-      return res.status(500).json({
-        error: "Error fetching operator mapping",
-        message: err.message,
-      });
-    }
-
-    const operatorMapping = operatorMappingResult.reduce((acc, row) => {
-      acc[row.operator_name] = {
-        code: row.code,
-        category: row.category,
-      };
-      return acc;
-    }, {});
-
-    const operatorDetails = operatorMapping[operatorName];
-
-    if (!operatorDetails) {
-      return res.status(400).json({
-        error: "Invalid operator name",
-        message: `Operator ${operatorName} is not supported.`,
-      });
-    }
-
-    const queryBalance = `
-      SELECT Closing_Balance 
-      FROM user_wallet 
-      WHERE userId = ? 
-      ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
-      LIMIT 1
-    `;
 
     db.query(queryBalance, [created_by_userid], (err, balanceResult) => {
       if (err) {
@@ -481,6 +474,8 @@ const sizarpayRechargeA = (req, res) => {
       const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
       const orderId = `SIZ${Date.now()}`;
 
+      // const operatorDetails = operatorMapping[operatorName];
+
       // Check provider balance and initiate recharge
       getDataFromSizarPayClientApi("/Balance", {
         Format: "1",
@@ -497,10 +492,17 @@ const sizarpayRechargeA = (req, res) => {
             }
           }
 
+          // if (!operatorMapping[operatorName]) {
+          //   return res.status(400).json({
+          //     error: "Invalid operator name",
+          //     message: `Operator ${operatorName} is not supported.`,
+          //   });
+          // }
+
           const insertQuery = `
-            INSERT INTO recharges (mobile_no, amount, walletDeductAmt, operator_name, providerName, recharge_Type, created_by_userid, created_at, orderid) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-          `;
+          INSERT INTO recharges (mobile_no, amount, walletDeductAmt, operator_name, providerName, recharge_Type, created_by_userid, created_at, orderid) 
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
           const values = [
             number,
             amount,
@@ -550,10 +552,10 @@ const sizarpayRechargeA = (req, res) => {
               : "Failure";
 
           const updateQuery = `
-            UPDATE recharges 
-            SET opcode = ?, status = ?, transaction_id = ?, opid = ?, orderid = ?, message = ?, errorcode = ?, updated_at = ? 
-            WHERE id = ?
-          `;
+          UPDATE recharges 
+          SET opcode = ?, status = ?, transaction_id = ?, opid = ?, orderid = ?, message = ?, errorcode = ?, updated_at = ? 
+          WHERE id = ?
+        `;
 
           const updateValues = [
             operatorDetails.code,
@@ -593,10 +595,10 @@ const sizarpayRechargeA = (req, res) => {
             );
 
             const updateWalletQuery = `
-              INSERT INTO user_wallet
-              (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            `;
+            INSERT INTO user_wallet
+            (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          `;
 
             const transactionDetails = `Recharge Deduction ${number}`;
             const transactionId = `TXNW${Date.now()}`;
@@ -626,6 +628,7 @@ const sizarpayRechargeA = (req, res) => {
                     });
                   } else {
                     resolve({
+                      // message: "Recharge successful",
                       message: rechargeMessage,
                       rechargeData,
                       wallet: {
@@ -663,6 +666,275 @@ const sizarpayRechargeA = (req, res) => {
     });
   });
 };
+
+// const sizarpayRechargeA = (req, res) => {
+//   let responseSent = false;
+//   const randomOutletID = Math.floor(100000 + Math.random() * 900000).toString();
+//   const GEOCode = "21.1466,79.0888";
+//   const Pincode = "482002";
+//   const CustomerNumber = "9926054551";
+//   const {
+//     number,
+//     amount,
+//     walletDeductAmt,
+//     operatorName,
+//     recharge_Type,
+//     created_by_userid,
+//   } = req.body;
+
+//   if (
+//     !number ||
+//     !amount ||
+//     !walletDeductAmt ||
+//     !operatorName ||
+//     !recharge_Type
+//   ) {
+//     return res.status(400).json({ error: "All fields are required" });
+//   }
+
+//   const providerName = "SizarPay";
+//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+//   const updatedAt = createdAt;
+
+//   // Fetch operator mapping dynamically from the database
+//   const queryOperatorMapping = `
+//     SELECT operator_name, code, category
+//     FROM api_operator_map
+//     WHERE api_name = 'SizarPay' AND status = 'Active'`;
+
+//   db.query(queryOperatorMapping, (err, operatorMappingResult) => {
+//     if (err) {
+//       return res.status(500).json({
+//         error: "Error fetching operator mapping",
+//         message: err.message,
+//       });
+//     }
+
+//     const operatorMapping = operatorMappingResult.reduce((acc, row) => {
+//       acc[row.operator_name] = {
+//         code: row.code,
+//         category: row.category,
+//       };
+//       return acc;
+//     }, {});
+
+//     const operatorDetails = operatorMapping[operatorName];
+
+//     if (!operatorDetails) {
+//       return res.status(400).json({
+//         error: "Invalid operator name",
+//         message: `Operator ${operatorName} is not supported.`,
+//       });
+//     }
+
+//     const queryBalance = `
+//       SELECT Closing_Balance
+//       FROM user_wallet
+//       WHERE userId = ?
+//       ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
+//       LIMIT 1
+//     `;
+
+//     db.query(queryBalance, [created_by_userid], (err, balanceResult) => {
+//       if (err) {
+//         return res.status(500).json({
+//           error: "Error fetching wallet balance",
+//           message: err.message,
+//         });
+//       }
+
+//       if (
+//         balanceResult.length === 0 ||
+//         parseFloat(balanceResult[0].Closing_Balance) < amount
+//       ) {
+//         return res.status(400).json({ error: "Insufficient wallet balance" });
+//       }
+
+//       const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+//       const orderId = `SIZ${Date.now()}`;
+
+//       // Check provider balance and initiate recharge
+//       getDataFromSizarPayClientApi("/Balance", {
+//         Format: "1",
+//         OutletID: randomOutletID,
+//       })
+//         .then((balanceData) => {
+//           if (balanceData?.bal < amount) {
+//             if (!responseSent) {
+//               responseSent = true; // Ensure only one response is sent
+//               return res.status(400).json({
+//                 message: "Recharge failed",
+//                 error: "Insufficient balance in Recharge Api",
+//               });
+//             }
+//           }
+
+//           const insertQuery = `
+//             INSERT INTO recharges (mobile_no, amount, walletDeductAmt, operator_name, providerName, recharge_Type, created_by_userid, created_at, orderid)
+//             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+//           `;
+//           const values = [
+//             number,
+//             amount,
+//             walletDeductAmt,
+//             operatorName,
+//             providerName,
+//             recharge_Type,
+//             created_by_userid,
+//             createdAt,
+//             orderId,
+//           ];
+
+//           return new Promise((resolve, reject) => {
+//             db.query(insertQuery, values, (err, result) => {
+//               if (err) {
+//                 reject({
+//                   status: 500,
+//                   error: "Database insertion error",
+//                   message: err.message,
+//                 });
+//               } else {
+//                 resolve({ orderId, operatorDetails, id: result.insertId });
+//               }
+//             });
+//           });
+//         })
+//         .then(({ orderId, operatorDetails, id }) => {
+//           return getDataFromSizarPayClientApi("/TransactionAPI", {
+//             Account: number,
+//             Amount: amount,
+//             SPKey: operatorDetails.code,
+//             ApiRequestID: orderId,
+//             Format: "1",
+//             GEOCode: GEOCode,
+//             Pincode: Pincode,
+//             CustomerNumber: CustomerNumber,
+//           }).then((rechargeData) => {
+//             return { rechargeData, orderId, id };
+//           });
+//         })
+//         .then(({ rechargeData, orderId, id }) => {
+//           const Status =
+//             rechargeData?.status == 1
+//               ? "Pending"
+//               : rechargeData?.status == 2
+//               ? "Success"
+//               : "Failure";
+
+//           const updateQuery = `
+//             UPDATE recharges
+//             SET opcode = ?, status = ?, transaction_id = ?, opid = ?, orderid = ?, message = ?, errorcode = ?, updated_at = ?
+//             WHERE id = ?
+//           `;
+
+//           const updateValues = [
+//             operatorDetails.code,
+//             Status,
+//             rechargeData.rpid,
+//             rechargeData.opid,
+//             orderId,
+//             rechargeData.msg,
+//             rechargeData.errorcode,
+//             updatedAt,
+//             id,
+//           ];
+
+//           return new Promise((resolve, reject) => {
+//             db.query(updateQuery, updateValues, (err) => {
+//               if (err) {
+//                 return reject({
+//                   status: 500,
+//                   error: "Database update error",
+//                   message: err.message,
+//                 });
+//               }
+//               resolve({ rechargeData, Status });
+//             });
+//           });
+//         })
+//         .then(({ rechargeData, Status }) => {
+//           if (Status === "Success" || Status === "Pending") {
+//             let rechargeMessage = "Recharge in process";
+//             if (Status === "Success") {
+//               rechargeMessage = "Recharge successful";
+//             } else if (Status === "Pending") {
+//               rechargeMessage = "Recharge in process";
+//             }
+//             const newWalletBalance = (currentBalance - walletDeductAmt).toFixed(
+//               2
+//             );
+
+//             const updateWalletQuery = `
+//               INSERT INTO user_wallet
+//               (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status)
+//               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+//             `;
+
+//             const transactionDetails = `Recharge Deduction ${number}`;
+//             const transactionId = `TXNW${Date.now()}`;
+
+//             return new Promise((resolve, reject) => {
+//               db.query(
+//                 updateWalletQuery,
+//                 [
+//                   created_by_userid,
+//                   updatedAt,
+//                   orderId,
+//                   transactionId,
+//                   currentBalance.toFixed(2),
+//                   newWalletBalance,
+//                   "Debit",
+//                   0,
+//                   walletDeductAmt,
+//                   transactionDetails,
+//                   "Success",
+//                 ],
+//                 (err) => {
+//                   if (err) {
+//                     reject({
+//                       status: 500,
+//                       error: "Failed to update wallet balance",
+//                       message: err.message,
+//                     });
+//                   } else {
+//                     resolve({
+//                       message: rechargeMessage,
+//                       rechargeData,
+//                       wallet: {
+//                         previousBalance: currentBalance.toFixed(2),
+//                         newBalance: newWalletBalance,
+//                       },
+//                       orderId,
+//                     });
+//                   }
+//                 }
+//               );
+//             });
+//           } else {
+//             return {
+//               message: "Recharge failed but no money was deducted",
+//               rechargeData,
+//             };
+//           }
+//         })
+//         .then((finalResult) => {
+//           if (!responseSent) {
+//             responseSent = true;
+//             res.json(finalResult);
+//           }
+//         })
+//         .catch((error) => {
+//           if (!responseSent) {
+//             responseSent = true;
+//             res.status(error.status || 500).json({
+//               error: error.error || "Recharge failed",
+//               message: error.message || "Unknown error",
+//             });
+//           }
+//         });
+//     });
+//   });
+// };
 
 const sizarPayRechargeStatusCheck = (req, res) => {
   const { transaction_id } = req.body;

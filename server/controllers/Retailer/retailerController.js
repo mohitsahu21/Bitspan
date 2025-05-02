@@ -5008,6 +5008,107 @@ const getWhiteLableData = (req, res) => {
   });
 };
 
+const digitalSignaturePlan = (req, res) => {
+  const { year, amount, link } = req.body;
+
+  if (!year || !amount || !link) {
+    return res
+      .status(400)
+      .json({ status: "Failure", error: "All fields are required" });
+  }
+
+  const created_at = moment().format("YYYY-MM-DD HH:mm:ss");
+  const planstatus = "Active";
+
+  const sql =
+    "INSERT INTO digitalsign (year, amount, link, status, created_at) VALUES (?, ?, ?, ?, ?)";
+
+  db.query(sql, [year, amount, link, planstatus, created_at], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ status: "Failure", error: err.message });
+    }
+
+    return res.status(201).json({
+      status: "Success",
+      message: "Digital Signature Plan added successfully",
+      formId: result.insertId,
+    });
+  });
+};
+
+const updateDigitalSignaturePlan = (req, res) => {
+  const { id } = req.params;
+  const { year, amount, link, status } = req.body;
+
+  if (!year || !amount || !link || !status) {
+    return res
+      .status(400)
+      .json({ status: "Failure", error: "All fields are required" });
+  }
+
+  const updated_at = moment().format("YYYY-MM-DD HH:mm:ss");
+
+  const sql =
+    "UPDATE digitalsign SET year = ?, amount = ?, link = ?, status = ?, updated_at = ? WHERE id = ?";
+
+  db.query(sql, [year, amount, link, status, updated_at, id], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", error: "Plan not found" });
+    }
+
+    return res.status(200).json({
+      status: "Success",
+      message: "Digital Signature Plan updated successfully",
+    });
+  });
+};
+
+const getdigitalSignaturePlan = (req, res) => {
+  const sqlQuery = `SELECT * FROM  digitalsign`;
+
+  db.query(sqlQuery, (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
+const getActiveDigitalSignaturePlans = (req, res) => {
+  const sqlQuery = `SELECT * FROM digitalsign WHERE status = 'Active'`;
+
+  db.query(sqlQuery, (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No active data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -5071,4 +5172,8 @@ module.exports = {
   getCertificateDetails,
   getSuperAdminData,
   getWhiteLableData,
+  digitalSignaturePlan,
+  updateDigitalSignaturePlan,
+  getdigitalSignaturePlan,
+  getActiveDigitalSignaturePlans,
 };

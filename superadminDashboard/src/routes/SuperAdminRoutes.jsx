@@ -216,6 +216,10 @@ const SAPanUploadedDocsList = lazy(() =>
 const SAActiveDeactiveOperator = lazy(() =>
   import("../components/SuperAdmin/SAActiveDeactiveOperator.jsx")
 );
+const DigitalSigns = lazy(() =>
+  import("../components/SuperAdmin/DigitalSigns.jsx")
+);
+const NewDSC = lazy(() => import("../components/SuperAdmin/NewDSC.jsx"));
 
 const SuperAdminRoutes = () => {
   const { currentUser, token } = useSelector((state) => state.user);
@@ -461,6 +465,8 @@ const SuperAdminRoutes = () => {
               path="/active-deactive-operator"
               element={<SAActiveDeactiveOperator />}
             />
+            <Route path="/digital-signature-plan" element={<DigitalSigns />} />
+            <Route path="/new-digital-signature-plan" element={<NewDSC />} />
             {/* <Route path="*" element={<NotFound />} /> */}
             <Route path="*" element={<Navigate to="/" />} />
 

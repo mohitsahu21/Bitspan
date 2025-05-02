@@ -65,6 +65,10 @@ const {
   getCertificateDetails,
   getSuperAdminData,
   getWhiteLableData,
+  digitalSignaturePlan,
+  updateDigitalSignaturePlan,
+  getdigitalSignaturePlan,
+  getActiveDigitalSignaturePlans,
 } = require("../../controllers/Retailer/retailerController");
 const authenticateToken = require("../../middleware/authenticateToken");
 
@@ -379,5 +383,9 @@ router.get("/getAllCommission/:userId", authenticateToken, getAllCommission);
 router.get("/certificateDetails/:userId", getCertificateDetails);
 router.get("/getSuperAdminData", getSuperAdminData);
 router.get("/getWhiteLableData/:whiteLabelId", getWhiteLableData);
+router.post("/digitalSignaturePlan", digitalSignaturePlan);
+router.put("/updateDigitalSignaturePlan/:id", updateDigitalSignaturePlan);
+router.get("/getdigitalSignaturePlan", getdigitalSignaturePlan);
+router.get("/getActiveDigitalSignaturePlans", getActiveDigitalSignaturePlans);
 
 module.exports = router;

@@ -294,6 +294,9 @@ const RechargeReceipt = lazy(() =>
   import("../components/DashBoard/RechargeReceipt")
 );
 
+const DigitalSign = lazy(() => import("../components/DashBoard/DigitalSign"));
+const DigitalToken = lazy(() => import("../components/DashBoard/DigitalToken"));
+
 const RetailerRoutes = () => {
   const { currentUser, token } = useSelector((state) => state.user);
   const userStatus = currentUser?.Status;
@@ -751,6 +754,8 @@ const RetailerRoutes = () => {
             {/* <Route path="*" element={<NotFound />} /> */}
 
             <Route path="/recharge-receipt" element={<RechargeReceipt />} />
+            <Route path="/Apply-DSC" element={<DigitalSign />} />
+            <Route path="/DSC-Token" element={<DigitalToken />} />
 
             <Route path="/registration-page" element={<DemoRegistration />} />
           </Routes>

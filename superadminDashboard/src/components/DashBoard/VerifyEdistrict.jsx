@@ -133,46 +133,6 @@ const VerifyEdistrict = () => {
     }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   console.log("Form Data Submitted: ", formData);
-  //   try {
-  //     const response = await axios.post(
-  //       `http://localhost:7777/api/auth/retailer/verify-Edistrict`,
-  //       formData
-  //     );
-  //     // alert("Form Submitted");
-  //     Swal.fire({
-  //       title: "Form Sumitted Success",
-  //       text: `${resData}`,
-  //       icon: "success",
-  //     });
-  //     setFormData({
-  //       applicationType: "",
-  //       name: "",
-  //       mobileNo: "",
-  //       rsNumber: "",
-  //       district: "",
-  //       tehsil: "",
-  //       amount: "",
-  //       user_id: "",
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-
-  //   // setFormData({
-  //   //   applicationType: "",
-  //   //   name: "",
-  //   //   mobileNo: "",
-  //   //   rsNumber: "",
-  //   //   user_id: "",
-  //   // });
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
