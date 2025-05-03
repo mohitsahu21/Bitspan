@@ -139,6 +139,11 @@ const {
   getAllOperatorList,
   ActiveOperator,
   DeactiveOperator,
+  getDSCForms,
+  rejectDSCForm,
+  SuccessDSCForm,
+  markForEditDSCForm,
+  ApproveDSCForm,
 } = require("../../controllers/SuperAdmin/superAdminController");
 const authenticateToken = require("../../middleware/authenticateToken");
 
@@ -557,8 +562,14 @@ router.get(
 );
 router.get("/getShareIdsSummary", authenticateToken, getShareIdsSummary);
 
+// Add routes for operator management and other functionalities
 router.get("/getAllOperatorList", getAllOperatorList);
 router.put("/ActiveOperator", ActiveOperator);
 router.put("/DeactiveOperator", DeactiveOperator);
+router.get("/getDSCForms", getDSCForms);
+router.put("/rejectDSCForm", rejectDSCForm);
+router.put("/SuccessDSCForm", SuccessDSCForm);
+router.put("/markForEditDSCForm", markForEditDSCForm);
+router.put("/ApproveDSCForm", ApproveDSCForm);
 
 module.exports = router;

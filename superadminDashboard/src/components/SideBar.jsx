@@ -1876,18 +1876,6 @@ const SuperAdminData = [
     iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
-      // {
-      //   title: "Download Forms",
-      //   path: "/download-offline-forms",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   // cName: "sub-nav",
-      // },
-      // {
-      //   title: "Apply Pan Card Offline",
-      //   path: "/submit-pan-card-offline",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   // cName: "sub-nav",
-      // },
       {
         title: "View Offline Recharge Request",
         path: "/Offline-Recharge-history",
@@ -1940,6 +1928,12 @@ const SuperAdminData = [
       {
         title: "View Sambal Forms",
         path: "/sambal-form-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "View DSC",
+        path: "/digital-signature-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
         // cName: "sub-nav",
       },

@@ -8849,6 +8849,322 @@ const DeactiveOperator = (req, res) => {
   }
 };
 
+// Digital Signature DSC
+
+const getDSCForms = (req, res) => {
+  try {
+    const sql = `SELECT c.*, u.UserName , u.role , u.ContactNo , u.Email FROM dsc c LEFT JOIN userprofile u  ON c.user_id = u.UserId ORDER BY id DESC`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getDSCForms from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getDSCForms" });
+      } else {
+        // Check if the result is empty
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getDSCForms found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getDSCForms fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getDSCForms from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getDSCForms",
+      error: error.message,
+    });
+  }
+};
+
+const rejectDSCForm = (req, res) => {
+  try {
+    const {
+      order_id,
+      note,
+      status,
+      user_id,
+      refundAmount,
+      Transaction_details,
+      process_by_userId,
+    } = req.body;
+
+    // Validate `order_id`: Check for undefined, null, or invalid value
+    if (
+      !order_id ||
+      typeof order_id !== "string" ||
+      order_id.trim() === "" ||
+      !status ||
+      !user_id ||
+      !process_by_userId
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing order_id",
+      });
+    }
+
+    // Validate `refundAmount`: Check for undefined, null, or invalid number
+    if (
+      refundAmount == null ||
+      isNaN(parseFloat(refundAmount)) ||
+      parseFloat(refundAmount) < 0
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing refund amount",
+      });
+    }
+
+    const refundAmountNumber = parseFloat(refundAmount);
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+    const Transaction_Id = `TXNW${Date.now()}`;
+    const Transaction_Type = "Credit";
+    const Transaction_status = "Success";
+    const transaction_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE dsc SET note = ? , status = ?, process_by_userId = ? , updated_at = ? WHERE order_id = ?`;
+
+    const values = [note, status, process_by_userId, updatedAt, order_id];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating rejectDSCForm:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating rejectDSCForm",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "rejectDSCForm not found" });
+      }
+
+      // return res.status(200).json({
+      //   success: true,
+      //   message: "updating rejectSambalForm successfully",
+      // });
+
+      const getClosingBalanceQuery = `SELECT Closing_Balance FROM user_wallet WHERE userId = ? ORDER BY wid DESC LIMIT 1`;
+
+      db.query(getClosingBalanceQuery, [user_id], (error, results) => {
+        if (error) {
+          console.error("Error fetching closing balance:", error);
+          return res.status(500).json({
+            success: false,
+            error: "Failed to fetch closing balance",
+          });
+        }
+
+        // if (results.length === 0) {
+        //   return res.status(404).json({
+        //     success: false,
+        //     message: "Wallet Add Money Request not found",
+        //   });
+        // }
+
+        const old_balance =
+          results.length != 0 ? results[0].Closing_Balance : 0;
+
+        // Ensure `old_balance` is a valid number
+        if (isNaN(old_balance)) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid closing balance in user wallet",
+          });
+        }
+        const opening_balance = Number(old_balance);
+        const credit_amount = refundAmountNumber;
+        const debit_amount = 0;
+        const new_balance = credit_amount + opening_balance;
+        // Ensure all calculated balances are valid numbers
+        if (
+          isNaN(opening_balance) ||
+          isNaN(credit_amount) ||
+          isNaN(new_balance)
+        ) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid balance calculations",
+          });
+        }
+
+        const new_balance_final = parseFloat(new_balance.toFixed(2)); // Ensure `new_balance` remains a number
+
+        // SQL query to update the user_wallet table with new balance
+
+        const sql2 = `INSERT INTO user_wallet (userId, transaction_date, Order_Id , Transaction_Id , Opening_Balance, Closing_Balance , credit_amount, debit_amount,Transaction_Type,Transaction_details ,status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)`;
+        const values2 = [
+          user_id,
+          transaction_date,
+          order_id,
+          Transaction_Id,
+          opening_balance,
+          new_balance_final,
+          credit_amount,
+          debit_amount,
+          Transaction_Type,
+          Transaction_details,
+          Transaction_status,
+        ];
+
+        db.query(sql2, values2, (error, results) => {
+          if (error) {
+            console.error("Error inserting into user_wallet:", error);
+            return res.status(500).json({
+              success: false,
+              error: "Failed to inserting refund amount into the user_wallet",
+            });
+          }
+
+          return res.status(200).json({
+            success: true,
+            message: "Reject the form and refund money successfully",
+          });
+        });
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const SuccessDSCForm = (req, res) => {
+  try {
+    const { order_id, note, status, process_by_userId } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE dsc SET note = ? , status = ?, process_by_userId = ? , updated_at = ? WHERE order_id = ?`;
+
+    const values = [note, status, process_by_userId, updatedAt, order_id];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating SuccessDSCForm:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating SuccessDSCForm",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "SuccessDSCForm not found" });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "updating SuccessDSCForm successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const markForEditDSCForm = (req, res) => {
+  try {
+    const { order_id, note, status, process_by_userId } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    const sql = `UPDATE dsc SET note = ? , status = ?, process_by_userId = ? , updated_at = ? WHERE order_id = ?`;
+
+    const values = [note, status, process_by_userId, updatedAt, order_id];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating markForEditDSCForm:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating markForEditDSCForm",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "markForEditDSCForm not found" });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "updating markForEditDSCForm successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const ApproveDSCForm = (req, res) => {
+  try {
+    const { order_id, note, status, process_by_userId } = req.body;
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+    // SQL query to update the package details
+    const sql = `UPDATE dsc SET note = ? , status = ?, process_by_userId = ? , updated_at = ? WHERE order_id = ?`;
+
+    const values = [note, status, process_by_userId, updatedAt, order_id];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating ApproveDSCForm:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating ApproveDSCForm",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "ApproveDSCForm not found" });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "updating ApproveDSCForm successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
 module.exports = {
   addPackage,
   getPackages,
@@ -8872,7 +9188,6 @@ module.exports = {
   complainGetData,
   getPendingComplaintData,
   resolveComplaint,
-
   getApplyOfflineForm,
   ApproveOfflineForm,
   markForEditOfflineForm,
@@ -8911,7 +9226,6 @@ module.exports = {
   markForEditOfflineDTHConnection,
   SuccessOfflineDTHConnection,
   rejectOfflineDTHConnection,
-
   getWalletWithdrawRequests,
   getPendingWalletWithdrawRequests,
   ApproveWalletWithdrawRequests,
@@ -8935,10 +9249,8 @@ module.exports = {
   getUserNotification,
   UpdateUserNotification,
   UpdateSAWebsiteJoiningPrice,
-
   AddWalletAddMoneyDirect,
   WithdrawWalletAddMoneyDirect,
-
   getBuyUserIdSummary,
   getOnlineRecharge,
   getOnlineDthConnection,
@@ -8990,4 +9302,9 @@ module.exports = {
   getAllOperatorList,
   ActiveOperator,
   DeactiveOperator,
+  getDSCForms,
+  rejectDSCForm,
+  SuccessDSCForm,
+  markForEditDSCForm,
+  ApproveDSCForm,
 };
