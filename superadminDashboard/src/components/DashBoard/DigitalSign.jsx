@@ -13,16 +13,21 @@ const DigitalSign = () => {
   const { currentUser, token } = useSelector((state) => state.user);
   const [prices, setPrices] = useState([]);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [selectedPlanAmount, setSelectedPlanAmount] = useState("");
   const [formData, setFormData] = useState({
-    applicationType: "",
     name: "",
-    mobileNo: "",
-    rsNumber: "",
-    district: "",
-    tehsil: "",
-    amount: prices[0]?.verify_edistrict_Certificate_Price,
+    father_name: "",
+    mobile: "",
+    email: "",
+    pan: "",
+    aadhar: "",
+    address: "",
+    plan: "",
     userId: currentUser.userId,
+    amount: "",
   });
+
+  console.log(formData);
 
   const [loading, setLoading] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
@@ -30,226 +35,219 @@ const DigitalSign = () => {
   const pinRefs = useRef([]);
   const [services, setServices] = useState([]);
 
-  //   const fetchServices = async () => {
-  //     try {
-  //       const { data } = await axios.get(
-  //         "https://2kadam.co.in/api/auth/retailer/getAllServicesList",
-  //         {
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       );
-  //       setServices(data.data);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //       if (error?.response?.status == 401) {
-  //         Swal.fire({
-  //           icon: "error",
-  //           title: "Your token is expired please login again",
-  //         });
-  //         dispatch(clearUser());
-  //         navigate("/");
-  //       }
-  //     }
-  //   };
+  const fetchServices = async () => {
+    try {
+      const { data } = await axios.get(
+        "https://2kadam.co.in/api/auth/retailer/getActiveDigitalSignaturePlans",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setServices(data.data);
+      console.log("Services data:", data.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      if (error?.response?.status == 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      }
+    }
+  };
 
-  //   useEffect(() => {
-  //     const fetchPackage = async () => {
-  //       try {
-  //         const response = await axios.get(
-  //           `https://2kadam.co.in/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
-  //           {
-  //             headers: {
-  //               "Content-Type": "application/json",
-  //               Authorization: `Bearer ${token}`,
-  //             },
-  //           }
-  //         );
+  console.log(prices[0]?.DSC_Commission);
 
-  //         if (Array.isArray(response.data.data)) {
-  //           setPrices(response.data.data);
-  //         } else {
-  //           console.error("Expected an array, received:", response.data.data);
-  //         }
-  //       } catch (error) {
-  //         console.error("Fetching package data failed:", error);
-  //       }
-  //     };
-  //     fetchPackage();
-  //     fetchServices();
-  //   }, []);
+  useEffect(() => {
+    const fetchPackage = async () => {
+      try {
+        const response = await axios.get(
+          `https://2kadam.co.in/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-  //   useEffect(() => {
-  //     if (services) {
-  //       const purchaseBankIdService = services.find(
-  //         (item) => item.service_name === "E-District"
-  //       );
+        if (Array.isArray(response.data.data)) {
+          setPrices(response.data.data);
+          console.log("Package data:", response.data.data);
+        } else {
+          console.error("Expected an array, received:", response.data.data);
+        }
+      } catch (error) {
+        console.error("Fetching package data failed:", error);
+      }
+    };
+    fetchPackage();
+    fetchServices();
+  }, []);
 
-  //       if (purchaseBankIdService?.status === "Deactive") {
-  //         Swal.fire({
-  //           title: "This service is currently Not Available",
-  //           text: "Please try after some time",
-  //           icon: "error",
-  //         });
-  //         navigate("/dashboard");
-  //       }
-  //     }
-  //   }, [services]);
-
-  //   useEffect(() => {
-  //     if (prices.length > 0) {
-  //       setFormData((prevFormData) => ({
-  //         ...prevFormData,
-  //         amount: prices[0].verify_edistrict_Certificate_Price,
-  //       }));
-  //     }
-  //   }, [prices]);
+  useEffect(() => {
+    if (prices && prices.length > 0) {
+      setFormData((prev) => ({
+        ...prev,
+        amount: prices[0]?.DSC_Commission || "",
+      }));
+    }
+  }, [prices]);
 
   //   console.log(formData);
 
-  //   const handleChange = (e) => {
-  //     const { name, value } = e.target;
-  //     if (name === "mobileNo") {
-  //       if (/^\d*$/.test(value)) {
-  //         setFormData((prevData) => ({
-  //           ...prevData,
-  //           [name]: value,
-  //         }));
-  //       }
-  //     } else {
-  //       setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-  //     }
-  //   };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "mobileNo") {
+      if (/^\d*$/.test(value)) {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+    } else {
+      setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+    }
+  };
 
-  //   const handleSubmit = async (e) => {
-  //     e.preventDefault();
-  //     setLoading(true);
-  //     try {
-  //       const response = await axios.post(
-  //         `https://2kadam.co.in/api/auth/retailer/verify-Edistrict`,
-  //         formData,
-  //         {
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       );
-  //       if (response.data.status == "Success") {
-  //         Swal.fire({
-  //           title: "Form Submitted Successfully",
-  //           text: response?.data?.message,
-  //           icon: "success",
-  //         });
-  //         setFormData({
-  //           applicationType: "",
-  //           name: "",
-  //           mobileNo: "",
-  //           rsNumber: "",
-  //           district: "",
-  //           tehsil: "",
-  //           amount: prices[0]?.verify_edistrict_Certificate_Price || "",
-  //           userId: currentUser.userId,
-  //         });
-  //       } else {
-  //         Swal.fire({
-  //           title: "Error",
-  //           text: response?.data?.message || "Something went wrong!",
-  //           icon: "error",
-  //         });
-  //       }
-  //     } catch (error) {
-  //       Swal.fire({
-  //         title: "Error",
-  //         text: error?.response?.data?.message || "Something went wrong!",
-  //         icon: "error",
-  //       });
-  //       console.error("Error submitting form:", error);
-  //     } finally {
-  //       setLoading(false);
-  //       setPin(["", "", "", ""]);
-  //       pinRefs.current[0]?.focus();
-  //     }
-  //   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        `https://2kadam.co.in/api/auth/retailer/addDSCForm`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data.status == "Success") {
+        Swal.fire({
+          title: "Form Submitted Successfully",
+          html: `
+            <p>${response?.data?.message}</p>
+            <p>Please pay ₹${selectedPlanAmount} only after the link
+                            is activated.</p>
+          `,
+          icon: "success",
+        });
+        setFormData({
+          name: "",
+          father_name: "",
+          mobile: "",
+          email: "",
+          pan: "",
+          aadhar: "",
+          address: "",
+          plan: "",
+          userId: currentUser.userId,
+          amount: prices[0]?.DSC_Commission,
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: response?.data?.message || "Something went wrong!",
+          icon: "error",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Error",
+        text: error?.response?.data?.message || "Something went wrong!",
+        icon: "error",
+      });
+      console.error("Error submitting form:", error);
+    } finally {
+      setLoading(false);
+      setPin(["", "", "", ""]);
+      pinRefs.current[0]?.focus();
+    }
+  };
 
-  //   const handlePinChange = (index, value) => {
-  //     if (/^\d?$/.test(value)) {
-  //       const newPin = [...pin];
-  //       newPin[index] = value;
-  //       setPin(newPin);
+  const handlePinChange = (index, value) => {
+    if (/^\d?$/.test(value)) {
+      const newPin = [...pin];
+      newPin[index] = value;
+      setPin(newPin);
 
-  //       // Move to next input if current is filled, move to previous if deleted
-  //       if (value !== "" && index < pin.length - 1) {
-  //         pinRefs.current[index + 1].focus();
-  //       } else if (value === "" && index > 0) {
-  //         pinRefs.current[index - 1].focus();
-  //       }
-  //     }
-  //   };
+      // Move to next input if current is filled, move to previous if deleted
+      if (value !== "" && index < pin.length - 1) {
+        pinRefs.current[index + 1].focus();
+      } else if (value === "" && index > 0) {
+        pinRefs.current[index - 1].focus();
+      }
+    }
+  };
 
-  //   const handleBackspace = (index) => {
-  //     if (pin[index] === "" && index > 0) {
-  //       pinRefs.current[index - 1].focus();
-  //     }
-  //   };
+  const handleBackspace = (index) => {
+    if (pin[index] === "" && index > 0) {
+      pinRefs.current[index - 1].focus();
+    }
+  };
 
-  //   const verifyPin = async () => {
-  //     try {
-  //       const response = await axios.post(
-  //         // `http://localhost:7777/api/auth/log-reg/verify-pin`,
-  //         `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
-  //         { user_id: currentUser.userId || "", pin: pin.join("") },
-  //         {
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       );
+  const verifyPin = async () => {
+    try {
+      const response = await axios.post(
+        // `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
+        { user_id: currentUser.userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-  //       if (response.data.success) {
-  //         return true;
-  //       } else {
-  //         Swal.fire({
-  //           title: "Error verifying PIN",
-  //           text:
-  //             response?.data?.message || "Something went wrong! Please Try again",
-  //           icon: "error",
-  //         });
-  //         return false;
-  //       }
-  //     } catch (error) {
-  //       console.error("Error verifying PIN:", error);
-  //       Swal.fire({
-  //         title: "Error verifying PIN",
-  //         text:
-  //           error?.response?.data?.message ||
-  //           "Something went wrong! Please Try again",
-  //         icon: "error",
-  //       });
-  //       return false;
-  //     }
-  //   };
+      if (response.data.success) {
+        return true;
+      } else {
+        Swal.fire({
+          title: "Error verifying PIN",
+          text:
+            response?.data?.message || "Something went wrong! Please Try again",
+          icon: "error",
+        });
+        return false;
+      }
+    } catch (error) {
+      console.error("Error verifying PIN:", error);
+      Swal.fire({
+        title: "Error verifying PIN",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong! Please Try again",
+        icon: "error",
+      });
+      return false;
+    }
+  };
 
-  //   const handleModalSubmit = async (e) => {
-  //     setIsVerifying(true);
-  //     const isPinValid = await verifyPin();
-  //     setIsVerifying(false);
-  //     if (isPinValid) {
-  //       setShowPinModal(false);
-  //       setPin(["", "", "", ""]);
-  //       handleSubmit(e);
-  //     } else {
-  //       setPin(["", "", "", ""]);
-  //     }
-  //   };
+  const handleModalSubmit = async (e) => {
+    setIsVerifying(true);
+    const isPinValid = await verifyPin();
+    setIsVerifying(false);
+    if (isPinValid) {
+      setShowPinModal(false);
+      setPin(["", "", "", ""]);
+      handleSubmit(e);
+    } else {
+      setPin(["", "", "", ""]);
+    }
+  };
 
-  //   const openPinModal = (e) => {
-  //     e.preventDefault();
-  //     setShowPinModal(true);
-  //   };
+  const openPinModal = (e) => {
+    e.preventDefault();
+    setShowPinModal(true);
+  };
   return (
     <Wrapper>
       <div className="main">
@@ -269,7 +267,7 @@ const DigitalSign = () => {
                 </div>
                 <div className="container p-3">
                   <form
-                    // onSubmit={openPinModal}
+                    onSubmit={openPinModal}
                     className="shadow p-3 mb-5 bg-body-tertiary rounded"
                   >
                     <div className="row mb-3">
@@ -279,8 +277,8 @@ const DigitalSign = () => {
                           type="text"
                           className="form-control"
                           name="name"
-                          //   value={formData.name}
-                          //   onChange={handleChange}
+                          value={formData.name}
+                          onChange={handleChange}
                           required
                         />
                       </div>
@@ -289,9 +287,9 @@ const DigitalSign = () => {
                         <input
                           type="text"
                           className="form-control"
-                          //   name="name"
-                          //   value={formData.name}
-                          //   onChange={handleChange}
+                          name="father_name"
+                          value={formData.father_name}
+                          onChange={handleChange}
                           required
                         />
                       </div>
@@ -308,9 +306,9 @@ const DigitalSign = () => {
                         <input
                           type="text"
                           className="form-control"
-                          //   name="mobileNo"
-                          //   value={formData.mobileNo}
-                          //   onChange={handleChange}
+                          name="mobile"
+                          value={formData.mobile}
+                          onChange={handleChange}
                           required
                           maxLength={10}
                           minLength={10}
@@ -321,9 +319,9 @@ const DigitalSign = () => {
                         <input
                           type="email"
                           className="form-control"
-                          //   name="rsNumber"
-                          //   value={formData.rsNumber}
-                          //   onChange={handleChange}
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
                           required
                         />
                       </div>
@@ -334,9 +332,9 @@ const DigitalSign = () => {
                         <input
                           type="text"
                           className="form-control"
-                          //   name="district"
-                          //   value={formData.district}
-                          //   onChange={handleChange}
+                          name="pan"
+                          value={formData.pan}
+                          onChange={handleChange}
                           required
                         />
                       </div>
@@ -345,9 +343,9 @@ const DigitalSign = () => {
                         <input
                           type="text"
                           className="form-control"
-                          //   name="tehsil"
-                          //   value={formData.tehsil}
-                          //   onChange={handleChange}
+                          name="aadhar"
+                          value={formData.aadhar}
+                          onChange={handleChange}
                           maxLength={12}
                           minLength={12}
                           required
@@ -360,9 +358,9 @@ const DigitalSign = () => {
                         <input
                           type="text"
                           className="form-control"
-                          //   name="amount"
-                          //   value={formData.amount}
-                          //   onChange={handleChange}
+                          name="address"
+                          value={formData.address}
+                          onChange={handleChange}
                           required
                         />
                       </div>
@@ -370,16 +368,33 @@ const DigitalSign = () => {
                         <label className="form-label">Select Plan</label>
                         <select
                           className="form-select"
-                          //   name="applicationType"
-                          //   value={formData.applicationType}
-                          //   onChange={handleChange}
+                          name="plan"
+                          value={formData.plan}
+                          onChange={(e) => {
+                            const selectedPlan = services.find(
+                              (plan) => plan.id === parseInt(e.target.value)
+                            );
+                            setFormData({
+                              ...formData,
+                              plan: selectedPlan?.year || "",
+                            });
+                            setSelectedPlanAmount(selectedPlan?.amount || "");
+                          }}
                           required
                         >
                           <option value="">- Select -</option>
-                          <option value="Plan 1">1 Year</option>
-                          <option value="Plan 2">2 Year</option>
-                          <option value="Plan 3">3 Year</option>
+                          {services.map((plan) => (
+                            <option key={plan.id} value={plan.year}>
+                              {plan.year} - ₹{plan.amount}
+                            </option>
+                          ))}
                         </select>
+                        {selectedPlanAmount && (
+                          <div className="mt-2 text-danger fw-bold">
+                            Please pay ₹{selectedPlanAmount} only after the link
+                            is activated.
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div className="row">
@@ -395,7 +410,7 @@ const DigitalSign = () => {
                     </div>
                   </form>
                   {/* - */}
-                  {/* <Modal
+                  <Modal
                     show={showPinModal}
                     onHide={() => setShowPinModal(false)}
                     centered
@@ -455,7 +470,7 @@ const DigitalSign = () => {
                         )}
                       </Button>
                     </Modal.Footer>
-                  </Modal> */}
+                  </Modal>
                 </div>
               </div>
             </div>

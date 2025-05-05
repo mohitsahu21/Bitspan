@@ -43,8 +43,8 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "http://localhost:7777/api/auth/superAdmin/ApproveDSCForm",
-        // "https://2kadam.co.in/api/auth/superAdmin/ApproveSambalForm",
+        // "http://localhost:7777/api/auth/superAdmin/ApproveDSCForm",
+        "https://2kadam.co.in/api/auth/superAdmin/ApproveDSCForm",
         formData,
         {
           headers: {
@@ -62,7 +62,9 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
         });
         setShowApproveModel(false);
         setIsRefresh((value) => !value);
+        console.log(response);
       } else {
+        console.log(response);
         Swal.fire({
           icon: "error",
           title: "An error occurred during the process. Please try again.",
@@ -178,8 +180,8 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        // "https://2kadam.co.in/api/auth/superAdmin/markForEditSambalForm",
-        "http://localhost:7777/api/auth/superAdmin/markForEditSambalForm",
+        "https://2kadam.co.in/api/auth/superAdmin/markForEditDSCForm",
+        // "http://localhost:7777/api/auth/superAdmin/markForEditDSCForm",
         formData,
         {
           headers: {
@@ -372,49 +374,37 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
     let whiteLableCommAmount = 0;
 
     try {
-      if (retailerPackage.Offline_Services_Commission_Type == "Percentage") {
+      if (retailerPackage.DSC_Commission_Type == "Percentage") {
         retailerCommAmount =
-          (amount * parseFloat(retailerPackage.Sambal_Commission)) / 100;
+          (amount * parseFloat(retailerPackage.DSC_Commission)) / 100;
       } else {
-        retailerCommAmount = parseFloat(retailerPackage.Sambal_Commission);
+        retailerCommAmount = parseFloat(retailerPackage.DSC_Commission);
       }
 
       if (distributor && distributorPackage) {
-        if (
-          distributorPackage.Offline_Services_Commission_Type == "Percentage"
-        ) {
+        if (distributorPackage.DSC_Commission_Type == "Percentage") {
           distributorCommAmount =
-            (amount * parseFloat(distributorPackage.Sambal_Commission)) / 100;
+            (amount * parseFloat(distributorPackage.DSC_Commission)) / 100;
         } else {
-          distributorCommAmount = parseFloat(
-            distributorPackage.Sambal_Commission
-          );
+          distributorCommAmount = parseFloat(distributorPackage.DSC_Commission);
         }
       }
       if (superDistributor && superDistributorPackage) {
-        if (
-          superDistributorPackage.Offline_Services_Commission_Type ==
-          "Percentage"
-        ) {
+        if (superDistributorPackage.DSC_Commission_Type == "Percentage") {
           superDistributorCommAmount =
-            (amount * parseFloat(superDistributorPackage.Sambal_Commission)) /
-            100;
+            (amount * parseFloat(superDistributorPackage.DSC_Commission)) / 100;
         } else {
           superDistributorCommAmount = parseFloat(
-            superDistributorPackage.Sambal_Commission
+            superDistributorPackage.DSC_Commission
           );
         }
       }
       if (white_lable && whiteLablePackage) {
-        if (
-          whiteLablePackage.Offline_Services_Commission_Type == "Percentage"
-        ) {
+        if (whiteLablePackage.DSC_Commission_Type == "Percentage") {
           whiteLableCommAmount =
-            (amount * parseFloat(whiteLablePackage.Sambal_Commission)) / 100;
+            (amount * parseFloat(whiteLablePackage.DSC_Commission)) / 100;
         } else {
-          whiteLableCommAmount = parseFloat(
-            whiteLablePackage.Sambal_Commission
-          );
+          whiteLableCommAmount = parseFloat(whiteLablePackage.DSC_Commission);
         }
       }
 
@@ -568,7 +558,6 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
           const response = await axios
             .put(
               "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
-              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.retailerFormData,
               {
                 headers: {
@@ -589,7 +578,6 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
           const response = await axios
             .put(
               "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
-              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.distributorFormData,
               {
                 headers: {
@@ -610,7 +598,6 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
           const response = await axios
             .put(
               "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
-              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.superDistributorFormData,
               {
                 headers: {
@@ -631,7 +618,6 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
           const response = await axios
             .put(
               "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
-              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.whiteLableFormData,
               {
                 headers: {
@@ -679,14 +665,13 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
             super_Distributor_Commission: super_Distributor_Commission,
             distributor_Commission: distributor_Commission,
             retailer_Commission: retailer_Commission,
-            transaction_type: "Sambal",
+            transaction_type: "DSC",
             transaction_details: result.retailerFormData.Transaction_details,
             status: "Success",
           };
           await axios
             .post(
               "https://2kadam.co.in/api/auth/superAdmin/addCommissionEntry",
-              // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
               commissionFormData,
               {
                 headers: {
@@ -702,8 +687,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
 
         await axios
           .put(
-            // "https://2kadam.co.in/api/auth/superAdmin/SuccessSambalForm",
-            "http://localhost:7777/api/auth/superAdmin/SuccessDSCForm",
+            "https://2kadam.co.in/api/auth/superAdmin/SuccessDSCForm",
+            // "http://localhost:7777/api/auth/superAdmin/SuccessDSCForm",
             formData,
             {
               headers: {
@@ -872,8 +857,8 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        // "https://2kadam.co.in/api/auth/superAdmin/rejectSambalForm",
-        "http://localhost:7777/api/auth/superAdmin/rejectDSCForm",
+        "https://2kadam.co.in/api/auth/superAdmin/rejectSambalForm",
+        // "http://localhost:7777/api/auth/superAdmin/rejectDSCForm",
         formData,
         {
           headers: {
@@ -1067,8 +1052,8 @@ const DSCHistory = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "http://localhost:7777/api/auth/superAdmin/getDSCForms",
-        // "https://2kadam.co.in/api/auth/superAdmin/getSambalForms",
+        // "http://localhost:7777/api/auth/superAdmin/getDSCForms",
+        "https://2kadam.co.in/api/auth/superAdmin/getDSCForms",
         {
           headers: {
             "Content-Type": "application/json",

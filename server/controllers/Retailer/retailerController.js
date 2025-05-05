@@ -5008,6 +5008,8 @@ const getWhiteLableData = (req, res) => {
   });
 };
 
+// Digital Signature Plan and other functionality
+
 const digitalSignaturePlan = (req, res) => {
   const { year, amount, link } = req.body;
 
@@ -5109,6 +5111,187 @@ const getActiveDigitalSignaturePlans = (req, res) => {
   });
 };
 
+const addDSCForm = (req, res) => {
+  const {
+    name,
+    father_name,
+    mobile,
+    email,
+    pan,
+    aadhar,
+    address,
+    plan,
+    userId,
+  } = req.body;
+
+  let { amount } = req.body;
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const orderId = `ORDS${Date.now()}`;
+  const transactionId = `TXNW${Date.now()}`;
+  const transactionDetails = `Sambal Form Deduction Order Id ${orderId}`;
+  const creditAmt = 0;
+
+  // Step 1: Check the current balance
+  const queryBalance = `
+    SELECT Closing_Balance 
+    FROM user_wallet 
+    WHERE userId = ? 
+    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+    LIMIT 1
+  `;
+
+  db.query(queryBalance, [userId], (err, balanceResult) => {
+    if (err) {
+      console.error("Error fetching wallet balance:", err);
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Failed to fetch wallet balance",
+        details: err.message,
+      });
+    }
+
+    if (balanceResult.length === 0) {
+      return res.status(404).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        message: "No balance found for the user.",
+      });
+    }
+
+    const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+    if (isNaN(currentBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Current balance is invalid.",
+      });
+    }
+
+    // Validate `Amount`: Check for undefined, null, or invalid number
+    if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+      return res.status(500).json({
+        success: false,
+        status: "Failure",
+        error: "Invalid or missing amount",
+      });
+    }
+
+    amount = parseFloat(parseFloat(amount).toFixed(2)); // Ensures it's a number with two decimal places
+
+    if (currentBalance < amount) {
+      return res.status(400).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        message: "Insufficient balance.",
+        currentBalance,
+        requiredAmount: amount,
+      });
+    }
+
+    const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+
+    // Step 2: Update the wallet table
+    const updateWalletQuery = `
+      INSERT INTO user_wallet 
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount,debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)
+    `;
+
+    db.query(
+      updateWalletQuery,
+      [
+        userId,
+        createdAt,
+        orderId,
+        transactionId,
+        currentBalance.toFixed(2),
+        newBalance,
+        "Debit",
+        creditAmt,
+        amount,
+        transactionDetails,
+        "Success",
+      ],
+      (err, walletResult) => {
+        if (err) {
+          console.error("Error updating wallet balance:", err);
+          return res.status(500).json({
+            status: "Failure",
+            step: "Update Wallet Balance",
+            error: "Failed to update wallet balance",
+            details: err.message,
+          });
+        }
+
+        // Step 3: Insert into dscFormQuery table
+        const dscFormQuery = `
+          INSERT INTO dsc (
+            order_id, name, father_name, mobile, email, pan,
+            aadhar, address, plan, user_id, amount, status, create_at
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        const sambalFormValues = [
+          orderId,
+          name,
+          father_name,
+          mobile,
+          email,
+          pan,
+          aadhar,
+          address,
+          plan,
+          userId,
+          amount,
+          "Pending",
+          createdAt,
+        ];
+
+        db.query(dscFormQuery, sambalFormValues, (err, result) => {
+          if (err) {
+            console.error("Error inserting data into DSCForm:", err);
+            return res.status(500).json({
+              status: "Failure",
+              step: "Insert DSCForm",
+              error: "Failed to insert into DSCForm",
+              details: err.message,
+            });
+          }
+
+          // Step 4: Return success response
+          return res.status(200).json({
+            status: "Success",
+            message:
+              "Wallet updated and Digital Siginature Form processed successfully.",
+            details: {
+              dthConnection: {
+                orderId,
+                name,
+                father_name,
+                mobile,
+                email,
+                pan,
+                aadhar,
+                address,
+                plan,
+                createdAt,
+              },
+              wallet: {
+                transactionId,
+                newBalance,
+                previousBalance: currentBalance.toFixed(2),
+                deductedAmount: amount,
+              },
+            },
+          });
+        });
+      }
+    );
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -5176,4 +5359,5 @@ module.exports = {
   updateDigitalSignaturePlan,
   getdigitalSignaturePlan,
   getActiveDigitalSignaturePlans,
+  addDSCForm,
 };

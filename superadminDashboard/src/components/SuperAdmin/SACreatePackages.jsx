@@ -163,6 +163,8 @@ const SACreatePackages = () => {
     retailer_id_price: "",
     retailer_min_id_limit: "",
     retailer_max_id_limit: "",
+    DSC_Commission_Type: "",
+    DSC_Commission: "",
   });
 
   const handleChange = (e) => {
@@ -342,6 +344,8 @@ const SACreatePackages = () => {
           retailer_id_price: "",
           retailer_min_id_limit: "",
           retailer_max_id_limit: "",
+          DSC_Commission_Type: "",
+          DSC_Commission: "",
         });
       } else {
         Swal.fire({
@@ -4069,11 +4073,9 @@ const SACreatePackages = () => {
                             <LuTextSelect />
                           </span>
                           <select
-                            // name="Offline_Insurance_Pay_Commission_Type"
-                            // value={
-                            //   formData.Offline_Insurance_Pay_Commission_Type
-                            // }
-                            // onChange={handleChange}
+                            name="DSC_Commission_Type"
+                            value={formData.DSC_Commission_Type}
+                            onChange={handleChange}
                             className="form-select"
                             aria-label="Default select example"
                             required
@@ -4101,9 +4103,9 @@ const SACreatePackages = () => {
                             type="number"
                             class="form-control"
                             placeholder="Enter Commission"
-                            // name="Offline_Insurance_Pay_Commission"
-                            // value={formData.Offline_Insurance_Pay_Commission}
-                            // onChange={handleChange}
+                            name="DSC_Commission"
+                            value={formData.DSC_Commission}
+                            onChange={handleChange}
                             required
                             min={0}
                             step="0.01" // Allows decimal input
