@@ -5292,6 +5292,226 @@ const addDSCForm = (req, res) => {
   });
 };
 
+const getDSCFormData = (req, res) => {
+  const userId = req.params.userId;
+  const query = `
+  SELECT 
+    dsc.*, 
+    digitalsign.link,
+    digitalsign.status AS plan_status
+  FROM dsc
+  LEFT JOIN digitalsign 
+    ON dsc.plan = digitalsign.year 
+  WHERE dsc.user_id = ? 
+  ORDER BY dsc.dsc_id DESC;
+`;
+
+  db.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      return res
+        .status(500)
+        .json({ status: "Failure", error: "Internal Server Error" });
+    }
+
+    if (results.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: results });
+  });
+};
+
+const buyDSCcoupon = (req, res) => {
+  const {
+    name,
+    email,
+    mobile,
+    address,
+    coupon_Quantity,
+    coupon_Price,
+    total_Amount,
+    userId,
+  } = req.body;
+
+  if (
+    !name ||
+    !email ||
+    !mobile ||
+    !address ||
+    !coupon_Quantity ||
+    !coupon_Price ||
+    !total_Amount ||
+    !userId
+  ) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+
+  if (isNaN(total_Amount) || parseFloat(total_Amount) <= 0) {
+    return res.status(400).json({
+      status: "Failure",
+      step: "Validation",
+      error: "Invalid amount. Amount must be a positive number.",
+    });
+  }
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+  // Step 1: Fetch the latest closing balance
+  const queryBalance = `
+    SELECT Closing_Balance 
+    FROM user_wallet 
+    WHERE userId = ? 
+    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+    LIMIT 1
+  `;
+
+  db.query(queryBalance, [userId], (err, balanceResult) => {
+    if (err) {
+      console.error("Error fetching wallet balance:", err);
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Failed to fetch wallet balance",
+        details: err.message,
+      });
+    }
+
+    if (balanceResult.length === 0) {
+      return res.status(404).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        message: "No balance found for the user.",
+      });
+    }
+
+    const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+    if (isNaN(currentBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Current balance is invalid.",
+      });
+    }
+
+    if (currentBalance < total_Amount) {
+      return res.status(400).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        message: "Insufficient balance.",
+        currentBalance,
+        requiredAmount: total_Amount,
+      });
+    }
+
+    // Step 2: Update wallet first
+    const newBalance = parseFloat(currentBalance - total_Amount).toFixed(2);
+    if (isNaN(newBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        error: "New balance calculation is invalid.",
+      });
+    }
+
+    const orderId = `COU${Date.now()}`;
+    const transactionId = `TXNW${Date.now()}`;
+    const transactionDetails = `Buy Digital Signature Token quantity ${coupon_Quantity}`;
+
+    const updateWalletQuery = `
+      INSERT INTO user_wallet 
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+      updateWalletQuery,
+      [
+        userId,
+        createdAt,
+        orderId,
+        transactionId,
+        currentBalance.toFixed(2),
+        newBalance,
+        "Debit",
+        0, // Credit amount is zero
+        total_Amount,
+        transactionDetails,
+        "Success",
+      ],
+      (err, walletResult) => {
+        if (err) {
+          console.error("Error updating wallet balance:", err);
+          return res.status(500).json({
+            status: "Failure",
+            step: "Update Wallet Balance",
+            error: "Failed to update wallet balance",
+            details: err.message,
+          });
+        }
+
+        // Step 3: Insert Coupon Request after wallet update
+        const status = "Pending";
+        const insertCouponQuery = `
+          INSERT INTO dsc_coupon_requests
+          (order_id, name, email, mobile, address, coupon_Quantity, coupon_Price, total_Amount, user_id, status, created_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        db.query(
+          insertCouponQuery,
+          [
+            orderId,
+            name,
+            email,
+            mobile,
+            address,
+            coupon_Quantity,
+            coupon_Price,
+            total_Amount,
+            userId,
+            status,
+            createdAt,
+          ],
+          (err, couponResult) => {
+            if (err) {
+              console.error("Error inserting Token request:", err);
+              return res.status(500).json({
+                status: "Failure",
+                step: "Buy DSC Token",
+                error: "Failed to process Buy DSC Token",
+                details: err.message,
+              });
+            }
+
+            return res.status(200).json({
+              status: "Success",
+              message:
+                "Token purchase processed and wallet updated successfully.",
+              details: {
+                wallet: {
+                  transactionId,
+                  newBalance,
+                  previousBalance: currentBalance.toFixed(2),
+                  deductedAmount: total_Amount,
+                },
+                recharge: {
+                  orderId,
+                  coupon_Quantity,
+                  coupon_Price,
+                  total_Amount,
+                },
+              },
+            });
+          }
+        );
+      }
+    );
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -5360,4 +5580,6 @@ module.exports = {
   getdigitalSignaturePlan,
   getActiveDigitalSignaturePlans,
   addDSCForm,
+  getDSCFormData,
+  buyDSCcoupon,
 };

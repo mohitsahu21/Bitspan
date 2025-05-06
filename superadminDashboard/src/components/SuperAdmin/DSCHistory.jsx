@@ -1339,7 +1339,7 @@ const DSCHistory = () => {
                                                         </span>{" "}
                                                         Approve
                                                       </Dropdown.Item>
-                                                      <Dropdown.Item
+                                                      {/* <Dropdown.Item
                                                         onClick={() => {
                                                           // setSelectedUser(user);
                                                           setShowMarkEditModel(
@@ -1354,7 +1354,7 @@ const DSCHistory = () => {
                                                           <CiViewList />
                                                         </span>{" "}
                                                         Mark for Edit
-                                                      </Dropdown.Item>
+                                                      </Dropdown.Item> */}
                                                     </Dropdown.Menu>
                                                   </Dropdown>
                                                 )}

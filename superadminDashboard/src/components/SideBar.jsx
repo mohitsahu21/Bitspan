@@ -794,11 +794,11 @@ const RetailerSidebarData = [
         path: "/verify-Edistrict-History",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
-      // {
-      //   title: "PAN 4.0 History",
-      //   path: "/pan-4.0-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
+      {
+        title: "DSC History",
+        path: "/DSC-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
       // {
       //   title: "NSDL PAN Transaction History",
       //   path: "/pan-transaction-report",

@@ -85,6 +85,7 @@ import Swal from "sweetalert2";
 import { clearUser } from "../redux/user/userSlice";
 import Payment from "../pages/Payment";
 import NotFound from "../components/NotFound";
+import DigitalSignHistory from "../components/DashBoard/DigitalSignHistory";
 
 // import UTIRetailerIdActivateComponent from "../components/DashBoard/UTIRetailerIdActivateComponent";
 // import UTIPanLoginComponent from "../components/DashBoard/UTIPanLoginComponent";
@@ -756,6 +757,7 @@ const RetailerRoutes = () => {
             <Route path="/recharge-receipt" element={<RechargeReceipt />} />
             <Route path="/Apply-DSC" element={<DigitalSign />} />
             <Route path="/DSC-Token" element={<DigitalToken />} />
+            <Route path="/DSC-history" element={<DigitalSignHistory />} />
 
             <Route path="/registration-page" element={<DemoRegistration />} />
           </Routes>

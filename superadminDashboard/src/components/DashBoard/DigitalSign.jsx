@@ -397,6 +397,20 @@ const DigitalSign = () => {
                         )}
                       </div>
                     </div>
+                    <div className="row mb-3">
+                      <div className="col-md-6">
+                        <label className="form-label">Amount</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="Amount"
+                          value={prices[0]?.DSC_Commission}
+                          onChange={handleChange}
+                          required
+                          readOnly
+                        />
+                      </div>
+                    </div>
                     <div className="row">
                       <div className="col-md-12 m-3 d-flex justify-content-center">
                         <button

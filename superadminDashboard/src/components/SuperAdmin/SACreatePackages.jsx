@@ -143,6 +143,7 @@ const SACreatePackages = () => {
     E_PAN_Card_Price: "",
     P_PAN_Card_Price: "",
     UTI_PAN_Coupon_Price: "",
+    DSC_token_Price: "",
     PAN_Card_Commission_Type: "",
     E_PAN_Card_Commission: "",
     UTI_PAN_Coupon_Commission: "",
@@ -324,6 +325,7 @@ const SACreatePackages = () => {
           E_PAN_Card_Price: "",
           P_PAN_Card_Price: "",
           UTI_PAN_Coupon_Price: "",
+          DSC_token_Price: "",
           PAN_Card_Commission_Type: "",
           E_PAN_Card_Commission: "",
           UTI_PAN_Coupon_Commission: "",
@@ -3485,7 +3487,7 @@ const SACreatePackages = () => {
                     </div>
                     <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
                       <div className="text-center  my-5">
-                        <h2>Create PAN Card Price</h2>
+                        <h2>Create PAN Card and DSC Price</h2>
                       </div>
 
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
@@ -3548,6 +3550,29 @@ const SACreatePackages = () => {
                             placeholder="Enter Price"
                             name="UTI_PAN_Coupon_Price"
                             value={formData.UTI_PAN_Coupon_Price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter DSC Coupon Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="DSC_token_Price"
+                            value={formData.DSC_token_Price}
                             onChange={handleChange}
                             required
                             min={0}

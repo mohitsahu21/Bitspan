@@ -122,6 +122,7 @@ const addPackage = (req, res) => {
       E_PAN_Card_Price,
       P_PAN_Card_Price,
       UTI_PAN_Coupon_Price,
+      DSC_token_Price,
       PAN_Card_Commission_Type,
       E_PAN_Card_Commission,
       UTI_PAN_Coupon_Commission,
@@ -190,7 +191,7 @@ const addPackage = (req, res) => {
         Online_Electricity_Bill_Pay_Commission_Type, Online_Electricity_Bill_Pay_Commission,
         Offline_Electricity_Bill_Pay_Commission_Type, Offline_Electricity_Bill_Pay_Commission,
         Online_Insurance_Pay_Commission_Type, Online_Insurance_Pay_Commission, Offline_Insurance_Pay_Commission_Type,
-        Offline_Insurance_Pay_Commission,E_PAN_Card_Price,P_PAN_Card_Price,UTI_PAN_Coupon_Price, PAN_Card_Commission_Type, E_PAN_Card_Commission, UTI_PAN_Coupon_Commission, P_PAN_Card_Commission ,  whitelabel_joining_price,
+        Offline_Insurance_Pay_Commission,E_PAN_Card_Price,P_PAN_Card_Price,UTI_PAN_Coupon_Price, DSC_token_Price, PAN_Card_Commission_Type, E_PAN_Card_Commission, UTI_PAN_Coupon_Commission, P_PAN_Card_Commission ,  whitelabel_joining_price,
       retailer_joining_price,
       superDistributor_joining_price,
       distributor_joining_price,
@@ -206,7 +207,7 @@ const addPackage = (req, res) => {
       retailer_id_price,
       retailer_min_id_limit,
       retailer_max_id_limit, DSC_Commission_Type, DSC_Commission, created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?, ?, ? ,?, ? , ? , ? , ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ? , ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ? , ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?, ?, ? ,?, ? , ? , ? , ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ? , ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ? , ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     const values = [
       package_name,
@@ -324,6 +325,7 @@ const addPackage = (req, res) => {
       E_PAN_Card_Price,
       P_PAN_Card_Price,
       UTI_PAN_Coupon_Price,
+      DSC_token_Price,
       PAN_Card_Commission_Type,
       E_PAN_Card_Commission,
       UTI_PAN_Coupon_Commission,
@@ -795,6 +797,7 @@ const editPackage = (req, res) => {
       E_PAN_Card_Price,
       P_PAN_Card_Price,
       UTI_PAN_Coupon_Price,
+      DSC_token_Price,
       PAN_Card_Commission_Type,
       E_PAN_Card_Commission,
       UTI_PAN_Coupon_Commission,
@@ -879,6 +882,7 @@ const editPackage = (req, res) => {
         E_PAN_Card_Price = ?,
         P_PAN_Card_Price = ?,
         UTI_PAN_Coupon_Price = ?, 
+        DSC_token_Price = ?,
         PAN_Card_Commission_Type = ?, E_PAN_Card_Commission = ?, UTI_PAN_Coupon_Commission = ?, 
         P_PAN_Card_Commission = ?, whitelabel_joining_price = ?,
       retailer_joining_price = ?,
@@ -1014,6 +1018,7 @@ const editPackage = (req, res) => {
       E_PAN_Card_Price,
       P_PAN_Card_Price,
       UTI_PAN_Coupon_Price,
+      DSC_token_Price,
       PAN_Card_Commission_Type,
       E_PAN_Card_Commission,
       UTI_PAN_Coupon_Commission,
