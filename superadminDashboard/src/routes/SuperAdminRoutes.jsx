@@ -223,6 +223,9 @@ const NewDSC = lazy(() => import("../components/SuperAdmin/NewDSC.jsx"));
 const DSCHistory = lazy(() =>
   import("../components/SuperAdmin/DSCHistory.jsx")
 );
+const SADigitalSignTokenHistory = lazy(() =>
+  import("../components/SuperAdmin/SADigitalSignTokenHistory.jsx")
+);
 
 const SuperAdminRoutes = () => {
   const { currentUser, token } = useSelector((state) => state.user);
@@ -471,6 +474,10 @@ const SuperAdminRoutes = () => {
             <Route path="/digital-signature-plan" element={<DigitalSigns />} />
             <Route path="/new-digital-signature-plan" element={<NewDSC />} />
             <Route path="/digital-signature-history" element={<DSCHistory />} />
+            <Route
+              path="/digital-signature-token-history"
+              element={<SADigitalSignTokenHistory />}
+            />
             {/* <Route path="*" element={<NotFound />} /> */}
             <Route path="*" element={<Navigate to="/" />} />
 

@@ -147,6 +147,7 @@ const SACreatePackages = () => {
     PAN_Card_Commission_Type: "",
     E_PAN_Card_Commission: "",
     UTI_PAN_Coupon_Commission: "",
+    DSC_Coupon_Commission: "",
     P_PAN_Card_Commission: "",
     whitelabel_joining_price: "",
     retailer_joining_price: "",
@@ -329,6 +330,7 @@ const SACreatePackages = () => {
           PAN_Card_Commission_Type: "",
           E_PAN_Card_Commission: "",
           UTI_PAN_Coupon_Commission: "",
+          DSC_Coupon_Commission: "",
           P_PAN_Card_Commission: "",
           whitelabel_joining_price: "",
           retailer_joining_price: "",
@@ -3589,7 +3591,7 @@ const SACreatePackages = () => {
                     </div>
                     <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
                       <div className="text-center  my-5">
-                        <h2>Create PAN Card Commission</h2>
+                        <h2>Create PAN Card And DSC Commission</h2>
                       </div>
 
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
@@ -3690,11 +3692,28 @@ const SACreatePackages = () => {
                         </div>
                       </div>
 
-                      {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                            <div className="text-center  mb-5 mt-3">
-                                                <button className="btn p-2">Change</button>
-                                            </div>
-                                        </div> */}
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Enter DSC Token Commission
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="DSC_Coupon_Commission"
+                            value={formData.DSC_Coupon_Commission}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01"
+                          />
+                        </div>
+                      </div>
                     </div>
                     <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
                       <div className="text-center  my-5">

@@ -126,6 +126,7 @@ const addPackage = (req, res) => {
       PAN_Card_Commission_Type,
       E_PAN_Card_Commission,
       UTI_PAN_Coupon_Commission,
+      DSC_Coupon_Commission,
       P_PAN_Card_Commission,
       whitelabel_joining_price,
       retailer_joining_price,
@@ -191,7 +192,7 @@ const addPackage = (req, res) => {
         Online_Electricity_Bill_Pay_Commission_Type, Online_Electricity_Bill_Pay_Commission,
         Offline_Electricity_Bill_Pay_Commission_Type, Offline_Electricity_Bill_Pay_Commission,
         Online_Insurance_Pay_Commission_Type, Online_Insurance_Pay_Commission, Offline_Insurance_Pay_Commission_Type,
-        Offline_Insurance_Pay_Commission,E_PAN_Card_Price,P_PAN_Card_Price,UTI_PAN_Coupon_Price, DSC_token_Price, PAN_Card_Commission_Type, E_PAN_Card_Commission, UTI_PAN_Coupon_Commission, P_PAN_Card_Commission ,  whitelabel_joining_price,
+        Offline_Insurance_Pay_Commission,E_PAN_Card_Price,P_PAN_Card_Price,UTI_PAN_Coupon_Price, DSC_token_Price, PAN_Card_Commission_Type, E_PAN_Card_Commission, UTI_PAN_Coupon_Commission, DSC_Coupon_Commission, P_PAN_Card_Commission ,  whitelabel_joining_price,
       retailer_joining_price,
       superDistributor_joining_price,
       distributor_joining_price,
@@ -329,6 +330,7 @@ const addPackage = (req, res) => {
       PAN_Card_Commission_Type,
       E_PAN_Card_Commission,
       UTI_PAN_Coupon_Commission,
+      DSC_Coupon_Commission,
       P_PAN_Card_Commission,
       whitelabel_joining_price,
       retailer_joining_price,
@@ -801,6 +803,7 @@ const editPackage = (req, res) => {
       PAN_Card_Commission_Type,
       E_PAN_Card_Commission,
       UTI_PAN_Coupon_Commission,
+      DSC_Coupon_Commission,
       P_PAN_Card_Commission,
       whitelabel_joining_price,
       retailer_joining_price,
@@ -883,7 +886,7 @@ const editPackage = (req, res) => {
         P_PAN_Card_Price = ?,
         UTI_PAN_Coupon_Price = ?, 
         DSC_token_Price = ?,
-        PAN_Card_Commission_Type = ?, E_PAN_Card_Commission = ?, UTI_PAN_Coupon_Commission = ?, 
+        PAN_Card_Commission_Type = ?, E_PAN_Card_Commission = ?, UTI_PAN_Coupon_Commission = ?, DSC_Coupon_Commission = ?, 
         P_PAN_Card_Commission = ?, whitelabel_joining_price = ?,
       retailer_joining_price = ?,
       superDistributor_joining_price = ?,
@@ -1022,6 +1025,7 @@ const editPackage = (req, res) => {
       PAN_Card_Commission_Type,
       E_PAN_Card_Commission,
       UTI_PAN_Coupon_Commission,
+      DSC_Coupon_Commission,
       P_PAN_Card_Commission,
       whitelabel_joining_price,
       retailer_joining_price,
@@ -9174,6 +9178,240 @@ const ApproveDSCForm = (req, res) => {
   }
 };
 
+const getDSCTokenRequests = (req, res) => {
+  try {
+    const sql = `
+  SELECT c.*, u.UserName, u.role, u.ContactNo, u.Email 
+  FROM dsc_coupon_requests c 
+  LEFT JOIN userprofile u 
+  ON c.user_id = u.UserId ORDER BY id DESC
+`;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error getDSCTokenRequests from MySQL:", err);
+        return res
+          .status(500)
+          .json({ success: false, error: "Error getDSCTokenRequests" });
+      } else {
+        if (result.length === 0) {
+          return res.status(200).json({
+            success: true,
+            data: [],
+            message: "No getDSCTokenRequests found",
+          });
+        } else {
+          return res.status(200).json({
+            success: true,
+            data: result,
+            message: "getDSCTokenRequests fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching getDSCTokenRequests from MySQL:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching getDSCTokenRequests",
+      error: error.message,
+    });
+  }
+};
+
+const rejectDSCTokenRequest = (req, res) => {
+  try {
+    const { order_id, note, status, process_by_userId, user_id, refundAmount } =
+      req.body;
+
+    if (
+      !order_id ||
+      typeof order_id !== "string" ||
+      order_id.trim() === "" ||
+      !status ||
+      !user_id ||
+      !process_by_userId
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing data",
+      });
+    }
+
+    if (
+      refundAmount == null ||
+      isNaN(parseFloat(refundAmount)) ||
+      parseFloat(refundAmount) < 0
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing refund amount",
+      });
+    }
+
+    const refundAmountNumber = parseFloat(refundAmount);
+
+    const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+    const Transaction_Id = `TXNW${Date.now()}`;
+    const Transaction_Type = "Credit";
+    const Transaction_details = `Refund for DSC Token request Order Id ${order_id}`;
+    const Transaction_status = "Success";
+    const transaction_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+
+    const sql = `UPDATE dsc_coupon_requests SET note = ? , status = ? , process_date = ?, process_by_userId = ? WHERE order_id = ?`;
+
+    const values = [note, status, updatedAt, process_by_userId, order_id];
+
+    db.query(sql, values, (error, results) => {
+      if (error) {
+        console.error("Error updating rejectDSCTokenRequest:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to updating rejectDSCTokenRequest",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "rejectDSCTokenRequest not found",
+        });
+      }
+
+      const getClosingBalanceQuery = `SELECT Closing_Balance FROM user_wallet WHERE userId = ? ORDER BY wid DESC LIMIT 1`;
+
+      db.query(getClosingBalanceQuery, [user_id], (error, results) => {
+        if (error) {
+          console.error("Error fetching closing balance:", error);
+          return res.status(500).json({
+            success: false,
+            error: "Failed to fetch closing balance",
+          });
+        }
+
+        const old_balance =
+          results.length != 0 ? results[0].Closing_Balance : 0;
+
+        // Ensure `old_balance` is a valid number
+        if (isNaN(old_balance)) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid closing balance in user wallet",
+          });
+        }
+        const opening_balance = Number(old_balance);
+        const credit_amount = refundAmountNumber;
+        const debit_amount = 0;
+        const new_balance = credit_amount + opening_balance;
+        // Ensure all calculated balances are valid numbers
+        if (
+          isNaN(opening_balance) ||
+          isNaN(credit_amount) ||
+          isNaN(new_balance)
+        ) {
+          return res.status(400).json({
+            success: false,
+            error: "Invalid balance calculations",
+          });
+        }
+
+        const new_balance_final = parseFloat(new_balance.toFixed(2)); // Ensure `new_balance` remains a number
+
+        // SQL query to update the user_wallet table with new balance
+
+        const sql2 = `INSERT INTO user_wallet (userId, transaction_date, Order_Id , Transaction_Id , Opening_Balance, Closing_Balance , credit_amount, debit_amount,Transaction_Type,Transaction_details ,status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)`;
+        const values2 = [
+          user_id,
+          transaction_date,
+          order_id,
+          Transaction_Id,
+          opening_balance,
+          new_balance_final,
+          credit_amount,
+          debit_amount,
+          Transaction_Type,
+          Transaction_details,
+          Transaction_status,
+        ];
+
+        db.query(sql2, values2, (error, results) => {
+          if (error) {
+            console.error("Error inserting into user_wallet:", error);
+            return res.status(500).json({
+              success: false,
+              error: "Failed to inserting refund amount into the user_wallet",
+            });
+          }
+
+          return res.status(200).json({
+            success: true,
+            message: "Reject the form and refund money successfully",
+          });
+        });
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
+const approveDSCTokenRequest = (req, res) => {
+  try {
+    const { order_id, note, status, process_by_userId } = req.body;
+
+    // Validate `order_id`: Check for undefined, null, or invalid value
+    if (
+      !order_id ||
+      typeof order_id !== "string" ||
+      order_id.trim() === "" ||
+      !status ||
+      !process_by_userId
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid or missing data",
+      });
+    }
+    const process_date = moment()
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DD HH:mm:ss");
+
+    const sql1 = `UPDATE dsc_coupon_requests SET note = ?, process_date = ?, status = ?, process_by_userId = ? WHERE order_id = ?`;
+    const values1 = [note, process_date, status, process_by_userId, order_id];
+
+    db.query(sql1, values1, (error, results) => {
+      if (error) {
+        console.error("Error updating approveDSCTokenRequest:", error);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to update approveDSCTokenRequest",
+        });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "approveDSCTokenRequest not found",
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "approveDSCTokenRequest successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An unexpected error occurred" });
+  }
+};
+
 module.exports = {
   addPackage,
   getPackages,
@@ -9316,4 +9554,7 @@ module.exports = {
   SuccessDSCForm,
   markForEditDSCForm,
   ApproveDSCForm,
+  getDSCTokenRequests,
+  rejectDSCTokenRequest,
+  approveDSCTokenRequest,
 };

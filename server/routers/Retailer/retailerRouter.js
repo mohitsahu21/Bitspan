@@ -72,6 +72,7 @@ const {
   addDSCForm,
   getDSCFormData,
   buyDSCcoupon,
+  getDSCToken,
 } = require("../../controllers/Retailer/retailerController");
 const authenticateToken = require("../../middleware/authenticateToken");
 
@@ -393,5 +394,6 @@ router.get("/getActiveDigitalSignaturePlans", getActiveDigitalSignaturePlans);
 router.post("/addDSCForm", addDSCForm);
 router.get("/getDSCFormData/:userId", getDSCFormData);
 router.post("/buyDSCcoupon", buyDSCcoupon);
+router.get("/getDSCToken/:userId", getDSCToken);
 
 module.exports = router;

@@ -144,6 +144,9 @@ const {
   SuccessDSCForm,
   markForEditDSCForm,
   ApproveDSCForm,
+  getDSCTokenRequests,
+  rejectDSCTokenRequest,
+  approveDSCTokenRequest,
 } = require("../../controllers/SuperAdmin/superAdminController");
 const authenticateToken = require("../../middleware/authenticateToken");
 
@@ -571,5 +574,8 @@ router.put("/rejectDSCForm", rejectDSCForm);
 router.put("/SuccessDSCForm", SuccessDSCForm);
 router.put("/markForEditDSCForm", markForEditDSCForm);
 router.put("/ApproveDSCForm", ApproveDSCForm);
+router.get("/getDSCTokenRequests", getDSCTokenRequests);
+router.put("/rejectDSCTokenRequest", rejectDSCTokenRequest);
+router.put("/approveDSCTokenRequest", approveDSCTokenRequest);
 
 module.exports = router;

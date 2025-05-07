@@ -85,7 +85,7 @@ import Swal from "sweetalert2";
 import { clearUser } from "../redux/user/userSlice";
 import Payment from "../pages/Payment";
 import NotFound from "../components/NotFound";
-import DigitalSignHistory from "../components/DashBoard/DigitalSignHistory";
+import DscTokenHistory from "../components/DashBoard/DscTokenHistory";
 
 // import UTIRetailerIdActivateComponent from "../components/DashBoard/UTIRetailerIdActivateComponent";
 // import UTIPanLoginComponent from "../components/DashBoard/UTIPanLoginComponent";
@@ -297,6 +297,9 @@ const RechargeReceipt = lazy(() =>
 
 const DigitalSign = lazy(() => import("../components/DashBoard/DigitalSign"));
 const DigitalToken = lazy(() => import("../components/DashBoard/DigitalToken"));
+const DigitalSignHistory = lazy(() =>
+  import("../components/DashBoard/DigitalSignHistory")
+);
 
 const RetailerRoutes = () => {
   const { currentUser, token } = useSelector((state) => state.user);
@@ -758,6 +761,7 @@ const RetailerRoutes = () => {
             <Route path="/Apply-DSC" element={<DigitalSign />} />
             <Route path="/DSC-Token" element={<DigitalToken />} />
             <Route path="/DSC-history" element={<DigitalSignHistory />} />
+            <Route path="/DSC-token-history" element={<DscTokenHistory />} />
 
             <Route path="/registration-page" element={<DemoRegistration />} />
           </Routes>

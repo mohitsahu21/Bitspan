@@ -799,11 +799,11 @@ const RetailerSidebarData = [
         path: "/DSC-history",
         icon: <IoIcons.IoIosPaper color="#fe662b" />,
       },
-      // {
-      //   title: "NSDL PAN Transaction History",
-      //   path: "/pan-transaction-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
+      {
+        title: "DSC Token History",
+        path: "/DSC-token-history",
+        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      },
     ],
   },
   {
@@ -1984,6 +1984,11 @@ const SuperAdminData = [
   {
     title: "PAN Coupon Requests",
     path: "/pan-coupon-requests",
+    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+  },
+  {
+    title: "DSC Token Requests",
+    path: "/digital-signature-token-history",
     icon: <IoIcons.IoIosPaper color="#fe662b" />,
   },
   {
