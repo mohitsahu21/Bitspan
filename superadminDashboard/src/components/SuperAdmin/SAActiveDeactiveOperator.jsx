@@ -38,7 +38,7 @@ const SAActiveApi = ({ complaint, setShowActiveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "http://localhost:7777/api/auth/superAdmin/ActiveOperator",
+        "https://2kadam.co.in/api/auth/superAdmin/ActiveOperator",
         formData,
         {
           headers: {
@@ -206,7 +206,7 @@ const SADeactiveApi = ({ complaint, setShowDeactiveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "http://localhost:7777/api/auth/superAdmin/DeactiveOperator",
+        "https://2kadam.co.in/api/auth/superAdmin/DeactiveOperator",
         formData,
         {
           headers: {
@@ -371,7 +371,7 @@ const SAActiveDeactiveOperator = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "http://localhost:7777/api/auth/superAdmin/getAllOperatorList",
+        "https://2kadam.co.in/api/auth/superAdmin/getAllOperatorList",
         {
           headers: {
             "Content-Type": "application/json",

@@ -335,6 +335,10 @@ import { FiShoppingBag } from "react-icons/fi";
 import { FaSlideshare } from "react-icons/fa";
 import { RiFileList3Fill } from "react-icons/ri";
 import { MdOutlineManageHistory } from "react-icons/md";
+import { MdHistory } from "react-icons/md";
+import { GoLink } from "react-icons/go";
+import { IoSettings } from "react-icons/io5";
+import { FaPlay } from "react-icons/fa";
 
 const Nav = styled.div`
   background-color: #e4e4e1;
@@ -368,7 +372,8 @@ const NavIcon = styled(Link)`
 `;
 
 const SidebarNav = styled.nav`
-  background-color: black;
+  /* background-color: black; */
+  background-color: #1e293b;
   box-shadow: 0 0 20px rgba(89, 102, 122, 0.1);
   width: 250px;
   height: 100vh;
@@ -410,232 +415,164 @@ const RetailerSidebarData = [
   {
     title: "Dashboard",
     path: "/dashboard",
-    icon: <AiIcons.AiFillHome color="#fe662b" />,
-    // iconClosed: <RiIcons.RiArrowDownSFill />,
-    // iconOpened: <RiIcons.RiArrowUpSFill />,
-
-    // subNav: [
-    // 	{
-    // 		title: "Our Aim",
-    // 		path: "/about-us/aim",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // 	{
-    // 		title: "Our Vision",
-    // 		path: "/about-us/vision",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // ],
+    icon: <AiIcons.AiFillHome color="white" size={18} />,
   },
-  // {
-  //   title: "Aadhar Linking Status",
-  //   path: "/aadhar-linking-status",
-  // icon: <IoIcons.IoIosPaper color="black" />,
-  // icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  // iconClosed: <RiIcons.RiArrowDownSFill color="black"/>,
-  // iconOpened: <RiIcons.RiArrowUpSFill color="black"/>,
-
-  // subNav: [
-  // 	{
-  // 		title: "Service 1",
-  // 		path: "/services/services1",
-  // 		icon: <IoIcons.IoIosPaper />,
-  // 		cName: "sub-nav",
-  // 	},
-  // 	{
-  // 		title: "Service 2",
-  // 		path: "/services/services2",
-  // 		icon: <IoIcons.IoIosPaper />,
-  // 		cName: "sub-nav",
-  // 	},
-  // 	{
-  // 		title: "Service 3",
-  // 		path: "/services/services3",
-  // 		icon: <IoIcons.IoIosPaper />,
-  // 	},
-  // ],
-  // },
   {
     title: "Wallet",
     path: "#",
-    icon: <FaIcons.FaPhone color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaPhone color="white" size={15} />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
+    // iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
 
     subNav: [
       {
         title: "Add Money to Wallet",
         path: "/add-money",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         cName: "sub-nav",
       },
       {
         title: "Add Wallet Summary",
         path: "/add-money-transaction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         cName: "sub-nav",
       },
       {
         title: "Add Wallet Offline",
         path: "/add-wallet-money-offline",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Wallet Offline Request",
         path: "/wallet-offline-request",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Wallet Full Summary",
         path: "/wallet-transaction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
   {
     title: "Recharge",
     path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaMobileAlt color="white" size={17} />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Prepaid Recharge",
         path: "/prepaid-recharge",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Postpaid Recharge",
         path: "/postpaid-recharge",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "DTH Recharge",
         path: "/dth-recharge",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
-      // {
-      //   title: "Electricity Recharge",
-      //   path: "/electricity-recharge",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Broadband Recharge",
-      //   path: "/broadband-recharge",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Apply DTH Connection",
-      //   path: "/dth-connection",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-
-      // {
-      //   title: "Recharge Refund Request",
-      //   path: "/recharge-refund-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "My Commission",
-      //   path: "/my-commission",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
     ],
   },
   {
     title: "Bill",
     path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Electricity",
         path: "/electricity-recharge",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Broadband",
         path: "/broadband-recharge",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Apply DTH Connection",
         path: "/dth-connection",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
   {
     title: "Recharge History",
     path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <MdHistory color="white" size={20} />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Prepaid Recharge History",
         path: "/prepaid-recharge-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Postpaid Recharge History",
         path: "/postpaid-recharge-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "DTH Recharge History",
         path: "/dth-recharge-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
   {
     title: "Bill History",
     path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Apply DTH Connection History",
         path: "/apply-dth-connection-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Eletricity Recharge History",
         path: "/eletricity-recharge-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Broadband Recharge History",
         path: "/broadband-recharge-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
   {
     title: "Commission",
     path: "#",
-    icon: <FaHandHoldingUsd color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaHandHoldingUsd color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "My Commission",
         path: "/my-commission",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         cName: "sub-nav",
       },
       {
         title: "View All Commission History",
         path: "/View-All-Commission-History",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         cName: "sub-nav",
       },
     ],
@@ -643,21 +580,21 @@ const RetailerSidebarData = [
   {
     title: "Purchase Bank ID",
     path: "#",
-    icon: <PiBankFill color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <PiBankFill color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "New Bank ID",
         path: "/bank-id",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "Bank ID History",
         path: "/bank-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
     ],
@@ -665,38 +602,38 @@ const RetailerSidebarData = [
   {
     title: "Other Services",
     path: "#",
-    icon: <MdFilterListOff color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <MdFilterListOff color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Download Forms",
         path: "/download-offline-forms",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "Apply Other Services",
         path: "/apply-offline",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "Sambal Form",
         path: "/SambalForm",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       // {
       //   title: "View All History",
       //   path: "/view-all-offline-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       //   // cName: "sub-nav",
       // },
       // {
       //   title: "Sambal History",
       //   path: "/Sambal-History",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       //   // cName: "sub-nav",
       // },
     ],
@@ -704,268 +641,190 @@ const RetailerSidebarData = [
   {
     title: "e-District",
     path: "#",
-    icon: <MdDisplaySettings color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <MdDisplaySettings color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       // {
       //   title: "Income",
       //   path: "http://income.ezeeportal.in/",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       // },
       // {
       //   title: "Domicile",
       //   path: "http://domicile.ezeeportal.in/",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       // },
       // {
       //   title: "E-district",
       //   path: "https://www.ezeeportal.in/p/edistrict-form.html",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       // },
       {
         title: "E-District Form",
         path: "/E-District-Form",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Verify E-District",
         path: "/verify-Edistrict",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       // {
       //   title: "E-District History",
       //   path: "/E-District-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       // },
       // {
       //   title: "Verify E-District History",
       //   path: "/verify-Edistrict-History",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       // },
     ],
   },
   {
     title: "Digital Signature",
     path: "#",
-    icon: <MdDisplaySettings color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <MdDisplaySettings color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Apply DSC",
         path: "/Apply-DSC",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Buy Token DSC",
         path: "/DSC-Token",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
   {
     title: "History",
     path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Apply Other Services History",
         path: "/view-all-offline-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Sambal History",
         path: "/Sambal-History",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "E-District History",
         path: "/E-District-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Verify E-District History",
         path: "/verify-Edistrict-History",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "DSC History",
         path: "/DSC-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "DSC Token History",
         path: "/DSC-token-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
   {
     title: "Training Video",
     path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-
-    // iconClosed: <RiIcons.RiArrowDownSFill />,
-    // iconOpened: <RiIcons.RiArrowUpSFill />,
-
-    // subNav: [
-    // 	{
-    // 		title: "Event 1",
-    // 		path: "/events/events1",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // 	{
-    // 		title: "Event 2",
-    // 		path: "/events/events2",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // ],
+    icon: <FaIcons.FaVideo color="white" size={16} />,
   },
   // {
   //   title: "Set PIN and 2 Step",
   //   path: "/2-step-verification",
-  //   icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
+  //   icon: <IoIcons.IoMdHelpCircle color="white" />,
   // },
   {
     title: "Important Links",
     path: "/important-links",
-    icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
+    icon: <GoLink color="white" size={17} />,
   },
-  // {
-  //   title: "UTI 2.0",
-  //   // path: "/training-video",
-  //   icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-  //   iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-  //   iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
-
-  //   subNav: [
-  //     {
-  //       title: "Apply PAN Card",
-  //       path: "/uti-login",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "UTI Transaction History",
-  //       path: "/uti-transaction-report",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //   ],
-  // },
   {
     title: "Pan Card Services",
     path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Pan Card Form 4.0",
         path: "/pan-card-4.0",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
-      // {
-      //   title: "PAN 4.0 History",
-      //   path: "/pan-4.0-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "UTI 2.4 PAN Card",
-      //   path: "/uti-login",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "UTI 2.4 Transaction History",
-      //   path: "/uti-transaction-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
       {
         title: "UTI PAN Card Login",
         path: "/uti-login-new",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
-
-      // {
-      //   title: "UTI 2.4 PAN Track",
-      //   path: "https://www.trackpan.utiitsl.com/PANONLINE/#forward",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
       {
         title: "UTI User ID Activate",
         path: "/retailer-id-revamp-activate",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "NSDL New PAN Card",
         path: "/pan-apply-49",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "NSDL Correction PAN",
         path: "/pan-apply-cr",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "NSDL Incomplete PAN Request",
         path: "/incomplete-request",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
-      // {
-      //   title: "NSDL PAN Track Status",
-      //   path: "https://tin.tin.nsdl.com/pantan/StatusTrack.html",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
       {
         title: "NSDL PAN Status",
         path: "/pan-status",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
-
-      // {
-      //   title: "NSDL PAN Transaction History",
-      //   path: "/pan-transaction-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "PAN Refund",
-      //   path: "/pan-transaction-refund-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "PAN Re Apply",
-      //   path: "/pan-transaction-resume-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
     ],
   },
   {
     title: "PAN History",
     path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "PAN 4.0 History",
         path: "/pan-4.0-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "NSDL PAN Transaction History",
         path: "/pan-transaction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "UTI 2.4 Transaction History",
         path: "/uti-transaction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
@@ -973,100 +832,45 @@ const RetailerSidebarData = [
   {
     title: "PAN Coupon",
     path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
-      // {
-      //   title: "User ID Activate",
-      //   path: "/retailer-id-revamp-activate",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
       {
         title: "UTI PSA Login",
         path: "/uti-login",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Buy Coupon",
         path: "/buy-coupon",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Buy Coupon History",
         path: "/uti-coupon-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
-  // {
-  //   title: "PAN Track",
-  //   path: "https://www.trackpan.utiitsl.com/PANONLINE/#forward",
-  //   icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
-  // },
-  // {
-  //   title: "NSDL PAN Application",
-  //   // path: "/training-video",
-  //   icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-  //   iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-  //   iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
-
-  //   subNav: [
-  //     {
-  //       title: "NSDL New PAN Card",
-  //       path: "/pan-apply-49",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "NSDL Correction PAN",
-  //       path: "/pan-apply-cr",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "NSDL PAN Track Status",
-  //       path: "https://tin.tin.nsdl.com/pantan/StatusTrack.html",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "PAN Status",
-  //       path: "/pan-status",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "PAN Transaction History",
-  //       path: "/pan-transaction-report",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "PAN Refund",
-  //       path: "/pan-transaction-refund-report",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "PAN Re Apply",
-  //       path: "/pan-transaction-resume-report",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //   ],
-  // },
   {
     title: "PAN Document",
     path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Upload PAN Document",
         path: "/pan-document-upload",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "PAN Uploaded Docs",
         path: "/pan-document",
-        icon: <IoIcons.IoIosPaper color="black" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
@@ -1074,45 +878,45 @@ const RetailerSidebarData = [
   {
     title: "Complaint",
     path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Complaint",
         path: "/raise-complaint",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "All Complaint List",
         path: "/complaint-raised-list",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
   {
     title: "Other Settings",
     path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <IoSettings color="white" size={17} />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Download Certificate",
         path: "/download-certificate",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <FaPlay color="#e74c3c" />,
       },
       {
         title: "Change Password",
         path: "/change-password",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Create Pin",
         path: "/generate-pin",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
@@ -1127,139 +931,74 @@ const SuperDisData = [
   {
     title: "Dashboard",
     path: "/dashboard",
-    icon: <AiIcons.AiFillHome color="#fe662b" />,
-    // iconClosed: <RiIcons.RiArrowDownSFill />,
-    // iconOpened: <RiIcons.RiArrowUpSFill />,
-
-    // subNav: [
-    // 	{
-    // 		title: "Our Aim",
-    // 		path: "/about-us/aim",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // 	{
-    // 		title: "Our Vision",
-    // 		path: "/about-us/vision",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // ],
+    icon: <AiIcons.AiFillHome color="white" />,
   },
-  // {
-  //   title: "Aadhar Linking Status",
-  //   path: "/aadhar-linking-status",
-  //   // icon: <IoIcons.IoIosPaper color="black" />,
-  //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //   // iconClosed: <RiIcons.RiArrowDownSFill color="black"/>,
-  //   // iconOpened: <RiIcons.RiArrowUpSFill color="black"/>,
-
-  //   // subNav: [
-  //   // 	{
-  //   // 		title: "Service 1",
-  //   // 		path: "/services/services1",
-  //   // 		icon: <IoIcons.IoIosPaper />,
-  //   // 		cName: "sub-nav",
-  //   // 	},
-  //   // 	{
-  //   // 		title: "Service 2",
-  //   // 		path: "/services/services2",
-  //   // 		icon: <IoIcons.IoIosPaper />,
-  //   // 		cName: "sub-nav",
-  //   // 	},
-  //   // 	{
-  //   // 		title: "Service 3",
-  //   // 		path: "/services/services3",
-  //   // 		icon: <IoIcons.IoIosPaper />,
-  //   // 	},
-  //   // ],
-  // },
   {
     title: "Wallet",
     path: "#",
-    icon: <FaWallet color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaWallet color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
-      // {
-      //   title: "Add Money to Wallet",
-      //   path: "/add-money",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   cName: "sub-nav",
-      // },
-      // {
-      //   title: "Add Wallet Summary",
-      //   path: "/add-money-transaction-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   cName: "sub-nav",
-      // },
-      // {
-      //   title: "Add Wallet Offline",
-      //   path: "/add-wallet-money-offline",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Wallet Offline Request",
-      //   path: "/wallet-offline-request",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
       {
         title: "Wallet Full Summary",
         path: "/wallet-transaction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Wallet To Wallet Money Transfer",
         path: "/wallet-to-wallet-transfer",
-        icon: <BsCurrencyExchange color="#fe662b" />,
+        icon: <BsCurrencyExchange color="#e74c3c" />,
       },
       {
         title: " Wallet TO Wallet Transfer History",
         // path: "/fund-transfer-status",
         path: "/Wallet-TO-Wallet-Transfer-History",
-        icon: <RiFileHistoryFill color="#fe662b" />,
+        icon: <RiFileHistoryFill color="#e74c3c" />,
       },
       {
         title: "Wallet Withdraw",
         path: "/wallet-withdraw",
-        icon: <PiHandWithdrawFill color="#fe662b" />,
+        icon: <PiHandWithdrawFill color="#e74c3c" />,
       },
       {
         title: "Wallet Withdraw History",
         path: "/wallet-withdraw-History",
-        icon: <RiFileHistoryFill color="#fe662b" />,
+        icon: <RiFileHistoryFill color="#e74c3c" />,
       },
     ],
   },
   {
     title: "Other Services",
     path: "#",
-    icon: <MdFilterListOff color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <MdFilterListOff color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Other Services History",
         path: "/view-all-offline-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "Sambal History",
         path: "/Sambal-History",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "Provider 2 Recharge",
         path: "/Offline-Recharge-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "Provider 2 DTH Connection",
         path: "/Offline-dth-connection",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
     ],
@@ -1268,26 +1007,20 @@ const SuperDisData = [
   {
     title: "Commission",
     path: "#",
-    icon: <FaHandHoldingUsd color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaHandHoldingUsd color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
-      // {
-      //   title: "View All History",
-      //   path: "/view-all-offline-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   // cName: "sub-nav",
-      // },
       {
         title: "My Commission",
         path: "/my-commission",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "View All Commission History",
         path: "/View-All-Commission-History",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
     ],
@@ -1296,92 +1029,21 @@ const SuperDisData = [
   {
     title: "Online Services",
     path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
-      // {
-      //   title: "Prepaid Recharge",
-      //   path: "/prepaid-recharge",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Postpaid Recharge",
-      //   path: "/postpaid-recharge",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "DTH Recharge",
-      //   path: "/dth-recharge",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Electricity Recharge",
-      //   path: "/electricity-recharge",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Broadband Recharge",
-      //   path: "/broadband-recharge",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Apply DTH Connection",
-      //   path: "/dth-connection",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "View Offline Recharge Request",
-      //   path: "/Offline-Recharge-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   // cName: "sub-nav",
-      // },
-      // {
-      //   title: "Prepaid Recharge History",
-      //   path: "/prepaid-recharge-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Postpaid Recharge History",
-      //   path: "/postpaid-recharge-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "DTH Recharge History",
-      //   path: "/dth-recharge-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Eletricity Recharge History",
-      //   path: "/eletricity-recharge-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Broadband Recharge History",
-      //   path: "/broadband-recharge-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Recharge Refund Request",
-      //   path: "/recharge-refund-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "My Commission",
-      //   path: "/my-commission",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
       {
         title: "Provider 1 DTH Connection",
         path: "/online-dth-connection-history",
-        icon: <FaRegListAlt color="#fe662b" />,
+        icon: <FaRegListAlt color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "Provider 1 Recharge",
         path: "/online-recharge-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
     ],
@@ -1389,45 +1051,20 @@ const SuperDisData = [
   {
     title: "e-District",
     path: "#",
-    icon: <MdDisplaySettings color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <MdDisplaySettings color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
-      // {
-      //   title: "Income",
-      //   path: "http://income.ezeeportal.in/",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Domicile",
-      //   path: "http://domicile.ezeeportal.in/",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "E-district",
-      //   path: "https://www.ezeeportal.in/p/edistrict-form.html",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "E-District Form",
-      //   path: "/E-District-Form",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Verify E-District",
-      //   path: "/verify-Edistrict",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
       {
         title: "E-District History",
         path: "/E-District-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Verify E-District History",
         path: "/verify-Edistrict-History",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
@@ -1435,272 +1072,146 @@ const SuperDisData = [
   {
     title: "Pan Coupan  History",
     path: "/Pan-Coupan-History",
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    icon: <IoIcons.IoIosPaper color="white" />,
     // cName: "sub-nav",
   },
   {
     title: "Training Video",
     path: "/training-video",
-    icon: <FaVideo color="#fe662b" />,
+    icon: <FaVideo color="white" />,
   },
   {
     title: "Pan Card Services",
     path: "#",
-    icon: <FaAddressCard color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaAddressCard color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
-      // {
-      //   title: "Pan Card Form 4.0",
-      //   path: "/pan-card-4.0",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "UTI 2.4 PAN Card",
-      //   path: "/uti-login",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "UTI PAN Card Login",
-      //   path: "/uti-login-new",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "UTI 2.4 Transaction History",
-      //   path: "/uti-transaction-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "UTI 2.4 PAN Track",
-      //   path: "https://www.trackpan.utiitsl.com/PANONLINE/#forward",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "NSDL New PAN Card",
-      //   path: "/pan-apply-49",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "NSDL Correction PAN",
-      //   path: "/pan-apply-cr",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "NSDL Incomplete PAN Request",
-      //   path: "/incomplete-request",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "NSDL PAN Track Status",
-      //   path: "https://tin.tin.nsdl.com/pantan/StatusTrack.html",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "PAN Status",
-      //   path: "/pan-status",
-      //   icon: <IoIcons.IoIosPaper color="#fe672b75" />,
-      // },
       {
         title: "PAN 4.0 History",
         path: "/pan-4.0-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "NSDL Pan History",
         path: "/pan-transaction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "NSDL PAN Correction History",
         path: "/pan-correction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
-
-      // {
-      //   title: "UTI Transaction History",
-      //   path: "/uti-transaction-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "PAN Refund",
-      //   path: "/pan-transaction-refund-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "PAN Re Apply",
-      //   path: "/pan-transaction-resume-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
     ],
   },
   // {
   //   title: "Set PIN and 2 Step",
   //   path: "/2-step-verification",
-  //   icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
+  //   icon: <IoIcons.IoMdHelpCircle color="white" />,
   // },
   {
     title: "Create A Partner",
     path: "#",
-    icon: <FaHandsHelping color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaHandsHelping color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Create Distributor",
         path: "/create-distributor",
-        icon: <FaRegHandshake color="#fe662b" />,
+        icon: <FaRegHandshake color="#e74c3c" />,
       },
       {
         title: "All Distributor List",
         path: "/All-Distributor-List",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Buy User ID Limit",
         path: "/buy-distributor-id",
-        icon: <FaIdCardAlt color="#fe662b" />,
+        icon: <FaIdCardAlt color="#e74c3c" />,
       },
       {
         title: "UserId Bought summary",
         path: "/UserId-Bought-summary",
-        icon: <FaUsersBetweenLines color="#fe662b" />,
+        icon: <FaUsersBetweenLines color="#e74c3c" />,
       },
     ],
   },
-  // {
-  //   title: "UTI 2.0",
-  //   // path: "/training-video",
-  //   icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-  //   iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-  //   iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
-
-  //   subNav: [
-  //     {
-  //       title: "Wallet Full Summary",
-  //       path: "/wallet-transaction-report",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "UTI Transaction History",
-  //       path: "/uti-transaction-report",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //   ],
-  // },
-  // {
-  //   title: "UTI New",
-  //   // path: "/training-video",
-  //   icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-  //   iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-  //   iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
-
-  //   subNav: [
-  //     {
-  //       title: "Buy Coupon",
-  //       path: "/buy-uti-coupon",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "Distribute UTI Coupon",
-  //       path: "/distribute-uti-coupon",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "UTI Coupon History",
-  //       path: "/uti-coupon-history",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //   ],
-  // },
-  // {
-  //   title: "PAN Transaction History",
-  //   path: "pan-transaction-report",
-  //   icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
-  // },
   {
     title: "User List",
     path: "#",
-    icon: <BiSolidUserDetail color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <BiSolidUserDetail color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Active Users",
         path: "/active-users",
-        icon: <PiUserCircleGearBold color="#fe662b" />,
+        icon: <PiUserCircleGearBold color="#e74c3c" />,
       },
       {
         title: "Deactive Users",
         path: "/deactive-users",
-        icon: <PiUserCircleMinusDuotone color="#fe662b" />,
+        icon: <PiUserCircleMinusDuotone color="#e74c3c" />,
       },
       {
         title: "All Users Joined List",
         path: "/users-joining-list",
-        icon: <HiUserGroup color="#fe662b" />,
+        icon: <HiUserGroup color="#e74c3c" />,
       },
-      // {
-      //   title: "Pending KYC Users",
-      //   path: "/pending-kyc-user",
-      //   icon: <MdPendingActions color="#fe662b" />,
-      // },
-      // {
-      //   title: "Pending Payment Users",
-      //   path: "/pending-payment-users",
-      //   icon: <CiMoneyCheck1 color="#fe662b" />,
-      // },
     ],
   },
   {
     title: "Complaint",
     path: "#",
-    icon: <HiDocumentReport color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <HiDocumentReport color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Complaint",
         path: "/raise-complaint",
-        icon: <MdAssignmentAdd color="#fe662b" />,
+        icon: <MdAssignmentAdd color="#e74c3c" />,
       },
       {
         title: "All Complaint List",
         path: "/complaint-raised-list",
-        icon: <MdOutlinePlaylistAddCheckCircle color="#fe662b" />,
+        icon: <MdOutlinePlaylistAddCheckCircle color="#e74c3c" />,
       },
     ],
   },
   {
     title: "Other Settings",
     path: "#",
-    icon: <MdAdminPanelSettings color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <MdAdminPanelSettings color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Download Certificate",
         path: "/download-certificate",
-        icon: <FaFileDownload color="#fe662b" />,
+        icon: <FaFileDownload color="#e74c3c" />,
       },
       {
         title: "Change Password",
         path: "/change-password",
-        icon: <TbPasswordUser color="#fe662b" />,
+        icon: <TbPasswordUser color="#e74c3c" />,
       },
       {
         title: "Bank Account Setup",
         path: "/bank-account-setup",
-        icon: <AiFillBank color="#fe662b" />,
+        icon: <AiFillBank color="#e74c3c" />,
       },
       {
         title: "Create Pin",
         path: "/generate-pin",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
@@ -1710,7 +1221,7 @@ const SuperAdminData = [
   {
     title: "Dashboard",
     path: "/dashboard",
-    icon: <AiIcons.AiFillHome color="#fe662b" />,
+    icon: <AiIcons.AiFillHome color="white" />,
     // iconClosed: <RiIcons.RiArrowDownSFill />,
     // iconOpened: <RiIcons.RiArrowUpSFill />,
 
@@ -1730,67 +1241,67 @@ const SuperAdminData = [
   {
     title: "Wallet",
     path: "#",
-    icon: <FaIcons.FaPhone color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaPhone color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       // {
       //   title: "Add Money to Wallet",
       //   path: "/add-money",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       //   cName: "sub-nav",
       // },
       // {
       //   title: "Add Wallet Summary",
       //   path: "/add-money-transaction-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       //   cName: "sub-nav",
       // },
       // {
       //   title: "Add Wallet Offline",
       //   path: "/add-wallet-money-offline",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       // },
       // {
       //   title: "Wallet Offline Request",
       //   path: "/wallet-offline-request",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       // },
       {
         title: "Wallet Full Summary",
         path: "/wallet-transaction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Wallet Withdraw Requests",
         path: "/wallet-withdraw-requests",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Wallet Withdraw Summary",
         path: "/wallet-withdraw-summary",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Add wallet Money Requests",
         path: "/add-wallet-money-requests",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Add wallet Money Summary",
         path: "/add-wallet-money-summary",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Add wallet Money Direct",
         path: "/add-wallet-money-direct",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Withdraw wallet Money Direct",
         path: "/withdraw-wallet-money-direct",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
@@ -1798,143 +1309,143 @@ const SuperAdminData = [
     title: "All Transaction",
     path: "#",
     // path: "/today-all-transaction",
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <IoIcons.IoIosPaper color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
     subNav: [
       // {
 
       {
         title: "Today All Transaction",
         path: "/today-all-transaction",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "All Transaction",
         path: "/all-transaction",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
   {
     title: "Commision",
     path: "#",
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <IoIcons.IoIosPaper color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       // {
       //   title: "Add Money to Wallet",
       //   path: "/add-money",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       //   cName: "sub-nav",
       // },
       // {
       //   title: "Add Wallet Summary",
       //   path: "/add-money-transaction-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       //   cName: "sub-nav",
       // },
       // {
       //   title: "Add Wallet Offline",
       //   path: "/add-wallet-money-offline",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       // },
       // {
       //   title: "Wallet Offline Request",
       //   path: "/wallet-offline-request",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       // },
       {
         title: "Commision Full Summary",
         path: "/commision-full-summary",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Create Package",
         path: "/create-package",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "View Packages",
         path: "/view-packages",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       //   {
       //   title: "Wallet Withdraw Requests",
       //   path: "/wallet-withdraw-requests",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       // },
     ],
   },
   {
     title: "Offline Services",
     path: "#",
-    icon: <MdFilterListOff color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <MdFilterListOff color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "View Offline Recharge Request",
         path: "/Offline-Recharge-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "View Offline DTH Connection Request",
         path: "/Offline-dth-connection",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
 
       {
         title: "View Offline Forms",
         path: "/view-all-offline-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "View PAN Offline Forms",
         path: "/Pan-offline-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "View Bank Id Forms",
         path: "/Bank-Id-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "View E-district Forms",
         path: "/E-district-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       // {
       //   title: "View E-district Forms",
       //   path: "/E-district-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       //   // cName: "sub-nav",
       // },
       {
         title: "View Verify E-district Forms Requests",
         path: "/verify-E-district-form-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "View Sambal Forms",
         path: "/sambal-form-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "View DSC",
         path: "/digital-signature-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
     ],
@@ -1942,277 +1453,277 @@ const SuperAdminData = [
   {
     title: "Online Services",
     path: "#",
-    icon: <RiBaseStationLine color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <RiBaseStationLine color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "View Recharge History",
         path: "/online-recharge-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "View DTH Connection History",
         path: "/online-dth-connection-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "NSDL PAN Transaction History",
         path: "/pan-transaction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "NSDL PAN Correction History",
         path: "/pan-correction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "UTI PAN Transaction History",
         path: "/uti-transaction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
   {
     title: "Web Settings",
     path: "/website-setting",
-    icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
+    icon: <IoIcons.IoMdHelpCircle color="white" />,
   },
   {
     title: "PAN Coupon Requests",
     path: "/pan-coupon-requests",
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    icon: <IoIcons.IoIosPaper color="white" />,
   },
   {
     title: "DSC Token Requests",
     path: "/digital-signature-token-history",
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    icon: <IoIcons.IoIosPaper color="white" />,
   },
   {
     title: "Create A Partner",
     path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Create White Label Account",
         path: "/create-white-label",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Create Super Distributor",
         path: "/create-super-distributor",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Create Distributor",
         path: "/create-distributor",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Create Retailer",
         path: "/create-retailer",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Create Superadmin Employee",
         path: "/create-superadmin-employee",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       // {
       //   title: "Buy User ID Limit",
       //   path: "/buy-admin-id",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       // },
     ],
   },
   {
     title: "User List",
     path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Active Users",
         path: "/active-users",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Deactive Users",
         path: "/deactive-users",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Pending KYC Users",
         path: "/pending-kyc-user",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Pending Payment Users",
         path: "/pending-payment-users",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "All Users Joined List",
         path: "/users-joining-list",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "WhiteLabel Website Users Joined List",
         path: "/whiteLabel-users-joining-list",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Super Admin Website Users Joined List",
         path: "/superAdmin-users-joining-list",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Super Admin Employee List",
         path: "/super-admin-employee-list",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "User Relation",
         path: "/user-relation-data",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Buy User ID Summary",
         path: "/buy-user-id-summary",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Transfer User ID Summary",
         path: "/Transfer-User-Ids-Summery",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
   {
     title: "Complaint",
     path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       // {
       //   title: "Complaint",
       //   path: "/raise-complaint",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       // },
       {
         title: "All Complaint List",
         path: "/complaint-raised-list",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
   {
     title: "Other Settings",
     path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       // {
       //   title: "Download Certificate",
       //   path: "/download-certificate",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       // },
       {
         title: "Active/Deactive Api",
         path: "/active-deactive-api",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Active/Deactive Operator",
         path: "/active-deactive-operator",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Active/Deactive Services",
         path: "/active-deactive-services",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Digital Signature",
         path: "/digital-signature-plan",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       // {
       //   title: "Set Joining Price",
       //   path: "/change-coupon-price",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       // },
       // {
       //   title: "User ID Set Rate",
       //   path: "/user-id-set-rate",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       // },
       {
         title: "Set DTH Connection Plans",
         path: "/Set-DTH-Connection-Plans",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       // {
       //   title: "Change NSDL Price",
       //   path: "/change-nsdl-price",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       // },
       // {
       //   title: "Change UTI 2.0 Price",
       //   path: "/change-uti-price",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       // },
       // {
       //   title: "Change UTI New Price",
       //   path: "/change-uti-new-price",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       // },
       {
         title: "Change Password",
         path: "/change-password",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       // {
       //   title: "Bank Account Setup",
       //   path: "/bank-account-setup",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       // },
       // {
       //   title: "Wallet Withdraw",
       //   path: "/wallet-withdraw",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       // },
       {
         title: "Fund Transfer Status",
         path: "/fund-transfer-status",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Uploaded Documents",
         path: "/uploaded-documents",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Choice User Notification",
         path: "/choice-user-notification",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Contact us users",
         path: "/contact-us-users",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
@@ -2221,7 +1732,7 @@ const WhiteLabelData = [
   {
     title: "Dashboard",
     path: "/dashboard",
-    icon: <AiIcons.AiFillHome color="#fe662b" />,
+    icon: <AiIcons.AiFillHome color="white" />,
     // iconClosed: <RiIcons.RiArrowDownSFill />,
     // iconOpened: <RiIcons.RiArrowUpSFill />,
 
@@ -2238,134 +1749,72 @@ const WhiteLabelData = [
     // 	},
     // ],
   },
-  // {
-  //   title: "Aadhar Linking Status",
-  //   path: "/aadhar-linking-status",
-  //   // icon: <IoIcons.IoIosPaper color="black" />,
-  //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //   // iconClosed: <RiIcons.RiArrowDownSFill color="black"/>,
-  //   // iconOpened: <RiIcons.RiArrowUpSFill color="black"/>,
-
-  //   // subNav: [
-  //   // 	{
-  //   // 		title: "Service 1",
-  //   // 		path: "/services/services1",
-  //   // 		icon: <IoIcons.IoIosPaper />,
-  //   // 		cName: "sub-nav",
-  //   // 	},
-  //   // 	{
-  //   // 		title: "Service 2",
-  //   // 		path: "/services/services2",
-  //   // 		icon: <IoIcons.IoIosPaper />,
-  //   // 		cName: "sub-nav",
-  //   // 	},
-  //   // 	{
-  //   // 		title: "Service 3",
-  //   // 		path: "/services/services3",
-  //   // 		icon: <IoIcons.IoIosPaper />,
-  //   // 	},
-  //   // ],
-  // },
   {
     title: "Wallet",
     path: "#",
-    icon: <FaWallet color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaWallet color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
-      // {
-      //   title: "Add Money to Wallet",
-      //   path: "/add-money",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   cName: "sub-nav",
-      // },
-      // {
-      //   title: "Add Wallet Summary",
-      //   path: "/add-money-transaction-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   cName: "sub-nav",
-      // },
-      // {
-      //   title: "Add Wallet Offline",
-      //   path: "/add-wallet-money-offline",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Wallet Offline Request",
-      //   path: "/wallet-offline-request",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
       {
         title: "Wallet Full Summary",
         path: "/wallet-transaction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Wallet To Wallet Money Transfer",
         path: "/wallet-to-wallet-transfer",
-        icon: <BsCurrencyExchange color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: " Wallet TO Wallet Transfer History",
         // path: "/fund-transfer-status",
         path: "/Wallet-TO-Wallet-Transfer-History",
-        icon: <RiFileHistoryFill color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Wallet Withdraw",
         path: "/wallet-withdraw",
-        icon: <PiHandWithdrawFill color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Wallet Withdraw History",
         path: "/wallet-withdraw-History",
-        icon: <RiFileHistoryFill color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
   {
     title: "Other Services",
     path: "#",
-    icon: <MdFilterListOff color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <MdFilterListOff color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
-      // {
-      //   title: "Download Forms",
-      //   path: "/download-offline-forms",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   // cName: "sub-nav",
-      // },
-      // {
-      //   title: "Apply Pan Card Offline",
-      //   path: "/submit-pan-card-offline",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   // cName: "sub-nav",
-      // },
       {
         title: "Other Services History",
         path: "/view-all-offline-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "Sambal History",
         path: "/Sambal-History",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "Provider 2 Recharge",
         path: "/Offline-Recharge-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "Provider 2 DTH Connection",
         path: "/Offline-dth-connection",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
     ],
@@ -2373,57 +1822,41 @@ const WhiteLabelData = [
   {
     title: "Training Video",
     path: "/WL-training-video",
-    icon: <FaVideo color="#fe662b" />,
-
-    // iconClosed: <RiIcons.RiArrowDownSFill />,
-    // iconOpened: <RiIcons.RiArrowUpSFill />,
-
-    // subNav: [
-    // 	{
-    // 		title: "Event 1",
-    // 		path: "/events/events1",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // 	{
-    // 		title: "Event 2",
-    // 		path: "/events/events2",
-    // 		icon: <IoIcons.IoIosPaper />,
-    // 	},
-    // ],
+    icon: <FaVideo color="white" />,
   },
   // {
   //   title: "Set PIN and 2 Step",
   //   path: "/2-step-verification",
-  //   icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
+  //   icon: <IoIcons.IoMdHelpCircle color="white" />,
   // },
   {
     title: "Web Settings",
     path: "/website-setting",
-    icon: <RiIcons.RiFileSettingsFill color="#fe662b" />,
+    icon: <RiIcons.RiFileSettingsFill color="white" />,
   },
   {
     title: "Commission",
     path: "#",
-    icon: <FaHandHoldingUsd color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaHandHoldingUsd color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       // {
       //   title: "View All History",
       //   path: "/view-all-offline-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       //   // cName: "sub-nav",
       // },
       {
         title: "My Commission",
         path: "/my-commission",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "View All Commission History",
         path: "/View-All-Commission-History",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
     ],
@@ -2432,92 +1865,21 @@ const WhiteLabelData = [
   {
     title: "Online Services",
     path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
-      // {
-      //   title: "Prepaid Recharge",
-      //   path: "/prepaid-recharge",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Postpaid Recharge",
-      //   path: "/postpaid-recharge",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "DTH Recharge",
-      //   path: "/dth-recharge",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Electricity Recharge",
-      //   path: "/electricity-recharge",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Broadband Recharge",
-      //   path: "/broadband-recharge",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Apply DTH Connection",
-      //   path: "/dth-connection",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "View Offline Recharge Request",
-      //   path: "/Offline-Recharge-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      //   // cName: "sub-nav",
-      // },
-      // {
-      //   title: "Prepaid Recharge History",
-      //   path: "/prepaid-recharge-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Postpaid Recharge History",
-      //   path: "/postpaid-recharge-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "DTH Recharge History",
-      //   path: "/dth-recharge-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Eletricity Recharge History",
-      //   path: "/eletricity-recharge-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Broadband Recharge History",
-      //   path: "/broadband-recharge-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Recharge Refund Request",
-      //   path: "/recharge-refund-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "My Commission",
-      //   path: "/my-commission",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
       {
         title: "Provider 1 DTH Connection",
         path: "/online-dth-connection-history",
-        icon: <FaRegListAlt color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "Provider 1 Recharge",
         path: "/online-recharge-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
     ],
@@ -2526,45 +1888,20 @@ const WhiteLabelData = [
   {
     title: "e-District",
     path: "#",
-    icon: <MdDisplaySettings color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <MdDisplaySettings color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
-      // {
-      //   title: "Income",
-      //   path: "http://income.ezeeportal.in/",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Domicile",
-      //   path: "http://domicile.ezeeportal.in/",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "E-district",
-      //   path: "https://www.ezeeportal.in/p/edistrict-form.html",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "E-District Form",
-      //   path: "/E-District-Form",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Verify E-District",
-      //   path: "/verify-Edistrict",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
       {
         title: "E-District History",
         path: "/E-District-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Verify E-District History",
         path: "/verify-Edistrict-History",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
@@ -2572,337 +1909,206 @@ const WhiteLabelData = [
   {
     title: "Pan Coupan  History",
     path: "/Pan-Coupan-History",
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    icon: <IoIcons.IoIosPaper color="white" />,
     // cName: "sub-nav",
   },
   {
     title: "Pan Card Services",
     path: "#",
-    icon: <FaAddressCard color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaAddressCard color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
-      // {
-      //   title: "Pan Card Form 4.0",
-      //   path: "/pan-card-4.0",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "UTI 2.4 PAN Card",
-      //   path: "/uti-login",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "UTI PAN Card Login",
-      //   path: "/uti-login-new",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "UTI 2.4 Transaction History",
-      //   path: "/uti-transaction-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "UTI 2.4 PAN Track",
-      //   path: "https://www.trackpan.utiitsl.com/PANONLINE/#forward",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "NSDL New PAN Card",
-      //   path: "/pan-apply-49",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "NSDL Correction PAN",
-      //   path: "/pan-apply-cr",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "NSDL Incomplete PAN Request",
-      //   path: "/incomplete-request",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "NSDL PAN Track Status",
-      //   path: "https://tin.tin.nsdl.com/pantan/StatusTrack.html",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "PAN Status",
-      //   path: "/pan-status",
-      //   icon: <IoIcons.IoIosPaper color="#fe672b75" />,
-      // },
       {
         title: "PAN 4.0 History",
         path: "/pan-4.0-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "NSDL New Pan History",
         path: "/pan-transaction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "NSDL PAN Correction History",
         path: "/pan-correction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
-
-      // {
-      //   title: "UTI Transaction History",
-      //   path: "/uti-transaction-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "PAN Refund",
-      //   path: "/pan-transaction-refund-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "PAN Re Apply",
-      //   path: "/pan-transaction-resume-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
     ],
   },
   {
     title: "Create A Partner",
     path: "#",
-    icon: <FaHandsHelping color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaHandsHelping color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Create White Label Account",
         path: "/create-white-label",
-        icon: <FaRegHandshake color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Create Super Distributor",
         path: "/create-super-distributor",
-        icon: <FaRegHandshake color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Create Distributor",
         path: "/create-distributor",
-        icon: <FaRegHandshake color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Create Retailer",
         path: "/create-retailer",
-        icon: <FaRegHandshake color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Created Users",
         path: "/Created-Users",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Buy User ID ",
         path: "/buy-id",
-        icon: <FiShoppingBag color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Buy User ID  summary",
         path: "/UserId-Bought-summary",
-        icon: <FaUsersBetweenLines color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Transfer IDs",
         path: "/Transfer-IDs",
-        icon: <FaSlideshare color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Transfer IDs Summary",
         path: "/Transfer-IDs-Summary",
-        icon: <RiFileList3Fill color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
   {
     title: "UTI 2.0",
     path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       // {
       //   title: "Wallet Full Summary",
       //   path: "/wallet-transaction-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       // },
       {
         title: "UTI Transaction History",
         path: "/uti-transaction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
-  // {
-  //   title: "UTI New",
-  //   path: "#",
-  //   icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-  //   iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-  //   iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
-
-  //   subNav: [
-  //     {
-  //       title: "Buy Coupon",
-  //       path: "/buy-uti-coupon",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "Distribute UTI Coupon",
-  //       path: "/distribute-uti-coupon",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "UTI Coupon History",
-  //       path: "/uti-coupon-history",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //   ],
-  // },
-  // {
-  //   title: "PAN Transaction History",
-  //   path: "pan-transaction-report",
-  //   icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
-  // },
   {
     title: "User List",
     path: "#",
-    icon: <BiSolidUserDetail color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <BiSolidUserDetail color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Active Users",
         path: "/active-users",
-        icon: <PiUserCircleGearBold color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Deactive Users",
         path: "/deactive-users",
-        icon: <PiUserCircleMinusDuotone color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
-      // {
-      //   title: "Pending Payment Users",
-      //   path: "/pending-payment-users",
-      //   icon: <CiMoneyCheck1 color="#fe662b" />,
-      // },
       {
         title: "All Users Joined List",
         path: "/users-joining-list",
-        icon: <HiUserGroup color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Website Users Joined List",
         path: "/website-users-joining-list",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       // {
       //   title: "White Label Joined List",
       //   path: "/white-label-joining-list",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       // },
       {
         title: "Pending KYC Users",
         path: "/pending-kyc-user",
-        icon: <MdPendingActions color="#fe662b" />,
+        icon: <MdPendingActions color="#e74c3c" />,
       },
       // {
       //   title: "Buy User ID Summary",
       //   path: "/buy-user-id-summary",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       // },
     ],
   },
   {
     title: "Complaint",
     path: "#",
-    icon: <HiDocumentReport color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <HiDocumentReport color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Complaint",
         path: "/raise-complaint",
-        icon: <MdAssignmentAdd color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "All Complaint List",
         path: "/complaint-raised-list",
-        icon: <MdOutlinePlaylistAddCheckCircle color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
   {
     title: "Other Settings",
     path: "#",
-    icon: <MdAdminPanelSettings color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <MdAdminPanelSettings color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Download Certificate",
         path: "/download-certificate",
-        icon: <FaFileDownload color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
-      // {
-      //   title: "ID Set Rate",
-      //   path: "/change-coupon-price",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Change NSDL Price",
-      //   path: "/change-nsdl-price",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Change UTI 2.0 Price",
-      //   path: "/change-uti-price",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Change UTI New Price",
-      //   path: "/change-uti-new-price",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
       {
         title: "Change Password",
         path: "/change-password",
-        icon: <TbPasswordUser color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Bank Account Setup",
         path: "/bank-account-setup",
-        icon: <AiFillBank color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
-      // {
-      //   title: "Wallet Withdraw",
-      //   path: "/wallet-withdraw",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
-      // {
-      //   title: "Fund Transfer Status",
-      //   path: "/fund-transfer-status",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-      // },
       {
         title: "Create Pin",
         path: "/generate-pin",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Contact Us ",
         path: "/Contact-Us",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
@@ -2912,7 +2118,7 @@ const DistributorData = [
   {
     title: "Dashboard",
     path: "/dashboard",
-    icon: <AiIcons.AiFillHome color="#fe662b" />,
+    icon: <AiIcons.AiFillHome color="white" />,
     // iconClosed: <RiIcons.RiArrowDownSFill />,
     // iconOpened: <RiIcons.RiArrowUpSFill />,
 
@@ -2920,101 +2126,73 @@ const DistributorData = [
 
     // ],
   },
-  // {
-  //   title: "Aadhar Linking Status",
-  //   path: "/aadhar-linking-status",
-  //   // icon: <IoIcons.IoIosPaper color="black" />,
-  //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //   // iconClosed: <RiIcons.RiArrowDownSFill color="black"/>,
-  //   // iconOpened: <RiIcons.RiArrowUpSFill color="black"/>,
-
-  //   // subNav: [
-  //   // 	{
-  //   // 		title: "Service 1",
-  //   // 		path: "/services/services1",
-  //   // 		icon: <IoIcons.IoIosPaper />,
-  //   // 		cName: "sub-nav",
-  //   // 	},
-  //   // 	{
-  //   // 		title: "Service 2",
-  //   // 		path: "/services/services2",
-  //   // 		icon: <IoIcons.IoIosPaper />,
-  //   // 		cName: "sub-nav",
-  //   // 	},
-  //   // 	{
-  //   // 		title: "Service 3",
-  //   // 		path: "/services/services3",
-  //   // 		icon: <IoIcons.IoIosPaper />,
-  //   // 	},
-  //   // ],
-  // },
   {
     title: "Wallet",
     path: "#",
-    icon: <FaIcons.FaPhone color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaPhone color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Wallet Full Summary",
         path: "/wallet-transaction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
 
       {
         title: "Wallet To Wallet Money Transfer",
         path: "/wallet-to-wallet-transfer",
-        icon: <BsCurrencyExchange color="#fe662b" />,
+        icon: <BsCurrencyExchange color="#e74c3c" />,
       },
       {
         title: " Wallet TO Wallet Transfer History",
         // path: "/fund-transfer-status",
         path: "/Wallet-TO-Wallet-Transfer-History",
-        icon: <RiFileHistoryFill color="#fe662b" />,
+        icon: <RiFileHistoryFill color="#e74c3c" />,
       },
       {
         title: "Wallet Withdraw",
         path: "/wallet-withdraw",
-        icon: <PiHandWithdrawFill color="#fe662b" />,
+        icon: <PiHandWithdrawFill color="#e74c3c" />,
       },
       {
         title: "Wallet Withdraw History",
         path: "/wallet-withdraw-History",
-        icon: <RiFileHistoryFill color="#fe662b" />,
+        icon: <RiFileHistoryFill color="#e74c3c" />,
       },
     ],
   },
   {
     title: "Offline Services",
     path: "#",
-    icon: <MdFilterListOff color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <MdFilterListOff color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "View All History",
         path: "/view-all-offline-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "Sambal History",
         path: "/Sambal-History",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "View Offline DTH Connection Request",
         path: "/Offline-dth-connection",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "View Offline Recharge Request",
         path: "/Offline-Recharge-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
     ],
@@ -3022,26 +2200,26 @@ const DistributorData = [
   {
     title: "Training Video",
     path: "/training-video",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="white" />,
   },
 
   {
     title: "Commission",
     path: "#",
-    icon: <FaHandHoldingUsd color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaHandHoldingUsd color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "My Commission",
         path: "/my-commission",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "View All Commission History",
         path: "/View-All-Commission-History",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
     ],
@@ -3049,21 +2227,21 @@ const DistributorData = [
   {
     title: "Online Services",
     path: "#",
-    icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaIcons.FaEnvelopeOpenText color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "View DTH Connection History",
         path: "/online-dth-connection-history",
-        icon: <FaRegListAlt color="#fe662b" />,
+        icon: <FaRegListAlt color="#e74c3c" />,
         // cName: "sub-nav",
       },
       {
         title: "View Recharge History",
         path: "/online-recharge-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
         // cName: "sub-nav",
       },
     ],
@@ -3072,20 +2250,20 @@ const DistributorData = [
   {
     title: "e-District",
     path: "#",
-    icon: <MdDisplaySettings color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <MdDisplaySettings color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "E-District History",
         path: "/E-District-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Verify E-District History",
         path: "/verify-Edistrict-History",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
@@ -3093,148 +2271,93 @@ const DistributorData = [
   {
     title: "Pan Coupan  History",
     path: "/Pan-Coupan-History",
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    icon: <IoIcons.IoIosPaper color="white" />,
     // cName: "sub-nav",
   },
   {
     title: "Set PIN and 2 Step",
     path: "/2-step-verification",
-    icon: <IoIcons.IoMdHelpCircle color="#fe662b" />,
+    icon: <IoIcons.IoMdHelpCircle color="white" />,
   },
   {
     title: "Create A Partner",
     path: "#",
-    icon: <FaHandsHelping color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaHandsHelping color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Create Retailer",
         path: "/create-retailer",
-        icon: <FaRegHandshake color="#fe662b" />,
+        icon: <FaRegHandshake color="#e74c3c" />,
       },
       {
         title: "All Retailer List",
         path: "/All-Retailer-List",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "Buy User ID Limit",
         path: "/buy-retailer-id",
-        icon: <FaIdCardAlt color="#fe662b" />,
+        icon: <FaIdCardAlt color="#e74c3c" />,
       },
       {
         title: "UserId Bought summary",
         path: "/UserId-Bought-summary",
-        icon: <FaUsersBetweenLines color="#fe662b" />,
+        icon: <FaUsersBetweenLines color="#e74c3c" />,
       },
     ],
   },
-  // {
-  //   title: "UTI 2.0",
-  //   // path: "/training-video",
-  //   icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-  //   iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-  //   iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
-
-  //   subNav: [
-  //     {
-  //       title: "Wallet Full Summary",
-  //       path: "/wallet-transaction-report",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "UTI Transaction History",
-  //       path: "/uti-transaction-report",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //   ],
-  // },
-  // {
-  //   title: "UTI New",
-  //   // path: "/training-video",
-  //   icon: <FaIcons.FaEnvelopeOpenText color="#fe662b" />,
-  //   iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-  //   iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
-
-  //   subNav: [
-  //     {
-  //       title: "Buy Coupon",
-  //       path: "/buy-uti-coupon",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "Distribute UTI Coupon",
-  //       path: "/distribute-uti-coupon",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //     {
-  //       title: "UTI Coupon History",
-  //       path: "/uti-coupon-history",
-  //       icon: <IoIcons.IoIosPaper color="#fe662b" />,
-  //     },
-  //   ],
-  // },
 
   {
     title: "User List",
     path: "#",
-    icon: <BiSolidUserDetail color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <BiSolidUserDetail color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Active Users",
         path: "/active-users",
-        icon: <PiUserCircleGearBold color="#fe662b" />,
+        icon: <PiUserCircleGearBold color="#e74c3c" />,
       },
       {
         title: "Deactive Users",
         path: "/deactive-users",
-        icon: <PiUserCircleMinusDuotone color="#fe662b" />,
+        icon: <PiUserCircleMinusDuotone color="#e74c3c" />,
       },
       {
         title: "All Users Joined List",
         path: "/users-joining-list",
-        icon: <HiUserGroup color="#fe662b" />,
+        icon: <HiUserGroup color="#e74c3c" />,
       },
-      // {
-      //   title: "Pending KYC Users",
-      //   path: "/pending-kyc-user",
-      //   icon: <MdPendingActions color="#fe662b" />,
-      // },
-      // {
-      //   title: "Pending Payment Users",
-      //   path: "/pending-payment-users",
-      //   icon: <CiMoneyCheck1 color="#fe662b" />,
-      // },
     ],
   },
 
   {
     title: "Pan Card Services",
     path: "#",
-    icon: <FaAddressCard color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <FaAddressCard color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "PAN 4.0 History",
         path: "/pan-4.0-history",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "NSDL Pan History",
         path: "/pan-transaction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {
         title: "NSDL PAN Correction History",
         path: "/pan-correction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
@@ -3242,50 +2365,50 @@ const DistributorData = [
   {
     title: "Complaint",
     path: "#",
-    icon: <HiDocumentReport color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <HiDocumentReport color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Complaint",
         path: "/raise-complaint",
-        icon: <MdAssignmentAdd color="#fe662b" />,
+        icon: <MdAssignmentAdd color="#e74c3c" />,
       },
       {
         title: "All Complaint List",
         path: "/complaint-raised-list",
-        icon: <MdOutlinePlaylistAddCheckCircle color="#fe662b" />,
+        icon: <MdOutlinePlaylistAddCheckCircle color="#e74c3c" />,
       },
     ],
   },
   {
     title: "Other Settings",
     path: "#",
-    icon: <MdAdminPanelSettings color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <MdAdminPanelSettings color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       {
         title: "Download Certificate",
         path: "/download-certificate",
-        icon: <FaFileDownload color="#fe662b" />,
+        icon: <FaFileDownload color="#e74c3c" />,
       },
       {
         title: "Change Password",
         path: "/change-password",
-        icon: <TbPasswordUser color="#fe662b" />,
+        icon: <TbPasswordUser color="#e74c3c" />,
       },
       {
         title: "Bank Account Setup",
         path: "/bank-account-setup",
-        icon: <AiFillBank color="#fe662b" />,
+        icon: <AiFillBank color="#e74c3c" />,
       },
       {
         title: "Create Pin",
         path: "/generate-pin",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
     ],
   },
@@ -3295,110 +2418,110 @@ const SuperAdminEmployeeData = [
   {
     title: "Dashboard",
     path: "/dashboard",
-    icon: <AiIcons.AiFillHome color="#fe662b" />,
+    icon: <AiIcons.AiFillHome color="white" />,
     // iconClosed: <RiIcons.RiArrowDownSFill />,
     // iconOpened: <RiIcons.RiArrowUpSFill />,
   },
   {
     title: "View Offline Recharge Request",
     path: "/Offline-Recharge-history",
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    icon: <IoIcons.IoIosPaper color="white" />,
     // cName: "sub-nav",
   },
   {
     title: "View Offline DTH Connection Request",
     path: "/Offline-dth-connection",
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    icon: <IoIcons.IoIosPaper color="white" />,
     // cName: "sub-nav",
   },
 
   {
     title: "View Offline Forms",
     path: "/view-all-offline-history",
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    icon: <IoIcons.IoIosPaper color="white" />,
     // cName: "sub-nav",
   },
   {
     title: "View PAN Offline Forms",
     path: "/Pan-offline-history",
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    icon: <IoIcons.IoIosPaper color="white" />,
     // cName: "sub-nav",
   },
   {
     title: "Online PAN Services",
     path: "#",
-    icon: <RiBaseStationLine color="#fe662b" />,
-    iconClosed: <RiIcons.RiArrowDownSFill color="#fe662b" />,
-    iconOpened: <RiIcons.RiArrowUpSFill color="#fe662b" />,
+    icon: <RiBaseStationLine color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
 
     subNav: [
       // {
       //   title: "View Recharge History",
       //   path: "/online-recharge-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       //   // cName: "sub-nav",
       // },
       // {
       //   title: "View DTH Connection History",
       //   path: "/online-dth-connection-history",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       //   // cName: "sub-nav",
       // },
       {
         title: "NSDL PAN Transaction History",
         path: "/pan-transaction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="white" />,
       },
       {
         title: "NSDL PAN Correction History",
         path: "/pan-correction-report",
-        icon: <IoIcons.IoIosPaper color="#fe662b" />,
+        icon: <IoIcons.IoIosPaper color="white" />,
       },
       // {
       //   title: "UTI PAN Transaction History",
       //   path: "/uti-transaction-report",
-      //   icon: <IoIcons.IoIosPaper color="#fe662b" />,
+      //   icon: <IoIcons.IoIosPaper color="white" />,
       // },
     ],
   },
   {
     title: "View Bank Id Forms",
     path: "/Bank-Id-history",
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    icon: <IoIcons.IoIosPaper color="white" />,
     // cName: "sub-nav",
   },
   {
     title: "View E-district Forms",
     path: "/E-district-history",
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    icon: <IoIcons.IoIosPaper color="white" />,
     // cName: "sub-nav",
   },
   {
     title: "View Verify E-district Forms Requests",
     path: "/verify-E-district-form-history",
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    icon: <IoIcons.IoIosPaper color="white" />,
     // cName: "sub-nav",
   },
   {
     title: "View Sambal Forms",
     path: "/sambal-form-history",
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    icon: <IoIcons.IoIosPaper color="white" />,
     // cName: "sub-nav",
   },
   {
     title: "PAN Coupon Requests",
     path: "/pan-coupon-requests",
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    icon: <IoIcons.IoIosPaper color="white" />,
   },
   {
     title: "Change Password",
     path: "/change-password",
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    icon: <IoIcons.IoIosPaper color="white" />,
   },
   {
     title: "All Complaint List",
     path: "/complaint-raised-list",
-    icon: <IoIcons.IoIosPaper color="#fe662b" />,
+    icon: <IoIcons.IoIosPaper color="white" />,
   },
 ];
 
@@ -3527,11 +2650,11 @@ const Sider = () => {
                   className="text-muted"
                 >
                   <NavDropdown.Item as={Link} to="/update-profile">
-                    <IoIosPerson size={20} color="#fe662b" />
+                    <IoIosPerson size={20} color="white" />
                     &nbsp;Profile
                   </NavDropdown.Item>
                   <NavDropdown.Item onClick={handleLogout}>
-                    <FaPowerOff size={20} color="#fe662b" />
+                    <FaPowerOff size={20} color="white" />
                     &nbsp; Log out
                   </NavDropdown.Item>
                   {/* <NavDropdown.Item href="#action/3.3">
@@ -3659,7 +2782,8 @@ export default Sider;
 
 const Wrapper = styled.div`
   .sticky-top {
-    background-color: black;
+    /* background-color: black; */
+    background-color: #1e293b;
   }
   .logo {
   }
