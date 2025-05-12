@@ -456,6 +456,46 @@ const RetailerSidebarData = [
     ],
   },
   {
+    title: "Find Services",
+    path: "#",
+    icon: <FaIcons.FaSearch color="white" />,
+    iconClosed: <RiIcons.RiArrowDownSFill color="white" />,
+    iconOpened: <RiIcons.RiArrowUpSFill color="white" />,
+
+    subNav: [
+      {
+        title: "Aadhar Details",
+        path: "#",
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
+      },
+      {
+        title: "Pan by Aadhaar No.",
+        path: "/pan-find-by-aadhar",
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
+      },
+      {
+        title: "Pan Details",
+        path: "#",
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
+      },
+      {
+        title: "RC Details",
+        path: "/rc-find",
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
+      },
+      {
+        title: "Ration Card Details",
+        path: "#",
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
+      },
+      {
+        title: "Driving Licence Details",
+        path: "#",
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
+      },
+    ],
+  },
+  {
     title: "Recharge",
     path: "#",
     icon: <FaIcons.FaMobileAlt color="white" size={17} />,

@@ -1,32 +1,70 @@
+// services/panaadharApi.js
 const axios = require("axios");
-const https = require("https");
 
-const fetchAadharFromEid = async (api_key, eid_no) => {
-  const url = `https://alpha-api.co.in/apiservice/generated_eid/eid_to_aadhar.php?api_key=${api_key}&eid=${eid_no}`;
-
+const findPanByAadhaar = async (apiKey, aadhaarNo) => {
   try {
-    const response = await axios.get(url, {
-      headers: { "cache-control": "no-cache" },
-      httpsAgent: new https.Agent({ rejectUnauthorized: false }), // ignore SSL issues
-    });
+    const response = await axios.get(
+      "https://www.apizone.info/api/find_pan/aadhaar_to_pan.php",
+      {
+        params: {
+          api_key: apiKey,
+          aadhaar_no: aadhaarNo,
+        },
+      }
+    );
 
-    const data = response.data;
-
-    // Handle error string response
-    if (typeof data === "string" && data.includes("balance")) {
-      return { error: "API balance is low" };
-    }
-
-    // Handle proper error object response
-    if (data.statusCode === 100) {
-      return { error: data.resMessage || "Invalid EID" };
-    }
-
-    // Success
-    return { data };
+    return response.data;
   } catch (error) {
-    return { error: error.message };
+    // Handle error and return meaningful message
+    if (error.response) {
+      return error.response.data;
+    } else {
+      return { status: "500", message: "Internal Server Error" };
+    }
   }
 };
 
-module.exports = { fetchAadharFromEid };
+const findPanDetails = async (apiKey, panno) => {
+  try {
+    const response = await axios.get(
+      "https://www.apizone.info/api/pan_details/pan.php",
+      {
+        params: {
+          api_key: apiKey,
+          panno: panno,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    // Handle error and return meaningful message
+    if (error.response) {
+      return error.response.data;
+    } else {
+      return { status: "500", message: "Internal Server Error" };
+    }
+  }
+};
+
+const getRcPdfData = async (apiKey, rcno, cardtype = "", chiptype = "") => {
+  const baseURL = "https://www.apizone.info/api/rc_pdf/rc.php";
+
+  try {
+    const response = await axios.get(baseURL, {
+      params: {
+        api_key: apiKey,
+        rcno,
+        cardtype,
+        chiptype,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching RC PDF:", error.message);
+    throw error;
+  }
+};
+
+module.exports = { findPanByAadhaar, findPanDetails, getRcPdfData };

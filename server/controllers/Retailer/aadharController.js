@@ -1,19 +1,364 @@
-const { fetchAadharFromEid } = require("../../APIS URL/aadharApi");
+const {
+  findPanByAadhaar,
+  findPanDetails,
+  getRcPdfData,
+} = require("../../APIS URL/aadharApi");
+const { db } = require("../../connect");
+const moment = require("moment-timezone");
+const dotenv = require("dotenv");
+dotenv.config();
 
-const getAadharData = async (req, res) => {
-  const { eid_no, api_key } = req.body;
+const getPanByAadhaar = async (req, res) => {
+  const { api_key, aadhaar_no } = req.body;
 
-  if (!eid_no || !api_key) {
-    return res.status(400).json({ error: "eid_no and api_key are required" });
+  if (!api_key || !aadhaar_no) {
+    return res.status(400).json({
+      status: "400",
+      message: "API Key and Aadhaar Number are required",
+    });
   }
 
-  const result = await fetchAadharFromEid(api_key, eid_no);
-
-  if (result.error) {
-    return res.status(400).json({ error: result.error });
+  try {
+    const result = await findPanByAadhaar(api_key, aadhaar_no);
+    res.status(result.status === "200" ? 200 : 404).json(result);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ status: "500", message: "Unexpected error occurred" });
   }
-
-  return res.status(200).json({ data: result.data });
 };
 
-module.exports = { getAadharData };
+const getPanDetails = async (req, res) => {
+  const { api_key, panno } = req.body;
+
+  if (!api_key || !panno) {
+    return res.status(400).json({
+      status: "400",
+      message: "API Key and Pan Number are required",
+    });
+  }
+
+  try {
+    const result = await findPanDetails(api_key, panno);
+    res.status(result.status === "200" ? 200 : 404).json(result);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ status: "500", message: "Unexpected error occurred" });
+  }
+};
+
+const PanByAadhaar = async (req, res) => {
+  const { aadhaar_no, userId } = req.body;
+  let { amount } = req.body;
+  const api_key = process.env.FIND_API_KEY;
+
+  if (!api_key) {
+    return res.status(500).json({
+      status: "Failure",
+      step: "Environment Variable",
+      message: "API Key is not set in environment variables.",
+    });
+  }
+
+  if (!aadhaar_no || !userId) {
+    return res.status(400).json({
+      status: "400",
+      message: "API Key, Aadhaar Number, and User ID are required",
+    });
+  }
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const orderId = `ORDP${Date.now()}`;
+  const transactionId = `TXNP${Date.now()}`;
+  const transactionDetails = `PAN by Aadhaar Deduction Order Id ${orderId}`;
+  const creditAmt = 0;
+
+  // Step 1: Check the current balance
+  const queryBalance = `
+    SELECT Closing_Balance 
+    FROM user_wallet 
+    WHERE userId = ? 
+    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+    LIMIT 1
+  `;
+
+  db.query(queryBalance, [userId], async (err, balanceResult) => {
+    if (err) {
+      console.error("Error fetching wallet balance:", err);
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Failed to fetch wallet balance",
+        details: err.message,
+      });
+    }
+
+    if (balanceResult.length === 0) {
+      return res.status(404).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        message: "No balance found for the user.",
+      });
+    }
+
+    const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+    if (isNaN(currentBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Current balance is invalid.",
+      });
+    }
+
+    // Step 2: Validate `amount`
+    if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+      return res.status(500).json({
+        success: false,
+        status: "Failure",
+        error: "Invalid or missing amount",
+      });
+    }
+
+    amount = parseFloat(parseFloat(amount).toFixed(2));
+
+    if (currentBalance < amount) {
+      return res.status(400).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        message: "Insufficient balance.",
+        currentBalance,
+        requiredAmount: amount,
+      });
+    }
+
+    const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+
+    // Step 3: Deduct amount from wallet
+    const updateWalletQuery = `
+      INSERT INTO user_wallet 
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+      updateWalletQuery,
+      [
+        userId,
+        createdAt,
+        orderId,
+        transactionId,
+        currentBalance.toFixed(2),
+        newBalance,
+        "Debit",
+        creditAmt,
+        amount,
+        transactionDetails,
+        "Success",
+      ],
+      async (err, walletResult) => {
+        if (err) {
+          console.error("Error updating wallet balance:", err);
+          return res.status(500).json({
+            status: "Failure",
+            step: "Update Wallet Balance",
+            error: "Failed to update wallet balance",
+            details: err.message,
+          });
+        }
+
+        // Step 4: Call PAN by Aadhaar API
+        try {
+          const result = await findPanByAadhaar(api_key, aadhaar_no);
+          return res.status(result.status === "200" ? 200 : 404).json({
+            status: "Success",
+            wallet: {
+              transactionId,
+              newBalance,
+              previousBalance: currentBalance.toFixed(2),
+              deductedAmount: amount,
+            },
+            panData: result,
+          });
+        } catch (err) {
+          return res.status(500).json({
+            status: "Failure",
+            step: "Call PAN by Aadhaar API",
+            message: "Unexpected error occurred while calling PAN API",
+            details: err.message,
+          });
+        }
+      }
+    );
+  });
+};
+
+const PanDetails = async (req, res) => {
+  const { panno, userId } = req.body;
+  let { amount } = req.body;
+  const api_key = process.env.FIND_API_KEY;
+
+  if (!api_key) {
+    return res.status(500).json({
+      status: "Failure",
+      step: "Environment Variable",
+      message: "API Key is not set in environment variables.",
+    });
+  }
+
+  if (!panno || !userId) {
+    return res.status(400).json({
+      status: "400",
+      message: "API Key, Pan Number, and User ID are required",
+    });
+  }
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const orderId = `ORDP${Date.now()}`;
+  const transactionId = `TXNP${Date.now()}`;
+  const transactionDetails = `PAN Deduction Order Id ${orderId}`;
+  const creditAmt = 0;
+
+  // Step 1: Check the current balance
+  const queryBalance = `
+    SELECT Closing_Balance 
+    FROM user_wallet 
+    WHERE userId = ? 
+    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+    LIMIT 1
+  `;
+
+  db.query(queryBalance, [userId], async (err, balanceResult) => {
+    if (err) {
+      console.error("Error fetching wallet balance:", err);
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Failed to fetch wallet balance",
+        details: err.message,
+      });
+    }
+
+    if (balanceResult.length === 0) {
+      return res.status(404).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        message: "No balance found for the user.",
+      });
+    }
+
+    const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+    if (isNaN(currentBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Current balance is invalid.",
+      });
+    }
+
+    // Step 2: Validate `amount`
+    if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+      return res.status(500).json({
+        success: false,
+        status: "Failure",
+        error: "Invalid or missing amount",
+      });
+    }
+
+    amount = parseFloat(parseFloat(amount).toFixed(2));
+
+    if (currentBalance < amount) {
+      return res.status(400).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        message: "Insufficient balance.",
+        currentBalance,
+        requiredAmount: amount,
+      });
+    }
+
+    const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+
+    // Step 3: Deduct amount from wallet
+    const updateWalletQuery = `
+      INSERT INTO user_wallet 
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+      updateWalletQuery,
+      [
+        userId,
+        createdAt,
+        orderId,
+        transactionId,
+        currentBalance.toFixed(2),
+        newBalance,
+        "Debit",
+        creditAmt,
+        amount,
+        transactionDetails,
+        "Success",
+      ],
+      async (err, walletResult) => {
+        if (err) {
+          console.error("Error updating wallet balance:", err);
+          return res.status(500).json({
+            status: "Failure",
+            step: "Update Wallet Balance",
+            error: "Failed to update wallet balance",
+            details: err.message,
+          });
+        }
+
+        // Step 4: Call PAN by Aadhaar API
+        try {
+          const result = await findPanDetails(api_key, panno);
+          return res.status(result.status === "200" ? 200 : 404).json({
+            status: "Success",
+            wallet: {
+              transactionId,
+              newBalance,
+              previousBalance: currentBalance.toFixed(2),
+              deductedAmount: amount,
+            },
+            panData: result,
+          });
+        } catch (err) {
+          return res.status(500).json({
+            status: "Failure",
+            step: "Call PAN API",
+            message: "Unexpected error occurred while calling PAN API",
+            details: err.message,
+          });
+        }
+      }
+    );
+  });
+};
+
+const fetchRcPdf = async (req, res) => {
+  const { api_key, rcno, cardtype, chiptype } = req.body;
+
+  if (!api_key || !rcno) {
+    return res.status(400).json({ error: "api_key and rcno are required" });
+  }
+
+  try {
+    const result = await getRcPdfData(api_key, rcno, cardtype, chiptype);
+    res.status(200).json(result);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to fetch RC PDF", details: error.message });
+  }
+};
+
+module.exports = {
+  getPanByAadhaar,
+  getPanDetails,
+  PanByAadhaar,
+  PanDetails,
+  fetchRcPdf,
+};

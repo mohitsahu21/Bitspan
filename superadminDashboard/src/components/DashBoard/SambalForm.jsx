@@ -110,7 +110,8 @@ const SambalForm = () => {
     if (prices.length > 0) {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        amount: prices[0].verify_edistrict_Certificate_Price,
+        // amount: prices[0].verify_edistrict_Certificate_Price,
+        amount: prices[0].Sambal_Price,
       }));
     }
   }, [prices]);
@@ -136,6 +137,24 @@ const SambalForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    if (
+      formData.amount === null ||
+      formData.amount === undefined ||
+      formData.amount === "" ||
+      isNaN(formData.amount) ||
+      Number(formData.amount) <= 0
+    ) {
+      Swal.fire({
+        title: "Failure",
+        text: "Please connect with admin.",
+        icon: "error",
+      }).then(() => {
+        navigate("/raise-complaint");
+      });
+      setLoading(false);
+      // alert("Please enter a valid amount greater than 0.");
+      return;
+    }
     console.log("Form Data Submitted: ", formData);
     try {
       const response = await axios.post(

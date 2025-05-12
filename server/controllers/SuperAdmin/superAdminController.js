@@ -146,6 +146,13 @@ const addPackage = (req, res) => {
       retailer_max_id_limit,
       DSC_Commission_Type,
       DSC_Commission,
+      aadhar_price,
+      pan_aadhar_price,
+      pan_price,
+      rc_price,
+      rc_download_price,
+      ration_price,
+      dl_price,
     } = req.body;
 
     const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
@@ -207,8 +214,14 @@ const addPackage = (req, res) => {
       distributor_max_id_limit,
       retailer_id_price,
       retailer_min_id_limit,
-      retailer_max_id_limit, DSC_Commission_Type, DSC_Commission, created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?, ?, ? ,?, ? , ? , ? , ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ? , ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ? , ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+      retailer_max_id_limit, DSC_Commission_Type, DSC_Commission, aadhar_price,
+pan_aadhar_price,
+pan_price,
+rc_price,
+rc_download_price,
+ration_price,
+dl_price, created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?, ?, ? ,?, ? , ? , ? , ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ? , ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ? , ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     const values = [
       package_name,
@@ -350,6 +363,13 @@ const addPackage = (req, res) => {
       retailer_max_id_limit,
       DSC_Commission_Type,
       DSC_Commission,
+      aadhar_price,
+      pan_aadhar_price,
+      pan_price,
+      rc_price,
+      rc_download_price,
+      ration_price,
+      dl_price,
       createdAt,
     ];
 
@@ -821,6 +841,15 @@ const editPackage = (req, res) => {
       retailer_id_price,
       retailer_min_id_limit,
       retailer_max_id_limit,
+      DSC_Commission_Type,
+      DSC_Commission,
+      aadhar_price,
+      pan_aadhar_price,
+      pan_price,
+      rc_price,
+      rc_download_price,
+      ration_price,
+      dl_price,
     } = req.body;
 
     const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
@@ -902,7 +931,16 @@ const editPackage = (req, res) => {
       distributor_max_id_limit = ?,
       retailer_id_price = ?,
       retailer_min_id_limit = ?,
-      retailer_max_id_limit = ?, updated_at = ? 
+      retailer_max_id_limit = ?, 
+         DSC_Commission_Type = ?,
+      DSC_Commission = ?,
+      aadhar_price = ?,
+pan_aadhar_price = ?,
+pan_price = ?,
+rc_price = ?,
+rc_download_price = ?,
+ration_price = ?,
+dl_price = ?, updated_at = ? 
       WHERE id = ?`;
 
     const values = [
@@ -1043,6 +1081,15 @@ const editPackage = (req, res) => {
       retailer_id_price,
       retailer_min_id_limit,
       retailer_max_id_limit,
+      DSC_Commission_Type,
+      DSC_Commission,
+      aadhar_price,
+      pan_aadhar_price,
+      pan_price,
+      rc_price,
+      rc_download_price,
+      ration_price,
+      dl_price,
       updatedAt,
       packageId,
     ];

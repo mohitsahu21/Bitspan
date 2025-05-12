@@ -167,6 +167,13 @@ const SACreatePackages = () => {
     retailer_max_id_limit: "",
     DSC_Commission_Type: "",
     DSC_Commission: "",
+    aadhar_price: "",
+    pan_aadhar_price: "",
+    pan_price: "",
+    rc_price: "",
+    rc_download_price: "",
+    ration_price: "",
+    dl_price: "",
   });
 
   const handleChange = (e) => {
@@ -350,6 +357,13 @@ const SACreatePackages = () => {
           retailer_max_id_limit: "",
           DSC_Commission_Type: "",
           DSC_Commission: "",
+          aadhar_price: "",
+          pan_aadhar_price: "",
+          pan_price: "",
+          rc_price: "",
+          rc_download_price: "",
+          ration_price: "",
+          dl_price: "",
         });
       } else {
         Swal.fire({
@@ -4159,6 +4173,176 @@ const SACreatePackages = () => {
 
                       {/* ==================== */}
                     </div>
+
+                    {/* ----- Create Package Find Services Start --------*/}
+                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                      <div className="text-center  my-5">
+                        <h2>Create Find Services Price</h2>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" className="form-label">
+                          Aadhar Details Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="aadhar_price"
+                            value={formData.aadhar_price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>{" "}
+                      {/* Aadhar Details Price */}
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Find Pan by Aadhaar Number Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="pan_aadhar_price"
+                            value={formData.pan_aadhar_price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>{" "}
+                      {/* Find Pan by Aadhaar Number Price */}
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Pan Details Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="pan_price"
+                            value={formData.pan_price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>
+                      {/* Pan Details Price */}
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          RC Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="rc_price"
+                            value={formData.rc_price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>
+                      {/* RC Price */}
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          RC Download Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="rc_download_price"
+                            value={formData.rc_download_price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>
+                      {/* RC Download Price */}
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Ration Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="ration_price"
+                            value={formData.ration_price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>
+                      {/* Ration Price */}
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Driving Licence Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Enter Commission"
+                            name="dl_price"
+                            value={formData.dl_price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>
+                      {/* Driving Licence Price */}
+                      {/* ==================== */}
+                    </div>
+                    {/* ------Create Package Find Services End ------*/}
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="text-center  m-5">
                         <button
