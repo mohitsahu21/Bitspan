@@ -85,7 +85,6 @@ import Swal from "sweetalert2";
 import { clearUser } from "../redux/user/userSlice";
 import Payment from "../pages/Payment";
 import NotFound from "../components/NotFound";
-import RCFind from "../components/DashBoard/RCFind";
 
 // import UTIRetailerIdActivateComponent from "../components/DashBoard/UTIRetailerIdActivateComponent";
 // import UTIPanLoginComponent from "../components/DashBoard/UTIPanLoginComponent";
@@ -306,6 +305,11 @@ const DscTokenHistory = lazy(() =>
 );
 const PanAndAadharFind = lazy(() =>
   import("../components/DashBoard/PanAndAadharFind")
+);
+const RCFind = lazy(() => import("../components/DashBoard/RCFind"));
+const PanDetails = lazy(() => import("../components/DashBoard/PanDetails"));
+const WalletReceipt = lazy(() =>
+  import("../components/DashBoard/WalletReceipt")
 );
 
 const RetailerRoutes = () => {
@@ -765,11 +769,13 @@ const RetailerRoutes = () => {
             {/* <Route path="*" element={<NotFound />} /> */}
 
             <Route path="/recharge-receipt" element={<RechargeReceipt />} />
+            <Route path="/wallet-receipt" element={<WalletReceipt />} />
             <Route path="/Apply-DSC" element={<DigitalSign />} />
             <Route path="/DSC-Token" element={<DigitalToken />} />
             <Route path="/DSC-history" element={<DigitalSignHistory />} />
             <Route path="/DSC-token-history" element={<DscTokenHistory />} />
             <Route path="/pan-find-by-aadhar" element={<PanAndAadharFind />} />
+            <Route path="/pan-details" element={<PanDetails />} />
             <Route path="/rc-find" element={<RCFind />} />
 
             <Route path="/registration-page" element={<DemoRegistration />} />

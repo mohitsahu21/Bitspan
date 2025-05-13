@@ -360,6 +360,9 @@ const Nav = styled.div`
   /* box-shadow: 1px 1px 6px black; */
   box-shadow: 0 0 20px rgba(89, 102, 122, 0.1);
   padding: 0 2rem; /* Optional: Add padding to space out content from edges */
+  @media print {
+    display: none !important;
+  }
 `;
 
 const NavIcon = styled(Link)`
@@ -385,6 +388,9 @@ const SidebarNav = styled.nav`
   /* transition: 350ms; */
   transition: 1s;
   z-index: 10;
+  @media print {
+    display: none !important;
+  }
 `;
 
 const SidebarWrap = styled.div`
@@ -475,7 +481,7 @@ const RetailerSidebarData = [
       },
       {
         title: "Pan Details",
-        path: "#",
+        path: "/pan-details",
         icon: <IoIcons.IoIosPaper color="#e74c3c" />,
       },
       {

@@ -9,14 +9,14 @@ import { Modal, Button, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { use } from "react";
 
-const RCFind = () => {
+const PanDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const [prices, setPrices] = useState([]);
   const [formData, setFormData] = useState({
+    panno: "",
     userId: currentUser?.userId,
-    rcno: "",
     amount: "",
   });
   const [loading, setLoading] = useState(false);
@@ -130,7 +130,8 @@ const RCFind = () => {
     console.log("Form Data Submitted: ", formData);
     try {
       const response = await axios.post(
-        `http://localhost:7777/api/auth/aadhar/fetchRcDetails`,
+        `http://localhost:7777/api/auth/aadhar/PanDetails`,
+        // `https://2kadam.co.in/api/auth/aadhar/PanDetails`,
         formData,
         {
           headers: {
@@ -139,31 +140,36 @@ const RCFind = () => {
           },
         }
       );
-
-      console.log("Response:", response);
-
       if (response.data.status === "Success") {
-        const base64Pdf = response.data.panData.pdf;
-        console.log("Base64 PDF:", base64Pdf);
+        const { panData, wallet } = response.data;
 
-        if (base64Pdf) {
-          // Decode base64 string to binary
-          const byteCharacters = atob(base64Pdf);
-          const byteNumbers = new Array(byteCharacters.length);
-          for (let i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
-          }
-          const byteArray = new Uint8Array(byteNumbers);
+        Swal.fire({
+          title: "PAN Data Retrieved",
+          html: `
+          <strong>PAN No:</strong> ${panData?.pan_no}<br/>
+          <strong>Name:</strong> ${panData?.name}<br/>
+          <strong>Father Name:</strong> ${
+            panData?.father ? panData?.father : "N/A"
+          }<br/>
+          <strong>DOB:</strong> ${panData?.dob ? panData?.dob : "N/A"}<br/>
+          <strong>Gender:</strong> ${
+            panData?.gender ? panData?.gender : "N/A"
+          }<br/>
+      <strong>Application No:</strong> ${
+        panData?.application_no ? panData?.application_no : "N/A"
+      }<br/>
+      <hr/>
+      <strong>Transaction ID:</strong> ${wallet?.transactionId}<br/>
+    `,
+          icon: "success",
+        });
 
-          // Create blob and object URL
-          const blob = new Blob([byteArray], { type: "application/pdf" });
-          const pdfUrl = URL.createObjectURL(blob);
-
-          // Open PDF in a new tab
-          window.open(pdfUrl, "_blank");
-        } else {
-          alert("No PDF data found in response");
-        }
+        // Reset form
+        setFormData({
+          panno: "",
+          userId: currentUser?.userId,
+          amount: prices[0]?.pan_aadhar_price,
+        });
       } else {
         Swal.fire({
           title: "Error",
@@ -171,35 +177,6 @@ const RCFind = () => {
           icon: "error",
         });
       }
-
-      //   if (response.data.status === "Success") {
-      //     const { panData, wallet } = response.data;
-
-      //     Swal.fire({
-      //       title: "PAN Data Retrieved",
-      //       html: `
-      //   <strong>Aadhaar:</strong> ${panData?.aadhaar}<br/>
-      //   <strong>PAN No:</strong> ${panData?.pan_no}<br/>
-      //   <strong>Application No:</strong> ${panData?.application_no}<br/>
-      //   <hr/>
-      //   <strong>Transaction ID:</strong> ${wallet?.transactionId}<br/>
-      // `,
-      //       icon: "success",
-      //     });
-
-      //     // Reset form
-      //     setFormData({
-      //       aadhaar_no: "",
-      //       userId: currentUser?.userId,
-      //       amount: prices[0]?.pan_aadhar_price,
-      //     });
-      //   } else {
-      //     Swal.fire({
-      //       title: "Error",
-      //       text: response?.data?.message || "Something went wrong!",
-      //       icon: "error",
-      //     });
-      //   }
     } catch (error) {
       console.log(error);
       Swal.fire({
@@ -308,7 +285,7 @@ const RCFind = () => {
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="d-flex justify-content-between align-items-center flex-wrap ">
                         <h4 className="mx-lg-5 mx-xl-5 mx-xxl-2  px-lg-3 px-xxl-0">
-                          Find Registration Certificate
+                          Pan Details
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -318,7 +295,7 @@ const RCFind = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Find Registration Certificate
+                            Pan Details
                           </span>{" "}
                         </p>
                       </div>
@@ -346,12 +323,10 @@ const RCFind = () => {
                                   id="floatingInputGroup2"
                                   placeholder="Mobile Number"
                                   onChange={handleChange}
-                                  name="rcno"
-                                  value={formData.rcno}
+                                  name="panno"
+                                  value={formData.panno}
                                 />
-                                <label for="floatingInputGroup2">
-                                  Registration Certificate No.
-                                </label>
+                                <label for="floatingInputGroup2">Pan No.</label>
                               </div>
                             </div>
                           </div>
@@ -439,7 +414,7 @@ const RCFind = () => {
   );
 };
 
-export default RCFind;
+export default PanDetails;
 
 const Wrapper = styled.div`
   .main {
@@ -462,57 +437,3 @@ const Wrapper = styled.div`
     font-size: 14px;
   }
 `;
-
-// import React from "react";
-// import axios from "axios";
-
-// const RCFind = () => {
-//   const fetchPdf = async () => {
-//     try {
-//       const response = await axios.post(
-//         "http://localhost:7777/api/auth/aadhar/fetchRcPdf",
-//         {
-//           api_key: "55190b0f78f4b83fd9781f3aab2193",
-//           rcno: "MP20CD6439",
-//           cardtype: "1",
-//           chiptype: "1",
-//         }
-//       );
-
-//       console.log("Response:", response);
-
-//       const base64Pdf = response.data.pdf;
-//       console.log("Base64 PDF:", base64Pdf);
-
-//       if (base64Pdf) {
-//         // Decode base64 string to binary
-//         const byteCharacters = atob(base64Pdf);
-//         const byteNumbers = new Array(byteCharacters.length);
-//         for (let i = 0; i < byteCharacters.length; i++) {
-//           byteNumbers[i] = byteCharacters.charCodeAt(i);
-//         }
-//         const byteArray = new Uint8Array(byteNumbers);
-
-//         // Create blob and object URL
-//         const blob = new Blob([byteArray], { type: "application/pdf" });
-//         const pdfUrl = URL.createObjectURL(blob);
-
-//         // Open PDF in a new tab
-//         window.open(pdfUrl, "_blank");
-//       } else {
-//         alert("No PDF data found in response");
-//       }
-//     } catch (error) {
-//       console.error("Error fetching RC PDF:", error);
-//       alert("Failed to fetch RC PDF");
-//     }
-//   };
-
-//   return (
-//     <div style={{ padding: "20px" }}>
-//       <button onClick={fetchPdf}>View RC PDF</button>
-//     </div>
-//   );
-// };
-
-// export default RCFind;

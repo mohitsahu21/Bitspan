@@ -5,18 +5,12 @@ import moment from "moment";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const RechargeReceipt = () => {
+const WalletReceipt = () => {
   const { currentUser, token } = useSelector((state) => state.user);
   const [relationData, setRelationData] = useState(null);
   const [apiData, setApiData] = useState(null);
   const navigate = useNavigate();
   const receiptData = JSON.parse(localStorage.getItem("receiptData"));
-
-  //   useEffect(() => {
-  //     setTimeout(() => {
-  //       window.print();
-  //     }, 500);
-  //   }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,7 +53,7 @@ const RechargeReceipt = () => {
 
   //   const today = new Date().toLocaleDateString("en-IN");
   const today = moment().format("DD/MM/YYYY");
-  console.log(receiptData?.rechargeType);
+  console.log(receiptData?.Type);
 
   const logoUrl = apiData?.data[0]?.Logo;
   console.log(logoUrl);
@@ -87,9 +81,7 @@ const RechargeReceipt = () => {
             alt="Company Logo"
             style={{ height: "60px", marginBottom: "10px" }}
           />
-          <h2>
-            Payment Confirmation for - {receiptData.rechargeType} Recharge
-          </h2>
+          <h2>Payment Confirmation for - {receiptData.Type}</h2>
         </div>
 
         {/* Company and Customer Info */}
@@ -145,7 +137,7 @@ const RechargeReceipt = () => {
               <strong>Email ID:</strong> {currentUser.email}
             </p>
             <p>
-              <strong>Order ID:</strong> {receiptData.receiptNumber}
+              <strong>Role:</strong> {receiptData.userRole}
             </p>
           </div>
         </div>
@@ -170,7 +162,7 @@ const RechargeReceipt = () => {
           </thead>
           <tbody>
             <tr>
-              <td style={tdStyle}>{receiptData.mobile_no}</td>
+              <td style={tdStyle}>{receiptData.userPhone}</td>
               <td style={tdStyle}>{receiptData.amount}</td>
               <td style={tdStyle}>Success</td>
             </tr>
@@ -250,7 +242,7 @@ const tdStyle = {
   padding: "10px",
 };
 
-export default RechargeReceipt;
+export default WalletReceipt;
 const Wrapper = styled.div`
   @media print {
     .no-print {

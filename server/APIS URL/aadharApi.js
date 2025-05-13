@@ -1,4 +1,3 @@
-// services/panaadharApi.js
 const axios = require("axios");
 
 const findPanByAadhaar = async (apiKey, aadhaarNo) => {
@@ -67,4 +66,24 @@ const getRcPdfData = async (apiKey, rcno, cardtype = "", chiptype = "") => {
   }
 };
 
-module.exports = { findPanByAadhaar, findPanDetails, getRcPdfData };
+const getDlPrint = async (apiKey, dlno, dob, cardtype = 1) => {
+  const url = `https://www.apizone.in/api/dl_pdf/dlprint.php`;
+
+  try {
+    const response = await axios.get(url, {
+      params: {
+        api_key: apiKey,
+        dlno,
+        dob,
+        cardtype,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching DL Print:", error.message);
+    return { status: 500, message: "API Error" };
+  }
+};
+
+module.exports = { findPanByAadhaar, findPanDetails, getRcPdfData, getDlPrint };

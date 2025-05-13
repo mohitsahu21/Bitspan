@@ -6,6 +6,7 @@ import { BiHomeAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const AddMoneyOffline = () => {
   const { currentUser, token } = useSelector((state) => state.user);
@@ -19,6 +20,7 @@ const AddMoneyOffline = () => {
     Payment_Mode: "",
     Transaction_Reference: "",
   });
+  const navigate = useNavigate();
   const [receiptAttachment, setReceiptAttachment] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [paymentDetails, setPaymentDetails] = useState({
@@ -107,6 +109,19 @@ const AddMoneyOffline = () => {
         title: "Form Submitted Successfully",
         text: response.data.message,
         icon: "success",
+      }).then(() => {
+        const receiptData = {
+          Type: "Add Money",
+          user_id: currentUser.userId,
+          userName: currentUser.username,
+          userPhone: currentUser.ContactNo,
+          userEmail: currentUser.email,
+          userRole: currentUser.role,
+          amount: formData.amount,
+        };
+        localStorage.setItem("receiptData", JSON.stringify(receiptData));
+        navigate("/wallet-receipt");
+        // window.open("/wallet-receipt", "_blank");
       });
       setFormData({
         user_id: currentUser.userId,
@@ -170,7 +185,7 @@ const AddMoneyOffline = () => {
         <div className="main">
           <div className="container-fluid ">
             <div className="row flex-wrap justify-content-center ">
-              <div className="col-xxl-3 col-xl-5 col-lg-5 col-md-5 me-md-5 p-0 pe-md-5 d-none ">
+              <div className="col-xxl-3 col-xl-5 col-lg-5 col-md-5 me-md-5 p-0 pe-md-5 d-none sidebar">
                 {/* <Sider /> */}
               </div>
               <div
@@ -346,6 +361,13 @@ const Wrapper = styled.div`
     height: 100%;
     width: 100%;
   }
+  /* index.css or styled-component */
+  @media print {
+    .sidebar {
+      display: none !important;
+    }
+  }
+
   button {
     color: #fff;
     background: #6d70ff;
