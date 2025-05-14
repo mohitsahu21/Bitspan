@@ -4,7 +4,7 @@ import HeadBar from "../components/HeadBar";
 import Sider from "../components/SideBar";
 import { TbRecharging } from "react-icons/tb";
 import { FaMobileAlt } from "react-icons/fa";
-import { MdOutlineWidthFull } from "react-icons/md";
+import { MdCalendarMonth, MdOutlineWidthFull } from "react-icons/md";
 import { RiCoupon2Line } from "react-icons/ri";
 import { FaRegMessage } from "react-icons/fa6";
 import { MdManageSearch } from "react-icons/md";
@@ -398,11 +398,12 @@ const Dashboard = () => {
                       </div> */}
 
                       <div className="notifications-container">
+                        <p className="text-center text-white" style={{backgroundColor:"cornflowerblue"}}>Notification <BsInfoSquare /></p>
                         {loading ? (
                           // <p>Loading notifications...</p>
                           <div className="news d-flex align-items-center">
-                            <span className="p-3 bg-info news-icon">
-                              <BsInfoSquare />
+                            <span className="p-3 news-icon ">
+                             
                             </span>
                             <p className="d-flex align-items-center mb-0 ms-2"></p>
                           </div>
@@ -427,8 +428,8 @@ const Dashboard = () => {
                                 }
                               }}
                             >
-                              <span className="p-3 bg-info news-icon">
-                                <BsInfoSquare />
+                              <span className="p-3 ">
+                                {/* <BsInfoSquare /> */}
                               </span>
                               <p className="d-flex align-items-center mb-0 ms-2">
                                 {notification.Retailer_Notification ||
@@ -439,214 +440,70 @@ const Dashboard = () => {
                         ) : (
                           // <p>No notifications available</p>
                           <div className="news d-flex align-items-center">
-                            <span className="p-3 bg-info news-icon">
-                              <BsInfoSquare />
+                            <span className="p-3 text-white news-icon">
+                              {/* <BsInfoSquare /> */}
                             </span>
                             <p className="d-flex align-items-center mb-0 ms-2"></p>
                           </div>
                         )}
                       </div>
+
+
+                      
                     </div>
                   </div>
                   <div className="row  d-flex formdata justify-content-center">
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div
-                        className="card card-1"
-                        onClick={() => navigate("/prepaid-recharge")}
-                      >
+                       <div className="col-xxl-8 col-lg-6 col-sm-12   d-flex justify-content-center mb-4 mt-1 p-0">
+                      <div className=" card-4 " id="main1">
                         <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <FaMobileAlt />
-                          </div>
-                          <div></div>
-                          <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">Mobile</p>
-                            <h4 className="px-2 my-0">Recharge</h4>{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div
-                        className="card card-2"
-                        onClick={() => navigate("/dth-recharge")}
-                      >
-                        <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <MdOutlineWidthFull />
-                          </div>
-                          <div></div>
-                          <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">DTH/D2H</p>
-                            <h4 className="px-2 my-0">Recharge</h4>{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div
-                        className="card card-3"
-                        onClick={() => navigate("/dth-recharge")}
-                      >
-                        <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <RiCoupon2Line />
-                          </div>
-                          <div></div>
-                          <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">Coupon</p>
-                            <h4 className="px-2 my-0">Purchase</h4>{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div> */}
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div
-                        className="card card-4"
-                        onClick={() => navigate("/raise-complaint")}
-                      >
-                        <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <FaRegMessage />
-                          </div>
-                          <div></div>
-                          <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">Complaints</p>
-                            <h4 className="px-2 my-0">Raise Query</h4>{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-1">
-                        <Link to="https://www.trackpan.utiitsl.com/PANONLINE/forms/TrackPan/trackApp#forward">
-                          <div className="d-flex">
-                            <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                              <MdManageSearch />
-                            </div>
-                            <div></div>
-                            <div className="d-flex flex-column cardtext">
-                              <p className="mb-0 px-2 my-0 fs-6">Pan Card</p>
-                              <h4 className="px-2 my-0">
-                                Track Application
-                              </h4>{" "}
-                            </div>
-                          </div>
-                        </Link>
-                      </div>
-                    </div>
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div
-                        className="card card-2"
-                        onClick={() => navigate("/uti-login")}
-                      >
-                        <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <IoIosLogIn />
-                          </div>
-                          <div></div>
-                          <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">PSA Login</p>
-                            <h4 className="px-2 my-0">UTIITSL</h4>{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div
-                        className="card card-3"
-                        onClick={() => navigate("/aadhar-linking-status")}
-                      >
-                        <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <FaIdCard />
-                          </div>
-                          <div></div>
-                          <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">Status</p>
-                            <h4 className="px-2 my-0">Aadhar Linking </h4>{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div
-                        className="card card-3"
-                        onClick={() => navigate("/crop-tool")}
-                      >
-                        <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <MdCrop />
-                          </div>
-                          <div></div>
-                          <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">
-                              Photo & Signature
-                            </p>
-                            <h4 className="px-2 my-0">Cropping Tool</h4>{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div
-                        className="card card-4"
-                        onClick={() => navigate("/add-money")}
-                      >
-                        <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <MdAddCard />
-                          </div>
-                          <div></div>
-                          <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">Add Money to</p>
-                            <h4 className="px-2 my-0">Wallet</h4>{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div
-                        className="card card-1"
-                        onClick={() => navigate("/pan-apply-49")}
-                      >
-                        <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <AiOutlineForm />
-                          </div>
-                          <div></div>
-                          <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">NSDL PAN</p>
-                            <h4 className="px-2 my-0">
-                              E-KYC Application
-                            </h4>{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-4">
-                        <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <LuIndianRupee />
-                          </div>
-                          <div></div>
-                          <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">Wallet Amount</p>
+                         
+                       
+                          <div className="d-flex flex-column text-white cardtext py-3">
+                            <p className="mb-0 px-2 my-0 fs-6 py-1">Wallet Amount</p>
                             {/* <h4 className="px-2 my-0">(Rs. 250/-)</h4>{" "} */}
-                            <h4 className="px-2 my-0">{`₹${
+                            <h4 className="px-2 my-0 fs-2">{`₹ ${
                               walletBalance === null || undefined
                                 ? "0.00"
                                 : walletBalance
                             }`}</h4>{" "}
                           </div>
+
+
+                          
+                        </div>
+                              <div className="d-flex gap-1 smallcard" >
+                   
+                      
+                          <div className="d-flex flex-column cardtext text-white p-1" style={{backgroundColor:"rgba(255, 255, 255, 0.15)" , borderRadius:"12px"}}>
+                            <p className="mb-0 px-2 my-0 fs-6">
+                              Today Commission
+                            </p>
+                            <h5 className="px-2 my-1">
+                              {TodaysformattedCommission
+                                ? `₹ ${TodaysformattedCommission}`
+                                : "..."}
+                            </h5>{" "}
+                          </div>
+                        
+                        
+                          <div className="d-flex flex-column cardtext text-white  " style={{backgroundColor:"rgba(255, 255, 255, 0.15)" , borderRadius:"12px"}}>
+                            <p className="mb-0 px-2 my-0 fs-6">
+                              Month Commission
+                            </p>
+                            <h5 className="px-2 my-1">
+                              {formattedCommission
+                                ? `₹ ${formattedCommission}`
+                                : "..."}
+                            </h5>{" "}
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-2">
+                     <div className="col-xxl-4 col-lg-6 col-sm-12    mb-3 mt-1 p-0">
+   <div className="col-xxl-12 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0" id="rescard">
+                      <div className=" card-2 p-4 " id="card121">
                         <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon" style={{backgroundColor:"#DD7536" , borderRadius:"15px"}}>
                             <MdAddCard />
                           </div>
                           <div></div>
@@ -654,36 +511,222 @@ const Dashboard = () => {
                             <p className="mb-0 px-2 my-0 fs-6">
                               Recharge Today
                             </p>
-                            <h4 className="px-2 my-0">
+                            <h5 className="px-2 my-0">
                               {TodayRecharge} - (Rs. {TodayRechargeAmt})
-                            </h4>{" "}
+                            </h5>{" "}
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-3">
+                    <div className="col-xxl-12 col-lg-6 col-sm-12 d-flex justify-content-center mb-3 mt-1 p-0" id="rescard">
+                      <div className=" card-3 p-4" id="card121">
                         <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <MdAddCard />
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon" style={{backgroundColor:" #06d6a0" , borderRadius:"15px"}}>
+                            <MdCalendarMonth/>
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
                             <p className="mb-0 px-2 my-0 fs-6">
                               Recharge Month
                             </p>
-                            <h4 className="px-2 my-0">
+                            <h5 className="px-2 my-0">
                               {monthlyRecharge} - (Rs. {monthlyRechargeAmt})
-                            </h4>{" "}
+                            </h5>{" "}
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
+                     </div>
+
+                    <h5 className="mt-3">Recharge Service</h5>
+                    <div className="col-xxl-3 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0">
+                      <div
+                        className="card card-1 p-3"
+                        onClick={() => navigate("/prepaid-recharge")}
+                      >
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon" id="bgicon">
+                            <FaMobileAlt />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">Mobile</p>
+                            <h5 className="px-2 my-0">Recharge</h5>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-3 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0">
+                      <div
+                        className="card card-2 p-3"
+                        onClick={() => navigate("/dth-recharge")}
+                      >
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon"style={{backgroundColor:"#e74c3c" , borderRadius:"15px"}} >
+                            <MdOutlineWidthFull />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">DTH/D2H</p>
+                            <h5 className="px-2 my-0">Recharge</h5>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                      <div className="col-xxl-3 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0"></div>
+                  
+                      <div className="col-xxl-3 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0"></div>
+                  
+                    {/* <div className="col-lg-4 col-8 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0">
+                      <div
+                        className="card card-3"
+                        onClick={() => navigate("/dth-recharge")}
+                      >
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon" id="bgicon">
+                            <RiCoupon2Line />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">Coupon</p>
+                            <h5 className="px-2 my-0">Purchase</h5>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div> */}
+                      <h5 className="mt-3">Quick Service</h5>
+                    <div className="col-xxl-3 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0">
+                      <div
+                        className="card card-4 p-3"
+                        onClick={() => navigate("/raise-complaint")}
+                      >
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon" style={{backgroundColor:"#2ecc71" , borderRadius:"15px"}}>
+                            <FaRegMessage />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">Complaints</p>
+                            <h5 className="px-2 my-0">Raise Query</h5>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-3 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0">
+                      <div className="card card-1 p-3">
+                        <Link to="https://www.trackpan.utiitsl.com/PANONLINE/forms/TrackPan/trackApp#forward">
+                          <div className="d-flex">
+                            <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon" style={{backgroundColor:"#29A0B1" , borderRadius:"15px"}}>
+                              <MdManageSearch />
+                            </div>
+                            <div></div>
+                            <div className="d-flex flex-column cardtext">
+                              <p className="mb-0 px-2 my-0 fs-6">Pan Card</p>
+                              <h5 className="px-2 my-0">
+                                Track Application
+                              </h5>{" "}
+                            </div>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="col-xxl-3 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0">
+                      <div
+                        className="card card-2 p-3"
+                        onClick={() => navigate("/uti-login")}
+                      >
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon" style={{backgroundColor:"#923aac" , borderRadius:"15px"}}>
+                            <IoIosLogIn />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">PSA Login</p>
+                            <h5 className="px-2 my-0">UTIITSL</h5>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-3 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0">
+                      <div
+                        className="card card-3 p-3"
+                        onClick={() => navigate("/aadhar-linking-status")}
+                      >
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon" style={{backgroundColor:"#f56f43" , borderRadius:"15px"}}>
+                            <FaIdCard />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">Status</p>
+                            <h5 className="px-2 my-0">Aadhar Linking </h5>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-3 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0">
+                      <div
+                        className="card card-3 p-3"
+                        onClick={() => navigate("/crop-tool")}
+                      >
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon" style={{backgroundColor:"#528269" , borderRadius:"15px"}}>
+                            <MdCrop />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">
+                              Photo & Signature
+                            </p>
+                            <h5 className="px-2 my-0">Cropping Tool</h5>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-3 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0">
+                      <div
+                        className="card card-4 p-3"
+                        onClick={() => navigate("/add-money")}
+                      >
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon" style={{backgroundColor:"#6e6ace" , borderRadius:"15px"}}>
+                            <MdAddCard />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">Add Money to</p>
+                            <h5 className="px-2 my-0">Wallet</h5>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-3 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0">
+                      <div
+                        className="card card-1 p-3"
+                        onClick={() => navigate("/pan-apply-49")}
+                      >
+                        <div className="d-flex">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon" style={{backgroundColor:"#2fddf4" , borderRadius:"15px"}}>
+                            <AiOutlineForm />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">NSDL PAN</p>
+                            <h5 className="px-2 my-0">
+                              E-KYC Application
+                            </h5>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div   >
+             
+                   
+
+                    {/* <div className="col-lg-4 col-8 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0">
                       <div className="card card-1">
                         <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
+                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon" id="bgicon">
                             <MdAddShoppingCart />
                           </div>
                           <div></div>
@@ -691,53 +734,14 @@ const Dashboard = () => {
                             <p className="mb-0 px-2 my-0 fs-6">
                               Today's Coupon Bought
                             </p>
-                            <h4 className="px-2 my-0">12</h4>{" "}
+                            <h5 className="px-2 my-0">12</h5>{" "}
                           </div>
                         </div>
                       </div>
                     </div> */}
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-2">
-                        <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <LuIndianRupee />
-                          </div>
-                          <div></div>
-                          <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">
-                              Today Commission
-                            </p>
-                            <h4 className="px-2 my-0">
-                              {TodaysformattedCommission
-                                ? `₹${TodaysformattedCommission}`
-                                : "..."}
-                            </h4>{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-3">
-                        <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <LuIndianRupee />
-                          </div>
-                          <div></div>
-                          <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">
-                              Month Commission
-                            </p>
-                            <h4 className="px-2 my-0">
-                              {formattedCommission
-                                ? `₹${formattedCommission}`
-                                : "..."}
-                            </h4>{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0"></div>
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0"></div>
+ <div className="col-xxl-3 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0"></div>
+
+               
                   </div>
                 </div>
               </div>
@@ -767,11 +771,11 @@ const Wrapper = styled.div`
   }
   .card:hover {
     /* transform: scale(1.1); */
-    background-image: linear-gradient(
+    /* background-image: linear-gradient(
       85.2deg,
       rgba(33, 3, 40, 1) 7.5%,
       rgba(65, 5, 72, 1) 88.7%
-    );
+    ); */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transform: translateY(-10px) scale(1.1);
     .icon {
@@ -779,19 +783,54 @@ const Wrapper = styled.div`
     }
   }
   .cardtext {
-    color: white;
+    color: black;
   }
   .icon {
-    color: #fe662b;
+    /* color: #fe662b; */
+    color: white;
+  }
+  #main1{
+     width: 100%;
+    padding: 10px;
+    margin: 0 10px;
+    border-radius: 10px;
+  
+    white-space: nowrap;
+
+    transition: transform 0.3s ease-in-out, border 0.3s ease,
+      border-radius 0.3s ease;
+        background-color:  #3a7bd5;
+    color: white;
+    @media screen and (min-width: 768px) and (max-width:1400px) {
+      margin: 0px 0px;
+    }
+ 
+  }
+  #card121{
+     width: 100%;
+    padding: 10px;
+    margin: 4 12px;
+    
+   
+    border-radius: 10px;
+    white-space: nowrap;
+border: 1px solid transparent;
+
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      
+
+    color: white;
+ 
   }
 
+  
   .card-1 {
     /* background-image: linear-gradient(
       91.3deg,
       rgba(240, 73, 207, 1) 15.7%,
       rgba(186, 90, 238, 1) 74.1%
     ); */
-    background: #6e6e6e;
+    background: white;
   }
 
   .card-2 {
@@ -800,7 +839,8 @@ const Wrapper = styled.div`
       rgba(87, 195, 155, 1) 0%,
       rgba(155, 218, 71, 0.66) 76.9%
     ); */
-    background: #6e6e6e;
+    /* background: #6e6e6e; */
+      background: white;
   }
   .card-3 {
     /* background-image: radial-gradient(
@@ -808,7 +848,8 @@ const Wrapper = styled.div`
       rgba(55, 60, 245, 1) 0%,
       rgba(234, 161, 15, 0.9) 100.2%
     ); */
-    background: #6e6e6e;
+    /* background: #6e6e6e; */
+      background: white;
   }
   .card-4 {
     /* background-image: linear-gradient(
@@ -816,7 +857,8 @@ const Wrapper = styled.div`
       rgba(131, 204, 255, 1) 0.4%,
       rgba(66, 144, 251, 1) 100.3%
     ); */
-    background: #6e6e6e;
+    /* background: #6e6e6e; */
+      background: white;
   }
   a {
     text-decoration: none;
@@ -832,9 +874,10 @@ const Wrapper = styled.div`
     }
   }
   .news {
-    border: 1px solid black;
+    border: 1px solid transparent;
     position: relative;
     overflow: hidden;
+    
   }
 
   @keyframes moveLeftToRight {
@@ -857,5 +900,29 @@ const Wrapper = styled.div`
   .news-icon {
     z-index: 1;
     font-size: large;
+    background-color: #3498db;
+
+  }
+  #bgicon{
+    background-color: #3498db;
+    border-radius: 15px;
+  }
+  .col-12{
+    border: 1px solid transparent;
+
+    border-radius: 15px;
+
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  .smallcard{
+    @media screen and (max-width: 768px) {
+       flex-direction: column;
+    }
+  }
+  #rescard{
+    @media (min-width: 1024px) and (max-width: 1500px) {
+    margin-left: 1rem;
+
+  }
   }
 `;

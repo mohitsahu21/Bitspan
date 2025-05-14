@@ -1,30 +1,20 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import HeadBar from "../components/HeadBar";
-import Sider from "../components/SideBar";
-import { TbRecharging } from "react-icons/tb";
-import { FaMobileAlt } from "react-icons/fa";
-import { MdOutlineWidthFull } from "react-icons/md";
-import { RiCoupon2Line } from "react-icons/ri";
-import { FaRegMessage } from "react-icons/fa6";
-import { MdManageSearch } from "react-icons/md";
-import { IoIosLogIn } from "react-icons/io";
-import { MdCrop } from "react-icons/md";
-import { MdAddCard } from "react-icons/md";
+
+import { MdAddCard, MdCalendarMonth } from "react-icons/md";
 import { LuIndianRupee } from "react-icons/lu";
-import { AiOutlineForm } from "react-icons/ai";
-import { MdAddShoppingCart } from "react-icons/md";
+
 import { Link, useNavigate } from "react-router-dom";
 import { BiHomeAlt } from "react-icons/bi";
 import { LuUserPlus } from "react-icons/lu";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
-import { BsInfoSquare } from "react-icons/bs";
+
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import Swal from "sweetalert2";
-import { clearUser } from "../redux/user/userSlice";
-import Loading from "../components/SuperAdmin/Loading";
+import { BsInfoSquare } from 'react-icons/bs';
+
+
 
 
 const SuperAdminDashboard = () => {
@@ -474,61 +464,98 @@ const CustomTooltip = styled(Tooltip)`
                   </div>
               <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10 mt-4">
                 <div className="container-fluid">
-                  {/* <div className="row d-flex formdata justify-content-center mb-3">
-                       <div className="col-12 boarder bg-white p-2">
-                           <div className="news d-flex align-items-center">
-                            <span className="p-3 bg-info news-icon">
-                           <BsInfoSquare/>  
-                           </span>
-                          <p className="d-flex align-items-center mb-0 ms-2">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio asperiores, autem optio, obcaecati consequatur deleniti soluta eius sequi assumenda, accusantium maxime! Voluptatibus aut corrupti dolores veniam? Eveniet, nemo quod? Inventore.</p>
-                          </div>
-                       </div>
-                  </div> */}
+               
                   <div className="row  d-flex formdata justify-content-center">
+                <div className="col-xxl-8 col-lg-6 col-sm-12    mb-4 mt-1">
+                                      <div className=" card-4 p-4" id="main1">
+                                        <div className="d-flex">
+                                         
+                                       
+                                          <div className="d-flex flex-column text-white cardtext py-3">
+                                           
+                                            <p className="mb-0 px-2 my-0 fs-6 py-1">Total Users</p>
+                                            {/* <h4 className="px-2 my-0">(Rs. 250/-)</h4>{" "} */}
+                                            <h5>  <LuUserPlus /> {users?.length ? users?.length : "..."}</h5>
+
+                                          </div>
                 
+                
+                                          
+                                        </div>
+                                              <div className="d-flex gap-1 smallcard" >
+                                          {/* <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-6 icon">
+                                            <LuIndianRupee />
+                                          </div> */}
+                                      
+                                          <div className="d-flex flex-column cardtext  p-1" style={{backgroundColor:"rgba(255, 255, 255, 0.15)" , borderRadius:"12px"}}>
+                                            <p className="mb-0  my-0 fs-6">
+                                                INS PAY Wallet Balance
+                                            </p>
+                                          <h5>₹ {instPayBalance?.length ? instPayBalance : "..." }</h5> 
+                                          </div>
+                                        
+                                        
+                                          <div className="d-flex flex-column cardtext   " style={{backgroundColor:"rgba(255, 255, 255, 0.15)" , borderRadius:"12px"}}>
+                                            <p className="mb-0 px-2 my-0 fs-6">
+                                                  Ezytm Wallet Balance
+                                            </p>
+ <h5 className="px-2 my-0">₹ {ezytmBalance?.length ? ezytmBalance : "..."}</h5>{" "}
+                                          </div>
+                                          <div className="d-flex flex-column cardtext   " style={{backgroundColor:"rgba(255, 255, 255, 0.15)" , borderRadius:"12px"}}>
+                                            <p className="mb-0 px-2 my-0 fs-6">
+                                                  CGONE PAY Wallet Balance
+                                            </p>
+ <h5 className="px-2 my-0">₹ {cgOnePayBalance?.length ? cgOnePayBalance : "..."}</h5>{" "}
+                                          </div>
+                                          <div className="d-flex flex-column cardtext   " style={{backgroundColor:"rgba(255, 255, 255, 0.15)" , borderRadius:"12px"}}>
+                                            <p className="mb-0 px-2 my-0 fs-6">
+                                                    Deeper Web Wallet Balance
+                                            </p>
+ <h5 className="px-2 my-0">₹ {deeperWebBalance?.length ? deeperWebBalance : "..."}</h5>{" "}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                     <div className="col-xxl-4 col-lg-6 col-sm-12    mb-3 mt-1 p-0">
+                   <div className="col-xxl-12 col-lg-6 col-sm-12    mb-3 mt-1 p-0" id="rescard">
+                                      <div className=" card-2 p-4 " id="card121">
+                                        <div className="d-flex">
+                                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 " style={{backgroundColor:"#DD7536" , borderRadius:"15px"}}>
+                                            <MdAddCard />
+                                          </div>
+                                          <div></div>
+                                          <div className="d-flex flex-column cardtext">
+                                            <p className="mb-0 px-2 my-0 fs-6">
+                                              Recharge Today
+                                            </p>
+                                        
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="col-xxl-12 col-lg-6 col-sm-12  mb-3 mt-1 p-0" id="rescard">
+                                      <div className=" card-3 p-4" id="card121">
+                                        <div className="d-flex">
+                                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 " style={{backgroundColor:" #06d6a0" , borderRadius:"15px"}}>
+                                            <MdCalendarMonth/>
+                                          </div>
+                                          <div></div>
+                                          <div className="d-flex flex-column cardtext">
+                                            <p className="mb-0 px-2 my-0 fs-6">
+                                              Recharge Month
+                                            </p>
+                                            
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                
+                                     </div>
                  
                   
                     
                  
-                    {/* <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div
-                        className="card card-3"
-                        onClick={() => navigate("/crop-tool")}
-                      >
-                        <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <MdCrop />
-                          </div>
-                          <div></div>
-                          <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">
-                              Photo & Signature
-                            </p>
-                            <h4 className="px-2 my-0">Cropping Tool</h4>{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div> */}
-               
-                   
                  
-                  
-                    {/* <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      
-                      <div className="card card-4">
-                        <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <MdAddCard />
-                          </div>
-                          <div></div>
-                          <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">Wallet Amount</p>
-                            <h4 className="px-2 my-0">(Rs. 250/-)</h4>{" "}
-                          </div>
-                        </div>
-                      </div>
-                     
-                    </div> */}
                     <User  id="t-1">
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-4">
@@ -547,22 +574,7 @@ const CustomTooltip = styled(Tooltip)`
                       </div>
                     </div>
                     </User>
-                    {/* <div className="col-lg-4 col-8 col-sm-8   d-flex justify-content-center my-3 p-0">
-                      <div className="card card-1">
-                        <div className="d-flex">
-                          <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon">
-                            <MdAddShoppingCart />
-                          </div>
-                          <div></div>
-                          <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">
-                              Today's Coupon Bought
-                            </p>
-                            <h4 className="px-2 my-0">12</h4>{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div> */}
+                   
                     <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
                       <div className="card card-2">
                         <div className="d-flex">
@@ -921,7 +933,7 @@ const Wrapper = styled.div`
     }
   }
   .cardtext {
-    color: white;
+    color: black;
   }
   .icon {
     color: #fe662b;
@@ -933,7 +945,8 @@ const Wrapper = styled.div`
       rgba(240, 73, 207, 1) 15.7%,
       rgba(186, 90, 238, 1) 74.1%
     ); */
-    background: #6e6e6e;
+        background: white;
+
   }
 
   .card-2 {
@@ -942,7 +955,9 @@ const Wrapper = styled.div`
       rgba(87, 195, 155, 1) 0%,
       rgba(155, 218, 71, 0.66) 76.9%
     ); */
-    background: #6e6e6e;
+        background: white;
+
+    border-radius: 15px;
   }
   .card-3 {
     /* background-image: radial-gradient(
@@ -950,7 +965,10 @@ const Wrapper = styled.div`
       rgba(55, 60, 245, 1) 0%,
       rgba(234, 161, 15, 0.9) 100.2%
     ); */
-    background: #6e6e6e;
+        background: white;
+
+    border-radius: 15px;
+
   }
   .card-4 {
     /* background-image: linear-gradient(
@@ -958,7 +976,8 @@ const Wrapper = styled.div`
       rgba(131, 204, 255, 1) 0.4%,
       rgba(66, 144, 251, 1) 100.3%
     ); */
-    background: #6e6e6e;
+        background: white;
+
   }
   a {
     text-decoration: none;
@@ -997,8 +1016,66 @@ const Wrapper = styled.div`
     position: absolute;
     right: 0;
   }
-  .news-icon{
-    z-index: 100;
+  .news-icon {
+    z-index: 1;
     font-size: large;
+    background-color: #3498db;
+
+  }
+    #main1{
+     width: 100%;
+    padding: 10px;
+    margin: 0 10px;
+    border-radius: 10px;
+  
+    white-space: nowrap;
+
+    transition: transform 0.3s ease-in-out, border 0.3s ease,
+      border-radius 0.3s ease;
+        background-color:  #3a7bd5;
+    color: white;
+    @media screen and (min-width: 768px) and (max-width:1400px) {
+      margin: 0px 0px;
+    }
+ 
+  }
+  #card121{
+     width: 100%;
+    padding: 10px;
+    margin: 4 12px;
+    
+   
+    border-radius: 10px;
+    white-space: nowrap;
+border: 1px solid transparent;
+
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      
+
+    color: white;
+ 
+  }
+
+  #bgicon{
+    background-color: #3498db;
+    border-radius: 15px;
+  }
+  .col-12{
+    border: 1px solid transparent;
+
+    border-radius: 15px;
+
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  .smallcard{
+    @media screen and (max-width: 768px) {
+       flex-direction: column;
+    }
+  }
+  #rescard{
+    @media (min-width: 1024px) and (max-width: 1500px) {
+    margin-left: 1rem;
+
+  }
   }
 `;
