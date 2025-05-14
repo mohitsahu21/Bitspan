@@ -471,10 +471,10 @@ const Dashboard = () => {
 
                           
                         </div>
-                              <div className="d-flex gap-1 smallcard" >
+                              <div className="d-flex gap-2 smallcard" >
                    
                       
-                          <div className="d-flex flex-column cardtext text-white p-1" style={{backgroundColor:"rgba(255, 255, 255, 0.15)" , borderRadius:"12px"}}>
+                          <div className="d-flex flex-column cardtext text-white p-1" style={{backgroundColor:"rgba(255, 255, 255, 0.15)" , borderRadius:"10px"}}>
                             <p className="mb-0 px-2 my-0 fs-6">
                               Today Commission
                             </p>
@@ -486,7 +486,7 @@ const Dashboard = () => {
                           </div>
                         
                         
-                          <div className="d-flex flex-column cardtext text-white  " style={{backgroundColor:"rgba(255, 255, 255, 0.15)" , borderRadius:"12px"}}>
+                          <div className="d-flex flex-column cardtext text-white  " style={{backgroundColor:"rgba(255, 255, 255, 0.15)" , borderRadius:"10px"}}>
                             <p className="mb-0 px-2 my-0 fs-6">
                               Month Commission
                             </p>
