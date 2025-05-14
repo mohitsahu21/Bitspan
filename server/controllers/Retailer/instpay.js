@@ -59,6 +59,153 @@ const gstVerification = async (req, res) => {
     });
 };
 
+const fetchGSTVerification = async (req, res) => {
+  const { number, userId } = req.body;
+  let { amount } = req.body;
+  const token = process.env.APITokenInstapay;
+  const username = process.env.APIUsernameInstapay;
+
+  if (!number || !userId) {
+    return res
+      .status(400)
+      .json({ message: "GST number and User ID are required" });
+  }
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const orderId = `ORDP${Date.now()}`;
+  const transactionId = `TXNP${Date.now()}`;
+  const transactionDetails = `GST Verify Deduction Order Id ${orderId}`;
+  const creditAmt = 0;
+
+  // Step 1: Check the current balance
+  const queryBalance = `
+    SELECT Closing_Balance 
+    FROM user_wallet 
+    WHERE userId = ? 
+    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+    LIMIT 1
+  `;
+
+  db.query(queryBalance, [userId], async (err, balanceResult) => {
+    if (err) {
+      console.error("Error fetching wallet balance:", err);
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Failed to fetch wallet balance",
+        details: err.message,
+      });
+    }
+
+    if (balanceResult.length === 0) {
+      return res.status(404).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        message: "No balance found for the user.",
+      });
+    }
+
+    const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+    if (isNaN(currentBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Current balance is invalid.",
+      });
+    }
+
+    // Step 2: Validate `amount`
+    if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+      return res.status(500).json({
+        success: false,
+        status: "Failure",
+        error: "Invalid or missing amount",
+      });
+    }
+
+    amount = parseFloat(parseFloat(amount).toFixed(2));
+
+    if (currentBalance < amount) {
+      return res.status(400).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        message: "Insufficient balance.",
+        currentBalance,
+        requiredAmount: amount,
+      });
+    }
+
+    const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+
+    // Step 3: Deduct amount from wallet
+    const updateWalletQuery = `
+      INSERT INTO user_wallet 
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+      updateWalletQuery,
+      [
+        userId,
+        createdAt,
+        orderId,
+        transactionId,
+        currentBalance.toFixed(2),
+        newBalance,
+        "Debit",
+        creditAmt,
+        amount,
+        transactionDetails,
+        "Success",
+      ],
+      async (err, walletResult) => {
+        if (err) {
+          console.error("Error updating wallet balance:", err);
+          return res.status(500).json({
+            status: "Failure",
+            step: "Update Wallet Balance",
+            error: "Failed to update wallet balance",
+            details: err.message,
+          });
+        }
+
+        // Step 4: Call PAN by Aadhaar API
+        try {
+          const result = await getDataFromClientApi(
+            "/v3/verification/gst_verification",
+            token,
+            username,
+            {
+              number: number,
+              orderid: orderId,
+              format: "json",
+            }
+          );
+
+          return res.status(result.status === "200" ? 200 : 400).json({
+            status: "Success",
+            wallet: {
+              transactionId,
+              newBalance,
+              previousBalance: currentBalance.toFixed(2),
+              deductedAmount: amount,
+            },
+            gstData: result,
+          });
+        } catch (err) {
+          return res.status(500).json({
+            status: "Failure",
+            step: "Call GST Verification API",
+            message: "Unexpected error occurred while calling GST API",
+            details: err.message,
+          });
+        }
+      }
+    );
+  });
+};
+
 const adharVerification = async (req, res) => {
   const token = process.env.APITokenInstapay; // or fetch it dynamically
   const username = process.env.APIUsernameInstapay; // or fetch from request, etc.
@@ -2011,6 +2158,7 @@ module.exports = {
   dthRechargeWithBalanceCheck,
   nsdlNewRequest,
   nsdlCorrection,
+  fetchGSTVerification,
 };
 
 // const dthRechargeWithBalanceCheck = (req, res) => {

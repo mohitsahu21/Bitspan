@@ -7,16 +7,18 @@ import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal, Button, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { use } from "react";
+import moment from "moment";
 
-const RCFind = () => {
+const FindDL = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const [prices, setPrices] = useState([]);
   const [formData, setFormData] = useState({
+    dlno: "",
+    dob: "",
+    cardtype: "",
     userId: currentUser?.userId,
-    rcno: "",
     amount: "",
   });
   const [loading, setLoading] = useState(false);
@@ -81,7 +83,7 @@ const RCFind = () => {
   useEffect(() => {
     if (services) {
       const purchaseBankIdService = services.find(
-        (item) => item.service_name === "RC Details"
+        (item) => item.service_name === "Driving Licence Details"
       );
 
       if (purchaseBankIdService?.status === "Deactive") {
@@ -99,29 +101,51 @@ const RCFind = () => {
     if (prices.length > 0) {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        amount: prices[0].rc_price,
+        amount: prices[0].dl_price,
       }));
     }
   }, [prices]);
 
   console.log("Form data:", formData);
 
+  //   const handleChange = (e) => {
+  //     const { name, value } = e.target;
+  //     if (
+  //       name === "samagraId" ||
+  //       name === "familyId" ||
+  //       name === "mobileNumber"
+  //     ) {
+  //       if (/^\d*$/.test(value)) {
+  //         setFormData((prevData) => ({
+  //           ...prevData,
+  //           [name]: value,
+  //         }));
+  //       }
+  //     } else {
+  //       setFormData({ ...formData, [name]: value });
+  //     }
+  //   };
+
+  //   const handleChange = (e) => {
+  //     const { name, value } = e.target;
+
+  //     setFormData((prevData) => ({
+  //       ...prevData,
+  //       [name]: value, // store the date as YYYY-MM-DD in formData
+  //     }));
+  //   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (
-      name === "samagraId" ||
-      name === "familyId" ||
-      name === "mobileNumber"
-    ) {
-      if (/^\d*$/.test(value)) {
-        setFormData((prevData) => ({
-          ...prevData,
-          [name]: value,
-        }));
-      }
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+
+    // If the input is 'dob', format the date using moment
+    const formattedValue =
+      name === "dob" ? moment(value, "YYYY-MM-DD").format("DD-MM-YYYY") : value;
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: formattedValue,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -145,9 +169,16 @@ const RCFind = () => {
       return;
     }
     console.log("Form Data Submitted: ", formData);
+
+    const formattedData = {
+      ...formData,
+      dob: moment(formData.dob, "YYYY-MM-DD").format("DD-MM-YYYY"),
+    };
+
+    console.log("Formatted Data:", formattedData);
     try {
       const response = await axios.post(
-        `http://localhost:7777/api/auth/aadhar/fetchRcDetails`,
+        `https://2kadam.co.in/api/auth/aadhar/fetchDLdetails`,
         formData,
         {
           headers: {
@@ -164,7 +195,6 @@ const RCFind = () => {
         console.log("Base64 PDF:", base64Pdf);
 
         if (base64Pdf) {
-          // Decode base64 string to binary
           const byteCharacters = atob(base64Pdf);
           const byteNumbers = new Array(byteCharacters.length);
           for (let i = 0; i < byteCharacters.length; i++) {
@@ -172,11 +202,9 @@ const RCFind = () => {
           }
           const byteArray = new Uint8Array(byteNumbers);
 
-          // Create blob and object URL
           const blob = new Blob([byteArray], { type: "application/pdf" });
           const pdfUrl = URL.createObjectURL(blob);
 
-          // Open PDF in a new tab
           window.open(pdfUrl, "_blank");
         } else {
           alert("No PDF data found in response");
@@ -188,42 +216,28 @@ const RCFind = () => {
           icon: "error",
         });
       }
-
-      //   if (response.data.status === "Success") {
-      //     const { panData, wallet } = response.data;
-
-      //     Swal.fire({
-      //       title: "PAN Data Retrieved",
-      //       html: `
-      //   <strong>Aadhaar:</strong> ${panData?.aadhaar}<br/>
-      //   <strong>PAN No:</strong> ${panData?.pan_no}<br/>
-      //   <strong>Application No:</strong> ${panData?.application_no}<br/>
-      //   <hr/>
-      //   <strong>Transaction ID:</strong> ${wallet?.transactionId}<br/>
-      // `,
-      //       icon: "success",
-      //     });
-
-      //     // Reset form
-      //     setFormData({
-      //       aadhaar_no: "",
-      //       userId: currentUser?.userId,
-      //       amount: prices[0]?.pan_aadhar_price,
-      //     });
-      //   } else {
-      //     Swal.fire({
-      //       title: "Error",
-      //       text: response?.data?.message || "Something went wrong!",
-      //       icon: "error",
-      //     });
-      //   }
     } catch (error) {
       console.log(error);
-      Swal.fire({
-        title: "Error",
-        text: error?.response?.data?.message || "Something went wrong!",
-        icon: "error",
-      });
+      const panData = error?.response?.data?.panData;
+
+      if (panData?.status === "404") {
+        Swal.fire({
+          title: "Failure",
+          text: panData?.message || "DL Not found!",
+          icon: "error",
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: error?.response?.data?.message || "Something went wrong!",
+          icon: "error",
+        });
+      }
+      //   Swal.fire({
+      //     title: "Error",
+      //     text: error?.response?.data?.message || "Something went wrong!",
+      //     icon: "error",
+      //   });
     } finally {
       setLoading(false);
       setPin(["", "", "", ""]);
@@ -254,7 +268,6 @@ const RCFind = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        // `http://localhost:7777/api/auth/log-reg/verify-pin`,
         `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {
@@ -325,7 +338,7 @@ const RCFind = () => {
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="d-flex justify-content-between align-items-center flex-wrap ">
                         <h4 className="mx-lg-5 mx-xl-5 mx-xxl-2  px-lg-3 px-xxl-0">
-                          Find Registration Certificate
+                          Find Driving License
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -335,7 +348,7 @@ const RCFind = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Find Registration Certificate
+                            Find Driving License
                           </span>{" "}
                         </p>
                       </div>
@@ -363,11 +376,42 @@ const RCFind = () => {
                                   id="floatingInputGroup2"
                                   placeholder="Mobile Number"
                                   onChange={handleChange}
-                                  name="rcno"
-                                  value={formData.rcno}
+                                  name="dlno"
+                                  value={formData.dlno}
                                 />
                                 <label for="floatingInputGroup2">
-                                  Registration Certificate No.
+                                  Driving License No.
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                          <br />
+
+                          <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 mx-auto">
+                            <div class="input-group">
+                              <span class="input-group-text">
+                                <MdFormatListNumberedRtl />
+                              </span>
+                              <div class="form-floating">
+                                <input
+                                  type="date"
+                                  class="form-control"
+                                  id="floatingInputGroup2"
+                                  placeholder="DOB"
+                                  onChange={handleChange}
+                                  name="dob"
+                                  //   value={formData.dob}
+                                  value={
+                                    formData.dob
+                                      ? moment(
+                                          formData.dob,
+                                          "DD-MM-YYYY"
+                                        ).format("YYYY-MM-DD")
+                                      : ""
+                                  }
+                                />
+                                <label for="floatingInputGroup2">
+                                  Date of Birth
                                 </label>
                               </div>
                             </div>
@@ -456,7 +500,7 @@ const RCFind = () => {
   );
 };
 
-export default RCFind;
+export default FindDL;
 
 const Wrapper = styled.div`
   .main {
@@ -479,57 +523,3 @@ const Wrapper = styled.div`
     font-size: 14px;
   }
 `;
-
-// import React from "react";
-// import axios from "axios";
-
-// const RCFind = () => {
-//   const fetchPdf = async () => {
-//     try {
-//       const response = await axios.post(
-//         "http://localhost:7777/api/auth/aadhar/fetchRcPdf",
-//         {
-//           api_key: "55190b0f78f4b83fd9781f3aab2193",
-//           rcno: "MP20CD6439",
-//           cardtype: "1",
-//           chiptype: "1",
-//         }
-//       );
-
-//       console.log("Response:", response);
-
-//       const base64Pdf = response.data.pdf;
-//       console.log("Base64 PDF:", base64Pdf);
-
-//       if (base64Pdf) {
-//         // Decode base64 string to binary
-//         const byteCharacters = atob(base64Pdf);
-//         const byteNumbers = new Array(byteCharacters.length);
-//         for (let i = 0; i < byteCharacters.length; i++) {
-//           byteNumbers[i] = byteCharacters.charCodeAt(i);
-//         }
-//         const byteArray = new Uint8Array(byteNumbers);
-
-//         // Create blob and object URL
-//         const blob = new Blob([byteArray], { type: "application/pdf" });
-//         const pdfUrl = URL.createObjectURL(blob);
-
-//         // Open PDF in a new tab
-//         window.open(pdfUrl, "_blank");
-//       } else {
-//         alert("No PDF data found in response");
-//       }
-//     } catch (error) {
-//       console.error("Error fetching RC PDF:", error);
-//       alert("Failed to fetch RC PDF");
-//     }
-//   };
-
-//   return (
-//     <div style={{ padding: "20px" }}>
-//       <button onClick={fetchPdf}>View RC PDF</button>
-//     </div>
-//   );
-// };
-
-// export default RCFind;

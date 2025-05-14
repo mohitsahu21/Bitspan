@@ -10,14 +10,14 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
-import {  fetchWalletBalance } from "../../redux/user/userSlice";
+import { fetchWalletBalance } from "../../redux/user/userSlice";
 const AddMoney = () => {
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
   const { walletBalance } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const fullUrl = window.location.href;
-  console.log(fullUrl)
+  console.log(fullUrl);
   const [formData, setFormData] = useState({
     user_id: currentUser.userId,
     amount: "",
@@ -29,17 +29,15 @@ const AddMoney = () => {
     website: fullUrl,
   });
 
-
-  useEffect(()=>{
+  useEffect(() => {
     if (currentUser?.userId) {
-            dispatch(fetchWalletBalance(currentUser.userId));
-          }
-  },[])
-
+      dispatch(fetchWalletBalance(currentUser.userId));
+    }
+  }, []);
 
   const [receiptAttachment, setReceiptAttachment] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  console.log(formData)
+  console.log(formData);
   const handleChange = (e) => {
     const { name, value } = e.target;
     // setFormData({ ...formData, [name]: value });
@@ -50,11 +48,10 @@ const AddMoney = () => {
           [name]: value,
         }));
       }
-    }
-    else {
+    } else {
       setFormData({
         ...formData,
-        [name] : value,
+        [name]: value,
       });
     }
   };
@@ -65,14 +62,13 @@ const AddMoney = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(formData.amount < 100){
+    if (formData.amount < 100) {
       Swal.fire({
         title: "Error",
-        text:
-         "Minimum amount is 100",
+        text: "Minimum amount is 100",
         icon: "error",
       });
-      return
+      return;
     }
     setIsLoading(true);
     try {
@@ -98,17 +94,17 @@ const AddMoney = () => {
         // "http://localhost:7777/api/auth/superAdmin/createOrderToAddWalletMoney",
         formData
       );
-    console.log(response)
+      console.log(response);
       // alert(response.data.message);
-     
-      if(response.data.status){
+
+      if (response.data.status) {
         Swal.fire({
           title: "Payment Link Created Successfully",
           text: `Your Order Id is ${response.data.data.result.orderId}`,
           icon: "success",
         }).then(() => {
           // Navigate to the payment URL after closing the alert
-          // window.location.href = response.data.data.result.payment_url; 
+          // window.location.href = response.data.data.result.payment_url;
           window.open(response.data.data.result.payment_url, "_blank");
         });
         // navigate(`/${response.data.data.result.payment_url}`)
@@ -122,7 +118,6 @@ const AddMoney = () => {
           Payment_Mode: "",
           website: fullUrl,
         });
-
       }
 
       // Swal.fire({
@@ -130,7 +125,6 @@ const AddMoney = () => {
       //   text: response.data.message,
       //   icon: "success",
       // });
-      
     } catch (error) {
       console.error("Error submitting form:", error.response.data);
       alert("Failed to submit form. Please try again.");
@@ -175,100 +169,103 @@ const AddMoney = () => {
                     </div>
                   </div>
                   <form onSubmit={handleSubmit}>
-                  <div className="row justify-content-lg-end justify-content-center pe-lg-4">
-                    <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-10 col-sm-10 shadow bg-body-tertiary rounded m-4 px-3 py-5">
-                      <div className="row d-flex flex-column g-4">
-                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                          <div class="input-group mb-3">
-                            <span class="input-group-text">
-                              <MdOutlineFormatListNumbered />
-                            </span>
-                            <div class="form-floating">
-                              <input
-                                type="text"
-                                class="form-control"
-                                id="floatingInputGroup1"
-                                placeholder="Transaction Number"
-                                readOnly
-                                value={currentUser.userId}
-                              />
-                              <label for="floatingInputGroup1">
-                                Your User Id
-                              </label>
+                    <div className="row justify-content-lg-end justify-content-center pe-lg-4">
+                      <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-10 col-sm-10 shadow bg-body-tertiary rounded m-4 px-3 py-5">
+                        <div className="row d-flex flex-column g-4">
+                          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <div class="input-group mb-3">
+                              <span class="input-group-text">
+                                <MdOutlineFormatListNumbered />
+                              </span>
+                              <div class="form-floating">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="floatingInputGroup1"
+                                  placeholder="Transaction Number"
+                                  readOnly
+                                  value={currentUser.userId}
+                                />
+                                <label for="floatingInputGroup1">
+                                  Your User Id
+                                </label>
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                          <div class="input-group">
-                            <span class="input-group-text">
-                              <FaRupeeSign />
-                            </span>
-                            <div class="form-floating">
-                              <input
-                                type="text"
-                                class="form-control"
-                                id="floatingInputGroup2"
-                                placeholder="Enter Amount"
-                                name="amount"
-                                value={formData.amount}
-                                onChange={handleChange}
-                                required
-                                min={100}
-                              />
-                              <label for="floatingInputGroup2">
-                                Amount in Rs. {"(Min 100/-)"}
-                              </label>
+                          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <div class="input-group">
+                              <span class="input-group-text">
+                                <FaRupeeSign />
+                              </span>
+                              <div class="form-floating">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="floatingInputGroup2"
+                                  placeholder="Enter Amount"
+                                  name="amount"
+                                  value={formData.amount}
+                                  onChange={handleChange}
+                                  required
+                                  min={100}
+                                />
+                                <label for="floatingInputGroup2">
+                                  Amount in Rs. {"(Min 100/-)"}
+                                </label>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                          <p className="fw-bold">
-                            Wallet Available Amount : Rs. {walletBalance}
-                          </p>
-                        </div>
+                          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <p className="fw-bold">
+                              Wallet Available Amount : Rs. {walletBalance}
+                            </p>
+                          </div>
 
-                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                          <div class="form-floating">
-                            <select
-                              class="form-select"
-                              id="floatingSelect"
-                              aria-label="Floating label select example"
-                              name="Payment_Mode"
+                          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <div class="form-floating">
+                              <select
+                                class="form-select"
+                                id="floatingSelect"
+                                aria-label="Floating label select example"
+                                name="Payment_Mode"
                                 value={formData.Payment_Mode}
                                 onChange={handleChange}
                                 required
-                            >
-                              <option selected value="">Select Payment Method</option>
-                              <option value="Online">Online</option>
-                              {/* <option value="2">
+                              >
+                                <option selected value="">
+                                  Select Payment Method
+                                </option>
+                                <option value="Online">Online</option>
+                                {/* <option value="2">
                                 Debit Card/ Credit Card / Netbanking
                               </option> */}
-                            </select>
-                            <label for="floatingSelect">Payment Method</label>
+                              </select>
+                              <label for="floatingSelect">Payment Method</label>
+                            </div>
                           </div>
-                        </div>
 
-                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                          <p className="m-0">UPI Payment - Free</p>
-                          {/* <p className="m-0">
+                          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <p className="m-0">UPI Payment - Free</p>
+                            {/* <p className="m-0">
                             Debit Card/ Credit Card / Netbanking - 3% Additional
                             Charges
                           </p> */}
-                        </div>
+                          </div>
 
-                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                          <div className="text-start mb-3">
-                          <button className="btn btn-primary p-2" disabled={isLoading}>
-                                {isLoading
-                                  ? "Processing..."
-                                  : "Pay Now"}
+                          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <div className="text-start mb-3">
+                              <button
+                                className="btn btn-primary p-2"
+                                disabled={isLoading}
+                              >
+                                {isLoading ? "Processing..." : "Pay Now"}
                               </button>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
                   </form>
                 </div>
               </div>

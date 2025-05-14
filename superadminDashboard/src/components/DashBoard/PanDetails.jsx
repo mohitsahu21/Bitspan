@@ -79,10 +79,27 @@ const PanDetails = () => {
   }, []);
 
   useEffect(() => {
+    if (services) {
+      const purchaseBankIdService = services.find(
+        (item) => item.service_name === "Pan Details"
+      );
+
+      if (purchaseBankIdService?.status === "Deactive") {
+        Swal.fire({
+          title: "Service Unavailable",
+          text: "This service is temporarily down and will be available shortly. Please check back later.",
+          icon: "error",
+        });
+        navigate("/dashboard");
+      }
+    }
+  }, [services]);
+
+  useEffect(() => {
     if (prices.length > 0) {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        amount: prices[0].pan_aadhar_price,
+        amount: prices[0].pan_price,
       }));
     }
   }, [prices]);
