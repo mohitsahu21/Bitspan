@@ -170,6 +170,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const AddWalletSummary = () => {
   const [allData, setAllData] = useState([]);
@@ -182,6 +183,7 @@ const AddWalletSummary = () => {
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState(""); // State for start date
   const [endDate, setEndDate] = useState("");
+  const navigate = useNavigate();
 
   const userID = currentUser.userId;
 
@@ -341,6 +343,7 @@ const AddWalletSummary = () => {
                                       <th scope="col">Status</th>
                                       <th scope="col">Remark</th>
                                       <th scope="col">Process Date</th>
+                                      <th scope="col">View</th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -372,6 +375,19 @@ const AddWalletSummary = () => {
                                           <td>{item.status}</td>
                                           <td>{item.remark}</td>
                                           <td>{item.process_date}</td>
+                                          <td>
+                                            <button
+                                              type="button"
+                                              class="btn btn-dark"
+                                              onClick={() =>
+                                                navigate(
+                                                  `/wallet-online-receipt/${item.id}`
+                                                )
+                                              }
+                                            >
+                                              Receipt
+                                            </button>
+                                          </td>
                                         </tr>
                                       ))
                                     ) : (
@@ -425,7 +441,7 @@ const Wrapper = styled.div`
   }
   button {
     color: #fff;
-    background: #6d70ff;
+    /* background: #6d70ff; */
   }
   .form-container {
     width: 50%;

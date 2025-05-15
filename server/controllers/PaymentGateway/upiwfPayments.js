@@ -131,7 +131,8 @@ const webhook_two = async (req, res) => {
     });
 
     const response = await axios.post(
-      "https://upi.wf/api/check-order-status",
+      // "https://upi.wf/api/check-order-status",
+      "https://qrpay.index.wf/api/check-order-status",
       postData.toString(),
       { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
     );
@@ -170,7 +171,8 @@ const webhook_two = async (req, res) => {
 const createOrder = async (req, res) => {
   const { customer_mobile, amount, remark1, remark2 } = req.body;
   const order_id = `OR${Date.now()}`; // Dynamic order ID based on timestamp
-  const user_token = process.env.UPIWF_KEY; // Security token from environment
+  // const user_token = process.env.UPIWF_KEY; // Security token from environment
+  const user_token = process.env.QRPAY_KEY; // Security token from environment
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const redirect_url = `https://2kadam.co.in/api/auth/superAdmin/webhooktwo?order_id=${order_id}&website=${remark1}`;
   const status = "Pending";
@@ -210,7 +212,8 @@ const createOrder = async (req, res) => {
         redirect_url,
       };
       const response = await axios.post(
-        "https://upi.wf/api/create-order",
+        // "https://upi.wf/api/create-order",
+        "https://qrpay.index.wf/api/create-order",
         postData
       );
       console.log(response);
@@ -267,7 +270,7 @@ const createOrderToAddWalletMoney = async (req, res) => {
   // const { customer_mobile, amount, remark1, remark2 } = req.body;
   const order_id = `WOR${Date.now()}`; // Dynamic order ID based on timestamp
   const Transaction_Reference = `Pay Online Payment Gateway Order ID ${order_id}`;
-  const user_token = process.env.UPIWF_KEY; // Security token from environment
+  const user_token = process.env.QRPAY_KEY; // Security token from environment
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const redirect_url = `https://2kadam.co.in/api/auth/upiwf/addWalletMoneyUsingPG?order_id=${order_id}&website=${website}`;
   const status = "Pending";
@@ -312,7 +315,8 @@ const createOrderToAddWalletMoney = async (req, res) => {
         redirect_url,
       };
       const response = await axios.post(
-        "https://upi.wf/api/create-order",
+        // "https://upi.wf/api/create-order",
+        "https://qrpay.index.wf/api/create-order",
         postData
       );
       console.log(response);
@@ -348,7 +352,7 @@ const createOrderToAddWalletMoney = async (req, res) => {
 const addWalletMoneyUsingPG = async (req, res) => {
   const clientTxnId = req.query.order_id;
   const website = req.query.website;
-  const key = process.env.UPIWF_KEY;
+  const key = process.env.QRPAY_KEY;
 
   try {
     // Fetch transaction details from the database
@@ -373,7 +377,8 @@ const addWalletMoneyUsingPG = async (req, res) => {
       order_id: dbData.order_id,
     });
     const response = await axios.post(
-      "https://upi.wf/api/check-order-status",
+      // "https://upi.wf/api/check-order-status",
+      "https://qrpay.index.wf/api/check-order-status",
       postData.toString(),
       {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -534,7 +539,7 @@ const createOrderToBuyUserId = async (req, res) => {
 
   const order_id = `ORUID${Date.now()}`; // Dynamic order ID based on timestamp
   const Transaction_Reference = `Buy ${userId_type} User Id Payment Gateway Order ID ${order_id}`;
-  const user_token = process.env.UPIWF_KEY; // Security token from environment
+  const user_token = process.env.QRPAY_KEY; // Security token from environment
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const redirect_url = `https://2kadam.co.in/api/auth/upiwf/BuyUserIdUsingPGVerify?order_id=${order_id}&website=${website}`;
   const status = "Pending";
@@ -578,7 +583,8 @@ const createOrderToBuyUserId = async (req, res) => {
         redirect_url,
       };
       const response = await axios.post(
-        "https://upi.wf/api/create-order",
+        // "https://upi.wf/api/create-order",
+        "https://qrpay.index.wf/api/create-order",
         postData
       );
       console.log(response);
@@ -756,7 +762,7 @@ const buyId = (req, res) => {
 // const BuyUserIdUsingPGVerify = async (req, res) => {
 //   const clientTxnId = req.query.order_id;
 //   const website = req.query.website;
-//   const key = process.env.UPIWF_KEY;
+//   const key = process.env.QRPAY_KEY;
 
 //   try {
 //     // Fetch transaction details from the database
@@ -811,7 +817,7 @@ const buyId = (req, res) => {
 const BuyUserIdUsingPGVerify = async (req, res) => {
   const clientTxnId = req.query.order_id;
   const website = req.query.website;
-  const key = process.env.UPIWF_KEY;
+  const key = process.env.QRPAY_KEY;
 
   try {
     // Fetch transaction details from the database
@@ -841,7 +847,8 @@ const BuyUserIdUsingPGVerify = async (req, res) => {
       order_id: dbData.orderId,
     });
     const response = await axios.post(
-      "https://upi.wf/api/check-order-status",
+      // "https://upi.wf/api/check-order-status",
+      "https://qrpay.index.wf/api/check-order-status",
       postData.toString(),
       {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -953,7 +960,7 @@ const createUserOnline = async (req, res) => {
   // const { customer_mobile, amount, remark1, remark2 } = req.body;
   const order_id = `WOR${Date.now()}`; // Dynamic order ID based on timestamp
   const Transaction_Reference = `Pay Online Payment Gateway Order ID ${order_id}`;
-  const user_token = process.env.UPIWF_KEY; // Security token from environment
+  const user_token = process.env.QRPAY_KEY; // Security token from environment
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const redirect_url = `https://2kadam.co.in/api/auth/upiwf/addWalletMoneyUsingPG?order_id=${order_id}&website=${website}`;
   const status = "Pending";
@@ -998,7 +1005,8 @@ const createUserOnline = async (req, res) => {
         redirect_url,
       };
       const response = await axios.post(
-        "https://upi.wf/api/create-order",
+        // "https://upi.wf/api/create-order",
+        "https://qrpay.index.wf/api/create-order",
         postData
       );
       console.log(response);
@@ -1078,7 +1086,7 @@ const createUserOnline = async (req, res) => {
 
 //   try {
 
-//     const user_token = process.env.UPIWF_KEY // Security token from environment
+//     const user_token = process.env.QRPAY_KEY // Security token from environment
 //     let userId = "" ;
 //     const cleanName = (name) => {
 //       return name.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
@@ -1328,7 +1336,7 @@ const userRegiserOnline = async (req, res) => {
   }
 
   try {
-    const user_token = process.env.UPIWF_KEY; // Security token from environment
+    const user_token = process.env.QRPAY_KEY; // Security token from environment
     let userId = "";
     const cleanName = (name) => name.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
     let namePart = cleanName(UserName).slice(0, 4);
@@ -1567,7 +1575,8 @@ const userRegiserOnline = async (req, res) => {
                     };
 
                     const response = await axios.post(
-                      "https://upi.wf/api/create-order",
+                      // "https://upi.wf/api/create-order",
+                      "https://qrpay.index.wf/api/create-order",
                       postData
                     );
 
@@ -1611,7 +1620,7 @@ const userRegiserOnline = async (req, res) => {
 const userRegiserOnlinePGVerify = async (req, res) => {
   const clientTxnId = req.query.order_id;
   const website = req.query.website;
-  const key = process.env.UPIWF_KEY;
+  const key = process.env.QRPAY_KEY;
 
   console.log(clientTxnId);
 
@@ -1643,7 +1652,8 @@ const userRegiserOnlinePGVerify = async (req, res) => {
       order_id: dbData.UserId,
     });
     const response = await axios.post(
-      "https://upi.wf/api/check-order-status",
+      // "https://upi.wf/api/check-order-status",
+      "https://qrpay.index.wf/api/check-order-status",
       postData.toString(),
       {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -1721,7 +1731,7 @@ const MakePaymentINPortal = async (req, res) => {
 
   const order_id = `ORUID${Date.now()}`; // Dynamic order ID based on timestamp
   // const Transaction_Reference = `Buy ${userId_type} User Id Payment Gateway Order ID ${userId}`
-  const user_token = process.env.UPIWF_KEY; // Security token from environment
+  const user_token = process.env.QRPAY_KEY; // Security token from environment
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   const redirect_url = `https://2kadam.co.in/api/auth/upiwf/MakeUserPaymentINPortalPGVerify?order_id=${userId}&website=${website}`;
   const status = "Pending";
@@ -1753,7 +1763,8 @@ const MakePaymentINPortal = async (req, res) => {
       redirect_url,
     };
     const response = await axios.post(
-      "https://upi.wf/api/create-order",
+      // "https://upi.wf/api/create-order",
+      "https://qrpay.index.wf/api/create-order",
       postData
     );
     console.log(response);
@@ -1781,7 +1792,7 @@ const MakePaymentINPortal = async (req, res) => {
 // const  MakeUserPaymentINPortalPGVerify = async (req, res) => {
 //   const clientTxnId = req.query.order_id;
 //   const website = req.query.website;
-//   const key = process.env.UPIWF_KEY;
+//   const key = process.env.QRPAY_KEY;
 
 //   console.log(clientTxnId)
 
@@ -1843,7 +1854,7 @@ const MakePaymentINPortal = async (req, res) => {
 const MakeUserPaymentINPortalPGVerify = async (req, res) => {
   const clientTxnId = req.query.order_id;
   const website = req.query.website;
-  const key = process.env.UPIWF_KEY;
+  const key = process.env.QRPAY_KEY;
 
   const userId = clientTxnId.split("_")[0];
   console.log(clientTxnId);
@@ -1877,7 +1888,8 @@ const MakeUserPaymentINPortalPGVerify = async (req, res) => {
       order_id: clientTxnId,
     });
     const response = await axios.post(
-      "https://upi.wf/api/check-order-status",
+      // "https://upi.wf/api/check-order-status",
+      "https://qrpay.index.wf/api/check-order-status",
       postData.toString(),
       {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },

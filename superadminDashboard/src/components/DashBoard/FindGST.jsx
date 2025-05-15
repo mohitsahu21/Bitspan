@@ -7,7 +7,6 @@ import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal, Button, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { use } from "react";
 
 const FindGST = () => {
   const dispatch = useDispatch();
@@ -81,7 +80,7 @@ const FindGST = () => {
   useEffect(() => {
     if (services) {
       const purchaseBankIdService = services.find(
-        (item) => item.service_name === "Pan by Aadhaar"
+        (item) => item.service_name === "GST Number"
       );
 
       if (purchaseBankIdService?.status === "Deactive") {
@@ -99,7 +98,7 @@ const FindGST = () => {
     if (prices.length > 0) {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        amount: prices[0].pan_aadhar_price,
+        amount: prices[0].rc_download_price,
       }));
     }
   }, [prices]);
@@ -124,95 +123,146 @@ const FindGST = () => {
     }
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   // if (
+  //   //   formData.amount === null ||
+  //   //   formData.amount === undefined ||
+  //   //   formData.amount === "" ||
+  //   //   isNaN(formData.amount) ||
+  //   //   Number(formData.amount) <= 0
+  //   // ) {
+  //   //   Swal.fire({
+  //   //     title: "Failure",
+  //   //     text: "Please connect with admin.",
+  //   //     icon: "error",
+  //   //   }).then(() => {
+  //   //     navigate("/raise-complaint");
+  //   //   });
+  //   //   setLoading(false);
+  //   //   return;
+  //   // }
+  //   console.log("Form Data Submitted: ", formData);
+  //   try {
+  //     const response = await axios.post(
+  //       `https://2kadam.co.in/api/auth/instpay/fetchGSTVerification`,
+  //       formData
+  //       // {
+  //       //   headers: {
+  //       //     "Content-Type": "application/json",
+  //       //     Authorization: `Bearer ${token}`,
+  //       //   },
+  //       // }
+  //     );
+
+  //     console.log("Response data:", response.data);
+  //     Swal.fire({
+  //       title: "GST Data Retrieved",
+  //       text: "GST Data Retrieved",
+  //       icon: "success",
+  //     });
+
+  //     // console.log("GST Data:", response.data.gstData);
+  //     // console.log("Wallet Data:", response.data.wallet);
+  //     //     if (
+  //     //       response.data.status === "Success" &&
+  //     //       response.data.gstData.status === "Success"
+  //     //     ) {
+  //     //       const { gstData, wallet } = response.data;
+  //     //       console.log("GST Data:", gstData);
+  //     //       console.log("Wallet Data:", wallet);
+  //     //       //   <strong>Nature of Business Activities:</strong> ${gstData?.nature_of_business_activities?.join(
+  //     //       //         ", "
+  //     //       //       )}<br/>
+  //     //       Swal.fire({
+  //     //         title: "PAN Data Retrieved",
+  //     //         html: `
+  //     //     <strong>Operator ID:</strong> ${gstData?.opid || "N/A"}<br/>
+  //     //  <strong>Trade name of Business:</strong> ${
+  //     //    gstData?.trade_name_of_business || "N/A"
+  //     //  }<br/>
+  //     //  <strong>GST No:</strong> ${gstData?.number || "N/A"}<br/>
+  //     //  <strong>Center Jurisdiction:</strong> ${
+  //     //    gstData?.center_jurisdiction || "N/A"
+  //     //  }<br/>
+  //     //  <strong>State Jurisdiction:</strong> ${
+  //     //    gstData?.state_jurisdiction || "N/A"
+  //     //  }<br/>
+  //     //  <strong>Date of Registration:</strong> ${
+  //     //    gstData?.date_of_registration || "N/A"
+  //     //  }<br/>
+  //     //  <strong>Constitution of Business:</strong> ${
+  //     //    gstData?.constitution_of_business || "N/A"
+  //     //  }<br/>
+  //     //  <strong>Taxpayer Type:</strong> ${gstData?.taxpayer_type || "N/A"}<br/>
+  //     //  <strong>GST in Status:</strong> ${gstData?.gst_in_status || "N/A"}<br/>
+  //     //  <strong>Last Update Date:</strong> ${gstData?.last_update_date || "N/A"}<br/>
+  //     //  <strong>Principal Place Address:</strong> ${
+  //     //    gstData?.principal_place_address || "N/A"
+  //     //  }<br/>
+  //     //  <strong>Message:</strong> ${gstData?.message || "N/A"}<br/>
+  //     //  <strong>Order ID:</strong> ${gstData?.orderid || "N/A"}<br/>
+  //     //  <hr/>
+  //     //  <strong>Transaction ID:</strong> ${wallet?.transactionId || "N/A"}<br/>
+  //     //   `,
+  //     //         icon: "success",
+  //     //       });
+
+  //     //       // Reset form
+  //     //       setFormData({
+  //     //         number: "",
+  //     //         userId: currentUser?.userId,
+  //     //         amount: prices[0]?.pan_aadhar_price,
+  //     //       });
+  //     //     } else {
+  //     //       Swal.fire({
+  //     //         title: "Error",
+  //     //         text: response?.data?.message || "Something went wrong!",
+  //     //         icon: "error",
+  //     //       });
+  //     //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     // console.log(error?.response?.data?.message);
+
+  //     Swal.fire({
+  //       title: "Error",
+  //       text: error?.response?.data?.message || "Something went wrong!",
+  //       icon: "error",
+  //     });
+  //   } finally {
+  //     setLoading(false);
+  //     setPin(["", "", "", ""]);
+  //     pinRefs.current[0]?.focus();
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    if (
-      formData.amount === null ||
-      formData.amount === undefined ||
-      formData.amount === "" ||
-      isNaN(formData.amount) ||
-      Number(formData.amount) <= 0
-    ) {
-      Swal.fire({
-        title: "Failure",
-        text: "Please connect with admin.",
-        icon: "error",
-      }).then(() => {
-        navigate("/raise-complaint");
-      });
-      setLoading(false);
-      return;
-    }
     console.log("Form Data Submitted: ", formData);
     try {
       const response = await axios.post(
         `https://2kadam.co.in/api/auth/instpay/fetchGSTVerification`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        formData
       );
-      if (response.data.status === "Success") {
-        const { gstData, wallet } = response.data;
-        //   <strong>Nature of Business Activities:</strong> ${gstData?.nature_of_business_activities?.join(
-        //         ", "
-        //       )}<br/>
-        Swal.fire({
-          title: "PAN Data Retrieved",
-          html: `
-      <strong>Operator ID:</strong> ${gstData?.opid || "N/A"}<br/>
-   <strong>Trade name of Business:</strong> ${
-     gstData?.trade_name_of_business || "N/A"
-   }<br/>
-   <strong>GST No:</strong> ${gstData?.number || "N/A"}<br/>
-   <strong>Center Jurisdiction:</strong> ${
-     gstData?.center_jurisdiction || "N/A"
-   }<br/>
-   <strong>State Jurisdiction:</strong> ${
-     gstData?.state_jurisdiction || "N/A"
-   }<br/>
-   <strong>Date of Registration:</strong> ${
-     gstData?.date_of_registration || "N/A"
-   }<br/>
-   <strong>Constitution of Business:</strong> ${
-     gstData?.constitution_of_business || "N/A"
-   }<br/>
-   <strong>Taxpayer Type:</strong> ${gstData?.taxpayer_type || "N/A"}<br/>
-   <strong>GST in Status:</strong> ${gstData?.gst_in_status || "N/A"}<br/>
-   <strong>Last Update Date:</strong> ${gstData?.last_update_date || "N/A"}<br/>
-   <strong>Principal Place Address:</strong> ${
-     gstData?.principal_place_address || "N/A"
-   }<br/>
-   <strong>Message:</strong> ${gstData?.message || "N/A"}<br/>
-   <strong>Order ID:</strong> ${gstData?.orderid || "N/A"}<br/>
-   <hr/>
-   <strong>Transaction ID:</strong> ${wallet?.transactionId || "N/A"}<br/>
-    `,
-          icon: "success",
-        });
 
-        // Reset form
-        setFormData({
-          number: "",
-          userId: currentUser?.userId,
-          amount: prices[0]?.pan_aadhar_price,
-        });
-      } else {
-        Swal.fire({
-          title: "Error",
-          text: response?.data?.message || "Something went wrong!",
-          icon: "error",
-        });
-      }
+      console.log("Response data:", response?.data);
+      console.log("Response data:", response?.data?.gstData);
+      console.log("Response data:", response?.data?.wallet);
+      Swal.fire({
+        title: "GST Data Retrieved",
+        text: "GST Data Retrieved",
+        icon: "success",
+      });
     } catch (error) {
       console.log(error);
+      console.log("Error Response:", error?.response);
+      console.log("Error Message:", error?.message);
       Swal.fire({
         title: "Error",
-        text: error?.response?.data?.message || "Something went wrong!",
+        text: error?.message || "Something went wrong!",
         icon: "error",
       });
     } finally {
@@ -469,3 +519,118 @@ const Wrapper = styled.div`
     font-size: 14px;
   }
 `;
+
+// import React, { useState } from "react";
+// import axios from "axios";
+// import Swal from "sweetalert2";
+
+// const FindGST = () => {
+//   const [formData, setFormData] = useState({
+//     number: "",
+//     userId: "",
+//     amount: "",
+//   });
+
+//   const [loading, setLoading] = useState(false);
+
+//   const handleChange = (e) => {
+//     setFormData({ ...formData, [e.target.name]: e.target.value });
+//   };
+//   console.log("Form data:", formData);
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setLoading(true);
+
+//     try {
+//       const res = await axios.post(
+//         "https://2kadam.co.in/api/auth/instpay/fetchGSTVerification",
+//         formData
+//       );
+//       const data = res.data;
+//       console.log("Response data:", data);
+//       console.log("Response data:", data.gstData);
+//       console.log("Response data:", data.wallet);
+
+//       Swal.fire({
+//         icon: "success",
+//         title: "GST Verification Successful",
+//         html: `
+//           <p><strong>Transaction ID:</strong> ${data.wallet.transactionId}</p>
+//           <p><strong>Previous Balance:</strong> ₹${
+//             data.wallet.previousBalance
+//           }</p>
+//           <p><strong>New Balance:</strong> ₹${data.wallet.newBalance}</p>
+//           <p><strong>Deducted Amount:</strong> ₹${
+//             data.wallet.deductedAmount
+//           }</p>
+//           <pre>${JSON.stringify(data.gstData, null, 2)}</pre>
+//         `,
+//         width: "600px",
+//       });
+//     } catch (err) {
+//       console.error(err);
+//       Swal.fire({
+//         icon: "error",
+//         title: "Error",
+//         text: err.message || "Something went wrong!",
+//       });
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   return (
+//     <div className="max-w-xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+//       <h2 className="text-2xl font-semibold mb-4">GST Verification</h2>
+//       <form onSubmit={handleSubmit}>
+//         <div className="mb-4">
+//           <label className="block mb-1 font-medium">GST Number</label>
+//           <input
+//             type="text"
+//             name="number"
+//             value={formData.number}
+//             onChange={handleChange}
+//             className="w-full border px-3 py-2 rounded"
+//             placeholder="Enter GST Number"
+//             required
+//           />
+//         </div>
+//         <div className="mb-4">
+//           <label className="block mb-1 font-medium">User ID</label>
+//           <input
+//             type="text"
+//             name="userId"
+//             value={formData.userId}
+//             onChange={handleChange}
+//             className="w-full border px-3 py-2 rounded"
+//             placeholder="Enter User ID"
+//             required
+//           />
+//         </div>
+//         <div className="mb-4">
+//           <label className="block mb-1 font-medium">Amount</label>
+//           <input
+//             type="number"
+//             step="0.01"
+//             name="amount"
+//             value={formData.amount}
+//             onChange={handleChange}
+//             className="w-full border px-3 py-2 rounded"
+//             placeholder="Enter amount to deduct"
+//             required
+//           />
+//         </div>
+//         <button
+//           type="submit"
+//           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+//           disabled={loading}
+//         >
+//           {loading ? "Verifying..." : "Verify GST"}
+//         </button>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default FindGST;

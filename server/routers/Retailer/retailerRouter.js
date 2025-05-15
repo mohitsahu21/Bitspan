@@ -73,6 +73,7 @@ const {
   getDSCFormData,
   buyDSCcoupon,
   getDSCToken,
+  getAddMoneyToWalletOnlineById,
 } = require("../../controllers/Retailer/retailerController");
 const authenticateToken = require("../../middleware/authenticateToken");
 
@@ -395,5 +396,6 @@ router.post("/addDSCForm", addDSCForm);
 router.get("/getDSCFormData/:userId", getDSCFormData);
 router.post("/buyDSCcoupon", buyDSCcoupon);
 router.get("/getDSCToken/:userId", getDSCToken);
+router.get("/getAddMoneyToWalletOnlineById/:id", getAddMoneyToWalletOnlineById);
 
 module.exports = router;

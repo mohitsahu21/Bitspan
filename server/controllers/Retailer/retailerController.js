@@ -4209,6 +4209,27 @@ const getAddMoneyToWalletOnline = (req, res) => {
   });
 };
 
+const getAddMoneyToWalletOnlineById = (req, res) => {
+  const id = req.params.id;
+
+  const query = `SELECT * FROM user_wallet_add_money_request WHERE id = ? AND Payment_Mode = "Online"`;
+
+  db.query(query, [id], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found for this ID" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result[0] });
+  });
+};
+
 const getPackageData = (req, res) => {
   const packageId = req.params.packageId;
 
@@ -5604,4 +5625,5 @@ module.exports = {
   getDSCFormData,
   buyDSCcoupon,
   getDSCToken,
+  getAddMoneyToWalletOnlineById,
 };
