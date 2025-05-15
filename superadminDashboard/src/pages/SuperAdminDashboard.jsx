@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { MdAddCard, MdCalendarMonth } from "react-icons/md";
-import { LuIndianRupee } from "react-icons/lu";
+import { MdAddCard, MdAirplaneTicket, MdBakeryDining, MdBook, MdCalendarMonth, MdCardGiftcard, MdCommentBank, MdCreditCard, MdFileCopy, MdFileDownloadDone, MdFileOpen, MdFilePresent, MdFileUploadOff, MdFilterFrames, MdFoodBank, MdFormatAlignCenter, MdFormatClear, MdFormatItalic, MdFormatOverline, MdMoney, MdPages, MdPageview, MdPending, MdPendingActions, MdPriceChange, MdRequestPage, MdRequestQuote } from "react-icons/md";
+import { LuFormInput, LuIndianRupee, LuRemoveFormatting } from "react-icons/lu";
 
 import { Link, useNavigate } from "react-router-dom";
-import { BiHomeAlt } from "react-icons/bi";
+import { BiHomeAlt, BiMoneyWithdraw, BiWallet } from "react-icons/bi";
 import { LuUserPlus } from "react-icons/lu";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { BsInfoSquare } from 'react-icons/bs';
+import { BsBank, BsInfoSquare, BsTicket, BsTicketDetailed } from 'react-icons/bs';
+import { FaFile, FaFortAwesome, FaMobileAlt } from "react-icons/fa";
+import { FaIndianRupeeSign, FaRegMessage, FaRupeeSign, FaTicketSimple } from "react-icons/fa6";
+import { TbCoinRupee, TbCoinRupeeFilled, TbMoodDollar } from "react-icons/tb";
+import { RiGitClosePullRequestFill, RiMoneyRupeeCircleFill } from "react-icons/ri";
 
 
 
@@ -551,7 +555,7 @@ const CustomTooltip = styled(Tooltip)`
                         <Link to="/Offline-Recharge-history">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-2 icon" style={{backgroundColor:"#2ecc71" , borderRadius:"15px"}}>
-                            <MdAddCard />
+ <FaMobileAlt />
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
@@ -569,7 +573,8 @@ const CustomTooltip = styled(Tooltip)`
                         <Link to="/view-all-offline-history">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-2 icon"style={{backgroundColor:"#29A0B1" , borderRadius:"15px"}}>
-                            <MdAddCard />
+                              <MdPendingActions />
+
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
@@ -587,7 +592,7 @@ const CustomTooltip = styled(Tooltip)`
                         <Link to="/Pan-offline-history">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-2 icon"style={{backgroundColor:"#923aac" , borderRadius:"15px"}}>
-                            <MdAddCard />
+                            <MdFileCopy />
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
@@ -605,7 +610,7 @@ const CustomTooltip = styled(Tooltip)`
                         <Link to="/Bank-Id-history">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-2 icon" style={{backgroundColor:"#f56f43" , borderRadius:"15px"}}>
-                            <MdAddCard />
+                            <BsBank />
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
@@ -623,7 +628,7 @@ const CustomTooltip = styled(Tooltip)`
                         <Link to="/E-district-history">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-2 icon" style={{backgroundColor:"#528269" , borderRadius:"15px"}}>
-                            <MdAddCard />
+                            <MdFileOpen />
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
@@ -641,7 +646,7 @@ const CustomTooltip = styled(Tooltip)`
                         <Link to="/verify-E-district-form-history">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-2 icon" style={{backgroundColor:"#6e6ace" , borderRadius:"15px"}}>
-                            <MdAddCard />
+                            <MdBook />
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
@@ -659,7 +664,7 @@ const CustomTooltip = styled(Tooltip)`
                         <Link to="/sambal-form-history">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-2 icon" style={{backgroundColor:"#2fddf4" , borderRadius:"15px"}}>
-                            <MdAddCard />
+                            <MdCreditCard />
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
@@ -677,7 +682,7 @@ const CustomTooltip = styled(Tooltip)`
                         <Link to="/pan-coupon-requests">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-2 icon" style={{backgroundColor:"#e74c3c" , borderRadius:"15px"}}>
-                            <MdAddCard />
+                            <FaTicketSimple />
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
@@ -695,7 +700,7 @@ const CustomTooltip = styled(Tooltip)`
                         <Link to="/complaint-raised-list">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-2 icon" style={{backgroundColor:"#3498db" , borderRadius:"15px"}}>
-                            <MdAddCard />
+                           <FaRegMessage />
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
@@ -713,7 +718,7 @@ const CustomTooltip = styled(Tooltip)`
                         <Link to="/wallet-withdraw-requests">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-2 icon" style={{backgroundColor:"#DD7536" , borderRadius:"15px"}}>
-                            <MdAddCard />
+                            <TbCoinRupee />
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
@@ -731,7 +736,7 @@ const CustomTooltip = styled(Tooltip)`
                         <Link to="/add-wallet-money-requests">
                         <div className="d-flex">
                           <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-2 icon" style={{backgroundColor:" #06d6a0" , borderRadius:"15px"}}>
-                            <MdAddCard />
+                            <BiWallet />
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
