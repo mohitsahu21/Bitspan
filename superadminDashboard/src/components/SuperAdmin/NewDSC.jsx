@@ -40,7 +40,8 @@ const NewDSC = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:7777/api/auth/retailer/digitalSignaturePlan",
+        // "http://localhost:7777/api/auth/retailer/digitalSignaturePlan",
+        "https://2kadam.co.in/api/auth/retailer/digitalSignaturePlan",
         {
           year,
           amount,

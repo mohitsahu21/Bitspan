@@ -6,6 +6,7 @@ import { BiHomeAlt } from "react-icons/bi";
 import ReactPaginate from "react-paginate";
 import { Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const PanTransactionReport = () => {
   const { currentUser, token } = useSelector((state) => state.user);
@@ -13,6 +14,7 @@ const PanTransactionReport = () => {
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [keyword, setKeyword] = useState("");
+  const navigate = useNavigate();
   // const [selectedDate, setSelectedDate] = useState("");
   const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
@@ -88,7 +90,7 @@ const PanTransactionReport = () => {
       (!toDate ||
         new Date(row.created_at).toISOString().split("T")[0] <=
           new Date(toDate).toISOString().split("T")[0]);
-    console.log(matchesKeyword);
+    // console.log(matchesKeyword);
     return matchesKeyword && matchesDate && matchesType;
   });
 
@@ -308,6 +310,7 @@ const PanTransactionReport = () => {
                                     <th scope="col">Physical Pan</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Message</th>
+                                    <th scope="col">View</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -338,6 +341,18 @@ const PanTransactionReport = () => {
                                           <td>{item.physicalPan}</td>
                                           <td>{item.status}</td>
                                           <td>{item.message}</td>
+                                          <td>
+                                            <button
+                                              className="btn btn-dark btn-sm"
+                                              onClick={() =>
+                                                navigate(
+                                                  `/pan-receipt/${item.orderid}`
+                                                )
+                                              }
+                                            >
+                                              Receipt
+                                            </button>
+                                          </td>
                                         </tr>
                                       )
                                     )
@@ -410,7 +425,7 @@ const Wrapper = styled.div`
   }
   button {
     color: #fff;
-    background: #6d70ff;
+    /* background: #6d70ff; */
   }
   .form-container {
     width: 50%;

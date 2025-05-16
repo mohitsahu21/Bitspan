@@ -147,7 +147,8 @@ const RCFind = () => {
     console.log("Form Data Submitted: ", formData);
     try {
       const response = await axios.post(
-        `http://localhost:7777/api/auth/aadhar/fetchRcDetails`,
+        // `http://localhost:7777/api/auth/aadhar/fetchRcDetails`,
+        `https://2kadam.co.in/api/auth/aadhar/fetchRcDetails`,
         formData,
         {
           headers: {

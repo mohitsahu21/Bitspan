@@ -317,6 +317,7 @@ const FindGST = lazy(() => import("../components/DashBoard/FindGST"));
 const WalletTwoReceipt = lazy(() =>
   import("../components/DashBoard/WalletTwoReceipt")
 );
+const PanReceipt = lazy(() => import("../components/DashBoard/PanReceipt"));
 
 const RetailerRoutes = () => {
   const { currentUser, token } = useSelector((state) => state.user);
@@ -780,6 +781,7 @@ const RetailerRoutes = () => {
               path="/wallet-online-receipt/:id"
               element={<WalletTwoReceipt />}
             />
+            <Route path="/pan-receipt/:id" element={<PanReceipt />} />
             <Route path="/Apply-DSC" element={<DigitalSign />} />
             <Route path="/DSC-Token" element={<DigitalToken />} />
             <Route path="/DSC-history" element={<DigitalSignHistory />} />

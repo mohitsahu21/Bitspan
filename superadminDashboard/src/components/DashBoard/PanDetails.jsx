@@ -147,8 +147,8 @@ const PanDetails = () => {
     console.log("Form Data Submitted: ", formData);
     try {
       const response = await axios.post(
-        `http://localhost:7777/api/auth/aadhar/PanDetails`,
-        // `https://2kadam.co.in/api/auth/aadhar/PanDetails`,
+        // `http://localhost:7777/api/auth/aadhar/PanDetails`,
+        `https://2kadam.co.in/api/auth/aadhar/PanDetails`,
         formData,
         {
           headers: {

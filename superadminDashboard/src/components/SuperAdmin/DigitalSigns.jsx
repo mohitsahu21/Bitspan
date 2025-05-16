@@ -37,7 +37,8 @@ const DigitalSigns = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "http://localhost:7777/api/auth/retailer/getdigitalSignaturePlan",
+        // "http://localhost:7777/api/auth/retailer/getdigitalSignaturePlan",
+        "https://2kadam.co.in/api/auth/retailer/getdigitalSignaturePlan",
         {
           headers: {
             "Content-Type": "application/json",
@@ -104,7 +105,8 @@ const DigitalSigns = () => {
 
     try {
       const { data } = await axios.put(
-        `http://localhost:7777/api/auth/retailer/updateDigitalSignaturePlan/${id}`,
+        // `http://localhost:7777/api/auth/retailer/updateDigitalSignaturePlan/${id}`,
+        `https://2kadam.co.in/api/auth/retailer/updateDigitalSignaturePlan/${id}`,
         { year, amount, link, status },
         {
           headers: {

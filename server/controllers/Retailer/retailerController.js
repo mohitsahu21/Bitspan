@@ -2115,6 +2115,27 @@ const nsdlTransactionNewRequest = (req, res) => {
   });
 };
 
+const getNsdlTransactionById = (req, res) => {
+  const { id } = req.params;
+
+  const query = `SELECT * FROM nsdlpan WHERE id = ?`;
+
+  db.query(query, [id], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "Record not found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result[0] });
+  });
+};
+
 const nsdlTransactionCorrection = (req, res) => {
   const query = `SELECT * FROM nsdlpancorrection ORDER BY id DESC`;
 
@@ -2125,6 +2146,27 @@ const nsdlTransactionCorrection = (req, res) => {
     } else {
       return res.status(200).json({ status: "Success", data: result });
     }
+  });
+};
+
+const getNsdlCorrectionById = (req, res) => {
+  const { id } = req.params;
+
+  const query = `SELECT * FROM nsdlpancorrection WHERE id = ?`;
+
+  db.query(query, [id], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "Record not found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result[0] });
   });
 };
 
@@ -5626,4 +5668,6 @@ module.exports = {
   buyDSCcoupon,
   getDSCToken,
   getAddMoneyToWalletOnlineById,
+  getNsdlTransactionById,
+  getNsdlCorrectionById,
 };

@@ -147,8 +147,8 @@ const PanAndAadharFind = () => {
     console.log("Form Data Submitted: ", formData);
     try {
       const response = await axios.post(
-        `http://localhost:7777/api/auth/aadhar/PanByAadhaar`,
-        // `https://2kadam.co.in/api/auth/aadhar/PanByAadhaar`,
+        // `http://localhost:7777/api/auth/aadhar/PanByAadhaar`,
+        `https://2kadam.co.in/api/auth/aadhar/PanByAadhaar`,
         formData,
         {
           headers: {

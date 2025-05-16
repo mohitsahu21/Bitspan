@@ -74,6 +74,8 @@ const {
   buyDSCcoupon,
   getDSCToken,
   getAddMoneyToWalletOnlineById,
+  getNsdlTransactionById,
+  getNsdlCorrectionById,
 } = require("../../controllers/Retailer/retailerController");
 const authenticateToken = require("../../middleware/authenticateToken");
 
@@ -161,11 +163,13 @@ router.get(
   authenticateToken,
   nsdlTransactionNewRequest
 );
+router.get("/getNsdlTransactionById/:id", getNsdlTransactionById);
 router.get(
   "/nsdl-trans-correction",
   authenticateToken,
   nsdlTransactionCorrection
 );
+router.get("/getNsdlCorrectionById/:id", getNsdlCorrectionById);
 router.get("/pan-4.0/:user_id", authenticateToken, panFourZeroGetAPI);
 
 const complainDataStorage = multer.diskStorage({
