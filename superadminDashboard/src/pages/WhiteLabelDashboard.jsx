@@ -30,8 +30,8 @@ const WhiteLabelDashboard = () => {
   // Define the custom tooltip styled component
   const CustomTooltip = styled(Tooltip)`
     .tooltip-inner {
-      background-color: #fdded1; /* Change the background color */
-      color: #fb510d; /* Change the text color */
+       background-color:  #3498db; /* Change the background color */
+  color: white;
       width: 150px;
       /* border: 1px solid black; */
     }
@@ -376,13 +376,14 @@ const WhiteLabelDashboard = () => {
                                           {/* <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-6 icon">
                                             <LuIndianRupee />
                                           </div> */}
-                                      
+                                      <User id="t-1">
                                           <div className="d-flex flex-column cardtext1  p-1" style={{backgroundColor:"rgba(255, 255, 255, 0.15)" , borderRadius:"12px"}}>
                                             <p className="mb-0 px-2   my-0 fs-6">
                                                Total Users
                                             </p>
                                           <h5 className="px-2 my-1"><LuUserPlus /> {users.length}</h5> 
                                           </div>
+                                          </User>
                                         
                                      
                                           
@@ -426,7 +427,7 @@ const WhiteLabelDashboard = () => {
                         </div>
                       </div>
                     </div> */}
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                    <div className="col-xxl-4 col-lg-6   d-flex justify-content-center my-3 p-0">
                       <div className="card card-2">
                         <Link
                           to="/View-All-Commission-History"
@@ -452,7 +453,7 @@ const WhiteLabelDashboard = () => {
                         </Link>
                       </div>
                     </div>
-                    <div className="col-xxl-4 col-lg-6 col-sm-8   d-flex justify-content-center my-3 p-0">
+                    <div className="col-xxl-4 col-lg-6   d-flex justify-content-center my-3 p-0">
                       <div className="card card-3">
                         <Link
                           to="/View-All-Commission-History"

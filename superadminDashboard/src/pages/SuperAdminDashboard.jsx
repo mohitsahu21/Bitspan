@@ -420,8 +420,8 @@ const SuperAdminDashboard = () => {
   // Define the custom tooltip styled component
 const CustomTooltip = styled(Tooltip)`
 .tooltip-inner {
-  background-color: #fdded1; /* Change the background color */
-  color: #fb510d; /* Change the text color */
+  background-color:  #3498db; /* Change the background color */
+  color: white; /* Change the text color */
   width: 190px;
   /* border: 1px solid black; */
 }
@@ -474,14 +474,16 @@ const CustomTooltip = styled(Tooltip)`
                                       <div className=" card-4 p-4 " id="main1">
                                         <div className="d-flex ">
                                          
+                                          <Link to="/users-joining-list">
                                        
+                                           <User id="t-1">
                                           <div className="d-flex flex-column text-white cardtext1 py-3">
                                            <h5>Total Users</h5>
-                                           
                                             {/* <h4 className="px-2 my-0">(Rs. 250/-)</h4>{" "} */}
                                             <h5>  <LuUserPlus /> {users?.length ? users?.length : "..."}</h5>
 
-                                          </div>
+                                          </div></User>
+                                          </Link>
                 
                 
                                           
