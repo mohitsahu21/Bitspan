@@ -86,4 +86,38 @@ const getDlPrint = async (apiKey, dlno, dob, cardtype = 1) => {
   }
 };
 
-module.exports = { findPanByAadhaar, findPanDetails, getRcPdfData, getDlPrint };
+const verifyVoterCard = async (epic_number, orderid) => {
+  const username = "9926054551";
+  const token = "da1a29b74e50cbfbf3f357beb52d6b32";
+  const url = `https://connect.ekychub.in/v3/verification/voter?username=${username}&token=${token}&epic_number=${epic_number}&orderid=${orderid}`;
+
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    throw new Error(error?.response?.data?.message || "API Error");
+  }
+};
+
+const verifyPassport = async (file_number, dob, orderid) => {
+  const username = "9926054551";
+  const token = "da1a29b74e50cbfbf3f357beb52d6b32";
+
+  const url = `https://connect.ekychub.in/v3/verification/passport?username=${username}&token=${token}&file_number=${file_number}&dob=${dob}&orderid=${orderid}`;
+
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (err) {
+    throw new Error("API call failed: " + err.message);
+  }
+};
+
+module.exports = {
+  findPanByAadhaar,
+  findPanDetails,
+  getRcPdfData,
+  getDlPrint,
+  verifyVoterCard,
+  verifyPassport,
+};

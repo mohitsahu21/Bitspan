@@ -8,6 +8,9 @@ const {
   fetchRcDetails,
   dlPrintController,
   fetchDLdetails,
+  voterCardVerification,
+  fetchVoterVerification,
+  passportVerification,
 } = require("../../controllers/Retailer/aadharController");
 const router = express.Router();
 
@@ -19,5 +22,8 @@ router.post("/fetchRcPdf", fetchRcPdf);
 router.post("/fetchRcDetails", fetchRcDetails);
 router.post("/dlPrintController", dlPrintController);
 router.post("/fetchDLdetails", fetchDLdetails);
+router.get("/voterCardVerification", voterCardVerification);
+router.post("/fetchVoterVerification", fetchVoterVerification);
+router.post("/passportVerification", passportVerification);
 
 module.exports = router;

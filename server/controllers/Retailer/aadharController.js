@@ -3,6 +3,7 @@ const {
   findPanDetails,
   getRcPdfData,
   getDlPrint,
+  verifyVoterCard,
 } = require("../../APIS URL/aadharApi");
 const { db } = require("../../connect");
 const moment = require("moment-timezone");
@@ -662,6 +663,280 @@ const fetchDLdetails = async (req, res) => {
   });
 };
 
+const voterCardVerification = async (req, res) => {
+  const { epic_number, orderid } = req.query;
+
+  if (!epic_number || !orderid) {
+    return res.status(400).json({
+      status: "Failure",
+      message: "epic_number and orderid are required",
+    });
+  }
+
+  try {
+    const result = await verifyVoterCard(epic_number, orderid);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ status: "Failure", message: error.message });
+  }
+};
+
+const fetchVoterVerification = async (req, res) => {
+  const { epic_number, userId } = req.body;
+  let { amount } = req.body;
+
+  if (!epic_number || !userId) {
+    return res.status(400).json({
+      status: "Failure",
+      message: "epic_number and userId are required",
+    });
+  }
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const orderId = `ORDV${Date.now()}`;
+  const transactionId = `TXNV${Date.now()}`;
+  const transactionDetails = `Voter Card Verification Order Id ${orderId}`;
+  const creditAmt = 0;
+
+  // Step 1: Fetch current wallet balance
+  const queryBalance = `
+    SELECT Closing_Balance 
+    FROM user_wallet 
+    WHERE userId = ? 
+    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+    LIMIT 1
+  `;
+
+  db.query(queryBalance, [userId], async (err, balanceResult) => {
+    if (err) {
+      console.error("Error fetching wallet balance:", err);
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Failed to fetch wallet balance",
+        details: err.message,
+      });
+    }
+
+    if (balanceResult.length === 0) {
+      return res.status(404).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        message: "No balance found for the user.",
+      });
+    }
+
+    const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+    if (isNaN(currentBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Current balance is invalid.",
+      });
+    }
+
+    // Step 2: Validate amount
+    if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+      return res.status(500).json({
+        success: false,
+        status: "Failure",
+        error: "Invalid or missing amount",
+      });
+    }
+
+    amount = parseFloat(parseFloat(amount).toFixed(2));
+
+    if (currentBalance < amount) {
+      return res.status(400).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        message: "Insufficient balance.",
+        currentBalance,
+        requiredAmount: amount,
+      });
+    }
+
+    const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+
+    // Step 3: Insert debit transaction
+    const updateWalletQuery = `
+      INSERT INTO user_wallet 
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+      updateWalletQuery,
+      [
+        userId,
+        createdAt,
+        orderId,
+        transactionId,
+        currentBalance.toFixed(2),
+        newBalance,
+        "Debit",
+        creditAmt,
+        amount,
+        transactionDetails,
+        "Success",
+      ],
+      async (err, walletResult) => {
+        if (err) {
+          console.error("Error updating wallet balance:", err);
+          return res.status(500).json({
+            status: "Failure",
+            step: "Update Wallet Balance",
+            error: "Failed to update wallet balance",
+            details: err.message,
+          });
+        }
+
+        // Step 4: Call Voter Card Verification API
+        try {
+          const result = await verifyVoterCard(epic_number, orderId);
+
+          return res.status(200).json({
+            status: "Success",
+            wallet: {
+              transactionId,
+              newBalance,
+              previousBalance: currentBalance.toFixed(2),
+              deductedAmount: amount,
+            },
+            voterData: result,
+          });
+        } catch (err) {
+          return res.status(500).json({
+            status: "Failure",
+            step: "Call Voter Card API",
+            message: "Unexpected error occurred while calling voter card API",
+            details: err.message,
+          });
+        }
+      }
+    );
+  });
+};
+
+const passportVerification = async (req, res) => {
+  const { file_number, dob, userId, amount } = req.body;
+
+  if (!file_number || !dob || !userId || amount == null) {
+    return res.status(400).json({
+      status: "Failure",
+      message: "file_number, dob, userId, and amount are required.",
+    });
+  }
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const orderId = `ORDP${Date.now()}`;
+  const transactionId = `TXNP${Date.now()}`;
+  const transactionDetails = `Passport Verification Order Id ${orderId}`;
+  const creditAmt = 0;
+
+  // Step 1: Fetch user wallet balance
+  const balanceQuery = `
+    SELECT Closing_Balance FROM user_wallet 
+    WHERE userId = ? 
+    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+    LIMIT 1
+  `;
+
+  db.query(balanceQuery, [userId], async (err, result) => {
+    if (err) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Failed to fetch wallet balance",
+        message: err.message,
+      });
+    }
+
+    if (result.length === 0) {
+      return res.status(404).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        message: "No balance found for the user.",
+      });
+    }
+
+    const currentBalance = parseFloat(result[0].Closing_Balance);
+    const parsedAmount = parseFloat(parseFloat(amount).toFixed(2));
+
+    if (isNaN(currentBalance) || isNaN(parsedAmount)) {
+      return res
+        .status(400)
+        .json({ status: "Failure", message: "Invalid amount or balance" });
+    }
+
+    if (currentBalance < parsedAmount) {
+      return res.status(400).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        message: "Insufficient balance.",
+        currentBalance,
+        requiredAmount: parsedAmount,
+      });
+    }
+
+    const newBalance = parseFloat(currentBalance - parsedAmount).toFixed(2);
+
+    // Step 2: Deduct wallet balance
+    const updateWalletQuery = `
+      INSERT INTO user_wallet 
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+      updateWalletQuery,
+      [
+        userId,
+        createdAt,
+        orderId,
+        transactionId,
+        currentBalance.toFixed(2),
+        newBalance,
+        "Debit",
+        creditAmt,
+        parsedAmount,
+        transactionDetails,
+        "Success",
+      ],
+      async (err2) => {
+        if (err2) {
+          return res.status(500).json({
+            status: "Failure",
+            step: "Wallet Update",
+            message: err2.message,
+          });
+        }
+
+        // Step 3: Call external API
+        try {
+          const result = await verifyPassport(file_number, dob, orderId);
+          return res.status(result.status === "Success" ? 200 : 400).json({
+            status: "Success",
+            wallet: {
+              transactionId,
+              newBalance,
+              previousBalance: currentBalance.toFixed(2),
+              deductedAmount: parsedAmount,
+            },
+            passportData: result,
+          });
+        } catch (error) {
+          return res.status(500).json({
+            status: "Failure",
+            step: "API Call",
+            message: error.message,
+          });
+        }
+      }
+    );
+  });
+};
+
 module.exports = {
   getPanByAadhaar,
   getPanDetails,
@@ -671,4 +946,7 @@ module.exports = {
   fetchRcDetails,
   dlPrintController,
   fetchDLdetails,
+  voterCardVerification,
+  fetchVoterVerification,
+  passportVerification,
 };
