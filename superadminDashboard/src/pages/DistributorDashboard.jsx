@@ -391,7 +391,7 @@ const DistributorDashboard = () => {
                           className="text-decoration-none"
                         >
                           <div className="d-flex">
-                            <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon" style={{backgroundColor:"#f56f43" , borderRadius:"15px"}}>
+                            <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-2 icon" style={{backgroundColor:"#f56f43" , borderRadius:"15px"}}>
                               <MdAddCard />
                             </div>
                             <div></div>
@@ -417,7 +417,7 @@ const DistributorDashboard = () => {
                           className="text-decoration-none"
                         >
                           <div className="d-flex">
-                            <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon" style={{backgroundColor:"#3498db" , borderRadius:"15px"}}>
+                            <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-2 icon" style={{backgroundColor:"#3498db" , borderRadius:"15px"}}>
                                <MdCalendarMonth />
                             </div>
                             <div></div>
