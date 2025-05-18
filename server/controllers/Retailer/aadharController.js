@@ -4,6 +4,8 @@ const {
   getRcPdfData,
   getDlPrint,
   verifyVoterCard,
+  getAadhaarOtp,
+  verifyAadhaarOtp,
 } = require("../../APIS URL/aadharApi");
 const { db } = require("../../connect");
 const moment = require("moment-timezone");
@@ -795,16 +797,82 @@ const fetchVoterVerification = async (req, res) => {
         try {
           const result = await verifyVoterCard(epic_number, orderId);
 
-          return res.status(200).json({
-            status: "Success",
-            wallet: {
-              transactionId,
-              newBalance,
-              previousBalance: currentBalance.toFixed(2),
-              deductedAmount: amount,
-            },
-            voterData: result,
-          });
+          // return res.status(200).json({
+          //   status: "Success",
+          //   wallet: {
+          //     transactionId,
+          //     newBalance,
+          //     previousBalance: currentBalance.toFixed(2),
+          //     deductedAmount: amount,
+          //   },
+          //   voterData: result,
+          // });
+
+          if (result.status === "Failure") {
+            const refundQuery = `
+    INSERT INTO user_wallet 
+    (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+            // const refundTransactionId = `TXNREFUND${Date.now()}`;
+            const refundTransactionId = `TXNV${Date.now()}`;
+            const refundedBalance = (parseFloat(newBalance) + amount).toFixed(
+              2
+            );
+
+            db.query(
+              refundQuery,
+              [
+                userId,
+                createdAt,
+                orderId,
+                refundTransactionId,
+                newBalance,
+                refundedBalance,
+                "Credit",
+                amount,
+                0,
+                "Refund due to voter verification failure",
+                "Success",
+              ],
+              (refundErr) => {
+                if (refundErr) {
+                  return res.status(500).json({
+                    status: "Failure",
+                    step: "Refund Wallet",
+                    message: "Verification failed and refund also failed.",
+                    details: refundErr.message,
+                  });
+                }
+
+                return res.status(200).json({
+                  status: "Failure",
+                  message: "Voter verification failed. Amount refunded.",
+                  wallet: {
+                    transactionId,
+                    refundedTransactionId: refundTransactionId,
+                    previousBalance: currentBalance.toFixed(2),
+                    newBalance: refundedBalance,
+                    refundedAmount: amount,
+                  },
+                  voterData: result,
+                });
+              }
+            );
+          } else {
+            // If verification successful
+            return res.status(200).json({
+              status: "Success",
+              wallet: {
+                transactionId,
+                newBalance,
+                previousBalance: currentBalance.toFixed(2),
+                deductedAmount: amount,
+              },
+              voterData: result,
+            });
+          }
         } catch (err) {
           return res.status(500).json({
             status: "Failure",
@@ -915,16 +983,81 @@ const passportVerification = async (req, res) => {
         // Step 3: Call external API
         try {
           const result = await verifyPassport(file_number, dob, orderId);
-          return res.status(result.status === "Success" ? 200 : 400).json({
-            status: "Success",
-            wallet: {
-              transactionId,
-              newBalance,
-              previousBalance: currentBalance.toFixed(2),
-              deductedAmount: parsedAmount,
-            },
-            passportData: result,
-          });
+          // return res.status(result.status === "Success" ? 200 : 400).json({
+          //   status: "Success",
+          //   wallet: {
+          //     transactionId,
+          //     newBalance,
+          //     previousBalance: currentBalance.toFixed(2),
+          //     deductedAmount: parsedAmount,
+          //   },
+          //   passportData: result,
+          // });
+
+          if (result.status === "Failure") {
+            const refundQuery = `
+    INSERT INTO user_wallet 
+    (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+            const refundTransactionId = `TXNV${Date.now()}`;
+            const refundedBalance = (parseFloat(newBalance) + amount).toFixed(
+              2
+            );
+
+            db.query(
+              refundQuery,
+              [
+                userId,
+                createdAt,
+                orderId,
+                refundTransactionId,
+                newBalance,
+                refundedBalance,
+                "Credit",
+                amount,
+                0,
+                "Refund due to Passport Verification failure",
+                "Success",
+              ],
+              (refundErr) => {
+                if (refundErr) {
+                  return res.status(500).json({
+                    status: "Failure",
+                    step: "Refund Wallet",
+                    message: "Verification failed and refund also failed.",
+                    details: refundErr.message,
+                  });
+                }
+
+                return res.status(200).json({
+                  status: "Failure",
+                  message: "Passport Verification failed. Amount refunded.",
+                  wallet: {
+                    transactionId,
+                    refundedTransactionId: refundTransactionId,
+                    previousBalance: currentBalance.toFixed(2),
+                    newBalance: refundedBalance,
+                    refundedAmount: amount,
+                  },
+                  voterData: result,
+                });
+              }
+            );
+          } else {
+            // If verification successful
+            return res.status(200).json({
+              status: "Success",
+              wallet: {
+                transactionId,
+                newBalance,
+                previousBalance: currentBalance.toFixed(2),
+                deductedAmount: amount,
+              },
+              passportData: result,
+            });
+          }
         } catch (error) {
           return res.status(500).json({
             status: "Failure",
@@ -935,6 +1068,229 @@ const passportVerification = async (req, res) => {
       }
     );
   });
+};
+
+const getOtp = async (req, res) => {
+  const { aadhaar_number, orderid } = req.query;
+  try {
+    const response = await getAadhaarOtp(aadhaar_number, orderid);
+    res.status(200).json(response.data);
+  } catch (error) {
+    res.status(500).json({
+      status: "Failure",
+      message: error.response?.data?.message || "Internal Server Error",
+    });
+  }
+};
+
+const verifyOtp = async (req, res) => {
+  const { aadhaar_number, ref_id, otp, orderid } = req.query;
+  try {
+    const response = await verifyAadhaarOtp(
+      aadhaar_number,
+      ref_id,
+      otp,
+      orderid
+    );
+    res.status(200).json(response.data);
+  } catch (error) {
+    res.status(500).json({
+      status: "Failure",
+      message: error.response?.data?.message || "Internal Server Error",
+    });
+  }
+};
+
+const aadhaarSendOtp = async (req, res) => {
+  const { aadhaar_number, userId, amount } = req.body;
+
+  if (!aadhaar_number || !userId || amount == null) {
+    return res.status(400).json({
+      status: "Failure",
+      message: "aadhaar_number, userId and amount are required.",
+    });
+  }
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const orderId = `ORDA${Date.now()}`;
+  const transactionId = `TXNA${Date.now()}`;
+  const transactionDetails = `Aadhaar OTP Send Order ${orderId}`;
+  const creditAmt = 0;
+
+  // Step 1: Fetch wallet balance
+  const balanceQuery = `
+    SELECT Closing_Balance FROM user_wallet 
+    WHERE userId = ? 
+    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+    LIMIT 1
+  `;
+
+  db.query(balanceQuery, [userId], async (err, result) => {
+    if (err || result.length === 0) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        message: err?.message || "No balance found for user",
+      });
+    }
+
+    const currentBalance = parseFloat(result[0].Closing_Balance);
+    const parsedAmount = parseFloat(parseFloat(amount).toFixed(2));
+    if (currentBalance < parsedAmount) {
+      return res.status(400).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        message: "Insufficient balance.",
+      });
+    }
+
+    const newBalance = (currentBalance - parsedAmount).toFixed(2);
+
+    // Step 2: Deduct wallet
+    const updateWalletQuery = `
+      INSERT INTO user_wallet 
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+      updateWalletQuery,
+      [
+        userId,
+        createdAt,
+        orderId,
+        transactionId,
+        currentBalance.toFixed(2),
+        newBalance,
+        "Debit",
+        creditAmt,
+        parsedAmount,
+        transactionDetails,
+        "Success",
+      ],
+      async (err2) => {
+        if (err2) {
+          return res.status(500).json({
+            status: "Failure",
+            step: "Wallet Update",
+            message: err2.message,
+          });
+        }
+
+        // Step 3: Call external Aadhaar OTP API
+        try {
+          const response = await getAadhaarOtp(aadhaar_number, orderId);
+          const data = response.data;
+
+          if (data.status === "Failure") {
+            // Refund
+            const refundTransactionId = `TXNR${Date.now()}`;
+            const refundedBalance = (
+              parseFloat(newBalance) + parsedAmount
+            ).toFixed(2);
+
+            db.query(
+              updateWalletQuery,
+              [
+                userId,
+                createdAt,
+                orderId,
+                refundTransactionId,
+                newBalance,
+                refundedBalance,
+                "Credit",
+                parsedAmount,
+                0,
+                "Refund due to OTP send failure",
+                "Success",
+              ],
+              (refundErr) => {
+                if (refundErr) {
+                  return res.status(500).json({
+                    status: "Failure",
+                    step: "Refund Wallet",
+                    message: "OTP Send failed and refund also failed.",
+                    details: refundErr.message,
+                  });
+                }
+
+                return res.status(200).json({
+                  status: "Failure",
+                  message: "OTP Send failed. Amount refunded.",
+                  wallet: {
+                    transactionId,
+                    refundedTransactionId: refundTransactionId,
+                    newBalance: refundedBalance,
+                    refundedAmount: parsedAmount,
+                  },
+                  apiData: data,
+                });
+              }
+            );
+          } else {
+            return res.status(200).json({
+              status: "Success",
+              message: "OTP sent successfully",
+              wallet: {
+                transactionId,
+                newBalance,
+                previousBalance: currentBalance.toFixed(2),
+                deductedAmount: parsedAmount,
+              },
+              otpData: data,
+              orderId,
+            });
+          }
+        } catch (error) {
+          return res.status(500).json({
+            status: "Failure",
+            step: "OTP API Call",
+            message: error.message,
+          });
+        }
+      }
+    );
+  });
+};
+
+const aadhaarVerifyOtp = async (req, res) => {
+  const { aadhaar_number, ref_id, otp, orderid } = req.body;
+
+  if (!aadhaar_number || !ref_id || !otp || !orderid) {
+    return res.status(400).json({
+      status: "Failure",
+      message: "aadhaar_number, ref_id, otp, and orderid are required.",
+    });
+  }
+
+  try {
+    const response = await verifyAadhaarOtp(
+      aadhaar_number,
+      ref_id,
+      otp,
+      orderid
+    );
+
+    const result = response.data;
+
+    if (result.status === "Success") {
+      return res.status(200).json({
+        status: "Success",
+        aadhaarData: result,
+      });
+    } else {
+      return res.status(400).json({
+        status: "Failure",
+        message: "OTP verification failed",
+        aadhaarData: result,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      status: "Failure",
+      message: error.response?.data?.message || "Internal Server Error",
+    });
+  }
 };
 
 module.exports = {
@@ -949,4 +1305,8 @@ module.exports = {
   voterCardVerification,
   fetchVoterVerification,
   passportVerification,
+  getOtp,
+  verifyOtp,
+  aadhaarSendOtp,
+  aadhaarVerifyOtp,
 };

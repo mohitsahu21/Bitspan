@@ -318,6 +318,7 @@ const WalletTwoReceipt = lazy(() =>
   import("../components/DashBoard/WalletTwoReceipt")
 );
 const PanReceipt = lazy(() => import("../components/DashBoard/PanReceipt"));
+const FindAadhar = lazy(() => import("../components/DashBoard/FindAadhar"));
 
 const RetailerRoutes = () => {
   const { currentUser, token } = useSelector((state) => state.user);
@@ -792,6 +793,7 @@ const RetailerRoutes = () => {
             <Route path="/dl-find" element={<FindDL />} />
             <Route path="/find-services" element={<FindPage />} />
             <Route path="/gst-find" element={<FindGST />} />
+            <Route path="/aadhar-find" element={<FindAadhar />} />
 
             <Route path="/registration-page" element={<DemoRegistration />} />
           </Routes>

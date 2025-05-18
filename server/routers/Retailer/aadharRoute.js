@@ -11,6 +11,10 @@ const {
   voterCardVerification,
   fetchVoterVerification,
   passportVerification,
+  getOtp,
+  verifyOtp,
+  aadhaarSendOtp,
+  aadhaarVerifyOtp,
 } = require("../../controllers/Retailer/aadharController");
 const router = express.Router();
 
@@ -25,5 +29,9 @@ router.post("/fetchDLdetails", fetchDLdetails);
 router.get("/voterCardVerification", voterCardVerification);
 router.post("/fetchVoterVerification", fetchVoterVerification);
 router.post("/passportVerification", passportVerification);
+router.get("/getOtp", getOtp);
+router.get("/verifyOtp", verifyOtp);
+router.post("/aadhaarSendOtp", aadhaarSendOtp);
+router.post("/aadhaarVerifyOtp", aadhaarVerifyOtp);
 
 module.exports = router;

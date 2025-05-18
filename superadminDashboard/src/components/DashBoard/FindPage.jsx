@@ -51,6 +51,11 @@ const FindPage = () => {
       path: "/gst-find",
       icon: <FaFileInvoice color="#e67e22" />,
     },
+    {
+      title: "Aadhaar Details",
+      path: "/aadhar-find",
+      icon: <FaFileInvoice color="#e67e22" />,
+    },
   ];
   return (
     <>

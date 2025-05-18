@@ -5,12 +5,19 @@ const getWalletBalance = (req, res) => {
   const userId = req.params.userId;
 
   // Modified query to fetch the latest closing balance
+  // const query = `
+  //       SELECT Closing_Balance
+  //       FROM user_wallet
+  //       WHERE userId = ?
+  //       ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
+  //       LIMIT 1
+  //   `;
   const query = `
-        SELECT Closing_Balance 
-        FROM user_wallet 
-        WHERE userId = ? 
-        ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
-        LIMIT 1
+SELECT Closing_Balance 
+FROM user_wallet 
+WHERE userId = ? 
+ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC, wid DESC 
+LIMIT 1
     `;
 
   db.query(query, [userId], (err, result) => {
@@ -133,8 +140,8 @@ const updateWalletBalance = (req, res) => {
 //   const orderId = `ORDR${Date.now()}`;
 //   const status = "Pending";
 
-//   const insertRechargeQuery = `INSERT INTO offline_recharge 
-//     (mobile_no, operator_name, amount, orderid, recharge_Type, created_by_userid, status, created_at) 
+//   const insertRechargeQuery = `INSERT INTO offline_recharge
+//     (mobile_no, operator_name, amount, orderid, recharge_Type, created_by_userid, status, created_at)
 //     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
 //   db.query(
@@ -161,10 +168,10 @@ const updateWalletBalance = (req, res) => {
 //       }
 
 //       const queryBalance = `
-//         SELECT Closing_Balance 
-//         FROM user_wallet 
-//         WHERE userId = ? 
-//         ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+//         SELECT Closing_Balance
+//         FROM user_wallet
+//         WHERE userId = ?
+//         ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
 //         LIMIT 1
 //       `;
 
@@ -219,8 +226,8 @@ const updateWalletBalance = (req, res) => {
 //         const transactionDetails = `Recharge Deduction ${mobile_no}`;
 
 //         const updateWalletQuery = `
-//           INSERT INTO user_wallet 
-//           (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
+//           INSERT INTO user_wallet
+//           (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status)
 //           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 //         `;
 
@@ -285,7 +292,7 @@ const offlineRechargeAndUpdateWallet = (req, res) => {
       status: "Failure",
       step: "Validation",
       error: "Please fill all the required fields",
-      message : "Please fill all the required fields"
+      message: "Please fill all the required fields",
     });
   }
 
@@ -294,7 +301,7 @@ const offlineRechargeAndUpdateWallet = (req, res) => {
       status: "Failure",
       step: "Validation",
       error: "Invalid amount. Amount must be a positive number.",
-      message : "Invalid amount. Amount must be a positive number."
+      message: "Invalid amount. Amount must be a positive number.",
     });
   }
 
@@ -491,7 +498,7 @@ const offlineRechargeAndUpdateWallet = (req, res) => {
 //   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 //   const orderId = `OROD${Date.now()}`;
 
-//   const insertRechargeQuery = `INSERT INTO offline_dth_connection 
+//   const insertRechargeQuery = `INSERT INTO offline_dth_connection
 //     (operatorName,
 //     first_name,
 //     last_name,
@@ -503,8 +510,8 @@ const offlineRechargeAndUpdateWallet = (req, res) => {
 //     orderid,
 //     message,
 //     user_id,
-//     status, 
-//     created_at) 
+//     status,
+//     created_at)
 //     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
 //   db.query(
@@ -536,10 +543,10 @@ const offlineRechargeAndUpdateWallet = (req, res) => {
 //       }
 
 //       const queryBalance = `
-//         SELECT Closing_Balance 
-//         FROM user_wallet 
-//         WHERE userId = ? 
-//         ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+//         SELECT Closing_Balance
+//         FROM user_wallet
+//         WHERE userId = ?
+//         ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
 //         LIMIT 1
 //       `;
 
@@ -594,8 +601,8 @@ const offlineRechargeAndUpdateWallet = (req, res) => {
 //         const transactionDetails = `Recharge Deduction ${number}`;
 
 //         const updateWalletQuery = `
-//           INSERT INTO user_wallet 
-//           (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status) 
+//           INSERT INTO user_wallet
+//           (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, debit_amount, Transaction_details, status)
 //           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 //         `;
 
@@ -654,7 +661,6 @@ const offlineRechargeAndUpdateWallet = (req, res) => {
 //     }
 //   );
 // };
-
 
 // first check user wallet balance then process recharge.
 const dthConnectionAndUpdateWallet = (req, res) => {
@@ -852,7 +858,6 @@ const dthConnectionAndUpdateWallet = (req, res) => {
     );
   });
 };
-
 
 module.exports = {
   getWalletBalance,

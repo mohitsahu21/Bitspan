@@ -113,6 +113,23 @@ const verifyPassport = async (file_number, dob, orderid) => {
   }
 };
 
+// AADHAAR VERIFICATION SEND OTP && GET OTP API
+
+const BASE_URL = "https://connect.ekychub.in/v3/verification";
+
+const EKYCHUB_USERNAME = "9926054551";
+const EKYCHUB_TOKEN = "da1a29b74e50cbfbf3f357beb52d6b32";
+
+const getAadhaarOtp = async (aadhaarNumber, orderId) => {
+  const url = `${BASE_URL}/get_aadhaar_otp?username=${EKYCHUB_USERNAME}&token=${EKYCHUB_TOKEN}&aadhaar_number=${aadhaarNumber}&orderid=${orderId}`;
+  return axios.get(url);
+};
+
+const verifyAadhaarOtp = async (aadhaarNumber, refId, otp, orderId) => {
+  const url = `${BASE_URL}/aadhaar_verify?username=${EKYCHUB_USERNAME}&token=${EKYCHUB_TOKEN}&aadhaar_number=${aadhaarNumber}&ref_id=${refId}&otp=${otp}&orderid=${orderId}`;
+  return axios.get(url);
+};
+
 module.exports = {
   findPanByAadhaar,
   findPanDetails,
@@ -120,4 +137,6 @@ module.exports = {
   getDlPrint,
   verifyVoterCard,
   verifyPassport,
+  getAadhaarOtp,
+  verifyAadhaarOtp,
 };
