@@ -7,18 +7,25 @@ import {
   FaCarSide,
   FaRegIdCard,
   FaAddressCard,
+  FaRegAddressCard,
 } from "react-icons/fa";
 import { FaFileInvoice } from "react-icons/fa";
 import { MdDriveEta } from "react-icons/md";
+import { FaPassport } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const FindPage = () => {
   const navigate = useNavigate();
   const cardData = [
+    // {
+    //   title: "Aadhar Details",
+    //   path: "#",
+    //   icon: <IoMdFingerPrint color="#3498db" />,
+    // },
     {
-      title: "Aadhar Details",
-      path: "#",
+      title: "Aadhaar Details",
+      path: "/aadhar-find",
       icon: <IoMdFingerPrint color="#3498db" />,
     },
     {
@@ -32,13 +39,23 @@ const FindPage = () => {
       icon: <FaAddressCard color="#2ecc71" />,
     },
     {
-      title: "RC Details",
+      title: "RC Download",
       path: "/rc-find",
       icon: <FaCarSide color="#f39c12" />,
     },
     {
-      title: "Ration Card Details",
-      path: "#",
+      title: "RC Details",
+      path: "/view-rc-find",
+      icon: <FaRegAddressCard color="#2980b9" />,
+    },
+    // {
+    //   title: "Ration Card Details",
+    //   path: "#",
+    //   icon: <FaRegIdCard color="#9b59b6" />,
+    // },
+    {
+      title: "Voter Details",
+      path: "/voter-find",
       icon: <FaRegIdCard color="#9b59b6" />,
     },
     {
@@ -52,9 +69,9 @@ const FindPage = () => {
       icon: <FaFileInvoice color="#e67e22" />,
     },
     {
-      title: "Aadhaar Details",
-      path: "/aadhar-find",
-      icon: <FaFileInvoice color="#e67e22" />,
+      title: "Passport Details",
+      path: "/passport-find",
+      icon: <FaPassport color="#2980b9" />,
     },
   ];
   return (

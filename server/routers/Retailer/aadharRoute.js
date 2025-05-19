@@ -15,6 +15,8 @@ const {
   verifyOtp,
   aadhaarSendOtp,
   aadhaarVerifyOtp,
+  handleVehicleRCVerification,
+  VehicleRCVerification,
 } = require("../../controllers/Retailer/aadharController");
 const router = express.Router();
 
@@ -33,5 +35,7 @@ router.get("/getOtp", getOtp);
 router.get("/verifyOtp", verifyOtp);
 router.post("/aadhaarSendOtp", aadhaarSendOtp);
 router.post("/aadhaarVerifyOtp", aadhaarVerifyOtp);
+router.get("/handleVehicleRCVerification", handleVehicleRCVerification);
+router.post("/VehicleRCVerification", VehicleRCVerification);
 
 module.exports = router;

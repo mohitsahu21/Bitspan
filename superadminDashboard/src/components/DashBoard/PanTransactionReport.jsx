@@ -22,8 +22,8 @@ const PanTransactionReport = () => {
   const [toDate, setToDate] = useState(""); // To date filter
   const [PaymentMode, setPaymentMode] = useState("");
 
-  const api1Url = `https://2kadam.co.in/api/auth/retailer/nsdl-trans-new-requst`;
-  const api2Url = `https://2kadam.co.in/api/auth/retailer/nsdl-trans-correction`;
+  const api1Url = `https://2kadam.co.in/api/auth/retailer/nsdl-trans-new-requst/${currentUser?.userId}`;
+  const api2Url = `https://2kadam.co.in/api/auth/retailer/nsdl-trans-correction/${currentUser?.userId}`;
 
   const fetchData = async (url) => {
     setLoading(true);

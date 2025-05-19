@@ -2102,10 +2102,23 @@ const UpdatePanFromData = (req, res) => {
   });
 };
 
-const nsdlTransactionNewRequest = (req, res) => {
-  const query = `SELECT * FROM nsdlpan ORDER BY id DESC`;
+// const nsdlTransactionNewRequest = (req, res) => {
+//   const query = `SELECT * FROM nsdlpan ORDER BY id DESC`;
 
-  db.query(query, (err, result) => {
+//   db.query(query, (err, result) => {
+//     if (err) {
+//       console.error("Database error:", err);
+//       return res.status(400).json({ status: "Failure", error: err.message });
+//     } else {
+//       return res.status(200).json({ status: "Success", data: result });
+//     }
+//   });
+// };
+const nsdlTransactionNewRequest = (req, res) => {
+  const { id } = req.params;
+  const query = `SELECT * FROM nsdlpan WHERE userId = ? ORDER BY id DESC`;
+
+  db.query(query, [id], (err, result) => {
     if (err) {
       console.error("Database error:", err);
       return res.status(400).json({ status: "Failure", error: err.message });
@@ -2118,7 +2131,7 @@ const nsdlTransactionNewRequest = (req, res) => {
 const getNsdlTransactionById = (req, res) => {
   const { id } = req.params;
 
-  const query = `SELECT * FROM nsdlpan WHERE id = ?`;
+  const query = `SELECT * FROM nsdlpan WHERE orderid = ?`;
 
   db.query(query, [id], (err, result) => {
     if (err) {
@@ -2137,9 +2150,10 @@ const getNsdlTransactionById = (req, res) => {
 };
 
 const nsdlTransactionCorrection = (req, res) => {
-  const query = `SELECT * FROM nsdlpancorrection ORDER BY id DESC`;
+  const { id } = req.params;
+  const query = `SELECT * FROM nsdlpancorrection WHERE userId = ? ORDER BY id DESC`;
 
-  db.query(query, (err, result) => {
+  db.query(query, [id], (err, result) => {
     if (err) {
       console.error("Database error:", err);
       return res.status(400).json({ status: "Failure", error: err.message });

@@ -8,13 +8,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Modal, Button, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-const PanDetails = () => {
+const FindPassport = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const [prices, setPrices] = useState([]);
   const [formData, setFormData] = useState({
-    panno: "",
+    file_number: "",
+    dob: "",
     userId: currentUser?.userId,
     amount: "",
   });
@@ -146,8 +147,7 @@ const PanDetails = () => {
     console.log("Form Data Submitted: ", formData);
     try {
       const response = await axios.post(
-        // `http://localhost:7777/api/auth/aadhar/PanDetails`,
-        `https://2kadam.co.in/api/auth/aadhar/PanDetails`,
+        `https://2kadam.co.in/api/auth/aadhar/passportVerification`,
         formData,
         {
           headers: {
@@ -157,32 +157,26 @@ const PanDetails = () => {
         }
       );
       if (response.data.status === "Success") {
-        const { panData, wallet } = response.data;
+        const { passportData, wallet } = response.data;
 
         Swal.fire({
           title: "PAN Data Retrieved",
           html: `
-          <strong>PAN No:</strong> ${panData?.pan_no}<br/>
-          <strong>Name:</strong> ${panData?.name}<br/>
-          <strong>Father Name:</strong> ${
-            panData?.father ? panData?.father : "N/A"
-          }<br/>
-          <strong>DOB:</strong> ${panData?.dob ? panData?.dob : "N/A"}<br/>
-          <strong>Gender:</strong> ${
-            panData?.gender ? panData?.gender : "N/A"
-          }<br/>
-      <strong>Application No:</strong> ${
-        panData?.application_no ? panData?.application_no : "N/A"
-      }<br/>
-      <hr/>
-      <strong>Transaction ID:</strong> ${wallet?.transactionId}<br/>
+          <strong>File Number:</strong> ${passportData?.file_number}<br/>
+          <strong>Name:</strong> ${passportData?.name}<br/>
+          <strong>DOB:</strong> ${passportData?.dob}<br/>
+          <strong>Application Type:</strong> ${passportData?.application_type}<br/>
+          <strong>Application Received Date:</strong> ${passportData?.application_received_date}<br/>
+          <hr/>
+          <strong>Transaction ID:</strong> ${wallet?.transactionId}<br/>
     `,
           icon: "success",
         });
 
         // Reset form
         setFormData({
-          panno: "",
+          file_number: "",
+          dob: "",
           userId: currentUser?.userId,
           amount: prices[0]?.pan_aadhar_price,
         });
@@ -230,7 +224,6 @@ const PanDetails = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        // `http://localhost:7777/api/auth/log-reg/verify-pin`,
         `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {
@@ -301,7 +294,7 @@ const PanDetails = () => {
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="d-flex justify-content-between align-items-center flex-wrap ">
                         <h4 className="mx-lg-5 mx-xl-5 mx-xxl-2  px-lg-3 px-xxl-0">
-                          Pan Details
+                          Passport Details
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -311,7 +304,7 @@ const PanDetails = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Pan Details
+                            Passport Details
                           </span>{" "}
                         </p>
                       </div>
@@ -327,7 +320,7 @@ const PanDetails = () => {
                               <Spinner animation="border" variant="primary" />
                             </div>
                           )}
-                          <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 mx-auto">
+                          <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 mx-auto mb-3">
                             <div class="input-group">
                               <span class="input-group-text">
                                 <MdFormatListNumberedRtl />
@@ -337,12 +330,34 @@ const PanDetails = () => {
                                   type="text"
                                   class="form-control"
                                   id="floatingInputGroup2"
-                                  placeholder="Mobile Number"
+                                  placeholder="file_number"
                                   onChange={handleChange}
-                                  name="panno"
-                                  value={formData.panno}
+                                  name="file_number"
+                                  value={formData.file_number}
                                 />
-                                <label for="floatingInputGroup2">Pan No.</label>
+                                <label for="floatingInputGroup2">
+                                  File No.
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 mx-auto">
+                            <div class="input-group">
+                              <span class="input-group-text">
+                                <MdFormatListNumberedRtl />
+                              </span>
+                              <div class="form-floating">
+                                <input
+                                  type="date"
+                                  class="form-control"
+                                  id="floatingInputGroup2"
+                                  placeholder="dob"
+                                  onChange={handleChange}
+                                  name="dob"
+                                  value={formData.dob}
+                                />
+                                <label for="floatingInputGroup2">DOB</label>
                               </div>
                             </div>
                           </div>
@@ -430,7 +445,7 @@ const PanDetails = () => {
   );
 };
 
-export default PanDetails;
+export default FindPassport;
 
 const Wrapper = styled.div`
   .main {

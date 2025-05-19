@@ -8,13 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Modal, Button, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-const PanDetails = () => {
+const FindRCView = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const [prices, setPrices] = useState([]);
   const [formData, setFormData] = useState({
-    panno: "",
+    vehicle_number: "",
     userId: currentUser?.userId,
     amount: "",
   });
@@ -146,8 +146,7 @@ const PanDetails = () => {
     console.log("Form Data Submitted: ", formData);
     try {
       const response = await axios.post(
-        // `http://localhost:7777/api/auth/aadhar/PanDetails`,
-        `https://2kadam.co.in/api/auth/aadhar/PanDetails`,
+        `https://2kadam.co.in/api/auth/aadhar/VehicleRCVerification`,
         formData,
         {
           headers: {
@@ -157,23 +156,30 @@ const PanDetails = () => {
         }
       );
       if (response.data.status === "Success") {
-        const { panData, wallet } = response.data;
+        const { rcData, wallet } = response.data;
 
         Swal.fire({
-          title: "PAN Data Retrieved",
+          title: "RC Data Retrieved",
           html: `
-          <strong>PAN No:</strong> ${panData?.pan_no}<br/>
-          <strong>Name:</strong> ${panData?.name}<br/>
-          <strong>Father Name:</strong> ${
-            panData?.father ? panData?.father : "N/A"
-          }<br/>
-          <strong>DOB:</strong> ${panData?.dob ? panData?.dob : "N/A"}<br/>
-          <strong>Gender:</strong> ${
-            panData?.gender ? panData?.gender : "N/A"
-          }<br/>
-      <strong>Application No:</strong> ${
-        panData?.application_no ? panData?.application_no : "N/A"
-      }<br/>
+          <strong>Name:</strong> ${rcData?.owner}<br/>
+          <strong>Father Name:</strong> ${rcData?.data?.owner_father_name}<br/>
+          <strong>Registration No:</strong> ${rcData?.data?.reg_no}<br/>
+          <strong>Class:</strong> ${rcData?.data?.class}<br/>
+          <strong>Chassis:</strong> ${rcData?.data?.chassis}<br/>
+          <strong>Engine:</strong> ${rcData?.data?.engine}<br/>
+          <strong>Vehicle Manufacturer:</strong> ${rcData?.data?.vehicle_manufacturer_name}<br/>
+          <strong>Model:</strong> ${rcData?.data?.model}<br/>
+          <strong>Colour:</strong> ${rcData?.data?.vehicle_colour}<br/>
+          <strong>Type:</strong> ${rcData?.data?.type}<br/>
+          <strong>Reg Date:</strong> ${rcData?.data?.reg_date}<br/>
+          <strong>Reg Authority:</strong> ${rcData?.data?.reg_authority}<br/>
+          <strong>Manufacturing Month Year:</strong> ${rcData?.data?.vehicle_manufacturing_month_year}<br/>
+          <strong>Insurance Company:</strong> ${rcData?.data?.vehicle_insurance_company_name}<br/>
+          <strong>Manufacturing Month Year:</strong> ${rcData?.data?.vehicle_manufacturing_month_year}<br/>
+          <strong>Insurance Upto:</strong> ${rcData?.data?.vehicle_insurance_upto}<br/>
+          <strong>Insurance Policy No:</strong> ${rcData?.data?.vehicle_insurance_policy_number}<br/>
+          <strong>RC Financer:</strong> ${rcData?.data?.rc_financer}<br/>
+          <strong>Present Address:</strong> ${rcData?.data?.present_address}<br/>
       <hr/>
       <strong>Transaction ID:</strong> ${wallet?.transactionId}<br/>
     `,
@@ -182,7 +188,7 @@ const PanDetails = () => {
 
         // Reset form
         setFormData({
-          panno: "",
+          vehicle_number: "",
           userId: currentUser?.userId,
           amount: prices[0]?.pan_aadhar_price,
         });
@@ -230,7 +236,6 @@ const PanDetails = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        // `http://localhost:7777/api/auth/log-reg/verify-pin`,
         `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {
@@ -301,7 +306,7 @@ const PanDetails = () => {
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="d-flex justify-content-between align-items-center flex-wrap ">
                         <h4 className="mx-lg-5 mx-xl-5 mx-xxl-2  px-lg-3 px-xxl-0">
-                          Pan Details
+                          View RC Details
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -311,7 +316,7 @@ const PanDetails = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Pan Details
+                            View RC Details
                           </span>{" "}
                         </p>
                       </div>
@@ -339,10 +344,12 @@ const PanDetails = () => {
                                   id="floatingInputGroup2"
                                   placeholder="Mobile Number"
                                   onChange={handleChange}
-                                  name="panno"
-                                  value={formData.panno}
+                                  name="vehicle_number"
+                                  value={formData.vehicle_number}
                                 />
-                                <label for="floatingInputGroup2">Pan No.</label>
+                                <label for="floatingInputGroup2">
+                                  Registration Number
+                                </label>
                               </div>
                             </div>
                           </div>
@@ -430,7 +437,7 @@ const PanDetails = () => {
   );
 };
 
-export default PanDetails;
+export default FindRCView;
 
 const Wrapper = styled.div`
   .main {

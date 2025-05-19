@@ -6,6 +6,7 @@ const {
   verifyVoterCard,
   getAadhaarOtp,
   verifyAadhaarOtp,
+  verifyVehicleRC,
 } = require("../../APIS URL/aadharApi");
 const { db } = require("../../connect");
 const moment = require("moment-timezone");
@@ -1293,6 +1294,199 @@ const aadhaarVerifyOtp = async (req, res) => {
   }
 };
 
+const handleVehicleRCVerification = async (req, res) => {
+  const { vehicle_number, orderid } = req.query;
+
+  if (!vehicle_number || !orderid) {
+    return res.status(400).json({
+      status: "Failure",
+      message: "Missing vehicle_number or orderid",
+    });
+  }
+
+  const result = await verifyVehicleRC(vehicle_number, orderid);
+
+  if (result.status === "Success") {
+    return res.status(200).json(result);
+  } else {
+    return res.status(400).json(result);
+  }
+};
+
+const VehicleRCVerification = async (req, res) => {
+  const { vehicle_number, userId, amount } = req.body;
+
+  if (!vehicle_number || !userId || amount == null) {
+    return res.status(400).json({
+      status: "Failure",
+      message: "vehicle_number, userId, and amount are required.",
+    });
+  }
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const orderId = `ORDP${Date.now()}`;
+  const transactionId = `TXNP${Date.now()}`;
+  const transactionDetails = `Vehicle RC Verification Order Id ${orderId}`;
+  const creditAmt = 0;
+
+  // Step 1: Fetch user wallet balance
+  const balanceQuery = `
+    SELECT Closing_Balance FROM user_wallet 
+    WHERE userId = ? 
+    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+    LIMIT 1
+  `;
+
+  db.query(balanceQuery, [userId], async (err, result) => {
+    if (err) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Failed to fetch wallet balance",
+        message: err.message,
+      });
+    }
+
+    if (result.length === 0) {
+      return res.status(404).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        message: "No balance found for the user.",
+      });
+    }
+
+    const currentBalance = parseFloat(result[0].Closing_Balance);
+    const parsedAmount = parseFloat(parseFloat(amount).toFixed(2));
+
+    if (isNaN(currentBalance) || isNaN(parsedAmount)) {
+      return res.status(400).json({
+        status: "Failure",
+        message: "Invalid amount or balance",
+      });
+    }
+
+    if (currentBalance < parsedAmount) {
+      return res.status(400).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        message: "Insufficient balance.",
+        currentBalance,
+        requiredAmount: parsedAmount,
+      });
+    }
+
+    const newBalance = parseFloat(currentBalance - parsedAmount).toFixed(2);
+
+    // Step 2: Deduct wallet balance
+    const updateWalletQuery = `
+      INSERT INTO user_wallet 
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+      updateWalletQuery,
+      [
+        userId,
+        createdAt,
+        orderId,
+        transactionId,
+        currentBalance.toFixed(2),
+        newBalance,
+        "Debit",
+        creditAmt,
+        parsedAmount,
+        transactionDetails,
+        "Success",
+      ],
+      async (err2) => {
+        if (err2) {
+          return res.status(500).json({
+            status: "Failure",
+            step: "Wallet Update",
+            message: err2.message,
+          });
+        }
+
+        // Step 3: Call external API
+        try {
+          const result = await verifyVehicleRC(vehicle_number, orderId);
+
+          if (result.status === "Failure") {
+            const refundQuery = `
+              INSERT INTO user_wallet 
+              (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `;
+
+            const refundTransactionId = `TXNV${Date.now()}`;
+            const refundedBalance = (parseFloat(newBalance) + amount).toFixed(
+              2
+            );
+
+            db.query(
+              refundQuery,
+              [
+                userId,
+                createdAt,
+                orderId,
+                refundTransactionId,
+                newBalance,
+                refundedBalance,
+                "Credit",
+                amount,
+                0,
+                "Refund due to Vehicle RC Verification failure",
+                "Success",
+              ],
+              (refundErr) => {
+                if (refundErr) {
+                  return res.status(500).json({
+                    status: "Failure",
+                    step: "Refund Wallet",
+                    message: "Verification failed and refund also failed.",
+                    details: refundErr.message,
+                  });
+                }
+
+                return res.status(200).json({
+                  status: "Failure",
+                  message: "Vehicle RC Verification failed. Amount refunded.",
+                  wallet: {
+                    transactionId,
+                    refundedTransactionId: refundTransactionId,
+                    previousBalance: currentBalance.toFixed(2),
+                    newBalance: refundedBalance,
+                    refundedAmount: amount,
+                  },
+                  rcData: result,
+                });
+              }
+            );
+          } else {
+            return res.status(200).json({
+              status: "Success",
+              wallet: {
+                transactionId,
+                newBalance,
+                previousBalance: currentBalance.toFixed(2),
+                deductedAmount: amount,
+              },
+              rcData: result,
+            });
+          }
+        } catch (error) {
+          return res.status(500).json({
+            status: "Failure",
+            step: "API Call",
+            message: error.message,
+          });
+        }
+      }
+    );
+  });
+};
+
 module.exports = {
   getPanByAadhaar,
   getPanDetails,
@@ -1309,4 +1503,6 @@ module.exports = {
   verifyOtp,
   aadhaarSendOtp,
   aadhaarVerifyOtp,
+  handleVehicleRCVerification,
+  VehicleRCVerification,
 };

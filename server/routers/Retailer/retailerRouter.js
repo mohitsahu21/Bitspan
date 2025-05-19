@@ -159,13 +159,13 @@ router.post(
 );
 
 router.get(
-  "/nsdl-trans-new-requst",
+  "/nsdl-trans-new-requst/:id",
   authenticateToken,
   nsdlTransactionNewRequest
 );
 router.get("/getNsdlTransactionById/:id", getNsdlTransactionById);
 router.get(
-  "/nsdl-trans-correction",
+  "/nsdl-trans-correction/:id",
   authenticateToken,
   nsdlTransactionCorrection
 );

@@ -1774,6 +1774,7 @@ const SuperAdminData = [
     ],
   },
 ];
+
 const WhiteLabelData = [
   {
     title: "Dashboard",
@@ -2602,6 +2603,7 @@ const Sider = () => {
       // setLoading(false);
     }
   };
+
   useEffect(() => {
     // Call the API to get the profile image
     fetchData();

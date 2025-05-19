@@ -8,13 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Modal, Button, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-const PanDetails = () => {
+const FindVoter = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const [prices, setPrices] = useState([]);
   const [formData, setFormData] = useState({
-    panno: "",
+    epic_number: "",
     userId: currentUser?.userId,
     amount: "",
   });
@@ -146,8 +146,7 @@ const PanDetails = () => {
     console.log("Form Data Submitted: ", formData);
     try {
       const response = await axios.post(
-        // `http://localhost:7777/api/auth/aadhar/PanDetails`,
-        `https://2kadam.co.in/api/auth/aadhar/PanDetails`,
+        `https://2kadam.co.in/api/auth/aadhar/fetchVoterVerification`,
         formData,
         {
           headers: {
@@ -157,23 +156,30 @@ const PanDetails = () => {
         }
       );
       if (response.data.status === "Success") {
-        const { panData, wallet } = response.data;
+        const { voterData, wallet } = response.data;
 
         Swal.fire({
-          title: "PAN Data Retrieved",
+          title: "Voter Data Retrieved",
           html: `
-          <strong>PAN No:</strong> ${panData?.pan_no}<br/>
-          <strong>Name:</strong> ${panData?.name}<br/>
-          <strong>Father Name:</strong> ${
-            panData?.father ? panData?.father : "N/A"
+          <strong>Name:</strong> ${
+            voterData?.data?.name || voterData?.name
           }<br/>
-          <strong>DOB:</strong> ${panData?.dob ? panData?.dob : "N/A"}<br/>
-          <strong>Gender:</strong> ${
-            panData?.gender ? panData?.gender : "N/A"
+          <strong>Name Regional Lang:</strong> ${
+            voterData?.data?.name_in_regional_lang
           }<br/>
-      <strong>Application No:</strong> ${
-        panData?.application_no ? panData?.application_no : "N/A"
-      }<br/>
+          <strong>Father Name:</strong> ${voterData?.data?.relation_name}<br/>
+          <strong>Father Name Regional Lang:</strong> ${
+            voterData?.data?.relation_name_in_regional_lang
+          }<br/>
+          <strong>Verification ID:</strong> ${
+            voterData?.data?.verification_id
+          }<br/>
+          <strong>Reference ID:</strong> ${voterData?.data?.reference_id}<br/>
+          <strong>Voter ID:</strong> ${voterData?.data?.epic_number}<br/>
+          <strong>Age:</strong> ${voterData?.data?.age}<br/>
+          <strong>Gender:</strong> ${voterData?.data?.gender}<br/>
+      <strong>Address:</strong> ${voterData?.data?.address}<br/>
+      <strong>Polling Station:</strong> ${voterData?.data?.polling_station}<br/>
       <hr/>
       <strong>Transaction ID:</strong> ${wallet?.transactionId}<br/>
     `,
@@ -182,9 +188,21 @@ const PanDetails = () => {
 
         // Reset form
         setFormData({
-          panno: "",
+          epic_number: "",
           userId: currentUser?.userId,
           amount: prices[0]?.pan_aadhar_price,
+        });
+      } else if (
+        response.data.status === "Failure" &&
+        response.data.voterData.status === "Failure"
+      ) {
+        Swal.fire({
+          title: `${response.data.message}`,
+          html: `
+      <strong>Transaction ID:</strong> ${wallet?.transactionId}<br/>
+      <strong>Refunded Transaction ID:</strong> ${wallet?.refundedTransactionId}<br/>
+    `,
+          icon: "error",
         });
       } else {
         Swal.fire({
@@ -301,7 +319,7 @@ const PanDetails = () => {
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="d-flex justify-content-between align-items-center flex-wrap ">
                         <h4 className="mx-lg-5 mx-xl-5 mx-xxl-2  px-lg-3 px-xxl-0">
-                          Pan Details
+                          Voter Details
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -311,7 +329,7 @@ const PanDetails = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Pan Details
+                            Voter Details
                           </span>{" "}
                         </p>
                       </div>
@@ -339,10 +357,12 @@ const PanDetails = () => {
                                   id="floatingInputGroup2"
                                   placeholder="Mobile Number"
                                   onChange={handleChange}
-                                  name="panno"
-                                  value={formData.panno}
+                                  name="epic_number"
+                                  value={formData.epic_number}
                                 />
-                                <label for="floatingInputGroup2">Pan No.</label>
+                                <label for="floatingInputGroup2">
+                                  EPIC No.
+                                </label>
                               </div>
                             </div>
                           </div>
@@ -430,7 +450,7 @@ const PanDetails = () => {
   );
 };
 
-export default PanDetails;
+export default FindVoter;
 
 const Wrapper = styled.div`
   .main {

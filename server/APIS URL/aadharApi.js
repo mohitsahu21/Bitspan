@@ -130,6 +130,21 @@ const verifyAadhaarOtp = async (aadhaarNumber, refId, otp, orderId) => {
   return axios.get(url);
 };
 
+const verifyVehicleRC = async (vehicle_number, orderid) => {
+  const url = `https://connect.ekychub.in/v3/verification/vehicle_rc?username=${EKYCHUB_USERNAME}&token=${EKYCHUB_TOKEN}&vehicle_number=${vehicle_number}&orderid=${orderid}`;
+
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    return {
+      status: "Error",
+      message:
+        error.message || "Something went wrong while verifying vehicle RC",
+    };
+  }
+};
+
 module.exports = {
   findPanByAadhaar,
   findPanDetails,
@@ -139,4 +154,5 @@ module.exports = {
   verifyPassport,
   getAadhaarOtp,
   verifyAadhaarOtp,
+  verifyVehicleRC,
 };
