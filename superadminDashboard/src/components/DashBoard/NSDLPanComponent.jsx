@@ -170,7 +170,9 @@ const NSDLPanComponent = () => {
     };
   
     return (
-      <div>
+      <Wrapper>
+      
+      <div className="resp">
         {loading ? (
                                       <div className="d-flex justify-content-center">
                                         <Spinner animation="border" role="status">
@@ -181,7 +183,27 @@ const NSDLPanComponent = () => {
                                       </div>
                                     ) : renderComponent()}
       </div>
+         <div className="repsmobile">
+                <h6
+                className="mt-4 text-center">You Can Access This Page of Only In Desktop and Tablet !!</h6>
+              </div>
+      </Wrapper>
     );
   };
   
   export default NSDLPanComponent;
+  const Wrapper = styled.div`
+    
+     .resp{
+    display: block;
+@media screen and (max-width: 768px){
+  display: none;
+}
+  }
+  .repsmobile{
+    display: none;
+@media screen and (max-width: 768px){
+  display: block;
+}
+  }
+  `

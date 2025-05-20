@@ -146,7 +146,7 @@ import axios from "axios";
 //           <div className="row justify-content-center">
 //             <div className="col-md-8 col-lg-8 col-xl-4">
 //               <div className="card">
-//                 <div className="p-4">
+//                 <div className="space">
 //                   <div className="text-center">
 //                     <h3>Bitspan.com</h3>
 //                     <h4 className="text-muted mt-2 text-center fs-5">
@@ -542,14 +542,18 @@ const LoginBitspan = () => {
   //     setLoading(false); // Set loading to false after the API call
   //   }
   // };
-
+useEffect(() => {
+  if (isOtpSent && inputsRef.current[0]) {
+    inputsRef.current[0].focus();
+  }
+}, [isOtpSent]);
   return (
     <Wrapper>
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-8 col-lg-8 col-xl-4">
             <div className="card">
-              <div className="p-4">
+              <div className="space">
                 {/* <div className="text-center">
                   <h3>Bitspan.com</h3>
                   <h4 className="text-muted mt-2 text-center fs-5">
@@ -653,22 +657,22 @@ const LoginBitspan = () => {
                           Enter OTP
                         </label>
                         <div className="otp-inputs">
-                          {otp.map((digit, index) => (
-                            <input
-                              key={index}
-                              type="text"
-                              maxLength="1"
-                              value={digit}
-                              ref={(el) => (inputsRef.current[index] = el)}
-                              onChange={(e) => handleChange(e.target, index)}
-                              // onKeyDown={(e) => handleKeyDown(e, index)}
-                              onKeyDown={(e) => {
-                                handleKeyDown(e, index);
-                                handlebutton(e); // Also check for "Enter" key
-                              }}
-                              className="otp-input"
-                            />
-                          ))}
+                         {otp.map((digit, index) => (
+  <input
+    key={index}
+    type="text"
+    maxLength="1"
+    value={digit}
+    ref={(el) => (inputsRef.current[index] = el)}
+    onChange={(e) => handleChange(e.target, index)}
+    onKeyDown={(e) => {
+      handleKeyDown(e, index);
+      handlebutton(e);
+    }}
+    className="otp-input"
+  />
+))}
+
                         </div>
                       </div>
 
@@ -697,33 +701,70 @@ const LoginBitspan = () => {
 export default LoginBitspan;
 
 const Wrapper = styled.div`
-  background-color: black;
-  bottom: 0;
-  height: 100%;
-  left: 0;
-  /* opacity: 0.; */
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 100%;
+    background: linear-gradient(135deg, #0bb197, #00665c);
+   min-height: 100vh;
+   display: flex;
+   align-items: center;
+  justify-content: center;
+
   .card {
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+    /* box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
     margin-bottom: 1.5rem;
     background-color: #ffffff;
-    margin-top: 8rem;
+    margin-top: 8rem; */
+         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+     animation: slideIn 0.6s ease-out;
+     border-radius: 16px;
+     padding: 2rem;
+     background: #fff;
+     width: 100%;
   }
-  .p-4 {
-    padding: 1.5rem !important;
+  .space {
+    padding: 1.5rem;
+    @media screen and  (max-width: 768px){
+      padding: 0rem;
+    }
   }
   h3 {
     color: #0bb197;
+    font-weight: 700;
+  }
+
+  h4 {
+    font-weight: 500;
+    color: #6c757d;
+  }
+
+  label {
+    font-weight: 500;
+  }
+    .form-control {
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .form-control:focus {
+    box-shadow: 0 0 0 0.15rem rgba(11, 177, 151, 0.25);
+    border-color: #0bb197;
   }
   button {
     background-color: #0bb197;
     color: #ffffff;
     border: #0bb197;
+   transition: background-color 0.5s ease;
+
     :hover {
       background-color: #92d6cc;
+    }
+  }
+    @keyframes slideIn {
+    from {
+      transform: translateY(40px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
     }
   }
   .otp-inputs {
@@ -739,7 +780,13 @@ const Wrapper = styled.div`
     text-align: center;
     border: 1px solid #ccc;
     border-radius: 5px;
+     transition: border-color 0.3s ease;
+
   }
+     .otp-input:focus {
+     border-color: #0bb197;
+     outline: none;
+   }
 `;
 
 // const LoginBitspan = () => {
@@ -828,7 +875,7 @@ const Wrapper = styled.div`
 //           <div className="row justify-content-center">
 //             <div className="col-md-8 col-lg-8 col-xl-4">
 //               <div className="card">
-//                 <div className="p-4">
+//                 <div className="space">
 //                   <div className="text-center">
 //                     <h3>Bitspan.com</h3>
 //                     <h4 className="text-muted mt-2 text-center fs-5">
@@ -946,3 +993,96 @@ const Wrapper = styled.div`
 //     </>
 //   );
 // };
+
+// const Wrapper = styled.div`
+//   background: linear-gradient(135deg, #0bb197, #00665c);
+//   min-height: 100vh;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+
+//   .card {
+//     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+//     animation: slideIn 0.6s ease-out;
+//     border-radius: 16px;
+//     padding: 2rem;
+//     background: #fff;
+//     width: 100%;
+//   }
+
+//   @keyframes slideIn {
+//     from {
+//       transform: translateY(40px);
+//       opacity: 0;
+//     }
+//     to {
+//       transform: translateY(0);
+//       opacity: 1;
+//     }
+//   }
+
+//   h3 {
+//     color: #0bb197;
+//     font-weight: 700;
+//   }
+
+//   h4 {
+//     font-weight: 500;
+//     color: #6c757d;
+//   }
+
+//   label {
+//     font-weight: 500;
+//   }
+
+//   .form-control {
+//     border-radius: 8px;
+//     transition: box-shadow 0.3s ease;
+//   }
+
+//   .form-control:focus {
+//     box-shadow: 0 0 0 0.15rem rgba(11, 177, 151, 0.25);
+//     border-color: #0bb197;
+//   }
+
+//   button {
+//     background-color: #0bb197;
+//     color: #ffffff;
+//     border: none;
+//     transition: background-color 0.3s ease;
+//     font-weight: 600;
+//     padding: 0.6rem;
+//     border-radius: 8px;
+//   }
+
+//   button:hover {
+//     background-color: #0aa08a;
+//   }
+
+//   .otp-inputs {
+//     display: flex;
+//     justify-content: space-between;
+//     gap: 10px;
+//     margin-top: 1rem;
+//   }
+
+//   .otp-input {
+//     width: 48px;
+//     height: 48px;
+//     font-size: 18px;
+//     text-align: center;
+//     border: 2px solid #ccc;
+//     border-radius: 8px;
+//     transition: border-color 0.3s ease;
+//   }
+
+//   .otp-input:focus {
+//     border-color: #0bb197;
+//     outline: none;
+//   }
+
+//   .text-center img {
+//     max-width: 120px;
+//     margin-bottom: 1rem;
+//   }
+// `;
