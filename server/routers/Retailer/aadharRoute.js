@@ -17,6 +17,9 @@ const {
   aadhaarVerifyOtp,
   handleVehicleRCVerification,
   VehicleRCVerification,
+  verifyDLController,
+  gstVerificationController,
+  fetchGSTVerification,
 } = require("../../controllers/Retailer/aadharController");
 const router = express.Router();
 
@@ -37,5 +40,8 @@ router.post("/aadhaarSendOtp", aadhaarSendOtp);
 router.post("/aadhaarVerifyOtp", aadhaarVerifyOtp);
 router.get("/handleVehicleRCVerification", handleVehicleRCVerification);
 router.post("/VehicleRCVerification", VehicleRCVerification);
+router.get("/verifyDLController", verifyDLController);
+router.get("/gstVerificationController", gstVerificationController);
+router.post("/fetchGSTVerification", fetchGSTVerification);
 
 module.exports = router;

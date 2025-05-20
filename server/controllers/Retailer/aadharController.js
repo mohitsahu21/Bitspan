@@ -7,6 +7,8 @@ const {
   getAadhaarOtp,
   verifyAadhaarOtp,
   verifyVehicleRC,
+  verifyDrivingLicense,
+  verifyGST,
 } = require("../../APIS URL/aadharApi");
 const { db } = require("../../connect");
 const moment = require("moment-timezone");
@@ -1487,6 +1489,232 @@ const VehicleRCVerification = async (req, res) => {
   });
 };
 
+const verifyDLController = async (req, res) => {
+  const { dl_number, dob, orderid } = req.query;
+
+  if (!dl_number || !dob || !orderid) {
+    return res
+      .status(400)
+      .json({ status: "Failure", message: "Missing required parameters" });
+  }
+
+  const result = await verifyDrivingLicense({
+    dl_number,
+    dob,
+    orderid,
+  });
+
+  if (result.status === "Success") {
+    res.status(200).json(result);
+  } else {
+    res.status(400).json(result);
+  }
+};
+
+const gstVerificationController = async (req, res) => {
+  const { gst, orderid } = req.query;
+
+  if (!gst || !orderid) {
+    return res
+      .status(400)
+      .json({ status: "Failure", message: "GST and orderid are required" });
+  }
+
+  const result = await verifyGST(gst, orderid);
+  res.json(result);
+};
+
+const fetchGSTVerification = async (req, res) => {
+  const { gst, userId } = req.body;
+  let { amount } = req.body;
+
+  if (!gst || !userId) {
+    return res.status(400).json({
+      status: "Failure",
+      message: "gst and userId are required",
+    });
+  }
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const orderId = `ORDV${Date.now()}`;
+  const transactionId = `TXNV${Date.now()}`;
+  const transactionDetails = `GST Verification Order Id ${orderId}`;
+  const creditAmt = 0;
+
+  // Step 1: Fetch current wallet balance
+  const queryBalance = `
+    SELECT Closing_Balance 
+    FROM user_wallet 
+    WHERE userId = ? 
+    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+    LIMIT 1
+  `;
+
+  db.query(queryBalance, [userId], async (err, balanceResult) => {
+    if (err) {
+      console.error("Error fetching wallet balance:", err);
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Failed to fetch wallet balance",
+        details: err.message,
+      });
+    }
+
+    if (balanceResult.length === 0) {
+      return res.status(404).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        message: "No balance found for the user.",
+      });
+    }
+
+    const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+    if (isNaN(currentBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Current balance is invalid.",
+      });
+    }
+
+    // Step 2: Validate amount
+    if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+      return res.status(500).json({
+        success: false,
+        status: "Failure",
+        error: "Invalid or missing amount",
+      });
+    }
+
+    amount = parseFloat(parseFloat(amount).toFixed(2));
+
+    if (currentBalance < amount) {
+      return res.status(400).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        message: "Insufficient balance.",
+        currentBalance,
+        requiredAmount: amount,
+      });
+    }
+
+    const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+
+    // Step 3: Insert debit transaction
+    const updateWalletQuery = `
+      INSERT INTO user_wallet 
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+      updateWalletQuery,
+      [
+        userId,
+        createdAt,
+        orderId,
+        transactionId,
+        currentBalance.toFixed(2),
+        newBalance,
+        "Debit",
+        creditAmt,
+        amount,
+        transactionDetails,
+        "Success",
+      ],
+      async (err, walletResult) => {
+        if (err) {
+          console.error("Error updating wallet balance:", err);
+          return res.status(500).json({
+            status: "Failure",
+            step: "Update Wallet Balance",
+            error: "Failed to update wallet balance",
+            details: err.message,
+          });
+        }
+
+        // Step 4: Call GST Verification API
+        try {
+          const result = await verifyGST(gst, orderId);
+
+          if (result.status === "Failure") {
+            const refundQuery = `
+    INSERT INTO user_wallet 
+    (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+            const refundTransactionId = `TXNV${Date.now()}`;
+            const refundedBalance = (parseFloat(newBalance) + amount).toFixed(
+              2
+            );
+
+            db.query(
+              refundQuery,
+              [
+                userId,
+                createdAt,
+                orderId,
+                refundTransactionId,
+                newBalance,
+                refundedBalance,
+                "Credit",
+                amount,
+                0,
+                "Refund due to GST verification failure",
+                "Success",
+              ],
+              (refundErr) => {
+                if (refundErr) {
+                  return res.status(500).json({
+                    status: "Failure",
+                    step: "Refund Wallet",
+                    message: "Verification failed and refund also failed.",
+                    details: refundErr.message,
+                  });
+                }
+
+                return res.status(200).json({
+                  status: "Failure",
+                  message: "GST verification failed. Amount refunded.",
+                  wallet: {
+                    transactionId,
+                    refundedTransactionId: refundTransactionId,
+                    previousBalance: currentBalance.toFixed(2),
+                    newBalance: refundedBalance,
+                    refundedAmount: amount,
+                  },
+                  gstData: result,
+                });
+              }
+            );
+          } else {
+            // If verification successful
+            return res.status(200).json({
+              status: "Success",
+              wallet: {
+                transactionId,
+                newBalance,
+                previousBalance: currentBalance.toFixed(2),
+                deductedAmount: amount,
+              },
+              gstData: result,
+            });
+          }
+        } catch (err) {
+          return res.status(500).json({
+            status: "Failure",
+            step: "Call GST API",
+            message: "Unexpected error occurred while calling GST API",
+            details: err.message,
+          });
+        }
+      }
+    );
+  });
+};
+
 module.exports = {
   getPanByAadhaar,
   getPanDetails,
@@ -1505,4 +1733,7 @@ module.exports = {
   aadhaarVerifyOtp,
   handleVehicleRCVerification,
   VehicleRCVerification,
+  verifyDLController,
+  gstVerificationController,
+  fetchGSTVerification,
 };

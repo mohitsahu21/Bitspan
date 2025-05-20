@@ -7,16 +7,15 @@ import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal, Button, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { use } from "react";
 
-const RCFind = () => {
+const FindGSTVerify = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
   const [prices, setPrices] = useState([]);
   const [formData, setFormData] = useState({
+    gst: "",
     userId: currentUser?.userId,
-    rcno: "",
     amount: "",
   });
   const [loading, setLoading] = useState(false);
@@ -81,7 +80,7 @@ const RCFind = () => {
   useEffect(() => {
     if (services) {
       const purchaseBankIdService = services.find(
-        (item) => item.service_name === "RC Download"
+        (item) => item.service_name === "GST Number"
       );
 
       if (purchaseBankIdService?.status === "Deactive") {
@@ -99,7 +98,7 @@ const RCFind = () => {
     if (prices.length > 0) {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        amount: prices[0].rc_download_price,
+        amount: prices[0].gst_price,
       }));
     }
   }, [prices]);
@@ -147,8 +146,7 @@ const RCFind = () => {
     console.log("Form Data Submitted: ", formData);
     try {
       const response = await axios.post(
-        // `http://localhost:7777/api/auth/aadhar/fetchRcDetails`,
-        `https://2kadam.co.in/api/auth/aadhar/fetchRcDetails`,
+        `https://2kadam.co.in/api/auth/aadhar/fetchGSTVerification`,
         formData,
         {
           headers: {
@@ -157,31 +155,46 @@ const RCFind = () => {
           },
         }
       );
-
-      console.log("Response:", response);
-
       if (response.data.status === "Success") {
-        const base64Pdf = response.data.panData.pdf;
-        console.log("Base64 PDF:", base64Pdf);
+        const { gstData, wallet } = response.data;
 
-        if (base64Pdf) {
-          // Decode base64 string to binary
-          const byteCharacters = atob(base64Pdf);
-          const byteNumbers = new Array(byteCharacters.length);
-          for (let i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
-          }
-          const byteArray = new Uint8Array(byteNumbers);
+        Swal.fire({
+          title: "GST Data Retrieved",
+          html: `
+          <strong>GST NO:</strong> ${gstData?.GSTIN}<br/>
+          <strong>Legal Name of Business:</strong> ${gstData?.legal_name_of_business}<br/>
+          <strong>Trade Name of Business:</strong> ${gstData?.trade_name_of_business}<br/>
+          <strong>Center Jurisdiction:</strong> ${gstData?.center_jurisdiction}<br/>
+          <strong>State Jurisdiction:</strong> ${gstData?.state_jurisdiction}<br/>
+          <strong>Constitution of Business:</strong> ${gstData?.constitution_of_business}<br/>
+          <strong>Taxpayer Type:</strong> ${gstData?.taxpayer_type}<br/>
+          <strong>GST Status:</strong> ${gstData?.gst_in_status}<br/>
+          <strong>Last Update Date:</strong> ${gstData?.last_update_date}<br/>
+          <strong>Principal Place Address:</strong> ${gstData?.principal_place_address}<br/>
+      <hr/>
+      <strong>Transaction ID:</strong> ${wallet?.transactionId}<br/>
+    `,
+          icon: "success",
+        });
 
-          // Create blob and object URL
-          const blob = new Blob([byteArray], { type: "application/pdf" });
-          const pdfUrl = URL.createObjectURL(blob);
-
-          // Open PDF in a new tab
-          window.open(pdfUrl, "_blank");
-        } else {
-          alert("No PDF data found in response");
-        }
+        // Reset form
+        setFormData({
+          gst: "",
+          userId: currentUser?.userId,
+          amount: prices[0]?.pan_aadhar_price,
+        });
+      } else if (
+        response.data.status === "Failure" &&
+        response.data.voterData.status === "Failure"
+      ) {
+        Swal.fire({
+          title: `${response.data.message}`,
+          html: `
+      <strong>Transaction ID:</strong> ${wallet?.transactionId}<br/>
+      <strong>Refunded Transaction ID:</strong> ${wallet?.refundedTransactionId}<br/>
+    `,
+          icon: "error",
+        });
       } else {
         Swal.fire({
           title: "Error",
@@ -189,35 +202,6 @@ const RCFind = () => {
           icon: "error",
         });
       }
-
-      //   if (response.data.status === "Success") {
-      //     const { panData, wallet } = response.data;
-
-      //     Swal.fire({
-      //       title: "PAN Data Retrieved",
-      //       html: `
-      //   <strong>Aadhaar:</strong> ${panData?.aadhaar}<br/>
-      //   <strong>PAN No:</strong> ${panData?.pan_no}<br/>
-      //   <strong>Application No:</strong> ${panData?.application_no}<br/>
-      //   <hr/>
-      //   <strong>Transaction ID:</strong> ${wallet?.transactionId}<br/>
-      // `,
-      //       icon: "success",
-      //     });
-
-      //     // Reset form
-      //     setFormData({
-      //       aadhaar_no: "",
-      //       userId: currentUser?.userId,
-      //       amount: prices[0]?.pan_aadhar_price,
-      //     });
-      //   } else {
-      //     Swal.fire({
-      //       title: "Error",
-      //       text: response?.data?.message || "Something went wrong!",
-      //       icon: "error",
-      //     });
-      //   }
     } catch (error) {
       console.log(error);
       Swal.fire({
@@ -326,7 +310,7 @@ const RCFind = () => {
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="d-flex justify-content-between align-items-center flex-wrap ">
                         <h4 className="mx-lg-5 mx-xl-5 mx-xxl-2  px-lg-3 px-xxl-0">
-                          Find Registration Certificate
+                          GST Details
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -336,7 +320,7 @@ const RCFind = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Find Registration Certificate
+                            GST Details
                           </span>{" "}
                         </p>
                       </div>
@@ -364,11 +348,11 @@ const RCFind = () => {
                                   id="floatingInputGroup2"
                                   placeholder="Mobile Number"
                                   onChange={handleChange}
-                                  name="rcno"
-                                  value={formData.rcno}
+                                  name="gst"
+                                  value={formData.gst}
                                 />
                                 <label for="floatingInputGroup2">
-                                  Registration Certificate No.
+                                  GST (Goods and Services Tax) No.
                                 </label>
                               </div>
                             </div>
@@ -457,7 +441,7 @@ const RCFind = () => {
   );
 };
 
-export default RCFind;
+export default FindGSTVerify;
 
 const Wrapper = styled.div`
   .main {
@@ -480,57 +464,3 @@ const Wrapper = styled.div`
     font-size: 14px;
   }
 `;
-
-// import React from "react";
-// import axios from "axios";
-
-// const RCFind = () => {
-//   const fetchPdf = async () => {
-//     try {
-//       const response = await axios.post(
-//         "http://localhost:7777/api/auth/aadhar/fetchRcPdf",
-//         {
-//           api_key: "55190b0f78f4b83fd9781f3aab2193",
-//           rcno: "MP20CD6439",
-//           cardtype: "1",
-//           chiptype: "1",
-//         }
-//       );
-
-//       console.log("Response:", response);
-
-//       const base64Pdf = response.data.pdf;
-//       console.log("Base64 PDF:", base64Pdf);
-
-//       if (base64Pdf) {
-//         // Decode base64 string to binary
-//         const byteCharacters = atob(base64Pdf);
-//         const byteNumbers = new Array(byteCharacters.length);
-//         for (let i = 0; i < byteCharacters.length; i++) {
-//           byteNumbers[i] = byteCharacters.charCodeAt(i);
-//         }
-//         const byteArray = new Uint8Array(byteNumbers);
-
-//         // Create blob and object URL
-//         const blob = new Blob([byteArray], { type: "application/pdf" });
-//         const pdfUrl = URL.createObjectURL(blob);
-
-//         // Open PDF in a new tab
-//         window.open(pdfUrl, "_blank");
-//       } else {
-//         alert("No PDF data found in response");
-//       }
-//     } catch (error) {
-//       console.error("Error fetching RC PDF:", error);
-//       alert("Failed to fetch RC PDF");
-//     }
-//   };
-
-//   return (
-//     <div style={{ padding: "20px" }}>
-//       <button onClick={fetchPdf}>View RC PDF</button>
-//     </div>
-//   );
-// };
-
-// export default RCFind;

@@ -145,6 +145,35 @@ const verifyVehicleRC = async (vehicle_number, orderid) => {
   }
 };
 
+const verifyDrivingLicense = async (dl_numner, dob, orderid) => {
+  const url = `https://connect.ekychub.in/v3/verification/driving?username=${EKYCHUB_USERNAME}&token=${EKYCHUB_TOKEN}&dl_numner=${dl_numner}&dob=${dob}&orderid=${orderid}`;
+
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    return {
+      status: "Error",
+      message:
+        error.message || "Something went wrong while verifying Driving Licence",
+    };
+  }
+};
+
+const verifyGST = async (gstNumber, orderId) => {
+  const username = "9926054551";
+  const token = "da1a29b74e50cbfbf3f357beb52d6b32";
+
+  const url = `https://connect.ekychub.in/v3/verification/gst_verification?username=${username}&token=${token}&gst=${gstNumber}&orderid=${orderId}`;
+
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    return { status: "Failure", message: error.message };
+  }
+};
+
 module.exports = {
   findPanByAadhaar,
   findPanDetails,
@@ -155,4 +184,6 @@ module.exports = {
   getAadhaarOtp,
   verifyAadhaarOtp,
   verifyVehicleRC,
+  verifyDrivingLicense,
+  verifyGST,
 };

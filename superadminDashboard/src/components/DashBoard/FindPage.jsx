@@ -59,13 +59,15 @@ const FindPage = () => {
       icon: <FaRegIdCard color="#9b59b6" />,
     },
     {
-      title: "Driving Licence Details",
+      // title: "Driving Licence Details",
+      title: "Driving Licence Download",
       path: "/dl-find",
       icon: <MdDriveEta color="#1abc9c" />,
     },
     {
       title: "GST Details",
-      path: "/gst-find",
+      // path: "/gst-find", //Backend Working but Frontend not working
+      path: "/gstverify-find",
       icon: <FaFileInvoice color="#e67e22" />,
     },
     {

@@ -225,6 +225,8 @@ const SAEditPackageModel = ({
     rc_download_price: packages.rc_download_price,
     ration_price: packages.ration_price,
     dl_price: packages.dl_price,
+    passport_price: packages.passport_price,
+    gst_price: packages.gst_price,
   });
 
   const handlesubmit = async (e) => {
@@ -4210,7 +4212,7 @@ const SAEditPackageModel = ({
 
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Ration Price
+                          Voter Price
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -4246,6 +4248,52 @@ const SAEditPackageModel = ({
                             placeholder="Enter Price"
                             name="dl_price"
                             value={formData.dl_price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Passport Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="passport_price"
+                            value={formData.passport_price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          GST Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="gst_price"
+                            value={formData.gst_price}
                             onChange={handleChange}
                             required
                             min={0}

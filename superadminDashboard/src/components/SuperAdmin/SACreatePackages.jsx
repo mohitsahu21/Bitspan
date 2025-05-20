@@ -174,6 +174,8 @@ const SACreatePackages = () => {
     rc_download_price: "",
     ration_price: "",
     dl_price: "",
+    passport_price: "",
+    gst_price: "",
   });
 
   const handleChange = (e) => {
@@ -364,6 +366,8 @@ const SACreatePackages = () => {
           rc_download_price: "",
           ration_price: "",
           dl_price: "",
+          passport_price: "",
+          gst_price: "",
         });
       } else {
         Swal.fire({
@@ -4214,7 +4218,7 @@ const SACreatePackages = () => {
                           <input
                             type="number"
                             class="form-control"
-                            placeholder="Enter Commission"
+                            placeholder="Enter Price"
                             name="pan_aadhar_price"
                             value={formData.pan_aadhar_price}
                             onChange={handleChange}
@@ -4237,7 +4241,7 @@ const SACreatePackages = () => {
                           <input
                             type="number"
                             class="form-control"
-                            placeholder="Enter Commission"
+                            placeholder="Enter Price"
                             name="pan_price"
                             value={formData.pan_price}
                             onChange={handleChange}
@@ -4260,7 +4264,7 @@ const SACreatePackages = () => {
                           <input
                             type="number"
                             class="form-control"
-                            placeholder="Enter Commission"
+                            placeholder="Enter Price"
                             name="rc_price"
                             value={formData.rc_price}
                             onChange={handleChange}
@@ -4283,7 +4287,7 @@ const SACreatePackages = () => {
                           <input
                             type="number"
                             class="form-control"
-                            placeholder="Enter Commission"
+                            placeholder="Enter Price"
                             name="rc_download_price"
                             value={formData.rc_download_price}
                             onChange={handleChange}
@@ -4296,7 +4300,7 @@ const SACreatePackages = () => {
                       {/* RC Download Price */}
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Ration Price
+                          Voter Price
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">
@@ -4306,7 +4310,7 @@ const SACreatePackages = () => {
                           <input
                             type="number"
                             class="form-control"
-                            placeholder="Enter Commission"
+                            placeholder="Enter Price"
                             name="ration_price"
                             value={formData.ration_price}
                             onChange={handleChange}
@@ -4316,7 +4320,7 @@ const SACreatePackages = () => {
                           />
                         </div>
                       </div>
-                      {/* Ration Price */}
+                      {/* DataBase column name Ration Price ka hai but use ho raha Voter Details */}
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
                           Driving Licence Price
@@ -4329,7 +4333,7 @@ const SACreatePackages = () => {
                           <input
                             type="number"
                             class="form-control"
-                            placeholder="Enter Commission"
+                            placeholder="Enter Price"
                             name="dl_price"
                             value={formData.dl_price}
                             onChange={handleChange}
@@ -4340,6 +4344,52 @@ const SACreatePackages = () => {
                         </div>
                       </div>
                       {/* Driving Licence Price */}
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          Passport Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="passport_price"
+                            value={formData.passport_price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>
+                      {/* Passport Price */}
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label for="name" class="form-label">
+                          GST Price
+                        </label>
+                        <div class="input-group flex-nowrap">
+                          <span class="input-group-text" id="addon-wrapping">
+                            {" "}
+                            <MdNumbers />
+                          </span>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Enter Price"
+                            name="gst_price"
+                            value={formData.gst_price}
+                            onChange={handleChange}
+                            required
+                            min={0}
+                            step="0.01" // Allows decimal input
+                          />
+                        </div>
+                      </div>
+                      {/* GST Price */}
                       {/* ==================== */}
                     </div>
                     {/* ------Create Package Find Services End ------*/}

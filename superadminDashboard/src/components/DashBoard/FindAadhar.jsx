@@ -94,7 +94,7 @@ const FindAadhar = () => {
 
   useEffect(() => {
     if (prices.length > 0) {
-      setAmount(prices[0].rc_download_price);
+      setAmount(prices[0].aadhar_price);
     }
   }, [prices]);
 

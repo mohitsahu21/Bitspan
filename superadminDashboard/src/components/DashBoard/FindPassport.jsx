@@ -81,7 +81,7 @@ const FindPassport = () => {
   useEffect(() => {
     if (services) {
       const purchaseBankIdService = services.find(
-        (item) => item.service_name === "Pan Details"
+        (item) => item.service_name === "Passport Details"
       );
 
       if (purchaseBankIdService?.status === "Deactive") {
@@ -99,7 +99,7 @@ const FindPassport = () => {
     if (prices.length > 0) {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        amount: prices[0].pan_price,
+        amount: prices[0].passport_price,
       }));
     }
   }, [prices]);
