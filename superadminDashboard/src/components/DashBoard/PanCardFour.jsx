@@ -495,7 +495,7 @@ const PanCardFour = () => {
         <div className="container-fluid">
           <div className="row flex-wrap justify-content-center">
             <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11 mt-5 formdata">
-              <div className="main shadow-none">
+              <div className="main shadow-none resp">
                 <div className="row shadow-none">
                   <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     <div className="d-flex justify-content-between align-items-center flex-wrap">
@@ -1006,6 +1006,11 @@ const PanCardFour = () => {
                 </div>
               </div>
             </div>
+            <div className="repsmobile">
+              <h6 className="mt-4 text-center">
+                You Can Access This Page of Only In Desktop and Tablet !!
+              </h6>
+            </div>
           </div>
         </div>
       </div>
@@ -1042,5 +1047,17 @@ const Wrapper = styled.div`
   .custom-dropdown option {
     background-color: #e8e4f0;
     color: #343a40;
+  }
+  .resp {
+    display: block;
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+  }
+  .repsmobile {
+    display: none;
+    @media screen and (max-width: 768px) {
+      display: block;
+    }
   }
 `;

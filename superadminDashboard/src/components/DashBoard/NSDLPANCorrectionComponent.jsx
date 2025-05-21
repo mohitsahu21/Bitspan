@@ -13,7 +13,6 @@ import NsdlPanCorrectionEasySmart from "./NsdlPanCorrectionEasySmart";
 import NsdlPanCorrectionZlink from "./NsdlPanCorrectionZlink";
 import NsdlPanCorrection from "./NsdlPanCorrection";
 
-
 // const NSDLPanComponent = () => {
 //     const [loading, setLoading] = useState(false);
 //     const [serviceLoading, setServiceLoading] = useState(false);
@@ -34,7 +33,7 @@ import NsdlPanCorrection from "./NsdlPanCorrection";
 //               Authorization: `Bearer ${token}`,
 //             },
 //           }
-  
+
 //         );
 //         setServices(data.data);
 //         setLoading(false);
@@ -60,8 +59,7 @@ import NsdlPanCorrection from "./NsdlPanCorrection";
 //         const handleTabClick = (tab) => {
 //             setServiceLoading(true)
 //             if(services){
-                     
-             
+
 //             const purchaseBankIdService = services.find((item) => {
 //                 if (
 //                   (item.service_name === "NSDL PAN Instapay" ||
@@ -78,9 +76,9 @@ import NsdlPanCorrection from "./NsdlPanCorrection";
 //               if (!purchaseBankIdService) {
 //                 setShow("None");
 //               }
-              
+
 //               console.log(purchaseBankIdService);
-          
+
 //             }
 //           }
 
@@ -94,97 +92,130 @@ import NsdlPanCorrection from "./NsdlPanCorrection";
 // }
 
 const NSDLPANCorrectionComponent = () => {
-    const [loading, setLoading] = useState(false);
-    const [serviceLoading, setServiceLoading] = useState(false);
-    const { token } = useSelector((state) => state.user);
-    const [services, setServices] = useState([]);
-    const [show, setShow] = useState("Loading");
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-  
-    // Fetch Services
-    const fetchServices = async () => {
-      setLoading(true);
-      try {
-        const { data } = await axios.get(
-          "https://2kadam.co.in/api/auth/retailer/getAllServicesList",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setServices(data.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        if (error?.response?.status === 401) {
-          Swal.fire({
-            icon: "error",
-            title: "Your token is expired please login again",
-          });
-          dispatch(clearUser());
-          navigate("/");
+  const [loading, setLoading] = useState(false);
+  const [serviceLoading, setServiceLoading] = useState(false);
+  const { token } = useSelector((state) => state.user);
+  const [services, setServices] = useState([]);
+  const [show, setShow] = useState("Loading");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // Fetch Services
+  const fetchServices = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "https://2kadam.co.in/api/auth/retailer/getAllServicesList",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
+      );
+      setServices(data.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
+        dispatch(clearUser());
+        navigate("/");
       }
-      setLoading(false);
-    };
-  
-    useEffect(() => {
-      fetchServices();
-    }, []);
-  
-    useEffect(() => {
-      const findActiveService = () => {
-        setServiceLoading(true);
-        if (services.length > 0) {
-          const activeService = services.find((item) => 
-            ["NSDL PAN Instapay", "NSDL PAN ZLink", "NSDL PAN Easysmart"].includes(item.service_name) &&
-            item.status === "Active"
-          );
-          setShow(activeService ? activeService.service_name : "None");
-        }
-        setServiceLoading(false);
-      };
-  
-      findActiveService();
-    }, [services]);
-  
-    // Function to render the correct component
-    const renderComponent = () => {
-      if (show === "NSDL PAN Instapay") {
-        return <NsdlPanCorrection />;
-      } else if (show === "NSDL PAN ZLink") {
-        return <NsdlPanCorrectionZlink />;
-      } else if (show === "NSDL PAN Easysmart") {
-        return  <NsdlPanCorrectionEasySmart />;
-      }else if(show === "Loading"){
-        return <div className="d-flex justify-content-center">
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden ">
-            Loading...
-          </span>
-        </Spinner>
-      </div>
-      }
-       else {
-        return <div className="d-flex justify-content-center p-4"><h4>NSDL PAN service is currently Not Available <br></br>Please try after some time</h4></div>;
-      }
-    };
-  
-    return (
-      <div>
-        {loading ? (
-                                      <div className="d-flex justify-content-center">
-                                        <Spinner animation="border" role="status">
-                                          <span className="visually-hidden ">
-                                            Loading...
-                                          </span>
-                                        </Spinner>
-                                      </div>
-                                    ) : renderComponent()}
-      </div>
-    );
+    }
+    setLoading(false);
   };
-  
-  export default NSDLPANCorrectionComponent;
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
+  useEffect(() => {
+    const findActiveService = () => {
+      setServiceLoading(true);
+      if (services.length > 0) {
+        const activeService = services.find(
+          (item) =>
+            [
+              "NSDL PAN Instapay",
+              "NSDL PAN ZLink",
+              "NSDL PAN Easysmart",
+            ].includes(item.service_name) && item.status === "Active"
+        );
+        setShow(activeService ? activeService.service_name : "None");
+      }
+      setServiceLoading(false);
+    };
+
+    findActiveService();
+  }, [services]);
+
+  // Function to render the correct component
+  const renderComponent = () => {
+    if (show === "NSDL PAN Instapay") {
+      return <NsdlPanCorrection />;
+    } else if (show === "NSDL PAN ZLink") {
+      return <NsdlPanCorrectionZlink />;
+    } else if (show === "NSDL PAN Easysmart") {
+      return <NsdlPanCorrectionEasySmart />;
+    } else if (show === "Loading") {
+      return (
+        <div className="d-flex justify-content-center">
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden ">Loading...</span>
+          </Spinner>
+        </div>
+      );
+    } else {
+      return (
+        <div className="d-flex justify-content-center p-4">
+          <h4>
+            NSDL PAN service is currently Not Available <br></br>Please try
+            after some time
+          </h4>
+        </div>
+      );
+    }
+  };
+
+  return (
+    <>
+      <Wrapper>
+        <div className="resp">
+          {loading ? (
+            <div className="d-flex justify-content-center">
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden ">Loading...</span>
+              </Spinner>
+            </div>
+          ) : (
+            renderComponent()
+          )}
+        </div>
+        <div className="repsmobile">
+          <h6 className="mt-4 text-center">
+            You Can Access This Page of Only In Desktop and Tablet !!
+          </h6>
+        </div>
+      </Wrapper>
+    </>
+  );
+};
+
+export default NSDLPANCorrectionComponent;
+const Wrapper = styled.div`
+  .resp {
+    display: block;
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+  }
+  .repsmobile {
+    display: none;
+    @media screen and (max-width: 768px) {
+      display: block;
+    }
+  }
+`;
