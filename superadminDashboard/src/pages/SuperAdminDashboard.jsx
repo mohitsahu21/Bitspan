@@ -1009,7 +1009,50 @@ const SuperAdminDashboard = () => {
                             </User>
                           </Link>
                         </div>
-                        <div className="d-flex gap-4  smallcard">
+
+                        <div className="d-flex gap-4 smallcard">
+                          {/* <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-6 icon">
+                                            <LuIndianRupee />
+                                          </div> */}
+
+                          <div
+                            className="d-flex flex-column cardtext1  p-1"
+                            style={{
+                              backgroundColor: "rgba(255, 255, 255, 0.15)",
+                              borderRadius: "12px",
+                            }}
+                          >
+                            <p className="mb-0 px-2 my-0 fs-6">
+                              Easy Smart Wallet Balance
+                            </p>
+                            <h5 className="px-2 my-1">
+                              ₹{" "}
+                              {easySmartBalance?.length
+                                ? easySmartBalance
+                                : "..."}
+                            </h5>
+                          </div>
+
+                          <div
+                            className="d-flex flex-column cardtext1 p-1  "
+                            style={{
+                              backgroundColor: "rgba(255, 255, 255, 0.15)",
+                              borderRadius: "12px",
+                            }}
+                          >
+                            <p className="mb-0 px-2 my-0 fs-6">
+                              Sizar Pay Wallet Balance
+                            </p>
+                            <h5 className="px-2 my-1">
+                              ₹{" "}
+                              {sizarpayBalance?.toString()?.length
+                                ? sizarpayBalance
+                                : "..."}
+                            </h5>{" "}
+                          </div>
+                        </div>
+
+                        <div className="d-flex gap-4  smallcard mt-3">
                           {/* <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-6 icon">
                                             <LuIndianRupee />
                                           </div> */}
@@ -1075,48 +1118,6 @@ const SuperAdminDashboard = () => {
                               ₹{" "}
                               {deeperWebBalance?.length
                                 ? deeperWebBalance
-                                : "..."}
-                            </h5>{" "}
-                          </div>
-                        </div>
-
-                        <div className="d-flex gap-4 smallcard mt-3">
-                          {/* <div className="d-flex justify-content-center flex-column align-items-center p-2 fs-6 icon">
-                                            <LuIndianRupee />
-                                          </div> */}
-
-                          <div
-                            className="d-flex flex-column cardtext1  p-1"
-                            style={{
-                              backgroundColor: "rgba(255, 255, 255, 0.15)",
-                              borderRadius: "12px",
-                            }}
-                          >
-                            <p className="mb-0 px-2 my-0 fs-6">
-                              Easy Smart Wallet Balance
-                            </p>
-                            <h5 className="px-2 my-1">
-                              ₹{" "}
-                              {easySmartBalance?.length
-                                ? easySmartBalance
-                                : "..."}
-                            </h5>
-                          </div>
-
-                          <div
-                            className="d-flex flex-column cardtext1 p-1  "
-                            style={{
-                              backgroundColor: "rgba(255, 255, 255, 0.15)",
-                              borderRadius: "12px",
-                            }}
-                          >
-                            <p className="mb-0 px-2 my-0 fs-6">
-                              Sizar Pay Wallet Balance
-                            </p>
-                            <h5 className="px-2 my-1">
-                              ₹{" "}
-                              {sizarpayBalance?.toString()?.length
-                                ? sizarpayBalance
                                 : "..."}
                             </h5>{" "}
                           </div>

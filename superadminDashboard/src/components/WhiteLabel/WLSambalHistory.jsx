@@ -140,37 +140,36 @@ const WLSambalHistory = () => {
       <Wrapper>
         <div className="main">
           <div className="container-fluid">
-           
-              <div className="row flex-wrap justify-content-lg-center justify-content-center ">
-                <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
-                  {/* <Sider /> */}
-                </div>
-                <div
-                  className="col-xxl-12 col-xl-12 col-lg-12 col-md-10  col-sm-10  col-11
+            <div className="row flex-wrap justify-content-lg-center justify-content-center ">
+              <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
+                {/* <Sider /> */}
+              </div>
+              <div
+                className="col-xxl-12 col-xl-12 col-lg-12 col-md-10  col-sm-10  col-11
                              mt-5 formdata "
-                >
-                  <div className="main shadow-none ">
-                    <div className="row shadow-none ">
-                      <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                        {/* <div className="text-center">
+              >
+                <div className="main shadow-none ">
+                  <div className="row shadow-none ">
+                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                      {/* <div className="text-center">
                                                 <h3>Prepaid Recharge History</h3>
                                             </div> */}
-                        <div className="d-flex justify-content-between align-items-center flex-wrap">
-                          <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                            Sambal History
-                          </h4>
-                          <h6 className="mx-lg-5">
-                            <BiHomeAlt /> &nbsp;/ &nbsp; Sambal History
-                          </h6>
-                        </div>
+                      <div className="d-flex justify-content-between align-items-center flex-wrap">
+                        <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
+                          Sambal History
+                        </h4>
+                        <h6 className="mx-lg-5">
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Sambal History
+                        </h6>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
-                      <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
-                        <div className="row d-flex flex-column g-4">
-                          <div className="d-flex flex-column flex-md-row gap-3">
-                            {/* <div className="col-12 col-md-4 col-lg-3">
+                  <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
+                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
+                      <div className="row d-flex flex-column g-4">
+                        <div className="d-flex flex-column flex-md-row gap-3">
+                          {/* <div className="col-12 col-md-4 col-lg-3">
                               <input
                                 className="form-control"
                                 type="search"
@@ -192,88 +191,92 @@ const WLSambalHistory = () => {
                               />
                             </div> */}
 
-                            <div className="col-12 col-md-4 col-lg-3">
-                              <label for="fromDate" className="form-label">
-                                From
-                              </label>
-                              <input
-                                id="fromDate"
-                                className="form-control"
-                                type="date"
-                                value={fromDate}
-                                onChange={(e) => {setFromDate(e.target.value)
-                                  setCurrentPage(0)
-                                }}
-                              />
-                            </div>
-                            <div className="col-12 col-md-4 col-lg-3">
-                              <label for="toDate" className="form-label">
-                                To
-                              </label>
-                              <input
-                                id="toDate"
-                                className="form-control "
-                                type="date"
-                                value={toDate}
-                                onChange={(e) => {setToDate(e.target.value)
-                                  setCurrentPage(0)
-                                }}
-                              />
-                            </div>
-                            <div className="col-12 col-md-4 col-lg-3">
-                              <label for="toDate" className="form-label">
-                                Select Status
-                              </label>
-                              <select
-                                className="form-select"
-                                aria-label="Default select example"
-                                value={status}
-                                onChange={(e) => {setStatus(e.target.value)
-                                  setCurrentPage(0)
-                                }}
-                              >
-                                <option selected>---Select---</option>
-                                <option value="Success">Success</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Under Process">
-                                  Under Process
-                                </option>
-                                <option value="Reject">Reject</option>
-                              </select>
-                            </div>
+                          <div className="col-12 col-md-4 col-lg-3">
+                            <label for="fromDate" className="form-label">
+                              From
+                            </label>
+                            <input
+                              id="fromDate"
+                              className="form-control"
+                              type="date"
+                              value={fromDate}
+                              onChange={(e) => {
+                                setFromDate(e.target.value);
+                                setCurrentPage(0);
+                              }}
+                            />
+                          </div>
+                          <div className="col-12 col-md-4 col-lg-3">
+                            <label for="toDate" className="form-label">
+                              To
+                            </label>
+                            <input
+                              id="toDate"
+                              className="form-control "
+                              type="date"
+                              value={toDate}
+                              onChange={(e) => {
+                                setToDate(e.target.value);
+                                setCurrentPage(0);
+                              }}
+                            />
+                          </div>
+                          <div className="col-12 col-md-4 col-lg-3">
+                            <label for="toDate" className="form-label">
+                              Select Status
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              value={status}
+                              onChange={(e) => {
+                                setStatus(e.target.value);
+                                setCurrentPage(0);
+                              }}
+                            >
+                              <option selected>---Select---</option>
+                              <option value="Success">Success</option>
+                              <option value="Pending">Pending</option>
+                              <option value="Under Process">
+                                Under Process
+                              </option>
+                              <option value="Reject">Reject</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div className="d-flex flex-column flex-xl-row gap-3">
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                            {/* <label for="fromDate" className="form-label">From</label> */}
+                            <input
+                              id="fromDate"
+                              className="form-control"
+                              type="search"
+                              placeholder="search By Order Id"
+                              value={keyword}
+                              onChange={(e) => {
+                                setKeyword(e.target.value);
+                                setCurrentPage(0);
+                              }}
+                            />
                           </div>
 
-                          <div className="d-flex flex-column flex-xl-row gap-3">
-                            <div className="col-12 col-md-12 col-lg-12 col-xl-8">
-                              {/* <label for="fromDate" className="form-label">From</label> */}
-                              <input
-                                id="fromDate"
-                                className="form-control"
-                                type="search"
-                                placeholder="search By Order Id"
-                                value={keyword}
-                                onChange={(e) => {setKeyword(e.target.value)
-                                  setCurrentPage(0)
-                                }}
-                              />
-                            </div>
-
-                            {/* <div className="d-flex align-items-end">
+                          {/* <div className="d-flex align-items-end">
         <button type="button" className="btn btn-primary button">Search</button>
     </div> */}
-                          </div>
+                        </div>
 
-                          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                            <div class="table-responsive">
+                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                          <div class="table-responsive">
                             {dataLoading ? (
-                                  <div className="d-flex justify-content-center">
-                                    <Spinner animation="border" role="status">
-                                      <span className="visually-hidden ">
-                                        Loading...
-                                      </span>
-                                    </Spinner>
-                                  </div>
-                                ) :
+                              <div className="d-flex justify-content-center">
+                                <Spinner animation="border" role="status">
+                                  <span className="visually-hidden ">
+                                    Loading...
+                                  </span>
+                                </Spinner>
+                              </div>
+                            ) : (
                               <table class="table table-striped">
                                 <thead className="table-dark">
                                   <tr>
@@ -337,30 +340,29 @@ const WLSambalHistory = () => {
                                   )}
                                 </tbody>
                               </table>
-}
-                            </div>
-                            <PaginationContainer>
-                              <ReactPaginate
-                                previousLabel={"Previous"}
-                                nextLabel={"Next"}
-                                breakLabel={"..."}
-                                pageCount={totalPages}
-                                marginPagesDisplayed={2}
-                                pageRangeDisplayed={3}
-                                onPageChange={handlePageChange}
-                                containerClassName={"pagination"}
-                                activeClassName={"active"}
-                                forcePage={currentPage}
-                              />
-                            </PaginationContainer>
+                            )}
                           </div>
+                          <PaginationContainer>
+                            <ReactPaginate
+                              previousLabel={"Previous"}
+                              nextLabel={"Next"}
+                              breakLabel={"..."}
+                              pageCount={totalPages}
+                              marginPagesDisplayed={2}
+                              pageRangeDisplayed={3}
+                              onPageChange={handlePageChange}
+                              containerClassName={"pagination"}
+                              activeClassName={"active"}
+                              forcePage={currentPage}
+                            />
+                          </PaginationContainer>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            
+            </div>
           </div>
         </div>
       </Wrapper>

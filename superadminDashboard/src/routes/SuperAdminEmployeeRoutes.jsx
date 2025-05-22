@@ -68,6 +68,14 @@ const SAEPanCouponRequests = lazy(() =>
   import("../components/SuperAdminEmployee/SAEPanCouponRequests")
 );
 
+const SAEDSCHistory = lazy(() =>
+  import("../components/SuperAdminEmployee/SAEDSCHistory")
+);
+
+const SAETokenDSC = lazy(() =>
+  import("../components/SuperAdminEmployee/SAETokenDSC")
+);
+
 const SuperAdminEmployeeRoutes = () => {
   const { currentUser, token } = useSelector((state) => state.user);
   const pathname = window.location.pathname;
@@ -230,6 +238,9 @@ const SuperAdminEmployeeRoutes = () => {
               path="/pan-coupon-requests"
               element={<SAEPanCouponRequests />}
             />
+
+            <Route path="/dsc-history" element={<SAEDSCHistory />} />
+            <Route path="/dsc-token-history" element={<SAETokenDSC />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Suspense>

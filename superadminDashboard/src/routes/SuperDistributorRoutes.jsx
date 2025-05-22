@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
 import Swal from "sweetalert2";
 import axios from "axios";
+import SATokenDscHistory from "../components/SuperDistributer/SATokenDscHistory";
 
 // Lazy-loaded components
 const SuperDistributerDashboard = lazy(() =>
@@ -166,6 +167,9 @@ const SdWalletToWalletTransfer = lazy(() =>
   import("../components/SuperDistributer/SdWalletToWalletTransfer")
 );
 const Profile = lazy(() => import("../pages/Profile"));
+const SAHistoryDSC = lazy(() =>
+  import("../components/SuperDistributer/SAHistoryDSC")
+);
 
 const SuperDistributorRoutes = () => {
   const { currentUser, token } = useSelector((state) => state.user);
@@ -417,6 +421,8 @@ const SuperDistributorRoutes = () => {
           element={<SdFundTransferStatus />}
         />
         <Route path="/generate-pin" element={<SdCreatePin />} />
+        <Route path="/dsc-history" element={<SAHistoryDSC />} />
+        <Route path="/dsc-token-history" element={<SATokenDscHistory />} />
         <Route
           path="/download-certificate-print"
           element={

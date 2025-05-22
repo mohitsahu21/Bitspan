@@ -490,6 +490,37 @@ const SuperAdminEmployeeDashboard = () => {
       {children}
     </OverlayTrigger>
   );
+
+  const [pendingDSC, setPendingDSC] = useState([]);
+  useEffect(() => {
+    const fetchPendingDSC = async () => {
+      setLoading(true);
+      try {
+        const { data } = await axios.get(
+          "https://2kadam.co.in/api/auth/superAdmin/getDSCForms",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const pending = data.data.filter((item) => item.status === "Pending");
+        setPendingDSC(pending);
+
+        // setPendingSambalForm(data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      }
+    };
+    fetchPendingDSC();
+  }, []);
+
+  console.log(pendingDSC.toString().length);
+
   return (
     <>
       {/* <Wrapper>
@@ -999,6 +1030,33 @@ const SuperAdminEmployeeDashboard = () => {
                                 {pendingSmabalForm.toString().length
                                   ? pendingSmabalForm
                                   : "..."}
+                              </h4>{" "}
+                            </div>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+
+                    <div className="col-xxl-4 col-lg-6 col-sm-12 d-flex justify-content-center my-3 p-0">
+                      <div className="card card-3">
+                        <Link to="/dsc-history">
+                          <div className="d-flex">
+                            <div
+                              className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon"
+                              style={{
+                                backgroundColor: "#2fddf4",
+                                borderRadius: "15px",
+                              }}
+                            >
+                              <MdCreditCard />
+                            </div>
+                            <div></div>
+                            <div className="d-flex flex-column cardtext">
+                              <p className="mb-0 px-2 my-0 fs-6">
+                                Digital Signature
+                              </p>
+                              <h4 className="px-2 my-0">
+                                {pendingDSC.length ? pendingDSC.length : "..."}
                               </h4>{" "}
                             </div>
                           </div>

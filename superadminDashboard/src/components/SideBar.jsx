@@ -1036,6 +1036,18 @@ const SuperDisData = [
         // cName: "sub-nav",
       },
       {
+        title: "DSC History",
+        path: "/dsc-history",
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "DSC Token History",
+        path: "/dsc-token-history",
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
+        // cName: "sub-nav",
+      },
+      {
         title: "Provider 2 Recharge",
         path: "/Offline-Recharge-history",
         icon: <IoIcons.IoIosPaper color="#e74c3c" />,
@@ -1853,6 +1865,18 @@ const WhiteLabelData = [
         // cName: "sub-nav",
       },
       {
+        title: "DSC History",
+        path: "/dsc-history",
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "DSC Token History",
+        path: "/dsc-token-history",
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
+        // cName: "sub-nav",
+      },
+      {
         title: "Provider 2 Recharge",
         path: "/Offline-Recharge-history",
         icon: <IoIcons.IoIosPaper color="#e74c3c" />,
@@ -2485,6 +2509,18 @@ const SuperAdminEmployeeData = [
   {
     title: "View Offline Forms",
     path: "/view-all-offline-history",
+    icon: <IoIcons.IoIosPaper color="white" />,
+    // cName: "sub-nav",
+  },
+  {
+    title: "View Digital Signature",
+    path: "/dsc-history",
+    icon: <IoIcons.IoIosPaper color="white" />,
+    // cName: "sub-nav",
+  },
+  {
+    title: "View DSC Token",
+    path: "/dsc-token-history",
     icon: <IoIcons.IoIosPaper color="white" />,
     // cName: "sub-nav",
   },

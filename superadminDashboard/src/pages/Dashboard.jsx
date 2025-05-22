@@ -27,6 +27,7 @@ import styled from "styled-components";
 import HeadBar from "../components/HeadBar";
 import Sider from "../components/SideBar";
 import { TbRecharging } from "react-icons/tb";
+import { FaPhoneAlt, FaBolt } from "react-icons/fa";
 import { FaMobileAlt } from "react-icons/fa";
 import { MdCalendarMonth, MdOutlineWidthFull } from "react-icons/md";
 import { RiCoupon2Line } from "react-icons/ri";
@@ -45,6 +46,8 @@ import { setUser, fetchWalletBalance } from "../redux/user/userSlice";
 import axios from "axios";
 import { LuIndianRupee } from "react-icons/lu";
 import { FaIdCard } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
+import { FaFileSignature } from "react-icons/fa";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -822,6 +825,29 @@ const Dashboard = () => {
                                 : walletBalance
                             }`}</h4>{" "}
                           </div>
+                          <div className="ms-auto d-flex align-items-center px-3">
+                            <button
+                              className="btn-sm px-3 py-2 add-money-btn"
+                              onClick={() => navigate("/add-money")}
+                              style={{
+                                borderRadius: "20px",
+                                fontSize: "14px",
+                                fontWeight: "500",
+                                color: "white",
+                                border: "2px solid rgba(255, 255, 255, 0.3)",
+                                backgroundColor: "rgba(255, 255, 255, 0.1)",
+                                backdropFilter: "blur(10px)",
+                                transition: "all 0.3s ease",
+                              }}
+                            >
+                              <FaPlus
+                                size={16}
+                                className="me-2"
+                                color="white"
+                              />
+                              Add Money
+                            </button>
+                          </div>
                         </div>
                         <div className="d-flex gap-2 smallcard">
                           <div
@@ -842,7 +868,7 @@ const Dashboard = () => {
                           </div>
 
                           <div
-                            className="d-flex flex-column cardtext text-white  "
+                            className="d-flex flex-column cardtext text-white"
                             style={{
                               backgroundColor: "rgba(255, 255, 255, 0.15)",
                               borderRadius: "10px",
@@ -938,6 +964,47 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
+                    {/* Postpaid Recharge */}
+                    <div className="col-xxl-3 col-lg-6 col-sm-12 d-flex justify-content-center mb-3 mt-1 p-0">
+                      <div
+                        className="card card-1 p-3"
+                        onClick={() => navigate("/postpaid-recharge")}
+                      >
+                        <div className="d-flex">
+                          <div
+                            className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon"
+                            id="bgiconM"
+                          >
+                            <FaPhoneAlt />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">Postpaid</p>
+                            <h5 className="px-2 my-0">Recharge</h5>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-3 col-lg-6 col-sm-12 d-flex justify-content-center mb-3 mt-1 p-0">
+                      <div
+                        className="card card-1 p-3"
+                        onClick={() => navigate("/electricity-recharge")}
+                      >
+                        <div className="d-flex">
+                          <div
+                            className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon"
+                            id="bgiconE"
+                          >
+                            <FaBolt />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">Electricity</p>
+                            <h5 className="px-2 my-0">Bill Payment</h5>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <div className="col-xxl-3 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0">
                       <div
                         className="card card-2 p-3"
@@ -1006,7 +1073,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-xxl-3 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0">
+                    {/* <div className="col-xxl-3 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0">
                       <div className="card card-1 p-3">
                         <Link to="https://www.trackpan.utiitsl.com/PANONLINE/forms/TrackPan/trackApp#forward">
                           <div className="d-flex">
@@ -1029,7 +1096,31 @@ const Dashboard = () => {
                           </div>
                         </Link>
                       </div>
+                    </div> */}
+                    <div className="col-xxl-3 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0">
+                      <div
+                        className="card card-2 p-3"
+                        onClick={() => navigate("/uti-login-new")}
+                      >
+                        <div className="d-flex">
+                          <div
+                            className="d-flex justify-content-center flex-column align-items-center p-2 fs-3 icon"
+                            style={{
+                              backgroundColor: "#29A0B1",
+                              borderRadius: "15px",
+                            }}
+                          >
+                            <MdManageSearch />
+                          </div>
+                          <div></div>
+                          <div className="d-flex flex-column cardtext">
+                            <p className="mb-0 px-2 my-0 fs-6">UTI Portal</p>
+                            <h5 className="px-2 my-0">UTI PAN Login</h5>{" "}
+                          </div>
+                        </div>
+                      </div>
                     </div>
+
                     <div className="col-xxl-3 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0">
                       <div
                         className="card card-2 p-3"
@@ -1056,7 +1147,8 @@ const Dashboard = () => {
                     <div className="col-xxl-3 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0">
                       <div
                         className="card card-3 p-3"
-                        onClick={() => navigate("/aadhar-linking-status")}
+                        // onClick={() => navigate("/aadhar-linking-status")}
+                        onClick={() => navigate("/aadhar-find")}
                       >
                         <div className="d-flex">
                           <div
@@ -1104,7 +1196,7 @@ const Dashboard = () => {
                     <div className="col-xxl-3 col-lg-6 col-sm-12   d-flex justify-content-center mb-3 mt-1 p-0">
                       <div
                         className="card card-4 p-3"
-                        onClick={() => navigate("/add-money")}
+                        onClick={() => navigate("/Apply-DSC")}
                       >
                         <div className="d-flex">
                           <div
@@ -1114,12 +1206,15 @@ const Dashboard = () => {
                               borderRadius: "15px",
                             }}
                           >
-                            <MdAddCard />
+                            {/* <MdAddCard /> */}
+                            <FaFileSignature />
                           </div>
                           <div></div>
                           <div className="d-flex flex-column cardtext">
-                            <p className="mb-0 px-2 my-0 fs-6">Add Money to</p>
-                            <h5 className="px-2 my-0">Wallet</h5>{" "}
+                            <p className="mb-0 px-2 my-0 fs-6">
+                              Digital Signature{" "}
+                            </p>
+                            <h5 className="px-2 my-0">Apply DSC</h5>{" "}
                           </div>
                         </div>
                       </div>
@@ -1323,6 +1418,14 @@ const Wrapper = styled.div`
   }
   #bgicon {
     background-color: #3498db;
+    border-radius: 15px;
+  }
+  #bgiconM {
+    background-color: #f5576c;
+    border-radius: 15px;
+  }
+  #bgiconE {
+    background-color: #4facfe;
     border-radius: 15px;
   }
   .col-12 {
