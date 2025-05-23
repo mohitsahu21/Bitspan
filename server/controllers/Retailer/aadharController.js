@@ -82,12 +82,19 @@ const PanByAadhaar = async (req, res) => {
   const creditAmt = 0;
 
   // Step 1: Check the current balance
+  // const queryBalance = `
+  //   SELECT Closing_Balance
+  //   FROM user_wallet
+  //   WHERE userId = ?
+  //   ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
+  //   LIMIT 1
+  // `;
   const queryBalance = `
-    SELECT Closing_Balance 
-    FROM user_wallet 
-    WHERE userId = ? 
-    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
-    LIMIT 1
+SELECT Closing_Balance 
+FROM user_wallet 
+WHERE userId = ? 
+ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC, wid DESC 
+LIMIT 1
   `;
 
   db.query(queryBalance, [userId], async (err, balanceResult) => {
@@ -227,12 +234,19 @@ const PanDetails = async (req, res) => {
   const creditAmt = 0;
 
   // Step 1: Check the current balance
+  // const queryBalance = `
+  //   SELECT Closing_Balance
+  //   FROM user_wallet
+  //   WHERE userId = ?
+  //   ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
+  //   LIMIT 1
+  // `;
   const queryBalance = `
-    SELECT Closing_Balance 
-    FROM user_wallet 
-    WHERE userId = ? 
-    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
-    LIMIT 1
+SELECT Closing_Balance 
+FROM user_wallet 
+WHERE userId = ? 
+ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC, wid DESC 
+LIMIT 1
   `;
 
   db.query(queryBalance, [userId], async (err, balanceResult) => {
@@ -389,12 +403,19 @@ const fetchRcDetails = async (req, res) => {
   const creditAmt = 0;
 
   // Step 1: Check the current balance
+  // const queryBalance = `
+  //   SELECT Closing_Balance
+  //   FROM user_wallet
+  //   WHERE userId = ?
+  //   ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
+  //   LIMIT 1
+  // `;
   const queryBalance = `
-    SELECT Closing_Balance 
-    FROM user_wallet 
-    WHERE userId = ? 
-    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
-    LIMIT 1
+SELECT Closing_Balance 
+FROM user_wallet 
+WHERE userId = ? 
+ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC, wid DESC 
+LIMIT 1
   `;
 
   db.query(queryBalance, [userId], async (err, balanceResult) => {
@@ -550,12 +571,19 @@ const fetchDLdetails = async (req, res) => {
   const creditAmt = 0;
 
   // Step 1: Check the current balance
+  // const queryBalance = `
+  //   SELECT Closing_Balance
+  //   FROM user_wallet
+  //   WHERE userId = ?
+  //   ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
+  //   LIMIT 1
+  // `;
   const queryBalance = `
-    SELECT Closing_Balance 
-    FROM user_wallet 
-    WHERE userId = ? 
-    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
-    LIMIT 1
+SELECT Closing_Balance 
+FROM user_wallet 
+WHERE userId = ? 
+ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC, wid DESC 
+LIMIT 1
   `;
 
   db.query(queryBalance, [userId], async (err, balanceResult) => {
@@ -704,12 +732,19 @@ const fetchVoterVerification = async (req, res) => {
   const creditAmt = 0;
 
   // Step 1: Fetch current wallet balance
+  // const queryBalance = `
+  //   SELECT Closing_Balance
+  //   FROM user_wallet
+  //   WHERE userId = ?
+  //   ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
+  //   LIMIT 1
+  // `;
   const queryBalance = `
-    SELECT Closing_Balance 
-    FROM user_wallet 
-    WHERE userId = ? 
-    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
-    LIMIT 1
+SELECT Closing_Balance 
+FROM user_wallet 
+WHERE userId = ? 
+ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC, wid DESC 
+LIMIT 1
   `;
 
   db.query(queryBalance, [userId], async (err, balanceResult) => {
@@ -906,11 +941,18 @@ const passportVerification = async (req, res) => {
   const creditAmt = 0;
 
   // Step 1: Fetch user wallet balance
+  // const balanceQuery = `
+  //   SELECT Closing_Balance FROM user_wallet
+  //   WHERE userId = ?
+  //   ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
+  //   LIMIT 1
+  // `;
   const balanceQuery = `
-    SELECT Closing_Balance FROM user_wallet 
-    WHERE userId = ? 
-    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
-    LIMIT 1
+SELECT Closing_Balance 
+FROM user_wallet 
+WHERE userId = ? 
+ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC, wid DESC 
+LIMIT 1
   `;
 
   db.query(balanceQuery, [userId], async (err, result) => {
@@ -1005,9 +1047,12 @@ const passportVerification = async (req, res) => {
   `;
 
             const refundTransactionId = `TXNV${Date.now()}`;
-            const refundedBalance = (parseFloat(newBalance) + amount).toFixed(
-              2
-            );
+            // const refundedBalance = (parseFloat(newBalance) + amount).toFixed(
+            //   2
+            // );
+            const refundedBalance = (
+              parseFloat(newBalance) + parseFloat(amount)
+            ).toFixed(2);
 
             db.query(
               refundQuery,
@@ -1121,11 +1166,18 @@ const aadhaarSendOtp = async (req, res) => {
   const creditAmt = 0;
 
   // Step 1: Fetch wallet balance
+  // const balanceQuery = `
+  //   SELECT Closing_Balance FROM user_wallet
+  //   WHERE userId = ?
+  //   ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
+  //   LIMIT 1
+  // `;
   const balanceQuery = `
-    SELECT Closing_Balance FROM user_wallet 
-    WHERE userId = ? 
-    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
-    LIMIT 1
+SELECT Closing_Balance 
+FROM user_wallet 
+WHERE userId = ? 
+ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC, wid DESC 
+LIMIT 1
   `;
 
   db.query(balanceQuery, [userId], async (err, result) => {
@@ -1332,11 +1384,18 @@ const VehicleRCVerification = async (req, res) => {
   const creditAmt = 0;
 
   // Step 1: Fetch user wallet balance
+  // const balanceQuery = `
+  //   SELECT Closing_Balance FROM user_wallet
+  //   WHERE userId = ?
+  //   ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
+  //   LIMIT 1
+  // `;
   const balanceQuery = `
-    SELECT Closing_Balance FROM user_wallet 
-    WHERE userId = ? 
-    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
-    LIMIT 1
+SELECT Closing_Balance 
+FROM user_wallet 
+WHERE userId = ? 
+ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC, wid DESC 
+LIMIT 1
   `;
 
   db.query(balanceQuery, [userId], async (err, result) => {
@@ -1542,12 +1601,19 @@ const fetchGSTVerification = async (req, res) => {
   const creditAmt = 0;
 
   // Step 1: Fetch current wallet balance
+  // const queryBalance = `
+  //   SELECT Closing_Balance
+  //   FROM user_wallet
+  //   WHERE userId = ?
+  //   ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC
+  //   LIMIT 1
+  // `;
   const queryBalance = `
-    SELECT Closing_Balance 
-    FROM user_wallet 
-    WHERE userId = ? 
-    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
-    LIMIT 1
+SELECT Closing_Balance 
+FROM user_wallet 
+WHERE userId = ? 
+ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC, wid DESC 
+LIMIT 1
   `;
 
   db.query(queryBalance, [userId], async (err, balanceResult) => {

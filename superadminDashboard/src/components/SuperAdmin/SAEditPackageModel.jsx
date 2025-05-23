@@ -4068,7 +4068,7 @@ const SAEditPackageModel = ({
 
                       <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label for="name" class="form-label">
-                          Find Pan by Aadhaar Number Price
+                          Enter DSC Commission
                         </label>
                         <div class="input-group flex-nowrap">
                           <span class="input-group-text" id="addon-wrapping">

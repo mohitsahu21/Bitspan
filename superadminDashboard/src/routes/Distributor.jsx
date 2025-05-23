@@ -129,6 +129,12 @@ const DPanCorrectionHistory = lazy(() =>
   import("../components/Distributor/DPanCorrectionHistory")
 );
 const DCreatePin = lazy(() => import("../components/Distributor/DCreatePin"));
+const DADSCHistory = lazy(() =>
+  import("../components/Distributor/DADSCHistory")
+);
+const DAdscTokenHistory = lazy(() =>
+  import("../components/Distributor/DAdscTokenHistory")
+);
 
 // const DtProfile = lazy(() => import("../components/Distributor/DtProfile"));
 const Profile = lazy(() => import("../pages/Profile"));
@@ -357,9 +363,10 @@ const Distributor = () => {
         />
         <Route path="/distribute-uti-coupon" element={<DDistributeCoupon />} />
         <Route path="/uti-coupon-history" element={<DUTICouponHistory />} />
+        <Route path="/dsc-history" element={<DADSCHistory />} />
+        <Route path="/dsc-token-history" element={<DAdscTokenHistory />} />
 
         <Route path="/change-price" element={<DChangePrice />} />
-        
 
         <Route
           path="/download-certificate-print"
@@ -378,7 +385,7 @@ const Distributor = () => {
             // )
           }
         />
-         <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>
   );

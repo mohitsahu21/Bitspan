@@ -2255,6 +2255,18 @@ const DistributorData = [
         // cName: "sub-nav",
       },
       {
+        title: "DSC History",
+        path: "/dsc-history",
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
+        // cName: "sub-nav",
+      },
+      {
+        title: "DSC Token History",
+        path: "/dsc-token-history",
+        icon: <IoIcons.IoIosPaper color="#e74c3c" />,
+        // cName: "sub-nav",
+      },
+      {
         title: "View Offline DTH Connection Request",
         path: "/Offline-dth-connection",
         icon: <IoIcons.IoIosPaper color="#e74c3c" />,
