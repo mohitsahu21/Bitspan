@@ -95,7 +95,7 @@ const AddMoney = () => {
       // );
       const response = await axios.post(
         "https://2kadam.co.in/api/auth/upiwf/createOrderToAddWalletMoney",
-        // "http://localhost:7777/api/auth/superAdmin/createOrderToAddWalletMoney",
+        // "https://2kadam.co.in/api/auth/superAdmin/createOrderToAddWalletMoney",
         formData
       );
     console.log(response)

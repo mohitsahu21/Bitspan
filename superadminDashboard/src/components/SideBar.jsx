@@ -2275,6 +2275,12 @@ const DistributorData = [
     // cName: "sub-nav",
   },
   {
+    title: "DSC History",
+    path: "/DSC-history-dist",
+    icon: <IoIcons.IoIosPaper color="white" />,
+    // cName: "sub-nav",
+  },
+  {
     title: "Set PIN and 2 Step",
     path: "/2-step-verification",
     icon: <IoIcons.IoMdHelpCircle color="white" />,

@@ -1,9 +1,10 @@
-const { fetchFromPlanApi } = require("../../APIS URL/planApis");
+const { fetchFromPlanApi } = require("../../APIs-URL/planApis");
 
 /**
  * Controller to handle Operator & Circle Check Request
  */
 const getOperatorAndCircle = (req, res) => {
+    // res.send("Control Dev");
   const { mobileNumber } = req.query;
 
   if (!mobileNumber) {
@@ -20,7 +21,7 @@ const getOperatorAndCircle = (req, res) => {
     ApiPassword: apiPassword,
     Mobileno: mobileNumber,
   };
-
+  
   const endpoint = "/OperatorFetchNew";
 
   // Call the utility function to fetch data
@@ -63,6 +64,44 @@ const getMobilePlans = (req, res) => {
     .then((data) => res.json(data))
     .catch((error) =>
       res.status(500).json({ error: "Failed to fetch mobile plans" })
+    );
+};
+
+const getBillInfo = (req, res) => {
+  const { accountNo, operatorCode, optional1, optional2, optional3 } =
+    req.query;
+
+  // Validate required fields
+  if (!accountNo || !operatorCode) {
+    return res
+      .status(400)
+      .json({ error: "Account number and operator code are required" });
+  }
+
+  // Fetch credentials from environment variables
+  const apiUserId = process.env.PLAN_API_USER_ID;
+  const apiPassword = process.env.PLAN_API_PASSWORD;
+
+  // Define query parameters
+  const params = {
+    apimember_id: apiUserId,
+    api_password: apiPassword,
+    Accountno: accountNo,
+    operator_code: operatorCode,
+    Optional1: optional1 || "",
+    Optional2: optional2 || "",
+    Optional3: optional3 || "",
+  };
+
+  const endpoint = "/BillCheck";
+
+  // Call the utility function to fetch data
+  fetchFromPlanApi(endpoint, params)
+    .then((data) => res.json(data))
+    .catch((error) =>
+      res
+        .status(500)
+        .json({ error: "Failed to fetch bill info", details: error.message })
     );
 };
 
@@ -197,44 +236,6 @@ const getBillCheckPlans = (req, res) => {
     );
 };
 
-const getBillInfo = (req, res) => {
-  const { accountNo, operatorCode, optional1, optional2, optional3 } =
-    req.query;
-
-  // Validate required fields
-  if (!accountNo || !operatorCode) {
-    return res
-      .status(400)
-      .json({ error: "Account number and operator code are required" });
-  }
-
-  // Fetch credentials from environment variables
-  const apiUserId = process.env.PLAN_API_USER_ID;
-  const apiPassword = process.env.PLAN_API_PASSWORD;
-
-  // Define query parameters
-  const params = {
-    apimember_id: apiUserId,
-    api_password: apiPassword,
-    Accountno: accountNo,
-    operator_code: operatorCode,
-    Optional1: optional1 || "",
-    Optional2: optional2 || "",
-    Optional3: optional3 || "",
-  };
-
-  const endpoint = "/BillCheck";
-
-  // Call the utility function to fetch data
-  fetchFromPlanApi(endpoint, params)
-    .then((data) => res.json(data))
-    .catch((error) =>
-      res
-        .status(500)
-        .json({ error: "Failed to fetch bill info", details: error.message })
-    );
-};
-
 module.exports = {
   getOperatorAndCircle,
   getMobilePlans,
@@ -242,5 +243,5 @@ module.exports = {
   getDTHPlans,
   getDTHPlansINFOCheck,
   getElectricityPlans,
-  getBillCheckPlans,
+  getBillCheckPlans
 };

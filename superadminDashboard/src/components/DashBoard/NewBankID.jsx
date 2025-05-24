@@ -395,7 +395,7 @@ const NewBankID = () => {
 
     try {
       const response = await axios.post(
-        // "http://localhost:7777/api/auth/retailer/bankidForm",
+        // "https://2kadam.co.in/api/auth/retailer/bankidForm",
         "https://2kadam.co.in/api/auth/retailer/bankidForm",
         submitForm,
         {
@@ -1261,7 +1261,7 @@ const Wrapper = styled.div`
 //     formDataObj.append("electric_bill", formData.electric_bill);
 //   try {
 //     const response = await axios.post(
-//       // `http://localhost:7777/api/auth/retailer/bankidForm`,
+//       // `https://2kadam.co.in/api/auth/retailer/bankidForm`,
 //       `http://bitspan.jyvflirl.a2hosted.com/api/auth/bankidForm`,
 //       formDataObj,
 //       {

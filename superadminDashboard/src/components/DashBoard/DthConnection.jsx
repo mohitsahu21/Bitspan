@@ -1205,7 +1205,7 @@ const DthConnection = () => {
     try {
       // Make the API call
       const result = await axios.post(
-        // "http://localhost:7777/api/auth/wallet/dthConnectionAndUpdateWallet",
+        // "https://2kadam.co.in/api/auth/wallet/dthConnectionAndUpdateWallet",
         "https://2kadam.co.in/api/auth/wallet/dthConnectionAndUpdateWallet",
         offlineForm,
         {

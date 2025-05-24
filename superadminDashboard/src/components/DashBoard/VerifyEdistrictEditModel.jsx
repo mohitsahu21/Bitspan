@@ -93,7 +93,7 @@ const VerifyEdistrictEditModel = ({
   //   console.log("Form Data Submitted: ", formData);
   //   try {
   //     const response = await axios.post(
-  //       `http://localhost:7777/api/auth/retailer/verify-Edistrict`,
+  //       `https://2kadam.co.in/api/auth/retailer/verify-Edistrict`,
   //       formData
   //     );
   //     // alert("Form Submitted");
@@ -132,7 +132,7 @@ const VerifyEdistrictEditModel = ({
     setLoading(true);
     try {
       const response = await axios.put(
-        // `http://localhost:7777/api/auth/retailer/verify-Edistrict`,
+        // `https://2kadam.co.in/api/auth/retailer/verify-Edistrict`,
         `https://2kadam.co.in/api/auth/retailer/UpdateVerifyDistrictForm`,
         formData,
         {
@@ -205,7 +205,7 @@ const VerifyEdistrictEditModel = ({
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        // `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        // `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {

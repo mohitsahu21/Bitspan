@@ -50,7 +50,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        // "http://localhost:7777/api/auth/superAdmin/ApproveSambalForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/ApproveSambalForm",
         "https://2kadam.co.in/api/auth/superAdmin/ApproveSambalForm",
         formData,
         {
@@ -950,7 +950,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
       setLoading(true);
       const response = await axios.put(
         "https://2kadam.co.in/api/auth/superAdmin/rejectSambalForm",
-        // "http://localhost:7777/api/auth/superAdmin/rejectSambalForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/rejectSambalForm",
         formData,
         {
           headers: {
@@ -1144,7 +1144,7 @@ const SAESambalHistory = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // "http://localhost:7777/api/auth/superAdmin/getSambalForms"
+        // "https://2kadam.co.in/api/auth/superAdmin/getSambalForms"
         "https://2kadam.co.in/api/auth/superAdmin/getSambalForms",
         {
           headers: {

@@ -358,7 +358,7 @@ const PanForm = () => {
 
     try {
       const response = await axios.post(
-        // `http://localhost:7777/api/auth/retailer/applyOfflineForm`,
+        // `https://2kadam.co.in/api/auth/retailer/applyOfflineForm`,
         `https://2kadam.co.in/api/auth/retailer/applyOfflineForm`,
         formDataObj,
         {
@@ -471,7 +471,7 @@ const PanForm = () => {
 
     try {
       const response = await axios.post(
-        // `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        // `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {

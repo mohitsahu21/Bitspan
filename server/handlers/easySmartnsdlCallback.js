@@ -5,6 +5,7 @@ const { db } = require("../connect");
 const handleEasySmartNsdlPANCallback = (req, res)=>{
 
     const {order_id , ack , status , encData} = req.query
+  
     const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   
     const query = `
@@ -20,10 +21,10 @@ const handleEasySmartNsdlPANCallback = (req, res)=>{
       }
   
       console.log("Data inserted successfully:");
-      // res.status(200).send("Callback processed successfully");
-
-       // Redirect the user to a specific URL after success
-    const redirectUrl = `https://2kadam.co.in/dashboard`;
+    //   res.status(200).send("Callback processed successfully");
+    
+      // Redirect the user to a specific URL after success
+    const redirectUrl = `https://bitspan.vimubds5.a2hosted.com/dashboard`;
     res.redirect(redirectUrl);
     });
 }

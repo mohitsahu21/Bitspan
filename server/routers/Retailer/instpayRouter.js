@@ -18,6 +18,7 @@ const {
   dthRechargeWithBalanceCheck,
   nsdlNewRequest,
   nsdlCorrection,
+  fetchGSTVerification,
 } = require("../../controllers/Retailer/instpay");
 
 const router = express.Router();
@@ -40,5 +41,6 @@ router.post("/api-recharge", rechargeWithBalanceCheck);
 router.post("/api-dth-recharge", dthRechargeWithBalanceCheck);
 router.post("/nsdl-new-request", nsdlNewRequest);
 router.post("/nsdl-pan-correction-request", nsdlCorrection);
+router.post("/fetchGSTVerification", fetchGSTVerification);
 
 module.exports = router;

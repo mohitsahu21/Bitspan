@@ -224,7 +224,7 @@ const EdistrictForm = () => {
 
     try {
       const response = await axios.post(
-        // "http://localhost:7777/api/auth/retailer/e-district-Form",
+        // "https://2kadam.co.in/api/auth/retailer/e-district-Form",
         "https://2kadam.co.in/api/auth/retailer/e-district-Form",
         data,
         {

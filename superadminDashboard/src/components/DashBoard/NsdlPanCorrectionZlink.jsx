@@ -113,7 +113,7 @@ const NsdlPanCorrectionZlink = () => {
     setLoading(true);
     try {
       const apiResponse = await axios.post(
-        // `http://localhost:7777/api/auth/zlink/zlinkCorrectionPanRequest`,
+        // `https://2kadam.co.in/api/auth/zlink/zlinkCorrectionPanRequest`,
         `https://2kadam.co.in/api/auth/zlink/zlinkCorrectionPanRequest`,
         formData
       );
@@ -200,7 +200,7 @@ const NsdlPanCorrectionZlink = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        // `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        // `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {

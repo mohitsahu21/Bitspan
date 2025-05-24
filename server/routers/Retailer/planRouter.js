@@ -6,7 +6,7 @@ const {
   getDTHPlans,
   getDTHPlansINFOCheck,
   getElectricityPlans,
-  getBillCheckPlans,
+  getBillCheckPlans
 } = require("../../controllers/Retailer/planController");
 
 const router = express.Router();

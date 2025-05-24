@@ -299,7 +299,7 @@ const PanCardFourEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
       const response = await axios.put(
         // "https://2kadam.co.in/api/auth/retailer/pan-4.0",
         "https://2kadam.co.in/api/auth/retailer/UpdatePanFromData",
-        // "http://localhost:7777/api/auth/retailer/UpdatePanFromData",
+        // "https://2kadam.co.in/api/auth/retailer/UpdatePanFromData",
         form,
         {
           headers: {

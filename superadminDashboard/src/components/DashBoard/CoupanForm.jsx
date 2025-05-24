@@ -88,7 +88,7 @@ const CoupanForm = () => {
     try {
       const response = await axios.post(
         // `https://2kadam.co.in/api/auth/retailer/buyDSCcoupon`,
-        `http://localhost:7777/api/auth/retailer/buyDSCcoupon`,
+        `https://2kadam.co.in/api/auth/retailer/buyDSCcoupon`,
         formData,
         {
           headers: {

@@ -1,5 +1,5 @@
 const express = require("express");
-const { easySmartBalance, easySmartNewPanRequest, easySmartNewPanTransactionStatus, easySmartNewPanAckStatus, easySmartCorrectionPanRequest, easySmartUtiAgentOnbording, easySmartUtiLogin } = require("../../controllers/Retailer/nsdlPanEasysmartController");
+const { easySmartBalance , easySmartNewPanRequest , easySmartNewPanTransactionStatus , easySmartNewPanAckStatus , easySmartCorrectionPanRequest , easySmartUtiAgentOnbording, easySmartUtiLogin} = require("../../controllers/Retailer/nsdlPanEasysmartController");
 const router = express.Router();
 
 
@@ -9,9 +9,11 @@ router.post("/easySmartNewPanTransactionStatus", easySmartNewPanTransactionStatu
 router.post("/easySmartNewPanAckStatus", easySmartNewPanAckStatus);
 router.post("/easySmartCorrectionPanRequest", easySmartCorrectionPanRequest);
 
+
 // uti routes
 router.post("/easySmartUtiAgentOnbording", easySmartUtiAgentOnbording);
 router.post("/easySmartUtiLogin", easySmartUtiLogin);
+// router.post("/cgonepayRecharge", cgonepayRecharge);
 
 
 

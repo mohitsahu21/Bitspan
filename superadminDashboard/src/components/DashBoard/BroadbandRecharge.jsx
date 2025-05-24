@@ -794,7 +794,7 @@ const BroadbandRecharge = () => {
     try {
       // Make the API call
       const result = await axios.post(
-        // "http://localhost:7777/api/auth/wallet/offlineRechargeAndUpdateWallet",
+        // "https://2kadam.co.in/api/auth/wallet/offlineRechargeAndUpdateWallet",
         "https://2kadam.co.in/api/auth/wallet/offlineRechargeAndUpdateWallet",
         offlineForm,
         {

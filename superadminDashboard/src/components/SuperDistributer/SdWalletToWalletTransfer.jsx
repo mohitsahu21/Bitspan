@@ -340,7 +340,7 @@ const SdWalletToWalletTransfer = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        // http://localhost:7777/api/auth/log-reg/verify-pin,
+        // https://2kadam.co.in/api/auth/log-reg/verify-pin,
         `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: userId || "", pin: pin.join("") },
         {

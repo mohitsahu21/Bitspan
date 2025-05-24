@@ -1,12 +1,16 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const { join, dirname } = require("path");
 const path = require("path");
 // Testing upload file start
 const expressFileUpload = require("express-fileupload");
 const fs = require("fs");
 // Testing upload file end
 const retailerRouter = require("./routers/Retailer/retailerRouter");
+const superDistributorRouter = require("./routers/SuperDistributor/superDistributorRouter");
+const DistributorRouter = require("./routers/Distributor/DistributorRouter");
+const whiteLabelRouter = require("./routers/WhiteLabel/whiteLabelRouter");
 const instpayRouter = require("./routers/Retailer/instpayRouter");
 const ezytmRouter = require("./routers/Retailer/ezytmRouter");
 const sizarPayRouter = require("./routers/Retailer/sizarPayRouter");
@@ -14,31 +18,29 @@ const cgonePayRouter = require("./routers/Retailer/cgonePayRouter");
 const deeperwebRouter = require("./routers/Retailer/deeperwebRouter");
 const nsdlPanEasySmart = require("./routers/Retailer/nsdlPanEasysmartRouter");
 const zlink = require("./routers/Retailer/zlinkPanRouter");
-const easyPayRouter = require("./routers/SuperAdmin/easyPayUpiPaymentRouter");
 const superAdminRouter = require("./routers/SuperAdmin/superAdminRouter");
 const loginRouter = require("./routers/LoginApi/loginUserRoute");
 const paymentRouter = require("./routers/PaymentGateway/orderRoute");
 const walletRouter = require("./routers/PaymentGateway/walletRoute");
 const upiwfPaymentRouter = require("./routers/PaymentGateway/upiwfPaymentsRouter");
 const planRouter = require("./routers/Retailer/planRouter");
-// const voterRoute = require("./routers/Retailer/voterRoute");
-// const aadharRoute = require("./routers/Retailer/aadharRoute");
 const moment = require("moment-timezone");
 const { db } = require("./connect");
-const {
-  handleCgonePayCallback,
-} = require("./handlers/callbackHandlersCgonePay");
-const {
-  handleEasySmartNsdlPANCallback,
-} = require("./handlers/easySmartnsdlCallback");
 const { paymentCallback } = require("./handlers/easyPay-payment-callback");
 dotenv.config();
-
+const { handleCgonePayCallback } = require("./handlers/callbackHandlersCgonePay");
+const { handleEasySmartNsdlPANCallback } = require("./handlers/easySmartnsdlCallback");
+const easyPayRouter = require("./routers/SuperAdmin/easyPayUpiPaymentRouter");
+const rationRoutes = require("./routers/Retailer/rationRoute");
+const aadharRoute = require("./routers/Retailer/aadharRoute");
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use("/api/auth/retailer", retailerRouter);
+app.use("/api/auth/superDistributor", superDistributorRouter);
+app.use("/api/auth/Distributor", DistributorRouter);
+app.use("/api/auth/whiteLabel", whiteLabelRouter);
 app.use("/api/auth/log-reg", loginRouter);
 app.use("/api/auth/pay", paymentRouter);
 app.use("/api/auth/wallet", walletRouter);
@@ -51,16 +53,13 @@ app.use("/api/auth/deeperweb", deeperwebRouter);
 app.use("/api/auth/nsdlpan", nsdlPanEasySmart);
 app.use("/api/auth/zlink", zlink);
 app.use("/api/auth/easyPayUpi", easyPayRouter);
-app.use("/api/auth/superAdmin", superAdminRouter);
+app.use("/api/auth/superAdmin" , superAdminRouter);
 app.use("/api/auth/fetch/plan", planRouter);
-// app.use("/api/auth/voter", voterRoute);
-// app.use("/api/auth/aadhar", aadharRoute);
+app.use("/api/auth/ration", rationRoutes);
+app.use("/api/auth/aadhar", aadharRoute);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use("/panUploads", express.static(path.join(__dirname, "panUploads")));
-app.use(
-  "/complainUpload",
-  express.static(path.join(__dirname, "complainUpload"))
-);
+// app.use(express.json({ limit: '10mb' }));
+// app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use("/profile-data", express.static(path.join(__dirname, "profile-data")));
 app.use(express.urlencoded({ extended: true }));
 app.use((err, req, res, next) => {
@@ -134,39 +133,25 @@ app.get("/callbackUrl", (req, res) => {
   });
 });
 
-app.get("/callbackUrlCgonePay", (req, res) => {
-  const STATUS = req.query.STATUS?.trim();
-  const TRANSACTIONID = req.query.TRANSACTIONID?.trim();
-  const OPERATORID = req.query.OPERATORID?.trim();
-  const CLIENTID = req.query.CLIENTID?.trim();
-  const MESSAGE = req.query.MESSAGE?.trim();
-
-  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-
-  const query = `
-    INSERT INTO cgonePaycallback (STATUS, TRANSACTIONID, OPERATORID,CLIENTID,MESSAGE, created_at)
-    VALUES (?, ?, ?, ?, ? , ?)
-  `;
-
-  // Execute the SQL query
-  db.query(
-    query,
-    [STATUS, TRANSACTIONID, OPERATORID, CLIENTID, MESSAGE, createdAt],
-    (err, result) => {
-      if (err) {
-        console.error("Error inserting data:", err);
-        return res.status(500).send("Internal Server Error");
-      }
-
-      console.log("Data inserted successfully:");
-      res.status(200).send("Callback processed successfully");
-    }
-  );
-});
+// cgonePay callback 
 
 app.get("/callbackUrlCgonePay", handleCgonePayCallback);
 app.get("/easySmartNsdlPANCallback", handleEasySmartNsdlPANCallback);
-app.get("/easyPay-payment-callback", paymentCallback);
+app.get("/easyPay-payment-callback", paymentCallback );
+
+// app.use(express.static(path.join(__dirname, "build")));
+
+// app.get("*", (req, res, next) => {
+//   if (req.url.startsWith("/api")) {
+//     return next();
+//   }
+
+//   res.sendFile(path.join(__dirname, "build", "index.html"));
+// });
+
+app.get("/dev", (req, res)=>{
+    res.send("Hello Dev");
+});
 
 const port = process.env.PORT || 7777;
 

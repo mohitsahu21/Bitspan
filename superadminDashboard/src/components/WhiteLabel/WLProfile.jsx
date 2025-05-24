@@ -75,7 +75,7 @@ const WLProfile = () => {
     try {
       const response = await axios.get(
         // `https://2kadam.co.in/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
-        `http://localhost:7777/api/auth/whiteLabel/getUserDetails/${currentUser?.userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getUserDetails/${currentUser?.userId}`,
         {
           headers: {
             "Content-Type": "application/json",

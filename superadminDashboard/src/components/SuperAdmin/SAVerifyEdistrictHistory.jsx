@@ -43,7 +43,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        // "http://localhost:7777/api/auth/superAdmin/ApproveVerifyEdistrictForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/ApproveVerifyEdistrictForm",
         "https://2kadam.co.in/api/auth/superAdmin/ApproveVerifyEdistrictForm",
         formData,
         {
@@ -872,7 +872,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
       setLoading(true);
       const response = await axios.put(
         "https://2kadam.co.in/api/auth/superAdmin/rejectVerifyEdistrictForm",
-        // "http://localhost:7777/api/auth/superAdmin/rejectVerifyEdistrictForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/rejectVerifyEdistrictForm",
         formData,
         {
           headers: {
@@ -1063,7 +1063,7 @@ const SAVerifyEdistrictHistory = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // "http://localhost:7777/api/auth/superAdmin/getVerifyEdistrictForms"
+        // "https://2kadam.co.in/api/auth/superAdmin/getVerifyEdistrictForms"
         "https://2kadam.co.in/api/auth/superAdmin/getVerifyEdistrictForms",
         {
           headers: {

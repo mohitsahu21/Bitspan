@@ -45,7 +45,7 @@ const Payment = () => {
           // );
           const response = await axios.post(
             "https://2kadam.co.in/api/auth/upiwf/MakePaymentINPortal",
-            // "http://localhost:7777/api/auth/superAdmin/createOrderToAddWalletMoney",
+            // "https://2kadam.co.in/api/auth/superAdmin/createOrderToAddWalletMoney",
             formData
           );
         console.log(response)

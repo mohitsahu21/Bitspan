@@ -45,7 +45,7 @@ const UTIRetailerIdActivateZlink = () => {
     setLoading(true);
     try {
       const { data } = await axios.post(
-        // 'http://localhost:7777/api/auth/nsdlpan/easySmartUtiAgentOnbording',
+        // 'https://2kadam.co.in/api/auth/nsdlpan/easySmartUtiAgentOnbording',
         // 'https://2kadam.co.in/api/auth/nsdlpan/easySmartUtiAgentOnbording',
         "https://2kadam.co.in/api/auth/zlink/zlinkUtiAgentOnbording",
 

@@ -385,7 +385,7 @@ const PanFormEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
 
     try {
       const response = await axios.put(
-        // `http://localhost:7777/api/auth/retailer/applyOfflineForm`,
+        // `https://2kadam.co.in/api/auth/retailer/applyOfflineForm`,
         `https://2kadam.co.in/api/auth/retailer/update_applyOfflineForm`,
         formDataObj,
         {
@@ -492,7 +492,7 @@ const PanFormEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        // `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        // `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {

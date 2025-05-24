@@ -28,7 +28,7 @@ const DAllDistributorList = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        // `http://localhost:7777/api/auth/superDistributor/getBoughtUserId/${userId}`
+        // `https://2kadam.co.in/api/auth/superDistributor/getBoughtUserId/${userId}`
         `https://2kadam.co.in/api/auth/Distributor/getAllPartner/${userId}`,
         {
           headers: {

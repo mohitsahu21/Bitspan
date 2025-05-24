@@ -181,7 +181,7 @@ const EdistrictEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
 
     try {
       const response = await axios.put(
-        // "http://localhost:7777/api/auth/retailer/e-district-Form",
+        // "https://2kadam.co.in/api/auth/retailer/e-district-Form",
         "https://2kadam.co.in/api/auth/retailer/UpdateeDistrictFormData",
         data,
         {

@@ -74,7 +74,7 @@ const DWalletToWalletTransfer = () => {
     try {
       const { data } = await axios.get(
         // "https://2kadam.co.in/api/auth/superAdmin/getAllUsers",
-        // `http://localhost:7777/api/auth/Distributor/getActiveUsers/${userId}`,
+        // `https://2kadam.co.in/api/auth/Distributor/getActiveUsers/${userId}`,
         `https://2kadam.co.in/api/auth/Distributor/getActiveUsers/${userId}`,
         {
           headers: {
@@ -340,7 +340,7 @@ const DWalletToWalletTransfer = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        // http://localhost:7777/api/auth/log-reg/verify-pin,
+        // https://2kadam.co.in/api/auth/log-reg/verify-pin,
         `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: userId || "", pin: pin.join("") },
         {

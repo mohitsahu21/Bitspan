@@ -5,7 +5,6 @@ const { db } = require("../connect");
 const handleCgonePayCallback = (req, res)=>{
 
     const {STATUS , TRANSACTIONID ,OPERATORID ,CLIENTID,MESSAGE } = req.query
-  
     const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
   
     const query = `

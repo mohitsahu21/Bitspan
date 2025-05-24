@@ -27,7 +27,7 @@ const AllPanForm = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        // `http://localhost:7777/api/auth/retailer/getApplyOfflineForm`
+        // `https://2kadam.co.in/api/auth/retailer/getApplyOfflineForm`
         // `https://2kadam.co.in/api/auth/retailer/getApplyOfflineForm`,
         `https://2kadam.co.in/api/auth/retailer/getApplyOfflineFormByid/${currentUser?.userId}`,
         {

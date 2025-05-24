@@ -15,6 +15,8 @@ import DChangePrice from "../components/Distributor/DChangePrice";
 import Certificate from "../components/Distributor/Certificate";
 import Swal from "sweetalert2";
 import { clearUser } from "../redux/user/userSlice";
+import DSCHistory from "../components/SuperAdmin/DSCHistory";
+import DSChistoryDist from "../components/Distributor/DSChistoryDist";
 
 // Lazy-loaded components
 const DistributorDashboard = lazy(() =>
@@ -341,6 +343,11 @@ const Distributor = () => {
         <Route
           path="/pan-transaction-report"
           element={<DPanTransactionReport />}
+        />
+
+        <Route
+          path="/DSC-history-dist"
+          element={<DSChistoryDist />}
         />
 
         <Route

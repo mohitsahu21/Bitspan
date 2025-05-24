@@ -33,7 +33,7 @@ const DWalletWithdrawReport = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        // `http://localhost:7777/api/auth/retailer/pan-4.0/${userData}`
+        // `https://2kadam.co.in/api/auth/retailer/pan-4.0/${userData}`
         `https://2kadam.co.in/api/auth/Distributor/getWalletWithdrawHistory/${userId}`,
         {
           headers: {

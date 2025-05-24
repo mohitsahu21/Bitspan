@@ -131,7 +131,7 @@ const ElectricityRecharge = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          // `http://localhost:7777/api/auth/retailer/getAllRechargeApi`
+          // `https://2kadam.co.in/api/auth/retailer/getAllRechargeApi`
           `https://2kadam.co.in/api/auth/retailer/getAllRechargeApi`,
           {
             headers: {
@@ -819,7 +819,7 @@ const ElectricityRecharge = () => {
     try {
       // Make the API call
       const result = await axios.post(
-        // "http://localhost:7777/api/auth/wallet/offlineRechargeAndUpdateWallet",
+        // "https://2kadam.co.in/api/auth/wallet/offlineRechargeAndUpdateWallet",
         "https://2kadam.co.in/api/auth/wallet/offlineRechargeAndUpdateWallet",
         offlineForm,
         {

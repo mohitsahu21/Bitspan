@@ -368,7 +368,7 @@ const BankIdEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
 
     try {
       const response = await axios.put(
-        // "http://localhost:7777/api/auth/retailer/update_bankidForm",
+        // "https://2kadam.co.in/api/auth/retailer/update_bankidForm",
         "https://2kadam.co.in/api/auth/retailer/update_bankidForm",
         submitForm,
         {

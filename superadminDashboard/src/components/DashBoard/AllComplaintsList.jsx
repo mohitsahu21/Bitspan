@@ -24,7 +24,7 @@ const AllComplaintsList = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        // `http://localhost:7777/api/auth/retailer/complain-data`
+        // `https://2kadam.co.in/api/auth/retailer/complain-data`
         `https://2kadam.co.in/api/auth/retailer/complain-data/${currentUser?.userId}`,
         {
           headers: {

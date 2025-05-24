@@ -43,7 +43,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        // "http://localhost:7777/api/auth/superAdmin/ApproveDSCForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/ApproveDSCForm",
         "https://2kadam.co.in/api/auth/superAdmin/ApproveDSCForm",
         formData,
         {
@@ -181,7 +181,7 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
       setLoading(true);
       const response = await axios.put(
         "https://2kadam.co.in/api/auth/superAdmin/markForEditDSCForm",
-        // "http://localhost:7777/api/auth/superAdmin/markForEditDSCForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/markForEditDSCForm",
         formData,
         {
           headers: {
@@ -688,7 +688,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         await axios
           .put(
             "https://2kadam.co.in/api/auth/superAdmin/SuccessDSCForm",
-            // "http://localhost:7777/api/auth/superAdmin/SuccessDSCForm",
+            // "https://2kadam.co.in/api/auth/superAdmin/SuccessDSCForm",
             formData,
             {
               headers: {
@@ -858,7 +858,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
       setLoading(true);
       const response = await axios.put(
         "https://2kadam.co.in/api/auth/superAdmin/rejectSambalForm",
-        // "http://localhost:7777/api/auth/superAdmin/rejectDSCForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/rejectDSCForm",
         formData,
         {
           headers: {
@@ -1052,7 +1052,7 @@ const DSCHistory = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // "http://localhost:7777/api/auth/superAdmin/getDSCForms",
+        // "https://2kadam.co.in/api/auth/superAdmin/getDSCForms",
         "https://2kadam.co.in/api/auth/superAdmin/getDSCForms",
         {
           headers: {

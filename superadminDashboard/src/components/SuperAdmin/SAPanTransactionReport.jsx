@@ -843,7 +843,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
       setLoading(true);
       const response = await axios.put(
         "https://2kadam.co.in/api/auth/superAdmin/rejectNSDLForm",
-        // "http://localhost:7777/api/auth/superAdmin/rejectSambalForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/rejectSambalForm",
         formData,
         {
   headers: {

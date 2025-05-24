@@ -46,7 +46,7 @@ const SdBuyDistributorId = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          // `http://localhost:7777/api/auth/superDistributor/getPackageData/${package_Id}`,
+          // `https://2kadam.co.in/api/auth/superDistributor/getPackageData/${package_Id}`,
           `https://2kadam.co.in/api/auth/superDistributor/getPackageData/${package_Id}`,
           {
             headers: {
@@ -97,7 +97,7 @@ const SdBuyDistributorId = () => {
   const fetchWalletBalance = async () => {
     try {
       const response = await axios.get(
-        // `http://localhost:7777/api/auth/superDistributor/getWalletBalance/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getWalletBalance/${userId}`,
         `https://2kadam.co.in/api/auth/superDistributor/getWalletBalance/${userId}`,
         {
           headers: {
@@ -140,7 +140,7 @@ const SdBuyDistributorId = () => {
   const fetchNoOfIds = async () => {
     try {
       const response = await axios.get(
-        // `http://localhost:7777/api/auth/superDistributor/getRemainingIds/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getRemainingIds/${userId}`,
         `https://2kadam.co.in/api/auth/superDistributor/getRemainingIds/${userId}`,
         {
           headers: {
@@ -264,7 +264,7 @@ const SdBuyDistributorId = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        // "http://localhost:7777/api/auth/superDistributor/buyId",
+        // "https://2kadam.co.in/api/auth/superDistributor/buyId",
         "https://2kadam.co.in/api/auth/superDistributor/buyId",
         payload
       );

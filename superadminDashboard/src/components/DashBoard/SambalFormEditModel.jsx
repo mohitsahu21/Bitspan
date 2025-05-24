@@ -84,7 +84,7 @@ const SambalFormEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     console.log("Form Data Submitted: ", formData);
     try {
       const response = await axios.put(
-        // `http://localhost:7777/api/auth/retailer/addSambalForm`,
+        // `https://2kadam.co.in/api/auth/retailer/addSambalForm`,
         `https://2kadam.co.in/api/auth/retailer/EditSambalForm`,
         formData,
         {
@@ -161,7 +161,7 @@ const SambalFormEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        // `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        // `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {

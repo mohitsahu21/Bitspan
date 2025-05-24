@@ -109,7 +109,7 @@ const NsdlNewPanCardEasySmart = () => {
     try {
       const apiResponse = await axios.post(
         `https://2kadam.co.in/api/auth/nsdlpan/easySmartNSDLNewPanRequest`,
-        // `http://localhost:7777/api/auth/nsdlpan/easySmartNSDLNewPanRequest`,
+        // `https://2kadam.co.in/api/auth/nsdlpan/easySmartNSDLNewPanRequest`,
         formData
       );
       // setFormData(apiResponse.data);
@@ -172,7 +172,7 @@ const NsdlNewPanCardEasySmart = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        // `http://localhost:7777/api/auth/log-reg/verify-pin`,
+        // `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {

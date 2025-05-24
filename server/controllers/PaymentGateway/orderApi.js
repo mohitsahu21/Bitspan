@@ -3,7 +3,7 @@ const FormData = require("form-data");
 const { db } = require("../../connect");
 const moment = require("moment-timezone");
 const createOrderInstance = require("./orderController");
-// PAYMENT - 1
+
 // const createOrder = async (req, res) => {
 //   const { customer_mobile, amount, redirect_url, remark1, remark2 } = req.body;
 
@@ -24,7 +24,7 @@ const createOrderInstance = require("./orderController");
 //       remark1,
 //       remark2,
 //       "PENDING",
-//       createdAt,
+//       createdAt
 //     ];
 
 //     db.query(sql, values, async (err, result) => {
@@ -233,157 +233,5 @@ const webhook = (req, res) => {
     return res.status(400).send("Invalid status");
   }
 };
-
-// const addWallet = (req, res) =>{
-//   const { customer_mobile, amount, redirect_url, remark1, remark2, pay_method, user_id, status } = req.body;
-
-//     //   console.log(req.body);
-//     const order_id = `WAOR${Date.now()}`;
-//     const user_token = process.env.PAYMENT_TOKEN;
-//     const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-
-//     try {
-//       const sql = `
-//           INSERT INTO orders (customer_mobile, amount, order_id, remark1, remark2, pay_method, user_id, status, created_at)
-//           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-//       const values = [
-//         customer_mobile,
-//         amount,
-//         order_id,
-//         remark1,
-//         remark2,
-//         pay_method,
-//         user_id,
-//         status,
-//         createdAt,
-//       ];
-
-//       db.query(sql, values, async (err, result) => {
-//         if (err) {
-//           console.error("Error saving order to database:", err.message);
-//           return res.status(500).json({
-//             status: false,
-//             message: "Error saving order to database",
-//             Error: err,
-//           });
-//         }
-
-//         console.log(`Order saved with ID: ${result.insertId}`);
-
-//         try {
-//           const order = await createOrderInstance.createOrder(
-//             customer_mobile,
-//             user_token,
-//             amount,
-//             order_id,
-//             redirect_url,
-//             remark1,
-//             remark2
-//           );
-
-//           return res.status(200).json({
-//             status: true,
-//             message: "Order created successfully!",
-//             data: order,
-//             dbId: result.insertId,
-//           });
-//         } catch (apiError) {
-//           console.error("Error in external API call:", apiError.message);
-
-//           db.query(
-//             "DELETE FROM orders WHERE id = ?",
-//             [result.insertId],
-//             (deleteErr) => {
-//               if (deleteErr) {
-//                 console.error(
-//                   "Error deleting order from database:",
-//                   deleteErr.message
-//                 );
-//               }
-//             }
-//           );
-
-//           return res.status(500).json({
-//             status: false,
-//             message: "Error in external API call",
-//           });
-//         }
-//       });
-//     } catch (error) {
-//       res.status(500).json({ status: false, message: error.message });
-//     }
-// }
-
-const addWallet = async (req, res) => {
-  const {
-    customer_mobile,
-    amount,
-    redirect_url,
-    remark1,
-    remark2,
-    pay_method,
-    user_id,
-    status,
-  } = req.body;
-
-  const order_id = `WAOR${Date.now()}`;
-  const user_token = process.env.PAYMENT_TOKEN;
-  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-
-  const sql = `
-    INSERT INTO orders (customer_mobile, amount, order_id, remark1, remark2, pay_method, user_id, status, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-  const values = [
-    customer_mobile,
-    amount,
-    order_id,
-    remark1,
-    remark2,
-    pay_method,
-    user_id,
-    status,
-    createdAt,
-  ];
-
-  try {
-    const result = await queryDatabase(sql, values);
-    console.log(`Order saved with ID: ${result.insertId}`);
-
-    try {
-      const order = await createOrderInstance.createOrder(
-        customer_mobile,
-        user_token,
-        amount,
-        order_id,
-        redirect_url,
-        remark1,
-        remark2
-      );
-
-      return res.status(200).json({
-        status: true,
-        message: "Order created successfully!",
-        data: order,
-        dbId: result.insertId,
-      });
-    } catch (apiError) {
-      console.error("Error in external API call:", apiError.message);
-      await queryDatabase("DELETE FROM orders WHERE id = ?", [result.insertId]);
-
-      return res.status(500).json({
-        status: false,
-        message: "Error in external API call",
-      });
-    }
-  } catch (dbError) {
-    console.error("Error saving order to database:", dbError.message);
-    return res.status(500).json({
-      status: false,
-      message: "Error saving order to database",
-    });
-  }
-}; // This Api is not used yet. Due to Webhook Response. but API Is fine/Work.
 
 module.exports = { createOrder, checkOrderStatus, webhook };

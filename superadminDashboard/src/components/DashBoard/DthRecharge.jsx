@@ -200,7 +200,7 @@ const DthRecharge = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          // `http://localhost:7777/api/auth/retailer/getAllRechargeApi`
+          // `https://2kadam.co.in/api/auth/retailer/getAllRechargeApi`
           `https://2kadam.co.in/api/auth/retailer/getAllRechargeApi`,
           {
             headers: {
@@ -1066,7 +1066,7 @@ const DthRecharge = () => {
   //   setLoading(true);
   //   try {
   //     const walletResponse = await axios.put(
-  //       `http://localhost:7777/api/auth/wallet/updateWalletBalance`,
+  //       `https://2kadam.co.in/api/auth/wallet/updateWalletBalance`,
   //       {
   //         userId: currentUser.userId,
   //         amount: offlineForm.amount,
@@ -1089,7 +1089,7 @@ const DthRecharge = () => {
 
   //     const result = await axios.post(
   //       // "https://2kadam.co.in/api/auth/retailer/offline-recharge",
-  //       "http://localhost:7777/api/auth/retailer/offline-recharge",
+  //       "https://2kadam.co.in/api/auth/retailer/offline-recharge",
   //       offlineForm
   //     );
   //     setResponseForm(result.data);
@@ -1131,7 +1131,7 @@ const DthRecharge = () => {
     try {
       // Make the API call
       const result = await axios.post(
-        // "http://localhost:7777/api/auth/wallet/offlineRechargeAndUpdateWallet",
+        // "https://2kadam.co.in/api/auth/wallet/offlineRechargeAndUpdateWallet",
         "https://2kadam.co.in/api/auth/wallet/offlineRechargeAndUpdateWallet",
         offlineForm,
         {

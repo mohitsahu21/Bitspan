@@ -55,7 +55,7 @@ const createOrder = async (req, res) => {
 
 //     // Payload for the external API request
 //     const data = {
-//         api_token: "491224",
+//         api_token: "876907",
 //         customer_name: "namo",
 //         order_id: odid,
 //         amount: amt,

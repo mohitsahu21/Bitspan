@@ -38,7 +38,6 @@ const fetch = require("node-fetch");
 
 //     console.log(text);
 
-//     // Check for an empty response
 //     if (!text || response.headers.get("content-length") === "0") {
 //       console.warn(
 //         "API returned an empty response. Proceeding with default values..."
@@ -47,18 +46,14 @@ const fetch = require("node-fetch");
 //     }
 
 //     try {
-//       // Attempt to parse the JSON
 //       const data = JSON.parse(text);
 
-//       // Check for a successful response
 //       if (response.ok && data.status === true) {
 //         return data;
 //       } else {
-//         // API returned a JSON response with an error message
 //         throw new Error(data.message || "Unknown error from API");
 //       }
 //     } catch (error) {
-//       // Handle JSON parsing errors
 //       console.error("Error parsing JSON:", text);
 //       throw new Error("Invalid JSON response");
 //     }
@@ -68,8 +63,6 @@ const fetch = require("node-fetch");
 // const createOrderInstance = new CreateOrderAPI(process.env.PAYMENT_API_LINK);
 
 // module.exports = createOrderInstance;
-
-//   "https://upi.wf/api/create-order"
 
 class CreateOrderAPI {
   constructor(apiUrl) {
@@ -120,3 +113,4 @@ class CreateOrderAPI {
 }
 
 module.exports = new CreateOrderAPI(process.env.PAYMENT_API_LINK);
+
