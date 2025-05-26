@@ -113,7 +113,7 @@ const PrepaidRechargeHistory = () => {
                   </div>
 
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
-                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded m-4 bg-body-tertiary g1">
+                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow rounded m-4 bg-body-tertiary g1">
                       <Tabs
                         defaultActiveKey="Provider 1"
                         id="uncontrolled-tab-example"

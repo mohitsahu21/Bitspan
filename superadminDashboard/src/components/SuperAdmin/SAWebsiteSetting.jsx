@@ -102,6 +102,8 @@ const Wrapper = styled.div`
   button {
     color: #fff;
     background: #6d70ff;
+     margin-left: 5px;
+     margin-top: 2px;
   }
   .form-container {
     width: 50%;
