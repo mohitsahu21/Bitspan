@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
 import { fetchWalletBalance } from "../../redux/user/userSlice";
-const AddMoney = () => {
+const AddMoneySecond = () => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.user);
   const { walletBalance } = useSelector((state) => state.user);
@@ -90,7 +90,7 @@ const AddMoney = () => {
       //   }
       // );
       const response = await axios.post(
-        "https://2kadam.co.in/api/auth/upiwf/createOrderToAddWalletMoney",
+        "https://2kadam.co.in/api/auth/upiwf/SecondcreateOrderToAddWalletMoney",
         // "http://localhost:7777/api/auth/superAdmin/createOrderToAddWalletMoney",
         formData
       );
@@ -126,12 +126,15 @@ const AddMoney = () => {
       //   icon: "success",
       // });
     } catch (error) {
+      console.log(error);
+
       console.error("Error submitting form:", error.response.data);
-      alert("Failed to submit form. Please try again.");
+      //   alert("Failed to submit form. Please try again.");
       Swal.fire({
         title: "Error",
         text:
-          error.response?.data || "Failed to submit form. Please try again.",
+          error.response?.data?.message ||
+          "Failed to submit form. Please try again.",
         icon: "error",
       });
     } finally {
@@ -159,11 +162,11 @@ const AddMoney = () => {
                       </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap ">
                         <h4 className="mx-lg-5  px-lg-5  px-xl-5">
-                          Add Money To Wallet
+                          Add Money To Wallet 2
                         </h4>
                         <h6 className="">
                           {" "}
-                          <BiHomeAlt /> &nbsp;/ &nbsp; Add Money To Wallet
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Add Money To Wallet 2
                         </h6>
                       </div>
                     </div>
@@ -280,7 +283,7 @@ const AddMoney = () => {
   );
 };
 
-export default AddMoney;
+export default AddMoneySecond;
 
 const Wrapper = styled.div`
   .main {

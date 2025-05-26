@@ -1934,6 +1934,251 @@ const MakeUserPaymentINPortalPGVerify = async (req, res) => {
   }
 };
 
+// Second Payment Gateway for qrpay.index.wf
+
+const SecondcreateOrderToAddWalletMoney = async (req, res) => {
+  const {
+    user_id,
+    amount,
+    userName,
+    userPhone,
+    userEmail,
+    userRole,
+    Payment_Mode,
+    website,
+  } = req.body;
+  console.log(
+    user_id,
+    amount,
+    userName,
+    userPhone,
+    userEmail,
+    userRole,
+    Payment_Mode,
+    website
+  );
+  // const { customer_mobile, amount, remark1, remark2 } = req.body;
+  const order_id = `WOR${Date.now()}`; // Dynamic order ID based on timestamp
+  const Transaction_Reference = `Pay Online Payment Gateway Order ID ${order_id}`;
+  const user_token = process.env.SECOND_QRPAY_KEY; // Security token from environment
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const redirect_url = `https://2kadam.co.in/api/auth/upiwf/SecondaddWalletMoneyUsingPG?order_id=${order_id}&website=${website}`;
+  const status = "Pending";
+
+  // const sql = `
+  //   INSERT INTO orders (customer_mobile, amount, order_id, remark1, remark2, status, created_at)
+  //   VALUES (?, ?, ?, ?, ?, ?, ?)`;
+  const sql = `INSERT INTO user_wallet_add_money_request (order_id, user_id, amount, userName, userPhone, userEmail, userRole, Payment_Mode, Transaction_Reference, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+  const values = [
+    order_id,
+    user_id,
+    amount,
+    userName,
+    userPhone,
+    userEmail,
+    userRole,
+    Payment_Mode,
+    Transaction_Reference,
+    status,
+    createdAt,
+  ];
+
+  try {
+    db.query(sql, values, (Error, Results) => {
+      if (Error) {
+        console.error("Error:", Error);
+        return res
+          .status(500)
+          .json({ success: false, message: "Failed to create order" });
+      } else {
+        console.log("Order created successfully:", Results);
+      }
+    });
+
+    try {
+      const postData = {
+        customer_mobile: userPhone,
+        user_token,
+        amount,
+        order_id,
+        redirect_url,
+      };
+      const response = await axios.post(
+        // "https://upi.wf/api/create-order",
+        "https://qrpay.index.wf/api/create-order",
+        postData
+      );
+      console.log(response);
+      if (response.data && response.data.status === "Success") {
+        // return data;
+        res.status(200).json({
+          status: true,
+          message: "Order created successfully!",
+          data: response.data,
+        });
+      } else {
+        throw new Error(response.data.message || "Unknown error");
+      }
+    } catch (apiError) {
+      console.error("Error in external API call:", apiError.message);
+
+      res.status(500).json({
+        status: false,
+        message: "Error in external API call",
+        error: apiError.message,
+      });
+    }
+  } catch (dbError) {
+    console.error("Error saving order to database:", dbError.message);
+    res.status(500).json({
+      status: false,
+      message: "Error saving order to database",
+      error: dbError.message,
+    });
+  }
+};
+
+const SecondaddWalletMoneyUsingPG = async (req, res) => {
+  const clientTxnId = req.query.order_id;
+  const website = req.query.website;
+  const key = process.env.SECOND_QRPAY_KEY;
+
+  try {
+    // Fetch transaction details from the database
+    const [dbData] = await new Promise((resolve, reject) => {
+      db.query(
+        "SELECT * FROM user_wallet_add_money_request WHERE order_id = ?",
+        [clientTxnId],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+
+    if (!dbData) {
+      return res.status(404).send("Transaction not found.");
+    }
+
+    // Check the order status from the external API
+    const postData = new URLSearchParams({
+      user_token: key,
+      order_id: dbData.order_id,
+    });
+    const response = await axios.post(
+      // "https://upi.wf/api/check-order-status",
+      "https://qrpay.index.wf/api/check-order-status",
+      postData.toString(),
+      {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      }
+    );
+
+    if (response.data.status === "Success") {
+      const txnStatus = response.data.result.txnStatus;
+      const createdAt = moment()
+        .tz("Asia/Kolkata")
+        .format("YYYY-MM-DD HH:mm:ss");
+      const amount = parseFloat(response.data.result.amount).toFixed(2); // Ensure amount is a valid number
+      const utr = response.data.result.utr;
+
+      if (dbData.status === "Pending") {
+        // Update the order status to 'Success'
+        await new Promise((resolve, reject) => {
+          db.query(
+            "UPDATE user_wallet_add_money_request SET status = ? , pg_Txn_Id = ? , process_date = ? WHERE order_id = ?",
+            ["Success", utr, createdAt, clientTxnId],
+            (err) => {
+              if (err) reject(err);
+              resolve();
+            }
+          );
+        });
+
+        // Add wallet money logic
+        const userId = dbData.user_id; // Assuming `user_id` is part of the `orders` table
+        const Transaction_details = `Add Wallet Money via Online Order Id ${dbData.order_id}`; // Customize as needed
+        const status = "Success";
+        const Transaction_Type = "Credit";
+        const transaction_date = moment()
+          .tz("Asia/Kolkata")
+          .format("YYYY-MM-DD HH:mm:ss");
+        const Order_Id = `ORW${Date.now()}`;
+        const Transaction_Id = `TXNW${Date.now()}`;
+
+        // Fetch the user's current closing balance
+        const getClosingBalanceQuery = `SELECT Closing_Balance FROM user_wallet WHERE userId = ? ORDER BY wid DESC LIMIT 1`;
+
+        db.query(getClosingBalanceQuery, [userId], (error, results) => {
+          if (error) {
+            console.error("Error fetching closing balance:", error);
+            return res.status(500).send("Failed to fetch closing balance");
+          }
+
+          const old_balance =
+            results.length !== 0 ? results[0].Closing_Balance : 0;
+
+          if (isNaN(old_balance)) {
+            return res
+              .status(400)
+              .send("Invalid closing balance in user wallet");
+          }
+
+          const opening_balance = Number(old_balance);
+          const credit_amount = Number(amount);
+          const debit_amount = 0;
+          let new_balance = opening_balance + credit_amount;
+          console.log(typeof new_balance);
+          console.log(typeof amount);
+          console.log(typeof opening_balance);
+          new_balance = parseFloat(new_balance.toFixed(2)); // Round to 2 decimal places
+
+          // Insert the wallet transaction
+          const sql2 = `INSERT INTO user_wallet (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, credit_amount, debit_amount, Transaction_Type, Transaction_details, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+          const values2 = [
+            userId,
+            transaction_date,
+            Order_Id,
+            Transaction_Id,
+            opening_balance,
+            new_balance,
+            credit_amount,
+            debit_amount,
+            Transaction_Type,
+            Transaction_details,
+            status,
+          ];
+
+          db.query(sql2, values2, (error) => {
+            if (error) {
+              console.error("Error inserting into user_wallet:", error);
+              return res.status(500).send("Failed to update wallet balance");
+            }
+
+            // Send success response
+            return res.send(
+              `<script>alert('Payment Successful and Wallet Updated'); window.location.replace('${website}');</script>`
+            );
+          });
+        });
+      } else {
+        return res.send(
+          `<script>alert('Transaction Failed.Please Contact to Admin'); window.location.replace('${website}');</script>`
+        );
+      }
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    // res.status(500).send('Internal Server Error.');
+    return res
+      .status(500)
+      .send(
+        `<script>alert('Internal Server Error.Please Contact to Admin'); window.location.replace('${website}');</script>`
+      );
+  }
+};
+
 module.exports = {
   webhook,
   webhook_two,
@@ -1946,4 +2191,6 @@ module.exports = {
   userRegiserOnlinePGVerify,
   MakePaymentINPortal,
   MakeUserPaymentINPortalPGVerify,
+  SecondcreateOrderToAddWalletMoney,
+  SecondaddWalletMoneyUsingPG,
 };

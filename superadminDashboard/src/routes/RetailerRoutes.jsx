@@ -125,6 +125,9 @@ const MobileRecharge = lazy(() =>
 const Complaints = lazy(() => import("../components/DashBoard/Complaints"));
 const UtiPan = lazy(() => import("../components/DashBoard/UtiPan"));
 const AddMoney = lazy(() => import("../components/DashBoard/AddMoney"));
+// const AddMoneySecond = lazy(() =>
+//   import("../components/DashBoard/AddMoneySecond")
+// );
 const AddMoneyOffline = lazy(() =>
   import("../components/DashBoard/AddMoneyOffline")
 );
@@ -494,6 +497,7 @@ const RetailerRoutes = () => {
             <Route path="/raise-complaint" element={<Complaints />} />
             <Route path="/uti-login" element={<UtiPan />} />
             <Route path="/add-money" element={<AddMoney />} />
+            {/* <Route path="/add-money-second" element={<AddMoneySecond />} /> */}
             <Route
               path="/add-wallet-money-offline"
               element={<AddMoneyOffline />}

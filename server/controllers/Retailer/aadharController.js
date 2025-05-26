@@ -184,16 +184,83 @@ LIMIT 1
         // Step 4: Call PAN by Aadhaar API
         try {
           const result = await findPanByAadhaar(api_key, aadhaar_no);
-          return res.status(result.status === "200" ? 200 : 404).json({
-            status: "Success",
-            wallet: {
-              transactionId,
-              newBalance,
-              previousBalance: currentBalance.toFixed(2),
-              deductedAmount: amount,
-            },
-            panData: result,
-          });
+          // return res.status(result.status === "200" ? 200 : 404).json({
+          //   status: "Success",
+          //   wallet: {
+          //     transactionId,
+          //     newBalance,
+          //     previousBalance: currentBalance.toFixed(2),
+          //     deductedAmount: amount,
+          //   },
+          //   panData: result,
+          // });
+          if (result.status === "404") {
+            const refundQuery = `
+    INSERT INTO user_wallet 
+    (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+            const refundTransactionId = `TXNV${Date.now()}`;
+            // const refundedBalance = (parseFloat(newBalance) + amount).toFixed(
+            //   2
+            // );
+            const refundedBalance = (
+              parseFloat(newBalance) + parseFloat(amount)
+            ).toFixed(2);
+
+            db.query(
+              refundQuery,
+              [
+                userId,
+                createdAt,
+                orderId,
+                refundTransactionId,
+                newBalance,
+                refundedBalance,
+                "Credit",
+                amount,
+                0,
+                "Refund due to Pan By Aadhar failure",
+                "Success",
+              ],
+              (refundErr) => {
+                if (refundErr) {
+                  return res.status(500).json({
+                    status: "Failure",
+                    step: "Refund Wallet",
+                    message: "Pan By Aadhar failed and refund also failed.",
+                    details: refundErr.message,
+                  });
+                }
+
+                return res.status(200).json({
+                  status: "Failure",
+                  message: "Pan By Aadhar failed. Amount refunded.",
+                  wallet: {
+                    transactionId,
+                    refundedTransactionId: refundTransactionId,
+                    previousBalance: currentBalance.toFixed(2),
+                    newBalance: refundedBalance,
+                    refundedAmount: amount,
+                  },
+                  panData: result,
+                });
+              }
+            );
+          } else {
+            // If verification successful
+            return res.status(200).json({
+              status: "Success",
+              wallet: {
+                transactionId,
+                newBalance,
+                previousBalance: currentBalance.toFixed(2),
+                deductedAmount: amount,
+              },
+              panData: result,
+            });
+          }
         } catch (err) {
           return res.status(500).json({
             status: "Failure",
@@ -336,16 +403,83 @@ LIMIT 1
         // Step 4: Call PAN by Aadhaar API
         try {
           const result = await findPanDetails(api_key, panno);
-          return res.status(result.status === "200" ? 200 : 404).json({
-            status: "Success",
-            wallet: {
-              transactionId,
-              newBalance,
-              previousBalance: currentBalance.toFixed(2),
-              deductedAmount: amount,
-            },
-            panData: result,
-          });
+          // return res.status(result.status === "200" ? 200 : 404).json({
+          //   status: "Success",
+          //   wallet: {
+          //     transactionId,
+          //     newBalance,
+          //     previousBalance: currentBalance.toFixed(2),
+          //     deductedAmount: amount,
+          //   },
+          //   panData: result,
+          // });
+          if (result.status === "404") {
+            const refundQuery = `
+    INSERT INTO user_wallet 
+    (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+            const refundTransactionId = `TXNV${Date.now()}`;
+            // const refundedBalance = (parseFloat(newBalance) + amount).toFixed(
+            //   2
+            // );
+            const refundedBalance = (
+              parseFloat(newBalance) + parseFloat(amount)
+            ).toFixed(2);
+
+            db.query(
+              refundQuery,
+              [
+                userId,
+                createdAt,
+                orderId,
+                refundTransactionId,
+                newBalance,
+                refundedBalance,
+                "Credit",
+                amount,
+                0,
+                "Refund due to Pan Details failure",
+                "Success",
+              ],
+              (refundErr) => {
+                if (refundErr) {
+                  return res.status(500).json({
+                    status: "Failure",
+                    step: "Refund Wallet",
+                    message: "Pan Details failed and refund also failed.",
+                    details: refundErr.message,
+                  });
+                }
+
+                return res.status(200).json({
+                  status: "Failure",
+                  message: "Pan Details failed. Amount refunded.",
+                  wallet: {
+                    transactionId,
+                    refundedTransactionId: refundTransactionId,
+                    previousBalance: currentBalance.toFixed(2),
+                    newBalance: refundedBalance,
+                    refundedAmount: amount,
+                  },
+                  panData: result,
+                });
+              }
+            );
+          } else {
+            // If verification successful
+            return res.status(200).json({
+              status: "Success",
+              wallet: {
+                transactionId,
+                newBalance,
+                previousBalance: currentBalance.toFixed(2),
+                deductedAmount: amount,
+              },
+              panData: result,
+            });
+          }
         } catch (err) {
           return res.status(500).json({
             status: "Failure",
@@ -505,16 +639,83 @@ LIMIT 1
         // Step 4: Call PAN by Aadhaar API
         try {
           const result = await getRcPdfData(api_key, rcno, cardtype, chiptype);
-          return res.status(result.status === "200" ? 200 : 404).json({
-            status: "Success",
-            wallet: {
-              transactionId,
-              newBalance,
-              previousBalance: currentBalance.toFixed(2),
-              deductedAmount: amount,
-            },
-            panData: result,
-          });
+          // return res.status(result.status === "200" ? 200 : 404).json({
+          //   status: "Success",
+          //   wallet: {
+          //     transactionId,
+          //     newBalance,
+          //     previousBalance: currentBalance.toFixed(2),
+          //     deductedAmount: amount,
+          //   },
+          //   panData: result,
+          // });
+          if (result.status === "404") {
+            const refundQuery = `
+    INSERT INTO user_wallet 
+    (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+            const refundTransactionId = `TXNV${Date.now()}`;
+            // const refundedBalance = (parseFloat(newBalance) + amount).toFixed(
+            //   2
+            // );
+            const refundedBalance = (
+              parseFloat(newBalance) + parseFloat(amount)
+            ).toFixed(2);
+
+            db.query(
+              refundQuery,
+              [
+                userId,
+                createdAt,
+                orderId,
+                refundTransactionId,
+                newBalance,
+                refundedBalance,
+                "Credit",
+                amount,
+                0,
+                "Refund due to RC Details failure",
+                "Success",
+              ],
+              (refundErr) => {
+                if (refundErr) {
+                  return res.status(500).json({
+                    status: "Failure",
+                    step: "Refund Wallet",
+                    message: "RC Details failed and refund also failed.",
+                    details: refundErr.message,
+                  });
+                }
+
+                return res.status(200).json({
+                  status: "Failure",
+                  message: "RC Details failed. Amount refunded.",
+                  wallet: {
+                    transactionId,
+                    refundedTransactionId: refundTransactionId,
+                    previousBalance: currentBalance.toFixed(2),
+                    newBalance: refundedBalance,
+                    refundedAmount: amount,
+                  },
+                  panData: result,
+                });
+              }
+            );
+          } else {
+            // If verification successful
+            return res.status(200).json({
+              status: "Success",
+              wallet: {
+                transactionId,
+                newBalance,
+                previousBalance: currentBalance.toFixed(2),
+                deductedAmount: amount,
+              },
+              panData: result,
+            });
+          }
         } catch (err) {
           return res.status(500).json({
             status: "Failure",
@@ -673,16 +874,83 @@ LIMIT 1
         // Step 4: Call PAN by Aadhaar API
         try {
           const result = await getDlPrint(api_key, dlno, dob, cardtype || 1);
-          return res.status(result.status === "200" ? 200 : 404).json({
-            status: "Success",
-            wallet: {
-              transactionId,
-              newBalance,
-              previousBalance: currentBalance.toFixed(2),
-              deductedAmount: amount,
-            },
-            panData: result,
-          });
+          // return res.status(result.status === "200" ? 200 : 404).json({
+          //   status: "Success",
+          //   wallet: {
+          //     transactionId,
+          //     newBalance,
+          //     previousBalance: currentBalance.toFixed(2),
+          //     deductedAmount: amount,
+          //   },
+          //   panData: result,
+          // });
+          if (result.status === "404") {
+            const refundQuery = `
+    INSERT INTO user_wallet 
+    (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+            const refundTransactionId = `TXNV${Date.now()}`;
+            // const refundedBalance = (parseFloat(newBalance) + amount).toFixed(
+            //   2
+            // );
+            const refundedBalance = (
+              parseFloat(newBalance) + parseFloat(amount)
+            ).toFixed(2);
+
+            db.query(
+              refundQuery,
+              [
+                userId,
+                createdAt,
+                orderId,
+                refundTransactionId,
+                newBalance,
+                refundedBalance,
+                "Credit",
+                amount,
+                0,
+                "Refund due to DL Details failure",
+                "Success",
+              ],
+              (refundErr) => {
+                if (refundErr) {
+                  return res.status(500).json({
+                    status: "Failure",
+                    step: "Refund Wallet",
+                    message: "DL Details failed and refund also failed.",
+                    details: refundErr.message,
+                  });
+                }
+
+                return res.status(200).json({
+                  status: "Failure",
+                  message: "DL Details failed. Amount refunded.",
+                  wallet: {
+                    transactionId,
+                    refundedTransactionId: refundTransactionId,
+                    previousBalance: currentBalance.toFixed(2),
+                    newBalance: refundedBalance,
+                    refundedAmount: amount,
+                  },
+                  panData: result,
+                });
+              }
+            );
+          } else {
+            // If verification successful
+            return res.status(200).json({
+              status: "Success",
+              wallet: {
+                transactionId,
+                newBalance,
+                previousBalance: currentBalance.toFixed(2),
+                deductedAmount: amount,
+              },
+              panData: result,
+            });
+          }
         } catch (err) {
           return res.status(500).json({
             status: "Failure",
