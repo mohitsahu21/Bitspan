@@ -48,39 +48,43 @@ const DropdownLink = styled(Link)`
   }
 `;
 
-const SubMenu = ({ item, activeDropdown, handleDropdownClick }) => {
-  const [subnav, setSubnav] = useState(false);
+
+const SubMenu = ({ item, activeDropdown, handleDropdownClick, closeSidebar }) => {
   const isOpen = activeDropdown === item.title;
 
-  const showSubnav = () => setSubnav(!subnav);
+  const handleMainClick = () => {
+    if (item.subNav) {
+      handleDropdownClick(item.title);
+    } else if (window.innerWidth <= 1024) {
+      closeSidebar();
+    }
+  };
+
+  const handleSubNavClick = () => {
+    if (window.innerWidth <= 1024) {
+      closeSidebar();
+    }
+  };
 
   return (
     <>
-      <SidebarLink
-        to={item.path}
-        onClick={item.subNav && (() => handleDropdownClick(item.title))}
-      >
+      <SidebarLink to={item.path || "#"} onClick={handleMainClick}>
         <div>
           <span className="icon">{item.icon}</span>
           <SidebarLabel>{item.title}</SidebarLabel>
         </div>
         <div>
-          {item.subNav && isOpen
-            ? item.iconOpened
-            : item.subNav
-            ? item.iconClosed
-            : null}
+          {item.subNav ? (isOpen ? item.iconOpened : item.iconClosed) : null}
         </div>
       </SidebarLink>
+
       {isOpen &&
-        item.subNav.map((item, index) => {
-          return (
-            <DropdownLink to={item.path} key={index}>
-              {item.icon}
-              <SidebarLabel>{item.title}</SidebarLabel>
-            </DropdownLink>
-          );
-        })}
+        item.subNav?.map((subItem, index) => (
+          <DropdownLink to={subItem.path} key={index} onClick={handleSubNavClick}>
+            {subItem.icon}
+            <SidebarLabel>{subItem.title}</SidebarLabel>
+          </DropdownLink>
+        ))}
     </>
   );
 };

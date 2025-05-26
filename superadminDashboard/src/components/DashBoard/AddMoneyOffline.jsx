@@ -282,7 +282,7 @@ const AddMoneyOffline = () => {
                                   onChange={handleChange}
                                   required
                                 />
-                                <label for="floatingInputGroup2">
+                                <label for="floatingInputGroup2" className="res">
                                   Amount in Rs. {"(Min 100/-)"}
                                 </label>
                               </div>
@@ -303,7 +303,7 @@ const AddMoneyOffline = () => {
                                   value={formData.Transaction_Reference}
                                   onChange={handleChange}
                                 />
-                                <label for="floatingInputGroup2">
+                                <label for="floatingInputGroup2" className="res">
                                   Transaction Reference (If any)
                                 </label>
                               </div>
@@ -401,5 +401,11 @@ const Wrapper = styled.div`
     border-radius: 10px;
     padding: 5px;
     background-color: #fff;
+  }
+    .res{
+    @media screen and (max-width: 375px) {
+      white-space: normal;
+      padding: 5px 10px;
+    }
   }
 `;

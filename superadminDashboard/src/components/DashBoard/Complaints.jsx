@@ -206,7 +206,7 @@ const Complaints = () => {
                               onChange={handleChange}
                               // required
                             />
-                            <label for="floatingInputGroup1">
+                            <label for="floatingInputGroup1" className="res">
                               Transaction Number
                             </label>
                           </div>
@@ -316,6 +316,12 @@ const Wrapper = styled.div`
   @media (min-width: 1500px) {
     .formdata {
       padding-left: 13rem;
+    }
+  }
+    .res{
+    @media screen and (max-width: 375px) {
+      white-space: normal;
+      padding: 5px 10px;
     }
   }
 `;

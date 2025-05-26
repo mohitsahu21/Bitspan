@@ -2630,7 +2630,10 @@ const Sider = () => {
   const navigate = useNavigate();
   const handleDropdownClick = (path) => {
     setActiveDropdown((prev) => (prev === path ? null : path));
+
+    
   };
+const closeSidebar = () => setSidebar(false);
 
   const showSidebar = () => setSidebar(!sidebar);
   const [profileImage, setProfileImage] = useState(null);
@@ -2687,11 +2690,11 @@ const Sider = () => {
       }
     };
 
+    // Run once on mount
+    
     window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleLogout = () => {
@@ -2801,6 +2804,7 @@ const Sider = () => {
                           key={index}
                           activeDropdown={activeDropdown}
                           handleDropdownClick={handleDropdownClick}
+                                      closeSidebar={closeSidebar}
                         />
                       );
                     })}
@@ -2812,6 +2816,7 @@ const Sider = () => {
                           key={index}
                           activeDropdown={activeDropdown}
                           handleDropdownClick={handleDropdownClick}
+                           closeSidebar={closeSidebar}
                         />
                       );
                     })}
@@ -2823,6 +2828,8 @@ const Sider = () => {
                           key={index}
                           activeDropdown={activeDropdown}
                           handleDropdownClick={handleDropdownClick}
+                           closeSidebar={closeSidebar}
+
                         />
                       );
                     })}
@@ -2834,6 +2841,8 @@ const Sider = () => {
                           key={index}
                           activeDropdown={activeDropdown}
                           handleDropdownClick={handleDropdownClick}
+                           closeSidebar={closeSidebar}
+
                         />
                       );
                     })}
@@ -2845,6 +2854,8 @@ const Sider = () => {
                           key={index}
                           activeDropdown={activeDropdown}
                           handleDropdownClick={handleDropdownClick}
+                           closeSidebar={closeSidebar}
+
                         />
                       );
                     })}
@@ -2857,6 +2868,8 @@ const Sider = () => {
                           key={index}
                           activeDropdown={activeDropdown}
                           handleDropdownClick={handleDropdownClick}
+                           closeSidebar={closeSidebar}
+
                         />
                       );
                     })}

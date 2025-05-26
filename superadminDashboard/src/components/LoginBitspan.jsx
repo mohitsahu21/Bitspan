@@ -538,7 +538,7 @@ const Wrapper = styled.div`
   .otp-inputs {
     display: flex;
     justify-content: space-between;
-    gap: 8px;
+    gap: 3px;
   }
 
   .otp-input {

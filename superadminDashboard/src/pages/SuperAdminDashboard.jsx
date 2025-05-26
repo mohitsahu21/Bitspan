@@ -993,7 +993,7 @@ const SuperAdminDashboard = () => {
                 <div className="container-fluid">
                   <div className="row  d-flex formdata justify-content-center">
                     <div className="col-xxl-12   mb-4 mt-1">
-                      <div className=" card-4 p-4 " id="main1">
+                      <div className=" card-4  g1" id="main1">
                         <div className="d-flex ">
                           <Link to="/users-joining-list">
                             <User id="t-1">
@@ -1476,6 +1476,10 @@ const Wrapper = styled.div`
 
     transition: transform 0.3s ease-in-out, border 0.3s ease,
       border-radius 0.3s ease;
+      @media screen and (max-width: 375px) {
+      padding: 5px;
+      margin: 0px;
+    }
   }
   .card:hover {
     /* transform: scale(1.1); */
@@ -1625,6 +1629,19 @@ const Wrapper = styled.div`
   #rescard {
     @media (min-width: 1024px) and (max-width: 1500px) {
       margin-left: 1rem;
+    }
+  }
+    .g1{
+  padding: 3rem;
+    @media screen and (max-width: 768px) {
+      
+    padding: 1rem;
+  }
+}
+  .res{
+    @media screen and (max-width: 375px) {
+      white-space: normal;
+      padding: 5px 10px;
     }
   }
 `;

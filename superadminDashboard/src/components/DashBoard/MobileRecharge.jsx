@@ -2642,13 +2642,12 @@ const Wrapper = styled.div`
     margin-top: 4rem;
     @media (min-width: 360px) and (max-width: 400px) {
       margin-top: 6rem;
-      position: absolute;
-      left: 35px;
+
     }
     @media (min-width: 401px) and (max-width: 500px) {
       margin-top: 6rem;
-      position: absolute;
-      left: 60px;
+      /* position: absolute;
+      left: 60px; */
     }
     @media (min-width: 501px) and (max-width: 600px) {
       margin-top: 6rem;

@@ -367,7 +367,7 @@ const RCFind = () => {
                                   name="rcno"
                                   value={formData.rcno}
                                 />
-                                <label for="floatingInputGroup2">
+                                <label for="floatingInputGroup2" className="res">
                                   Registration Certificate No.
                                 </label>
                               </div>
@@ -478,6 +478,12 @@ const Wrapper = styled.div`
     list-style: none;
     padding-left: 0;
     font-size: 14px;
+  }
+    .res{
+    @media screen and (max-width: 375px) {
+      white-space: normal;
+      padding: 5px 10px;
+    }
   }
 `;
 

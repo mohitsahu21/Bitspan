@@ -790,11 +790,11 @@ const SuperAdminEmployeeDashboard = () => {
                 <div className="container-fluid">
                   <div className="row  d-flex formdata justify-content-center">
                     <div className="col-xxl-12   mb-4 mt-1">
-                      <div className=" card-4 p-4 " id="main1">
+                      <div className=" card-4 " id="main1">
                         <div className="d-flex ">
                           <Link to="/complaint-raised-list">
                             <div className="d-flex flex-column text-white ">
-                              <h6 className="mb-0 px-2 my-0 fs-5">
+                              <h6 className="mb-0  my-0 fs-5">
                                 Total Pending Complaints
                               </h6>
                               <h5 className="px-1 my-1">
@@ -1136,6 +1136,10 @@ const Wrapper = styled.div`
 
     transition: transform 0.3s ease-in-out, border 0.3s ease,
       border-radius 0.3s ease;
+       @media screen and (max-width: 375px) {
+      padding: 5px;
+      margin: 0px;
+    }
   }
   .card:hover {
     /* transform: scale(1.1); */
@@ -1238,7 +1242,7 @@ const Wrapper = styled.div`
   }
   #main1 {
     width: 100%;
-    padding: 10px;
+    padding: 1.5rem;
 
     border-radius: 10px;
 
@@ -1248,6 +1252,12 @@ const Wrapper = styled.div`
       border-radius 0.3s ease;
     background-color: #3a7bd5;
     color: white;
+      
+    @media screen and (max-width: 375px) {
+      white-space: normal;
+   
+    }
+
     @media screen and (min-width: 768px) and (max-width: 1400px) {
       margin: 0px 0px;
     }

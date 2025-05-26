@@ -591,7 +591,7 @@ const PanForm = () => {
                             onChange={handleChange}
                             required
                           />
-                          <label htmlFor="floatingInputGroup2">
+                          <label htmlFor="floatingInputGroup2" className="res">
                             Applicant Father Name
                           </label>
                         </div>
@@ -926,6 +926,12 @@ const Wrapper = styled.div`
   .custom-dropdown option {
     background-color: #e8e4f0;
     color: #343a40;
+  }
+    .res{
+    @media screen and (max-width: 375px) {
+      white-space: normal;
+      padding: 5px 10px;
+    }
   }
 `;
 {

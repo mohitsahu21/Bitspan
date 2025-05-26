@@ -113,23 +113,23 @@ const PrepaidRechargeHistory = () => {
                   </div>
 
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
-                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
+                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded m-4 bg-body-tertiary g1">
                       <Tabs
                         defaultActiveKey="Provider 1"
                         id="uncontrolled-tab-example"
                         className="mb-3"
                         variant="tabs"
                       >
-                        <Tab eventKey="Provider 1" title="Provider 1">
+                        <Tab eventKey="Provider 1" title="Provider 1" cla>
                           <div className="row d-flex flex-column g-4">
                             <div className="d-flex flex-column flex-xl-row gap-3">
                               {/* <div className="col-12 col-md-4 col-lg-3"> */}
-                              <div className="col-12 col-md-12 col-lg-12 col-xl-8">
+                              <div className="col-12 col-md-12 col-lg-12 col-xl-8 ">
                                 <input
                                   className="form-control"
                                   type="search"
                                   id="floatingInputGroup1"
-                                  placeholder="Search by Mob No, TXN ID, or Ord ID"
+                                  placeholder="Search by Mob No,TXN ID,or Ord ID"
                                   value={filterValue}
                                   onChange={(e) => {
                                     setFilterValue(e.target.value);
@@ -283,8 +283,17 @@ const Wrapper = styled.div`
     width: 100%;
   }
   button {
-    color: #fff;
+    color: #ffff;
     background: #6d70ff;
+    margin-left: 5px;
+
+  }
+  .g1{
+  padding: 3rem;
+    @media screen and (max-width: 768px) {
+      
+    padding: 1rem;
+  }
   }
   .form-container {
     width: 50%;
@@ -395,4 +404,5 @@ const PaginationContainer = styled.div`
       margin-left: 5px;
     }
   }
+  
 `;

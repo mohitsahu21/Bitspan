@@ -827,7 +827,7 @@ const Dashboard = () => {
                           </div>
                           <div className="ms-auto d-flex align-items-center px-3">
                             <button
-                              className="btn-sm px-3 py-2 add-money-btn"
+                              className="btn-sm px-2 py-2 add-money-btn"
                               onClick={() => navigate("/add-money")}
                               style={{
                                 borderRadius: "20px",

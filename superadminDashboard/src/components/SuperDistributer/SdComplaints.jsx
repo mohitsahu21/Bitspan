@@ -134,7 +134,7 @@ const SdComplaints = () => {
                     </div>
                   </div>
                   <form onSubmit={handleSubmit} encType="multipart/form-data">
-                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
+                    <div className="row g-4 shadow bg-body-tertiary rounded  px-3 g1">
                       <div className="text-center">
                         <h4>Enter All Correct Details For Raising Ticket</h4>
                       </div>
@@ -295,4 +295,12 @@ const Wrapper = styled.div`
       padding-left: 13rem;
     }
   }
+    .g1{
+  padding: 3rem;
+    @media screen and (max-width: 768px) {
+      margin-top: 1rem;
+      margin: 10px;
+    padding: 1rem;
+  }
+}
 `;

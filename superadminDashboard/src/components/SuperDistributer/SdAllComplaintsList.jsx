@@ -102,7 +102,7 @@ const SdAllComplaintsList = () => {
                 {/* <Sider /> */}
               </div>
               <div
-                className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
+                className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-12
                              mt-5 formdata "
               >
                 <div className="main shadow-none ">
@@ -123,7 +123,7 @@ const SdAllComplaintsList = () => {
                   </div>
 
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
-                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
+                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow rounded m-4 bg-body-tertiary g1">
                       <div className="row d-flex flex-column g-4">
                         <div className="d-flex flex-column flex-md-row gap-3">
                           <div className="col-12 col-md-4 col-lg-3">
@@ -336,6 +336,13 @@ const Wrapper = styled.div`
       padding-left: 13rem;
     }
   }
+    .g1{
+  padding: 3rem;
+    @media screen and (max-width: 768px) {
+      
+    padding: 1rem;
+  }
+}
 `;
 const PaginationContainer = styled.div`
   .pagination {

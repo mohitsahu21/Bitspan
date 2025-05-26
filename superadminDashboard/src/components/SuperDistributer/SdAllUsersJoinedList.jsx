@@ -444,11 +444,11 @@ const Wrapper = styled.div`
     background: #5356fa;
     border-color: #5356fa;
   }
-  .form-container {
+  /* .form-container {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-  }
+  } */
   .field-group {
     display: flex;
     flex-direction: column;

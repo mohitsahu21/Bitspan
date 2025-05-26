@@ -444,11 +444,11 @@ const Wrapper = styled.div`
     background: #5356fa;
     border-color: #5356fa;
   }
-  .form-container {
+  /* .form-container {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-  }
+  }*/
   .field-group {
     display: flex;
     flex-direction: column;
@@ -491,9 +491,9 @@ const Wrapper = styled.div`
       width: 30%;
     }
   }
-  .custom-dropdown-toggle::after {
+  /* .custom-dropdown-toggle::after {
     display: none !important;
-  }
+  }  */
 `;
 
 const PaginationContainer = styled.div`

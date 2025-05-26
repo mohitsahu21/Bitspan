@@ -114,7 +114,7 @@ const PostpaidRechargeHistory = () => {
                   </div>
 
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
-                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
+                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  m-4 bg-body-tertiary g1">
                       <Tabs
                         defaultActiveKey="Provider 1"
                         id="uncontrolled-tab-example"
@@ -285,7 +285,16 @@ const Wrapper = styled.div`
   button {
     color: #fff;
     background: #6d70ff;
+    margin-left: 5px;
+
   }
+    .g1{
+  padding: 3rem;
+    @media screen and (max-width: 768px) {
+      
+    padding: 1rem;
+  }
+}
   .form-container {
     width: 50%;
     margin: auto;

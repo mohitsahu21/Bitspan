@@ -210,7 +210,7 @@ const AddMoney = () => {
                                   required
                                   min={100}
                                 />
-                                <label for="floatingInputGroup2">
+                                <label for="floatingInputGroup2" className="res">
                                   Amount in Rs. {"(Min 100/-)"}
                                 </label>
                               </div>
@@ -302,4 +302,11 @@ const Wrapper = styled.div`
       padding-left: 13rem;
     }
   }
+  .res{
+    @media screen and (max-width: 375px) {
+      white-space: normal;
+      padding: 5px 10px;
+    }
+  }
+  
 `;

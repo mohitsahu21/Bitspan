@@ -351,7 +351,7 @@ const FindGSTVerify = () => {
                                   name="gst"
                                   value={formData.gst}
                                 />
-                                <label for="floatingInputGroup2">
+                                <label for="floatingInputGroup2" className="res">
                                   GST (Goods and Services Tax) No.
                                 </label>
                               </div>
@@ -462,5 +462,11 @@ const Wrapper = styled.div`
     list-style: none;
     padding-left: 0;
     font-size: 14px;
+  }
+    .res{
+    @media screen and (max-width: 375px) {
+      white-space: normal;
+      padding: 5px 10px;
+    }
   }
 `;
