@@ -52,8 +52,8 @@ const SAResolveComplaint = ({
     try {
       setLoading(true);
       const response = await axios.put(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectUser",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        // "https://2kadam.co.in/api/auth/superAdmin/rejectUser",
+        "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -175,7 +175,7 @@ const SAEAllComplaintsList = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/complainGetData",
+        "https://2kadam.co.in/api/auth/superAdmin/complainGetData",
         {
           headers: {
             "Content-Type": "application/json",
@@ -267,7 +267,7 @@ const SAEAllComplaintsList = () => {
   //         setLoading(true);
   //         try {
   //           const { data } = await axios.put(
-  //             "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser",
+  //             "https://2kadam.co.in/api/auth/superAdmin/deactivateUser",
   //             {
   //                userId: id
   //             }
@@ -371,7 +371,10 @@ const SAEAllComplaintsList = () => {
                               type="search"
                               placeholder="Enter User Name/User Id/Mobile/Email Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value);
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -381,8 +384,9 @@ const SAEAllComplaintsList = () => {
                               aria-label="Default select example"
                               value={complaintStatus}
                               onChange={(e) =>
-                                setComplaintStatus(e.target.value)
-                              }
+                                {setComplaintStatus(e.target.value)
+                                setCurrentPage(0)
+                                }}
                             >
                               <option selected>
                                 ---Select Complaint Status---
@@ -408,7 +412,8 @@ const SAEAllComplaintsList = () => {
                                 <table class="table table-striped">
                                   <thead className="table-dark">
                                     <tr>
-                                      <th scope="col">#</th>
+                                      {/* <th scope="col">#</th> */}
+                                      <th scope="col">Complaint ID</th>
                                       <th scope="col">Ticket Raised Date</th>
 
                                       <th scope="col">Complaint Type</th>
@@ -423,9 +428,9 @@ const SAEAllComplaintsList = () => {
                                       <th scope="col">User Mobile</th>
                                       <th scope="col">Complaint File</th>
                                       <th scope="col">Response</th>
-                                      <th scope="col">Status</th>
                                       <th scope="col">Process By</th>
                                       <th scope="col">Process Date</th>
+                                      <th scope="col">Status</th>
                                       <th scope="col">Action</th>
                                     </tr>
                                   </thead>
@@ -434,11 +439,12 @@ const SAEAllComplaintsList = () => {
                                       showApiData?.map((user, index) => (
                                         <tr key={user.id}>
                                           {/* <th scope="row">{index + 1}</th> */}
-                                          <td>
+                                          {/* <td>
                                             {currentPage * complaintsPerPage +
                                               index +
                                               1}
-                                          </td>
+                                          </td> */}
+                                          <td>{user.id}</td>
                                           <td>{user.createdAt}</td>
                                           <td>{user.complainType}</td>
                                           <td>{user.mobileNo}</td>
@@ -467,7 +473,7 @@ const SAEAllComplaintsList = () => {
                                                   </div>
                                                 ))}
                                           </td> */}
-                                          <td>
+                                          {/* <td>
                                             <a
                                               href={user.complainFile}
                                               target="_blank"
@@ -475,7 +481,22 @@ const SAEAllComplaintsList = () => {
                                             >
                                               View
                                             </a>
-                                          </td>
+                                          </td> */}
+                                             <td>
+                                              {
+                                               user.complainFile ? 
+                                               <a
+                                               href={user.complainFile}
+                                               target="_blank"
+                                               rel="noopener noreferrer"
+                                             >
+                                               View
+                                             </a> 
+                                             :
+                                             "Not Available"
+                                              }
+                                             
+                                            </td>
                                           {/* <td>
                                               <a
                                                 href={user.AadharBack}
@@ -498,9 +519,10 @@ const SAEAllComplaintsList = () => {
                                           {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
                                           {/* <td>{user?.Note}</td> */}
                                           <td>{user.response}</td>
-                                          <td>{user.status}</td>
+                                          
                                           <td>{user.process_by_userId}</td>
-                                          <td>{user.updated_at}</td>
+                                          <td>{user.process_date}</td>
+                                          <td>{user.status}</td>
                                           <td>
                                             {user.status === "Pending" && (
                                               <Dropdown>
@@ -562,6 +584,7 @@ const SAEAllComplaintsList = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

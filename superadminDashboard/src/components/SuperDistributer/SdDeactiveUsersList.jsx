@@ -35,8 +35,8 @@ const SdDeactiveUsersList = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getActiveUsers",
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getDeactiveUsers/${userId}`,
+        // "https://2kadam.co.in/api/auth/superDistributor/getActiveUsers",
+        `https://2kadam.co.in/api/auth/superDistributor/getDeactiveUsers/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -125,7 +125,7 @@ const SdDeactiveUsersList = () => {
           setLoading(true);
           try {
             const { data } = await axios.put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser",
+              "https://2kadam.co.in/api/auth/superAdmin/deactivateUser",
               {
                 userId: id,
               },
@@ -282,8 +282,8 @@ const SdDeactiveUsersList = () => {
                                       <th scope="col">Role</th>
                                       <th scope="col">Email</th>
                                       <th scope="col">Mobile</th>
-                                      <th scope="col">Package Id</th>
-                                      <th scope="col">Package Name</th>
+                                      {/* <th scope="col">Package Id</th> */}
+                                      {/* <th scope="col">Package Name</th> */}
                                       {/* <th scope="col">Address</th> */}
                                       <th scope="col">PAN No</th>
                                       <th scope="col">AAdhaar No</th>
@@ -291,21 +291,14 @@ const SdDeactiveUsersList = () => {
                                       <th scope="col">City</th>
                                       <th scope="col">State</th>
                                       <th scope="col">Pincode</th>
-
-                                      {/* <th scope="col">P-Coupon <br/>Price</th>
-                                                                      <th scope="col">E-Coupon <br/>Price</th> */}
-
                                       <th scope="col">Created By</th>
                                       <th scope="col">Website Name</th>
-
                                       <th scope="col">Payment Status</th>
-                                      <th scope="col">Aadhar Front</th>
-                                      <th scope="col">Aadhar Back</th>
-                                      <th scope="col">Pan Card Front</th>
-                                      {/* <th scope="col">View KYC</th> */}
+                                      {/* <th scope="col">Aadhar Front</th> */}
+                                      {/* <th scope="col">Aadhar Back</th> */}
+                                      {/* <th scope="col">Pan Card Front</th> */}
                                       <th scope="col">Status</th>
-                                      {/* <th scope="col">Note</th> */}
-                                      <th scope="col">Action</th>
+                                      {/* <th scope="col">Action</th> */}
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -325,8 +318,8 @@ const SdDeactiveUsersList = () => {
                                           <td>{user.role}</td>
                                           <td>{user.Email}</td>
                                           <td>{user.ContactNo}</td>
-                                          <td>{user.package_Id}</td>
-                                          <td>{user.package_name}</td>
+                                          {/* <td>{user.package_Id}</td> */}
+                                          {/* <td>{user.package_name}</td> */}
                                           <td>{user.PanCardNumber}</td>
                                           <td>{user.AadharNumber}</td>
                                           <td>{user.BusinessName}</td>
@@ -346,7 +339,7 @@ const SdDeactiveUsersList = () => {
                                           </td>
                                           <td>{user?.PaymentStatus}</td>
 
-                                          <td>
+                                          {/* <td>
                                             {user.AadharFront ? (
                                               <a
                                                 href={user.AadharFront}
@@ -358,8 +351,8 @@ const SdDeactiveUsersList = () => {
                                             ) : (
                                               "Not Available"
                                             )}
-                                          </td>
-                                          <td>
+                                          </td> */}
+                                          {/* <td>
                                             {user.AadharBack ? (
                                               <a
                                                 href={user.AadharBack}
@@ -371,8 +364,8 @@ const SdDeactiveUsersList = () => {
                                             ) : (
                                               "Not Available"
                                             )}
-                                          </td>
-                                          <td>
+                                          </td> */}
+                                          {/* <td>
                                             {user.PanCardFront ? (
                                               <a
                                                 href={user.PanCardFront}
@@ -384,11 +377,11 @@ const SdDeactiveUsersList = () => {
                                             ) : (
                                               "Not Available"
                                             )}
-                                          </td>
+                                          </td> */}
                                           <td>{user.Status}</td>
                                           {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
                                           {/* <td>{user?.Note}</td> */}
-                                          <td>
+                                          {/* <td>
                                             <Dropdown>
                                               <Dropdown.Toggle
                                                 variant="success"
@@ -438,7 +431,7 @@ const SdDeactiveUsersList = () => {
                                                 </Dropdown.Item>
                                               </Dropdown.Menu>
                                             </Dropdown>
-                                          </td>
+                                          </td> */}
                                         </tr>
                                       ))
                                     ) : (
@@ -463,6 +456,7 @@ const SdDeactiveUsersList = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BiHomeAlt } from "react-icons/bi";
 import styled from "styled-components";
-import { Dropdown, DropdownButton } from "react-bootstrap";
+import { Dropdown, DropdownButton, Spinner } from "react-bootstrap";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,8 +29,8 @@ const SdAllCommissionHistory = () => {
     setLoading(true); // Start loading
     try {
       const response = await axios.get(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getAllCommission/${userId}`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getAllCommission/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getAllCommission/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getAllCommission/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -83,13 +83,18 @@ const SdAllCommissionHistory = () => {
   console.log(formData);
 
   const filteredData = formData?.filter((row) => {
+    const trimmedSearchQuery = searchQuery?.trim().toLowerCase(); // Trim whitespace from search query
+    // const trimmedKeyword = keyword?.trim().toLowerCase(); // Trim whitespace from keyword
+
     const matchesSearch =
-      row.applicant_name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
-      row.applicant_number
+      row.order_id
         ?.toLowerCase()
-        ?.includes(searchQuery?.toLowerCase()) ||
-      row.transaction_id?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
-      row.order_id?.toLowerCase()?.includes(searchQuery?.toLowerCase());
+        .replace(/\s+/g, "")
+        .includes(trimmedSearchQuery.replace(/\s+/g, "")) ||
+      row.transaction_id
+        ?.toLowerCase()
+        .replace(/\s+/g, "")
+        .includes(trimmedSearchQuery.replace(/\s+/g, ""));
     const matchesStatus =
       selectedStatus === "All" ||
       row.status?.toLowerCase() === selectedStatus?.toLowerCase();
@@ -141,7 +146,13 @@ const SdAllCommissionHistory = () => {
     setCurrentPage(selected);
   };
 
-  const displayData = paginateData();
+  // const displayData = paginateData();
+
+  const displayData = paginateData().map((row) => ({
+    ...row,
+    order_id: row.order_id?.replace(/\s+/g, ""), // Removes all spaces
+    transaction_id: row.transaction_id?.replace(/\s+/g, ""),
+  }));
 
   return (
     <>
@@ -188,7 +199,11 @@ const SdAllCommissionHistory = () => {
                               // placeholder="Search by Name, Mobile, or Order ID"
                               placeholder="Search by  Order ID"
                               value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
+                              // onChange={(e) => setSearchQuery(e.target.value)}
+                              onChange={(e) => (
+                                setSearchQuery(e.target.value),
+                                setCurrentPage(0)
+                              )}
                             />
                           </div>
 
@@ -201,7 +216,9 @@ const SdAllCommissionHistory = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {setFromDate(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -213,7 +230,9 @@ const SdAllCommissionHistory = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => {setToDate(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             />
                           </div>
                           {/* <div className="col-12 col-md-4 col-lg-3 d-flex align-items-end">
@@ -265,6 +284,15 @@ const SdAllCommissionHistory = () => {
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div className="table-responsive">
+                          {loading ? (
+                                  <div className="d-flex justify-content-center">
+                                    <Spinner animation="border" role="status">
+                                      <span className="visually-hidden ">
+                                        Loading...
+                                      </span>
+                                    </Spinner>
+                                  </div>
+                                ) :
                             <table className="table table-striped">
                               <thead className="table-dark">
                                 <tr>
@@ -275,7 +303,7 @@ const SdAllCommissionHistory = () => {
                                   <th scope="col">Amount</th>
                                   {/* <th scope="col">White Label ID</th> */}
                                   {/* <th scope="col">Super Distributor ID</th> */}
-                                  <th scope="col">Super Distributor ID</th>
+                                  {/* <th scope="col">Super Distributor ID</th> */}
                                   {/* <th scope="col">Retailer ID</th> */}
                                   {/* <th scope="col">White Label Commission</th> */}
                                   <th scope="col">White Label Commission</th>
@@ -288,9 +316,7 @@ const SdAllCommissionHistory = () => {
                                 </tr>
                               </thead>
                               <tbody>
-                                {loading ? (
-                                  <p>Loading...</p>
-                                ) : displayData.length > 0 ? (
+                               {   displayData.length > 0 ? (
                                   displayData.map((item, index) => (
                                     <tr key={index}>
                                       <td>
@@ -304,7 +330,7 @@ const SdAllCommissionHistory = () => {
                                       <td>{item.amount}</td>
                                       {/* <td>{item.whiteLabel_id}</td> */}
                                       {/* <td>{item.super_Distributor_id}</td> */}
-                                      <td>{item.super_Distributor_id}</td>
+                                      {/* <td>{item.super_Distributor_id}</td> */}
                                       {/* <td>{item.retailer_id}</td> */}
                                       {/* <td>{item.whiteLabel_Commission}</td> */}
                                       <td>{item.whiteLabel_Commission}</td>
@@ -328,6 +354,7 @@ const SdAllCommissionHistory = () => {
                                 )}
                               </tbody>
                             </table>
+}
                           </div>
                           <PaginationContainer>
                             <ReactPaginate
@@ -340,6 +367,7 @@ const SdAllCommissionHistory = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

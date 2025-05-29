@@ -74,8 +74,8 @@ const SdWalletToWalletTransfer = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getActiveUsers/${userId}`,
+        // "https://2kadam.co.in/api/auth/superAdmin/getAllUsers",
+        `https://2kadam.co.in/api/auth/superDistributor/getActiveUsers/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -112,8 +112,8 @@ const SdWalletToWalletTransfer = () => {
     // setLoading(true);
     try {
       const { data } = await axios.get(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getWalletBalance/${formData.userId}`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletBalance/${formData.userId}`,
+        // `https://2kadam.co.in/api/auth/superAdmin/getWalletBalance/${formData.userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getWalletBalance/${formData.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -158,7 +158,7 @@ const SdWalletToWalletTransfer = () => {
   const fetchWalletBalance = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletBalance/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getWalletBalance/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -260,7 +260,7 @@ const SdWalletToWalletTransfer = () => {
       setButtonLoading(true);
 
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/walletToWalletTransfer`,
+        `https://2kadam.co.in/api/auth/superDistributor/walletToWalletTransfer`,
         updatedFormData,
         {
           headers: {
@@ -341,8 +341,14 @@ const SdWalletToWalletTransfer = () => {
     try {
       const response = await axios.post(
         // http://localhost:7777/api/auth/log-reg/verify-pin,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: userId || "", pin: pin.join("") }
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
+        { user_id: userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {

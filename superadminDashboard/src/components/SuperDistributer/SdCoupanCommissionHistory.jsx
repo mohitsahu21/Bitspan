@@ -6,6 +6,7 @@ import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import { use } from "react";
 
 const SdCoupanCommissionHistory = () => {
   const [formData, setFormData] = useState([]);
@@ -25,7 +26,7 @@ const SdCoupanCommissionHistory = () => {
     setLoading(true); // Start loading
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getCoupanHistory/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getCoupanHistory/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -124,6 +125,10 @@ const SdCoupanCommissionHistory = () => {
     return matchesKeyword && matchesDate && matchesSearch && matchesStatus;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [searchQuery, fromDate, toDate]);
+
   const totalPages = Math.ceil(filteredData.length / complaintsPerPage);
 
   const paginateData = () => {
@@ -178,12 +183,15 @@ const SdCoupanCommissionHistory = () => {
                               Search
                             </label>
                             <input
-                              type="text"
+                              type="search"
                               className="form-control responsive-input"
                               // placeholder="Search by Name, Mobile, or Order ID"
                               placeholder="Search by  Order ID"
                               value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
+                              onChange={(e) => (
+                                setSearchQuery(e.target.value),
+                                setCurrentPage(0)
+                              )}
                             />
                           </div>
 
@@ -196,7 +204,9 @@ const SdCoupanCommissionHistory = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => (
+                                setFromDate(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -208,7 +218,9 @@ const SdCoupanCommissionHistory = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => (
+                                setToDate(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
                           {/* <div className="col-12 col-md-4 col-lg-3 d-flex align-items-end">
@@ -264,7 +276,7 @@ const SdCoupanCommissionHistory = () => {
                               <thead className="table-dark">
                                 <tr>
                                   <th scope="col">Sr. No</th>
-                                  <th scope="col">ID</th>
+                                  {/* <th scope="col">ID</th> */}
                                   <th scope="col">Order ID</th>
                                   <th scope="col">Coupon Quantity</th>
                                   <th scope="col">Coupon Price</th>
@@ -295,7 +307,7 @@ const SdCoupanCommissionHistory = () => {
                                           index +
                                           1}
                                       </td>
-                                      <td>{item.id}</td>
+                                      {/* <td>{item.id}</td> */}
                                       <td>{item.order_id}</td>
                                       <td>{item.coupon_Quantity}</td>
                                       <td>{item.coupon_Price}</td>
@@ -332,6 +344,7 @@ const SdCoupanCommissionHistory = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

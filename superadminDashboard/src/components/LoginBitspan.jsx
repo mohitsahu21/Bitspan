@@ -6,243 +6,6 @@ import { useDispatch } from "react-redux";
 import { setUser, fetchWalletBalance } from "../redux/user/userSlice";
 import axios from "axios";
 
-// const LoginBitspan = () => {
-//   const dispatch = useDispatch();
-//   const [userName, setUserName] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [otp, setOtp] = useState("");
-//   const [userRole, setUserRole] = useState("");
-//   const [isOtpSent, setIsOtpSent] = useState(false);
-//   const [loading, setLoading] = useState(false);
-//   const navigate = useNavigate();
-
-//   const handleLogin = async () => {
-//     try {
-//       const response = await axios.post(
-//         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/loginWithOTP`,
-//         {
-//           UserId: userName,
-//           password,
-//         }
-//       );
-
-//       console.log("Full Response:", response);
-//       console.log("Response Data:", response.data);
-//       console.log("Response User:", response.data.user);
-
-//       if (response?.data?.status === "Success") {
-//         if (response.data.message === "OTP sent to your registered email") {
-//           setIsOtpSent(true);
-//         } else if (response.data.message === "Login successful") {
-//           dispatch(setUser(user));
-//         }
-//         // const user = response?.data?.user;
-
-//         // console.log(user);
-
-//         // if (user && user.role) {
-//         //   console.log("User role:", role);
-//         //   const { role } = user;
-
-//         //   setUserRole(role);
-
-//         //   if (role === "Retailer" || role === "SuperAdmin") {
-//         //     Swal.fire({
-//         //       position: "center",
-//         //       icon: "success",
-//         //       title: "OTP sent to your registered number",
-//         //       showConfirmButton: false,
-//         //       timer: 1500,
-//         //     });
-//         //     setIsOtpSent(true);
-//         //   } else {
-//         //     dispatch(setUser(user));
-//         //     Swal.fire({
-//         //       position: "center",
-//         //       icon: "success",
-//         //       title: "Login Successful",
-//         //       showConfirmButton: false,
-//         //       timer: 1500,
-//         //     });
-//         //     navigate("/dashboard");
-//         //   }
-//         // } else {
-//         //   Swal.fire({
-//         //     icon: "error",
-//         //     title: "Login Failed",
-//         //     text: "User role information is missing",
-//         //   });
-//         // }
-//       } else {
-//         Swal.fire({
-//           icon: "error",
-//           title: "Oops...",
-//           text: response?.data?.message || "Login failed",
-//         });
-//       }
-//     } catch (error) {
-//       console.error("Login error:", error.message);
-//       Swal.fire({
-//         icon: "error",
-//         title: "Login Failed",
-//         text: "Something went wrong!",
-//       });
-//     }
-//   };
-
-//   const handleOtpVerification = async () => {
-//     if (!otp) {
-//       Swal.fire({
-//         icon: "warning",
-//         title: "Missing OTP",
-//         text: "Please enter the OTP sent to your number",
-//       });
-//       return;
-//     }
-
-//     setLoading(true); // Set loading to true before API call
-//     try {
-//       const response = await axios.post(
-//         `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verifyOTP`,
-//         {
-//           UserId: userName,
-//           otp,
-//         }
-//       );
-
-//       if (response.data.status === "Success") {
-//         dispatch(setUser(response.data.user));
-//         Swal.fire({
-//           position: "center",
-//           icon: "success",
-//           title: "Login Successful",
-//           showConfirmButton: false,
-//           timer: 1500,
-//         });
-//         navigate("/dashboard");
-//       } else {
-//         Swal.fire({
-//           icon: "error",
-//           title: "Oops...",
-//           text: response.data.message,
-//         });
-//       }
-//     } catch (error) {
-//       console.error("OTP Verification error:", error);
-//       Swal.fire({
-//         icon: "error",
-//         title: "OTP Verification Failed",
-//         text: "Invalid OTP or something went wrong!",
-//       });
-//     } finally {
-//       setLoading(false); // Set loading to false after API call
-//     }
-//   };
-
-//   return (
-//     <>
-//       <Wrapper>
-//         <div className="container">
-//           <div className="row justify-content-center">
-//             <div className="col-md-8 col-lg-8 col-xl-4">
-//               <div className="card">
-//                 <div className="p-4">
-//                   <div className="text-center">
-//                     <h3>Bitspan.com</h3>
-//                     <h4 className="text-muted mt-2 text-center fs-5">
-//                       Welcome Back!
-//                     </h4>
-//                     <p className="mb-5 text-center">
-//                       Sign in to continue to Bitspan.
-//                     </p>
-//                   </div>
-//                   <form>
-//                     {!isOtpSent ? (
-//                       <>
-//                         <div data-mdb-input-init className="form-outline mb-4">
-//                           <label className="form-label" htmlFor="form2Example1">
-//                             User Name
-//                           </label>
-//                           <input
-//                             type="email"
-//                             id="form2Example1"
-//                             className="form-control"
-//                             value={userName}
-//                             onChange={(e) => setUserName(e.target.value)}
-//                           />
-//                         </div>
-
-//                         <div data-mdb-input-init className="form-outline mb-4">
-//                           <label className="form-label" htmlFor="form2Example2">
-//                             Password
-//                           </label>
-//                           <input
-//                             type="password"
-//                             id="form2Example2"
-//                             className="form-control"
-//                             value={password}
-//                             onChange={(e) => setPassword(e.target.value)}
-//                           />
-//                         </div>
-
-//                         <div className="row mb-4">
-//                           <div className="col">
-//                             <a href="#!">Forgot password?</a>
-//                           </div>
-//                         </div>
-
-//                         <div className="d-grid gap-2">
-//                           <button
-//                             data-mdb-ripple-init
-//                             type="button"
-//                             className="btn btn-primary btn-block mb-4"
-//                             onClick={handleLogin}
-//                             disabled={loading} // Disable button while loading
-//                           >
-//                             {loading ? "Signing in..." : "Sign in"}
-//                           </button>
-//                         </div>
-//                       </>
-//                     ) : (
-//                       <>
-//                         <div className="form-outline mb-4">
-//                           <label className="form-label" htmlFor="otpInput">
-//                             Enter OTP
-//                           </label>
-//                           <input
-//                             type="text"
-//                             id="otpInput"
-//                             className="form-control"
-//                             value={otp}
-//                             onChange={(e) => setOtp(e.target.value)}
-//                           />
-//                         </div>
-
-//                         <div className="d-grid gap-2">
-//                           <button
-//                             type="button"
-//                             className="btn btn-primary btn-block mb-4"
-//                             onClick={handleOtpVerification}
-//                             disabled={loading} // Disable button while loading
-//                           >
-//                             {loading ? "Verifying..." : "Verify OTP"}
-//                           </button>
-//                         </div>
-//                       </>
-//                     )}
-//                   </form>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </Wrapper>
-//     </>
-//   );
-// };
-
-// export default LoginBitspan;
-
 const LoginBitspan = () => {
   const dispatch = useDispatch();
   const [userName, setUserName] = useState("");
@@ -257,7 +20,7 @@ const LoginBitspan = () => {
   useEffect(() => {
     window.history.pushState(null, "", window.location.href);
     window.addEventListener("popstate", () => navigate("/"));
-  
+
     return () => {
       window.removeEventListener("popstate", () => navigate("/"));
     };
@@ -268,7 +31,7 @@ const LoginBitspan = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/loginWithOTP`,
+        `https://2kadam.co.in/api/auth/log-reg/loginWithOTP`,
         {
           UserId: userName,
           password,
@@ -322,26 +85,24 @@ const LoginBitspan = () => {
           //         text: "Please Make Payment First Or Contact Admin if Payment Done",
           //       });
           //       // dispatch(clearUser());
-        
-          //       navigate("/payment" , { state: { user: response.data.user } });
-                  // Navigate to the success page and pass the response data
-                  Swal.fire({
-                    title: "User Payment is Pending",
-                    text: "Please Make Payment First Or Contact Admin if Payment Done",
-                    showDenyButton: false,
-                    showCancelButton: true,
-                    confirmButtonText: "Pay Now",
-                   
-                  }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
-                    if (result.isConfirmed) {
-                      // Swal.fire("Saved!", "", "success");
-                      navigate("/payment" , { state: { user: response.data.user } });
-                    } else if (result.isDenied) {
-                      Swal.fire("Changes are not saved", "", "info");
-                    }
-                  });
 
+          //       navigate("/payment" , { state: { user: response.data.user } });
+          // Navigate to the success page and pass the response data
+          Swal.fire({
+            title: "User Payment is Pending",
+            text: "Please Make Payment First Or Contact Admin if Payment Done",
+            showDenyButton: false,
+            showCancelButton: true,
+            confirmButtonText: "Pay Now",
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              // Swal.fire("Saved!", "", "success");
+              navigate("/payment", { state: { user: response.data.user } });
+            } else if (result.isDenied) {
+              Swal.fire("Changes are not saved", "", "info");
+            }
+          });
         } else if (response.data.message === "User KYC is Pending") {
           console.error("Login error:", response.data.message);
           const user = response.data.user;
@@ -363,11 +124,24 @@ const LoginBitspan = () => {
       }
     } catch (error) {
       console.error("Login error:", error.message);
-      Swal.fire({
-        icon: "error",
-        title: "Login Failed",
-        text: "Something went wrong!",
-      });
+      console.log(error);
+      if (
+        error?.response?.data?.status === "Failure" &&
+        (error?.response?.data?.message === "User not found" ||
+          error?.response?.data?.message === "Invalid password")
+      ) {
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: "The User Id or Password you entered is incorrect.",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: "Something went wrong!",
+        });
+      }
     } finally {
       setLoading(false); // Set loading to false after the API call
     }
@@ -427,7 +201,7 @@ const LoginBitspan = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verifyOTP`,
+        `https://2kadam.co.in/api/auth/log-reg/verifyOTP`,
         { UserId: userName, otp: otpValue }
       );
 
@@ -494,7 +268,7 @@ const LoginBitspan = () => {
   //   setLoading(true); // Set loading to true before the API call
   //   try {
   //     const response = await axios.post(
-  //       `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verifyOTP`,
+  //       `https://2kadam.co.in/api/auth/log-reg/verifyOTP`,
   //       {
   //         UserId: userName,
   //         otp,
@@ -530,13 +304,20 @@ const LoginBitspan = () => {
   //   }
   // };
 
+  useEffect(() => {
+    if (isOtpSent && inputsRef.current[0]) {
+      inputsRef.current[0].focus();
+    }
+  }, [isOtpSent]);
+
   return (
     <Wrapper>
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-8 col-lg-8 col-xl-4">
             <div className="card">
-              <div className="p-4">
+              {/* <div className="p-4"> */}
+              <div className="space">
                 {/* <div className="text-center">
                   <h3>Bitspan.com</h3>
                   <h4 className="text-muted mt-2 text-center fs-5">
@@ -549,11 +330,9 @@ const LoginBitspan = () => {
                 <div className="text-center">
                   <h3>Welcome Back!</h3>
                   <h4 className="text-muted mt-2 text-center fs-5">
-                  Sign in to continue to Dashboard
+                    Sign in to continue to Dashboard
                   </h4>
-                  <p className="mb-5 text-center">
-                   
-                  </p>
+                  <p className="mb-5 text-center"></p>
                 </div>
                 {/* <form onSubmit={(e) => e.preventDefault()}> */}
                 <form onSubmit={handleLogin}>
@@ -684,39 +463,82 @@ const LoginBitspan = () => {
 export default LoginBitspan;
 
 const Wrapper = styled.div`
-  background-color: black;
+  background: linear-gradient(135deg, #0bb197, #00665c);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color: black;
   bottom: 0;
   height: 100%;
   left: 0;
-  /* opacity: 0.; */
   position: absolute;
   right: 0;
   top: 0;
-  width: 100%;
+  width: 100%; */
   .card {
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+    /* box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
     margin-bottom: 1.5rem;
     background-color: #ffffff;
-    margin-top: 8rem;
+    margin-top: 8rem; */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    animation: slideIn 0.6s ease-out;
+    border-radius: 16px;
+    padding: 2rem;
+    background: #fff;
+    width: 100%;
+  }
+  .space {
+    padding: 1.5rem;
+    @media screen and (max-width: 768px) {
+      padding: 0rem;
+    }
   }
   .p-4 {
     padding: 1.5rem !important;
   }
   h3 {
     color: #0bb197;
+    font-weight: 700;
+  }
+  h4 {
+    font-weight: 500;
+    color: #6c757d;
+  }
+  label {
+    font-weight: 500;
+  }
+  .form-control {
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+  }
+  .form-control:focus {
+    box-shadow: 0 0 0 0.15rem rgba(11, 177, 151, 0.25);
+    border-color: #0bb197;
   }
   button {
     background-color: #0bb197;
     color: #ffffff;
     border: #0bb197;
+    transition: background-color 0.5s ease;
     :hover {
       background-color: #92d6cc;
+    }
+  }
+  @keyframes slideIn {
+    from {
+      transform: translateY(40px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
     }
   }
   .otp-inputs {
     display: flex;
     justify-content: space-between;
-    gap: 8px;
+    gap: 3px;
   }
 
   .otp-input {
@@ -726,6 +548,11 @@ const Wrapper = styled.div`
     text-align: center;
     border: 1px solid #ccc;
     border-radius: 5px;
+    transition: border-color 0.3s ease;
+  }
+  .otp-input:focus {
+    border-color: #0bb197;
+    outline: none;
   }
 `;
 

@@ -11,6 +11,8 @@ import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
 const SdBankAccountSetup = () => {
+  const [loading, setLoading] = useState(false);
+  const [delLoading, delSetLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
@@ -47,8 +49,8 @@ const SdBankAccountSetup = () => {
   const fetchBankAccounts = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getBankDetails/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getBankDetails/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getBankDetails/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getBankDetails/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -111,10 +113,12 @@ const SdBankAccountSetup = () => {
       return; // Prevent form submission
     }
 
+    setLoading(true);
+
     // Proceed with the form submission if validation is passed
     axios
       .post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/addBankDetails/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/addBankDetails/${userId}`,
         {
           userId: userId, // Ensure userId is passed to the backend
           bankholder_name: bankData.holderName,
@@ -170,6 +174,9 @@ const SdBankAccountSetup = () => {
             text: "An error occurred while adding the bank account. Please try again later.",
           });
         }
+      })
+      .finally(() => {
+        setLoading(false); // ✅ Stop loading after API call completes
       });
   };
 
@@ -185,9 +192,10 @@ const SdBankAccountSetup = () => {
     });
 
     if (confirm.isConfirmed) {
+      delSetLoading(true);
       try {
         const response = await axios.delete(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/deleteBankDetails/${bid}`,
+          `https://2kadam.co.in/api/auth/superDistributor/deleteBankDetails/${bid}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -234,6 +242,8 @@ const SdBankAccountSetup = () => {
             confirmButtonText: "Okay",
           });
         }
+      }finally{
+        delSetLoading(false); // ✅ Stop loading after API call completes
       }
     }
   };
@@ -350,8 +360,19 @@ const SdBankAccountSetup = () => {
 
                   <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     <div className="text-start mb-3">
-                      <button className="btn p-2" onClick={handleSubmit}>
+                      {/* <button
+                        className="btn btn-primary p-2"
+                        onClick={handleSubmit}
+                      >
                         Submit
+                      </button> */}
+
+                      <button
+                        className="btn btn-primary p-2"
+                        onClick={handleSubmit}
+                        disabled={loading}
+                      >
+                        {loading ? "Processing..." : "Submit"}
                       </button>
                     </div>
                   </div>
@@ -414,6 +435,7 @@ const SdBankAccountSetup = () => {
                                     className="btn btn-danger btn-sm"
                                     style={{ marginLeft: "10px" }}
                                     onClick={() => handleDelete(account.bid)}
+                                    disabled={delLoading}
                                   >
                                     <MdDeleteForever />
                                   </button>

@@ -32,7 +32,7 @@ const SACommisionSummary = () => {
       setLoading(true);
       try {
         const { data } = await axios.get(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getCommissionEntry",
+          "https://2kadam.co.in/api/auth/superAdmin/getCommissionEntry",
           {
     headers: {
       "Content-Type": "application/json",
@@ -142,18 +142,26 @@ const SACommisionSummary = () => {
                                                   <div className="col-12 col-md-4 col-lg-3">
                                                           <label for="fromDate" className="form-label">From</label>
                                                           <input id="fromDate" className="form-control" type="date"  value={fromDate}
-                                onChange={(e) => setFromDate(e.target.value)}/>
+                                onChange={(e) => {
+                                  setFromDate(e.target.value)
+                                  setCurrentPage(0);
+                                }}/>
                                                       </div>
                                                       <div className="col-12 col-md-4 col-lg-3">
                                                           <label for="toDate" className="form-label">To</label>
                                                           <input id="toDate" className="form-control " type="date" value={toDate}
-                                onChange={(e) => setToDate(e.target.value)}/>
+                                onChange={(e) => {setToDate(e.target.value)
+                                  setCurrentPage(0);
+                                }}/>
                                                       </div>
                                                       <div className="col-12 col-md-4 col-lg-3">
                                                           <label for="toDate" className="form-label">Select Type</label>
                                                           <select className="form-select" aria-label="Default select example"
                                                            value={rechargeType}
-                                                           onChange={(e) => setRechargeType(e.target.value)}>
+                                                           onChange={(e) => {
+                                                            setRechargeType(e.target.value)
+                                                            setCurrentPage(0);
+                                                            }}>
                                                                <option selected>---Select---</option>
                                                               <option value="Prepaid">Prepaid</option>
                                                               <option value="Postpaid">Postpaid</option>
@@ -162,7 +170,18 @@ const SACommisionSummary = () => {
                                                               <option value="Electricity">Electricity</option>
                                                               <option value="Insurance">Insurance</option>
                                                               <option value="Landline">Landline</option>
+                                                              <option value="PAN">PAN</option>
+                                                              <option value="NSDL PAN">NSDL PAN</option>
                                                               <option value="PAN Coupon">PAN Coupon</option>
+                                                              <option value="New DTH Connection">New DTH Connection</option>
+                                                              <option value="Edistrict">Edistrict</option>
+                                                              <option value="Verify Edistrict">Verify Edistrict</option>
+                                                              <option value="Birth Certificate">Birth Certificate</option>
+                                                              <option value="Death Certificate">Death Certificate</option>
+                                                              <option value="Sambal">Sambal</option>
+                                                              <option value="Pan Find">Pan Find</option>
+                                                              <option value="GST Registration">GST Registration</option>
+                                                              <option value="Udyog Aadhar">Udyog Aadhar</option>
   
   
                                                           </select>
@@ -178,7 +197,11 @@ const SACommisionSummary = () => {
                                                            type="search"
                                                            placeholder="Enter Order Id/Txn ID/User Id"
                                                            value={keyword}
-                                onChange={(e) => setKeyword(e.target.value)}
+                                // onChange={(e) => setKeyword(e.target.value)}
+                                onChange={(e) => {
+                                  setKeyword(e.target.value)
+                                  setCurrentPage(0);
+                                }}
                                                            />
                                                       </div>
                                                       
@@ -274,6 +297,7 @@ const SACommisionSummary = () => {
                                                             onPageChange={handlePageChange}
                                                             containerClassName={"pagination"}
                                                             activeClassName={"active"}
+                                                            forcePage={currentPage}
                                                           />
                                                         </PaginationContainer>
                                                     

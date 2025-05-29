@@ -55,8 +55,8 @@ const BuyUserId = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getPackageData/${package_Id}`,
-          // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getPackageData/${package_Id}`,
+          `https://2kadam.co.in/api/auth/whiteLabel/getPackageData/${package_Id}`,
+          // `https://2kadam.co.in/api/auth/superDistributor/getPackageData/${package_Id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -113,8 +113,8 @@ const BuyUserId = () => {
   const fetchWalletBalance = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWalletBalance/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletBalance/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getWalletBalance/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getWalletBalance/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -140,7 +140,8 @@ const BuyUserId = () => {
         dispatch(clearUser()); // Clear user session
         navigate("/"); // Redirect to login page
       } else {
-        alert("Failed to load wallet balance.");
+        // alert("Failed to load wallet balance.");
+        console.log("Failed to load wallet balance.");
       }
     }
   };
@@ -155,7 +156,7 @@ const BuyUserId = () => {
   const fetchNoOfIds = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getRemainingIds/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getRemainingIds/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -240,7 +241,7 @@ const BuyUserId = () => {
 
     console.log(walletBalance);
     if (
-      selectedPaymentMethod === "Offline" &&
+      selectedPaymentMethod === "Wallet" &&
       calculateTotalAmount() > walletBalance
     ) {
       Swal.fire({
@@ -286,10 +287,11 @@ const BuyUserId = () => {
       payment_method: formData.paymentMethod,
     };
 
+    setLoading(true);
     try {
       const response = await axios.post(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/buyId",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/buyId",
+        // "https://2kadam.co.in/api/auth/superDistributor/buyId",
+        "https://2kadam.co.in/api/auth/whiteLabel/buyId",
         payload,
         {
           headers: {
@@ -339,11 +341,11 @@ const BuyUserId = () => {
         Swal.fire({
           icon: "error",
           title: "Error!",
-          text:
-            error.response?.data?.message ||
-            "An error occurred while submitting your request.",
+          text: "An error occurred while submitting your request.",
         });
       }
+    } finally {
+      setLoading(false); // ✅ Stop loading
     }
   };
 
@@ -376,7 +378,7 @@ const BuyUserId = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/upiwf/createOrderToBuyUserId",
+        "https://2kadam.co.in/api/auth/upiwf/createOrderToBuyUserId",
         payload
       );
 
@@ -431,19 +433,26 @@ const BuyUserId = () => {
       <div className="main">
         <div className="container-fluid">
           <div className="row flex-wrap justify-content-lg-end justify-content-center">
+            <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2  d-none ">
+              {/* <Sider /> */}
+            </div>
             <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-10 col-12 mt-5">
               <div className="main shadow-none">
-                <div className="d-flex justify-content-between align-items-center flex-wrap">
-                  <h4>Buy User ID</h4>
-                  <p>
-                    <BiHomeAlt /> &nbsp;/ &nbsp;
-                    <span
-                      className="text-body-secondary"
-                      style={{ fontSize: "13px" }}
-                    >
-                      Buy User ID
-                    </span>
-                  </p>
+                <div className="row shadow-none ">
+                  <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                    <div className="d-flex justify-content-between align-items-center flex-wrap">
+                      <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Buy User ID</h4>
+                      <p className="mx-lg-5">
+                        <BiHomeAlt /> &nbsp;/ &nbsp;
+                        <span
+                          className="text-body-secondary"
+                          style={{ fontSize: "13px" }}
+                        >
+                          Buy User ID
+                        </span>
+                      </p>
+                    </div>
+                  </div>
                 </div>
                 <div className="row justify-content-center pe-4">
                   <div className="col-xxl-9 col-xl-9 col-lg-10 col-md-12 col-sm-12 rounded px-3">
@@ -623,13 +632,13 @@ const BuyUserId = () => {
                           >
                             <option value="">Select Payment Method</option>
                             <option value="Online">Online</option>
-                            <option value="Offline">Wallet</option>
+                            <option value="Wallet">Wallet</option>
                           </select>
                         </div>
 
                         <div className="col-xl-12 text-center mt-4">
                           <button
-                            className="btn p-2"
+                            className="btn btn-primary p-2"
                             type="submit"
                             disabled={loading}
                           >

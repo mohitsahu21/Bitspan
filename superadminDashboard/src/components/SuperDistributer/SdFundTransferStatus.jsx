@@ -7,6 +7,7 @@ import ReactPaginate from "react-paginate";
 import { Dropdown, Modal, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { clearUser } from "../../redux/user/userSlice";
+import { use } from "react";
 
 const SdFundTransferStatus = () => {
   // const [transactions, setTransactions] = useState([]); // Default to an empty array
@@ -29,7 +30,7 @@ const SdFundTransferStatus = () => {
     setLoading(true); // Start loading
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletToWalletTransfer/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getWalletToWalletTransfer/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -102,6 +103,10 @@ const SdFundTransferStatus = () => {
     console.log(matchesKeyword);
     return matchesKeyword && matchesDate && matchesType;
   });
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword, status, fromDate, toDate]);
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
@@ -188,7 +193,9 @@ const SdFundTransferStatus = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={status}
-                              onChange={(e) => setStatus(e.target.value)}
+                              onChange={(e) => (
+                                setStatus(e.target.value), setCurrentPage(0)
+                              )}
                             >
                               <option selected>---Select---</option>
                               <option value="Success">Success</option>
@@ -206,7 +213,9 @@ const SdFundTransferStatus = () => {
                               type="search"
                               placeholder="search By Order Id Or Txn Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => (
+                                setKeyword(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
 
@@ -283,6 +292,7 @@ const SdFundTransferStatus = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

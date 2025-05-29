@@ -26,7 +26,7 @@ const SdPrepaidRechargeHistory = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApiRechargeData/${userID}`,
+        `https://2kadam.co.in/api/auth/retailer/getApiRechargeData/${userID}`,
 
         {
           headers: {
@@ -241,6 +241,7 @@ const SdPrepaidRechargeHistory = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

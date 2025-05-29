@@ -31,7 +31,7 @@ const CoupanForm = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          `https://2kadam.co.in/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
           {
             headers: {
               "Content-Type": "multipart/form-data",
@@ -87,7 +87,8 @@ const CoupanForm = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/buyCoupon`,
+        // `https://2kadam.co.in/api/auth/retailer/buyDSCcoupon`,
+        `http://localhost:7777/api/auth/retailer/buyDSCcoupon`,
         formData,
         {
           headers: {
@@ -161,7 +162,7 @@ const CoupanForm = () => {
       const pinString = Array.isArray(pin) ? pin.join("") : ""; // Ensure pin is an array
 
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser?.userId || "", pin: pinString },
         {
           headers: {
@@ -190,7 +191,7 @@ const CoupanForm = () => {
   //   }
   //   try {
   //     const response = await axios.post(
-  //       `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+  //       `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
   //       { user_id: currentUser.userId || "", pin: pin.join("") },
   //       {
   //         headers: {

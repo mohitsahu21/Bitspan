@@ -183,7 +183,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
       setLoading(true);
 
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${item.user_id}`,
+        `https://2kadam.co.in/api/auth/superAdmin/getUserRelations/${item.user_id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -209,7 +209,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 
         const retailerPromise = axios
           .get(
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
+            `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -225,7 +225,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
         if (distributor) {
           const distributorPromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -242,7 +242,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
         if (superDistributor) {
           const superDistributorPromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -259,7 +259,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
         if (white_lable) {
           const whiteLablePromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -305,8 +305,8 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
         ) {
           const response = await axios
             .put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.retailerFormData,
               {
                 headers: {
@@ -326,8 +326,8 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
         ) {
           const response = await axios
             .put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.distributorFormData,
               {
                 headers: {
@@ -347,8 +347,8 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
         ) {
           const response = await axios
             .put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.superDistributorFormData,
               {
                 headers: {
@@ -368,8 +368,8 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
         ) {
           const response = await axios
             .put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.whiteLableFormData,
               {
                 headers: {
@@ -423,8 +423,8 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
           };
           await axios
             .post(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+              "https://2kadam.co.in/api/auth/superAdmin/addCommissionEntry",
+              // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
               commissionFormData,
               {
                 headers: {
@@ -440,8 +440,8 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 
         await axios
           .put(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approvePanCouponRequest",
-            // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+            "https://2kadam.co.in/api/auth/superAdmin/approvePanCouponRequest",
+            // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
             formData,
             {
               headers: {
@@ -498,8 +498,8 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
   //     try {
   //       setLoading(true);
   //       const response = await axios.put(
-  //         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approvePanCouponRequest",
-  //         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+  //         "https://2kadam.co.in/api/auth/superAdmin/approvePanCouponRequest",
+  //         // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
   //         formData,
 
   // {
@@ -654,7 +654,11 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -704,8 +708,8 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectPanCouponRequest",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/rejectPanCouponRequest",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
 
         {
@@ -860,7 +864,11 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -894,7 +902,7 @@ const SAEPanCouponRequests = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPanCouponRequests",
+        "https://2kadam.co.in/api/auth/superAdmin/getPanCouponRequests",
 
         {
           headers: {
@@ -1020,7 +1028,9 @@ const SAEPanCouponRequests = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {setFromDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -1032,7 +1042,9 @@ const SAEPanCouponRequests = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => {setToDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                         </div>
@@ -1046,7 +1058,10 @@ const SAEPanCouponRequests = () => {
                               type="search"
                               placeholder="Enter User Name/User Id/Mobile/Email Id/Order Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value);
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
 
@@ -1293,6 +1308,7 @@ const SAEPanCouponRequests = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

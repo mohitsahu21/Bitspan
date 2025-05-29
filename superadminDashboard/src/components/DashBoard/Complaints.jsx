@@ -22,10 +22,20 @@ const Complaints = () => {
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState(null);
 
+  const initialFormState = {
+    complainType: "",
+    transactionNo: "",
+    mobileNo: "",
+    remark: "",
+    userID: currentUser.userId,
+  };
+
   const handleChange = (e) => {
+    const { name, value } = e.target;
+    const newValue = name === "mobileNo" ? value.replace(/\D/g, "") : value;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: newValue,
     });
   };
 
@@ -61,6 +71,14 @@ const Complaints = () => {
     setComplainFile(e.target.files[0]);
   };
 
+  const resetForm = () => {
+    setFormData(initialFormState);
+    setComplainFile(null);
+    // Reset file input
+    const fileInput = document.getElementById("formFileLg");
+    if (fileInput) fileInput.value = "";
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -78,7 +96,7 @@ const Complaints = () => {
     try {
       const res = await axios.post(
         // `http://localhost:7777/api/auth/retailer/complain-query`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/complain-query`,
+        `https://2kadam.co.in/api/auth/retailer/complain-query`,
         data,
         {
           headers: {
@@ -95,6 +113,8 @@ const Complaints = () => {
         icon: "success",
         title: "Complaint Registered Successfully!",
         text: "Your complaint has been recorded. We will get back to you shortly.",
+      }).then(() => {
+        resetForm(); // Reset form after successful submission
       });
     } catch (err) {
       console.error("Error submitting the form", err);
@@ -186,7 +206,7 @@ const Complaints = () => {
                               onChange={handleChange}
                               // required
                             />
-                            <label for="floatingInputGroup1">
+                            <label for="floatingInputGroup1" className="res">
                               Transaction Number
                             </label>
                           </div>
@@ -207,6 +227,9 @@ const Complaints = () => {
                               value={formData.mobileNo}
                               onChange={handleChange}
                               required
+                              autoComplete="off"
+                              maxLength={10}
+                              minLength={10}
                             />
                             <label for="floatingInputGroup1">
                               Mobile Number
@@ -293,6 +316,12 @@ const Wrapper = styled.div`
   @media (min-width: 1500px) {
     .formdata {
       padding-left: 13rem;
+    }
+  }
+    .res{
+    @media screen and (max-width: 375px) {
+      white-space: normal;
+      padding: 5px 10px;
     }
   }
 `;

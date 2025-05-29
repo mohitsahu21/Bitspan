@@ -48,8 +48,8 @@ const WLOfflineDthConnection = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getOfflineDTHConnection/${userId}`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getOfflineDTHConnection/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getOfflineDTHConnection/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getOfflineDTHConnection/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -57,15 +57,18 @@ const WLOfflineDthConnection = () => {
           },
         }
       );
-      const applicationData = data?.data?.filter(
-        (item) => item.status !== "Under Process"
-      );
-      setUsers(applicationData);
+      // const applicationData = data?.data?.filter(
+      //   (item) => item.status !== "Under Process"
+      // );
+      // setUsers(applicationData);
 
-      const filterData = data?.data?.filter(
-        (item) => item.status === "Under Process"
-      );
-      setUnderProcessForms(filterData);
+      // const filterData = data?.data?.filter(
+      //   (item) => item.status === "Under Process"
+      // );
+      // setUnderProcessForms(filterData);
+
+      setUsers(data?.data || []);
+
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -92,14 +95,8 @@ const WLOfflineDthConnection = () => {
 
   const filteredItems = users.filter((row) => {
     const matchesKeyword =
-      (row?.first_name &&
-        row.first_name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.number &&
-        row.number.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.UserName &&
-        row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.user_id &&
-        row.user_id.toLowerCase().includes(keyword.trim().toLowerCase()));
+      (row?.orderid &&
+        row.orderid.toLowerCase().includes(keyword.trim().toLowerCase())) 
 
     const matchesOperator =
       !OperatorName ||
@@ -132,39 +129,39 @@ const WLOfflineDthConnection = () => {
 
   console.log(users);
 
-  const filteredUnderProcessItems = underProcessForms.filter((row) => {
-    const matchesKeyword =
-      (row?.first_name &&
-        row.first_name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.number &&
-        row.number.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.UserName &&
-        row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.orderid &&
-        row.orderid.toLowerCase().includes(keyword.trim().toLowerCase()));
-    row?.user_id &&
-      row.user_id.toLowerCase().includes(keyword.trim().toLowerCase());
+  // const filteredUnderProcessItems = underProcessForms.filter((row) => {
+  //   const matchesKeyword =
+  //     (row?.first_name &&
+  //       row.first_name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+  //     (row?.number &&
+  //       row.number.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+  //     (row?.UserName &&
+  //       row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+  //     (row?.orderid &&
+  //       row.orderid.toLowerCase().includes(keyword.trim().toLowerCase()));
+  //   row?.user_id &&
+  //     row.user_id.toLowerCase().includes(keyword.trim().toLowerCase());
 
-    return matchesKeyword;
-  });
+  //   return matchesKeyword;
+  // });
 
-  const totalUnderProcessPages = Math.ceil(
-    filteredUnderProcessItems.length / complaintsPerPage
-  );
+  // const totalUnderProcessPages = Math.ceil(
+  //   filteredUnderProcessItems.length / complaintsPerPage
+  // );
 
-  const filterUnderProcessPagination = () => {
-    const startIndex = currentPage * complaintsPerPage;
-    const endIndex = startIndex + complaintsPerPage;
-    return filteredUnderProcessItems?.slice(startIndex, endIndex);
-  };
+  // const filterUnderProcessPagination = () => {
+  //   const startIndex = currentPage * complaintsPerPage;
+  //   const endIndex = startIndex + complaintsPerPage;
+  //   return filteredUnderProcessItems?.slice(startIndex, endIndex);
+  // };
 
-  const handleUnderProcessPageChange = ({ selected }) => {
-    setCurrentPage(selected);
-  };
+  // const handleUnderProcessPageChange = ({ selected }) => {
+  //   setCurrentPage(selected);
+  // };
 
-  const showUnderProcessData = filterUnderProcessPagination();
+  // const showUnderProcessData = filterUnderProcessPagination();
 
-  console.log(showUnderProcessData);
+  // console.log(showUnderProcessData);
 
   return (
     <>
@@ -187,7 +184,7 @@ const WLOfflineDthConnection = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Offline DTH Connection history
+                          Provider 2 DTH Connection
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -197,7 +194,7 @@ const WLOfflineDthConnection = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Offline DTH Connection history
+                            Provider 2 DTH Connection
                           </span>{" "}
                         </p>
                       </div>
@@ -206,13 +203,8 @@ const WLOfflineDthConnection = () => {
 
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
-                      <Tabs
-                        defaultActiveKey="Application"
-                        id="uncontrolled-tab-example"
-                        className="mb-3"
-                        variant="tabs"
-                      >
-                        <Tab eventKey="Application" title="Application">
+                    
+                        
                           <div className="row d-flex flex-column g-4">
                             <div className="d-flex flex-column flex-lg-row gap-3">
                               {/* <div className="col-12 col-md-4 col-lg-3">
@@ -233,8 +225,9 @@ const WLOfflineDthConnection = () => {
                                   aria-label="Default select example"
                                   value={OperatorName}
                                   onChange={(e) =>
-                                    setOperatorName(e.target.value)
-                                  }
+                                    {setOperatorName(e.target.value)
+                                    setCurrentPage(0)
+                                    }}
                                 >
                                   <option selected>
                                     ---Select Operator---
@@ -254,7 +247,8 @@ const WLOfflineDthConnection = () => {
                                   aria-label="Default select example"
                                   value={formStatus}
                                   onChange={(e) =>
-                                    setFormStatus(e.target.value)
+                                   { setFormStatus(e.target.value)
+                                    setCurrentPage(0)}
                                   }
                                 >
                                   <option selected>
@@ -262,7 +256,9 @@ const WLOfflineDthConnection = () => {
                                   </option>
                                   <option value="Pending">Pending</option>
                                   <option value="Success">Success</option>
-                                  <option value="Mark Edit">Mark Edit</option>
+                                  <option value="Under Process">
+                                    Under Process
+                                  </option>
                                   <option value="Reject">Reject</option>
                                 </select>
                               </div>
@@ -274,9 +270,11 @@ const WLOfflineDthConnection = () => {
                                 id="fromDate"
                                 className="form-control"
                                 type="search"
-                                placeholder="Enter Applicant Name/Order Id/User Name"
+                                placeholder="Search by Order Id"
                                 value={keyword}
-                                onChange={(e) => setKeyword(e.target.value)}
+                                onChange={(e) => {setKeyword(e.target.value)
+                                setCurrentPage(0)
+                                }}
                               />
                             </div>
 
@@ -431,12 +429,12 @@ const WLOfflineDthConnection = () => {
                                   onPageChange={handlePageChange}
                                   containerClassName={"pagination"}
                                   activeClassName={"active"}
+                                  forcePage={currentPage}
                                 />
                               </PaginationContainer>
                             </div>
                           </div>
-                        </Tab>
-                      </Tabs>
+                      
                     </div>
                   </div>
                 </div>

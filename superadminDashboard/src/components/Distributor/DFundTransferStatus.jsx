@@ -26,7 +26,7 @@ const DFundTransferStatus = () => {
     setLoading(true); // Start loading
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getWalletToWalletTransfer/${userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/getWalletToWalletTransfer/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -99,6 +99,10 @@ const DFundTransferStatus = () => {
     console.log(matchesKeyword);
     return matchesKeyword && matchesDate && matchesType;
   });
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword, status, fromDate, toDate]);
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
@@ -203,7 +207,9 @@ const DFundTransferStatus = () => {
                               type="search"
                               placeholder="search By Order Id Or Txn Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => (
+                                setKeyword(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
 
@@ -280,6 +286,7 @@ const DFundTransferStatus = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

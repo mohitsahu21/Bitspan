@@ -128,7 +128,7 @@ const Certificate = ({ user, name, address, date, id }) => {
     const fetchUserRelation = async () => {
       try {
         const resposne = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${currentUser.userId}`,
+          `https://2kadam.co.in/api/auth/superAdmin/getUserRelations/${currentUser.userId}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -142,14 +142,14 @@ const Certificate = ({ user, name, address, date, id }) => {
         const { superAdmin, white_lable } = userData;
         if (white_lable) {
           const whiteLabelResponse = await axios.get(
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getWhiteLableData/${white_lable}`
+            `https://2kadam.co.in/api/auth/retailer/getWhiteLableData/${white_lable}`
           );
           setApiData(whiteLabelResponse.data);
           console.log(whiteLabelResponse.data);
         } else if (superAdmin) {
           // Call Super Admin API
           const superAdminResponse = await axios.get(
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getSuperAdminData`
+            `https://2kadam.co.in/api/auth/retailer/getSuperAdminData`
           );
           setApiData(superAdminResponse.data);
           console.log(superAdminResponse.data);
@@ -194,9 +194,23 @@ const Certificate = ({ user, name, address, date, id }) => {
             <p className="para">
               Address: <strong className="strong">{address}</strong>
             </p>
+            {/* <p className="para">
+              Date of Issue:{" "}
+              <strong className="strong">
+                {new Date(currentUser?.CreateAt)?.toISOString()?.split("T")[0]}
+              </strong>
+            </p> */}
+
             <p className="para">
-              Date of Issue: <strong className="strong">{date}</strong>
+              Date of Issue:{" "}
+              <strong className="strong">
+                {currentUser?.CreateAt &&
+                !isNaN(new Date(currentUser.CreateAt).getTime())
+                  ? new Date(currentUser.CreateAt).toISOString().split("T")[0]
+                  : "N/A"}
+              </strong>
             </p>
+
             <p className="para">
               is an authorized as a{" "}
               <strong className="strong">

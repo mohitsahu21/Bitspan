@@ -35,7 +35,7 @@ const DEdistrict = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getEDistrictHistory/${userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/getEDistrictHistory/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -342,6 +342,7 @@ const DEdistrict = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

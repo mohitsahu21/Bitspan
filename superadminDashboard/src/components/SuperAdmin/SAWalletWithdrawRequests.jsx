@@ -44,8 +44,8 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveWalletWithdrawRequests",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/ApproveWalletWithdrawRequests",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -244,8 +244,8 @@ const handlesubmit = async (e) => {
   try {
     setLoading(true);
     const response = await axios.put(
-      "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectWalletWithdrawRequests",
-      // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+      "https://2kadam.co.in/api/auth/superAdmin/rejectWalletWithdrawRequests",
+      // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
       formData,
       {
         headers: {
@@ -423,7 +423,7 @@ const SAWalletWithdrawRequests = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletWithdrawRequests" ,
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingWalletWithdrawRequests" ,
         {
           headers: {
             "Content-Type": "application/json",
@@ -536,12 +536,16 @@ const SAWalletWithdrawRequests = () => {
                                                 <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="fromDate" className="form-label">From</label>
                                                         <input id="fromDate" className="form-control" type="date"  value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}/>
+                              onChange={(e) => {setFromDate(e.target.value)
+                                setCurrentPage(0);
+                              }}/>
                                                     </div>
                                                     <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="toDate" className="form-label">To</label>
                                                         <input id="toDate" className="form-control " type="date" value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}/>
+                              onChange={(e) => {setToDate(e.target.value)
+                                setCurrentPage(0);
+                              }}/>
                                                     </div>
                                                 </div>
 
@@ -554,7 +558,10 @@ const SAWalletWithdrawRequests = () => {
                                                          type="search"
                                                          placeholder="Enter User Name/User Id/Mobile/Email Id/Order Id"
                                                          value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                                                          />
                                                     </div>
                                                     
@@ -808,6 +815,7 @@ const SAWalletWithdrawRequests = () => {
                                                           pageCount={totalPages}
                                                           marginPagesDisplayed={2}
                                                           pageRangeDisplayed={5}
+                                                          forcePage={currentPage}
                                                           onPageChange={handlePageChange}
                                                           containerClassName={"pagination"}
                                                           activeClassName={"active"}

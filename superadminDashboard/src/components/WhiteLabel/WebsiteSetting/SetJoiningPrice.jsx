@@ -30,8 +30,8 @@ const SetJoiningPrice = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWhitelabelSettings/${userId}`,
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
+        `https://2kadam.co.in/api/auth/whiteLabel/getWhitelabelSettings/${userId}`,
+        // "https://2kadam.co.in/api/auth/superAdmin/getSuperAdminSettings"
         {
           headers: {
             "Content-Type": "application/json",
@@ -85,8 +85,8 @@ const SetJoiningPrice = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getPackageData/${package_Id}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getPackageData/${package_Id}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getPackageData/${package_Id}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getPackageData/${package_Id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -143,8 +143,8 @@ const SetJoiningPrice = () => {
     setLoading(true);
     try {
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/UpdateWLWebsiteJoiningPrice",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateSAWebsiteJoiningPrice",
+        "https://2kadam.co.in/api/auth/whiteLabel/UpdateWLWebsiteJoiningPrice",
+        // "https://2kadam.co.in/api/auth/superAdmin/UpdateSAWebsiteJoiningPrice",
         formData,
 
         {
@@ -319,7 +319,7 @@ const SetJoiningPrice = () => {
                           <div className="text-center mb-2">
                             <button
                               type="submit"
-                              className="btn p-2"
+                              className="btn btn-primary p-2"
                               disabled={loading}
                             >
                               {loading ? "Loading..." : "UPDATE"}

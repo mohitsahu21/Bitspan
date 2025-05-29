@@ -34,7 +34,7 @@ const VerifyEdistrict = () => {
     // setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+        "https://2kadam.co.in/api/auth/retailer/getAllServicesList",
         {
           headers: {
             "Content-Type": "application/json",
@@ -63,7 +63,7 @@ const VerifyEdistrict = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          `https://2kadam.co.in/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -133,53 +133,13 @@ const VerifyEdistrict = () => {
     }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   console.log("Form Data Submitted: ", formData);
-  //   try {
-  //     const response = await axios.post(
-  //       `http://localhost:7777/api/auth/retailer/verify-Edistrict`,
-  //       formData
-  //     );
-  //     // alert("Form Submitted");
-  //     Swal.fire({
-  //       title: "Form Sumitted Success",
-  //       text: `${resData}`,
-  //       icon: "success",
-  //     });
-  //     setFormData({
-  //       applicationType: "",
-  //       name: "",
-  //       mobileNo: "",
-  //       rsNumber: "",
-  //       district: "",
-  //       tehsil: "",
-  //       amount: "",
-  //       user_id: "",
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-
-  //   // setFormData({
-  //   //   applicationType: "",
-  //   //   name: "",
-  //   //   mobileNo: "",
-  //   //   rsNumber: "",
-  //   //   user_id: "",
-  //   // });
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const response = await axios.post(
         // `http://localhost:7777/api/auth/retailer/verify-Edistrict`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/verify-Edistrict`,
+        `https://2kadam.co.in/api/auth/retailer/verify-Edistrict`,
         formData,
         {
           headers: {
@@ -251,7 +211,7 @@ const VerifyEdistrict = () => {
     try {
       const response = await axios.post(
         // `http://localhost:7777/api/auth/log-reg/verify-pin`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {
           headers: {
@@ -320,11 +280,11 @@ const VerifyEdistrict = () => {
                   </div>
                 </div>
                 <div className="container p-3">
-                  <div className="d-flex justify-content-center align-items-center">
+                  {/* <div className="d-flex justify-content-center align-items-center">
                     <div className="col-6 mb-4 border border-danger rounded shadow-sm">
                       <h5 className="text-center m-0 p-3">Verify E-District</h5>
                     </div>
-                  </div>
+                  </div> */}
                   <form
                     onSubmit={openPinModal}
                     className="shadow p-3 mb-5 bg-body-tertiary rounded"

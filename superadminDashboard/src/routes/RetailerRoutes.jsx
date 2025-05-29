@@ -84,6 +84,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { clearUser } from "../redux/user/userSlice";
 import Payment from "../pages/Payment";
+import NotFound from "../components/NotFound";
+
 // import UTIRetailerIdActivateComponent from "../components/DashBoard/UTIRetailerIdActivateComponent";
 // import UTIPanLoginComponent from "../components/DashBoard/UTIPanLoginComponent";
 // import NSDLPanStatusComponent from "../components/DashBoard/NSDLPanStatusComponent";
@@ -123,6 +125,9 @@ const MobileRecharge = lazy(() =>
 const Complaints = lazy(() => import("../components/DashBoard/Complaints"));
 const UtiPan = lazy(() => import("../components/DashBoard/UtiPan"));
 const AddMoney = lazy(() => import("../components/DashBoard/AddMoney"));
+// const AddMoneySecond = lazy(() =>
+//   import("../components/DashBoard/AddMoneySecond")
+// );
 const AddMoneyOffline = lazy(() =>
   import("../components/DashBoard/AddMoneyOffline")
 );
@@ -288,6 +293,42 @@ const RtAllCommissionHistory = lazy(() =>
   import("../components/DashBoard/RtAllCommissionHistory")
 );
 
+const RechargeReceipt = lazy(() =>
+  import("../components/DashBoard/RechargeReceipt")
+);
+
+const DigitalSign = lazy(() => import("../components/DashBoard/DigitalSign"));
+const DigitalToken = lazy(() => import("../components/DashBoard/DigitalToken"));
+const DigitalSignHistory = lazy(() =>
+  import("../components/DashBoard/DigitalSignHistory")
+);
+
+const DscTokenHistory = lazy(() =>
+  import("../components/DashBoard/DscTokenHistory")
+);
+const PanAndAadharFind = lazy(() =>
+  import("../components/DashBoard/PanAndAadharFind")
+);
+const RCFind = lazy(() => import("../components/DashBoard/RCFind"));
+const PanDetails = lazy(() => import("../components/DashBoard/PanDetails"));
+const WalletReceipt = lazy(() =>
+  import("../components/DashBoard/WalletReceipt")
+);
+const FindDL = lazy(() => import("../components/DashBoard/FindDL"));
+const FindPage = lazy(() => import("../components/DashBoard/FindPage"));
+const FindGST = lazy(() => import("../components/DashBoard/FindGST"));
+const WalletTwoReceipt = lazy(() =>
+  import("../components/DashBoard/WalletTwoReceipt")
+);
+const PanReceipt = lazy(() => import("../components/DashBoard/PanReceipt"));
+const FindAadhar = lazy(() => import("../components/DashBoard/FindAadhar"));
+const FindVoter = lazy(() => import("../components/DashBoard/FindVoter"));
+const FindPassport = lazy(() => import("../components/DashBoard/FindPassport"));
+const FindRCView = lazy(() => import("../components/DashBoard/FindRCView"));
+const FindGSTVerify = lazy(() =>
+  import("../components/DashBoard/FindGSTVerify")
+);
+
 const RetailerRoutes = () => {
   const { currentUser, token } = useSelector((state) => state.user);
   const userStatus = currentUser?.Status;
@@ -296,31 +337,34 @@ const RetailerRoutes = () => {
   // console.log(token);
 
   const pathname = window.location.pathname;
+  const fullUrl = window.location.href;
   const [status, setStatus] = useState(null);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState("");
   const dispatch = useDispatch();
   const [user, setUser] = useState("");
   // const userStatus = currentUser?.Status;
+  // console.log(fullUrl);
 
   // Logging the current user and token for debugging
-  console.log("Current User:", currentUser);
-  console.log("Token:", token);
-  console.log(status);
+  // console.log("Current User:", currentUser);
+  // console.log("Token:", token);
+  // console.log(currentUser.Status);
   // UseEffect hook to call the API once when the component mounts
   useEffect(() => {
     if (currentUser?.userId && token) {
+      console.log("api call");
       fetchUserData();
     } else {
       console.log("Missing userId or token, cannot fetch data.");
     }
-  }, [currentUser, token, pathname]);
+  }, [currentUser, token, fullUrl]);
 
   const fetchUserData = async () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -404,7 +448,7 @@ const RetailerRoutes = () => {
   //   const fetchUserRelation = async () => {
   //     try {
   //       const resposne = await axios.get(
-  //         `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${currentUser.userId}`,
+  //         `https://2kadam.co.in/api/auth/superAdmin/getUserRelations/${currentUser.userId}`,
   //         {
   //           headers: {
   //             "Content-Type": "application/json",
@@ -437,140 +481,40 @@ const RetailerRoutes = () => {
           }
         >
           <Routes>
-            <Route path="/" element={<LoginBitspan />} />
+            {/* <Route path="/" element={<LoginBitspan />} /> */}
+            <Route path="/" element={<Dashboard />} />
             <Route path="/payment" element={<Payment user={user} />} />
             <Route path="/update-profile" element={<Profile />} />
-            <Route
-              path="/dashboard"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <Dashboard />
-                )
-              }
-            />
-            <Route
-              path="/pan-card-apply"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <MultiStepForm />
-                )
-              }
-            />
-            <Route
-              path="/prepaid-recharge"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <MobileRecharge />
-                )
-              }
-            />
-            <Route
-              path="/postpaid-recharge"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <PostPaidRecharge />
-                )
-              }
-            />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/pan-card-apply" element={<MultiStepForm />} />
+            <Route path="/prepaid-recharge" element={<MobileRecharge />} />
+            <Route path="/postpaid-recharge" element={<PostPaidRecharge />} />
             <Route
               path="/electricity-recharge"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <ElectricityRecharge />
-                )
-              }
+              element={<ElectricityRecharge />}
             />
-            <Route
-              path="/broadband-recharge"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <BroadbandRecharge />
-                )
-              }
-            />
-            <Route
-              path="/raise-complaint"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <Complaints />
-                )
-              }
-            />
-            <Route
-              path="/uti-login"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <UtiPan />
-                )
-              }
-            />
-            <Route
-              path="/add-money"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <AddMoney />
-                )
-              }
-            />
+            <Route path="/broadband-recharge" element={<BroadbandRecharge />} />
+            <Route path="/raise-complaint" element={<Complaints />} />
+            <Route path="/uti-login" element={<UtiPan />} />
+            <Route path="/add-money" element={<AddMoney />} />
+            {/* <Route path="/add-money-second" element={<AddMoneySecond />} /> */}
             <Route
               path="/add-wallet-money-offline"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <AddMoneyOffline />
-                )
-              }
+              element={<AddMoneyOffline />}
             />
             <Route
               path="/add-money-transaction-report"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <AddWalletSummary />
-                )
-              }
+              element={<AddWalletSummary />}
             />
 
             <Route
               path="/wallet-offline-request"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <AddWalletOfflineSummary />
-                )
-              }
+              element={<AddWalletOfflineSummary />}
             />
 
             <Route
               path="/wallet-transaction-report"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <WalletTransactionReport />
-                )
-              }
+              element={<WalletTransactionReport />}
             />
             {/* <Route
               path="/pan-apply-49"
@@ -582,16 +526,7 @@ const RetailerRoutes = () => {
                 )
               }
             /> */}
-            <Route
-              path="/pan-apply-49"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <NSDLPanComponent />
-                )
-              }
-            />
+            <Route path="/pan-apply-49" element={<NSDLPanComponent />} />
             {/* <Route
               path="/pan-apply-cr"
               element={
@@ -604,13 +539,7 @@ const RetailerRoutes = () => {
             /> */}
             <Route
               path="/pan-apply-cr"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <NSDLPANCorrectionComponent />
-                )
-              }
+              element={<NSDLPANCorrectionComponent />}
             />
             {/* <Route
               path="/pan-status"
@@ -622,68 +551,26 @@ const RetailerRoutes = () => {
                 )
               }
             /> */}
-            <Route
-              path="/pan-status"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <NSDLPanStatusComponent />
-                )
-              }
-            />
+            <Route path="/pan-status" element={<NSDLPanStatusComponent />} />
 
             {/* easy smart route */}
             <Route
               path="/nsdl-new-pan-card"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <NsdlNewPanCardEasySmart />
-                )
-              }
+              element={<NsdlNewPanCardEasySmart />}
             />
             <Route
               path="/nsdl-new-pan-card-redirect"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <RedirectPanForm />
-                )
-              }
+              element={<RedirectPanForm />}
             />
-            <Route
-              path="/easySmartNsdlPANCallback"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <Dashboard />
-                )
-              }
-            />
+            <Route path="/easySmartNsdlPANCallback" element={<Dashboard />} />
 
             <Route
               path="/nsdl-correction-pan-card"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <NsdlPanCorrectionEasySmart />
-                )
-              }
+              element={<NsdlPanCorrectionEasySmart />}
             />
             <Route
               path="/nsdl-correction-pan-card-redirect"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <RedirectionCorrectionPanForm />
-                )
-              }
+              element={<RedirectionCorrectionPanForm />}
             />
 
             {/* easy smart route */}
@@ -691,26 +578,14 @@ const RetailerRoutes = () => {
             {/* Zlink Pan route */}
             <Route
               path="/nsdl-new-pan-card-2"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <NsdlNewPanCardZlink />
-                )
-              }
+              element={<NsdlNewPanCardZlink />}
             />
             {/* <Route path="/nsdl-new-pan-card-redirect" element={<RedirectPanForm />} /> */}
             {/* <Route path="/easySmartNsdlPANCallback" element={<Dashboard />} /> */}
 
             <Route
               path="/nsdl-correction-pan-card-2"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <NsdlPanCorrectionZlink />
-                )
-              }
+              element={<NsdlPanCorrectionZlink />}
             />
             {/* <Route path="/nsdl-correction-pan-card-redirect" element={<RedirectionCorrectionPanForm />} />  */}
 
@@ -718,23 +593,11 @@ const RetailerRoutes = () => {
 
             <Route
               path="/pan-transaction-report"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <PanTransactionReport />
-                )
-              }
+              element={<PanTransactionReport />}
             />
             <Route
               path="/pan-transaction-refund-report"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <PanTransactionRefundReport />
-                )
-              }
+              element={<PanTransactionRefundReport />}
             />
             {/* <Route
               path="/pan-transaction-resume-report"
@@ -746,36 +609,9 @@ const RetailerRoutes = () => {
                 )
               }
             /> */}
-            <Route
-              path="/raise-complaint"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <Complaints />
-                )
-              }
-            />
-            <Route
-              path="/add-money"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <AddMoney />
-                )
-              }
-            />
-            <Route
-              path="/uti-login"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <UtiPan />
-                )
-              }
-            />
+            <Route path="/raise-complaint" element={<Complaints />} />
+            <Route path="/add-money" element={<AddMoney />} />
+            <Route path="/uti-login" element={<UtiPan />} />
             {/* <Route
               path="/uti-login-new"
               element={
@@ -786,66 +622,18 @@ const RetailerRoutes = () => {
                 )
               }
             /> */}
-            <Route
-              path="/uti-login-new"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <UTIPanLoginComponent />
-                )
-              }
-            />
-            <Route
-              path="/dth-recharge"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <DthRecharge />
-                )
-              }
-            />
-            <Route
-              path="/dth-connection"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <DthConnection />
-                )
-              }
-            />
+            <Route path="/uti-login-new" element={<UTIPanLoginComponent />} />
+            <Route path="/dth-recharge" element={<DthRecharge />} />
+            <Route path="/dth-connection" element={<DthConnection />} />
             <Route
               path="/apply-dth-connection-history"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <DTHConnectionHistroy />
-                )
-              }
+              element={<DTHConnectionHistroy />}
             />
             <Route
               path="/aadhar-linking-status"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <AadharLinkingStatus />
-                )
-              }
+              element={<AadharLinkingStatus />}
             />
-            <Route
-              path="/training-video"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <TrainingVideo />
-                )
-              }
-            />
+            <Route path="/training-video" element={<TrainingVideo />} />
             {/* <Route
               path="/2-step-verification"
               element={
@@ -858,13 +646,7 @@ const RetailerRoutes = () => {
             /> */}
             <Route
               path="/uti-transaction-report"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <UTIPanTransactionReport />
-                )
-              }
+              element={<UTIPanTransactionReport />}
             />
             {/* <Route
               path="/retailer-id-revamp-activate"
@@ -878,143 +660,44 @@ const RetailerRoutes = () => {
             /> */}
             <Route
               path="/retailer-id-revamp-activate"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <UTIRetailerIdActivateComponent />
-                )
-              }
+              element={<UTIRetailerIdActivateComponent />}
             />
-            <Route
-              path="/password-reset"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <UTIPasswordReset />
-                )
-              }
-            />
-            <Route
-              path="/uti-coupon-history"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <UTICouponHistory />
-                )
-              }
-            />
+            <Route path="/password-reset" element={<UTIPasswordReset />} />
+            <Route path="/uti-coupon-history" element={<UTICouponHistory />} />
             <Route
               path="/pan-document-upload"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <PanDocumentUpload />
-                )
-              }
+              element={<PanDocumentUpload />}
             />
-            <Route
-              path="/pan-document"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <PanUploadedDocsList />
-                )
-              }
-            />
-            <Route
-              path="/important-links"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <ImportantLink />
-                )
-              }
-            />
+            <Route path="/pan-document" element={<PanUploadedDocsList />} />
+            <Route path="/important-links" element={<ImportantLink />} />
             <Route
               path="/complaint-raised-list"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <AllComplaintsList />
-                )
-              }
+              element={<AllComplaintsList />}
             />
             <Route
               path="/download-certificate"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <DownloadCertificate />
-                )
-              }
+              element={<DownloadCertificate />}
             />
-            <Route
-              path="/change-password"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <ChangePassword />
-                )
-              }
-            />
+            <Route path="/change-password" element={<ChangePassword />} />
             <Route
               path="/prepaid-recharge-history"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <PrepaidRechargeHistory />
-                )
-              }
+              element={<PrepaidRechargeHistory />}
             />
             <Route
               path="/postpaid-recharge-history"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <PostpaidRechargeHistory />
-                )
-              }
+              element={<PostpaidRechargeHistory />}
             />
             <Route
               path="/dth-recharge-history"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <DTHRechargeHistory />
-                )
-              }
+              element={<DTHRechargeHistory />}
             />
             <Route
               path="/eletricity-recharge-history"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <ElectricityHistory />
-                )
-              }
+              element={<ElectricityHistory />}
             />
             <Route
               path="/broadband-recharge-history"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <BroadbandHistory />
-                )
-              }
+              element={<BroadbandHistory />}
             />
             {/* <Route
               path="/recharge-refund-report"
@@ -1026,94 +709,28 @@ const RetailerRoutes = () => {
                 )
               }
             /> */}
-            <Route
-              path="/my-commission"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <MyCommission />
-                )
-              }
-            />
-            <Route
-              path="/crop-tool"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <Tool />
-                )
-              }
-            />
+            <Route path="/my-commission" element={<MyCommission />} />
+            <Route path="/crop-tool" element={<Tool />} />
             <Route
               path="/download-offline-forms"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <OffilnePanCard />
-                )
-              }
+              element={<OffilnePanCard />}
             />
-            <Route
-              path="/apply-offline"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <PanForm />
-                )
-              }
-            />
-            <Route
-              path="/view-all-offline-history"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <AllPanForm />
-                )
-              }
-            />
+            <Route path="/apply-offline" element={<PanForm />} />
+            <Route path="/view-all-offline-history" element={<AllPanForm />} />
             <Route
               path="/download-certificate-print"
               element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <Certificate
-                    user="RETAILER"
-                    name={currentUser?.username}
-                    address={`${currentUser?.City}, ${currentUser?.State}, ${currentUser?.PinCode}`}
-                    date={
-                      new Date(currentUser?.CreateAt).toISOString().split("T")[0]
-                    }
-                    id={currentUser?.userId}
-                  />
-                )
+                <Certificate
+                  user="RETAILER"
+                  name={currentUser?.username}
+                  address={`${currentUser?.City}, ${currentUser?.State}, ${currentUser?.PinCode}`}
+                  date={new Date(currentUser?.CreateAt)}
+                  id={currentUser?.userId}
+                />
               }
             />
-            <Route
-              path="/bank-id"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <NewBankID />
-                )
-              }
-            />
-            <Route
-              path="/pan-card-4.0"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <PanCardFour />
-                )
-              }
-            />
+            <Route path="/bank-id" element={<NewBankID />} />
+            <Route path="/pan-card-4.0" element={<PanCardFour />} />
             {/* <Route
               path="/incomplete-request"
               element={
@@ -1126,156 +743,71 @@ const RetailerRoutes = () => {
             /> */}
             <Route
               path="/incomplete-request"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <NSDLIncompletePanCompoent />
-                )
-              }
+              element={<NSDLIncompletePanCompoent />}
             />
 
             <Route
               path="/incomplete-request-zlink"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <NsdlIncompletePanZlink />
-                )
-              }
+              element={<NsdlIncompletePanZlink />}
             />
             <Route
               path="/redirect-incomplete-pan-zlink"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <IncompletePanFormZlink />
-                )
-              }
+              element={<IncompletePanFormZlink />}
             />
 
-            <Route
-              path="/pan-4.0-history"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <PanFourHistory />
-                )
-              }
-            />
+            <Route path="/pan-4.0-history" element={<PanFourHistory />} />
 
-            <Route
-              path="/E-District-Form"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <EdistrictForm />
-                )
-              }
-            />
+            <Route path="/E-District-Form" element={<EdistrictForm />} />
 
-            <Route
-              path="/generate-pin"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <CreatePin />
-                )
-              }
-            />
+            <Route path="/generate-pin" element={<CreatePin />} />
 
-            <Route
-              path="/bank-history"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <BankHistory />
-                )
-              }
-            />
+            <Route path="/bank-history" element={<BankHistory />} />
 
-            <Route
-              path="/E-District-history"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <Edistrict />
-                )
-              }
-            />
+            <Route path="/E-District-history" element={<Edistrict />} />
 
-            <Route
-              path="/SambalForm"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SambalForm />
-                )
-              }
-            />
+            <Route path="/SambalForm" element={<SambalForm />} />
 
-            <Route
-              path="/verify-Edistrict"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <VerifyEdistrict />
-                )
-              }
-            />
+            <Route path="/verify-Edistrict" element={<VerifyEdistrict />} />
 
             <Route
               path="/verify-Edistrict-History"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <VerifyDistrictHistory />
-                )
-              }
+              element={<VerifyDistrictHistory />}
             />
 
-            <Route
-              path="/Sambal-History"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SambalHistory />
-                )
-              }
-            />
+            <Route path="/Sambal-History" element={<SambalHistory />} />
 
-            <Route
-              path="/buy-coupon"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <CoupanForm />
-                )
-              }
-            />
+            <Route path="/buy-coupon" element={<CoupanForm />} />
 
             <Route
               path="/View-All-Commission-History"
-              element={
-                userStatus === "Pending" || userStatus === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <RtAllCommissionHistory />
-                )
-              }
+              element={<RtAllCommissionHistory />}
             />
+
+            <Route path="*" element={<Navigate to="/" />} />
+            {/* <Route path="*" element={<NotFound />} /> */}
+
+            <Route path="/recharge-receipt" element={<RechargeReceipt />} />
+            <Route path="/wallet-receipt" element={<WalletReceipt />} />
+            <Route
+              path="/wallet-online-receipt/:id"
+              element={<WalletTwoReceipt />}
+            />
+            <Route path="/pan-receipt/:id" element={<PanReceipt />} />
+            <Route path="/Apply-DSC" element={<DigitalSign />} />
+            <Route path="/DSC-Token" element={<DigitalToken />} />
+            <Route path="/DSC-history" element={<DigitalSignHistory />} />
+            <Route path="/DSC-token-history" element={<DscTokenHistory />} />
+            <Route path="/pan-find-by-aadhar" element={<PanAndAadharFind />} />
+            <Route path="/pan-details" element={<PanDetails />} />
+            <Route path="/rc-find" element={<RCFind />} />
+            <Route path="/dl-find" element={<FindDL />} />
+            <Route path="/find-services" element={<FindPage />} />
+            <Route path="/gst-find" element={<FindGST />} />
+            <Route path="/aadhar-find" element={<FindAadhar />} />
+            <Route path="/voter-find" element={<FindVoter />} />
+            <Route path="/passport-find" element={<FindPassport />} />
+            <Route path="/view-rc-find" element={<FindRCView />} />
+            <Route path="/gstverify-find" element={<FindGSTVerify />} />
 
             <Route path="/registration-page" element={<DemoRegistration />} />
           </Routes>

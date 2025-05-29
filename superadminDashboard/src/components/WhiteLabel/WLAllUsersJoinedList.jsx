@@ -32,8 +32,8 @@ const WLAllUsersJoinedList = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWhiteLabelUsersData/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getSuperDistributorUsersData/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getWhiteLabelUsersData/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getSuperDistributorUsersData/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -150,7 +150,9 @@ const WLAllUsersJoinedList = () => {
                               type="search"
                               placeholder="Enter User Name/User Id/Mobile/Email Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {setKeyword(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
 
@@ -160,7 +162,9 @@ const WLAllUsersJoinedList = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={userType}
-                              onChange={(e) => setUserType(e.target.value)}
+                              onChange={(e) => {setUserType(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             >
                               <option selected>---Select User Type---</option>
                               <option value="Retailer">Retailer</option>
@@ -177,7 +181,9 @@ const WLAllUsersJoinedList = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={status}
-                              onChange={(e) => setStatus(e.target.value)}
+                              onChange={(e) => {setStatus(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             >
                               <option selected>---Select Status---</option>
                               <option value="Active">Active</option>
@@ -192,7 +198,9 @@ const WLAllUsersJoinedList = () => {
                               aria-label="Default select example"
                               value={complaintsPerPage}
                               onChange={(e) =>
-                                setComplaintsPerPage(e.target.value)
+                               {setComplaintsPerPage(e.target.value)
+                                setCurrentPage(0)
+                               } 
                               }
                             >
                               {/* <option selected>--Row Per Page---</option> */}
@@ -248,8 +256,8 @@ const WLAllUsersJoinedList = () => {
                                       <th scope="col">Role</th>
                                       <th scope="col">Email</th>
                                       <th scope="col">Mobile</th>
-                                      <th scope="col">Package Id</th>
-                                      <th scope="col">Package Name</th>
+                                      {/* <th scope="col">Package Id</th>
+                                      <th scope="col">Package Name</th> */}
                                       {/* <th scope="col">Address</th> */}
                                       <th scope="col">PAN No</th>
                                       <th scope="col">AAdhaar No</th>
@@ -291,8 +299,8 @@ const WLAllUsersJoinedList = () => {
                                           <td>{user.role}</td>
                                           <td>{user.Email}</td>
                                           <td>{user.ContactNo}</td>
-                                          <td>{user.package_Id}</td>
-                                          <td>{user.package_name}</td>
+                                          {/* <td>{user.package_Id}</td>
+                                          <td>{user.package_name}</td> */}
                                           <td>{user.PanCardNumber}</td>
                                           <td>{user.AadharNumber}</td>
                                           <td>{user.BusinessName}</td>
@@ -412,6 +420,7 @@ const WLAllUsersJoinedList = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>
@@ -443,11 +452,11 @@ const Wrapper = styled.div`
     background: #5356fa;
     border-color: #5356fa;
   }
-  .form-container {
+  /* .form-container {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-  }
+  } */
   .field-group {
     display: flex;
     flex-direction: column;

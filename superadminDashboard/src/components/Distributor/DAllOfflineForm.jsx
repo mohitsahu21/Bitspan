@@ -21,8 +21,8 @@ const DAllOfflineForm = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getApplyOfflineFormById/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApplyOfflineForm`
+        `https://2kadam.co.in/api/auth/Distributor/getApplyOfflineFormById/${userId}`,
+        // `https://2kadam.co.in/api/auth/retailer/getApplyOfflineForm`
 
         {
           headers: {
@@ -326,6 +326,7 @@ const DAllOfflineForm = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

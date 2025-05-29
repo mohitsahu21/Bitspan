@@ -21,8 +21,8 @@ const SdAllOfflineForm = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getApplyOfflineFormById/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApplyOfflineForm`
+        `https://2kadam.co.in/api/auth/superDistributor/getApplyOfflineFormById/${userId}`,
+        // `https://2kadam.co.in/api/auth/retailer/getApplyOfflineForm`
 
         {
           headers: {
@@ -69,9 +69,15 @@ const SdAllOfflineForm = () => {
   console.log(formData);
 
   const filteredData = formData?.filter((item) => {
-    const createdAtDate = item.created_at ? new Date(item.created_at) : null;
-    const fromDateObj = fromDate ? new Date(fromDate) : null;
-    const toDateObj = toDate ? new Date(toDate) : null;
+    const createdAtDate = item.created_at
+      ? new Date(item.created_at).toISOString().split("T")[0]
+      : null;
+    const fromDateObj = fromDate
+      ? new Date(fromDate).toISOString().split("T")[0]
+      : null;
+    const toDateObj = toDate
+      ? new Date(toDate).toISOString().split("T")[0]
+      : null;
 
     const matchesSearch =
       item.applicant_name
@@ -90,6 +96,10 @@ const SdAllOfflineForm = () => {
 
     return matchesSearch && matchesStatus && matchesDate;
   });
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [searchQuery, selectedStatus, fromDate, toDate]);
 
   const totalPages = Math.ceil(filteredData.length / complaintsPerPage);
 
@@ -126,10 +136,10 @@ const SdAllOfflineForm = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          View All Offline History
+                          Other Services History
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; View All Offline History{" "}
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Other Services History{" "}
                         </h6>
                       </div>
                     </div>
@@ -144,19 +154,25 @@ const SdAllOfflineForm = () => {
                               Search
                             </label>
                             <input
-                              type="text"
+                              type="search"
                               className="form-control responsive-input"
                               // placeholder="Search by Name, Mobile, or Order ID"
                               placeholder="Search by  Order ID"
                               value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
+                              onChange={(e) => (
+                                setSearchQuery(e.target.value),
+                                setCurrentPage(0)
+                              )}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3 d-flex align-items-end">
                             <DropdownButton
                               id="dropdown-basic-button"
                               title={selectedStatus}
-                              onSelect={(e) => setSelectedStatus(e)}
+                              // onSelect={(e) => setSelectedStatus(e)}
+                              onSelect={(e) => (
+                                setSelectedStatus(e), setCurrentPage(0)
+                              )}
                             >
                               <Dropdown.Item eventKey="All">All</Dropdown.Item>
                               <Dropdown.Item eventKey="Success">
@@ -167,6 +183,12 @@ const SdAllOfflineForm = () => {
                               </Dropdown.Item>
                               <Dropdown.Item eventKey="Pending">
                                 Pending
+                              </Dropdown.Item>
+                              <Dropdown.Item eventKey="Mark Edit">
+                                Mark Edit
+                              </Dropdown.Item>
+                              <Dropdown.Item eventKey="Under Process">
+                                Under Process
                               </Dropdown.Item>
                             </DropdownButton>
                           </div>
@@ -326,6 +348,7 @@ const SdAllOfflineForm = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

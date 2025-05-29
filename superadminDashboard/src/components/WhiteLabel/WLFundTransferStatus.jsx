@@ -31,8 +31,8 @@ const WLFundTransferStatus = () => {
     setLoading(true); // Start loading
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWalletToWalletTransfer/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletToWalletTransfer/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getWalletToWalletTransfer/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getWalletToWalletTransfer/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -154,9 +154,9 @@ const WLFundTransferStatus = () => {
                   </div>
                   <div className="row justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded p-5 m-4">
-                      <div className="text-center">
+                      {/* <div className="text-center">
                         <h5>All Wallet Transfer Request Status</h5>
-                      </div>
+                      </div> */}
                       <div className="row d-flex flex-column g-4">
                         <div className="d-flex flex-column flex-md-row gap-3">
                           <div className="col-12 col-md-4 col-lg-3">
@@ -168,7 +168,9 @@ const WLFundTransferStatus = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {setFromDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -180,10 +182,12 @@ const WLFundTransferStatus = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => {setToDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
-                          <div className="col-12 col-md-4 col-lg-3">
+                          {/* <div className="col-12 col-md-4 col-lg-3">
                             <label for="toDate" className="form-label">
                               Select Status
                             </label>
@@ -196,9 +200,9 @@ const WLFundTransferStatus = () => {
                               <option selected>---Select---</option>
                               <option value="Success">Success</option>
                               <option value="Pending">Pending</option>
-                              {/* <option value="Reject">Reject</option> */}
+                              <option value="Reject">Reject</option>
                             </select>
-                          </div>
+                          </div> */}
                         </div>
                         <div className="d-flex flex-column flex-xl-row gap-3">
                           <div className="col-12 col-md-12 col-lg-12 col-xl-8">
@@ -209,7 +213,9 @@ const WLFundTransferStatus = () => {
                               type="search"
                               placeholder="search By Order Id Or Txn Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {setKeyword(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
 
@@ -286,6 +292,7 @@ const WLFundTransferStatus = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

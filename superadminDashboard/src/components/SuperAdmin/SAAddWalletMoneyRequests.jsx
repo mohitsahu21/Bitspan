@@ -48,8 +48,8 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveWalletAddMoneyRequests",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/ApproveWalletAddMoneyRequests",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -223,7 +223,9 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 //  reject model component start//
 const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 const [loading, setLoading] = useState(false);
-
+const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
 const [formData, setFormData] = useState({
   user_id : item.user_id ,
 
@@ -247,8 +249,8 @@ const handlesubmit = async (e) => {
   try {
     setLoading(true);
     const response = await axios.put(
-      "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectWalletAddMoneyRequests",
-      // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+      "https://2kadam.co.in/api/auth/superAdmin/rejectWalletAddMoneyRequests",
+      // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
       formData,
       {
         headers: {
@@ -445,7 +447,7 @@ const SAAddWalletMoneyRequests = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingWalletAddMoneyRequests",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingWalletAddMoneyRequests",
         {
           headers: {
             "Content-Type": "application/json",
@@ -559,12 +561,16 @@ const SAAddWalletMoneyRequests = () => {
                                                 <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="fromDate" className="form-label">From</label>
                                                         <input id="fromDate" className="form-control" type="date"  value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}/>
+                              onChange={(e) => {setFromDate(e.target.value)
+                                setCurrentPage(0);
+                              }}/>
                                                     </div>
                                                     <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="toDate" className="form-label">To</label>
                                                         <input id="toDate" className="form-control " type="date" value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}/>
+                              onChange={(e) => {setToDate(e.target.value)
+                                setCurrentPage(0);
+                              }}/>
                                                     </div>
                                                 </div>
 
@@ -577,7 +583,10 @@ const SAAddWalletMoneyRequests = () => {
                                                          type="search"
                                                          placeholder="Enter User Name/User Id/Mobile/Email Id/Order Id"
                                                          value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                                                          />
                                                     </div>
                                                     
@@ -841,6 +850,7 @@ const SAAddWalletMoneyRequests = () => {
                                                           onPageChange={handlePageChange}
                                                           containerClassName={"pagination"}
                                                           activeClassName={"active"}
+                                                          forcePage={currentPage}
                                                         />
                                                       </PaginationContainer>
                                                 </div>

@@ -34,7 +34,7 @@ const SAPendingPaymentUsers = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingPaymentUsers",
+            "https://2kadam.co.in/api/auth/superAdmin/getPendingPaymentUsers",
             {
               headers: {
                 "Content-Type": "application/json",
@@ -127,7 +127,7 @@ const SAPendingPaymentUsers = () => {
             setLoading(true);
             try {
               const { data } = await axios.put(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/markPaymentComplete", 
+                "https://2kadam.co.in/api/auth/superAdmin/markPaymentComplete", 
                 {
                    userId: id 
                 },
@@ -251,7 +251,11 @@ const SAPendingPaymentUsers = () => {
                                                          type="search"
                                                          placeholder="Enter User Name/User Id/Mobile/Email Id"
                                                          value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              // onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                                                          />
                                                     </div>
                                                     <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -262,7 +266,9 @@ const SAPendingPaymentUsers = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={userType}
-                              onChange={(e) => setUserType(e.target.value)}
+                              onChange={(e) => {setUserType(e.target.value)
+                                setCurrentPage(0);
+                              }}
                               
                             >
                               <option selected>---Select User Type---</option>
@@ -462,6 +468,7 @@ const SAPendingPaymentUsers = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                           

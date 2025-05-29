@@ -26,7 +26,7 @@ const DthConnection = () => {
     // setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+        "https://2kadam.co.in/api/auth/retailer/getAllServicesList",
         {
           headers: {
             "Content-Type": "application/json",
@@ -497,7 +497,7 @@ const DthConnection = () => {
       // setLoading(true);
 
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${currentUser.userId}`,
+        `https://2kadam.co.in/api/auth/superAdmin/getUserRelations/${currentUser.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -526,7 +526,7 @@ const DthConnection = () => {
 
         const retailerPromise = axios
           .get(
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
+            `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -542,7 +542,7 @@ const DthConnection = () => {
         if (distributor) {
           const distributorPromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -559,7 +559,7 @@ const DthConnection = () => {
         if (superDistributor) {
           const superDistributorPromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -576,7 +576,7 @@ const DthConnection = () => {
         if (white_lable) {
           const whiteLablePromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -674,7 +674,7 @@ const DthConnection = () => {
 
     try {
       const rechargeResult = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/api-dth-recharge`,
+        `https://2kadam.co.in/api/auth/instpay/api-dth-recharge`,
         updatedFormData
       );
       setLoading(false);
@@ -706,8 +706,8 @@ const DthConnection = () => {
         ) {
           const response = await axios
             .put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.distributorFormData,
               {
                 headers: {
@@ -727,8 +727,8 @@ const DthConnection = () => {
         ) {
           const response = await axios
             .put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.superDistributorFormData,
               {
                 headers: {
@@ -748,8 +748,8 @@ const DthConnection = () => {
         ) {
           const response = await axios
             .put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.whiteLableFormData,
               {
                 headers: {
@@ -809,8 +809,8 @@ const DthConnection = () => {
           console.log(commissionFormData);
           await axios
             .post(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+              "https://2kadam.co.in/api/auth/superAdmin/addCommissionEntry",
+              // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
               commissionFormData,
               {
                 headers: {
@@ -883,8 +883,8 @@ const DthConnection = () => {
           console.log(commissionFormData);
           await axios
             .post(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+              "https://2kadam.co.in/api/auth/superAdmin/addCommissionEntry",
+              // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
               commissionFormData,
               {
                 headers: {
@@ -987,7 +987,7 @@ const DthConnection = () => {
 
   //   try {
   //     const response = await axios.post(
-  //       `https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/api-dth-recharge`,
+  //       `https://2kadam.co.in/api/auth/instpay/api-dth-recharge`,
   //       formData
   //     );
   //     setLoading(false)
@@ -1060,7 +1060,7 @@ const DthConnection = () => {
     const getData = async () => {
       try {
         const { data } = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/dth-plan`
+          `https://2kadam.co.in/api/auth/instpay/dth-plan`
         );
         setPlan(data);
         console.log(data);
@@ -1093,7 +1093,7 @@ const DthConnection = () => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getDthConnectionPlan`,
+          `https://2kadam.co.in/api/auth/retailer/getDthConnectionPlan`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -1189,7 +1189,7 @@ const DthConnection = () => {
 
   //   try {
   //     const response = await axios.post(
-  //       `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/offline-dth-connection`,
+  //       `https://2kadam.co.in/api/auth/retailer/offline-dth-connection`,
   //       requestData
   //     );
 
@@ -1206,7 +1206,7 @@ const DthConnection = () => {
       // Make the API call
       const result = await axios.post(
         // "http://localhost:7777/api/auth/wallet/dthConnectionAndUpdateWallet",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/wallet/dthConnectionAndUpdateWallet",
+        "https://2kadam.co.in/api/auth/wallet/dthConnectionAndUpdateWallet",
         offlineForm,
         {
           headers: {
@@ -1286,7 +1286,7 @@ const DthConnection = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {
           headers: {

@@ -38,8 +38,8 @@ const WLPendingKycUsers = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getPendingKycUsers/${userId}`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getPendingKycUsers/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getPendingKycUsers/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getPendingKycUsers/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -180,7 +180,9 @@ const WLPendingKycUsers = () => {
                               type="search"
                               placeholder="Enter User Name/User Id/Mobile/Email Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {setKeyword(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -189,7 +191,9 @@ const WLPendingKycUsers = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={userType}
-                              onChange={(e) => setUserType(e.target.value)}
+                              onChange={(e) => {setUserType(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             >
                               <option selected>---Select User Type---</option>
                               <option value="Retailer">Retailer</option>
@@ -244,14 +248,14 @@ const WLPendingKycUsers = () => {
                                       <th scope="col">Created By</th>
                                       <th scope="col">Website Name</th>
 
-                                      <th scope="col">Aadhar Front</th>
+                                      {/* <th scope="col">Aadhar Front</th>
                                       <th scope="col">Aadhar Back</th>
-                                      <th scope="col">Pan Card Front</th>
+                                      <th scope="col">Pan Card Front</th> */}
                                       {/* <th scope="col">View KYC</th> */}
                                       <th scope="col">Payment Status</th>
                                       <th scope="col">Status</th>
                                       <th scope="col">Note</th>
-                                      <th scope="col">Action</th>
+                                      {/* <th scope="col">Action</th> */}
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -304,7 +308,7 @@ const WLPendingKycUsers = () => {
                                               </div>
                                             ))}
                                       </td> */}
-                                          <td>
+                                          {/* <td>
                                             {user.AadharFront ? (
                                               <a
                                                 href={user.AadharFront}
@@ -342,12 +346,12 @@ const WLPendingKycUsers = () => {
                                             ) : (
                                               "Not Available"
                                             )}
-                                          </td>
+                                          </td> */}
                                           <td>{user?.payment_status}</td>
                                           <td>{user.Status}</td>
                                           {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
                                           <td>{user?.Note}</td>
-                                          <td>
+                                          {/* <td>
                                             <Dropdown>
                                               <Dropdown.Toggle
                                                 variant="success"
@@ -385,7 +389,7 @@ const WLPendingKycUsers = () => {
                                                 </Dropdown.Item>
                                               </Dropdown.Menu>
                                             </Dropdown>
-                                          </td>
+                                          </td> */}
                                         </tr>
                                       ))
                                     ) : (
@@ -410,6 +414,7 @@ const WLPendingKycUsers = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

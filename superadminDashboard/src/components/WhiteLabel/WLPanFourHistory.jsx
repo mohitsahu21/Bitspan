@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { Spinner } from "react-bootstrap";
 
 const WLPanFourHistory = () => {
   const dispatch = useDispatch();
@@ -27,18 +28,18 @@ const WLPanFourHistory = () => {
   // Fetch userId and token from Redux store
   const userId = useSelector((state) => state.user.currentUser?.userId);
 
-  const maskSensitiveInfo = (value, maskLength, revealLength) => {
-    const maskedValue = "*".repeat(maskLength);
-    const revealedValue = value.slice(-revealLength);
-    return maskedValue + revealedValue;
-  };
+  // const maskSensitiveInfo = (value, maskLength, revealLength) => {
+  //   const maskedValue = "*".repeat(maskLength);
+  //   const revealedValue = value.slice(-revealLength);
+  //   return maskedValue + revealedValue;
+  // };
 
   const fetchData = async () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getOfflinePan/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getOfflinePan/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getOfflinePan/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getOfflinePan/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -97,6 +98,7 @@ const WLPanFourHistory = () => {
       !PaymentMode ||
       PaymentMode === "---Select---" ||
       row.status === PaymentMode;
+
     // return matchesKeyword && matchesType ;
     const matchesDate =
       (!fromDate ||
@@ -146,10 +148,10 @@ const WLPanFourHistory = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          PAN Transaction Report
+                        PAN 4.0 History
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; PAN Transaction Report
+                          <BiHomeAlt /> &nbsp;/ &nbsp; PAN 4.0 History
                         </h6>
                       </div>
                     </div>
@@ -168,7 +170,9 @@ const WLPanFourHistory = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {setFromDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -180,7 +184,9 @@ const WLPanFourHistory = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => {setToDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -191,11 +197,18 @@ const WLPanFourHistory = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={PaymentMode}
-                              onChange={(e) => setPaymentMode(e.target.value)}
+                              onChange={(e) => {setPaymentMode(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             >
                               <option selected>---Select---</option>
                               <option value="Success">Success</option>
-                              <option value="Failed">Failed</option>
+                              <option value="Under Process">
+                                Under Process
+                              </option>
+                              <option value="Pending">Pending</option>
+                              <option value="Reject">Reject</option>
+                              <option value="Mark Edit">Mark Edit</option>
                             </select>
                           </div>
 
@@ -212,7 +225,9 @@ const WLPanFourHistory = () => {
                               type="search"
                               placeholder="search By Order Id "
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {setKeyword(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
 
@@ -224,7 +239,13 @@ const WLPanFourHistory = () => {
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
                             {loading ? (
-                              <p>Loading...</p>
+                              <div className="d-flex justify-content-center">
+                              <Spinner animation="border" role="status">
+                                <span className="visually-hidden">
+                                  Loading...
+                                </span>
+                              </Spinner>
+                            </div>
                             ) : (
                               <table class="table table-striped">
                                 <thead className="table-dark">
@@ -246,16 +267,17 @@ const WLPanFourHistory = () => {
                                     <th scope="col">Gender</th>
                                     <th scope="col">Office Address</th>
                                     <th scope="col">Aadhar Details</th> */}
-                                    <th scope="col">Mobile No</th>
+                                    {/* <th scope="col">Mobile No</th> */}
                                     {/* <th scope="col">Email</th>
                                     <th scope="col">Pincode</th>
                                     <th scope="col">State</th> */}
-                                    <th scope="col">Change Request</th>
+                                    {/* <th scope="col">Change Request</th> */}
                                     {/* <th scope="col">KYC </th>
                                     <th scope="col">Form </th>
                                     <th scope="col">Signature</th>
                                     <th scope="col">Photo</th> */}
                                     <th scope="col">Amount</th>
+                                    <th scope="col">User Id</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Message</th>
                                   </tr>
@@ -281,17 +303,17 @@ const WLPanFourHistory = () => {
                                         <td>{item.office_address}</td>
                                         <td>{item.aadhar_details}</td> */}
                                         {/* <td>{item.mobile_no}</td> */}
-                                        <td>
+                                        {/* <td>
                                           {maskSensitiveInfo(
                                             item.mobile_no,
                                             6,
                                             4
                                           )}
-                                        </td>
+                                        </td> */}
                                         {/* <td>{item.email_id}</td>
                                         <td>{item.pin_code}</td>
                                         <td>{item.state}</td> */}
-                                        <td>{item.Change_Request}</td>
+                                        {/* <td>{item.Change_Request}</td> */}
                                         {/* <td>
                                           {item.documentUpload
                                             ? item.documentUpload
@@ -337,17 +359,18 @@ const WLPanFourHistory = () => {
                                           </a>
                                         </td> */}
                                         <td>{item.Charge_Amount}</td>
+                                        <td>{item.user_id }</td>
                                         <td
-                                          style={{
-                                            color:
-                                              item.status === "Pending"
-                                                ? "#FFC107"
-                                                : item.status === "Reject"
-                                                ? "#DC3545"
-                                                : item.status === "Success"
-                                                ? "#28A745"
-                                                : "black",
-                                          }}
+                                          // style={{
+                                          //   color:
+                                          //     item.status === "Pending"
+                                          //       ? "#FFC107"
+                                          //       : item.status === "Reject"
+                                          //       ? "#DC3545"
+                                          //       : item.status === "Success"
+                                          //       ? "#28A745"
+                                          //       : "black",
+                                          // }}
                                         >
                                           {item.status}
                                         </td>
@@ -375,6 +398,7 @@ const WLPanFourHistory = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

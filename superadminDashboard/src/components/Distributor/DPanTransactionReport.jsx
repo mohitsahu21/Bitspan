@@ -38,7 +38,7 @@ const DPanTransactionReport = () => {
     try {
       const response = await axios.get(
         // `http://localhost:7777/api/auth/retailer/pan-4.0/${userData}`
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getOnlinePan/${userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/getOnlinePan/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -346,6 +346,7 @@ const DPanTransactionReport = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

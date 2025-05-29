@@ -14,6 +14,7 @@ import DChangePrice from "../components/Distributor/DChangePrice";
 
 import Certificate from "../components/Distributor/Certificate";
 import Swal from "sweetalert2";
+import { clearUser } from "../redux/user/userSlice";
 
 // Lazy-loaded components
 const DistributorDashboard = lazy(() =>
@@ -128,8 +129,15 @@ const DPanCorrectionHistory = lazy(() =>
   import("../components/Distributor/DPanCorrectionHistory")
 );
 const DCreatePin = lazy(() => import("../components/Distributor/DCreatePin"));
+const DADSCHistory = lazy(() =>
+  import("../components/Distributor/DADSCHistory")
+);
+const DAdscTokenHistory = lazy(() =>
+  import("../components/Distributor/DAdscTokenHistory")
+);
 
-const DtProfile = lazy(() => import("../components/Distributor/DtProfile"));
+// const DtProfile = lazy(() => import("../components/Distributor/DtProfile"));
+const Profile = lazy(() => import("../pages/Profile"));
 
 const Distributor = () => {
   const { currentUser, token } = useSelector((state) => state.user);
@@ -137,6 +145,7 @@ const Distributor = () => {
   const userId = currentUser?.userId;
 
   const pathname = window.location.pathname;
+  const fullUrl = window.location.href;
   const [status, setStatus] = useState(null);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState("");
@@ -155,13 +164,13 @@ const Distributor = () => {
     } else {
       console.log("Missing userId or token, cannot fetch data.");
     }
-  }, [currentUser, token, pathname]);
+  }, [currentUser, token, fullUrl]);
 
   const fetchUserData = async () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -236,413 +245,117 @@ const Distributor = () => {
         }
       ></Suspense>
       <Routes>
-        <Route
-          path="/dashboard"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DistributorDashboard />
-            )
-          }
-        />
-        <Route path="/update-profile" element={<DtProfile />} />
+        <Route path="/dashboard" element={<DistributorDashboard />} />
+        <Route path="/" element={<DistributorDashboard />} />
+        <Route path="/update-profile" element={<Profile />} />
         {/* <Route
           path="/aadhar-linking-status"
           element={<AadharLinkingStatus />}
         /> */}
-        <Route
-          path="/training-video"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <TrainingVideo />
-            )
-          }
-        />
+        <Route path="/training-video" element={<TrainingVideo />} />
         <Route
           path="/wallet-transaction-report"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DWalletTransactionReport />
-            )
-          }
+          element={<DWalletTransactionReport />}
         />
         <Route
           path="/wallet-to-wallet-transfer"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DWalletToWalletTransfer />
-            )
-          }
+          element={<DWalletToWalletTransfer />}
         />
 
         <Route
           path="/Wallet-TO-Wallet-Transfer-History"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DFundTransferStatus />
-            )
-          }
+          element={<DFundTransferStatus />}
         />
         <Route
           path="/wallet-withdraw-History"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DWalletWithdrawReport />
-            )
-          }
+          element={<DWalletWithdrawReport />}
         />
 
-        <Route
-          path="/wallet-withdraw"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DWalletWithdraw />
-            )
-          }
-        />
-        <Route
-          path="/view-all-offline-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DAllOfflineForm />
-            )
-          }
-        />
-        <Route
-          path="/Sambal-History"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DSambalHistory />
-            )
-          }
-        />
+        <Route path="/wallet-withdraw" element={<DWalletWithdraw />} />
+        <Route path="/view-all-offline-history" element={<DAllOfflineForm />} />
+        <Route path="/Sambal-History" element={<DSambalHistory />} />
         <Route
           path="/Offline-dth-connection"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DOfflineDthConnection />
-            )
-          }
+          element={<DOfflineDthConnection />}
         />
 
         <Route
           path="/Offline-Recharge-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DOfflineRechargeHistory />
-            )
-          }
+          element={<DOfflineRechargeHistory />}
         />
-        <Route
-          path="/my-commission"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DMyCommission />
-            )
-          }
-        />
+        <Route path="/my-commission" element={<DMyCommission />} />
         <Route
           path="/View-All-Commission-History"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DAllCommissionHistory />
-            )
-          }
+          element={<DAllCommissionHistory />}
         />
 
         <Route
           path="/online-dth-connection-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DOnlineDthConnection />
-            )
-          }
+          element={<DOnlineDthConnection />}
         />
 
-        <Route
-          path="/online-recharge-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DOnlineRecharges />
-            )
-          }
-        />
-        <Route
-          path="/E-District-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DEdistrict />
-            )
-          }
-        />
+        <Route path="/online-recharge-history" element={<DOnlineRecharges />} />
+        <Route path="/E-District-history" element={<DEdistrict />} />
 
         <Route
           path="/verify-Edistrict-History"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DVerifyDistrictHistory />
-            )
-          }
+          element={<DVerifyDistrictHistory />}
         />
 
         <Route
           path="/Pan-Coupan-History"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DCoupanCommissionHistory />
-            )
-          }
+          element={<DCoupanCommissionHistory />}
         />
-        <Route
-          path="/create-retailer"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DCreateDistributor />
-            )
-          }
-        />
+        <Route path="/create-retailer" element={<DCreateDistributor />} />
 
-        <Route
-          path="/All-Retailer-List"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DAllDistributorList />
-            )
-          }
-        />
+        <Route path="/All-Retailer-List" element={<DAllDistributorList />} />
 
-        <Route
-          path="/buy-retailer-id"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DBuyDistributorId />
-            )
-          }
-        />
+        <Route path="/buy-retailer-id" element={<DBuyDistributorId />} />
 
-        <Route
-          path="/UserId-Bought-summary"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DBoughtSummery />
-            )
-          }
-        />
+        <Route path="/UserId-Bought-summary" element={<DBoughtSummery />} />
 
-        <Route
-          path="/active-users"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DActiveUsersList />
-            )
-          }
-        />
+        <Route path="/active-users" element={<DActiveUsersList />} />
 
-        <Route
-          path="/deactive-users"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DDeactiveUsersList />
-            )
-          }
-        />
+        <Route path="/deactive-users" element={<DDeactiveUsersList />} />
 
-        <Route
-          path="/users-joining-list"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DAllUsersJoinedList />
-            )
-          }
-        />
+        <Route path="/users-joining-list" element={<DAllUsersJoinedList />} />
 
-        <Route
-          path="/pending-kyc-user"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DPendingKycUsers />
-            )
-          }
-        />
+        <Route path="/pending-kyc-user" element={<DPendingKycUsers />} />
 
         <Route
           path="/pending-payment-users"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DPendingPaymentUsers />
-            )
-          }
+          element={<DPendingPaymentUsers />}
         />
 
-        <Route
-          path="/raise-complaint"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DComplaints />
-            )
-          }
-        />
+        <Route path="/raise-complaint" element={<DComplaints />} />
 
-        <Route
-          path="/complaint-raised-list"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DAllComplaintsList />
-            )
-          }
-        />
+        <Route path="/complaint-raised-list" element={<DAllComplaintsList />} />
         <Route
           path="/download-certificate"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DDownloadCertificate />
-            )
-          }
+          element={<DDownloadCertificate />}
         />
-        <Route
-          path="/change-password"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DChangePassword />
-            )
-          }
-        />
+        <Route path="/change-password" element={<DChangePassword />} />
 
-        <Route
-          path="/bank-account-setup"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DBankAccountSetup />
-            )
-          }
-        />
+        <Route path="/bank-account-setup" element={<DBankAccountSetup />} />
 
         <Route
           path="/bank-account-setup/verify/:bid"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DBankAccountVerify />
-            )
-          }
+          element={<DBankAccountVerify />}
         />
-        <Route
-          path="/pan-4.0-history"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DPanFourHistory />
-            )
-          }
-        />
+        <Route path="/pan-4.0-history" element={<DPanFourHistory />} />
 
         <Route
           path="/pan-transaction-report"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DPanTransactionReport />
-            )
-          }
+          element={<DPanTransactionReport />}
         />
 
         <Route
           path="/pan-correction-report"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DPanCorrectionHistory />
-            )
-          }
+          element={<DPanCorrectionHistory />}
         />
-        <Route
-          path="/generate-pin"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DCreatePin />
-            )
-          }
-        />
+        <Route path="/generate-pin" element={<DCreatePin />} />
 
-        <Route
-          path="/2-step-verification"
-          element={
-            userStatus === "Pending" || userStatus === "Deactive" ? (
-              <Navigate to="/update-profile" />
-            ) : (
-              <DStepVerification />
-            )
-          }
-        />
+        <Route path="/2-step-verification" element={<DStepVerification />} />
 
         <Route
           path="/uti-transaction-report"
@@ -650,6 +363,8 @@ const Distributor = () => {
         />
         <Route path="/distribute-uti-coupon" element={<DDistributeCoupon />} />
         <Route path="/uti-coupon-history" element={<DUTICouponHistory />} />
+        <Route path="/dsc-history" element={<DADSCHistory />} />
+        <Route path="/dsc-token-history" element={<DAdscTokenHistory />} />
 
         <Route path="/change-price" element={<DChangePrice />} />
 
@@ -663,12 +378,14 @@ const Distributor = () => {
               user="DISTRIBUTOR"
               name={currentUser?.username}
               address={`${currentUser?.City}, ${currentUser?.State}, ${currentUser?.PinCode}`}
-              date={new Date(currentUser?.CreateAt).toISOString().split("T")[0]}
+              date={currentUser?.CreateAt}
+              // date={new Date(currentUser?.CreateAt).toISOString().split("T")[0]}
               id={currentUser?.userId}
             />
             // )
           }
         />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>
   );

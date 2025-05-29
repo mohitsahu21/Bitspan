@@ -53,7 +53,7 @@ const EdistrictEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
   //     const fetchPackage = async () => {
   //       try {
   //         const response = await axios.get(
-  //           `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+  //           `https://2kadam.co.in/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
   //         );
   //         // console.log(response.data.data);
   //         if (Array.isArray(response.data.data)) {
@@ -182,7 +182,7 @@ const EdistrictEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     try {
       const response = await axios.put(
         // "http://localhost:7777/api/auth/retailer/e-district-Form",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/UpdateeDistrictFormData",
+        "https://2kadam.co.in/api/auth/retailer/UpdateeDistrictFormData",
         data,
         {
           headers: {
@@ -261,7 +261,7 @@ const EdistrictEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
 
   //   try {
   //     const response = await axios.put(
-  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/UpdateeDistrictFormData",
+  //       "https://2kadam.co.in/api/auth/retailer/UpdateeDistrictFormData",
   //       data,
   //       {
   //         headers: {
@@ -348,7 +348,7 @@ const EdistrictEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {
           headers: {
@@ -407,11 +407,11 @@ const EdistrictEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
           <div className="row flex-wrap justify-content-center">
             <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11 mt-5 formdata ">
               <div className="container mt-4">
-                <div className="col-12 d-flex justify-content-center">
+                {/* <div className="col-12 d-flex justify-content-center">
                   <div className="border border-danger rounded shadow-sm mb-3">
                     <h2 className="text-center m-0 px-5 py-3">E District</h2>
                   </div>
-                </div>
+                </div> */}
                 <form
                   onSubmit={openPinModal}
                   className="shadow p-3 mb-5 bg-body rounded"

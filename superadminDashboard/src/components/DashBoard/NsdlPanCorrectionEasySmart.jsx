@@ -24,7 +24,7 @@ const NsdlPanCorrectionEasySmart = () => {
       const [isVerifying, setIsVerifying] = useState(false);
   const [formData, setFormData] = useState({
     app_mode: "",
-    redirect_url : "https://bitspan.vimubds5.a2hosted.com/easySmartNsdlPANCallback",
+    redirect_url : "https://2kadam.co.in/easySmartNsdlPANCallback",
     selectType: "",
     first_name: "",
     middle_name : "",
@@ -49,7 +49,7 @@ const NsdlPanCorrectionEasySmart = () => {
       const fetchPackage = async () => {
         try {
           const response = await axios.get(
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
+            `https://2kadam.co.in/api/auth/retailer/getPackageData/${currentUser?.package_Id}`
           );
           // console.log(response.data.data);
           if (Array.isArray(response.data.data)) {
@@ -108,7 +108,7 @@ const NsdlPanCorrectionEasySmart = () => {
     setLoading(true);
     try {
       const apiResponse = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/nsdlpan/easySmartCorrectionPanRequest`,
+        `https://2kadam.co.in/api/auth/nsdlpan/easySmartCorrectionPanRequest`,
         // `http://localhost:7777/api/auth/nsdlpan/easySmartNSDLNewPanRequest`,
         formData
       );
@@ -120,7 +120,7 @@ const NsdlPanCorrectionEasySmart = () => {
       navigate('/nsdl-correction-pan-card-redirect', { state: { enc_data: apiResponse.data.nsdlData.enc_data } });
      setFormData({
       app_mode: "",
-      redirect_url : "https://bitspan.vimubds5.a2hosted.com/easySmartNsdlPANCallback",
+      redirect_url : "https://2kadam.co.in/easySmartNsdlPANCallback",
       selectType: "",
       first_name: "",
       middle_name : "",
@@ -196,8 +196,14 @@ const NsdlPanCorrectionEasySmart = () => {
     try {
       const response = await axios.post(
         // `http://localhost:7777/api/auth/log-reg/verify-pin`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
-        { user_id: currentUser.userId || "", pin: pin.join("") }
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
+        { user_id: currentUser.userId || "", pin: pin.join("") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {

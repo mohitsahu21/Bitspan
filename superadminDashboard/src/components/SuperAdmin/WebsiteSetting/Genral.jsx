@@ -38,7 +38,7 @@ const Genral = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
+            "https://2kadam.co.in/api/auth/superAdmin/getSuperAdminSettings"
           );
           setData(data.data);
           setFormData({
@@ -89,6 +89,9 @@ const Genral = () => {
     const handleFileChange = (e) => {
         const { name } = e.target;
         const file = e.target.files[0];
+        const maxSize = 5 * 1024 * 1024; // 5MB limit
+    const requiredWidth = 200; // Required width
+    const requiredHeight = 200; // Required height
          // Reset error message
         setQrCodeError("");
     
@@ -101,6 +104,33 @@ const Genral = () => {
             qrCodeRef.current.value = null; // Clear the input field
             return; // Stop further processing
         }
+        // Check file size
+              if (file.size > maxSize) {
+                Swal.fire({
+                  icon: "error",
+                  title: "File Too Large",
+                  text: `File ${file.type} exceeds the 5MB limit.`,
+                });
+                e.target.value = ""; // Clear input
+                return;
+              }
+               // Check image resolution only for QR Code
+                    if (name === "QR_Code") {
+                      const img = new Image();
+                      img.src = URL.createObjectURL(file);
+                      img.onload = () => {
+                        if (img.width !== requiredWidth || img.height !== requiredHeight) {
+                          Swal.fire({
+                            icon: "error",
+                            title: "Invalid Image Resolution",
+                            text: `Image must be exactly ${requiredWidth}x${requiredHeight} pixels.`,
+                          });
+                          if (qrCodeRef?.current) qrCodeRef.current.value = ""; // Clear input field
+                          e.target.value = ""; // Fallback clearing
+                          return;
+                        }
+                    
+                        
 
             const reader = new FileReader();
     
@@ -113,6 +143,8 @@ const Genral = () => {
             };
     
             reader.readAsDataURL(file);
+        }
+        }
         }
     };
 
@@ -144,7 +176,7 @@ const Genral = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post("https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateGenralSetting", formDataSend, {
+            const response = await axios.post("https://2kadam.co.in/api/auth/superAdmin/UpdateGenralSetting", formDataSend, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     Authorization: `Bearer ${token}`
@@ -365,7 +397,7 @@ const Genral = () => {
                                     </div>
                                     <div className="col-sm-12">
                                         <label for="name" class="form-label">
-                                            QR Code
+                                        QR Code (200 x 200)px
                                         </label>
                                         <div>
                                         <img src={formData.QR_Code_Preview} width={200} height={200} className="img-fluid" />
@@ -401,7 +433,7 @@ const Genral = () => {
 
                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                         <div className="text-center mb-2">
-                                            <button type="submit" disabled={loading} className="btn p-2">{loading ? "Loading..." :  "UPDATE"}</button>
+                                            <button type="submit" disabled={loading} className="btn btn-primary p-2">{loading ? "Loading..." :  "UPDATE"}</button>
                                         </div>
                                     </div>
                                     </>

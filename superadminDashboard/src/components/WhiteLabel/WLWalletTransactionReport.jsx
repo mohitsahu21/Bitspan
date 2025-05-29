@@ -25,8 +25,9 @@ const WLWalletTransactionReport = () => {
   const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
   const [isRefresh, setIsRefresh] = useState(false);
-  const [fromDate, setFromDate] = useState(""); // From date filter
-  const [toDate, setToDate] = useState(""); // To date filter
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+
   const [filteredItems, setFilteredItems] = useState([]);
   const userId = currentUser?.userId;
 
@@ -34,8 +35,8 @@ const WLWalletTransactionReport = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletSummary/${userId}`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWalletSummary/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getWalletSummary/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getWalletSummary/${userId}`,
 
         {
           headers: {
@@ -75,6 +76,7 @@ const WLWalletTransactionReport = () => {
   }, [keyword, fromDate, toDate, users]);
 
   const applyFilters = () => {
+    console.log("Filtering data from:", fromDate, "to:", toDate);
     const filtered = users.filter((row) => {
       const searchKeyword = keyword.trim().toLowerCase();
       const matchesKeyword =
@@ -82,9 +84,17 @@ const WLWalletTransactionReport = () => {
           row.Transaction_Id.toLowerCase().includes(searchKeyword)) ||
         (row?.Order_Id && row.Order_Id.toLowerCase().includes(searchKeyword));
 
+      // const matchesDate =
+      //   (!fromDate || new Date(row.transaction_date) >= new Date(fromDate)) &&
+      //   (!toDate || new Date(row.transaction_date) <= new Date(toDate));
+
       const matchesDate =
-        (!fromDate || new Date(row.transaction_date) >= new Date(fromDate)) &&
-        (!toDate || new Date(row.transaction_date) <= new Date(toDate));
+        (!fromDate ||
+          new Date(row.transaction_date).setHours(0, 0, 0, 0) >=
+            new Date(fromDate).setHours(0, 0, 0, 0)) &&
+        (!toDate ||
+          new Date(row.transaction_date).setHours(23, 59, 59, 999) <=
+            new Date(toDate).setHours(23, 59, 59, 999));
 
       return matchesKeyword && matchesDate;
     });
@@ -130,10 +140,10 @@ const WLWalletTransactionReport = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Wallet Transaction Report
+                        Wallet Full Summary
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; Wallet Transaction Report
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Wallet Full Summary
                         </h6>
                       </div>
                     </div>
@@ -166,7 +176,7 @@ const WLWalletTransactionReport = () => {
                               onChange={(e) => setToDate(e.target.value)}
                             />
                           </div>
-                          <div className="d-flex align-items-end">
+                          {/* <div className="d-flex align-items-end">
                             <button
                               type="button"
                               className="btn btn-primary button"
@@ -174,7 +184,7 @@ const WLWalletTransactionReport = () => {
                             >
                               Search
                             </button>
-                          </div>
+                          </div> */}
                         </div>
 
                         <div className="d-flex flex-column flex-xl-row gap-3">
@@ -273,6 +283,7 @@ const WLWalletTransactionReport = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

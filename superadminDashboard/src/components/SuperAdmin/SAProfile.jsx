@@ -23,6 +23,7 @@ const SAProfile = () => {
    const [isLoading, setLoading] = useState(false);
    const [userData,setUserData] = useState([]);
    console.log(userData);
+  const [profileImage, setprofileImage] = useState(null);
    const [formData,setFormData] = useState(
    {
     userId : userData.UserId,
@@ -43,8 +44,8 @@ const SAProfile = () => {
       setLoading(true);
      
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserDetails/${user.userId}`,
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
+        `https://2kadam.co.in/api/auth/superAdmin/getUserDetails/${user.userId}`,
+        // "https://2kadam.co.in/api/auth/log-reg/user-register",
         
   {
   headers: {
@@ -121,17 +122,32 @@ useEffect(()=>{
 
  const handlesubmit = async (e) => {
   e.preventDefault();
+
+  const data = new FormData();
+  data.append("userId", formData.userId);
+  data.append("username", formData.username);
+  data.append("ContactNo", formData.ContactNo);
+  data.append("email", formData.email);
+  data.append("PanCardNumber", formData.PanCardNumber);
+  data.append("AadharNumber", formData.AadharNumber);
+  data.append("BusinessName", formData.BusinessName);
+  data.append("City", formData.City);
+  data.append("State", formData.State);
+  data.append("PinCode", formData.PinCode);
+  if (profileImage) {
+    data.append("profileImage", profileImage);
+  }
   try {
     setLoading(true);
    
     const response = await axios.put(
-      "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/EditSuperAdminProfile",
-      // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
-      formData,
+      "https://2kadam.co.in/api/auth/superAdmin/EditSuperAdminProfile",
+      // "https://2kadam.co.in/api/auth/log-reg/user-register",
+      data,
       
 {
 headers: {
-  "Content-Type": "application/json",
+  "Content-Type": "multipart/form-data",
   Authorization: `Bearer ${token}`,
 },
 }
@@ -144,6 +160,7 @@ headers: {
         icon: "success",
         title: response.data.message ,
       });
+     window.location.reload();
    
     } else {
       Swal.fire({
@@ -170,6 +187,60 @@ headers: {
     });
   }
 };
+
+  const handleFileChange = (e) => {
+     const { name, files } = e.target;
+     console.log(`File input changed - Name: ${name}, Files:`, files);
+     const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+     const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+ 
+     const requiredWidth = 50; // Required width
+     const requiredHeight = 75; // Required height
+ 
+      if (!allowedTypes.includes(files[0].type)) {
+             Swal.fire({
+               icon: "error",
+               title: "Invalid File Type",
+               text: `Invalid file: ${files[0].name}. Only JPEG, JPG, PNG are allowed.`,
+             });
+             e.target.value = "";
+             return;
+           }
+              if (files[0].size > maxSize) {
+                   Swal.fire({
+                     icon: "error",
+                     title: "File Too Large",
+                     text: `File ${files[0].name} exceeds the 5MB limit.`,
+                   });
+                   e.target.value = "";
+                   return;
+                 }
+    
+     if (name === "profileImage") {
+         // Check image resolution
+   const img = new Image();
+   img.src = URL.createObjectURL(files[0]);
+   img.onload = () => {
+     if (img.width !== requiredWidth || img.height !== requiredHeight) {
+       Swal.fire({
+         icon: "error",
+         title: "Invalid Image Resolution",
+         text: `Image must be exactly ${requiredWidth}x${requiredHeight} pixels.`,
+       });
+       e.target.value = "";
+       return;
+     }
+       
+       setprofileImage(files[0]);
+       console.log("Updated profileImage:", files[0]);
+       Swal.fire(
+         "File Selected",
+         "Profile Image file selected successfully!",
+         "success"
+       );
+     }
+   };
+ }
   
   return (
     <>
@@ -456,6 +527,20 @@ headers: {
                         />
                       </div>
                     </div>
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                          <label>Profile Image (50 X 75)px</label>
+                          <div className="input-group">
+                            <input
+                              class="form-control"
+                              type="file"
+                              id="formFile"
+                              name="profileImage"
+                              accept="image/*"
+                              onChange={handleFileChange}
+                              required
+                            />
+                          </div>
+                        </div>
 
                     {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label>Photo</label>
@@ -484,7 +569,7 @@ headers: {
                     </div> */}
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="text-start m-3">
-                        <button className="btn p-2">Update</button>
+                        <button className="btn btn-primary p-2">Update</button>
                       </div>
                     </div>
                   </div>

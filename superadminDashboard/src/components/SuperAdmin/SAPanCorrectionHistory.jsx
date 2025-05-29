@@ -42,8 +42,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
 //     try {
 //       setLoading(true);
 //       const response = await axios.put(
-//         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessSambalForm",
-//         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+//         "https://2kadam.co.in/api/auth/superAdmin/SuccessSambalForm",
+//         // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
 //         formData,
 //         {
 //   headers: {
@@ -252,7 +252,7 @@ const handlesubmit = async (e) => {
     setLoading(true);
 
     const { data } = await axios.get(
-      `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${item.userId}`,
+      `https://2kadam.co.in/api/auth/superAdmin/getUserRelations/${item.userId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -278,7 +278,7 @@ const handlesubmit = async (e) => {
 
     const retailerPromise = axios
       .get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
+        `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -294,7 +294,7 @@ const handlesubmit = async (e) => {
       if (distributor) {
         const distributorPromise = axios
           .get(
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+            `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -311,7 +311,7 @@ const handlesubmit = async (e) => {
       if (superDistributor) {
         const superDistributorPromise = axios
           .get(
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+            `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -328,7 +328,7 @@ const handlesubmit = async (e) => {
       if (white_lable) {
         const whiteLablePromise = axios
           .get(
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+            `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -364,8 +364,8 @@ const handlesubmit = async (e) => {
       
       if(result && result.retailerFormData && result.retailerFormData.amount){
         const response = await axios.put(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+          "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+          // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
           result.retailerFormData,
           {
             headers: {
@@ -379,8 +379,8 @@ const handlesubmit = async (e) => {
       }
       if( result && result.distributorFormData && result.distributorFormData.amount){
         const response = await axios.put(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+          "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+          // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
           result.distributorFormData,
           {
             headers: {
@@ -394,8 +394,8 @@ const handlesubmit = async (e) => {
       }
       if( result && result.superDistributorFormData && result.superDistributorFormData.amount){
         const response = await axios.put(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+          "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+          // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
           result.superDistributorFormData,
           {
             headers: {
@@ -409,8 +409,8 @@ const handlesubmit = async (e) => {
       }
       if( result && result.whiteLableFormData && result.whiteLableFormData.amount){
         const response = await axios.put(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+          "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+          // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
           result.whiteLableFormData,
           {
             headers: {
@@ -463,8 +463,8 @@ const handlesubmit = async (e) => {
           status : "Success",
         }
         await axios.post(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+          "https://2kadam.co.in/api/auth/superAdmin/addCommissionEntry",
+          // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
           commissionFormData,
           {
             headers: {
@@ -478,8 +478,8 @@ const handlesubmit = async (e) => {
       }
 
         await axios.put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessNSDLCorrectionForm",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+              "https://2kadam.co.in/api/auth/superAdmin/SuccessNSDLCorrectionForm",
+              // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
               formData,
               {
                 headers: {
@@ -646,7 +646,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectNSDLCorrectionForm",
+        "https://2kadam.co.in/api/auth/superAdmin/rejectNSDLCorrectionForm",
         // "http://localhost:7777/api/auth/superAdmin/rejectSambalForm",
         formData,
         {
@@ -839,7 +839,7 @@ const SAPanCorrectionHistory = () => {
       setLoading(true);
       try {
         const { data } = await axios.get(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getOnlinePanCorrectionData",
+          "https://2kadam.co.in/api/auth/superAdmin/getOnlinePanCorrectionData",
           {
   headers: {
     "Content-Type": "application/json",
@@ -955,18 +955,27 @@ const SAPanCorrectionHistory = () => {
                                                     <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="fromDate" className="form-label">From</label>
                                                         <input id="fromDate" className="form-control" type="date" value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}/>
+                               onChange={(e) => {
+                                setFromDate(e.target.value)
+                                setCurrentPage(0);
+                                }}/>
                                                     </div>
                                                     <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="toDate" className="form-label">To</label>
                                                         <input id="toDate" className="form-control " type="date" value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}/>
+                              onChange={(e) => {
+                                setToDate(e.target.value)
+                                setCurrentPage(0);
+                              }}/>
                                                     </div>
                                                     <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="toDate" className="form-label">Select Status</label>
                                                         <select className="form-select" aria-label="Default select example"
                                                          value={PaymentMode}
-                                                         onChange={(e) => setPaymentMode(e.target.value)}>
+                                                         onChange={(e) => {
+                                                          setPaymentMode(e.target.value)
+                                                          setCurrentPage(0);
+                                                        }}>
                                                              <option selected>---Select---</option>
                                                             <option value="Success">Success</option>
                                                             <option value="Failed">Failed</option>
@@ -990,7 +999,11 @@ const SAPanCorrectionHistory = () => {
          type="search"
          placeholder="Enter Name/Mobile/Email/Order Id/Txn Id/Retailer Name/Id"
          value={keyword}
-onChange={(e) => setKeyword(e.target.value)}
+// onChange={(e) => setKeyword(e.target.value)}
+onChange={(e) => {
+  setKeyword(e.target.value)
+  setCurrentPage(0);
+}}
          />
     </div>
     
@@ -1159,6 +1172,7 @@ onChange={(e) => setKeyword(e.target.value)}
                                                           onPageChange={handlePageChange}
                                                           containerClassName={"pagination"}
                                                           activeClassName={"active"}
+                                                          forcePage={currentPage}
                                                         />
                                                       </PaginationContainer>
                                                  

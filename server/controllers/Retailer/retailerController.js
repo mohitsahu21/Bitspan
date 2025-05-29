@@ -4,6 +4,8 @@ const moment = require("moment-timezone");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const dotenv = require("dotenv");
+dotenv.config();
 
 // const applyOfflineForm = (req, res) => {
 //   const {
@@ -302,7 +304,7 @@ const applyOfflineForm = (req, res) => {
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
   const attached_form = req.files.attached_form
     ? `${domain}/uploads/${req.files.attached_form[0].filename}`
     : null;
@@ -524,7 +526,7 @@ const update_applyOfflineForm = (req, res) => {
 
   const updated_at = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
   const attached_form = req.files.attached_form
     ? `${domain}/uploads/${req.files.attached_form[0].filename}`
     : previous_attached_form;
@@ -633,7 +635,7 @@ const getApplyOfflineFormByid = (req, res) => {
   //   return res.status(400).json({ error: "Invalid user ID" });
   // }
 
-  const query = `SELECT * FROM apply_offline_form WHERE user_id = ?`;
+  const query = `SELECT * FROM apply_offline_form WHERE user_id = ? ORDER BY id DESC`;
 
   db.query(query, [userId], (err, results) => {
     if (err) {
@@ -930,7 +932,7 @@ const bankidForm = (req, res) => {
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
   const attached_photo = req.files.attached_photo
     ? `${domain}/uploads/${req.files.attached_photo[0].filename}`
     : null;
@@ -1169,7 +1171,7 @@ const update_bankidForm = (req, res) => {
   // console.log(req.files.electric_bill)
   const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
   const attached_photo = req.files.attached_photo
     ? `${domain}/uploads/${req.files.attached_photo[0].filename}`
     : previous_attached_photo;
@@ -1796,7 +1798,7 @@ const panFromData = (req, res) => {
   let { amount } = req.body;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
 
   // Handle file uploads
   const documentUpload =
@@ -2017,7 +2019,7 @@ const UpdatePanFromData = (req, res) => {
   } = req.body;
 
   const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
 
   // Handle file uploads
   const documentUpload =
@@ -2100,10 +2102,23 @@ const UpdatePanFromData = (req, res) => {
   });
 };
 
-const nsdlTransactionNewRequest = (req, res) => {
-  const query = `SELECT * FROM nsdlpan ORDER BY id DESC`;
+// const nsdlTransactionNewRequest = (req, res) => {
+//   const query = `SELECT * FROM nsdlpan ORDER BY id DESC`;
 
-  db.query(query, (err, result) => {
+//   db.query(query, (err, result) => {
+//     if (err) {
+//       console.error("Database error:", err);
+//       return res.status(400).json({ status: "Failure", error: err.message });
+//     } else {
+//       return res.status(200).json({ status: "Success", data: result });
+//     }
+//   });
+// };
+const nsdlTransactionNewRequest = (req, res) => {
+  const { id } = req.params;
+  const query = `SELECT * FROM nsdlpan WHERE userId = ? ORDER BY id DESC`;
+
+  db.query(query, [id], (err, result) => {
     if (err) {
       console.error("Database error:", err);
       return res.status(400).json({ status: "Failure", error: err.message });
@@ -2113,16 +2128,59 @@ const nsdlTransactionNewRequest = (req, res) => {
   });
 };
 
-const nsdlTransactionCorrection = (req, res) => {
-  const query = `SELECT * FROM nsdlpancorrection ORDER BY id DESC`;
+const getNsdlTransactionById = (req, res) => {
+  const { id } = req.params;
 
-  db.query(query, (err, result) => {
+  const query = `SELECT * FROM nsdlpan WHERE orderid = ?`;
+
+  db.query(query, [id], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "Record not found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result[0] });
+  });
+};
+
+const nsdlTransactionCorrection = (req, res) => {
+  const { id } = req.params;
+  const query = `SELECT * FROM nsdlpancorrection WHERE userId = ? ORDER BY id DESC`;
+
+  db.query(query, [id], (err, result) => {
     if (err) {
       console.error("Database error:", err);
       return res.status(400).json({ status: "Failure", error: err.message });
     } else {
       return res.status(200).json({ status: "Success", data: result });
     }
+  });
+};
+
+const getNsdlCorrectionById = (req, res) => {
+  const { id } = req.params;
+
+  const query = `SELECT * FROM nsdlpancorrection WHERE id = ?`;
+
+  db.query(query, [id], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "Record not found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result[0] });
   });
 };
 
@@ -2144,14 +2202,15 @@ const complainInsertApi = (req, res) => {
   const { complainType, transactionNo, mobileNo, remark, userID } = req.body;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
+  const status = "Pending";
 
   const complainFile =
     req.files && req.files.complainFile
       ? `${domain}/complainUpload/${req.files.complainFile[0].filename}`
       : null;
 
-  const insertquery = `INSERT INTO complaindata (complainType, transactionNo, mobileNo, remark, complainFile, userID, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+  const insertquery = `INSERT INTO complaindata (complainType, transactionNo, mobileNo, remark, complainFile, userID, createdAt, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
   const values = [
     complainType,
@@ -2161,6 +2220,7 @@ const complainInsertApi = (req, res) => {
     complainFile,
     userID,
     createdAt,
+    status,
   ];
 
   db.query(insertquery, values, (err, result) => {
@@ -2209,7 +2269,7 @@ const complainGetData = (req, res) => {
 
 const profileInfo = (req, res) => {
   try {
-    const domain = "http://localhost:7777";
+    const domain = process.env.domain;
 
     // Extract uploaded file paths
     const aadharFront = req.files?.aadharFront?.[0]?.filename
@@ -2368,7 +2428,7 @@ const profileUserKyc = (req, res) => {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
   const aadharFront = req.files.aadharFront
     ? `${domain}/profile-data/${req.files.aadharFront[0].filename}`
     : null;
@@ -2688,7 +2748,7 @@ const eDistrictFormData = (req, res) => {
   let { amount } = req.body;
 
   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
 
   // Handle multiple file uploads
   const documentUpload = req.files
@@ -2888,7 +2948,7 @@ const UpdateeDistrictFormData = (req, res) => {
   // console.log(req.body);
 
   const updated_at = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-  const domain = "http://localhost:7777";
+  const domain = process.env.domain;
 
   // Handling multiple file uploads
   // const documentUpload = req.files.documentUpload
@@ -4038,7 +4098,7 @@ const PanDocumentUpload = (req, res) => {
     const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
     const orderId = `PDOC${Date.now()}`;
     const userStatus = "Success";
-    const domain = "http://localhost:7777";
+    const domain = process.env.domain;
 
     const podfile =
       req.files && req.files.podfile
@@ -4124,7 +4184,7 @@ const walletOffline = (req, res) => {
     const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
     const orderId = `WOR${Date.now()}`;
     const userStatus = "Pending";
-    const domain = "http://localhost:7777";
+    const domain = process.env.domain;
 
     const Receiept_Attechment =
       req.files && req.files.Receiept_Attechment
@@ -4202,6 +4262,27 @@ const getAddMoneyToWalletOnline = (req, res) => {
     }
 
     return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
+const getAddMoneyToWalletOnlineById = (req, res) => {
+  const id = req.params.id;
+
+  const query = `SELECT * FROM user_wallet_add_money_request WHERE id = ? AND Payment_Mode = "Online"`;
+
+  db.query(query, [id], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found for this ID" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result[0] });
   });
 };
 
@@ -4813,7 +4894,6 @@ const getAllMonthRechargeOffline = (req, res) => {
 
 const getTodaysRecharge = (req, res) => {
   const { userId } = req.params;
-
   // SQL query to fetch commission records for the user for the current day
   const sql = `
     SELECT * 
@@ -4839,6 +4919,7 @@ const getTodaysRecharge = (req, res) => {
     }); // Return the commission records for the current day
   });
 };
+
 const getTodaysRechargeOffline = (req, res) => {
   const { userId } = req.params;
 
@@ -4875,7 +4956,7 @@ const getAllCommission = (req, res) => {
   const sql = `
     SELECT * 
     FROM commission_table 
-    WHERE distributor_id = ?
+    WHERE retailer_id = ?
     ORDER BY created_at DESC
   `;
 
@@ -5004,6 +5085,531 @@ const getWhiteLableData = (req, res) => {
   });
 };
 
+// Digital Signature Plan and other functionality
+
+const digitalSignaturePlan = (req, res) => {
+  const { year, amount, link } = req.body;
+
+  if (!year || !amount || !link) {
+    return res
+      .status(400)
+      .json({ status: "Failure", error: "All fields are required" });
+  }
+
+  const created_at = moment().format("YYYY-MM-DD HH:mm:ss");
+  const planstatus = "Active";
+
+  const sql =
+    "INSERT INTO digitalsign (year, amount, link, status, created_at) VALUES (?, ?, ?, ?, ?)";
+
+  db.query(sql, [year, amount, link, planstatus, created_at], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ status: "Failure", error: err.message });
+    }
+
+    return res.status(201).json({
+      status: "Success",
+      message: "Digital Signature Plan added successfully",
+      formId: result.insertId,
+    });
+  });
+};
+
+const updateDigitalSignaturePlan = (req, res) => {
+  const { id } = req.params;
+  const { year, amount, link, status } = req.body;
+
+  if (!year || !amount || !link || !status) {
+    return res
+      .status(400)
+      .json({ status: "Failure", error: "All fields are required" });
+  }
+
+  const updated_at = moment().format("YYYY-MM-DD HH:mm:ss");
+
+  const sql =
+    "UPDATE digitalsign SET year = ?, amount = ?, link = ?, status = ?, updated_at = ? WHERE id = ?";
+
+  db.query(sql, [year, amount, link, status, updated_at, id], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", error: "Plan not found" });
+    }
+
+    return res.status(200).json({
+      status: "Success",
+      message: "Digital Signature Plan updated successfully",
+    });
+  });
+};
+
+const getdigitalSignaturePlan = (req, res) => {
+  const sqlQuery = `SELECT * FROM  digitalsign`;
+
+  db.query(sqlQuery, (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
+const getActiveDigitalSignaturePlans = (req, res) => {
+  const sqlQuery = `SELECT * FROM digitalsign WHERE status = 'Active'`;
+
+  db.query(sqlQuery, (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No active data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
+const addDSCForm = (req, res) => {
+  const {
+    name,
+    father_name,
+    mobile,
+    email,
+    pan,
+    aadhar,
+    address,
+    plan,
+    userId,
+  } = req.body;
+
+  let { amount } = req.body;
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+  const orderId = `ORDS${Date.now()}`;
+  const transactionId = `TXNW${Date.now()}`;
+  const transactionDetails = `Sambal Form Deduction Order Id ${orderId}`;
+  const creditAmt = 0;
+
+  // Step 1: Check the current balance
+  const queryBalance = `
+    SELECT Closing_Balance 
+    FROM user_wallet 
+    WHERE userId = ? 
+    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+    LIMIT 1
+  `;
+
+  db.query(queryBalance, [userId], (err, balanceResult) => {
+    if (err) {
+      console.error("Error fetching wallet balance:", err);
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Failed to fetch wallet balance",
+        details: err.message,
+      });
+    }
+
+    if (balanceResult.length === 0) {
+      return res.status(404).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        message: "No balance found for the user.",
+      });
+    }
+
+    const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+    if (isNaN(currentBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Current balance is invalid.",
+      });
+    }
+
+    // Validate `Amount`: Check for undefined, null, or invalid number
+    if (amount == null || isNaN(parseFloat(amount)) || parseFloat(amount) < 0) {
+      return res.status(500).json({
+        success: false,
+        status: "Failure",
+        error: "Invalid or missing amount",
+      });
+    }
+
+    amount = parseFloat(parseFloat(amount).toFixed(2)); // Ensures it's a number with two decimal places
+
+    if (currentBalance < amount) {
+      return res.status(400).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        message: "Insufficient balance.",
+        currentBalance,
+        requiredAmount: amount,
+      });
+    }
+
+    const newBalance = parseFloat(currentBalance - amount).toFixed(2);
+
+    // Step 2: Update the wallet table
+    const updateWalletQuery = `
+      INSERT INTO user_wallet 
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount,debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)
+    `;
+
+    db.query(
+      updateWalletQuery,
+      [
+        userId,
+        createdAt,
+        orderId,
+        transactionId,
+        currentBalance.toFixed(2),
+        newBalance,
+        "Debit",
+        creditAmt,
+        amount,
+        transactionDetails,
+        "Success",
+      ],
+      (err, walletResult) => {
+        if (err) {
+          console.error("Error updating wallet balance:", err);
+          return res.status(500).json({
+            status: "Failure",
+            step: "Update Wallet Balance",
+            error: "Failed to update wallet balance",
+            details: err.message,
+          });
+        }
+
+        // Step 3: Insert into dscFormQuery table
+        const dscFormQuery = `
+          INSERT INTO dsc (
+            order_id, name, father_name, mobile, email, pan,
+            aadhar, address, plan, user_id, amount, status, create_at
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        const sambalFormValues = [
+          orderId,
+          name,
+          father_name,
+          mobile,
+          email,
+          pan,
+          aadhar,
+          address,
+          plan,
+          userId,
+          amount,
+          "Pending",
+          createdAt,
+        ];
+
+        db.query(dscFormQuery, sambalFormValues, (err, result) => {
+          if (err) {
+            console.error("Error inserting data into DSCForm:", err);
+            return res.status(500).json({
+              status: "Failure",
+              step: "Insert DSCForm",
+              error: "Failed to insert into DSCForm",
+              details: err.message,
+            });
+          }
+
+          // Step 4: Return success response
+          return res.status(200).json({
+            status: "Success",
+            message:
+              "Wallet updated and Digital Siginature Form processed successfully.",
+            details: {
+              dthConnection: {
+                orderId,
+                name,
+                father_name,
+                mobile,
+                email,
+                pan,
+                aadhar,
+                address,
+                plan,
+                createdAt,
+              },
+              wallet: {
+                transactionId,
+                newBalance,
+                previousBalance: currentBalance.toFixed(2),
+                deductedAmount: amount,
+              },
+            },
+          });
+        });
+      }
+    );
+  });
+};
+
+const getDSCFormData = (req, res) => {
+  const userId = req.params.userId;
+  const query = `
+  SELECT 
+    dsc.*, 
+    digitalsign.link,
+    digitalsign.status AS plan_status
+  FROM dsc
+  LEFT JOIN digitalsign 
+    ON dsc.plan = digitalsign.year 
+  WHERE dsc.user_id = ? 
+  ORDER BY dsc.dsc_id DESC;
+`;
+
+  db.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      return res
+        .status(500)
+        .json({ status: "Failure", error: "Internal Server Error" });
+    }
+
+    if (results.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: results });
+  });
+};
+
+const buyDSCcoupon = (req, res) => {
+  const {
+    name,
+    email,
+    mobile,
+    address,
+    coupon_Quantity,
+    coupon_Price,
+    total_Amount,
+    userId,
+  } = req.body;
+
+  if (
+    !name ||
+    !email ||
+    !mobile ||
+    !address ||
+    !coupon_Quantity ||
+    !coupon_Price ||
+    !total_Amount ||
+    !userId
+  ) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+
+  if (isNaN(total_Amount) || parseFloat(total_Amount) <= 0) {
+    return res.status(400).json({
+      status: "Failure",
+      step: "Validation",
+      error: "Invalid amount. Amount must be a positive number.",
+    });
+  }
+
+  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+  // Step 1: Fetch the latest closing balance
+  const queryBalance = `
+    SELECT Closing_Balance 
+    FROM user_wallet 
+    WHERE userId = ? 
+    ORDER BY STR_TO_DATE(transaction_date, '%Y-%m-%d %H:%i:%s') DESC 
+    LIMIT 1
+  `;
+
+  db.query(queryBalance, [userId], (err, balanceResult) => {
+    if (err) {
+      console.error("Error fetching wallet balance:", err);
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Failed to fetch wallet balance",
+        details: err.message,
+      });
+    }
+
+    if (balanceResult.length === 0) {
+      return res.status(404).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        message: "No balance found for the user.",
+      });
+    }
+
+    const currentBalance = parseFloat(balanceResult[0].Closing_Balance);
+    if (isNaN(currentBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Fetch Wallet Balance",
+        error: "Current balance is invalid.",
+      });
+    }
+
+    if (currentBalance < total_Amount) {
+      return res.status(400).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        message: "Insufficient balance.",
+        currentBalance,
+        requiredAmount: total_Amount,
+      });
+    }
+
+    // Step 2: Update wallet first
+    const newBalance = parseFloat(currentBalance - total_Amount).toFixed(2);
+    if (isNaN(newBalance)) {
+      return res.status(500).json({
+        status: "Failure",
+        step: "Wallet Deduction",
+        error: "New balance calculation is invalid.",
+      });
+    }
+
+    const orderId = `COU${Date.now()}`;
+    const transactionId = `TXNW${Date.now()}`;
+    const transactionDetails = `Buy Digital Signature Token quantity ${coupon_Quantity}`;
+
+    const updateWalletQuery = `
+      INSERT INTO user_wallet 
+      (userId, transaction_date, Order_Id, Transaction_Id, Opening_Balance, Closing_Balance, Transaction_Type, credit_amount, debit_amount, Transaction_details, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+      updateWalletQuery,
+      [
+        userId,
+        createdAt,
+        orderId,
+        transactionId,
+        currentBalance.toFixed(2),
+        newBalance,
+        "Debit",
+        0, // Credit amount is zero
+        total_Amount,
+        transactionDetails,
+        "Success",
+      ],
+      (err, walletResult) => {
+        if (err) {
+          console.error("Error updating wallet balance:", err);
+          return res.status(500).json({
+            status: "Failure",
+            step: "Update Wallet Balance",
+            error: "Failed to update wallet balance",
+            details: err.message,
+          });
+        }
+
+        // Step 3: Insert Coupon Request after wallet update
+        const status = "Pending";
+        const insertCouponQuery = `
+          INSERT INTO dsc_coupon_requests
+          (order_id, name, email, mobile, address, coupon_Quantity, coupon_Price, total_Amount, user_id, status, created_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        db.query(
+          insertCouponQuery,
+          [
+            orderId,
+            name,
+            email,
+            mobile,
+            address,
+            coupon_Quantity,
+            coupon_Price,
+            total_Amount,
+            userId,
+            status,
+            createdAt,
+          ],
+          (err, couponResult) => {
+            if (err) {
+              console.error("Error inserting Token request:", err);
+              return res.status(500).json({
+                status: "Failure",
+                step: "Buy DSC Token",
+                error: "Failed to process Buy DSC Token",
+                details: err.message,
+              });
+            }
+
+            return res.status(200).json({
+              status: "Success",
+              message:
+                "Token purchase processed and wallet updated successfully.",
+              details: {
+                wallet: {
+                  transactionId,
+                  newBalance,
+                  previousBalance: currentBalance.toFixed(2),
+                  deductedAmount: total_Amount,
+                },
+                recharge: {
+                  orderId,
+                  coupon_Quantity,
+                  coupon_Price,
+                  total_Amount,
+                },
+              },
+            });
+          }
+        );
+      }
+    );
+  });
+};
+
+const getDSCToken = (req, res) => {
+  const userId = req.params.userId;
+
+  let query = `SELECT * FROM dsc_coupon_requests WHERE user_id = ? ORDER BY id  DESC`;
+
+  db.query(query, [userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(400).json({ status: "Failure", error: err.message });
+    }
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "Failure", message: "No data found" });
+    }
+
+    return res.status(200).json({ status: "Success", data: result });
+  });
+};
+
 module.exports = {
   applyOfflineForm,
   getApplyOfflineFormByid,
@@ -5067,4 +5673,15 @@ module.exports = {
   getCertificateDetails,
   getSuperAdminData,
   getWhiteLableData,
+  digitalSignaturePlan,
+  updateDigitalSignaturePlan,
+  getdigitalSignaturePlan,
+  getActiveDigitalSignaturePlans,
+  addDSCForm,
+  getDSCFormData,
+  buyDSCcoupon,
+  getDSCToken,
+  getAddMoneyToWalletOnlineById,
+  getNsdlTransactionById,
+  getNsdlCorrectionById,
 };

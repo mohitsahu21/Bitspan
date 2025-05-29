@@ -29,7 +29,7 @@ const NsdlNewPanCardZlink = () => {
   const [formData, setFormData] = useState({
     app_mode: "",
     redirect_url:
-      "https://bitspan.vimubds5.a2hosted.com/easySmartNsdlPANCallback",
+      "https://2kadam.co.in/easySmartNsdlPANCallback",
     selectType: "",
     first_name: "",
     middle_name: "",
@@ -48,7 +48,7 @@ const NsdlNewPanCardZlink = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          `https://2kadam.co.in/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -108,7 +108,7 @@ const NsdlNewPanCardZlink = () => {
     setLoading(true);
     try {
       const apiResponse = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/zlinkNSDLNewPanRequest`,
+        `https://2kadam.co.in/api/auth/zlink/zlinkNSDLNewPanRequest`,
         // `http://localhost:7777/api/auth/zlink/zlinkNSDLNewPanRequest`,
         // `http://localhost:7777/api/auth/nsdlpan/easySmartNSDLNewPanRequest`,
         formData
@@ -171,7 +171,7 @@ const NsdlNewPanCardZlink = () => {
     try {
       const response = await axios.post(
         // `http://localhost:7777/api/auth/log-reg/verify-pin`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {
           headers: {

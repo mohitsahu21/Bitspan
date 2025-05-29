@@ -28,7 +28,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     order_id: item.order_id,
     note: "",
     status: "Under Process",
-    process_by_userId	: currentUser.userId
+    process_by_userId: currentUser.userId,
   });
 
   const handleChange = (e) => {
@@ -44,7 +44,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
       setLoading(true);
       const response = await axios.put(
         // "http://localhost:7777/api/auth/superAdmin/ApproveSambalForm",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveSambalForm",
+        "https://2kadam.co.in/api/auth/superAdmin/ApproveSambalForm",
         formData,
         {
           headers: {
@@ -73,9 +73,9 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
       if (error?.response?.status == 401) {
         // alert("Your token is expired please login again")
         Swal.fire({
-                  icon: "error",
-                  title: "Your token is expired please login again",
-                });
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
         dispatch(clearUser());
         navigate("/");
       }
@@ -135,7 +135,11 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn btn-primary p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -159,7 +163,7 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     order_id: item.order_id,
     note: "",
     status: "Mark Edit",
-    process_by_userId	: currentUser.userId
+    process_by_userId: currentUser.userId,
   });
 
   const handleChange = (e) => {
@@ -174,8 +178,8 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/markForEditSambalForm",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/markForEditSambalForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -205,9 +209,9 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
       if (error?.response?.status == 401) {
         // alert("Your token is expired please login again")
         Swal.fire({
-                  icon: "error",
-                  title: "Your token is expired please login again",
-                });
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
         dispatch(clearUser());
         navigate("/");
       }
@@ -266,7 +270,11 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn btn-primary p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -281,16 +289,16 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
 // Success Model start //
 const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
- const navigate = useNavigate();
- const dispatch = useDispatch();
-  const [userRelation,setUserRelation] = useState([]);
- const { token } = useSelector((state) => state.user);
- const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [userRelation, setUserRelation] = useState([]);
+  const { token } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     order_id: item.order_id,
     note: "",
     status: "Success",
-    process_by_userId	: currentUser.userId
+    process_by_userId: currentUser.userId,
   });
 
   const handleChange = (e) => {
@@ -300,229 +308,219 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
     });
   };
 
-//   const handlesubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       setLoading(true);
-//       const response = await axios.put(
-//         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessSambalForm",
-//         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-//         formData,
-//         {
-//   headers: {
-//     "Content-Type": "application/json",
-//     Authorization: `Bearer ${token}`,
-//   },
-// }
-//       );
-//       console.log(response);
-//       setLoading(false);
-//       if (response.data.success) {
-//         Swal.fire({
-//           icon: "success",
-//           title: "Mark Success Form Successfully",
-//         });
-//         setShowSuccessModel(false);
-//         setIsRefresh((value) => !value);
-//       } else {
-//         Swal.fire({
-//           icon: "error",
-//           title: "An error occurred during the process. Please try again.",
-//         });
-//       }
-//     } catch (error) {
-//       console.error("There was an error submitting the form!", error);
-//       if (error?.response?.status == 401) {
-//         // alert("Your token is expired please login again")
-//         Swal.fire({
-//                   icon: "error",
-//                   title: "Your token is expired please login again",
-//                 });
-//         dispatch(clearUser());
-//         navigate("/");
-//       }
-//       setLoading(false);
-//       Swal.fire({
-//         icon: "error",
-//         title: "An error occurred during the process. Please try again.",
-//       });
-//     }
-//   };
+  //   const handlesubmit = async (e) => {
+  //     e.preventDefault();
+  //     try {
+  //       setLoading(true);
+  //       const response = await axios.put(
+  //         "https://2kadam.co.in/api/auth/superAdmin/SuccessSambalForm",
+  //         // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
+  //         formData,
+  //         {
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     Authorization: `Bearer ${token}`,
+  //   },
+  // }
+  //       );
+  //       console.log(response);
+  //       setLoading(false);
+  //       if (response.data.success) {
+  //         Swal.fire({
+  //           icon: "success",
+  //           title: "Mark Success Form Successfully",
+  //         });
+  //         setShowSuccessModel(false);
+  //         setIsRefresh((value) => !value);
+  //       } else {
+  //         Swal.fire({
+  //           icon: "error",
+  //           title: "An error occurred during the process. Please try again.",
+  //         });
+  //       }
+  //     } catch (error) {
+  //       console.error("There was an error submitting the form!", error);
+  //       if (error?.response?.status == 401) {
+  //         // alert("Your token is expired please login again")
+  //         Swal.fire({
+  //                   icon: "error",
+  //                   title: "Your token is expired please login again",
+  //                 });
+  //         dispatch(clearUser());
+  //         navigate("/");
+  //       }
+  //       setLoading(false);
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "An error occurred during the process. Please try again.",
+  //       });
+  //     }
+  //   };
 
-const sambalCommission = async (retailer, distributor, superDistributor, white_lable ,packageDetails,item)=>{
-  const Order_Id = `ORW${Date.now()}`;
-  const Transaction_Id = `TXNW${Date.now()}`;
- const  retailerFormData = {
-    userId: retailer,
-amount : "",
-Transaction_details : `Commission Credit for Sambal Application Order Id ${item.order_id}`,
-status : "Success",
-Order_Id,
-Transaction_Id
-  }
-  const  distributorFormData = {
-    userId: distributor,
-amount : "",
-Transaction_details : `Commission Credit for Sambal Application Order Id ${item.order_id}`,
-status : "Success",
-Order_Id,
-Transaction_Id
-  }
-  const  superDistributorFormData = {
-    userId: superDistributor,
-amount : "",
-Transaction_details : `Commission Credit for Sambal Application Order Id ${item.order_id}`,
-status : "Success",
-Order_Id,
-Transaction_Id
-  }
-  const  whiteLableFormData = {
-    userId: white_lable,
-amount : "",
-Transaction_details : `Commission Credit for Sambal Application Order Id ${item.order_id}`,
-status : "Success",
-Order_Id,
-Transaction_Id
-  }
-  const retailerPackage = packageDetails?.retailer ? packageDetails?.retailer[0]:  {};
-  const distributorPackage = packageDetails?.distributor ? packageDetails?.distributor[0] : {};
-  const superDistributorPackage = packageDetails?.superDistributor ? packageDetails?.superDistributor[0] : {} ;
-  const whiteLablePackage = packageDetails?.whiteLable ? packageDetails?.whiteLable[0] : {} ;
+  const sambalCommission = async (
+    retailer,
+    distributor,
+    superDistributor,
+    white_lable,
+    packageDetails,
+    item
+  ) => {
+    const Order_Id = `ORW${Date.now()}`;
+    const Transaction_Id = `TXNW${Date.now()}`;
+    const retailerFormData = {
+      userId: retailer,
+      amount: "",
+      Transaction_details: `Commission Credit for Sambal Application Order Id ${item.order_id}`,
+      status: "Success",
+      Order_Id,
+      Transaction_Id,
+    };
+    const distributorFormData = {
+      userId: distributor,
+      amount: "",
+      Transaction_details: `Commission Credit for Sambal Application Order Id ${item.order_id}`,
+      status: "Success",
+      Order_Id,
+      Transaction_Id,
+    };
+    const superDistributorFormData = {
+      userId: superDistributor,
+      amount: "",
+      Transaction_details: `Commission Credit for Sambal Application Order Id ${item.order_id}`,
+      status: "Success",
+      Order_Id,
+      Transaction_Id,
+    };
+    const whiteLableFormData = {
+      userId: white_lable,
+      amount: "",
+      Transaction_details: `Commission Credit for Sambal Application Order Id ${item.order_id}`,
+      status: "Success",
+      Order_Id,
+      Transaction_Id,
+    };
+    const retailerPackage = packageDetails?.retailer
+      ? packageDetails?.retailer[0]
+      : {};
+    const distributorPackage = packageDetails?.distributor
+      ? packageDetails?.distributor[0]
+      : {};
+    const superDistributorPackage = packageDetails?.superDistributor
+      ? packageDetails?.superDistributor[0]
+      : {};
+    const whiteLablePackage = packageDetails?.whiteLable
+      ? packageDetails?.whiteLable[0]
+      : {};
 
-  // const application_type = item.application_type;
-  const amount = parseFloat(item.amount);
+    // const application_type = item.application_type;
+    const amount = parseFloat(item.amount);
 
-  let retailerCommAmount = 0;
-  let distributorCommAmount = 0;
-  let superDistributorCommAmount = 0;
-  let whiteLableCommAmount = 0;
+    let retailerCommAmount = 0;
+    let distributorCommAmount = 0;
+    let superDistributorCommAmount = 0;
+    let whiteLableCommAmount = 0;
 
+    try {
+      if (retailerPackage.Offline_Services_Commission_Type == "Percentage") {
+        retailerCommAmount =
+          (amount * parseFloat(retailerPackage.Sambal_Commission)) / 100;
+      } else {
+        retailerCommAmount = parseFloat(retailerPackage.Sambal_Commission);
+      }
 
-  try {
-        
-        if(retailerPackage.Offline_Services_Commission_Type == "Percentage"){
-          
-            retailerCommAmount = (amount * parseFloat(retailerPackage.Sambal_Commission))/100
-          
+      if (distributor && distributorPackage) {
+        if (
+          distributorPackage.Offline_Services_Commission_Type == "Percentage"
+        ) {
+          distributorCommAmount =
+            (amount * parseFloat(distributorPackage.Sambal_Commission)) / 100;
+        } else {
+          distributorCommAmount = parseFloat(
+            distributorPackage.Sambal_Commission
+          );
         }
-        else{
-            
-              retailerCommAmount = parseFloat(retailerPackage.Sambal_Commission);
-           
+      }
+      if (superDistributor && superDistributorPackage) {
+        if (
+          superDistributorPackage.Offline_Services_Commission_Type ==
+          "Percentage"
+        ) {
+          superDistributorCommAmount =
+            (amount * parseFloat(superDistributorPackage.Sambal_Commission)) /
+            100;
+        } else {
+          superDistributorCommAmount = parseFloat(
+            superDistributorPackage.Sambal_Commission
+          );
         }
-
-        if(distributor && distributorPackage){
-          if(distributorPackage.Offline_Services_Commission_Type == "Percentage"){
-            
-             
-             
-                distributorCommAmount = (amount * parseFloat(distributorPackage.Sambal_Commission))/100
-            
-           
-          }
-          else{
-            
-                distributorCommAmount = parseFloat(distributorPackage.Sambal_Commission);
-              
-          }
-
+      }
+      if (white_lable && whiteLablePackage) {
+        if (
+          whiteLablePackage.Offline_Services_Commission_Type == "Percentage"
+        ) {
+          whiteLableCommAmount =
+            (amount * parseFloat(whiteLablePackage.Sambal_Commission)) / 100;
+        } else {
+          whiteLableCommAmount = parseFloat(
+            whiteLablePackage.Sambal_Commission
+          );
         }
-        if(superDistributor && superDistributorPackage){
-          if(superDistributorPackage.Offline_Services_Commission_Type == "Percentage"){
-           
-                superDistributorCommAmount = (amount * parseFloat(superDistributorPackage.Sambal_Commission))/100
-            
-          }
-          else{
-            
-             
-              
-                superDistributorCommAmount = parseFloat(superDistributorPackage.Sambal_Commission);
-             
-          }
+      }
 
-        }
-        if(white_lable && whiteLablePackage){
-          if(whiteLablePackage.Offline_Services_Commission_Type == "Percentage"){
-           
-              
-              
-                whiteLableCommAmount = (amount * parseFloat(whiteLablePackage.Sambal_Commission))/100
-             
-          }
-          else{
-            
-                whiteLableCommAmount = parseFloat(whiteLablePackage.Sambal_Commission);
-            
-          }
-
-        }
-
-
-       retailerFormData.amount = retailerCommAmount;
-       distributorFormData.amount = distributorCommAmount;
-       superDistributorFormData.amount = superDistributorCommAmount;
-       whiteLableFormData.amount = whiteLableCommAmount;
+      retailerFormData.amount = retailerCommAmount;
+      distributorFormData.amount = distributorCommAmount;
+      superDistributorFormData.amount = superDistributorCommAmount;
+      whiteLableFormData.amount = whiteLableCommAmount;
       //  console.log(retailerCommAmount)
       //  console.log(distributorCommAmount)
       //  console.log(superDistributorCommAmount)
       //  console.log(whiteLableCommAmount)
-        
-  } catch (error) {
-    console.log(error)
-  }
-  return { retailerFormData, distributorFormData, superDistributorFormData, whiteLableFormData,Order_Id,Transaction_Id };
-}
+    } catch (error) {
+      console.log(error);
+    }
+    return {
+      retailerFormData,
+      distributorFormData,
+      superDistributorFormData,
+      whiteLableFormData,
+      Order_Id,
+      Transaction_Id,
+    };
+  };
 
-const handlesubmit = async (e) => {
-  e.preventDefault();
-  try {
-    setLoading(true);
+  const handlesubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
 
-    const { data } = await axios.get(
-      `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${item.user_id}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    console.log(data);
-    setUserRelation(data.data);
-
-    if (data.data) {
-      const { distributor, superDistributor, white_lable } = data.data;
-      const retailer = item.user_id
-      // Create an array to hold promises and a mapping object
-      const promises = [];
-      const resultsMap = {
-        retailer : null,
-        distributor: null,
-        superDistributor: null,
-        whiteLable: null,
-      };
-
-    const retailerPromise = axios
-      .get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
+      const { data } = await axios.get(
+        `https://2kadam.co.in/api/auth/superAdmin/getUserRelations/${item.user_id}`,
         {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
-      )
-      .then((response) => {
-        resultsMap.retailer = response.data.data;
-      });
-      promises.push(retailerPromise);
+      );
 
-      if (distributor) {
-        const distributorPromise = axios
+      console.log(data);
+      setUserRelation(data.data);
+
+      if (data.data) {
+        const { distributor, superDistributor, white_lable } = data.data;
+        const retailer = item.user_id;
+        // Create an array to hold promises and a mapping object
+        const promises = [];
+        const resultsMap = {
+          retailer: null,
+          distributor: null,
+          superDistributor: null,
+          whiteLable: null,
+        };
+
+        const retailerPromise = axios
           .get(
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+            `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -531,235 +529,280 @@ const handlesubmit = async (e) => {
             }
           )
           .then((response) => {
-            resultsMap.distributor = response.data.data;
+            resultsMap.retailer = response.data.data;
           });
-        promises.push(distributorPromise);
-      }
+        promises.push(retailerPromise);
 
-      if (superDistributor) {
-        const superDistributorPromise = axios
-          .get(
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          )
-          .then((response) => {
-            resultsMap.superDistributor = response.data.data;
-          });
-        promises.push(superDistributorPromise);
-      }
-
-      if (white_lable) {
-        const whiteLablePromise = axios
-          .get(
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          )
-          .then((response) => {
-            resultsMap.whiteLable = response.data.data;
-          });
-        promises.push(whiteLablePromise);
-      }
-
-      // Wait for all promises to resolve
-      await Promise.all(promises);
-
-      // Log the results
-      console.log("retailer Package:", resultsMap.retailer);
-      console.log("Distributor Package:", resultsMap.distributor);
-      console.log("Super Distributor Package:", resultsMap.superDistributor);
-      console.log("White Label Package:", resultsMap.whiteLable);
-     
-      let result = {};
-      // Use the results as needed
-        
-          result = await sambalCommission(retailer, distributor, superDistributor, white_lable ,resultsMap,item)
-          console.log(result)
-        
-      
-     
-       // Track whether all commissions were processed successfully
-  let allProcessesSuccessful = true;
-      
-      if(result && result.retailerFormData && result.retailerFormData.amount){
-        const response = await axios.put(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
-          result.retailerFormData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        ).catch(() => {
-          allProcessesSuccessful = false;
-        });
-      }
-      if( result && result.distributorFormData && result.distributorFormData.amount){
-        const response = await axios.put(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
-          result.distributorFormData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        ).catch(() => {
-          allProcessesSuccessful = false;
-        });
-      }
-      if( result && result.superDistributorFormData && result.superDistributorFormData.amount){
-        const response = await axios.put(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
-          result.superDistributorFormData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        ).catch(() => {
-          allProcessesSuccessful = false;
-        });
-      }
-      if( result && result.whiteLableFormData && result.whiteLableFormData.amount){
-        const response = await axios.put(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
-          result.whiteLableFormData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        ).catch(() => {
-          allProcessesSuccessful = false;
-        });
-      }
-      console.log(result)
-      if(result && result.retailerFormData){
-        let whiteLabel_Commission = 0 ;
-        let super_Distributor_Commission = 0 ;
-        let distributor_Commission = 0 ;
-        let retailer_Commission = 0;
-        if(result.whiteLableFormData && result.whiteLableFormData.amount){
-          whiteLabel_Commission = result.whiteLableFormData.amount
-        }
-        if(result.superDistributorFormData && result.superDistributorFormData.amount){
-          super_Distributor_Commission = result.superDistributorFormData.amount
-        }
-        if(result.distributorFormData && result.distributorFormData.amount){
-          distributor_Commission = result.distributorFormData.amount
-        }
-        if(result.retailerFormData && result.retailerFormData.amount){
-          retailer_Commission = result.retailerFormData.amount
-        }
-        
-
-
-      
-
-        const commissionFormData = {
-
-          order_id: result.Order_Id,
-          transaction_id : result.Transaction_Id,
-          amount :  item.amount,
-          whiteLabel_id : white_lable ? white_lable : "NA",
-          super_Distributor_id : superDistributor ? superDistributor : "NA",
-          distributor_id : distributor ? distributor : "NA",
-          retailer_id : retailer ? retailer : "NA",
-          whiteLabel_Commission : whiteLabel_Commission ,
-          super_Distributor_Commission : super_Distributor_Commission,
-          distributor_Commission : distributor_Commission,
-          retailer_Commission : retailer_Commission,
-          transaction_type : "Sambal",
-          transaction_details : result.retailerFormData.Transaction_details,
-          status : "Success",
-        }
-        await axios.post(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-          commissionFormData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        ).catch(() => {
-          allProcessesSuccessful = false;
-        });
-      }
-
-        await axios.put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessSambalForm",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
-              formData,
+        if (distributor) {
+          const distributorPromise = axios
+            .get(
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
               {
                 headers: {
                   "Content-Type": "application/json",
                   Authorization: `Bearer ${token}`,
                 },
               }
-            ).catch(() => {
+            )
+            .then((response) => {
+              resultsMap.distributor = response.data.data;
+            });
+          promises.push(distributorPromise);
+        }
+
+        if (superDistributor) {
+          const superDistributorPromise = axios
+            .get(
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then((response) => {
+              resultsMap.superDistributor = response.data.data;
+            });
+          promises.push(superDistributorPromise);
+        }
+
+        if (white_lable) {
+          const whiteLablePromise = axios
+            .get(
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then((response) => {
+              resultsMap.whiteLable = response.data.data;
+            });
+          promises.push(whiteLablePromise);
+        }
+
+        // Wait for all promises to resolve
+        await Promise.all(promises);
+
+        // Log the results
+        console.log("retailer Package:", resultsMap.retailer);
+        console.log("Distributor Package:", resultsMap.distributor);
+        console.log("Super Distributor Package:", resultsMap.superDistributor);
+        console.log("White Label Package:", resultsMap.whiteLable);
+
+        let result = {};
+        // Use the results as needed
+
+        result = await sambalCommission(
+          retailer,
+          distributor,
+          superDistributor,
+          white_lable,
+          resultsMap,
+          item
+        );
+        console.log(result);
+
+        // Track whether all commissions were processed successfully
+        let allProcessesSuccessful = true;
+
+        if (
+          result &&
+          result.retailerFormData &&
+          result.retailerFormData.amount
+        ) {
+          const response = await axios
+            .put(
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
+              result.retailerFormData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .catch(() => {
               allProcessesSuccessful = false;
             });
-      
-       // Show success message if all processes succeeded
-  if (allProcessesSuccessful) {
-    setShowSuccessModel(false);
-    setIsRefresh((value) => !value);
-    Swal.fire({
-      icon: "success",
-      title: "Success",
-      text: "All commissions have been processed successfully!",
-    });
-  } else {
-    setShowSuccessModel(false);
-    setIsRefresh((value) => !value);
-    Swal.fire({
-      icon: "warning",
-      title: "Partial Success",
-      text: "Some commissions were not processed. Please check the logs.",
-    });
-  }
+        }
+        if (
+          result &&
+          result.distributorFormData &&
+          result.distributorFormData.amount
+        ) {
+          const response = await axios
+            .put(
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
+              result.distributorFormData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .catch(() => {
+              allProcessesSuccessful = false;
+            });
+        }
+        if (
+          result &&
+          result.superDistributorFormData &&
+          result.superDistributorFormData.amount
+        ) {
+          const response = await axios
+            .put(
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
+              result.superDistributorFormData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .catch(() => {
+              allProcessesSuccessful = false;
+            });
+        }
+        if (
+          result &&
+          result.whiteLableFormData &&
+          result.whiteLableFormData.amount
+        ) {
+          const response = await axios
+            .put(
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
+              result.whiteLableFormData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .catch(() => {
+              allProcessesSuccessful = false;
+            });
+        }
+        console.log(result);
+        if (result && result.retailerFormData) {
+          let whiteLabel_Commission = 0;
+          let super_Distributor_Commission = 0;
+          let distributor_Commission = 0;
+          let retailer_Commission = 0;
+          if (result.whiteLableFormData && result.whiteLableFormData.amount) {
+            whiteLabel_Commission = result.whiteLableFormData.amount;
+          }
+          if (
+            result.superDistributorFormData &&
+            result.superDistributorFormData.amount
+          ) {
+            super_Distributor_Commission =
+              result.superDistributorFormData.amount;
+          }
+          if (result.distributorFormData && result.distributorFormData.amount) {
+            distributor_Commission = result.distributorFormData.amount;
+          }
+          if (result.retailerFormData && result.retailerFormData.amount) {
+            retailer_Commission = result.retailerFormData.amount;
+          }
 
+          const commissionFormData = {
+            order_id: result.Order_Id,
+            transaction_id: result.Transaction_Id,
+            amount: item.amount,
+            whiteLabel_id: white_lable ? white_lable : "NA",
+            super_Distributor_id: superDistributor ? superDistributor : "NA",
+            distributor_id: distributor ? distributor : "NA",
+            retailer_id: retailer ? retailer : "NA",
+            whiteLabel_Commission: whiteLabel_Commission,
+            super_Distributor_Commission: super_Distributor_Commission,
+            distributor_Commission: distributor_Commission,
+            retailer_Commission: retailer_Commission,
+            transaction_type: "Sambal",
+            transaction_details: result.retailerFormData.Transaction_details,
+            status: "Success",
+          };
+          await axios
+            .post(
+              "https://2kadam.co.in/api/auth/superAdmin/addCommissionEntry",
+              // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
+              commissionFormData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .catch(() => {
+              allProcessesSuccessful = false;
+            });
+        }
 
+        await axios
+          .put(
+            "https://2kadam.co.in/api/auth/superAdmin/SuccessSambalForm",
+            // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
+            formData,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .catch(() => {
+            allProcessesSuccessful = false;
+          });
 
+        // Show success message if all processes succeeded
+        if (allProcessesSuccessful) {
+          setShowSuccessModel(false);
+          setIsRefresh((value) => !value);
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "All commissions have been processed successfully!",
+          });
+        } else {
+          setShowSuccessModel(false);
+          setIsRefresh((value) => !value);
+          Swal.fire({
+            icon: "warning",
+            title: "Partial Success",
+            text: "Some commissions were not processed. Please check the logs.",
+          });
+        }
+      }
+    } catch (error) {
+      console.error("There was an error submitting the form!", error);
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "An error occurred during the process. Please try again.",
+        });
+      }
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error("There was an error submitting the form!", error);
-    if (error?.response?.status === 401) {
-      Swal.fire({
-        icon: "error",
-        title: "Your token is expired please login again",
-      });
-      dispatch(clearUser());
-      navigate("/");
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "An error occurred during the process. Please try again.",
-      });
-    }
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
     <>
@@ -810,7 +853,11 @@ const handlesubmit = async (e) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn btn-primary p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -825,21 +872,20 @@ const handlesubmit = async (e) => {
 //  reject model component start//
 const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
   const [loading, setLoading] = useState(false);
- const navigate = useNavigate();
- const dispatch = useDispatch();
- const { token } = useSelector((state) => state.user);
- const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     order_id: item.order_id,
     note: "",
     status: "Reject",
-    amount : item.amount,
-    Transaction_details : `Refund Credit for Sambal Application Order Id ${item.order_id}`,
-    chargeAmount : "",
-    refundAmount : "",
-    user_id : item.user_id,
-    process_by_userId	: currentUser.userId
-
+    amount: item.amount,
+    Transaction_details: `Refund Credit for Sambal Application Order Id ${item.order_id}`,
+    chargeAmount: "",
+    refundAmount: "",
+    user_id: item.user_id,
+    process_by_userId: currentUser.userId,
   });
 
   // const handleChange = (e) => {
@@ -859,7 +905,10 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
       if (name === "chargeAmount") {
         // Calculate refundAmount dynamically
         const chargeAmount = parseFloat(value) || 0; // Handle non-numeric input
-        const refundAmount = Math.max(0, parseFloat(item.amount) - chargeAmount);
+        const refundAmount = Math.max(
+          0,
+          parseFloat(item.amount) - chargeAmount
+        );
         updatedFormData.refundAmount = refundAmount.toFixed(2); // Format to 2 decimal places
       }
 
@@ -867,22 +916,20 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     });
   };
 
-
-
   const handlesubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectSambalForm",
+        "https://2kadam.co.in/api/auth/superAdmin/rejectSambalForm",
         // "http://localhost:7777/api/auth/superAdmin/rejectSambalForm",
         formData,
         {
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  },
-}
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response);
       setLoading(false);
@@ -904,9 +951,9 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
       if (error?.response?.status == 401) {
         // alert("Your token is expired please login again")
         Swal.fire({
-                  icon: "error",
-                  title: "Your token is expired please login again",
-                });
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
         dispatch(clearUser());
         navigate("/");
       }
@@ -966,7 +1013,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
           </div>
           <div className="mt-3">
             <label for="name" class="form-label">
-             Charge Amount
+              Charge Amount
             </label>
             <div class="input-group flex-nowrap">
               <span class="input-group-text" id="addon-wrapping">
@@ -988,7 +1035,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
           </div>
           <div className="mt-3">
             <label for="name" class="form-label">
-             Refund Amount
+              Refund Amount
             </label>
             <div class="input-group flex-nowrap">
               <span class="input-group-text" id="addon-wrapping">
@@ -1000,10 +1047,9 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
                 name="package_name"
                 class="form-control"
                 placeholder="Refund amount"
-                value={formData.refundAmount  || formData.amount}
+                value={formData.refundAmount || formData.amount}
                 // onChange={handleChange}
                 disabled
-                
               />
             </div>
           </div>
@@ -1031,7 +1077,11 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn btn-primary p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -1046,9 +1096,9 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 
 const SASambalHistory = () => {
   const [loading, setLoading] = useState(false);
- const navigate = useNavigate();
- const dispatch = useDispatch();
- const { token } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
   const [underProcessForms, setUnderProcessForms] = useState([]);
   const [keyword, setKeyword] = useState("");
@@ -1067,13 +1117,13 @@ const SASambalHistory = () => {
     try {
       const { data } = await axios.get(
         // "http://localhost:7777/api/auth/superAdmin/getSambalForms"
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSambalForms",
+        "https://2kadam.co.in/api/auth/superAdmin/getSambalForms",
         {
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  },
-}
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const applicationData = data?.data?.filter(
         (item) => item.status !== "Under Process"
@@ -1090,9 +1140,9 @@ const SASambalHistory = () => {
       if (error?.response?.status == 401) {
         // alert("Your token is expired please login again")
         Swal.fire({
-                  icon: "error",
-                  title: "Your token is expired please login again",
-                });
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
         dispatch(clearUser());
         navigate("/");
       }
@@ -1166,7 +1216,7 @@ const SASambalHistory = () => {
   //         setLoading(true);
   //         try {
   //           const { data } = await axios.put(
-  //             "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser",
+  //             "https://2kadam.co.in/api/auth/superAdmin/deactivateUser",
   //             {
   //                userId: id
   //             }
@@ -1206,17 +1256,16 @@ const SASambalHistory = () => {
   //   };
   const filteredUnderProcessItems = underProcessForms.filter((row) => {
     const matchesKeyword =
-    (row?.samagra_id &&
-      row.samagra_id.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-    (row?.mobile_number &&
-      row.mobile_number
-        .toLowerCase()
-        .includes(keyword.trim().toLowerCase())) ||
-    (row?.family_id &&
-      row.family_id.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-    (row?.order_id &&
-      row.order_id.toLowerCase().includes(keyword.trim().toLowerCase()));
-
+      (row?.samagra_id &&
+        row.samagra_id.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.mobile_number &&
+        row.mobile_number
+          .toLowerCase()
+          .includes(keyword.trim().toLowerCase())) ||
+      (row?.family_id &&
+        row.family_id.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.order_id &&
+        row.order_id.toLowerCase().includes(keyword.trim().toLowerCase()));
 
     return matchesKeyword;
   });
@@ -1308,7 +1357,11 @@ const SASambalHistory = () => {
                                   type="search"
                                   placeholder="Enter Samagra Id/Family Id/Mobile/Order Id"
                                   value={keyword}
-                                  onChange={(e) => setKeyword(e.target.value)}
+                                  // onChange={(e) => setKeyword(e.target.value)}
+                                  onChange={(e) => {
+                                    setKeyword(e.target.value);
+                                    setCurrentPage(0);
+                                  }}
                                 />
                               </div>
                               <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -1317,17 +1370,18 @@ const SASambalHistory = () => {
                                   className="form-select"
                                   aria-label="Default select example"
                                   value={formStatus}
-                                  onChange={(e) =>
-                                    setFormStatus(e.target.value)
-                                  }
+                                  onChange={(e) => {
+                                    setFormStatus(e.target.value);
+                                    setCurrentPage(0);
+                                  }}
                                 >
                                   <option selected>
                                     ---Select Form Status---
                                   </option>
                                   <option value="Pending">Pending</option>
-                              <option value="Success">Success</option>
-                              <option value="Mark Edit">Mark Edit</option>
-                              <option value="Reject">Reject</option>
+                                  <option value="Success">Success</option>
+                                  <option value="Mark Edit">Mark Edit</option>
+                                  <option value="Reject">Reject</option>
                                 </select>
                               </div>
                             </div>
@@ -1408,12 +1462,12 @@ const SASambalHistory = () => {
                                               <td>{item.amount}</td>
                                               <td>{item.status}</td>
                                               <td>{item.process_by_userId}</td>
-                                          <td>{item.updated_at}</td>
-
-                                             
+                                              <td>{item.updated_at}</td>
 
                                               <td>
-                                                {(item.status === "Pending" || item.status === "Mark Edit") && (
+                                                {(item.status === "Pending" ||
+                                                  item.status ===
+                                                    "Mark Edit") && (
                                                   <Dropdown>
                                                     <Dropdown.Toggle
                                                       variant="success"
@@ -1448,7 +1502,9 @@ const SASambalHistory = () => {
                                                       <Dropdown.Item
                                                         onClick={() => {
                                                           // setSelectedUser(user);
-                                                          setShowMarkEditModel(true);
+                                                          setShowMarkEditModel(
+                                                            true
+                                                          );
                                                           setSelectedItem(item);
                                                           //   deactivateUser(user.UserId)
                                                         }}
@@ -1475,28 +1531,28 @@ const SASambalHistory = () => {
                                         )}
                                       </tbody>
                                     </table>
-
                                   </>
                                 )}
                               </div>
-                                    <PaginationContainer>
-                                      <ReactPaginate
-                                        previousLabel={"Previous"}
-                                        nextLabel={"Next"}
-                                        breakLabel={"..."}
-                                        pageCount={totalPages}
-                                        marginPagesDisplayed={2}
-                                        pageRangeDisplayed={5}
-                                        onPageChange={handlePageChange}
-                                        containerClassName={"pagination"}
-                                        activeClassName={"active"}
-                                      />
-                                    </PaginationContainer>
+                              <PaginationContainer>
+                                <ReactPaginate
+                                  previousLabel={"Previous"}
+                                  nextLabel={"Next"}
+                                  breakLabel={"..."}
+                                  pageCount={totalPages}
+                                  marginPagesDisplayed={2}
+                                  pageRangeDisplayed={5}
+                                  onPageChange={handlePageChange}
+                                  containerClassName={"pagination"}
+                                  activeClassName={"active"}
+                                  forcePage={currentPage}
+                                />
+                              </PaginationContainer>
                             </div>
                           </div>
                         </Tab>
                         <Tab eventKey="Under Process" title="Under Process">
-                        <div className="row d-flex flex-column g-4">
+                          <div className="row d-flex flex-column g-4">
                             <div className="d-flex flex-column flex-xl-row gap-3">
                               {/* <div className="col-12 col-md-4 col-lg-3">
         <label for="fromDate" className="form-label">From</label>
@@ -1518,7 +1574,11 @@ const SASambalHistory = () => {
                                   type="search"
                                   placeholder="Enter Samagra Id/Family Id/Mobile/Order Id"
                                   value={keyword}
-                                  onChange={(e) => setKeyword(e.target.value)}
+                                  // onChange={(e) => setKeyword(e.target.value)}
+                                  onChange={(e) => {
+                                    setKeyword(e.target.value);
+                                    setCurrentPage(0);
+                                  }}
                                 />
                               </div>
                               {/* <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -1587,90 +1647,101 @@ const SASambalHistory = () => {
                                       <tbody>
                                         {showUnderProcessData &&
                                         showUnderProcessData.length > 0 ? (
-                                          showUnderProcessData?.map((item, index) => (
-                                            <tr key={index}>
-                                              {/* <th scope="row">{index + 1}</th> */}
-                                              <td>
-                                                {currentPage *
-                                                  complaintsPerPage +
-                                                  index +
-                                                  1}
-                                              </td>
-                                              <td>{item.created_at}</td>
-                                              <td>{item.order_id}</td>
-                                              <td>{item.samagra_id}</td>
+                                          showUnderProcessData?.map(
+                                            (item, index) => (
+                                              <tr key={index}>
+                                                {/* <th scope="row">{index + 1}</th> */}
+                                                <td>
+                                                  {currentPage *
+                                                    complaintsPerPage +
+                                                    index +
+                                                    1}
+                                                </td>
+                                                <td>{item.created_at}</td>
+                                                <td>{item.order_id}</td>
+                                                <td>{item.samagra_id}</td>
 
-                                              <td>{item.family_id}</td>
-                                              <td>{item.applicant_type}</td>
-                                              <td>{item.mobile_number}</td>
-                                              <td>{item.education}</td>
-                                              <td>{item.occupation}</td>
-                                              <td>{item.sms_notification}</td>
-                                              <td>{item.income_tax_payer}</td>
-                                              <td>{item.land_ownership}</td>
-                                              <td>{item.govt_service}</td>
-                                              <td>{item.user_id}</td>
-                                              <td>{item.UserName}</td>
-                                              <td>{item.ContactNo}</td>
-                                              <td>{item.note}</td>
-                                              <td>{item.amount}</td>
-                                              <td>{item.status}</td>
-                                              <td>{item.process_by_userId}</td>
-                                          <td>{item.updated_at}</td>
+                                                <td>{item.family_id}</td>
+                                                <td>{item.applicant_type}</td>
+                                                <td>{item.mobile_number}</td>
+                                                <td>{item.education}</td>
+                                                <td>{item.occupation}</td>
+                                                <td>{item.sms_notification}</td>
+                                                <td>{item.income_tax_payer}</td>
+                                                <td>{item.land_ownership}</td>
+                                                <td>{item.govt_service}</td>
+                                                <td>{item.user_id}</td>
+                                                <td>{item.UserName}</td>
+                                                <td>{item.ContactNo}</td>
+                                                <td>{item.note}</td>
+                                                <td>{item.amount}</td>
+                                                <td>{item.status}</td>
+                                                <td>
+                                                  {item.process_by_userId}
+                                                </td>
+                                                <td>{item.updated_at}</td>
 
-                                             
-
-                                              <td>
-                                                {item.status === "Under Process" && (
-                                                  <Dropdown>
-                                                    <Dropdown.Toggle
-                                                      variant="success"
-                                                      // id={`dropdown-${user.id}`}
-                                                      as="span"
-                                                      style={{
-                                                        border: "none",
-                                                        background: "none",
-                                                        cursor: "pointer",
-                                                      }}
-                                                      className="custom-dropdown-toggle"
-                                                    >
-                                                      <PiDotsThreeOutlineVerticalBold />
-                                                    </Dropdown.Toggle>
-                                                    <Dropdown.Menu>
-                                                      <Dropdown.Item
-                                                        onClick={() => {
-                                                          // setSelectedUser(user);
-                                                          setShowSuccessModel(true);
-                                                          setSelectedItem(item);
-                                                          //   deactivateUser(user.UserId)
+                                                <td>
+                                                  {item.status ===
+                                                    "Under Process" && (
+                                                    <Dropdown>
+                                                      <Dropdown.Toggle
+                                                        variant="success"
+                                                        // id={`dropdown-${user.id}`}
+                                                        as="span"
+                                                        style={{
+                                                          border: "none",
+                                                          background: "none",
+                                                          cursor: "pointer",
                                                         }}
+                                                        className="custom-dropdown-toggle"
                                                       >
-                                                        <span className="">
-                                                          {" "}
-                                                          <CiViewList />
-                                                        </span>{" "}
-                                                        Success
-                                                      </Dropdown.Item>
-                                                      <Dropdown.Item
-                                                        onClick={() => {
-                                                          // setSelectedUser(user);
-                                                          setShowRejectModel(true);
-                                                          setSelectedItem(item);
-                                                          //   deactivateUser(user.UserId)
-                                                        }}
-                                                      >
-                                                        <span className="">
-                                                          {" "}
-                                                          <CiViewList />
-                                                        </span>{" "}
-                                                        Reject
-                                                      </Dropdown.Item>
-                                                    </Dropdown.Menu>
-                                                  </Dropdown>
-                                                )}
-                                              </td>
-                                            </tr>
-                                          ))
+                                                        <PiDotsThreeOutlineVerticalBold />
+                                                      </Dropdown.Toggle>
+                                                      <Dropdown.Menu>
+                                                        <Dropdown.Item
+                                                          onClick={() => {
+                                                            // setSelectedUser(user);
+                                                            setShowSuccessModel(
+                                                              true
+                                                            );
+                                                            setSelectedItem(
+                                                              item
+                                                            );
+                                                            //   deactivateUser(user.UserId)
+                                                          }}
+                                                        >
+                                                          <span className="">
+                                                            {" "}
+                                                            <CiViewList />
+                                                          </span>{" "}
+                                                          Success
+                                                        </Dropdown.Item>
+                                                        <Dropdown.Item
+                                                          onClick={() => {
+                                                            // setSelectedUser(user);
+                                                            setShowRejectModel(
+                                                              true
+                                                            );
+                                                            setSelectedItem(
+                                                              item
+                                                            );
+                                                            //   deactivateUser(user.UserId)
+                                                          }}
+                                                        >
+                                                          <span className="">
+                                                            {" "}
+                                                            <CiViewList />
+                                                          </span>{" "}
+                                                          Reject
+                                                        </Dropdown.Item>
+                                                      </Dropdown.Menu>
+                                                    </Dropdown>
+                                                  )}
+                                                </td>
+                                              </tr>
+                                            )
+                                          )
                                         ) : (
                                           <tr>
                                             <td colSpan="13">
@@ -1681,23 +1752,23 @@ const SASambalHistory = () => {
                                         )}
                                       </tbody>
                                     </table>
-
                                   </>
                                 )}
                               </div>
-                                    <PaginationContainer>
-                                      <ReactPaginate
-                                        previousLabel={"Previous"}
-                                        nextLabel={"Next"}
-                                        breakLabel={"..."}
-                                        pageCount={totalUnderProcessPages}
-                                        marginPagesDisplayed={2}
-                                        pageRangeDisplayed={5}
-                                        onPageChange={handleUnderProcessPageChange}
-                                        containerClassName={"pagination"}
-                                        activeClassName={"active"}
-                                      />
-                                    </PaginationContainer>
+                              <PaginationContainer>
+                                <ReactPaginate
+                                  previousLabel={"Previous"}
+                                  nextLabel={"Next"}
+                                  breakLabel={"..."}
+                                  pageCount={totalUnderProcessPages}
+                                  marginPagesDisplayed={2}
+                                  pageRangeDisplayed={5}
+                                  onPageChange={handleUnderProcessPageChange}
+                                  containerClassName={"pagination"}
+                                  activeClassName={"active"}
+                                  forcePage={currentPage}
+                                />
+                              </PaginationContainer>
                             </div>
                           </div>
                         </Tab>
@@ -1737,9 +1808,9 @@ const SASambalHistory = () => {
 
         {/*  Approve Model  end*/}
 
-              {/* Mark Edit Model  start*/}
+        {/* Mark Edit Model  start*/}
 
-              <Modal
+        <Modal
           // size="lg"
           show={showMarkEditModel}
           //   fullscreen={true}
@@ -1764,10 +1835,9 @@ const SASambalHistory = () => {
 
         {/*  Mark Edit Model  end*/}
 
-        
-           {/* Success Model  start*/}
+        {/* Success Model  start*/}
 
-           <Modal
+        <Modal
           // size="lg"
           show={showSuccessModel}
           //   fullscreen={true}
@@ -1791,7 +1861,6 @@ const SASambalHistory = () => {
         </Modal>
 
         {/*  Success Model  end*/}
-
 
         {/* Reject Model  start*/}
 

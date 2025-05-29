@@ -31,7 +31,7 @@ const WalletTransactionReport = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getWalletSummary/${userId}`
+        `https://2kadam.co.in/api/auth/retailer/getWalletSummary/${userId}`
         // {
         //   headers: {
         //     "Content-Type": "application/json",
@@ -84,6 +84,10 @@ const WalletTransactionReport = () => {
     return matchesKeyword && matchesDate;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword]);
+
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
   const filterPagination = () => {
@@ -121,7 +125,7 @@ const WalletTransactionReport = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Wallet Transaction Report
+                          Wallet Transaction History
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -131,7 +135,7 @@ const WalletTransactionReport = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Wallet Transaction Report
+                            Wallet Transaction History
                           </span>{" "}
                         </p>
                       </div>
@@ -271,6 +275,7 @@ const WalletTransactionReport = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

@@ -25,7 +25,7 @@ const AllComplaintsList = () => {
     try {
       const response = await axios.get(
         // `http://localhost:7777/api/auth/retailer/complain-data`
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/complain-data/${currentUser?.userId}`,
+        `https://2kadam.co.in/api/auth/retailer/complain-data/${currentUser?.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -96,6 +96,10 @@ const AllComplaintsList = () => {
     setToDate(""); // Clear toDate
     setCurrentPage(0); // Reset pagination to the first page
   };
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, []);
 
   const totalPages = Math.ceil(apiData.length / complaintsPerPage);
 
@@ -196,7 +200,9 @@ const AllComplaintsList = () => {
                               type="search"
                               placeholder="Search By Complaint ID ,Transaction No."
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => (
+                                setKeyword(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
                           <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -321,6 +327,7 @@ const AllComplaintsList = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

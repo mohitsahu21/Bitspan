@@ -6,6 +6,7 @@ import { BiHomeAlt } from "react-icons/bi";
 import ReactPaginate from "react-paginate";
 import { Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const PanTransactionReport = () => {
   const { currentUser, token } = useSelector((state) => state.user);
@@ -13,6 +14,7 @@ const PanTransactionReport = () => {
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [keyword, setKeyword] = useState("");
+  const navigate = useNavigate();
   // const [selectedDate, setSelectedDate] = useState("");
   const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
@@ -20,8 +22,8 @@ const PanTransactionReport = () => {
   const [toDate, setToDate] = useState(""); // To date filter
   const [PaymentMode, setPaymentMode] = useState("");
 
-  const api1Url = `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/nsdl-trans-new-requst`;
-  const api2Url = `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/nsdl-trans-correction`;
+  const api1Url = `https://2kadam.co.in/api/auth/retailer/nsdl-trans-new-requst/${currentUser?.userId}`;
+  const api2Url = `https://2kadam.co.in/api/auth/retailer/nsdl-trans-correction/${currentUser?.userId}`;
 
   const fetchData = async (url) => {
     setLoading(true);
@@ -88,9 +90,13 @@ const PanTransactionReport = () => {
       (!toDate ||
         new Date(row.created_at).toISOString().split("T")[0] <=
           new Date(toDate).toISOString().split("T")[0]);
-    console.log(matchesKeyword);
+    // console.log(matchesKeyword);
     return matchesKeyword && matchesDate && matchesType;
   });
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [PaymentMode, fromDate, toDate, keyword]);
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
@@ -127,10 +133,11 @@ const PanTransactionReport = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          PAN Transaction Report
+                          NSDL PAN Transaction History
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; PAN Transaction Report
+                          <BiHomeAlt /> &nbsp;/ &nbsp; NSDL PAN Transaction
+                          History
                         </h6>
                       </div>
                     </div>
@@ -242,7 +249,9 @@ const PanTransactionReport = () => {
                               type="search"
                               placeholder="Search By Name/Mobile/Email/Order Id/Txn Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => (
+                                setKeyword(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
                           <div className="d-flex align-items-end">
@@ -301,6 +310,7 @@ const PanTransactionReport = () => {
                                     <th scope="col">Physical Pan</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Message</th>
+                                    <th scope="col">View</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -331,6 +341,18 @@ const PanTransactionReport = () => {
                                           <td>{item.physicalPan}</td>
                                           <td>{item.status}</td>
                                           <td>{item.message}</td>
+                                          <td>
+                                            <button
+                                              className="btn btn-dark btn-sm"
+                                              onClick={() =>
+                                                navigate(
+                                                  `/pan-receipt/${item.orderid}`
+                                                )
+                                              }
+                                            >
+                                              Receipt
+                                            </button>
+                                          </td>
                                         </tr>
                                       )
                                     )
@@ -377,6 +399,7 @@ const PanTransactionReport = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>
@@ -402,7 +425,7 @@ const Wrapper = styled.div`
   }
   button {
     color: #fff;
-    background: #6d70ff;
+    /* background: #6d70ff; */
   }
   .form-container {
     width: 50%;

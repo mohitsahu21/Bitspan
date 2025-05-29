@@ -26,7 +26,7 @@ const ElectricityHistory = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getApiEletricityRechargeData/${userID}`,
+        `https://2kadam.co.in/api/auth/retailer/getApiEletricityRechargeData/${userID}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -63,6 +63,7 @@ const ElectricityHistory = () => {
       );
     });
     setFilteredData(filtered);
+    setCurrentPage(0);
   }, [filterValue, allData]);
 
   useEffect(() => {
@@ -113,7 +114,7 @@ const ElectricityHistory = () => {
                   </div>
 
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
-                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
+                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow rounded m-4 bg-body-tertiary g1">
                       <Tabs
                         defaultActiveKey="Provider 1"
                         id="uncontrolled-tab-example"
@@ -132,6 +133,7 @@ const ElectricityHistory = () => {
                                   value={filterValue}
                                   onChange={(e) => {
                                     setFilterValue(e.target.value);
+                                    setCurrentPage(0);
                                     // if (e.target.value === "") {
                                     //   setCurrentPage(0);
                                     // }
@@ -251,6 +253,7 @@ const ElectricityHistory = () => {
                                   onPageChange={handlePageChange}
                                   containerClassName={"pagination"}
                                   activeClassName={"active"}
+                                  forcePage={currentPage}
                                 />
                               </PaginationContainer>
                             </div>
@@ -282,6 +285,7 @@ const Wrapper = styled.div`
   button {
     color: #fff;
     background: #6d70ff;
+     margin-left: 5px;
   }
   .form-container {
     width: 50%;
@@ -304,6 +308,13 @@ const Wrapper = styled.div`
     .formdata {
       padding-left: 13rem;
     }
+  }
+   .g1{
+  padding: 3rem;
+    @media screen and (max-width: 768px) {
+      
+    padding: 1rem;
+  }
   }
 `;
 

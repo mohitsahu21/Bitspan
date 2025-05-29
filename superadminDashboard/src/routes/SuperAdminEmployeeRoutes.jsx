@@ -16,6 +16,8 @@ const SAEProfile = lazy(() =>
   import("../components/SuperAdminEmployee/SAEProfile")
 );
 
+// const Profile = lazy(() => import("../pages/Profile"));
+
 const SAEOfflineRechargeHistory = lazy(() =>
   import("../components/SuperAdminEmployee/SAEOfflineRechargeHistory")
 );
@@ -66,9 +68,18 @@ const SAEPanCouponRequests = lazy(() =>
   import("../components/SuperAdminEmployee/SAEPanCouponRequests")
 );
 
+const SAEDSCHistory = lazy(() =>
+  import("../components/SuperAdminEmployee/SAEDSCHistory")
+);
+
+const SAETokenDSC = lazy(() =>
+  import("../components/SuperAdminEmployee/SAETokenDSC")
+);
+
 const SuperAdminEmployeeRoutes = () => {
   const { currentUser, token } = useSelector((state) => state.user);
   const pathname = window.location.pathname;
+  const fullUrl = window.location.href;
   const [status, setStatus] = useState(null);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState("");
@@ -87,13 +98,13 @@ const SuperAdminEmployeeRoutes = () => {
     } else {
       console.log("Missing userId or token, cannot fetch data.");
     }
-  }, [currentUser, token, pathname]);
+  }, [currentUser, token, fullUrl]);
 
   const fetchUserData = async () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -166,149 +177,71 @@ const SuperAdminEmployeeRoutes = () => {
           <Routes>
             <Route
               path="/dashboard"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SuperAdminEmployeeDashboard />
-                )
-              }
+              element={<SuperAdminEmployeeDashboard />}
             />
+            <Route path="/" element={<SuperAdminEmployeeDashboard />} />
 
             <Route path="/update-profile" element={<SAEProfile />} />
+            {/* <Route path="/update-profile" element={<Profile />} /> */}
 
             <Route
               path="/Offline-Recharge-history"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEOfflineRechargeHistory />
-                )
-              }
+              element={<SAEOfflineRechargeHistory />}
             />
             <Route
               path="/Offline-dth-connection"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEOfflineDthConnection />
-                )
-              }
+              element={<SAEOfflineDthConnection />}
             />
 
             <Route
               path="/view-all-offline-history"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEAllOfflineForm />
-                )
-              }
+              element={<SAEAllOfflineForm />}
             />
 
             <Route
               path="/Pan-offline-history"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEPanOfflineHistory />
-                )
-              }
+              element={<SAEPanOfflineHistory />}
             />
 
             <Route
               path="/pan-transaction-report"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEPanTransactionReport />
-                )
-              }
+              element={<SAEPanTransactionReport />}
             />
 
             <Route
               path="/pan-correction-report"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEPanCorrectionReport />
-                )
-              }
+              element={<SAEPanCorrectionReport />}
             />
 
             <Route path="/Bank-Id-history" element={<SAEBankIdForms />} />
 
             <Route
               path="/E-district-history"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEEdistrictHistory />
-                )
-              }
+              element={<SAEEdistrictHistory />}
             />
 
             <Route
               path="/verify-E-district-form-history"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEVerifyEdistrictHistory />
-                )
-              }
+              element={<SAEVerifyEdistrictHistory />}
             />
 
-            <Route
-              path="/sambal-form-history"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAESambalHistory />
-                )
-              }
-            />
+            <Route path="/sambal-form-history" element={<SAESambalHistory />} />
 
-            <Route
-              path="/change-password"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEChangePassword />
-                )
-              }
-            />
+            <Route path="/change-password" element={<SAEChangePassword />} />
 
             <Route
               path="/complaint-raised-list"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEAllComplaintsList />
-                )
-              }
+              element={<SAEAllComplaintsList />}
             />
 
             <Route
               path="/pan-coupon-requests"
-              element={
-                status === "Deactive" ? (
-                  <Navigate to="/update-profile" />
-                ) : (
-                  <SAEPanCouponRequests />
-                )
-              }
+              element={<SAEPanCouponRequests />}
             />
+
+            <Route path="/dsc-history" element={<SAEDSCHistory />} />
+            <Route path="/dsc-token-history" element={<SAETokenDSC />} />
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Suspense>
       </Wrapper>

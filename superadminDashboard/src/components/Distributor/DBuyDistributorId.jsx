@@ -46,7 +46,7 @@ const DBuyDistributorId = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getPackageData/${package_Id}`,
+          `https://2kadam.co.in/api/auth/Distributor/getPackageData/${package_Id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -96,7 +96,7 @@ const DBuyDistributorId = () => {
   const fetchWalletBalance = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getWalletBalance/${userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/getWalletBalance/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -121,7 +121,8 @@ const DBuyDistributorId = () => {
         dispatch(clearUser()); // Clear user session
         navigate("/"); // Redirect to login page
       } else {
-        alert("Failed to load wallet balance.");
+        // alert("Failed to load wallet balance.");
+        console.log("Failed to load wallet balance.");
       }
     }
   };
@@ -136,7 +137,7 @@ const DBuyDistributorId = () => {
   const fetchNoOfIds = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getRemainingIds/${userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/getRemainingIds/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -210,7 +211,7 @@ const DBuyDistributorId = () => {
     const selectedPaymentMethod = e.target.value;
 
     if (
-      selectedPaymentMethod === "Offline" &&
+      selectedPaymentMethod === "Wallet" &&
       calculateTotalAmount() > walletBalance
     ) {
       Swal.fire({
@@ -258,7 +259,7 @@ const DBuyDistributorId = () => {
 
     try {
       const response = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/buyId",
+        "https://2kadam.co.in/api/auth/Distributor/buyId",
         payload
       );
 
@@ -326,7 +327,7 @@ const DBuyDistributorId = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/upiwf/createOrderToBuyUserId",
+        "https://2kadam.co.in/api/auth/upiwf/createOrderToBuyUserId",
         payload
       );
 
@@ -553,7 +554,7 @@ const DBuyDistributorId = () => {
                           >
                             <option value="">Select Payment Method</option>
                             <option value="Online">Online</option>
-                            <option value="Offline">Wallet</option>
+                            <option value="Wallet">Wallet</option>
                           </select>
                         </div>
 

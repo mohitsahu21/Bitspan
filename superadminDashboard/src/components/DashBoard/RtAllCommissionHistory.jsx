@@ -25,7 +25,7 @@ const RtAllCommissionHistory = () => {
     setLoading(true); // Start loading
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllCommission/${userId}`,
+        `https://2kadam.co.in/api/auth/retailer/getAllCommission/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -124,6 +124,10 @@ const RtAllCommissionHistory = () => {
     return matchesKeyword && matchesDate && matchesSearch && matchesStatus;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword, fromDate, toDate]);
+
   const totalPages = Math.ceil(filteredData.length / complaintsPerPage);
 
   const paginateData = () => {
@@ -178,12 +182,15 @@ const RtAllCommissionHistory = () => {
                               Search
                             </label>
                             <input
-                              type="text"
+                              type="search"
                               className="form-control responsive-input"
                               // placeholder="Search by Name, Mobile, or Order ID"
                               placeholder="Search by  Order ID"
                               value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
+                              onChange={(e) => (
+                                setSearchQuery(e.target.value),
+                                setCurrentPage(0)
+                              )}
                             />
                           </div>
 

@@ -33,7 +33,7 @@ const SAWalletWithdrawSummary = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getWalletTransactions" ,
+        "https://2kadam.co.in/api/auth/superAdmin/getWalletTransactions" ,
         {
           headers: {
             "Content-Type": "application/json",
@@ -121,7 +121,7 @@ const SAWalletWithdrawSummary = () => {
                                                 <h3>Wallet Transaction Report</h3>
                                             </div> */}
                                             <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Wallet Transaction Report</h4>
+                                                <h4 className="mx-lg-5 px-lg-3 px-xxl-5">Wallet Full Summary</h4>
                                                 <p className="mx-lg-5">
                                                     {" "}
                                                     <BiHomeAlt /> &nbsp;/ &nbsp;{" "}
@@ -130,7 +130,7 @@ const SAWalletWithdrawSummary = () => {
                                                         style={{ fontSize: "13px" }}
                                                     >
                                                         {" "}
-                                                        Wallet Transaction Report
+                                                        Wallet Full Summary
                                                     </span>{" "}
                                                 </p>
                                             </div>
@@ -143,12 +143,16 @@ const SAWalletWithdrawSummary = () => {
                                                 <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="fromDate" className="form-label">From</label>
                                                         <input id="fromDate" className="form-control" type="date"  value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}/>
+                              onChange={(e) => {setFromDate(e.target.value)
+                                setCurrentPage(0);
+                              }}/>
                                                     </div>
                                                     <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="toDate" className="form-label">To</label>
                                                         <input id="toDate" className="form-control " type="date" value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}/>
+                              onChange={(e) => {setToDate(e.target.value)
+                                setCurrentPage(0);
+                              }}/>
                                                     </div>
                                                 </div>
 
@@ -163,7 +167,9 @@ const SAWalletWithdrawSummary = () => {
                                                          type="search"
                                                          placeholder="Enter User Name/User Id/Order Id"
                                                          value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {setKeyword(e.target.value)
+                                                setCurrentPage(0);
+                              }}
                                                          />
                                                           </div>
                                                     </div>
@@ -265,6 +271,7 @@ const SAWalletWithdrawSummary = () => {
                                                           marginPagesDisplayed={2}
                                                           pageRangeDisplayed={5}
                                                           onPageChange={handlePageChange}
+                                                          forcePage={currentPage}
                                                           containerClassName={"pagination"}
                                                           activeClassName={"active"}
                                                         />

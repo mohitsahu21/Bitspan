@@ -43,8 +43,8 @@ const SAResolveComplaint = ({ complaint, setShowResolveModel, setIsRefresh }) =>
       try {
         setLoading(true);
         const response = await axios.put(
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectUser",
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+          // "https://2kadam.co.in/api/auth/superAdmin/rejectUser",
+          "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
           formData,
           {
             headers: {
@@ -174,7 +174,7 @@ const SAAllComplaintsList = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/complainGetData",
+            "https://2kadam.co.in/api/auth/superAdmin/complainGetData",
             {
               headers: {
                 "Content-Type": "application/json",
@@ -260,7 +260,7 @@ const SAAllComplaintsList = () => {
     //         setLoading(true);
     //         try {
     //           const { data } = await axios.put(
-    //             "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser", 
+    //             "https://2kadam.co.in/api/auth/superAdmin/deactivateUser", 
     //             {
     //                userId: id 
     //             }
@@ -360,7 +360,11 @@ const SAAllComplaintsList = () => {
                                                          type="search"
                                                          placeholder="Enter User Name/User Id/Mobile/Email Id"
                                                          value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              // onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                                                          />
                                                     </div>
                                                     <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -371,7 +375,9 @@ const SAAllComplaintsList = () => {
                                                           className="form-select"
                                                           aria-label="Default select example"
                                                           value={complaintStatus}
-                                                          onChange={(e) => setComplaintStatus(e.target.value)}
+                                                          onChange={(e) => {setComplaintStatus(e.target.value)
+                                                            setCurrentPage(0);
+                                                          }}
                                                           
                                                         >
                                                           <option selected>---Select Complaint Status---</option>
@@ -415,8 +421,9 @@ const SAAllComplaintsList = () => {
                                                                     <th scope="col">User Email</th>
                                                                     <th scope="col">User Mobile</th>
                                                                     <th scope="col">Complaint File</th>
-                                                                    <th scope="col">Resolve Date</th>
                                                                     <th scope="col">Response</th>
+                                                                    <th scope="col">Process By</th>
+                                                                    <th scope="col">Process Date</th>
                                                                     <th scope="col">Status</th>
                                                                     <th scope="col">Action</th>
 
@@ -495,8 +502,10 @@ const SAAllComplaintsList = () => {
                                            
                                             {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
                                             {/* <td>{user?.Note}</td> */}
-                                            <td>{user.process_date}</td>
                                             <td>{user.response}</td>
+                                            <td>{user.process_by_userId}</td>
+                                            <td>{user.process_date}</td>
+                                            {/* <td>{user.response}</td> */}
                                             <td>{user.status}</td>
                                             <td>
                                             { user.status === "Pending" && 
@@ -563,6 +572,7 @@ const SAAllComplaintsList = () => {
                                                           onPageChange={handlePageChange}
                                                           containerClassName={"pagination"}
                                                           activeClassName={"active"}
+                                                          forcePage={currentPage}
                                                         />
                                                       </PaginationContainer>
                                                  

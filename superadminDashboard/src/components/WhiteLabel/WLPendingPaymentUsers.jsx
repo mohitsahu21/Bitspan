@@ -36,8 +36,8 @@ const WLPendingPaymentUsers = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getPendingPaymentUsers/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getPendingPaymentUsers/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getPendingPaymentUsers/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getPendingPaymentUsers/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -330,6 +330,7 @@ const WLPendingPaymentUsers = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

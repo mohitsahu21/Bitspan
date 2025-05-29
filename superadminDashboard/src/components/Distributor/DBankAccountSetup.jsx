@@ -47,7 +47,7 @@ const DBankAccountSetup = () => {
   const fetchBankAccounts = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getBankDetails/${userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/getBankDetails/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -113,7 +113,7 @@ const DBankAccountSetup = () => {
     // Proceed with the form submission if validation is passed
     axios
       .post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/addBankDetails/${userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/addBankDetails/${userId}`,
         {
           userId: userId, // Ensure userId is passed to the backend
           bankholder_name: bankData.holderName,
@@ -186,7 +186,7 @@ const DBankAccountSetup = () => {
     if (confirm.isConfirmed) {
       try {
         const response = await axios.delete(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/deleteBankDetails/${bid}`,
+          `https://2kadam.co.in/api/auth/Distributor/deleteBankDetails/${bid}`,
           {
             headers: {
               "Content-Type": "application/json",

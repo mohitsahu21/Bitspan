@@ -45,7 +45,7 @@ const SdOfflineRechargeHistory = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getSpecificUserTransactions/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getSpecificUserTransactions/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -107,6 +107,10 @@ const SdOfflineRechargeHistory = () => {
     return matchesKeyword && matchesDate && matchesType;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword, formStatus, fromDate, toDate]);
+
   console.log(filteredItems);
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
@@ -148,7 +152,7 @@ const SdOfflineRechargeHistory = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Offline Recharge Requests
+                          Provider 2 Recharge
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -158,7 +162,7 @@ const SdOfflineRechargeHistory = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Offline Recharge Requests
+                            Provider 2 Recharge
                           </span>{" "}
                         </p>
                       </div>
@@ -169,40 +173,6 @@ const SdOfflineRechargeHistory = () => {
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
                       <div className="row d-flex flex-column g-4">
                         <div className="d-flex flex-column flex-xl-row gap-3">
-                          {/* <div className="col-12 col-md-4 col-lg-3">
-                            <label for="fromDate" className="form-label">
-                              From
-                            </label>
-
-                            <input
-                              id="fromDate"
-                              className="form-control"
-                              type="date"
-                              value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
-                            />
-                          </div>
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="toDate" className="form-label">
-                              To
-                            </label>
-                            <input
-                              id="toDate"
-                              className="form-control "
-                              type="date"
-                              value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
-                            />
-                          </div> */}
-                          {/* <div className="d-flex align-items-end">
-                            <button
-                              type="button"
-                              className="btn btn-primary button"
-                            >
-                              Search
-                            </button>
-                          </div> */}
-
                           <div className="col-12 col-md-12 col-lg-12 col-xl-8">
                             {/* <label for="fromDate" className="form-label">From</label> */}
                             <input
@@ -212,7 +182,9 @@ const SdOfflineRechargeHistory = () => {
                               // placeholder="Enter Number/Order Id/User Name/User Id"
                               placeholder="Order Id/User Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => (
+                                setKeyword(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
                           <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -221,7 +193,9 @@ const SdOfflineRechargeHistory = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={formStatus}
-                              onChange={(e) => setFormStatus(e.target.value)}
+                              onChange={(e) => (
+                                setFormStatus(e.target.value), setCurrentPage(0)
+                              )}
                             >
                               <option selected>---Select Form Status---</option>
                               <option value="Pending">Pending</option>
@@ -242,7 +216,9 @@ const SdOfflineRechargeHistory = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => (
+                                setFromDate(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -254,7 +230,9 @@ const SdOfflineRechargeHistory = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => (
+                                setToDate(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
                         </div>
@@ -391,6 +369,7 @@ const SdOfflineRechargeHistory = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

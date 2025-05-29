@@ -50,7 +50,7 @@ const NewBankID = () => {
     // setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+        "https://2kadam.co.in/api/auth/retailer/getAllServicesList",
         {
           headers: {
             "Content-Type": "application/json",
@@ -79,7 +79,7 @@ const NewBankID = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          `https://2kadam.co.in/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -337,7 +337,7 @@ const NewBankID = () => {
   const getServices = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getSelectedServices/${currentUser.userId}`,
+        `https://2kadam.co.in/api/auth/retailer/getSelectedServices/${currentUser.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -396,7 +396,7 @@ const NewBankID = () => {
     try {
       const response = await axios.post(
         // "http://localhost:7777/api/auth/retailer/bankidForm",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/bankidForm",
+        "https://2kadam.co.in/api/auth/retailer/bankidForm",
         submitForm,
         {
           headers: {
@@ -478,7 +478,7 @@ const NewBankID = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {
           headers: {
@@ -636,7 +636,7 @@ const NewBankID = () => {
 
                 {/* <form onSubmit={handleSubmit} encType="multipart/form-data"> */}
                 <form onSubmit={openPinModal} encType="multipart/form-data">
-                  <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
+                  <div className="row g-4 shadow bg-body-tertiary rounded px-3 g1">
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="input-group mb-3">
                         <span className="input-group-text">
@@ -1075,6 +1075,13 @@ const Wrapper = styled.div`
     background-color: #e8e4f0;
     color: #343a40;
   }
+    .g1{
+  padding: 3rem;
+    @media screen and (max-width: 768px) {
+      
+    padding: 1rem;
+  }
+}
 `;
 
 {

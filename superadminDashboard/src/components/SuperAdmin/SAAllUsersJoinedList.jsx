@@ -30,7 +30,7 @@ const [status, setStatus] = useState(""); // For status filter
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
+        "https://2kadam.co.in/api/auth/superAdmin/getAllUsers",
         {
           headers: {
             "Content-Type": "application/json",
@@ -144,7 +144,11 @@ const [status, setStatus] = useState(""); // For status filter
                               type="search"
                               placeholder="Enter User Name/User Id/Mobile/Email Id/Package Name"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              // onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
 
@@ -154,7 +158,9 @@ const [status, setStatus] = useState(""); // For status filter
                               className="form-select"
                               aria-label="Default select example"
                               value={userType}
-                              onChange={(e) => setUserType(e.target.value)}
+                              onChange={(e) => {setUserType(e.target.value)
+                                setCurrentPage(0);
+                              }}
                               
                             >
                               <option selected>---Select User Type---</option>
@@ -170,7 +176,9 @@ const [status, setStatus] = useState(""); // For status filter
                               className="form-select"
                               aria-label="Default select example"
                               value={status}
-    onChange={(e) => setStatus(e.target.value)}
+    onChange={(e) => {setStatus(e.target.value)
+      setCurrentPage(0);
+    }}
                             >
                               <option selected>---Select Status---</option>
                               <option value="Active">Active</option>
@@ -184,7 +192,10 @@ const [status, setStatus] = useState(""); // For status filter
                               className="form-select"
                               aria-label="Default select example"
                               value={complaintsPerPage}
-                              onChange={(e) => setComplaintsPerPage(e.target.value)}
+                              onChange={(e) => {
+                                setComplaintsPerPage(Number(e.target.value))
+                                setCurrentPage(0);
+                              }}
                             >
                               {/* <option selected>--Row Per Page---</option> */}
                               <option value="10">10</option>
@@ -401,6 +412,7 @@ const [status, setStatus] = useState(""); // For status filter
                                     onPageChange={handlePageChange}
                                     containerClassName={"pagination"}
                                     activeClassName={"active"}
+                                    forcePage={currentPage}
                                   />
                                 </PaginationContainer>
                         </div>
@@ -432,11 +444,11 @@ const Wrapper = styled.div`
     background: #5356fa;
     border-color: #5356fa;
   }
-  .form-container {
+  /* .form-container {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-  }
+  }*/
   .field-group {
     display: flex;
     flex-direction: column;
@@ -479,9 +491,9 @@ const Wrapper = styled.div`
       width: 30%;
     }
   }
-  .custom-dropdown-toggle::after {
+  /* .custom-dropdown-toggle::after {
     display: none !important;
-  }
+  }  */
 `;
 
 const PaginationContainer = styled.div`

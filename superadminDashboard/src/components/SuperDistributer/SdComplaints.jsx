@@ -25,6 +25,14 @@ const SdComplaints = () => {
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState(null);
 
+  const initialFormState = {
+    complainType: "",
+    transactionNo: "",
+    mobileNo: "",
+    remark: "",
+    userID: currentUser.userId,
+  };
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -34,6 +42,14 @@ const SdComplaints = () => {
 
   const handleFileChange = (e) => {
     setComplainFile(e.target.files[0]);
+  };
+
+  const resetForm = () => {
+    setFormData(initialFormState);
+    setComplainFile(null);
+    // Reset file input
+    const fileInput = document.getElementById("formFileLg");
+    if (fileInput) fileInput.value = "";
   };
 
   const handleSubmit = async (e) => {
@@ -52,8 +68,8 @@ const SdComplaints = () => {
 
     try {
       const res = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/complain-query`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/complain-query`,
+        `https://2kadam.co.in/api/auth/superDistributor/complain-query`,
+        // `https://2kadam.co.in/api/auth/retailer/complain-query`,
         data,
         {
           headers: {
@@ -70,6 +86,8 @@ const SdComplaints = () => {
         icon: "success",
         title: "Complaint Registered Successfully!",
         text: "Your complaint has been recorded. We will get back to you shortly.",
+      }).then(() => {
+        resetForm(); // Reset form after successful submission
       });
     } catch (err) {
       console.error("Error submitting the form", err);
@@ -116,7 +134,7 @@ const SdComplaints = () => {
                     </div>
                   </div>
                   <form onSubmit={handleSubmit} encType="multipart/form-data">
-                    <div className="row g-4 shadow bg-body-tertiary rounded m-4 px-3">
+                    <div className="row g-4 shadow bg-body-tertiary rounded  px-3 g1">
                       <div className="text-center">
                         <h4>Enter All Correct Details For Raising Ticket</h4>
                       </div>
@@ -277,4 +295,12 @@ const Wrapper = styled.div`
       padding-left: 13rem;
     }
   }
+    .g1{
+  padding: 3rem;
+    @media screen and (max-width: 768px) {
+      margin-top: 1rem;
+      margin: 10px;
+    padding: 1rem;
+  }
+}
 `;

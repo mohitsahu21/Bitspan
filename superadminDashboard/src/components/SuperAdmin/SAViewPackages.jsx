@@ -22,27 +22,25 @@ const SAViewPackages = () => {
   const [packages, setPackages] = useState([]);
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [loading, setLoading] = useState(false);
- const navigate = useNavigate();
- const dispatch = useDispatch();
- const { token } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
   const [keyword, setKeyword] = useState("");
   const complaintsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(0);
   const [isRefresh, setIsRefresh] = useState(false);
 
-  
   const fetchPackages = async () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPackage",
+        "https://2kadam.co.in/api/auth/superAdmin/getPackage",
         {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
-
       );
       setPackages(data.data);
       setLoading(false);
@@ -51,98 +49,100 @@ const SAViewPackages = () => {
       if (error?.response?.status == 401) {
         // alert("Your token is expired please login again")
         Swal.fire({
-                  icon: "error",
-                  title: "Your token is expired please login again",
-                });
+          icon: "error",
+          title: "Your token is expired please login again",
+        });
         dispatch(clearUser());
         navigate("/");
       }
       setLoading(false);
     }
   };
-  console.log(selectedPackage?.id)
+  console.log(selectedPackage?.id);
 
-  
   const deletePackages = async (id) => {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: "btn btn-success",
-        cancelButton: "btn btn-danger"
+        cancelButton: "btn btn-danger",
       },
-      buttonsStyling: false
+      buttonsStyling: false,
     });
-  
-    swalWithBootstrapButtons.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, cancel!",
-      reverseButtons: true
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        setLoading(true);
-        try {
-          const { data } = await axios.delete(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deletePackage", 
-            {
-              data: { package_id: id },
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
+
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          setLoading(true);
+          try {
+            const { data } = await axios.delete(
+              "https://2kadam.co.in/api/auth/superAdmin/deletePackage",
+              {
+                data: { package_id: id },
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            if (data.success) {
+              swalWithBootstrapButtons.fire({
+                title: "Deleted!",
+                text: data.message,
+                icon: "success",
+              });
+              fetchPackages();
+            } else {
+              swalWithBootstrapButtons.fire({
+                title: "Error!",
+                text:
+                  data.message ||
+                  "An error occurred during the process. Please try again.",
+                icon: "error",
+              });
             }
-          );
-          if (data.success) {
-            swalWithBootstrapButtons.fire({
-              title: "Deleted!",
-              text: data.message,
-              icon: "success"
-            });
-            fetchPackages();
-          } else {
+          } catch (error) {
+            console.error("Error deleting package:", error);
+            if (error?.response?.status == 401) {
+              // alert("Your token is expired please login again")
+              Swal.fire({
+                icon: "error",
+                title: "Your token is expired please login again",
+              });
+              dispatch(clearUser());
+              navigate("/");
+            }
             swalWithBootstrapButtons.fire({
               title: "Error!",
-              text: data.message || "An error occurred during the process. Please try again.",
-              icon: "error"
+              text: "An error occurred during the process. Please try again.",
+              icon: "error",
             });
+          } finally {
+            setLoading(false);
           }
-        } catch (error) {
-          console.error("Error deleting package:", error);
-          if (error?.response?.status == 401) {
-            // alert("Your token is expired please login again")
-            Swal.fire({
-                      icon: "error",
-                      title: "Your token is expired please login again",
-                    });
-            dispatch(clearUser());
-            navigate("/");
-          }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
           swalWithBootstrapButtons.fire({
-            title: "Error!",
-            text: "An error occurred during the process. Please try again.",
-            icon: "error"
+            title: "Cancelled",
+            text: "Your package is safe :)",
+            icon: "error",
           });
-        } finally {
-          setLoading(false);
         }
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        swalWithBootstrapButtons.fire({
-          title: "Cancelled",
-          text: "Your package is safe :)",
-          icon: "error"
-        });
-      }
-    });
+      });
   };
-  
 
   // const deletePackages = async (id) => {
   //   setLoading(true);
   //   try {
   //     const { data } = await axios.delete(
-  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deletePackage", {
+  //       "https://2kadam.co.in/api/auth/superAdmin/deletePackage", {
   //           data: { package_id: id }
   //         }
   //     );
@@ -160,7 +160,7 @@ const SAViewPackages = () => {
   //           title: data.message,
   //         });
   //     }
-      
+
   //     setLoading(false);
   //     console.log(data)
   //   } catch (error) {
@@ -173,15 +173,14 @@ const SAViewPackages = () => {
   //   }
   // };
 
-  
   // useEffect(() => {
-  
+
   //   fetchPackages();
   // }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchPackages();
-  },[isRefresh])
+  }, [isRefresh]);
 
   const filteredItems = packages.filter(
     (row) =>
@@ -189,10 +188,9 @@ const SAViewPackages = () => {
         row.package_name
           .toLowerCase()
           .includes(keyword.trim().toLowerCase())) ||
-      (row?.id && row.id.toString().includes(keyword.trim())) || (row?.package_for &&
-        row.package_for
-          .toLowerCase()
-          .includes(keyword.trim().toLowerCase()))
+      (row?.id && row.id.toString().includes(keyword.trim())) ||
+      (row?.package_for &&
+        row.package_for.toLowerCase().includes(keyword.trim().toLowerCase()))
   );
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
@@ -258,7 +256,11 @@ const SAViewPackages = () => {
                               type="search"
                               placeholder="Search Packages"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              // onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value);
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
                           {/* <div className="col-12 col-md-4 col-lg-3">
@@ -278,14 +280,15 @@ const SAViewPackages = () => {
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div className="table-responsive">
                             {loading ? (
-                               <div className="d-flex justify-content-center">
-                               <Spinner animation="border" role="status">
-                               <span className="visually-hidden ">Loading...</span>
-                             </Spinner>
-                             </div>
-                            )
-                            : (
-                                <table className="table table-striped">
+                              <div className="d-flex justify-content-center">
+                                <Spinner animation="border" role="status">
+                                  <span className="visually-hidden ">
+                                    Loading...
+                                  </span>
+                                </Spinner>
+                              </div>
+                            ) : (
+                              <table className="table table-striped">
                                 <thead className="table-dark">
                                   <tr>
                                     {/* <th scope="col">#</th> */}
@@ -305,68 +308,64 @@ const SAViewPackages = () => {
                                 </thead>
                                 <tbody>
                                   {showApiData && showApiData.length > 0 ? (
-                                      showApiData?.map((pkg, index) => (
-                                        <tr key={pkg.id}>
-                                          {/* <th scope="row">{index + 1}</th> */}
-                                          <td>{pkg.id}</td>
-                                          <td>{pkg.created_at}</td>
-                                          <td>{pkg.package_name}</td>
-                                          <td>{pkg.package_for}</td>
-                                          <td>
-                                            <Dropdown>
-                                              <Dropdown.Toggle
-                                                variant="success"
-                                                id={`dropdown-${pkg.id}`}
+                                    showApiData?.map((pkg, index) => (
+                                      <tr key={pkg.id}>
+                                        {/* <th scope="row">{index + 1}</th> */}
+                                        <td>{pkg.id}</td>
+                                        <td>{pkg.created_at}</td>
+                                        <td>{pkg.package_name}</td>
+                                        <td>{pkg.package_for}</td>
+                                        <td>
+                                          <Dropdown>
+                                            <Dropdown.Toggle
+                                              variant="success"
+                                              id={`dropdown-${pkg.id}`}
+                                            >
+                                              Action Button
+                                            </Dropdown.Toggle>
+                                            <Dropdown.Menu>
+                                              <Dropdown.Item
+                                                onClick={() => {
+                                                  setSelectedPackage(pkg);
+                                                  setShowPackgeDetail(true);
+                                                }}
                                               >
-                                                Action Button
-                                              </Dropdown.Toggle>
-                                              <Dropdown.Menu>
-                                                <Dropdown.Item
-                                                  onClick={() => {
-                                                    setSelectedPackage(pkg);
-                                                    setShowPackgeDetail(true);
-                                                  }}
-                                                >
-                                                  <span className="">
-                                                    {" "}
-                                                    <CiViewList />
-                                                  </span>{" "}
-                                                  View
-                                                </Dropdown.Item>
-                                                <Dropdown.Item
-                                                  onClick={() => {
-                                                    setSelectedPackage(pkg);
-                                                    setEditPackgeDetail(true);
-                                                  }}
-                                                >
-                                                  <FaEdit /> Edit
-                                                </Dropdown.Item>
-                                                <Dropdown.Item
-                                                  onClick={() => {
-                                                    setSelectedPackage(pkg);
-                                                    deletePackages(pkg.id)
-                                                    
-                                                  }}
-                                                >
-                                                  <MdDelete /> Delete
-                                                </Dropdown.Item>
-                                              </Dropdown.Menu>
-                                            </Dropdown>
-                                          </td>
-                                        </tr>
-                                      ))
+                                                <span className="">
+                                                  {" "}
+                                                  <CiViewList />
+                                                </span>{" "}
+                                                View
+                                              </Dropdown.Item>
+                                              <Dropdown.Item
+                                                onClick={() => {
+                                                  setSelectedPackage(pkg);
+                                                  setEditPackgeDetail(true);
+                                                }}
+                                              >
+                                                <FaEdit /> Edit
+                                              </Dropdown.Item>
+                                              <Dropdown.Item
+                                                onClick={() => {
+                                                  setSelectedPackage(pkg);
+                                                  deletePackages(pkg.id);
+                                                }}
+                                              >
+                                                <MdDelete /> Delete
+                                              </Dropdown.Item>
+                                            </Dropdown.Menu>
+                                          </Dropdown>
+                                        </td>
+                                      </tr>
+                                    ))
                                   ) : (
                                     <tr>
-                                    <td colSpan="13">No data available</td>{" "}
-                                    {/* Updated colSpan to match table columns */}
-                                  </tr>
-                                  )
-                                   }
+                                      <td colSpan="13">No data available</td>{" "}
+                                      {/* Updated colSpan to match table columns */}
+                                    </tr>
+                                  )}
                                 </tbody>
                               </table>
-                            )
-                        }
-                          
+                            )}
                           </div>
                           {/* <div className="float-end">
                             <nav aria-label="Page navigation example">
@@ -391,19 +390,20 @@ const SAViewPackages = () => {
                                   </nav>
                                   </div> */}
                         </div>
-                                  <PaginationContainer>
-                                    <ReactPaginate
-                                      previousLabel={"Previous"}
-                                      nextLabel={"Next"}
-                                      breakLabel={"..."}
-                                      pageCount={totalPages}
-                                      marginPagesDisplayed={2}
-                                      pageRangeDisplayed={5}
-                                      onPageChange={handlePageChange}
-                                      containerClassName={"pagination"}
-                                      activeClassName={"active"}
-                                    />
-                                  </PaginationContainer>
+                        <PaginationContainer>
+                          <ReactPaginate
+                            previousLabel={"Previous"}
+                            nextLabel={"Next"}
+                            breakLabel={"..."}
+                            pageCount={totalPages}
+                            marginPagesDisplayed={2}
+                            pageRangeDisplayed={5}
+                            onPageChange={handlePageChange}
+                            containerClassName={"pagination"}
+                            activeClassName={"active"}
+                            forcePage={currentPage}
+                          />
+                        </PaginationContainer>
                       </div>
                     </div>
                   </div>
@@ -447,7 +447,11 @@ const SAViewPackages = () => {
           </Modal.Header>
           <Modal.Body>
             {selectedPackage && (
-              <SAEditPackageModel packages={selectedPackage} setEditPackgeDetail={setEditPackgeDetail} setIsRefresh={setIsRefresh}/>
+              <SAEditPackageModel
+                packages={selectedPackage}
+                setEditPackgeDetail={setEditPackgeDetail}
+                setIsRefresh={setIsRefresh}
+              />
             )}
           </Modal.Body>
         </Modal>

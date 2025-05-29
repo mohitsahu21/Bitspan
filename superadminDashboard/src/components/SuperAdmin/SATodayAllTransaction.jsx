@@ -35,7 +35,7 @@ const SATodayAllTransaction = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getTodayWalletTransactions",
+        "https://2kadam.co.in/api/auth/superAdmin/getTodayWalletTransactions",
         {
           headers: {
             "Content-Type": "application/json",
@@ -166,7 +166,10 @@ const SATodayAllTransaction = () => {
                                                          type="search"
                                                          placeholder="Enter User Name/User Id/Order Id"
                                                          value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                                                         onChange={(e) => {
+                                                          setKeyword(e.target.value)
+                                                          setCurrentPage(0);
+                                                        }}
                                                          />
                                                           </div>
                                                     </div>
@@ -270,6 +273,7 @@ const SATodayAllTransaction = () => {
                                                           onPageChange={handlePageChange}
                                                           containerClassName={"pagination"}
                                                           activeClassName={"active"}
+                                                          forcePage={currentPage}
                                                         />
                                                       </PaginationContainer>
                                                   

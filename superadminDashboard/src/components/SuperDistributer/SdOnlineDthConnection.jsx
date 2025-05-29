@@ -37,8 +37,8 @@ const SdOnlineDthConnection = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getOnlineDthConnection",
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getOnlineDTHConnection/${userId}`,
+        // "https://2kadam.co.in/api/auth/superAdmin/getOnlineDthConnection",
+        `https://2kadam.co.in/api/auth/superDistributor/getOnlineDTHConnection/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -112,6 +112,10 @@ const SdOnlineDthConnection = () => {
     return matchesKeyword && matchesDate && matchesType;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword, OperatorName, fromDate, toDate]);
+
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
   const filterPagination = () => {
@@ -149,7 +153,7 @@ const SdOnlineDthConnection = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Online DTH Connection History
+                          Provider 1 DTH Connection
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -159,7 +163,7 @@ const SdOnlineDthConnection = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Online DTH Connection History
+                            Provider 1 DTH Connection
                           </span>{" "}
                         </p>
                       </div>
@@ -168,35 +172,24 @@ const SdOnlineDthConnection = () => {
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-12 shadow bg-body-tertiary rounded  p-5 m-4">
                       <div className="row d-flex flex-column g-4">
-                        <div className="d-flex flex-column flex-md-row gap-3">
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="fromDate" className="form-label">
-                              From
-                            </label>
+                        <div className="d-flex flex-column flex-xl-row gap-3">
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-8">
                             <input
                               id="fromDate"
                               className="form-control"
-                              type="date"
-                              value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              type="search"
+                              placeholder="Enter Order Id/Txn ID/Operator/User Id"
+                              value={keyword}
+                              onChange={(e) => (
+                                setKeyword(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="toDate" className="form-label">
-                              To
-                            </label>
-                            <input
-                              id="toDate"
-                              className="form-control "
-                              type="date"
-                              value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
-                            />
-                          </div>
-                          <div className="col-12 col-md-4 col-lg-3">
-                            <label for="toDate" className="form-label">
+
+                          <div className="col-12 col-md-12 col-lg-12 col-xl-3">
+                            {/* <label for="toDate" className="form-label">
                               Select Operator
-                            </label>
+                            </label> */}
                             <select
                               className="form-select"
                               aria-label="Default select example"
@@ -214,21 +207,34 @@ const SdOnlineDthConnection = () => {
                         </div>
 
                         <div className="d-flex flex-column flex-xl-row gap-3">
-                          <div className="col-12 col-md-12 col-lg-12 col-xl-10">
-                            {/* <label for="fromDate" className="form-label">From</label> */}
+                          <div className="col-12 col-md-4 col-lg-3">
+                            <label for="fromDate" className="form-label">
+                              From
+                            </label>
                             <input
                               id="fromDate"
                               className="form-control"
-                              type="search"
-                              placeholder="Enter Order Id/Txn ID/Operator/User Id"
-                              value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              type="date"
+                              value={fromDate}
+                              onChange={(e) => (
+                                setFromDate(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
-
-                          {/* <div className="d-flex align-items-end">
-                                                        <button type="button" className="btn btn-primary button">Search</button>
-                                                    </div> */}
+                          <div className="col-12 col-md-4 col-lg-3">
+                            <label for="toDate" className="form-label">
+                              To
+                            </label>
+                            <input
+                              id="toDate"
+                              className="form-control "
+                              type="date"
+                              value={toDate}
+                              onChange={(e) => (
+                                setToDate(e.target.value), setCurrentPage(0)
+                              )}
+                            />
+                          </div>
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -250,16 +256,9 @@ const SdOnlineDthConnection = () => {
                                       <th scope="col">Date</th>
                                       <th scope="col">Order Id</th>
                                       <th scope="col">Transaction Id</th>
-                                      {/* <th scope="col">First Name</th>
-                                      <th scope="col">Last Name</th>
-                                      <th scope="col">Full Address</th>
-                                      <th scope="col">Postal Code</th> */}
-                                      <th scope="col">Plan Id</th>
                                       <th scope="col">Amount</th>
                                       <th scope="col">Operator Name</th>
                                       <th scope="col">Mo. Number</th>
-                                      <th scope="col">Message</th>
-                                      {/* <th scope="col">API Provider Name</th> */}
                                       <th scope="col">User Id</th>
                                       <th scope="col">Status</th>
                                     </tr>
@@ -276,11 +275,6 @@ const SdOnlineDthConnection = () => {
                                           <td>{item.created_at}</td>
                                           <td>{item.orderid}</td>
                                           <td>{item.txid}</td>
-                                          {/* <td>{item.first_name}</td>
-                                          <td>{item.last_name}</td>
-                                          <td>{item.full_address}</td>
-                                          <td>{item.postal_code}</td> */}
-                                          <td>{item.plan_id}</td>
                                           <td>{item.amount}</td>
                                           <td>{item.operatorName}</td>
                                           <td>
@@ -290,7 +284,7 @@ const SdOnlineDthConnection = () => {
                                               4
                                             )}
                                           </td>
-                                          <td>{item.message}</td>
+                                          {/* <td>{item.message}</td> */}
                                           {/* <td>{item.providerName}</td> */}
                                           <td>{item.user_id}</td>
                                           <td>{item.status}</td>
@@ -323,6 +317,7 @@ const SdOnlineDthConnection = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

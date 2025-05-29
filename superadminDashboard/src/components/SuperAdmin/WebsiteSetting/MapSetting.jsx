@@ -32,7 +32,7 @@ const MapSetting = () => {
                                    
                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                         <div className="text-center mb-2">
-                                            <button className="btn p-2">UPDATE</button>
+                                            <button className="btn btn-primary p-2">UPDATE</button>
                                         </div>
                                     </div>
                                 </div>

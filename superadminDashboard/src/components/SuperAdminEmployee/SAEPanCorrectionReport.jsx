@@ -40,8 +40,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
   //     try {
   //       setLoading(true);
   //       const response = await axios.put(
-  //         "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessSambalForm",
-  //         // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+  //         "https://2kadam.co.in/api/auth/superAdmin/SuccessSambalForm",
+  //         // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
   //         formData,
   //         {
   //   headers: {
@@ -267,7 +267,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
       setLoading(true);
 
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${item.userId}`,
+        `https://2kadam.co.in/api/auth/superAdmin/getUserRelations/${item.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -293,7 +293,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
 
         const retailerPromise = axios
           .get(
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
+            `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -309,7 +309,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         if (distributor) {
           const distributorPromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -326,7 +326,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         if (superDistributor) {
           const superDistributorPromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -343,7 +343,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         if (white_lable) {
           const whiteLablePromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -389,8 +389,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         ) {
           const response = await axios
             .put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.retailerFormData,
               {
                 headers: {
@@ -410,8 +410,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         ) {
           const response = await axios
             .put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.distributorFormData,
               {
                 headers: {
@@ -431,8 +431,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         ) {
           const response = await axios
             .put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.superDistributorFormData,
               {
                 headers: {
@@ -452,8 +452,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         ) {
           const response = await axios
             .put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.whiteLableFormData,
               {
                 headers: {
@@ -507,8 +507,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
           };
           await axios
             .post(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+              "https://2kadam.co.in/api/auth/superAdmin/addCommissionEntry",
+              // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
               commissionFormData,
               {
                 headers: {
@@ -524,8 +524,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
 
         await axios
           .put(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessNSDLCorrectionForm",
-            // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+            "https://2kadam.co.in/api/auth/superAdmin/SuccessNSDLCorrectionForm",
+            // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
             formData,
             {
               headers: {
@@ -626,7 +626,11 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -690,7 +694,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectNSDLCorrectionForm",
+        "https://2kadam.co.in/api/auth/superAdmin/rejectNSDLCorrectionForm",
         // "http://localhost:7777/api/auth/superAdmin/rejectSambalForm",
         formData,
         {
@@ -846,7 +850,11 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -880,7 +888,7 @@ const SAEPanCorrectionReport = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getOnlinePanCorrectionData",
+        "https://2kadam.co.in/api/auth/superAdmin/getOnlinePanCorrectionData",
         {
           headers: {
             "Content-Type": "application/json",
@@ -1013,7 +1021,9 @@ const SAEPanCorrectionReport = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {setFromDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -1025,7 +1035,9 @@ const SAEPanCorrectionReport = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => {setToDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -1036,7 +1048,9 @@ const SAEPanCorrectionReport = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={PaymentMode}
-                              onChange={(e) => setPaymentMode(e.target.value)}
+                              onChange={(e) => {setPaymentMode(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             >
                               <option selected>---Select---</option>
                               <option value="Success">Success</option>
@@ -1058,7 +1072,10 @@ const SAEPanCorrectionReport = () => {
                               type="search"
                               placeholder="Enter Name/Mobile/Email/Order Id/Txn Id/Retailer Name/Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value);
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
 
@@ -1225,6 +1242,7 @@ const SAEPanCorrectionReport = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

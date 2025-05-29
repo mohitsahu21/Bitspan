@@ -5,7 +5,7 @@ import { FaAddressCard, FaUser } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { BiHomeAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom"; // Import useParams for fetching bid from URL
+import { Navigate, useParams } from "react-router-dom"; // Import useParams for fetching bid from URL
 import Swal from "sweetalert2";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +25,7 @@ const WLBankAccountVerify = () => {
   const [error, setError] = useState(""); // To hold validation error messages
   const [timer, setTimer] = useState(0); // Timer state
   const [loading, setLoading] = useState(false); // State for loading effect
+  const [isloading, isSetLoading] = useState(false); // State for loading effect
 
   const { bid } = useParams(); // Fetch bid from URL params
 
@@ -33,8 +34,8 @@ const WLBankAccountVerify = () => {
     console.log("Fetching bank details for bid:", bid); // Log bid before request
     try {
       const response = await axios.get(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getBankAccountDetails/${bid}`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getBankAccountDetails/${bid}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getBankAccountDetails/${bid}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getBankAccountDetails/${bid}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -96,8 +97,8 @@ const WLBankAccountVerify = () => {
 
     try {
       const response = await axios.post(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/changeBankStatus",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/changeBankStatus",
+        // "https://2kadam.co.in/api/auth/superDistributor/changeBankStatus",
+        "https://2kadam.co.in/api/auth/whiteLabel/changeBankStatus",
         { UserId, bid },
 
         {
@@ -153,9 +154,10 @@ const WLBankAccountVerify = () => {
     }
 
     try {
+      isSetLoading(true); // Start loading
       const response = await axios.post(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/verifyOtpAndChangeBankStatus",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/verifyOtpAndChangeBankStatus",
+        // "https://2kadam.co.in/api/auth/superDistributor/verifyOtpAndChangeBankStatus",
+        "https://2kadam.co.in/api/auth/whiteLabel/verifyOtpAndChangeBankStatus",
         { UserId, otp },
 
         {
@@ -172,7 +174,8 @@ const WLBankAccountVerify = () => {
           text: "Your OTP has been verified and status updated.",
           willClose: () => {
             // Navigate to another page once SweetAlert closes
-            window.location.href = "/bank-account-setup"; // Replace '/success' with your desired route
+            // window.location.href = "/bank-account-setup";
+            navigate("/bank-account-setup");
           },
         });
         setOtpSent(true); // OTP has been sent
@@ -204,6 +207,8 @@ const WLBankAccountVerify = () => {
             "An error occurred while submitting the OTP. Please try again.",
         });
       }
+    }finally{
+      isSetLoading(false); // ✅ Stop loading after API call completes
     }
   };
 
@@ -386,11 +391,11 @@ const WLBankAccountVerify = () => {
                   <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     <div className="text-start mb-3">
                       <button
-                        className="btn p-2"
+                        className="btn btn-primary p-2"
                         onClick={SubmitBankOtp}
-                        disabled={!otpSent} // Disable the button if OTP has not been sent
+                        disabled={!otpSent || isloading} // Disable the button if OTP has not been sent
                       >
-                        Submit
+                       {isloading ? "Processing..." : "Submit"}
                       </button>
                     </div>
                   </div>

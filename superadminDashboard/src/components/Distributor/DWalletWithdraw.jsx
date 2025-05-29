@@ -54,7 +54,7 @@ const DWalletWithdraw = () => {
   const fetchBankAccounts = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getActiveBankDetails/${userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/getActiveBankDetails/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -82,7 +82,7 @@ const DWalletWithdraw = () => {
   const fetchWalletBalance = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getWalletBalance/${userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/getWalletBalance/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -149,7 +149,7 @@ const DWalletWithdraw = () => {
     try {
       // Submit the form data to the server
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/WalletWithdraw/${userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/WalletWithdraw/${userId}`,
         formData,
         {
           headers: {

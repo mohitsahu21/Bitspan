@@ -91,8 +91,8 @@ const WLComplaints = () => {
 
     try {
       const res = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/complain-query`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/complain-query`,
+        `https://2kadam.co.in/api/auth/whiteLabel/complain-query`,
+        // `https://2kadam.co.in/api/auth/retailer/complain-query`,
         data,
         {
           headers: {
@@ -224,7 +224,7 @@ const WLComplaints = () => {
                               onChange={handleChange}
                               // required
                             />
-                            <label for="floatingInputGroup1">
+                            <label for="floatingInputGroup1" className="res">
                               Transaction Number
                             </label>
                           </div>
@@ -291,7 +291,10 @@ const WLComplaints = () => {
 
                       <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                         <div className="text-start mb-3">
-                          <button className="btn p-2" disabled={loading}>
+                          <button
+                            className="btn btn-primary p-2"
+                            disabled={loading}
+                          >
                             {loading ? "Submitting..." : "Submit"}
                           </button>
                         </div>
@@ -327,6 +330,12 @@ const Wrapper = styled.div`
   @media (min-width: 1500px) {
     .formdata {
       padding-left: 13rem;
+    }
+  }
+    .res{
+    @media screen and (max-width: 375px) {
+      white-space: normal;
+      padding: 5px 10px;
     }
   }
 `;

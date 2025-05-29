@@ -26,7 +26,7 @@ const SocialLinks = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
+            "https://2kadam.co.in/api/auth/superAdmin/getSuperAdminSettings"
           );
           setData(data.data);
           setFormData({
@@ -73,7 +73,7 @@ const SocialLinks = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.put("https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateSocialLinkSetting", formData,
+            const response = await axios.put("https://2kadam.co.in/api/auth/superAdmin/UpdateSocialLinkSetting", formData,
                 
 {
     headers: {
@@ -237,7 +237,7 @@ const SocialLinks = () => {
 
                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                         <div className="text-center mb-2">
-                                            <button type="submit" className="btn p-2" disabled={loading}>{loading ? "Loading..." :  "UPDATE"}</button>
+                                            <button type="submit" className="btn btn-primary p-2" disabled={loading}>{loading ? "Loading..." :  "UPDATE"}</button>
                                         </div>
                                     </div>
                                      </>

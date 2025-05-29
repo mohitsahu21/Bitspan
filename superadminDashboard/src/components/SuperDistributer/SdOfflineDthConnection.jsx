@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { MdOutlineFormatListNumbered } from "react-icons/md";
 import { FaMobileAlt, FaRupeeSign } from "react-icons/fa";
@@ -48,8 +48,8 @@ const SdOfflineDthConnection = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getOfflineDTHConnection/${userId}`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getOfflineDTHConnection/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getOfflineDTHConnection/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getOfflineDTHConnection/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -82,18 +82,15 @@ const SdOfflineDthConnection = () => {
     }
   };
 
-  // useEffect(() => {
-  //   fetchOfflineForm();
-  // }, []);
-
   useEffect(() => {
     fetchOfflineForm();
+    console.log("Users Data:", users);
   }, [isRefresh]);
 
   const filteredItems = users.filter((row) => {
     const matchesKeyword =
-      (row?.first_name &&
-        row.first_name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.orderid &&
+        row.orderid.toLowerCase().includes(keyword.trim().toLowerCase())) ||
       (row?.number &&
         row.number.toLowerCase().includes(keyword.trim().toLowerCase())) ||
       (row?.UserName &&
@@ -132,40 +129,6 @@ const SdOfflineDthConnection = () => {
 
   console.log(users);
 
-  const filteredUnderProcessItems = underProcessForms.filter((row) => {
-    const matchesKeyword =
-      (row?.first_name &&
-        row.first_name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.number &&
-        row.number.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.UserName &&
-        row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.orderid &&
-        row.orderid.toLowerCase().includes(keyword.trim().toLowerCase()));
-    row?.user_id &&
-      row.user_id.toLowerCase().includes(keyword.trim().toLowerCase());
-
-    return matchesKeyword;
-  });
-
-  const totalUnderProcessPages = Math.ceil(
-    filteredUnderProcessItems.length / complaintsPerPage
-  );
-
-  const filterUnderProcessPagination = () => {
-    const startIndex = currentPage * complaintsPerPage;
-    const endIndex = startIndex + complaintsPerPage;
-    return filteredUnderProcessItems?.slice(startIndex, endIndex);
-  };
-
-  const handleUnderProcessPageChange = ({ selected }) => {
-    setCurrentPage(selected);
-  };
-
-  const showUnderProcessData = filterUnderProcessPagination();
-
-  console.log(showUnderProcessData);
-
   return (
     <>
       <Wrapper>
@@ -187,7 +150,7 @@ const SdOfflineDthConnection = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Offline DTH Connection history
+                          Provider 2 DTH Connection
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -197,7 +160,7 @@ const SdOfflineDthConnection = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Offline DTH Connection history
+                            Provider 2 DTH Connection
                           </span>{" "}
                         </p>
                       </div>
@@ -215,26 +178,15 @@ const SdOfflineDthConnection = () => {
                         <Tab eventKey="Application" title="Application">
                           <div className="row d-flex flex-column g-4">
                             <div className="d-flex flex-column flex-lg-row gap-3">
-                              {/* <div className="col-12 col-md-4 col-lg-3">
-                                                        <label for="fromDate" className="form-label">From</label>
-                                                        <input id="fromDate" className="form-control" type="date" />
-                                                    </div>
-                                                    <div className="col-12 col-md-4 col-lg-3">
-                                                        <label for="toDate" className="form-label">To</label>
-                                                        <input id="toDate" className="form-control " type="date" />
-                                                    </div>
-                                                    <div className="d-flex align-items-end">
-                                                        <button type="button" className="btn btn-primary button">Search</button>
-                                                    </div> */}
                               <div className="col-12 col-md-12 col-lg-6">
-                                {/* <label for="toDate" className="form-label">Select Operator</label> */}
                                 <select
                                   className="form-select"
                                   aria-label="Default select example"
                                   value={OperatorName}
-                                  onChange={(e) =>
-                                    setOperatorName(e.target.value)
-                                  }
+                                  onChange={(e) => (
+                                    setOperatorName(e.target.value),
+                                    setCurrentPage(0)
+                                  )}
                                 >
                                   <option selected>
                                     ---Select Operator---
@@ -253,16 +205,17 @@ const SdOfflineDthConnection = () => {
                                   className="form-select"
                                   aria-label="Default select example"
                                   value={formStatus}
-                                  onChange={(e) =>
-                                    setFormStatus(e.target.value)
-                                  }
+                                  onChange={(e) => (
+                                    setFormStatus(e.target.value),
+                                    setCurrentPage(0)
+                                  )}
                                 >
                                   <option selected>
                                     ---Select Form Status---
                                   </option>
                                   <option value="Pending">Pending</option>
                                   <option value="Success">Success</option>
-                                  <option value="Mark Edit">Mark Edit</option>
+                                  {/* <option value="Mark Edit">Mark Edit</option> */}
                                   <option value="Reject">Reject</option>
                                 </select>
                               </div>
@@ -276,7 +229,9 @@ const SdOfflineDthConnection = () => {
                                 type="search"
                                 placeholder="Enter Applicant Name/Order Id/User Name"
                                 value={keyword}
-                                onChange={(e) => setKeyword(e.target.value)}
+                                onChange={(e) => (
+                                  setKeyword(e.target.value), setCurrentPage(0)
+                                )}
                               />
                             </div>
 
@@ -298,21 +253,14 @@ const SdOfflineDthConnection = () => {
                                           <th scope="col">Sr.No</th>
                                           <th scope="col">Created Date</th>
                                           <th scope="col">Order Id</th>
-                                          {/* <th scope="col">first_name</th>
-                                          <th scope="col">last_name</th>
-                                          <th scope="col">full_address</th>
-                                          <th scope="col">postal_code</th> */}
                                           <th scope="col">number</th>
                                           <th scope="col">Operator Name</th>
                                           <th scope="col">Validity</th>
                                           <th scope="col">amount</th>
                                           <th scope="col">Description</th>
                                           <th scope="col">User Id</th>
-                                          {/* <th scope="col">User Name</th>
-                                          <th scope="col">User Mobile</th> */}
                                           <th scope="col">Status</th>
                                           <th scope="col">Note</th>
-                                          {/* <th scope="col">Action</th> */}
                                         </tr>
                                       </thead>
                                       <tbody>
@@ -328,11 +276,6 @@ const SdOfflineDthConnection = () => {
                                               </td>
                                               <td>{item.created_at}</td>
                                               <td>{item.orderid}</td>
-                                              {/* <td>{item.first_name}</td>
-                                              <td>{item.last_name}</td>
-                                              <td>{item.full_address}</td>
-                                              <td>{item.postal_code}</td> */}
-                                              {/* <td>{item.number}</td> */}
                                               <td>
                                                 {maskSensitiveInfo(
                                                   item.number,
@@ -344,67 +287,9 @@ const SdOfflineDthConnection = () => {
                                               <td>{item.validity}</td>
                                               <td>{item.amount}</td>
                                               <td>{item.message}</td>
-
                                               <td>{item.user_id}</td>
-                                              {/* <td>{item.UserName}</td>
-                                              <td>{item.ContactNo}</td> */}
                                               <td>{item.status}</td>
                                               <td>{item.note}</td>
-                                              {/* <td>
-                                                {(item.status === "Pending" ||
-                                                  item.status ===
-                                                    "Mark Edit") && (
-                                                  <Dropdown>
-                                                    <Dropdown.Toggle
-                                                      variant="success"
-                                                      // id={`dropdown-${user.id}`}
-                                                      as="span"
-                                                      style={{
-                                                        border: "none",
-                                                        background: "none",
-                                                        cursor: "pointer",
-                                                      }}
-                                                      className="custom-dropdown-toggle"
-                                                    >
-                                                      <PiDotsThreeOutlineVerticalBold />
-                                                    </Dropdown.Toggle>
-                                                    <Dropdown.Menu>
-                                                      <Dropdown.Item
-                                                        onClick={() => {
-                                                          // setSelectedUser(user);
-                                                          setShowApproveModel(
-                                                            true
-                                                          );
-                                                          setSelectedItem(item);
-                                                          //   deactivateUser(user.UserId)
-                                                        }}
-                                                      >
-                                                        <span className="">
-                                                          {" "}
-                                                          <CiViewList />
-                                                        </span>{" "}
-                                                        Approve
-                                                      </Dropdown.Item>
-                                                      <Dropdown.Item
-                                                        onClick={() => {
-                                                          // setSelectedUser(user);
-                                                          setShowMarkEditModel(
-                                                            true
-                                                          );
-                                                          setSelectedItem(item);
-                                                          //   deactivateUser(user.UserId)
-                                                        }}
-                                                      >
-                                                        <span className="">
-                                                          {" "}
-                                                          <CiViewList />
-                                                        </span>{" "}
-                                                        Mark for Edit
-                                                      </Dropdown.Item>
-                                                    </Dropdown.Menu>
-                                                  </Dropdown>
-                                                )}
-                                              </td> */}
                                             </tr>
                                           ))
                                         ) : (
@@ -431,6 +316,7 @@ const SdOfflineDthConnection = () => {
                                   onPageChange={handlePageChange}
                                   containerClassName={"pagination"}
                                   activeClassName={"active"}
+                                  forcePage={currentPage}
                                 />
                               </PaginationContainer>
                             </div>
@@ -447,7 +333,7 @@ const SdOfflineDthConnection = () => {
 
         {/* Approve  Model  start*/}
 
-        <Modal
+        {/* <Modal
           // size="lg"
           show={ShowApproveModel}
           //   fullscreen={true}
@@ -468,12 +354,12 @@ const SdOfflineDthConnection = () => {
               />
             )}
           </Modal.Body>
-        </Modal>
+        </Modal> */}
 
         {/*  Approve Model  end*/}
 
         {/* Mark Edit Model  start*/}
-
+        {/* 
         <Modal
           // size="lg"
           show={showMarkEditModel}
@@ -495,13 +381,13 @@ const SdOfflineDthConnection = () => {
               />
             )}
           </Modal.Body>
-        </Modal>
+        </Modal> */}
 
         {/*  Mark Edit Model  end*/}
 
         {/* Success Model  start*/}
 
-        <Modal
+        {/* <Modal
           // size="lg"
           show={showSuccessModel}
           //   fullscreen={true}
@@ -522,13 +408,13 @@ const SdOfflineDthConnection = () => {
               />
             )}
           </Modal.Body>
-        </Modal>
+        </Modal> */}
 
         {/*  Success Model  end*/}
 
         {/* Reject Model  start*/}
 
-        <Modal
+        {/* <Modal
           // size="lg"
           show={ShowRejectModel}
           //   fullscreen={true}
@@ -549,7 +435,7 @@ const SdOfflineDthConnection = () => {
               />
             )}
           </Modal.Body>
-        </Modal>
+        </Modal> */}
 
         {/*  Reject Model  end*/}
       </Wrapper>
@@ -681,3 +567,22 @@ const PaginationContainer = styled.div`
     }
   }
 `;
+// const filteredUnderProcessItems = underProcessForms.filter((row) => {
+//   const matchesKeyword =
+//     (row?.first_name &&
+//       row.first_name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+//     (row?.number &&
+//       String(row.number)
+//         .toLowerCase()
+//         .includes(keyword.trim().toLowerCase())) ||
+//     (row?.UserName &&
+//       row.UserName.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+//     (row?.orderid &&
+//       row.orderid.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+//     (row?.user_id &&
+//       String(row.user_id)
+//         .toLowerCase()
+//         .includes(keyword.trim().toLowerCase()));
+
+//   return matchesKeyword;
+// });

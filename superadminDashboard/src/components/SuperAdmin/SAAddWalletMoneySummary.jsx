@@ -49,8 +49,8 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveWalletAddMoneyRequests",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/ApproveWalletAddMoneyRequests",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -251,8 +251,8 @@ const handlesubmit = async (e) => {
   try {
     setLoading(true);
     const response = await axios.put(
-      "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectWalletAddMoneyRequests",
-      // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+      "https://2kadam.co.in/api/auth/superAdmin/rejectWalletAddMoneyRequests",
+      // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
       formData,
       {
         headers: {
@@ -450,7 +450,7 @@ const SAAddWalletMoneySummary = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllWalletAddMoneyRequests",
+        "https://2kadam.co.in/api/auth/superAdmin/getAllWalletAddMoneyRequests",
         {
           headers: {
             "Content-Type": "application/json",
@@ -494,13 +494,13 @@ const SAAddWalletMoneySummary = () => {
           (row?.order_id &&
             row.order_id.toLowerCase().includes(keyword.trim().toLowerCase()))
            
-          // const matchesType = !formStatus || formStatus === "---Select Form Status---" || row.status === formStatus;
+          const matchesType = !formStatus || formStatus === "---Select---" || row.status === formStatus;
           // return matchesKeyword && matchesType ;
           const matchesDate =
       (!fromDate || new Date(row.created_at).toISOString().split("T")[0] >= new Date(fromDate).toISOString().split("T")[0] ) &&
       (!toDate || new Date(row.created_at).toISOString().split("T")[0]  <= new Date(toDate).toISOString().split("T")[0] );
       console.log(matchesKeyword)
-          return matchesKeyword && matchesDate;
+          return matchesKeyword && matchesDate && matchesType;
           
         }
        
@@ -563,12 +563,32 @@ const SAAddWalletMoneySummary = () => {
                                                 <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="fromDate" className="form-label">From</label>
                                                         <input id="fromDate" className="form-control" type="date"  value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}/>
+                              onChange={(e) => {setFromDate(e.target.value)
+                                setCurrentPage(0);
+                              }}/>
                                                     </div>
                                                     <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="toDate" className="form-label">To</label>
                                                         <input id="toDate" className="form-control " type="date" value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}/>
+                              onChange={(e) => {setToDate(e.target.value)
+                                setCurrentPage(0);
+                              }}/>
+                                                    </div>
+                                                    <div className="col-12 col-md-4 col-lg-3">
+                                                        <label for="toDate" className="form-label">Select Status</label>
+                                                        <select className="form-select" aria-label="Default select example"
+                                                         value={formStatus}
+                                                         onChange={(e) => {
+                                                          setFormStatus(e.target.value)
+                                                          setCurrentPage(0);
+                                                          }}>
+                                                             <option selected>---Select---</option>
+                                                            <option value="Success">Success</option>
+                                                            <option value="Pending">Pending</option>
+                                                            <option value="Reject">Reject</option>
+
+
+                                                        </select>
                                                     </div>
                                                 </div>
 
@@ -581,7 +601,10 @@ const SAAddWalletMoneySummary = () => {
                                                          type="search"
                                                          placeholder="Enter User Name/User Id/Mobile/Email Id/Order Id"
                                                          value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                                                         onChange={(e) => {
+                                                          setKeyword(e.target.value)
+                                                          setCurrentPage(0);
+                                                        }}
                                                          />
                                                     </div>
                                                     
@@ -844,6 +867,7 @@ const SAAddWalletMoneySummary = () => {
                                                           onPageChange={handlePageChange}
                                                           containerClassName={"pagination"}
                                                           activeClassName={"active"}
+                                                          forcePage={currentPage}
                                                         />
                                                       </PaginationContainer>
                                                   

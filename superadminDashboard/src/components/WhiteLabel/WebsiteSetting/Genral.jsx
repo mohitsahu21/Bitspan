@@ -40,14 +40,14 @@ const Genral = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWhitelabelSettings/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getWhitelabelSettings/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`, // Add token to the request header
           },
         }
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
+        // "https://2kadam.co.in/api/auth/superAdmin/getSuperAdminSettings"
       );
       setData(data.data);
       setFormData({
@@ -190,8 +190,8 @@ const Genral = () => {
 
     try {
       const response = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/UpdateGenralSetting",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateGenralSetting",
+        "https://2kadam.co.in/api/auth/whiteLabel/UpdateGenralSetting",
+        // "https://2kadam.co.in/api/auth/superAdmin/UpdateGenralSetting",
         formDataSend,
         {
           headers: {
@@ -488,7 +488,7 @@ const Genral = () => {
                             <button
                               type="submit"
                               disabled={loading}
-                              className="btn p-2"
+                              className="btn btn-primary p-2"
                             >
                               {loading ? "Loading..." : "UPDATE"}
                             </button>

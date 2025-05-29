@@ -32,9 +32,9 @@ const WLPanCorrectionHistory = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getOnlinePanCorrectionData",
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getNsdlPanCorrectionHistory/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getNsdlPanCorrectionHistory/${userId}`,
+        // "https://2kadam.co.in/api/auth/superAdmin/getOnlinePanCorrectionData",
+        `https://2kadam.co.in/api/auth/whiteLabel/getNsdlPanCorrectionHistory/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getNsdlPanCorrectionHistory/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -81,9 +81,12 @@ const WLPanCorrectionHistory = () => {
     //   row.email.toLowerCase().includes(keyword.trim().toLowerCase()));
 
     const matchesType =
-      !PaymentMode ||
-      PaymentMode === "---Select---" ||
-      row.status === PaymentMode;
+      // !PaymentMode ||
+      // PaymentMode === "---Select---" ||
+      // row.status === PaymentMode;
+      !PaymentMode || PaymentMode === "---Select---" ||
+      (PaymentMode === "Failed" && (row.status === "Failed" || row.status === "Failure")) ||
+      row.status === PaymentMode;  
     // return matchesKeyword && matchesType ;
     const matchesDate =
       (!fromDate ||
@@ -163,7 +166,9 @@ const WLPanCorrectionHistory = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {setFromDate(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -175,7 +180,9 @@ const WLPanCorrectionHistory = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) =>{ setToDate(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -186,11 +193,14 @@ const WLPanCorrectionHistory = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={PaymentMode}
-                              onChange={(e) => setPaymentMode(e.target.value)}
+                              onChange={(e) => {setPaymentMode(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             >
                               <option selected>---Select---</option>
                               <option value="Success">Success</option>
                               <option value="Failed">Failed</option>
+                              <option value="Reject">Reject</option>
                             </select>
                           </div>
 
@@ -205,9 +215,11 @@ const WLPanCorrectionHistory = () => {
                               id="fromDate"
                               className="form-control"
                               type="search"
-                              placeholder="search By Order Id Or Txn Id"
+                              placeholder="search By Order Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {setKeyword(e.target.value)
+                                setCurrentPage(0)
+                              }}
                             />
                           </div>
 
@@ -235,26 +247,27 @@ const WLPanCorrectionHistory = () => {
                                       <th scope="col">Date</th>
 
                                       <th scope="col">Order Id</th>
-                                      <th scope="col">Transaction Id</th>
+                                      {/* <th scope="col">Transaction Id</th> */}
                                       <th scope="col">Application Mode</th>
-                                      <th scope="col">Select Type</th>
+                                      {/* <th scope="col">Select Type</th> */}
                                       {/* <th scope="col">Name</th>
                                       <th scope="col">DOB</th>
                                       <th scope="col">Gender</th> */}
                                       {/* <th scope="col">Mobile</th> */}
                                       {/* <th scope="col">Email</th>
-                                      <th scope="col">PAN NO.</th>
-                                      <th scope="col">Physical Pan</th> */}
-                                      <th scope="col">Retailer Id</th>
+                                      <th scope="col">PAN NO.</th> */}
+                                      <th scope="col">Physical Pan</th>
+                                      {/* <th scope="col">Retailer Id</th> */}
                                       {/* <th scope="col">Retailer Name</th> */}
                                       {/* <th scope="col">User Role</th> */}
                                       {/* <th scope="col">No Of User Id</th> */}
 
                                       <th scope="col">Amount</th>
-                                      <th scope="col">Message</th>
-                                      <th scope="col">API Provider Name</th>
+                                      {/* <th scope="col">Message</th>
+                                      <th scope="col">API Provider Name</th> */}
 
                                       <th scope="col">Status</th>
+                                      <th scope="col">User ID</th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -268,22 +281,23 @@ const WLPanCorrectionHistory = () => {
                                           </td>
                                           <td>{item.created_at}</td>
                                           <td>{item.orderid}</td>
-                                          <td>{item.txid}</td>
+                                          {/* <td>{item.txid}</td> */}
                                           <td>{item.applicationMode}</td>
-                                          <td>{item.selectType}</td>
+                                          {/* <td>{item.selectType}</td> */}
                                           {/* <td>{item.name}</td>
                                           <td>{item.dob}</td>
                                           <td>{item.gender}</td> */}
                                           {/* <td>{item.mobile}</td> */}
                                           {/* <td>{item.email}</td>
-                                          <td>{item.pan_no}</td>
-                                          <td>{item.physicalPan}</td> */}
+                                          <td>{item.pan_no}</td> */}
+                                          <td>{item.physicalPan}</td>
+                                          <td>{item.walletDeductAmt}</td>
+                                          <td>{item.status}</td>
                                           <td>{item.userId}</td>
                                           {/* <td>{item.UserName}</td> */}
-                                          <td>{item.amount}</td>
-                                          <td>{item.message}</td>
-                                          <td>{item.providerName}</td>
-                                          <td>{item.status}</td>
+                                          {/* <td>{item.amount}</td> */}
+                                          {/* <td>{item.message}</td>
+                                          <td>{item.providerName}</td> */}
                                         </tr>
                                       ))
                                     ) : (
@@ -308,6 +322,7 @@ const WLPanCorrectionHistory = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

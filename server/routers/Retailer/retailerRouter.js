@@ -65,6 +65,17 @@ const {
   getCertificateDetails,
   getSuperAdminData,
   getWhiteLableData,
+  digitalSignaturePlan,
+  updateDigitalSignaturePlan,
+  getdigitalSignaturePlan,
+  getActiveDigitalSignaturePlans,
+  addDSCForm,
+  getDSCFormData,
+  buyDSCcoupon,
+  getDSCToken,
+  getAddMoneyToWalletOnlineById,
+  getNsdlTransactionById,
+  getNsdlCorrectionById,
 } = require("../../controllers/Retailer/retailerController");
 const authenticateToken = require("../../middleware/authenticateToken");
 
@@ -148,15 +159,17 @@ router.post(
 );
 
 router.get(
-  "/nsdl-trans-new-requst",
+  "/nsdl-trans-new-requst/:id",
   authenticateToken,
   nsdlTransactionNewRequest
 );
+router.get("/getNsdlTransactionById/:id", getNsdlTransactionById);
 router.get(
-  "/nsdl-trans-correction",
+  "/nsdl-trans-correction/:id",
   authenticateToken,
   nsdlTransactionCorrection
 );
+router.get("/getNsdlCorrectionById/:id", getNsdlCorrectionById);
 router.get("/pan-4.0/:user_id", authenticateToken, panFourZeroGetAPI);
 
 const complainDataStorage = multer.diskStorage({
@@ -379,5 +392,14 @@ router.get("/getAllCommission/:userId", authenticateToken, getAllCommission);
 router.get("/certificateDetails/:userId", getCertificateDetails);
 router.get("/getSuperAdminData", getSuperAdminData);
 router.get("/getWhiteLableData/:whiteLabelId", getWhiteLableData);
+router.post("/digitalSignaturePlan", digitalSignaturePlan);
+router.put("/updateDigitalSignaturePlan/:id", updateDigitalSignaturePlan);
+router.get("/getdigitalSignaturePlan", getdigitalSignaturePlan);
+router.get("/getActiveDigitalSignaturePlans", getActiveDigitalSignaturePlans);
+router.post("/addDSCForm", addDSCForm);
+router.get("/getDSCFormData/:userId", getDSCFormData);
+router.post("/buyDSCcoupon", buyDSCcoupon);
+router.get("/getDSCToken/:userId", getDSCToken);
+router.get("/getAddMoneyToWalletOnlineById/:id", getAddMoneyToWalletOnlineById);
 
 module.exports = router;

@@ -37,14 +37,14 @@ const Payment = () => {
         //   }
     
           // const response = await axios.post(
-          //   "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/add-money-wallet",
+          //   "https://2kadam.co.in/api/auth/retailer/add-money-wallet",
           //   data,
           //   {
           //     headers: { "Content-Type": "multipart/form-data" },
           //   }
           // );
           const response = await axios.post(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/upiwf/MakePaymentINPortal",
+            "https://2kadam.co.in/api/auth/upiwf/MakePaymentINPortal",
             // "http://localhost:7777/api/auth/superAdmin/createOrderToAddWalletMoney",
             formData
           );

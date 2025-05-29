@@ -32,8 +32,8 @@ const DAllUsersJoinedList = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getDistributorUsersData/${userId}`,
+        // "https://2kadam.co.in/api/auth/superAdmin/getAllUsers",
+        `https://2kadam.co.in/api/auth/Distributor/getDistributorUsersData/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -154,8 +154,8 @@ const DAllUsersJoinedList = () => {
                             />
                           </div>
 
-                          <div className="field-group col-11 col-md-4 col-lg-2">
-                            {/* <label for="toDate" className="form-label fw-bold">PAN Mode</label> */}
+                          {/* <div className="field-group col-11 col-md-4 col-lg-2">
+                            <label for="toDate" className="form-label fw-bold">PAN Mode</label>
                             <select
                               className="form-select"
                               aria-label="Default select example"
@@ -165,12 +165,12 @@ const DAllUsersJoinedList = () => {
                               <option selected>---Select User Type---</option>
                               <option value="Retailer">Retailer</option>
                               <option value="Distributor">Distributor</option>
-                              {/* <option value="SuperDistributor">
+                              <option value="SuperDistributor">
                                 Super Distributor
                               </option>
-                              <option value="WhiteLabel">White Label</option> */}
+                              <option value="WhiteLabel">White Label</option>
                             </select>
-                          </div>
+                          </div> */}
                           <div className="field-group col-11 col-md-4 col-lg-2">
                             {/* <label for="toDate" className="form-label fw-bold">PAN Type</label> */}
                             <select
@@ -248,8 +248,8 @@ const DAllUsersJoinedList = () => {
                                       <th scope="col">Role</th>
                                       <th scope="col">Email</th>
                                       <th scope="col">Mobile</th>
-                                      <th scope="col">Package Id</th>
-                                      <th scope="col">Package Name</th>
+                                      {/* <th scope="col">Package Id</th>
+                                      <th scope="col">Package Name</th> */}
                                       {/* <th scope="col">Address</th> */}
                                       <th scope="col">PAN No</th>
                                       <th scope="col">AAdhaar No</th>
@@ -259,7 +259,7 @@ const DAllUsersJoinedList = () => {
                                       <th scope="col">Pincode</th>
 
                                       {/* <th scope="col">P-Coupon <br/>Price</th>
-                                                                      <th scope="col">E-Coupon <br/>Price</th> */}
+                                    <th scope="col">E-Coupon <br/>Price</th> */}
 
                                       <th scope="col">Created By</th>
                                       <th scope="col">Website Name</th>
@@ -291,8 +291,8 @@ const DAllUsersJoinedList = () => {
                                           <td>{user.role}</td>
                                           <td>{user.Email}</td>
                                           <td>{user.ContactNo}</td>
-                                          <td>{user.package_Id}</td>
-                                          <td>{user.package_name}</td>
+                                          {/* <td>{user.package_Id}</td>
+                                          <td>{user.package_name}</td> */}
                                           <td>{user.PanCardNumber}</td>
                                           <td>{user.AadharNumber}</td>
                                           <td>{user.BusinessName}</td>
@@ -412,6 +412,7 @@ const DAllUsersJoinedList = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

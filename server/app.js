@@ -21,6 +21,8 @@ const paymentRouter = require("./routers/PaymentGateway/orderRoute");
 const walletRouter = require("./routers/PaymentGateway/walletRoute");
 const upiwfPaymentRouter = require("./routers/PaymentGateway/upiwfPaymentsRouter");
 const planRouter = require("./routers/Retailer/planRouter");
+// const voterRoute = require("./routers/Retailer/voterRoute");
+const aadharRoute = require("./routers/Retailer/aadharRoute");
 const moment = require("moment-timezone");
 const { db } = require("./connect");
 const {
@@ -51,6 +53,8 @@ app.use("/api/auth/zlink", zlink);
 app.use("/api/auth/easyPayUpi", easyPayRouter);
 app.use("/api/auth/superAdmin", superAdminRouter);
 app.use("/api/auth/fetch/plan", planRouter);
+// app.use("/api/auth/voter", voterRoute);
+app.use("/api/auth/aadhar", aadharRoute);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/panUploads", express.static(path.join(__dirname, "panUploads")));
 app.use(

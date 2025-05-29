@@ -41,8 +41,8 @@ const WLActiveUsersList = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getActiveUsers/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getActiveUsers/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getActiveUsers/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getActiveUsers/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -158,7 +158,9 @@ const WLActiveUsersList = () => {
                               type="search"
                               placeholder="Enter User Name/User Id/Mobile/Email Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {setKeyword(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -167,7 +169,9 @@ const WLActiveUsersList = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={userType}
-                              onChange={(e) => setUserType(e.target.value)}
+                              onChange={(e) => {setUserType(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             >
                               <option selected>---Select User Type---</option>
                               <option value="Retailer">Retailer</option>
@@ -211,8 +215,8 @@ const WLActiveUsersList = () => {
                                       <th scope="col">Role</th>
                                       <th scope="col">Email</th>
                                       <th scope="col">Mobile</th>
-                                      <th scope="col">Package Id</th>
-                                      <th scope="col">Package Name</th>
+                                      {/* <th scope="col">Package Id</th>
+                                      <th scope="col">Package Name</th> */}
                                       {/* <th scope="col">Address</th> */}
                                       {/* <th scope="col">PAN No</th>
                                       <th scope="col">AAdhaar No</th> */}
@@ -220,8 +224,8 @@ const WLActiveUsersList = () => {
                                       <th scope="col">City</th>
                                       <th scope="col">State</th>
                                       <th scope="col">Pincode</th>
-
-                                      {/* <th scope="col">Status</th> */}
+                                      <th scope="col">Created By</th>
+                                      <th scope="col">Status</th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -240,14 +244,17 @@ const WLActiveUsersList = () => {
                                           <td>{user.UserName}</td>
                                           <td>{user.role}</td>
                                           <td>{user.Email}</td>
-                                          <td>
+                                          {/* <td>
                                             {maskSensitiveInfo(
                                               user.ContactNo,
                                               6,
                                               4
                                             )}
+                                          </td> */}
+                                          <td>
+                                            {user.ContactNo}
                                           </td>
-                                          <td>{user.package_Id}</td>
+                                          {/* <td>{user.package_Id}</td> */}
                                           {/* <td>{user.package_name}</td>
                                           <td>{user.PanCardNumber}</td>
                                           <td>{user.AadharNumber}</td> */}
@@ -256,7 +263,11 @@ const WLActiveUsersList = () => {
 
                                           <td>{user.State}</td>
                                           <td>{user.PinCode}</td>
-
+                                          <td>
+                                            {user?.created_By_User_Id +
+                                              " " +
+                                              user?.created_By_User_Role}
+                                          </td>
                                           <td>{user.Status}</td>
                                         </tr>
                                       ))
@@ -282,6 +293,7 @@ const WLActiveUsersList = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

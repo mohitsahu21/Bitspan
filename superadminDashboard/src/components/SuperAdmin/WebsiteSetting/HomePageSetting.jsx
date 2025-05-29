@@ -94,7 +94,7 @@ const HomePageSetting = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
+            "https://2kadam.co.in/api/auth/superAdmin/getSuperAdminSettings"
           );
           setData(data.data);
           setFormData({
@@ -196,7 +196,7 @@ const HomePageSetting = () => {
         console.log(formDataSend)
 
         try {
-            const response = await axios.post("https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateHomePageSetting", formDataSend, {
+            const response = await axios.post("https://2kadam.co.in/api/auth/superAdmin/UpdateHomePageSetting", formDataSend, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     Authorization: `Bearer ${token}`,
@@ -404,7 +404,7 @@ const HomePageSetting = () => {
 
                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                         <div className="text-center mb-2">
-                                            <button type="submit" className="btn p-2" disabled={loading}>{loading ? "Loading..." :  "UPDATE"}</button>
+                                            <button type="submit" className="btn btn-primary p-2" disabled={loading}>{loading ? "Loading..." :  "UPDATE"}</button>
                                         </div>
                                     </div>
                                      </>

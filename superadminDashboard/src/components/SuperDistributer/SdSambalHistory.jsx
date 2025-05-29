@@ -41,8 +41,8 @@ const SdSambalHistory = () => {
     setDataLoading(true);
     try {
       const response = await axios.get(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getSambalHistory/${userID}`
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getSambalHistory/${userID}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getSambalHistory/${userID}`
+        `https://2kadam.co.in/api/auth/superDistributor/getSambalHistory/${userID}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -115,6 +115,10 @@ const SdSambalHistory = () => {
     console.log(matchesKeyword);
     return matchesKeyword && matchesDate && matchesType;
   });
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword]);
 
   // const totalPages = Math.ceil(filteredData.length / complaintsPerPage);
 
@@ -328,6 +332,7 @@ const SdSambalHistory = () => {
                                 onPageChange={handlePageChange}
                                 containerClassName={"pagination"}
                                 activeClassName={"active"}
+                                forcePage={currentPage}
                               />
                             </PaginationContainer>
                           </div>

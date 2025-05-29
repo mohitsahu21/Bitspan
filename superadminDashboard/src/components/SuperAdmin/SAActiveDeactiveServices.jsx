@@ -40,8 +40,8 @@ const SAActiveApi = ({ complaint, setShowActiveModel, setIsRefresh }) => {
       try {
         setLoading(true);
         const response = await axios.put(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ActiveServices",
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+          "https://2kadam.co.in/api/auth/superAdmin/ActiveServices",
+          // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
           formData,
           {
             headers: {
@@ -192,8 +192,8 @@ const SADeactiveApi = ({ complaint, setShowDeactiveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/DeactiveServices",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/DeactiveServices",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -345,7 +345,7 @@ const SAActiveDeactiveServices = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllServicesList",
+            "https://2kadam.co.in/api/auth/superAdmin/getAllServicesList",
             {
               headers: {
                 "Content-Type": "application/json",
@@ -426,7 +426,7 @@ const SAActiveDeactiveServices = () => {
     //         setLoading(true);
     //         try {
     //           const { data } = await axios.put(
-    //             "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser", 
+    //             "https://2kadam.co.in/api/auth/superAdmin/deactivateUser", 
     //             {
     //                userId: id 
     //             }
@@ -525,7 +525,11 @@ console.log(showApiData);
                                                          type="search"
                                                          placeholder="Enter Service Name/Service For"
                                                          value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              // onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                                                          />
                                                     </div>
                                                     <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -536,7 +540,9 @@ console.log(showApiData);
                                                           className="form-select"
                                                           aria-label="Default select example"
                                                           value={Status}
-                                                          onChange={(e) => setStatus(e.target.value)}
+                                                          onChange={(e) => {setStatus(e.target.value)
+                                                            setCurrentPage(0);
+                                                          }}
                                                           
                                                         >
                                                           <option selected>---Select Status---</option>
@@ -691,6 +697,7 @@ console.log(showApiData);
                                                           onPageChange={handlePageChange}
                                                           containerClassName={"pagination"}
                                                           activeClassName={"active"}
+                                                          forcePage={currentPage}
                                                         />
                                                       </PaginationContainer>
                                                 </div>

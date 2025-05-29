@@ -215,8 +215,8 @@ const SAFundTransferStatus = () => {
     setLoading(true); // Start loading
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getWalletToWalletTransfer`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletToWalletTransfer/${userId}`,
+        `https://2kadam.co.in/api/auth/superAdmin/getWalletToWalletTransfer`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getWalletToWalletTransfer/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -352,7 +352,9 @@ const SAFundTransferStatus = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {setFromDate(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -364,7 +366,9 @@ const SAFundTransferStatus = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => {setToDate(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -375,7 +379,9 @@ const SAFundTransferStatus = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={status}
-                              onChange={(e) => setStatus(e.target.value)}
+                              onChange={(e) => {setStatus(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             >
                               <option selected>---Select---</option>
                               <option value="Success">Success</option>
@@ -393,7 +399,11 @@ const SAFundTransferStatus = () => {
                               type="search"
                               placeholder="search By Order Id Or Txn Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              // onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
 
@@ -474,6 +484,7 @@ const SAFundTransferStatus = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

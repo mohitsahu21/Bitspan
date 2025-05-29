@@ -7,6 +7,7 @@ import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
 
 const WLWalletWithdrawReport = () => {
   const dispatch = useDispatch();
@@ -36,8 +37,8 @@ const WLWalletWithdrawReport = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWalletWithdrawHistory/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getWalletWithdrawHistory/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getWalletWithdrawHistory/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getWalletWithdrawHistory/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -165,7 +166,10 @@ const WLWalletWithdrawReport = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {
+                                setFromDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -177,7 +181,10 @@ const WLWalletWithdrawReport = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => {
+                                setToDate(e.target.value)
+                              setCurrentPage(0)
+                            }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -188,7 +195,9 @@ const WLWalletWithdrawReport = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={status}
-                              onChange={(e) => setStatus(e.target.value)}
+                              onChange={(e) => {setStatus(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             >
                               <option selected>---Select---</option>
                               <option value="Approve">Approve</option>
@@ -210,7 +219,9 @@ const WLWalletWithdrawReport = () => {
                               type="search"
                               placeholder="search By Order Id "
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {setKeyword(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
 
@@ -222,7 +233,13 @@ const WLWalletWithdrawReport = () => {
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
                             {loading ? (
-                              <p>Loading...</p>
+                               <div className="d-flex justify-content-center">
+                               <Spinner animation="border" role="status">
+                                 <span className="visually-hidden">
+                                   Loading...
+                                 </span>
+                               </Spinner>
+                             </div>
                             ) : (
                               <table className="table table-striped">
                                 <thead className="table-dark">
@@ -242,7 +259,7 @@ const WLWalletWithdrawReport = () => {
                                     <th scope="col">Status</th>
                                     <th scope="col">Process Date</th>
                                     <th scope="col">UTR/Txn No.</th>
-                                    <th scope="col">Transaction Type</th>
+                                    {/* <th scope="col">Transaction Type</th> */}
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -282,7 +299,7 @@ const WLWalletWithdrawReport = () => {
                                         </td>
                                         <td>{item.process_date}</td>
                                         <td>{item.transaction_Id}</td>
-                                        <td>{item.Transactoion_Type}</td>
+                                        {/* <td>{item.Transactoion_Type}</td> */}
                                       </tr>
                                     ))
                                   ) : (
@@ -305,6 +322,7 @@ const WLWalletWithdrawReport = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

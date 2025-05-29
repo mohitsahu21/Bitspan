@@ -90,6 +90,7 @@ function App() {
             location.pathname !== "/" &&
             location.pathname !== "/password-reset" &&
             location.pathname !== "/download-certificate-print" &&
+            location.pathname !== "/recharge-receipt" &&
             location.pathname !== "/registration-page" &&
             location.pathname !== "/payment" && <Sider />}
 

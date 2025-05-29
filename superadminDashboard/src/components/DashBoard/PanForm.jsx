@@ -52,7 +52,7 @@ const PanForm = () => {
     // setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+        "https://2kadam.co.in/api/auth/retailer/getAllServicesList",
         {
           headers: {
             "Content-Type": "application/json",
@@ -81,7 +81,7 @@ const PanForm = () => {
     const fetchPackage = async () => {
       try {
         const { data } = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          `https://2kadam.co.in/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -359,7 +359,7 @@ const PanForm = () => {
     try {
       const response = await axios.post(
         // `http://localhost:7777/api/auth/retailer/applyOfflineForm`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/applyOfflineForm`,
+        `https://2kadam.co.in/api/auth/retailer/applyOfflineForm`,
         formDataObj,
         {
           headers: {
@@ -472,7 +472,7 @@ const PanForm = () => {
     try {
       const response = await axios.post(
         // `http://localhost:7777/api/auth/log-reg/verify-pin`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {
           headers: {
@@ -536,13 +536,19 @@ const PanForm = () => {
               <div className="main shadow-none">
                 <div className="row shadow-none">
                   <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                    <div className="col-12 d-flex justify-content-center">
+                    <div className="d-flex justify-content-between align-items-center flex-wrap">
+                      <h4 className="mx-lg-5 px-lg-3">Other Services</h4>
+                      <h6 className="mx-lg-5">
+                        <BiHomeAlt /> &nbsp;/ &nbsp; Other Services
+                      </h6>
+                    </div>
+                    {/* <div className="col-12 d-flex justify-content-center">
                       <div className="border border-danger rounded shadow-sm mb-3">
                         <h2 className="text-center m-0 px-5 py-3">
                           Other Services
                         </h2>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 <form onSubmit={openPinModal}>
@@ -585,7 +591,7 @@ const PanForm = () => {
                             onChange={handleChange}
                             required
                           />
-                          <label htmlFor="floatingInputGroup2">
+                          <label htmlFor="floatingInputGroup2" className="res">
                             Applicant Father Name
                           </label>
                         </div>
@@ -920,6 +926,12 @@ const Wrapper = styled.div`
   .custom-dropdown option {
     background-color: #e8e4f0;
     color: #343a40;
+  }
+    .res{
+    @media screen and (max-width: 375px) {
+      white-space: normal;
+      padding: 5px 10px;
+    }
   }
 `;
 {

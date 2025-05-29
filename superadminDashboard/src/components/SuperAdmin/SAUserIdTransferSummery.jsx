@@ -36,7 +36,7 @@ const SAUserIdTransferSummery = () => {
       console.log("Fetching API..."); // ✅ Step 1: Check if API call is triggered
 
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getShareIdsSummary`,
+        `https://2kadam.co.in/api/auth/superAdmin/getShareIdsSummary`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -97,8 +97,10 @@ const SAUserIdTransferSummery = () => {
           row.receiverId.toLowerCase().includes(searchKeyword));
 
       const matchesDate =
-        (!fromDate || new Date(row.transferDate) >= new Date(fromDate)) &&
-        (!toDate || new Date(row.transferDate) <= new Date(toDate));
+        // (!fromDate || new Date(row.transferDate) >= new Date(fromDate)) &&
+        // (!toDate || new Date(row.transferDate) <= new Date(toDate));
+        (!fromDate || new Date(row?.transferDate)?.toISOString()?.split("T")[0] >= new Date(fromDate)?.toISOString()?.split("T")[0] ) &&
+        (!toDate || new Date(row?.transferDate)?.toISOString()?.split("T")[0]  <= new Date(toDate)?.toISOString()?.split("T")[0] );
 
       return matchesKeyword && matchesDate;
     });
@@ -164,10 +166,10 @@ const SAUserIdTransferSummery = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Transfer User Ids Summery
+                          Transfer User Ids Summary
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; Transfer User Ids Summery
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Transfer User Ids Summary
                         </h6>
                       </div>
                     </div>
@@ -185,7 +187,9 @@ const SAUserIdTransferSummery = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {setFromDate(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -197,10 +201,12 @@ const SAUserIdTransferSummery = () => {
                               className="form-control"
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => {setToDate(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
-                          <div className="d-flex align-items-end">
+                          {/* <div className="d-flex align-items-end">
                             <button
                               type="button"
                               className="btn btn-primary button"
@@ -208,7 +214,7 @@ const SAUserIdTransferSummery = () => {
                             >
                               Search
                             </button>
-                          </div>
+                          </div> */}
                         </div>
 
                         <div className="d-flex flex-column flex-xl-row gap-3">
@@ -220,7 +226,11 @@ const SAUserIdTransferSummery = () => {
                               type="search"
                               placeholder="search By Sender Id Or Reciever Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              // onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
 
@@ -303,6 +313,7 @@ const SAUserIdTransferSummery = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

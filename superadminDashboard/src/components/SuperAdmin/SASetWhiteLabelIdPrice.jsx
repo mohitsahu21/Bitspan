@@ -37,7 +37,7 @@ const SASetWhiteLabelIdPrice = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserIdPriceList",
+        "https://2kadam.co.in/api/auth/superAdmin/getUserIdPriceList",
         {
           headers: {
             "Content-Type": "application/json",
@@ -87,7 +87,7 @@ const SASetWhiteLabelIdPrice = () => {
     try {
       setLoading(true);
     const {data} =  await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/updateUserIdPrice",
+        "https://2kadam.co.in/api/auth/superAdmin/updateUserIdPrice",
         formData,
         {
           headers: {

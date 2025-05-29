@@ -28,7 +28,7 @@ const BankHistory = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllBranchId/${userData}`,
+          `https://2kadam.co.in/api/auth/retailer/getAllBranchId/${userData}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -60,6 +60,10 @@ const BankHistory = () => {
       row.status === formStatus;
     return matchesKeyword && matchesType;
   });
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword, formStatus]);
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
@@ -100,13 +104,13 @@ const BankHistory = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="col-12 d-flex justify-content-center">
+                  {/* <div className="col-12 d-flex justify-content-center">
                     <div className="border border-danger rounded shadow-sm mb-3">
                       <h2 className="text-center m-0 px-5 py-3">
                         Bank ID History
                       </h2>
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
                     <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
@@ -329,6 +333,7 @@ const BankHistory = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

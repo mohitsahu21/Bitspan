@@ -25,7 +25,7 @@ const DCoupanCommissionHistory = () => {
     setLoading(true); // Start loading
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getCoupanHistory/${userId}`,
+        `https://2kadam.co.in/api/auth/Distributor/getCoupanHistory/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -332,6 +332,7 @@ const DCoupanCommissionHistory = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

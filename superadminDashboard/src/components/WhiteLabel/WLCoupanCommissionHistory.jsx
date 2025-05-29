@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BiHomeAlt } from "react-icons/bi";
 import styled from "styled-components";
-import { Dropdown, DropdownButton } from "react-bootstrap";
+import { Dropdown, DropdownButton, Spinner } from "react-bootstrap";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,8 +29,8 @@ const WLCoupanCommissionHistory = () => {
     setLoading(true); // Start loading
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getCoupanHistory/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getCoupanHistory/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getCoupanHistory/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getCoupanHistory/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -84,12 +84,12 @@ const WLCoupanCommissionHistory = () => {
 
   const filteredData = formData?.filter((row) => {
     const matchesSearch =
-      row.applicant_name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
+      row.applicant_name?.toLowerCase()?.includes(searchQuery?.trim()?.toLowerCase()) ||
       row.applicant_number
         ?.toLowerCase()
         ?.includes(searchQuery?.toLowerCase()) ||
       row.transaction_id?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
-      row.order_id?.toLowerCase()?.includes(searchQuery?.toLowerCase());
+      row.order_id?.toLowerCase()?.includes(searchQuery?.trim()?.toLowerCase());
     const matchesStatus =
       selectedStatus === "All" ||
       row.status?.toLowerCase() === selectedStatus?.toLowerCase();
@@ -164,11 +164,11 @@ const WLCoupanCommissionHistory = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          View Coupan Commission History
+                        Pan Coupan History
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; View Coupan Commission
-                          History{" "}
+                          <BiHomeAlt /> &nbsp;/ &nbsp; Pan Coupan History
+                          
                         </h6>
                       </div>
                     </div>
@@ -188,7 +188,9 @@ const WLCoupanCommissionHistory = () => {
                               // placeholder="Search by Name, Mobile, or Order ID"
                               placeholder="Search by  Order ID"
                               value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
+                              onChange={(e) => {setSearchQuery(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
 
@@ -201,7 +203,9 @@ const WLCoupanCommissionHistory = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {setFromDate(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -213,7 +217,9 @@ const WLCoupanCommissionHistory = () => {
                               className="form-control "
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => {setToDate(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
                           {/* <div className="col-12 col-md-4 col-lg-3 d-flex align-items-end">
@@ -265,11 +271,20 @@ const WLCoupanCommissionHistory = () => {
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div className="table-responsive">
+                          {loading ? (
+                              <div className="d-flex justify-content-center">
+                                <Spinner animation="border" role="status">
+                                  <span className="visually-hidden">
+                                    Loading...
+                                  </span>
+                                </Spinner>
+                              </div>
+                            ) :
                             <table className="table table-striped">
                               <thead className="table-dark">
                                 <tr>
                                   <th scope="col">Sr. No</th>
-                                  <th scope="col">ID</th>
+                                  <th scope="col">Date</th>
                                   <th scope="col">Order ID</th>
                                   <th scope="col">Coupon Quantity</th>
                                   <th scope="col">Coupon Price</th>
@@ -279,20 +294,11 @@ const WLCoupanCommissionHistory = () => {
                                   <th scope="col">Note</th>
                                   <th scope="col">Process Date</th>
                                   <th scope="col">Status</th>
-                                  <th scope="col">Created At</th>
+                                  {/* <th scope="col">Created At</th> */}
                                 </tr>
                               </thead>
                               <tbody>
-                                {loading ? (
-                                  <tr>
-                                    <td
-                                      colSpan="12"
-                                      style={{ textAlign: "center" }}
-                                    >
-                                      Loading...
-                                    </td>
-                                  </tr>
-                                ) : displayData.length > 0 ? (
+                                {displayData && displayData.length > 0 ? (
                                   displayData.map((item, index) => (
                                     <tr key={index}>
                                       <td>
@@ -300,7 +306,9 @@ const WLCoupanCommissionHistory = () => {
                                           index +
                                           1}
                                       </td>
-                                      <td>{item.id}</td>
+                                      {/* <td>{item.id}</td> */}
+                                      <td>{item.created_at}</td>
+
                                       <td>{item.order_id}</td>
                                       <td>{item.coupon_Quantity}</td>
                                       <td>{item.coupon_Price}</td>
@@ -310,7 +318,6 @@ const WLCoupanCommissionHistory = () => {
                                       <td>{item.note}</td>
                                       <td>{item.process_date}</td>
                                       <td>{item.status}</td>
-                                      <td>{item.created_at}</td>
                                     </tr>
                                   ))
                                 ) : (
@@ -325,6 +332,7 @@ const WLCoupanCommissionHistory = () => {
                                 )}
                               </tbody>
                             </table>
+}
                           </div>
                           <PaginationContainer>
                             <ReactPaginate
@@ -337,6 +345,7 @@ const WLCoupanCommissionHistory = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

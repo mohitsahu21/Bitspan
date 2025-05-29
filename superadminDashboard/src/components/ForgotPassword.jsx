@@ -21,7 +21,7 @@ const ForgotPassword = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/forgot-password`,
+        `https://2kadam.co.in/api/auth/log-reg/forgot-password`,
         { UserId: userId }
       );
       if (response.data.status === "Success") {
@@ -45,7 +45,7 @@ const ForgotPassword = () => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verifyOTP-forgot`,
+        `https://2kadam.co.in/api/auth/log-reg/verifyOTP-forgot`,
         {
           UserId: userId,
           otp: otp,

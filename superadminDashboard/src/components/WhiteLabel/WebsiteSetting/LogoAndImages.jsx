@@ -103,8 +103,8 @@ const LogoAndImages = () => {
   const fetchData = async () => {
     try {
       const { data } = await axios.get(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWhitelabelSettings/${userId}`,
+        // "https://2kadam.co.in/api/auth/superAdmin/getSuperAdminSettings"
+        `https://2kadam.co.in/api/auth/whiteLabel/getWhitelabelSettings/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -214,7 +214,7 @@ const LogoAndImages = () => {
 
     try {
       const response = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/UpdateLogoImageSetting",
+        "https://2kadam.co.in/api/auth/whiteLabel/UpdateLogoImageSetting",
         formDataSend,
         {
           headers: {
@@ -445,7 +445,7 @@ const LogoAndImages = () => {
                             <button
                               type="submit"
                               disabled={loading}
-                              className="btn p-2"
+                              className="btn btn-primary p-2"
                             >
                               {loading ? "Loading..." : "UPDATE"}
                             </button>

@@ -46,8 +46,8 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveBankIdForm",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/ApproveBankIdForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -181,8 +181,8 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/markForEditBankIdForm",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/markForEditBankIdForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -313,8 +313,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessBankIdForm",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/SuccessBankIdForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -472,8 +472,8 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectBankIdForm",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/rejectBankIdForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -673,7 +673,7 @@ const SABankIdForms = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getBankIdForm",
+        "https://2kadam.co.in/api/auth/superAdmin/getBankIdForm",
         {
           headers: {
             "Content-Type": "application/json",
@@ -763,7 +763,7 @@ const SABankIdForms = () => {
   //         setLoading(true);
   //         try {
   //           const { data } = await axios.put(
-  //             "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser", 
+  //             "https://2kadam.co.in/api/auth/superAdmin/deactivateUser", 
   //             {
   //                userId: id 
   //             }
@@ -902,7 +902,11 @@ const SABankIdForms = () => {
                                   type="search"
                                   placeholder="Enter Applicant Name/Mobile/Email Id/Order Id"
                                   value={keyword}
-                                  onChange={(e) => setKeyword(e.target.value)}
+                                  // onChange={(e) => setKeyword(e.target.value)}
+                                  onChange={(e) => {
+                                    setKeyword(e.target.value)
+                                    setCurrentPage(0);
+                                  }}
                                 />
                               </div>
                               <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -913,7 +917,11 @@ const SABankIdForms = () => {
                                   className="form-select"
                                   aria-label="Default select example"
                                   value={formStatus}
-                                  onChange={(e) => setFormStatus(e.target.value)}
+                                  onChange={(e) => {
+                                    setFormStatus(e.target.value)
+                                    setCurrentPage(0);
+                                  }
+                                  }
 
                                 >
                                   <option selected>---Select Form Status---</option>
@@ -1164,6 +1172,7 @@ View Form
                                           onPageChange={handlePageChange}
                                           containerClassName={"pagination"}
                                           activeClassName={"active"}
+                                          forcePage={currentPage}
                                         />
                                       </PaginationContainer>
 
@@ -1193,7 +1202,11 @@ View Form
       type="search"
       placeholder="Enter Applicant Name/Mobile/Email Id/Order Id"
       value={keyword}
-      onChange={(e) => setKeyword(e.target.value)}
+      // onChange={(e) => setKeyword(e.target.value)}
+      onChange={(e) => {
+        setKeyword(e.target.value)
+        setCurrentPage(0);
+      }}
     />
   </div>
   {/* <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -1450,6 +1463,7 @@ View Form
               onPageChange={handleUnderProcessPageChange}
               containerClassName={"pagination"}
               activeClassName={"active"}
+              forcePage={currentPage}
             />
           </PaginationContainer>
 

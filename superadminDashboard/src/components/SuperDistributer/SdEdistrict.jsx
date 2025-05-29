@@ -35,7 +35,7 @@ const SdEdistrict = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getEDistrictHistory/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getEDistrictHistory/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -121,6 +121,10 @@ const SdEdistrict = () => {
         })
       : []; // Ensure it's an empty array if formData is empty or not loaded yet
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [searchQuery, fromDate, toDate]);
+
   const totalPages = Math.ceil(filteredData?.length / complaintsPerPage);
 
   const paginateData = () => {
@@ -174,7 +178,7 @@ const SdEdistrict = () => {
                               Search
                             </label>
                             <input
-                              type="text"
+                              type="search"
                               className="form-control "
                               placeholder="Search by Name or Order ID"
                               value={searchQuery}
@@ -244,16 +248,6 @@ const SdEdistrict = () => {
                                     <th scope="col">S.No</th>
                                     <th scope="col">Order ID</th>
                                     <th scope="col">Applicant Type</th>
-                                    {/* <th scope="col">Applicant Name</th>
-                                    <th scope="col">Applicant Father Name</th>
-                                    <th scope="col">Mobile Number</th>
-                                    <th scope="col">DOB</th>
-                                    <th scope="col">Gender</th>
-                                    <th scope="col">Cast</th>
-                                    <th scope="col">Aadhar No</th>
-                                    <th scope="col">Samagra ID</th>
-                                    <th scope="col">Address</th>
-                                    <th scope="col">State</th> */}
                                     <th scope="col">Prev Application</th>
                                     <th scope="col">Annual inc</th>
                                     <th scope="col">View Document</th>
@@ -274,31 +268,9 @@ const SdEdistrict = () => {
                                         </td>
                                         <td>{item.order_id}</td>
                                         <td>{item.application_type}</td>
-                                        {/* <td>{item.name}</td>
-                                        <td>{item.father_husband_name}</td>
-                                        <td>
-                                          {maskSensitiveInfo(
-                                            item.mobile_no,
-                                            6,
-                                            4
-                                          )}
-                                        </td>
-                                        <td>{item.dob}</td>
-                                        <td>{item.gender}</td>
-                                        <td>{item.cast}</td>
-                                        <td>
-                                          {maskSensitiveInfo(
-                                            item.aadhar_no,
-                                            8,
-                                            4
-                                          )}
-                                        </td>
-                                        <td>{item.samagar_member_id}</td>
-                                        <td>{item.address}</td>
-                                        <td>{item.state}</td> */}
                                         <td>{item.previous_application}</td>
                                         <td>{item.annual_income}</td>
-                                        <td>
+                                        {/* <td>
                                           {item?.documentUpload
                                             ?.split(",")
                                             .map((kycurl, kycindx) => (
@@ -312,6 +284,24 @@ const SdEdistrict = () => {
                                                 </a>
                                               </div>
                                             ))}
+                                        </td> */}
+                                        <td>
+                                          {item?.documentUpload &&
+                                          item.documentUpload.trim() !== ""
+                                            ? item.documentUpload
+                                                .split(",")
+                                                .map((kycurl, kycindx) => (
+                                                  <div key={kycindx}>
+                                                    <a
+                                                      href={kycurl}
+                                                      target="_blank"
+                                                      rel="noopener noreferrer"
+                                                    >
+                                                      View {kycindx + 1}
+                                                    </a>
+                                                  </div>
+                                                ))
+                                            : "Not Available"}
                                         </td>
                                         <td>{item.charge_amount}</td>
                                         <td>{item.created_at}</td>
@@ -342,6 +332,7 @@ const SdEdistrict = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

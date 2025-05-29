@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { MdFormatListNumberedRtl } from "react-icons/md";
@@ -30,7 +30,7 @@ const VerifyDistrictHistory = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getVerifyEdistrict/${userID}`,
+        `https://2kadam.co.in/api/auth/retailer/getVerifyEdistrict/${userID}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -50,6 +50,10 @@ const VerifyDistrictHistory = () => {
   };
   console.log(allData);
 
+  useEffect(() => {
+    fetchRechargeData();
+  }, [isRefresh]);
+
   // useEffect(() => {
   //   const filtered = allData.filter((item) => {
   //     const searchValue = filterValue.toLowerCase();
@@ -61,32 +65,51 @@ const VerifyDistrictHistory = () => {
   //   setFilteredData(filtered);
   // }, [filterValue, allData]);
 
-  const filteredItems = allData?.filter((row) => {
-    const matchesKeyword =
-      (row?.samagra_id &&
-        row.order_id
-          .toLowerCase()
-          .includes(filterValue.trim().toLowerCase())) ||
-      (row?.mobileNo &&
-        row.mobileNo
-          .toLowerCase()
-          .includes(filterValue.trim().toLowerCase())) ||
-      (row?.name &&
-        row.name.toLowerCase().includes(filterValue.trim().toLowerCase())) ||
-      (row?.rsNumber &&
-        row.rsNumber.toLowerCase().includes(filterValue.trim().toLowerCase()));
+  const filteredItems = useMemo(() => {
+    console.log("Filter Value:", filterValue);
+    return allData.filter((row) => {
+      const searchValue = filterValue.trim().toLowerCase();
 
-    const matchesType =
-      !formStatus ||
-      formStatus === "---Select Form Status---" ||
-      row.status === formStatus;
-    return matchesKeyword && matchesType;
-  });
+      const matchesKeyword =
+        (row?.order_id && row.order_id.toLowerCase().includes(searchValue)) ||
+        (row?.mobileNo && row.mobileNo.toLowerCase().includes(searchValue)) ||
+        (row?.name && row.name.toLowerCase().includes(searchValue)) ||
+        (row?.rsNumber && row.rsNumber.toLowerCase().includes(searchValue));
+
+      const matchesType =
+        !formStatus ||
+        formStatus === "---Select Form Status---" ||
+        row.status === formStatus;
+
+      return matchesKeyword && matchesType;
+    });
+  }, [allData, filterValue, formStatus]);
+
+  // const filteredItems = allData?.filter((row) => {
+  //   const matchesKeyword =
+  //     (row?.samagra_id &&
+  //       row.order_id
+  //         .toLowerCase()
+  //         .includes(filterValue.trim().toLowerCase())) ||
+  //     (row?.mobileNo &&
+  //       row.mobileNo
+  //         .toLowerCase()
+  //         .includes(filterValue.trim().toLowerCase())) ||
+  //     (row?.name &&
+  //       row.name.toLowerCase().includes(filterValue.trim().toLowerCase())) ||
+  //     (row?.rsNumber &&
+  //       row.rsNumber.toLowerCase().includes(filterValue.trim().toLowerCase()));
+
+  //   const matchesType =
+  //     !formStatus ||
+  //     formStatus === "---Select Form Status---" ||
+  //     row.status === formStatus;
+  //   return matchesKeyword && matchesType;
+  // });
   // setFilteredData(filteredItems);
-
   useEffect(() => {
-    fetchRechargeData();
-  }, [isRefresh]);
+    setCurrentPage(0);
+  }, [filterValue, formStatus]);
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
@@ -144,16 +167,14 @@ const VerifyDistrictHistory = () => {
                               value={filterValue}
                               onChange={(e) => {
                                 setFilterValue(e.target.value);
-                                if (e.target.value === "") {
-                                  setCurrentPage(0);
-                                }
+                                setCurrentPage(0);
                               }}
-                              onKeyDown={(e) => {
-                                if (e.key === "Escape") {
-                                  setFilterValue("");
-                                  setCurrentPage(0);
-                                }
-                              }}
+                              // onKeyDown={(e) => {
+                              //   if (e.key === "Escape") {
+                              //     setFilterValue("");
+                              //     setCurrentPage(0);
+                              //   }
+                              // }}
                             />
                           </div>
                           <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -290,6 +311,7 @@ const VerifyDistrictHistory = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

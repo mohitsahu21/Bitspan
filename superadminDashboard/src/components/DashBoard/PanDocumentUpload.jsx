@@ -75,7 +75,7 @@ const PanDocumentUpload = () => {
 
     try {
       const response = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/panDocument",
+        "https://2kadam.co.in/api/auth/retailer/panDocument",
         formDataToSend,
         {
           headers: {
@@ -148,7 +148,7 @@ const PanDocumentUpload = () => {
                     </div>
                   </div>
                   <div className="row justify-content-center ">
-                    <div className="col-xxl-6 col-xl-9 col-lg-9 col-md-10 col-sm-9 shadow rounded m-4  px-5 py-5 bg-body-tertiary">
+                    <div className="col-xxl-6 col-xl-9 col-lg-9 col-md-10 col-sm-9 shadow rounded    py-5 bg-body-tertiary g1">
                       <form onSubmit={handleSubmit}>
                         <div className="row d-flex flex-column g-4">
                           <div className="d-flex justify-content-center flex-column flex-xl-row gap-3">
@@ -437,4 +437,11 @@ const Wrapper = styled.div`
     width: 50%;
     margin: auto;
   }
+    .g1{
+  padding: 3rem;
+    @media screen and (max-width: 768px) {
+      
+    padding: 1rem;
+  }
+}
 `;

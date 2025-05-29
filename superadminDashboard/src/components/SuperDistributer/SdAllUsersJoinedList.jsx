@@ -32,8 +32,8 @@ const SAAllUsersJoinedList = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getSuperDistributorUsersData/${userId}`,
+        // "https://2kadam.co.in/api/auth/superAdmin/getAllUsers",
+        `https://2kadam.co.in/api/auth/superDistributor/getSuperDistributorUsersData/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -248,8 +248,8 @@ const SAAllUsersJoinedList = () => {
                                       <th scope="col">Role</th>
                                       <th scope="col">Email</th>
                                       <th scope="col">Mobile</th>
-                                      <th scope="col">Package Id</th>
-                                      <th scope="col">Package Name</th>
+                                      {/* <th scope="col">Package Id</th> */}
+                                      {/* <th scope="col">Package Name</th> */}
                                       {/* <th scope="col">Address</th> */}
                                       <th scope="col">PAN No</th>
                                       <th scope="col">AAdhaar No</th>
@@ -291,8 +291,8 @@ const SAAllUsersJoinedList = () => {
                                           <td>{user.role}</td>
                                           <td>{user.Email}</td>
                                           <td>{user.ContactNo}</td>
-                                          <td>{user.package_Id}</td>
-                                          <td>{user.package_name}</td>
+                                          {/* <td>{user.package_Id}</td> */}
+                                          {/* <td>{user.package_name}</td> */}
                                           <td>{user.PanCardNumber}</td>
                                           <td>{user.AadharNumber}</td>
                                           <td>{user.BusinessName}</td>
@@ -412,6 +412,7 @@ const SAAllUsersJoinedList = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>
@@ -443,11 +444,11 @@ const Wrapper = styled.div`
     background: #5356fa;
     border-color: #5356fa;
   }
-  .form-container {
+  /* .form-container {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-  }
+  } */
   .field-group {
     display: flex;
     flex-direction: column;

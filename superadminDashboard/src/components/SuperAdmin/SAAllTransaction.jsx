@@ -35,7 +35,7 @@ const SAAllTransaction = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getWalletTransactions",
+        "https://2kadam.co.in/api/auth/superAdmin/getWalletTransactions",
         {
           headers: {
             "Content-Type": "application/json",
@@ -146,12 +146,16 @@ const SAAllTransaction = () => {
                                                 <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="fromDate" className="form-label">From</label>
                                                         <input id="fromDate" className="form-control" type="date"  value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}/>
+                              onChange={(e) => {setFromDate(e.target.value)
+                                setCurrentPage(0);
+                              }}/>
                                                     </div>
                                                     <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="toDate" className="form-label">To</label>
                                                         <input id="toDate" className="form-control " type="date" value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}/>
+                              onChange={(e) => {setToDate(e.target.value)
+                                setCurrentPage(0);
+                              }}/>
                                                     </div>
                                                 </div>
 
@@ -166,7 +170,11 @@ const SAAllTransaction = () => {
                                                          type="search"
                                                          placeholder="Enter User Name/User Id/Order Id"
                                                          value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              // onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                                                          />
                                                           </div>
                                                     </div>
@@ -271,6 +279,7 @@ const SAAllTransaction = () => {
                                                           onPageChange={handlePageChange}
                                                           containerClassName={"pagination"}
                                                           activeClassName={"active"}
+                                                          forcePage={currentPage}
                                                         />
                                                       </PaginationContainer>
                                                 </div>

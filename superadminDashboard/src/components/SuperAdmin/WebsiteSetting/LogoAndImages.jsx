@@ -92,7 +92,7 @@ const LogoAndImages = () => {
        
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings"
+            "https://2kadam.co.in/api/auth/superAdmin/getSuperAdminSettings"
           );
           setData(data.data);
           setFormData({
@@ -169,7 +169,7 @@ const LogoAndImages = () => {
         
 
         try {
-            const response = await axios.post("https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateLogoImageSetting", formDataSend, {
+            const response = await axios.post("https://2kadam.co.in/api/auth/superAdmin/UpdateLogoImageSetting", formDataSend, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     Authorization: `Bearer ${token}`,
@@ -327,7 +327,7 @@ const LogoAndImages = () => {
 
                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                         <div className="text-center mb-2">
-                                            <button type="submit" disabled={loading} className="btn p-2">{loading ? "Loading..." :  "UPDATE"}</button>
+                                            <button type="submit" disabled={loading} className="btn btn-primary p-2">{loading ? "Loading..." :  "UPDATE"}</button>
                                         </div>
                                     </div>
                                      </>

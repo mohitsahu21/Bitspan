@@ -30,7 +30,7 @@ const PanFourHistory = () => {
     try {
       const response = await axios.get(
         // `http://localhost:7777/api/auth/retailer/pan-4.0/${userData}`
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/pan-4.0/${userData}`,
+        `https://2kadam.co.in/api/auth/retailer/pan-4.0/${userData}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -73,6 +73,10 @@ const PanFourHistory = () => {
     return matchesKeyword && matchesType;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword, formStatus]);
+
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
   const filterPagination = () => {
@@ -108,10 +112,10 @@ const PanFourHistory = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          PAN Transaction Report
+                          PAN 4.0 History
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; PAN Transaction Report
+                          <BiHomeAlt /> &nbsp;/ &nbsp; PAN 4.0 History
                         </h6>
                       </div>
                     </div>
@@ -131,7 +135,9 @@ const PanFourHistory = () => {
                               type="search"
                               placeholder="Search by Name, Mobile no , Aadhar no, Email , Order Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => (
+                                setKeyword(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
                           <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -309,9 +315,9 @@ const PanFourHistory = () => {
                                                     </a>
                                                   </div>
                                                 ))
-                                            : "No KYC available"}
+                                            : "Not Available"}
                                         </td>
-                                        <td>
+                                        {/* <td>
                                           {" "}
                                           <a
                                             href={item.attachment_form}
@@ -319,37 +325,63 @@ const PanFourHistory = () => {
                                           >
                                             View
                                           </a>
+                                        </td> */}
+                                        <td>
+                                          {item.attachment_form ? (
+                                            <a
+                                              href={item.attachment_form}
+                                              target="_blank"
+                                            >
+                                              View
+                                            </a>
+                                          ) : (
+                                            "Not Available"
+                                          )}
                                         </td>
                                         <td>
                                           {" "}
-                                          <a
+                                          {item.attachment_signature ? (
+                                            <a
+                                              href={item.attachment_signature}
+                                              target="_blank"
+                                            >
+                                              View
+                                            </a>
+                                          ) : (
+                                            "Not Available"
+                                          )}
+                                          {/* <a
                                             href={item.attachment_signature}
                                             target="_blank"
                                           >
                                             View
-                                          </a>
+                                          </a> */}
                                         </td>
                                         <td>
                                           {" "}
-                                          <a
-                                            href={item.attachment_photo}
-                                            target="_blank"
-                                          >
-                                            View
-                                          </a>
+                                          {item.attachment_photo ? (
+                                            <a
+                                              href={item.attachment_photo}
+                                              target="_blank"
+                                            >
+                                              View
+                                            </a>
+                                          ) : (
+                                            "Not Available"
+                                          )}
                                         </td>
                                         <td>{item.Charge_Amount}</td>
                                         <td
-                                          style={{
-                                            color:
-                                              item.status === "Pending"
-                                                ? "#FFC107"
-                                                : item.status === "Reject"
-                                                ? "#DC3545"
-                                                : item.status === "Success"
-                                                ? "#28A745"
-                                                : "black",
-                                          }}
+                                        // style={{
+                                        //   color:
+                                        //     item.status === "Pending"
+                                        //       ? "#FFC107"
+                                        //       : item.status === "Reject"
+                                        //       ? "#DC3545"
+                                        //       : item.status === "Success"
+                                        //       ? "#28A745"
+                                        //       : "black",
+                                        // }}
                                         >
                                           {item.status}
                                         </td>
@@ -404,8 +436,8 @@ const PanFourHistory = () => {
                           </div>
                           <PaginationContainer>
                             <ReactPaginate
-                              previousLabel={"previous"}
-                              nextLabel={"next"}
+                              previousLabel={"Previous"}
+                              nextLabel={"Next"}
                               breakLabel={"..."}
                               pageCount={totalPages}
                               marginPagesDisplayed={2}
@@ -413,6 +445,7 @@ const PanFourHistory = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

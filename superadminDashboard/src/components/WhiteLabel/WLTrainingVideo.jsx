@@ -18,8 +18,8 @@ const WLTrainingVideo = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminSettings",
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getWhitelabelSettings/${UserId}`,
+          // "https://2kadam.co.in/api/auth/superAdmin/getSuperAdminSettings",
+          `https://2kadam.co.in/api/auth/whiteLabel/getWhitelabelSettings/${UserId}`,
           {
             headers: {
               "Content-Type": "application/json",

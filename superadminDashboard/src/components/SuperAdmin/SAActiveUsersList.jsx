@@ -62,7 +62,7 @@ const handlePackageSelect = (e) => {
     setPackagesLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPackage",
+        "https://2kadam.co.in/api/auth/superAdmin/getPackage",
         
 {
   headers: {
@@ -123,8 +123,8 @@ const handlePackageSelect = (e) => {
       setLoading(true);
      
       const response = await axios.put(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ChangeUserInfo",
+        // "https://2kadam.co.in/api/auth/superAdmin/approveUser",
+        "https://2kadam.co.in/api/auth/superAdmin/ChangeUserInfo",
         formData,
         {
           headers: {
@@ -373,7 +373,7 @@ const SAActiveUsersList = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getActiveUsers",
+            "https://2kadam.co.in/api/auth/superAdmin/getActiveUsers",
             {
               headers: {
                 "Content-Type": "application/json",
@@ -454,7 +454,7 @@ const SAActiveUsersList = () => {
             setLoading(true);
             try {
               const { data } = await axios.put(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser", 
+                "https://2kadam.co.in/api/auth/superAdmin/deactivateUser", 
                 {
                    userId: id 
                 },
@@ -556,7 +556,10 @@ const SAActiveUsersList = () => {
                                                          type="search"
                                                          placeholder="Enter User Name/User Id/Mobile/Email Id/Package Name"
                                                          value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) =>{ 
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                                                          />
                                                     </div>
                                                     <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -567,7 +570,9 @@ const SAActiveUsersList = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={userType}
-                              onChange={(e) => setUserType(e.target.value)}
+                              onChange={(e) => {setUserType(e.target.value)
+                                 setCurrentPage(0)
+                                }}
                               
                             >
                               <option selected>---Select User Type---</option>
@@ -631,7 +636,7 @@ const SAActiveUsersList = () => {
                                     <th scope="col">Aadhar Front</th>
                                     <th scope="col">Aadhar Back</th>
                                     <th scope="col">Pan Card Front</th>
-                                    {/* <th scope="col">View KYC</th> */}
+                                    <th scope="col">Photo</th>
                                     <th scope="col">Status</th>
                                     {/* <th scope="col">Note</th> */}
                                     <th scope="col">Action</th>
@@ -728,6 +733,21 @@ const SAActiveUsersList = () => {
                                           }
                                          
                                         </td>
+                                        <td>
+                                          {
+                                            user.profileImage ?
+                                            <a
+                                            href={user.profileImage}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                          >
+                                            View
+                                          </a>
+                                             :
+                                             "Not Available"
+                                          }
+                                         
+                                        </td>
                                         <td>{user.Status}</td>
                                         {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
                                         {/* <td>{user?.Note}</td> */}
@@ -803,6 +823,7 @@ const SAActiveUsersList = () => {
                                                           marginPagesDisplayed={2}
                                                           pageRangeDisplayed={5}
                                                           onPageChange={handlePageChange}
+                                                          forcePage={currentPage}
                                                           containerClassName={"pagination"}
                                                           activeClassName={"active"}
                                                         />

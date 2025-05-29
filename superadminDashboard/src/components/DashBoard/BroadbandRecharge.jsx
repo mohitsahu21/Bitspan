@@ -21,7 +21,7 @@ const BroadbandRecharge = () => {
     // setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+        "https://2kadam.co.in/api/auth/retailer/getAllServicesList",
         {
           headers: {
             "Content-Type": "application/json",
@@ -108,7 +108,7 @@ const BroadbandRecharge = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllRechargeApi`,
+          `https://2kadam.co.in/api/auth/retailer/getAllRechargeApi`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -338,7 +338,7 @@ const BroadbandRecharge = () => {
       // setLoading(true);
 
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${currentUser.userId}`,
+        `https://2kadam.co.in/api/auth/superAdmin/getUserRelations/${currentUser.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -367,7 +367,7 @@ const BroadbandRecharge = () => {
 
         const retailerPromise = axios
           .get(
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
+            `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -383,7 +383,7 @@ const BroadbandRecharge = () => {
         if (distributor) {
           const distributorPromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -400,7 +400,7 @@ const BroadbandRecharge = () => {
         if (superDistributor) {
           const superDistributorPromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -417,7 +417,7 @@ const BroadbandRecharge = () => {
         if (white_lable) {
           const whiteLablePromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -526,6 +526,19 @@ const BroadbandRecharge = () => {
             title: "Done!",
             text: "Recharge Successful",
             icon: "success",
+          }).then(() => {
+            // Prepare receipt data
+            const receiptData = {
+              rechargeType: "Broadband",
+              receiptNumber: rechargeResult.data.orderId,
+              mobile_no: formData.number,
+              // operator: formData.operator_name,
+              amount: formData.amount,
+            };
+
+            localStorage.setItem("receiptData", JSON.stringify(receiptData));
+
+            navigate("/recharge-receipt");
           });
           setResponse(result.data);
           success = true;
@@ -542,8 +555,8 @@ const BroadbandRecharge = () => {
           ) {
             const response = await axios
               .put(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-                // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+                "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+                // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
                 result.distributorFormData,
                 {
                   headers: {
@@ -563,8 +576,8 @@ const BroadbandRecharge = () => {
           ) {
             const response = await axios
               .put(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-                // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+                "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+                // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
                 result.superDistributorFormData,
                 {
                   headers: {
@@ -584,8 +597,8 @@ const BroadbandRecharge = () => {
           ) {
             const response = await axios
               .put(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-                // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+                "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+                // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
                 result.whiteLableFormData,
                 {
                   headers: {
@@ -648,8 +661,8 @@ const BroadbandRecharge = () => {
             console.log(commissionFormData);
             await axios
               .post(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
-                // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+                "https://2kadam.co.in/api/auth/superAdmin/addCommissionEntry",
+                // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
                 commissionFormData,
                 {
                   headers: {
@@ -710,8 +723,8 @@ const BroadbandRecharge = () => {
             console.log(commissionFormData);
             await axios
               .post(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
-                // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+                "https://2kadam.co.in/api/auth/superAdmin/addCommissionEntry",
+                // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
                 commissionFormData,
                 {
                   headers: {
@@ -782,7 +795,7 @@ const BroadbandRecharge = () => {
       // Make the API call
       const result = await axios.post(
         // "http://localhost:7777/api/auth/wallet/offlineRechargeAndUpdateWallet",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/wallet/offlineRechargeAndUpdateWallet",
+        "https://2kadam.co.in/api/auth/wallet/offlineRechargeAndUpdateWallet",
         offlineForm,
         {
           headers: {
@@ -806,6 +819,19 @@ const BroadbandRecharge = () => {
           title: "Done!",
           text: `Recharge Successful! Order ID: ${result.data.details.recharge.orderId}`,
           icon: "success",
+        }).then(() => {
+          // Prepare receipt data
+          const receiptData = {
+            rechargeType: "Broadband",
+            receiptNumber: result.data.details.recharge.orderId,
+            mobile_no: offlineForm.mobile_no,
+            // operator: formData.operator_name,
+            amount: offlineForm.amount,
+          };
+
+          localStorage.setItem("receiptData", JSON.stringify(receiptData));
+
+          navigate("/recharge-receipt");
         });
         setOfflineForm({
           mobile_no: "",
@@ -872,7 +898,7 @@ const BroadbandRecharge = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {
           headers: {
@@ -912,7 +938,7 @@ const BroadbandRecharge = () => {
   const verifyOnlinePin = async () => {
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: onlinePin.join("") },
         {
           headers: {

@@ -31,7 +31,7 @@ const SADeactiveUsersList = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getdeactiveUsers",
+            "https://2kadam.co.in/api/auth/superAdmin/getdeactiveUsers",
             {
               headers: {
                 "Content-Type": "application/json",
@@ -120,7 +120,7 @@ const SADeactiveUsersList = () => {
             setLoading(true);
             try {
               const { data } = await axios.put(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/activateUser", 
+                "https://2kadam.co.in/api/auth/superAdmin/activateUser", 
                 {
                    userId: id 
                 },
@@ -219,7 +219,11 @@ const SADeactiveUsersList = () => {
                                                          type="search"
                                                          placeholder="Enter User Name/User Id/Mobile/Email Id/Package Name"
                                                          value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              // onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                                                          />
                                                     </div>
                                                     <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -230,7 +234,9 @@ const SADeactiveUsersList = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={userType}
-                              onChange={(e) => setUserType(e.target.value)}
+                              onChange={(e) => {setUserType(e.target.value)
+                                setCurrentPage(0);
+                              }}
                               
                             >
                               <option selected>---Select User Type---</option>
@@ -293,7 +299,7 @@ const SADeactiveUsersList = () => {
                                     <th scope="col">Aadhar Front</th>
                                     <th scope="col">Aadhar Back</th>
                                     <th scope="col">Pan Card Front</th>
-                                    {/* <th scope="col">View KYC</th> */}
+                                    <th scope="col">Photo</th>
                                     <th scope="col">Status</th>
                                     {/* <th scope="col">Note</th> */}
                                     <th scope="col">Action</th>
@@ -393,6 +399,21 @@ const SADeactiveUsersList = () => {
                                           }
                                           
                                         </td>
+                                        <td>
+                                          {
+                                            user.profileImage ?
+                                            <a
+                                            href={user.profileImage}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                          >
+                                            View
+                                          </a>
+                                            :
+                                            "Not Available"
+                                          }
+                                          
+                                        </td>
                                         <td>{user.Status}</td>
                                         {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
                                         {/* <td>{user?.Note}</td> */}
@@ -453,6 +474,7 @@ const SADeactiveUsersList = () => {
                                                           onPageChange={handlePageChange}
                                                           containerClassName={"pagination"}
                                                           activeClassName={"active"}
+                                                          forcePage={currentPage}
                                                         />
                                                       </PaginationContainer>
                                                 

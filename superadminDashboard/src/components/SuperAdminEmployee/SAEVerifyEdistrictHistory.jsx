@@ -51,7 +51,7 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
       setLoading(true);
       const response = await axios.put(
         // "http://localhost:7777/api/auth/superAdmin/ApproveVerifyEdistrictForm",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveVerifyEdistrictForm",
+        "https://2kadam.co.in/api/auth/superAdmin/ApproveVerifyEdistrictForm",
         formData,
         {
           headers: {
@@ -142,7 +142,11 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -188,8 +192,8 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/markForEditVerifyEdistrictForm",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/markForEditVerifyEdistrictForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -280,7 +284,11 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -326,8 +334,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
   //   try {
   //     setLoading(true);
   //     const response = await axios.put(
-  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessVerifyEdistrictForm",
-  //       // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+  //       "https://2kadam.co.in/api/auth/superAdmin/SuccessVerifyEdistrictForm",
+  //       // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
   //       formData,
   //       {
   //         headers: {
@@ -524,7 +532,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
       setLoading(true);
 
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${item.user_id}`,
+        `https://2kadam.co.in/api/auth/superAdmin/getUserRelations/${item.user_id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -550,7 +558,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
 
         const retailerPromise = axios
           .get(
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
+            `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -566,7 +574,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         if (distributor) {
           const distributorPromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -583,7 +591,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         if (superDistributor) {
           const superDistributorPromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -600,7 +608,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         if (white_lable) {
           const whiteLablePromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -646,8 +654,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         ) {
           const response = await axios
             .put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.retailerFormData,
               {
                 headers: {
@@ -667,8 +675,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         ) {
           const response = await axios
             .put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.distributorFormData,
               {
                 headers: {
@@ -688,8 +696,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         ) {
           const response = await axios
             .put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.superDistributorFormData,
               {
                 headers: {
@@ -709,8 +717,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         ) {
           const response = await axios
             .put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.whiteLableFormData,
               {
                 headers: {
@@ -764,8 +772,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
           };
           await axios
             .post(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+              "https://2kadam.co.in/api/auth/superAdmin/addCommissionEntry",
+              // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
               commissionFormData,
               {
                 headers: {
@@ -781,8 +789,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
 
         await axios
           .put(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessVerifyEdistrictForm",
-            // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+            "https://2kadam.co.in/api/auth/superAdmin/SuccessVerifyEdistrictForm",
+            // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
             formData,
             {
               headers: {
@@ -882,7 +890,11 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -953,7 +965,7 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectVerifyEdistrictForm",
+        "https://2kadam.co.in/api/auth/superAdmin/rejectVerifyEdistrictForm",
         // "http://localhost:7777/api/auth/superAdmin/rejectVerifyEdistrictForm",
         formData,
         {
@@ -1109,7 +1121,11 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -1145,7 +1161,7 @@ const SAEVerifyEdistrictHistory = () => {
     try {
       const { data } = await axios.get(
         // "http://localhost:7777/api/auth/superAdmin/getVerifyEdistrictForms"
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getVerifyEdistrictForms",
+        "https://2kadam.co.in/api/auth/superAdmin/getVerifyEdistrictForms",
         {
           headers: {
             "Content-Type": "application/json",
@@ -1190,8 +1206,8 @@ const SAEVerifyEdistrictHistory = () => {
     const matchesKeyword =
       (row?.name &&
         row.name.toLowerCase().includes(keyword.trim().toLowerCase())) ||
-      (row?.mobile_no &&
-        row.mobile_no.toLowerCase().includes(keyword.trim().toLowerCase())) ||
+      (row?.mobileNo &&
+        row.mobileNo.toLowerCase().includes(keyword.trim().toLowerCase())) ||
       (row?.rsNumber &&
         row.rsNumber.toLowerCase().includes(keyword.trim().toLowerCase())) ||
       (row?.order_id &&
@@ -1243,7 +1259,7 @@ const SAEVerifyEdistrictHistory = () => {
   //         setLoading(true);
   //         try {
   //           const { data } = await axios.put(
-  //             "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser",
+  //             "https://2kadam.co.in/api/auth/superAdmin/deactivateUser",
   //             {
   //                userId: id
   //             }
@@ -1323,7 +1339,7 @@ const SAEVerifyEdistrictHistory = () => {
                 {/* <Sider /> */}
               </div>
               <div
-                className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
+                className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-12
                              mt-5 formdata "
               >
                 <div className="main shadow-none ">
@@ -1334,7 +1350,7 @@ const SAEVerifyEdistrictHistory = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Verify E-district Form history
+                          Verify E-district Form Request
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -1344,7 +1360,7 @@ const SAEVerifyEdistrictHistory = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            Verify E-district Form history
+                            Verify E-district Form Request
                           </span>{" "}
                         </p>
                       </div>
@@ -1352,7 +1368,7 @@ const SAEVerifyEdistrictHistory = () => {
                   </div>
 
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
-                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
+                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded   m-4 bg-body-tertiary g1">
                       <Tabs
                         defaultActiveKey="Application"
                         id="uncontrolled-tab-example"
@@ -1382,7 +1398,10 @@ const SAEVerifyEdistrictHistory = () => {
                                   type="search"
                                   placeholder="Enter Applicant Name/Mobile/RS Number/Order Id"
                                   value={keyword}
-                                  onChange={(e) => setKeyword(e.target.value)}
+                                  onChange={(e) => {
+                                    setKeyword(e.target.value);
+                                    setCurrentPage(0);
+                                  }}
                                 />
                               </div>
                               <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -1392,15 +1411,16 @@ const SAEVerifyEdistrictHistory = () => {
                                   aria-label="Default select example"
                                   value={formStatus}
                                   onChange={(e) =>
-                                    setFormStatus(e.target.value)
-                                  }
+                                    {setFormStatus(e.target.value)
+                                      setCurrentPage(0);
+                                    }}
                                 >
                                   <option selected>
                                     ---Select Form Status---
                                   </option>
                                   <option value="Pending">Pending</option>
                                   <option value="Success">Success</option>
-                                  <option value="Mark Edit">Mark Edit</option>
+                                  {/* <option value="Mark Edit">Mark Edit</option> */}
                                   <option value="Reject">Reject</option>
                                 </select>
                               </div>
@@ -1555,6 +1575,7 @@ const SAEVerifyEdistrictHistory = () => {
                                   onPageChange={handlePageChange}
                                   containerClassName={"pagination"}
                                   activeClassName={"active"}
+                                  forcePage={currentPage}
                                 />
                               </PaginationContainer>
                             </div>
@@ -1583,7 +1604,10 @@ const SAEVerifyEdistrictHistory = () => {
                                   type="search"
                                   placeholder="Enter Applicant Name/Mobile/RS Number/Order Id"
                                   value={keyword}
-                                  onChange={(e) => setKeyword(e.target.value)}
+                                  onChange={(e) => {
+                                    setKeyword(e.target.value);
+                                    setCurrentPage(0);
+                                  }}
                                 />
                               </div>
                               {/* <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -1758,6 +1782,7 @@ const SAEVerifyEdistrictHistory = () => {
                                   onPageChange={handleUnderProcessPageChange}
                                   containerClassName={"pagination"}
                                   activeClassName={"active"}
+                                  forcePage={currentPage}
                                 />
                               </PaginationContainer>
                             </div>
@@ -1894,6 +1919,7 @@ const Wrapper = styled.div`
   button {
     color: #fff;
     background: #6d70ff;
+    margin-left: 5px;
   }
   .form-container {
     width: 50%;
@@ -1919,6 +1945,13 @@ const Wrapper = styled.div`
   }
   .custom-dropdown-toggle::after {
     display: none !important;
+  }
+   .g1{
+  padding: 3rem;
+    @media screen and (max-width: 768px) {
+      
+    padding: 1rem;
+  }
   }
 `;
 

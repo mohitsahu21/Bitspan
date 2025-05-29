@@ -19,7 +19,7 @@ const WLChangePassword = () => {
   const [message, setMessage] = useState("");
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, token } = useSelector((state) => state.user);
 
   const userID = currentUser?.userId;
   console.log(userID);
@@ -32,7 +32,7 @@ const WLChangePassword = () => {
 
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/change-password-request`,
+        `https://2kadam.co.in/api/auth/log-reg/change-password-request`,
         {
           UserId: userID,
           oldPassword: oldPassword,
@@ -98,7 +98,7 @@ const WLChangePassword = () => {
 
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-otp-change-password`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-otp-change-password`,
         {
           UserId: userID,
           otp: otp,
@@ -237,7 +237,7 @@ const WLChangePassword = () => {
                             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                               <div className="text-center mb-3">
                                 <button
-                                  className="btn py-2 px-4"
+                                  className="btn btn-primary py-2 px-4"
                                   type="submit"
                                   disabled={isLoading}
                                 >
@@ -274,7 +274,7 @@ const WLChangePassword = () => {
                             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                               <div className="text-center mb-3 mt-3">
                                 <button
-                                  className="btn py-2 px-4"
+                                  className="btn btn-primary py-2 px-4"
                                   type="submit"
                                   disabled={isLoading}
                                 >

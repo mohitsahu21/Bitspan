@@ -25,7 +25,7 @@ const SdAllCommissionHistory = () => {
     setLoading(true); // Start loading
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getAllCommission/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getAllCommission/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -124,6 +124,10 @@ const SdAllCommissionHistory = () => {
     return matchesKeyword && matchesDate && matchesSearch && matchesStatus;
   });
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [searchQuery, fromDate, toDate]);
+
   const totalPages = Math.ceil(filteredData.length / complaintsPerPage);
 
   const paginateData = () => {
@@ -178,12 +182,15 @@ const SdAllCommissionHistory = () => {
                               Search
                             </label>
                             <input
-                              type="text"
+                              type="search"
                               className="form-control responsive-input"
                               // placeholder="Search by Name, Mobile, or Order ID"
                               placeholder="Search by  Order ID"
                               value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
+                              onChange={(e) => (
+                                setSearchQuery(e.target.value),
+                                setCurrentPage(0)
+                              )}
                             />
                           </div>
 
@@ -270,7 +277,7 @@ const SdAllCommissionHistory = () => {
                                   <th scope="col">Amount</th>
                                   {/* <th scope="col">White Label ID</th> */}
                                   {/* <th scope="col">Super Distributor ID</th> */}
-                                  <th scope="col">Distributor ID</th>
+                                  {/* <th scope="col">Distributor ID</th> */}
                                   {/* <th scope="col">Retailer ID</th> */}
                                   {/* <th scope="col">White Label Commission</th> */}
                                   <th scope="col">
@@ -301,7 +308,7 @@ const SdAllCommissionHistory = () => {
                                       <td>{item.amount}</td>
                                       {/* <td>{item.whiteLabel_id}</td> */}
                                       {/* <td>{item.super_Distributor_id}</td> */}
-                                      <td>{item.distributor_id}</td>
+                                      {/* <td>{item.distributor_id}</td> */}
                                       {/* <td>{item.retailer_id}</td> */}
                                       {/* <td>{item.whiteLabel_Commission}</td> */}
                                       <td>
@@ -339,6 +346,7 @@ const SdAllCommissionHistory = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

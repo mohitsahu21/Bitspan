@@ -21,15 +21,107 @@ const WLMyCommission = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
-  const package_Id = useSelector((state) => state.user.currentUser?.package_Id);
+  // const package_Id = useSelector((state) => state.user.currentUser?.package_Id);
 
-  // Fetch Package Data
-  const fetchPackageData = async () => {
+  // const fullUrl = window.location.href;
+  const [status, setStatus] = useState(null);
+  // const navigate = useNavigate();
+  // const [isLoading, setIsLoading] = useState("");
+  // const dispatch = useDispatch();
+  const [user, setUser] = useState("");
+  // const userStatus = currentUser?.Status;
+
+  // Logging the current user and token for debugging
+  console.log("Current User:", currentUser);
+  console.log("Token:", token);
+  console.log(status);
+  // UseEffect hook to call the API once when the component mounts
+  useEffect(() => {
+    if (currentUser?.userId && token) {
+      fetchUserData();
+    } else {
+      console.log("Missing userId or token, cannot fetch data.");
+    }
+  }, [currentUser?.userId, token]); // Removed unnecessary `fullUrl` dependency
+
+  const fetchUserData = async () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getPackageData/${package_Id}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getPackageData/${package_Id}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("User Details:", response.data?.data);
+      const userData = response.data?.data;
+      setUser(userData); // Setting user state
+
+      const userStatus = userData?.Status;
+      const paymentStatus = userData?.payment_status;
+      const packageId = userData?.package_Id;
+
+      console.log(packageId); // Logging packageId properly
+
+      if (userStatus === "Deactive") {
+        Swal.fire({
+          icon: "error",
+          title: "User Deactive",
+          text: "Please contact Admin!",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else if (paymentStatus === "Pending") {
+        Swal.fire({
+          icon: "error",
+          title: "User Payment is Pending",
+          text: "Please Make Payment First Or Contact Admin if Payment Done",
+        });
+        navigate("/payment");
+      } else if (userStatus === "Pending") {
+        Swal.fire({
+          icon: "error",
+          title: "User KYC is Pending",
+          text: "Please Update KYC details First Or Contact Admin if Already Submitted Kyc details",
+        });
+        navigate("/update-profile");
+      }
+
+      setStatus(userStatus); // Setting status state
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Session Expired",
+          text: "Your session has expired. Please log in again.",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong! Please try again later.",
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Fetch Package Data
+  const fetchPackageData = async () => {
+    if (!user?.package_Id) return;
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        `https://2kadam.co.in/api/auth/whiteLabel/getPackageData/${user?.package_Id}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getPackageData/${package_Id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -61,9 +153,15 @@ const WLMyCommission = () => {
     }
   };
   console.log(packageData);
+  // useEffect(() => {
+  //   fetchPackageData(); // Component mount hone par fetch karein
+  // }, [package_Id]);
+
   useEffect(() => {
-    fetchPackageData(); // Component mount hone par fetch karein
-  }, [package_Id]);
+    if (user?.package_Id) {
+      fetchPackageData();
+    }
+  }, [user?.package_Id]);
 
   return (
     <>
@@ -753,7 +851,7 @@ const WLMyCommission = () => {
 
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
                     <div className="text-center  my-5">
-                      <h2>Offline Services Commission</h2>
+                      <h2>Other Services Commission</h2>
                     </div>
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
@@ -801,7 +899,7 @@ const WLMyCommission = () => {
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        Offline E PAN Card Commission
+                        PAN 4.0 E PAN Card Commission
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -821,7 +919,7 @@ const WLMyCommission = () => {
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        Offline P PAN Card Commission
+                      PAN 4.0 P PAN Card Commission
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -2283,7 +2381,7 @@ const WLMyCommission = () => {
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        Offline Broadband Bill Pay Commission
+                        Provider 2 Broadband Bill Pay Commission
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -2391,7 +2489,7 @@ const WLMyCommission = () => {
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        Offline Electricity Bill Pay Commission
+                      Provider 2 Electricity Bill Pay Commission
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">

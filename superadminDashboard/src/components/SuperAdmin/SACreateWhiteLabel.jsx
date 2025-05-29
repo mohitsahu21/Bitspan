@@ -20,6 +20,7 @@ const SACreateWhiteLabel = () => {
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const fullUrl = window.location.origin;
   const { token } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
 
@@ -38,7 +39,7 @@ const SACreateWhiteLabel = () => {
     White_Label_Website_URL : "",
     created_By_User_Id: currentUser.userId,
     created_By_User_Role: currentUser.role,
-    created_By_Website: ""
+    created_By_Website: fullUrl
   });
 
   // const handleChange = (e) => {
@@ -74,8 +75,8 @@ const SACreateWhiteLabel = () => {
       setLoading(true);
      
       const response = await axios.post(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
+        // "https://2kadam.co.in/api/auth/superAdmin/approveUser",
+        "https://2kadam.co.in/api/auth/log-reg/user-register",
         formData,
         {
                   headers: {
@@ -109,7 +110,7 @@ const SACreateWhiteLabel = () => {
             White_Label_Website_URL : "",
             created_By_User_Id: currentUser.userId,
             created_By_User_Role: currentUser.role,
-            created_By_Website: "www.bitspan.in"
+            created_By_Website: fullUrl
 
         })
         

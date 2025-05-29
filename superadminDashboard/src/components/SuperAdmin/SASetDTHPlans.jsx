@@ -38,8 +38,8 @@ const SAActiveApi = ({ complaint, setShowActiveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ActiveApi",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/ActiveApi",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -186,8 +186,8 @@ const SADeactiveApi = ({ complaint, setShowEditModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/EditDTHConnetionPlans",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/EditDTHConnetionPlans",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -358,8 +358,8 @@ const SACreatePlan = ({  setShowCreatePlanModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreateDTHConnectionPlans",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/CreateDTHConnectionPlans",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -508,7 +508,7 @@ const SASetDTHPlans = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getDTHConnectionPlans",
+        "https://2kadam.co.in/api/auth/superAdmin/getDTHConnectionPlans",
         {
           headers: {
             "Content-Type": "application/json",
@@ -565,15 +565,13 @@ const SASetDTHPlans = () => {
         setLoading(true);
         try {
           const { data } = await axios.delete(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/DeleteDTHConnetionPlans", 
-            {
-              data: { id }
-            },
+            "https://2kadam.co.in/api/auth/superAdmin/DeleteDTHConnetionPlans", 
             {
               headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
               },
+              data: { id }, // Pass data correctly in the second argument
             }
     
           );
@@ -669,7 +667,7 @@ const SASetDTHPlans = () => {
   //         setLoading(true);
   //         try {
   //           const { data } = await axios.put(
-  //             "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser",
+  //             "https://2kadam.co.in/api/auth/superAdmin/deactivateUser",
   //             {
   //                userId: id
   //             }
@@ -771,7 +769,11 @@ const SASetDTHPlans = () => {
                               type="search"
                               placeholder="Search Operator/Amount/Validity"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              // onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -937,6 +939,7 @@ const SASetDTHPlans = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

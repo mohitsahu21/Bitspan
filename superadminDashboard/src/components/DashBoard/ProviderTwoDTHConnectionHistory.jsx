@@ -39,8 +39,8 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/markForEditOfflineDTHConnection",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/markForEditOfflineDTHConnection",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -168,7 +168,7 @@ const ProviderTwoDTHConnectionHistory = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getOfflineDTHConnection/${userID}`,
+        `https://2kadam.co.in/api/auth/retailer/getOfflineDTHConnection/${userID}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -229,6 +229,10 @@ const ProviderTwoDTHConnectionHistory = () => {
       row.status === formStatus;
     return matchesKeyword && matchesType && matchesOperator;
   });
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword, formStatus]);
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
@@ -334,7 +338,7 @@ const ProviderTwoDTHConnectionHistory = () => {
               type="search"
               placeholder="Search By Name,Mobile,Order Id"
               value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
+              onChange={(e) => (setKeyword(e.target.value), setCurrentPage(0))}
             />
           </div>
 
@@ -467,6 +471,7 @@ const ProviderTwoDTHConnectionHistory = () => {
                 onPageChange={handlePageChange}
                 containerClassName={"pagination"}
                 activeClassName={"active"}
+                forcePage={currentPage}
               />
             </PaginationContainer>
           </div>

@@ -34,7 +34,7 @@ const SAOnlineDthConnection = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getOnlineDthConnection",
+        "https://2kadam.co.in/api/auth/superAdmin/getOnlineDthConnection",
         {
   headers: {
     "Content-Type": "application/json",
@@ -150,18 +150,27 @@ const SAOnlineDthConnection = () => {
                                                 <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="fromDate" className="form-label">From</label>
                                                         <input id="fromDate" className="form-control" type="date"  value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}/>
+                               onChange={(e) => {
+                                setFromDate(e.target.value)
+                                setCurrentPage(0);
+                                }}/>
                                                     </div>
                                                     <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="toDate" className="form-label">To</label>
                                                         <input id="toDate" className="form-control " type="date" value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}/>
+                               onChange={(e) => {
+                                setToDate(e.target.value)
+                                setCurrentPage(0);
+                              }}/>
                                                     </div>
                                                     <div className="col-12 col-md-4 col-lg-3">
                                                         <label for="toDate" className="form-label">Select Operator</label>
                                                         <select className="form-select" aria-label="Default select example"
                                                          value={OperatorName}
-                                                         onChange={(e) => setOperatorName(e.target.value)}>
+                                                         onChange={(e) => {
+                                                          setOperatorName(e.target.value)
+                                                          setCurrentPage(0);
+                                                          }}>
                                                              <option selected>---Select---</option>
                                                             <option value="Dish TV">Dish TV</option>
                                                             <option value="Tata Sky">Tata Sky</option>
@@ -183,7 +192,11 @@ const SAOnlineDthConnection = () => {
                                                          type="search"
                                                          placeholder="Enter Name/Last Name/Order Id/Txn ID/Operator/Mo. No./User Name/User Id"
                                                          value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              // onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                                                          />
                                                     </div>
                                                     
@@ -298,6 +311,7 @@ const SAOnlineDthConnection = () => {
                                                           onPageChange={handlePageChange}
                                                           containerClassName={"pagination"}
                                                           activeClassName={"active"}
+                                                          forcePage={currentPage}
                                                         />
                                                       </PaginationContainer>
                                                   

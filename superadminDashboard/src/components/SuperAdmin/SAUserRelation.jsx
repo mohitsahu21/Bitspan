@@ -70,7 +70,7 @@ const SAChangeWhiteLabel = ({ user, setWhiteLabelModel, setIsRefresh }) => {
       setPackagesLoading(true);
       try {
         const { data } = await axios.get(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
+          "https://2kadam.co.in/api/auth/superAdmin/getAllUsers",
           {
             headers: {
               "Content-Type": "application/json",
@@ -133,8 +133,8 @@ const SAChangeWhiteLabel = ({ user, setWhiteLabelModel, setIsRefresh }) => {
         setLoading(true);
        
         const response = await axios.put(
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/changeUserWhiteLabel",
+          // "https://2kadam.co.in/api/auth/superAdmin/approveUser",
+          "https://2kadam.co.in/api/auth/superAdmin/changeUserWhiteLabel",
          formData,
          {
           headers: {
@@ -370,7 +370,7 @@ const SAChangeSuperDistributor = ({ user, setSuperDistributorModel, setIsRefresh
       setPackagesLoading(true);
       try {
         const { data } = await axios.get(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
+          "https://2kadam.co.in/api/auth/superAdmin/getAllUsers",
           {
             headers: {
               "Content-Type": "application/json",
@@ -433,8 +433,8 @@ const SAChangeSuperDistributor = ({ user, setSuperDistributorModel, setIsRefresh
         setLoading(true);
        
         const response = await axios.put(
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/changeUserSuperDistributor",
+          // "https://2kadam.co.in/api/auth/superAdmin/approveUser",
+          "https://2kadam.co.in/api/auth/superAdmin/changeUserSuperDistributor",
          formData,
          {
           headers: {
@@ -637,7 +637,7 @@ const SAChangeDistributor = ({ user, setDistributorModel, setIsRefresh }) => {
       setPackagesLoading(true);
       try {
         const { data } = await axios.get(
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getAllUsers",
+          "https://2kadam.co.in/api/auth/superAdmin/getAllUsers",
           {
             headers: {
               "Content-Type": "application/json",
@@ -700,8 +700,8 @@ const SAChangeDistributor = ({ user, setDistributorModel, setIsRefresh }) => {
         setLoading(true);
        
         const response = await axios.put(
-          // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
-          "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/changeUserDistributor",
+          // "https://2kadam.co.in/api/auth/superAdmin/approveUser",
+          "https://2kadam.co.in/api/auth/superAdmin/changeUserDistributor",
          formData,
          {
           headers: {
@@ -884,8 +884,8 @@ const SARejectUser = ({ user, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectUser",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectUser",
+        // "https://2kadam.co.in/api/auth/superAdmin/rejectUser",
+        "https://2kadam.co.in/api/auth/superAdmin/rejectUser",
         formData,
         {
           headers: {
@@ -1035,7 +1035,7 @@ const SAUserRelation = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelationData",
+        "https://2kadam.co.in/api/auth/superAdmin/getUserRelationData",
         {
           headers: {
             "Content-Type": "application/json",
@@ -1172,7 +1172,11 @@ const SAUserRelation = () => {
                                                          type="search"
                                                          placeholder="Enter User Name/User Id/Mobile/Email Id"
                                                          value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              // onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                                                          />
                                                     </div>
                                                     <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -1183,7 +1187,9 @@ const SAUserRelation = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={userType}
-                              onChange={(e) => setUserType(e.target.value)}
+                              onChange={(e) => {setUserType(e.target.value)
+                                setCurrentPage(0);
+                              }}
                               
                             >
                               <option selected>---Select User Type---</option>
@@ -1419,6 +1425,7 @@ const SAUserRelation = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                           

@@ -38,7 +38,7 @@ const UTICouponHistory = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getCoupon/${currentUser?.userId}`,
+        `https://2kadam.co.in/api/auth/retailer/getCoupon/${currentUser?.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -88,6 +88,10 @@ const UTICouponHistory = () => {
     console.log(matchesKeyword);
     return matchesKeyword && matchesDate;
   });
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword, formStatus]);
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
@@ -181,7 +185,9 @@ const UTICouponHistory = () => {
                               type="search"
                               placeholder="Search By Order Id"
                               value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => (
+                                setKeyword(e.target.value), setCurrentPage(0)
+                              )}
                             />
                           </div>
 
@@ -264,6 +270,7 @@ const UTICouponHistory = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

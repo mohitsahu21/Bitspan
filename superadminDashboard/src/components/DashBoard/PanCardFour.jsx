@@ -65,7 +65,7 @@ const PanCardFour = () => {
     // setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+        "https://2kadam.co.in/api/auth/retailer/getAllServicesList",
         {
           headers: {
             "Content-Type": "application/json",
@@ -94,7 +94,7 @@ const PanCardFour = () => {
     const fetchPrices = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          `https://2kadam.co.in/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -280,7 +280,13 @@ const PanCardFour = () => {
 
     if (formData.application_type == "Correction") {
       if (Object.keys(filteredChangeRequest).length === 0) {
-        alert("Please select at least one change request");
+        // alert("Please select at least one change request");
+        Swal.fire({
+          icon: "warning",
+          title: "Validation Error",
+          text: "Please select at least one change request field for Correction.",
+        });
+        setIsLoading(false);
         return;
       }
     }
@@ -319,8 +325,8 @@ const PanCardFour = () => {
 
     try {
       const response = await axios.post(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/pan-4.0",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/pan-4.0-form",
+        // "https://2kadam.co.in/api/auth/retailer/pan-4.0",
+        "https://2kadam.co.in/api/auth/retailer/pan-4.0-form",
         form,
         {
           headers: {
@@ -431,7 +437,7 @@ const PanCardFour = () => {
   const verifyPin = async () => {
     try {
       const response = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {
           headers: {
@@ -489,23 +495,23 @@ const PanCardFour = () => {
         <div className="container-fluid">
           <div className="row flex-wrap justify-content-center">
             <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11 mt-5 formdata">
-              <div className="main shadow-none">
+              <div className="main shadow-none resp">
                 <div className="row shadow-none">
                   <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     <div className="d-flex justify-content-between align-items-center flex-wrap">
-                      <h4 className="px-lg-3">Apply Pan Card Offline</h4>
+                      <h4 className="px-lg-3">Apply Pan Card</h4>
                       <h6 className="mx-lg-5">
-                        <BiHomeAlt /> &nbsp;/ &nbsp; Apply Pan Card Offline
+                        <BiHomeAlt /> &nbsp;/ &nbsp; Apply Pan Card
                       </h6>
                     </div>
                   </div>
                 </div>
                 <div className="container p-3">
-                  <div className="d-flex justify-content-center align-items-center">
+                  {/* <div className="d-flex justify-content-center align-items-center">
                     <div className="col-6 mb-4 border border-danger rounded shadow-sm">
                       <h5 className="text-center m-0 p-3">PAN 4.0</h5>
                     </div>
-                  </div>
+                  </div> */}
                   <form onSubmit={openPinModal}>
                     <div className="row">
                       <div className="col-md-6 mb-3">
@@ -1000,6 +1006,11 @@ const PanCardFour = () => {
                 </div>
               </div>
             </div>
+            <div className="repsmobile">
+              <h6 className="mt-4 text-center">
+                You Can Access This Page of Only In Desktop and Tablet !!
+              </h6>
+            </div>
           </div>
         </div>
       </div>
@@ -1036,5 +1047,17 @@ const Wrapper = styled.div`
   .custom-dropdown option {
     background-color: #e8e4f0;
     color: #343a40;
+  }
+  .resp {
+    display: block;
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+  }
+  .repsmobile {
+    display: none;
+    @media screen and (max-width: 768px) {
+      display: block;
+    }
   }
 `;

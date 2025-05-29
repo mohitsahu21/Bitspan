@@ -37,7 +37,7 @@
 
 //     try {
 //       const response = await axios.put(
-//         `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/user-profile/${currentUser?.userId}`,
+//         `https://2kadam.co.in/api/auth/retailer/user-profile/${currentUser?.userId}`,
 //         formData,
 //         {
 //           headers: {
@@ -356,7 +356,6 @@
 //   }
 // `;
 
-
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FaUser } from "react-icons/fa";
@@ -386,6 +385,7 @@ const Profile = () => {
   const [panCardFront, setPanCardFront] = useState(null);
   const [profileImage, setprofileImage] = useState(null);
   const [status, setStatus] = useState(null);
+  const [user, setUser] = useState(null);
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
@@ -396,24 +396,24 @@ const Profile = () => {
     const requiredWidth = 50; // Required width
     const requiredHeight = 75; // Required height
 
-     if (!allowedTypes.includes(files[0].type)) {
-            Swal.fire({
-              icon: "error",
-              title: "Invalid File Type",
-              text: `Invalid file: ${files[0].name}. Only JPEG, JPG, PNG are allowed.`,
-            });
-            e.target.value = "";
-            return;
-          }
-             if (files[0].size > maxSize) {
-                  Swal.fire({
-                    icon: "error",
-                    title: "File Too Large",
-                    text: `File ${files[0].name} exceeds the 5MB limit.`,
-                  });
-                  e.target.value = "";
-                  return;
-                }
+    if (!allowedTypes.includes(files[0].type)) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid File Type",
+        text: `Invalid file: ${files[0].name}. Only JPEG, JPG, PNG are allowed.`,
+      });
+      e.target.value = "";
+      return;
+    }
+    if (files[0].size > maxSize) {
+      Swal.fire({
+        icon: "error",
+        title: "File Too Large",
+        text: `File ${files[0].name} exceeds the 5MB limit.`,
+      });
+      e.target.value = "";
+      return;
+    }
     if (name === "aadharFront") {
       setAadharFront(files[0]);
       console.log("Updated aadharFront:", files[0]);
@@ -442,36 +442,36 @@ const Profile = () => {
       );
     }
     if (name === "profileImage") {
-        // Check image resolution
-  const img = new Image();
-  img.src = URL.createObjectURL(files[0]);
-  img.onload = () => {
-    if (img.width !== requiredWidth || img.height !== requiredHeight) {
-      Swal.fire({
-        icon: "error",
-        title: "Invalid Image Resolution",
-        text: `Image must be exactly ${requiredWidth}x${requiredHeight} pixels.`,
-      });
-      e.target.value = "";
-      return;
-    }
-      
-      setprofileImage(files[0]);
-      console.log("Updated profileImage:", files[0]);
-      Swal.fire(
-        "File Selected",
-        "Profile Image file selected successfully!",
-        "success"
-      );
+      // Check image resolution
+      const img = new Image();
+      img.src = URL.createObjectURL(files[0]);
+      img.onload = () => {
+        if (img.width !== requiredWidth || img.height !== requiredHeight) {
+          Swal.fire({
+            icon: "error",
+            title: "Invalid Image Resolution",
+            text: `Image must be exactly ${requiredWidth}x${requiredHeight} pixels.`,
+          });
+          e.target.value = "";
+          return;
+        }
+
+        setprofileImage(files[0]);
+        console.log("Updated profileImage:", files[0]);
+        Swal.fire(
+          "File Selected",
+          "Profile Image file selected successfully!",
+          "success"
+        );
+      };
     }
   };
-}
 
   const fetchUserData = async () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -483,6 +483,7 @@ const Profile = () => {
       console.log("User Details:", response.data?.data);
       const userStatus = response.data?.data?.Status; // API response se status fetch kar rahe hain
       setStatus(userStatus); // Status ko state mein set karenge
+      setUser(response.data?.data);
       console.log(userStatus);
     } catch (error) {
       console.error("Error fetching user details:", error);
@@ -536,11 +537,12 @@ const Profile = () => {
 
     try {
       const response = await axios.put(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/user-profile/${currentUser?.userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/user-profile/${currentUser?.userId}`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -840,15 +842,12 @@ const Profile = () => {
                       </>
                     </div>
                   </form>
-                  {currentUser?.status === "Pending" &&
-                    currentUser?.Note?.trim() && (
-                      <div className="col-12">
-                        <label>Note</label>
-                        <div className="alert alert-warning">
-                          {currentUser.Note}
-                        </div>
-                      </div>
-                    )}
+                  {status === "Pending" && user?.Note?.trim() && (
+                    <div className="col-12">
+                      <label>Note</label>
+                      <div className="alert alert-warning">{user?.Note}</div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

@@ -181,7 +181,7 @@ const handlePackageSelect = (e) => {
     
     try {
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${user.created_By_User_Id}`,
+        `https://2kadam.co.in/api/auth/superAdmin/getUserRelations/${user.created_By_User_Id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -214,7 +214,7 @@ const handlePackageSelect = (e) => {
     setPackagesLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPackage",
+        "https://2kadam.co.in/api/auth/superAdmin/getPackage",
         {
           headers: {
             "Content-Type": "application/json",
@@ -274,8 +274,8 @@ const handlePackageSelect = (e) => {
       setLoading(true);
      
       const response = await axios.put(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
+        // "https://2kadam.co.in/api/auth/superAdmin/approveUser",
+        "https://2kadam.co.in/api/auth/superAdmin/approveUser",
         formDataToSend,
         {
           headers: {
@@ -576,8 +576,8 @@ const SARejectUser = ({ user, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectUser",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectUser",
+        // "https://2kadam.co.in/api/auth/superAdmin/rejectUser",
+        "https://2kadam.co.in/api/auth/superAdmin/rejectUser",
         formData,
         {
           headers: {
@@ -724,7 +724,7 @@ const SAPendingKycUsers = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getPendingUsers",
+        "https://2kadam.co.in/api/auth/superAdmin/getPendingUsers",
         {
           headers: {
             "Content-Type": "application/json",
@@ -861,7 +861,11 @@ const SAPendingKycUsers = () => {
                                                          type="search"
                                                          placeholder="Enter User Name/User Id/Mobile/Email Id"
                                                          value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              // onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                                                          />
                                                     </div>
                                                     <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -872,7 +876,9 @@ const SAPendingKycUsers = () => {
                               className="form-select"
                               aria-label="Default select example"
                               value={userType}
-                              onChange={(e) => setUserType(e.target.value)}
+                              onChange={(e) => {setUserType(e.target.value)
+                                setCurrentPage(0);
+                              }}
                               
                             >
                               <option selected>---Select User Type---</option>
@@ -930,7 +936,7 @@ const SAPendingKycUsers = () => {
                                     <th scope="col">Aadhar Front</th>
                                     <th scope="col">Aadhar Back</th>
                                     <th scope="col">Pan Card Front</th>
-                                    {/* <th scope="col">View KYC</th> */}
+                                    <th scope="col">Photo</th>
                                     <th scope="col">Payment Status</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Note</th>
@@ -1027,6 +1033,20 @@ const SAPendingKycUsers = () => {
                                           }
                                          
                                         </td>
+                                        <td>
+                                          {
+                                           user.profileImage ?
+                                           <a
+                                           href={user.profileImage}
+                                           target="_blank"
+                                           rel="noopener noreferrer"
+                                         >
+                                           View
+                                         </a> : 
+                                         "Not Available"
+                                          }
+                                         
+                                        </td>
                                         <td>{user?.payment_status}</td>
                                         <td>{user.Status}</td>
                                         {/* <td> <Link to={'/change-price'}>Change Price </Link></td> */}
@@ -1090,6 +1110,7 @@ const SAPendingKycUsers = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                           

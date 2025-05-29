@@ -8,6 +8,7 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
 
 const WLAllComplaintsList = () => {
   const dispatch = useDispatch();
@@ -26,8 +27,8 @@ const WLAllComplaintsList = () => {
     try {
       const response = await axios.get(
         // `http://localhost:7777/api/auth/retailer/complain-data`
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getAllComplaintsData/${currentUser?.userId}`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getAllComplaintsData/${currentUser?.userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getAllComplaintsData/${currentUser?.userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getAllComplaintsData/${currentUser?.userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -135,7 +136,9 @@ const WLAllComplaintsList = () => {
                               className="form-control"
                               type="date"
                               value={fromDate}
-                              onChange={(e) => setFromDate(e.target.value)}
+                              onChange={(e) => {setFromDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
                           <div className="col-12 col-md-4 col-lg-3">
@@ -147,10 +150,12 @@ const WLAllComplaintsList = () => {
                               className="form-control"
                               type="date"
                               value={toDate}
-                              onChange={(e) => setToDate(e.target.value)}
+                              onChange={(e) => {setToDate(e.target.value)
+                              setCurrentPage(0)
+                              }}
                             />
                           </div>
-                          <div className="d-flex align-items-end">
+                          {/* <div className="d-flex align-items-end">
                             <button
                               type="button"
                               className="btn btn-primary button"
@@ -167,24 +172,33 @@ const WLAllComplaintsList = () => {
                             >
                               Clear
                             </button>
-                          </div>
+                          </div> */}
                         </div>
 
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                           <div class="table-responsive">
                             {loading ? (
-                              <p>Loading...</p>
+                              <div className="d-flex justify-content-center">
+                              <Spinner animation="border" role="status">
+                                <span className="visually-hidden ">
+                                  Loading...
+                                </span>
+                              </Spinner>
+                            </div>
                             ) : (
                               <table class="table table-striped">
                                 <thead className="table-dark">
                                   <tr>
-                                    <th scope="col">#</th>
-                                    {/* <th scope="col">Complaint ID</th> */}
+                                    {/* <th scope="col">#</th> */}
+                                    <th scope="col">Complaint ID</th>
                                     <th scope="col">Ticket Raised Date</th>
                                     <th scope="col">Complaint Type</th>
+                                    <th scope="col">Complaint Mobile</th>
                                     <th scope="col">Complaint file</th>
                                     <th scope="col">Remark</th>
                                     <th scope="col">Transaction No.</th>
+                                    <th scope="col">Resolve Date</th>
+                                    <th scope="col">Response</th>
                                     <th scope="col">Status</th>
                                     {/* <th scope="col">Response</th> */}
                                   </tr>
@@ -193,13 +207,15 @@ const WLAllComplaintsList = () => {
                                   {showApiData && showApiData.length > 0 ? (
                                     showApiData.map((item, index) => (
                                       <tr>
-                                        <td>
+                                        {/* <td>
                                           {currentPage * complaintsPerPage +
                                             index +
                                             1}
-                                        </td>
+                                        </td> */}
+                                        <th scope="row">{item.id}</th>
                                         <td>{item.createdAt}</td>
                                         <td>{item.complainType}</td>
+                                        <td>{item.mobileNo}</td>
                                         <td>
                                           {item.complainFile
                                             ? item.complainFile
@@ -239,6 +255,8 @@ const WLAllComplaintsList = () => {
 
                                         <td>{item.remark}</td>
                                         <td>{item.transactionNo}</td>
+                                        <td>{item.process_date}</td>
+                                        <td>{item.response}</td>
                                         <td>{item.status}</td>
                                       </tr>
                                     ))
@@ -285,6 +303,7 @@ const WLAllComplaintsList = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

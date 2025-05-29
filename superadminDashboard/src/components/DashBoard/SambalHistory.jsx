@@ -30,7 +30,7 @@ const SambalHistory = () => {
     setDataLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getSambalHistory/${userID}`,
+        `https://2kadam.co.in/api/auth/retailer/getSambalHistory/${userID}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -85,7 +85,8 @@ const SambalHistory = () => {
 
   useEffect(() => {
     fetchRechargeData();
-  }, [isRefresh]);
+    setCurrentPage(0);
+  }, [isRefresh, formStatus]);
 
   const totalPages = Math.ceil(filteredItems.length / complaintsPerPage);
 
@@ -144,9 +145,10 @@ const SambalHistory = () => {
                               value={filterValue}
                               onChange={(e) => {
                                 setFilterValue(e.target.value);
-                                if (e.target.value === "") {
-                                  setCurrentPage(0);
-                                }
+                                setCurrentPage(0);
+                                // if (e.target.value === "") {
+                                //   setCurrentPage(0);
+                                // }
                               }}
                               onKeyDown={(e) => {
                                 if (e.key === "Escape") {
@@ -298,6 +300,7 @@ const SambalHistory = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

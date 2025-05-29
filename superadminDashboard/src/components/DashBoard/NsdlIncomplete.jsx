@@ -25,7 +25,7 @@ const NsdlIncomplete = () => {
     setLoading(true);
     try {
       const { data } = await axios.post(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/nsdl-pan-incomplete`,
+        `https://2kadam.co.in/api/auth/instpay/nsdl-pan-incomplete`,
         formData
       );
       // setFormData(data);
@@ -43,8 +43,8 @@ const NsdlIncomplete = () => {
       console.log(error);
       Swal.fire({
         icon: "error",
-          title: "Oops",
-          text: "Something went wrong! Please Try again",
+        title: "Oops",
+        text: "Something went wrong! Please Try again",
       });
     } finally {
       setLoading(false);
@@ -71,10 +71,11 @@ const NsdlIncomplete = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          Incomplete PAN Request
+                          NSDL Incomplete PAN Request
                         </h4>
                         <h6 className="mx-lg-5">
-                          <BiHomeAlt /> &nbsp;/ &nbsp; Incomplete PAN Request
+                          <BiHomeAlt /> &nbsp;/ &nbsp; NSDL Incomplete PAN
+                          Request
                         </h6>
                       </div>
                     </div>

@@ -26,8 +26,8 @@ const PanStatus = () => {
     setLoading(true);
     try {
       const { data } = await axios.post(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/nsdl-pan-incomplete`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/zlink/zlinkPantxnStatus`,
+        // `https://2kadam.co.in/api/auth/instpay/nsdl-pan-incomplete`,
+        `https://2kadam.co.in/api/auth/zlink/zlinkPantxnStatus`,
 
         formData
       );

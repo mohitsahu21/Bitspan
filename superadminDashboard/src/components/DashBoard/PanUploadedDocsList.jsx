@@ -24,7 +24,7 @@ const PanUploadedDocsList = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPanDocument/${userID}`,
+        `https://2kadam.co.in/api/auth/retailer/getPanDocument/${userID}`,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -57,6 +57,7 @@ const PanUploadedDocsList = () => {
       );
     });
     setFilteredData(filtered);
+    setCurrentPage(0);
   }, [filterValue, allData]);
 
   useEffect(() => {
@@ -150,9 +151,10 @@ const PanUploadedDocsList = () => {
                               value={filterValue}
                               onChange={(e) => {
                                 setFilterValue(e.target.value);
-                                if (e.target.value === "") {
-                                  setCurrentPage(0);
-                                }
+                                setCurrentPage(0);
+                                // if (e.target.value === "") {
+                                //   setCurrentPage(0);
+                                // }
                               }}
                               onKeyDown={(e) => {
                                 if (e.key === "Escape") {
@@ -216,12 +218,16 @@ const PanUploadedDocsList = () => {
                                         <td>{item.confirmAddress}</td>
                                         <td>{item.remark}</td>
                                         <td>
-                                          <Link
-                                            to={item.podfile}
-                                            target="_blank"
-                                          >
-                                            View
-                                          </Link>
+                                          {item.podfile ? (
+                                            <Link
+                                              to={item.podfile}
+                                              target="_blank"
+                                            >
+                                              View
+                                            </Link>
+                                          ) : (
+                                            "Not Available"
+                                          )}
                                         </td>
                                         <td>{item.status}</td>
                                         <td>{item.note}</td>
@@ -249,6 +255,7 @@ const PanUploadedDocsList = () => {
                               onPageChange={handlePageChange}
                               containerClassName={"pagination"}
                               activeClassName={"active"}
+                              forcePage={currentPage}
                             />
                           </PaginationContainer>
                         </div>

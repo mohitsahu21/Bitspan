@@ -26,7 +26,7 @@ const SAChangeUserNotification = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserNotification",
+            "https://2kadam.co.in/api/auth/superAdmin/getUserNotification",
             {
               headers: {
                 "Content-Type": "application/json",
@@ -88,7 +88,7 @@ const SAChangeUserNotification = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.put("https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/UpdateUserNotification", formData,
+            const response = await axios.put("https://2kadam.co.in/api/auth/superAdmin/UpdateUserNotification", formData,
               {
                 headers: {
                   "Content-Type": "application/json",

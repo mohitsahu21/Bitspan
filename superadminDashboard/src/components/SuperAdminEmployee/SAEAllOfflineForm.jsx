@@ -50,8 +50,8 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/ApproveOfflineForm",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/ApproveOfflineForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -142,7 +142,11 @@ const SAApproveModel = ({ item, setShowApproveModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -189,8 +193,8 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/markForEditOfflineForm",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/markForEditOfflineForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -281,7 +285,11 @@ const SAMarkEditModel = ({ item, setShowMarkEditModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -329,8 +337,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
   //   try {
   //     setLoading(true);
   //     const response = await axios.put(
-  //       "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessOfflineForm",
-  //       // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+  //       "https://2kadam.co.in/api/auth/superAdmin/SuccessOfflineForm",
+  //       // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
   //       formData,
   //       {
   //         headers: {
@@ -1197,7 +1205,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
       setLoading(true);
 
       const { data } = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserRelations/${item.user_id}`,
+        `https://2kadam.co.in/api/auth/superAdmin/getUserRelations/${item.user_id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -1223,7 +1231,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
 
         const retailerPromise = axios
           .get(
-            `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
+            `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${retailer}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -1239,7 +1247,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         if (distributor) {
           const distributorPromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${distributor}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -1256,7 +1264,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         if (superDistributor) {
           const superDistributorPromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${superDistributor}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -1273,7 +1281,7 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         if (white_lable) {
           const whiteLablePromise = axios
             .get(
-              `https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
+              `https://2kadam.co.in/api/auth/superAdmin/getUserPackageDetails/${white_lable}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -1370,8 +1378,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         ) {
           const response = await axios
             .put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.retailerFormData,
               {
                 headers: {
@@ -1391,8 +1399,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         ) {
           const response = await axios
             .put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.distributorFormData,
               {
                 headers: {
@@ -1412,8 +1420,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         ) {
           const response = await axios
             .put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.superDistributorFormData,
               {
                 headers: {
@@ -1433,8 +1441,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
         ) {
           const response = await axios
             .put(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/CreditCommission",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/AddWalletAddMoneyDirect",
+              "https://2kadam.co.in/api/auth/superAdmin/CreditCommission",
+              // "https://2kadam.co.in/api/auth/log-reg/AddWalletAddMoneyDirect",
               result.whiteLableFormData,
               {
                 headers: {
@@ -1488,8 +1496,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
           };
           await axios
             .post(
-              "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/addCommissionEntry",
-              // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+              "https://2kadam.co.in/api/auth/superAdmin/addCommissionEntry",
+              // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
               commissionFormData,
               {
                 headers: {
@@ -1505,8 +1513,8 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
 
         await axios
           .put(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/SuccessOfflineForm",
-            // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+            "https://2kadam.co.in/api/auth/superAdmin/SuccessOfflineForm",
+            // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
             formData,
             {
               headers: {
@@ -1606,7 +1614,11 @@ const SASuccessModel = ({ item, setShowSuccessModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -1678,8 +1690,8 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
     try {
       setLoading(true);
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/rejectOfflineForm",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/resolveComplaint",
+        "https://2kadam.co.in/api/auth/superAdmin/rejectOfflineForm",
+        // "https://2kadam.co.in/api/auth/superAdmin/resolveComplaint",
         formData,
         {
           headers: {
@@ -1833,7 +1845,11 @@ const SARejectModel = ({ item, setShowRejectModel, setIsRefresh }) => {
 
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div className="text-center  m-5">
-              <button type="submit" className="btn p-2" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary p-2"
+                disabled={loading}
+              >
                 {loading ? "Loading..." : "Submit"}
               </button>
             </div>
@@ -1868,7 +1884,7 @@ const SAAllOfflineForm = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getApplyOfflineForm",
+        "https://2kadam.co.in/api/auth/superAdmin/getApplyOfflineForm",
         {
           headers: {
             "Content-Type": "application/json",
@@ -1970,7 +1986,7 @@ const SAAllOfflineForm = () => {
   //         setLoading(true);
   //         try {
   //           const { data } = await axios.put(
-  //             "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser",
+  //             "https://2kadam.co.in/api/auth/superAdmin/deactivateUser",
   //             {
   //                userId: id
   //             }
@@ -2055,7 +2071,7 @@ const SAAllOfflineForm = () => {
                 {/* <Sider /> */}
               </div>
               <div
-                className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-11
+                className="col-xxl-12 col-xl-11 col-lg-12 col-md-10  col-sm-10  col-12
                              mt-5 formdata "
               >
                 <div className="main shadow-none ">
@@ -2066,7 +2082,7 @@ const SAAllOfflineForm = () => {
                                             </div> */}
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <h4 className="mx-lg-5 px-lg-3 px-xxl-5">
-                          View All Offline History
+                          View All Offline Forms Request
                         </h4>
                         <p className="mx-lg-5">
                           {" "}
@@ -2076,7 +2092,7 @@ const SAAllOfflineForm = () => {
                             style={{ fontSize: "13px" }}
                           >
                             {" "}
-                            View All Offline History
+                            View All Offline Forms Request
                           </span>{" "}
                         </p>
                       </div>
@@ -2084,7 +2100,7 @@ const SAAllOfflineForm = () => {
                   </div>
 
                   <div className="row  justify-content-xl-end justify-content-center pe-lg-4">
-                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded  p-5 m-4 bg-body-tertiary">
+                    <div className="col-xxl-11 col-xl-11 col-lg-10 col-md-12 col-sm-12 col-11 shadow rounded m-4 bg-body-tertiary g1">
                       <Tabs
                         defaultActiveKey="Application"
                         id="uncontrolled-tab-example"
@@ -2114,7 +2130,10 @@ const SAAllOfflineForm = () => {
                                   type="search"
                                   placeholder="Enter Applicant Name/Mobile/Email Id/Order Id"
                                   value={keyword}
-                                  onChange={(e) => setKeyword(e.target.value)}
+                                  onChange={(e) => {
+                                    setKeyword(e.target.value);
+                                    setCurrentPage(0);
+                                  }}
                                 />
                               </div>
                               <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -2124,8 +2143,9 @@ const SAAllOfflineForm = () => {
                                   aria-label="Default select example"
                                   value={formStatus}
                                   onChange={(e) =>
-                                    setFormStatus(e.target.value)
-                                  }
+                                    {setFormStatus(e.target.value)
+                                    setCurrentPage(0)
+                                     }}
                                 >
                                   <option selected>
                                     ---Select Form Status---
@@ -2162,6 +2182,7 @@ const SAAllOfflineForm = () => {
                                             Applicant Father Name
                                           </th>
                                           <th scope="col">Applicant Number</th>
+                                          <th scope="col">Applicant Email</th>
                                           <th scope="col">Service</th>
                                           <th scope="col">E-Stamp Type</th>
                                           <th scope="col">E-Stamp Amount</th>
@@ -2196,6 +2217,7 @@ const SAAllOfflineForm = () => {
                                               <td>{item.applicant_name}</td>
                                               <td>{item.applicant_father}</td>
                                               <td>{item.applicant_number}</td>
+                                              <td>{item.email}</td>
                                               <td>
                                                 {item.applicant_select_service}
                                               </td>
@@ -2347,6 +2369,7 @@ const SAAllOfflineForm = () => {
                                   onPageChange={handlePageChange}
                                   containerClassName={"pagination"}
                                   activeClassName={"active"}
+                                  forcePage={currentPage}
                                 />
                               </PaginationContainer>
                             </div>
@@ -2375,7 +2398,10 @@ const SAAllOfflineForm = () => {
                                   type="search"
                                   placeholder="Enter Applicant Name/Mobile/Email Id/Order Id"
                                   value={keyword}
-                                  onChange={(e) => setKeyword(e.target.value)}
+                                  onChange={(e) => {
+                                    setKeyword(e.target.value);
+                                    setCurrentPage(0);
+                                  }}
                                 />
                               </div>
                               {/* <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -2418,6 +2444,7 @@ const SAAllOfflineForm = () => {
                                             Applicant Father Name
                                           </th>
                                           <th scope="col">Applicant Number</th>
+                                          <th scope="col">Applicant Email</th>
                                           <th scope="col">Service</th>
                                           <th scope="col">E-Stamp Type</th>
                                           <th scope="col">E-Stamp Amount</th>
@@ -2453,6 +2480,7 @@ const SAAllOfflineForm = () => {
                                                 <td>{item.applicant_name}</td>
                                                 <td>{item.applicant_father}</td>
                                                 <td>{item.applicant_number}</td>
+                                                <td>{item.email}</td>
                                                 <td>
                                                   {
                                                     item.applicant_select_service
@@ -2611,6 +2639,7 @@ const SAAllOfflineForm = () => {
                                   onPageChange={handleUnderProcessPageChange}
                                   containerClassName={"pagination"}
                                   activeClassName={"active"}
+                                  forcePage={currentPage}
                                 />
                               </PaginationContainer>
                             </div>
@@ -2747,6 +2776,7 @@ const Wrapper = styled.div`
   button {
     color: #fff;
     background: #6d70ff;
+    margin-left: 5px;
   }
   .form-container {
     width: 50%;
@@ -2772,6 +2802,13 @@ const Wrapper = styled.div`
   }
   .custom-dropdown-toggle::after {
     display: none !important;
+  }
+   .g1{
+  padding: 3rem;
+    @media screen and (max-width: 768px) {
+      
+    padding: 1rem;
+  }
   }
 `;
 

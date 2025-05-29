@@ -31,7 +31,8 @@ const CreateWhiteLabel = () => {
   const { token } = useSelector((state) => state.user);
   const userId = useSelector((state) => state.user.currentUser?.userId);
 
-  const host = window.location.host;
+  // const host = window.location.host;
+  const host = window.location.origin;
 
   const [remainingIds, setRemainingIds] = useState({
     remaining_whitelable_id: 0,
@@ -43,8 +44,8 @@ const CreateWhiteLabel = () => {
   const fetchNoOfIds = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/getRemainingIds/${userId}`,
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getRemainingIds/${userId}`,
+        `https://2kadam.co.in/api/auth/whiteLabel/getRemainingIds/${userId}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getRemainingIds/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -83,8 +84,8 @@ const CreateWhiteLabel = () => {
   const updateNoOfIds = async () => {
     try {
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/whiteLabel/updateUserProfile",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/updateUserProfile",
+        "https://2kadam.co.in/api/auth/whiteLabel/updateUserProfile",
+        // "https://2kadam.co.in/api/auth/superDistributor/updateUserProfile",
         updatedFormData,
         {
           headers: {
@@ -169,9 +170,9 @@ const CreateWhiteLabel = () => {
       setLoading(true);
 
       const response = await axios.post(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
+        // "https://2kadam.co.in/api/auth/superAdmin/approveUser",
+        "https://2kadam.co.in/api/auth/log-reg/user-register",
+        // "https://2kadam.co.in/api/auth/log-reg/user-register",
         formData,
 
         {
@@ -597,7 +598,7 @@ const CreateWhiteLabel = () => {
                           <div className="text-start mb-3">
                             <button
                               type="submit"
-                              className="btn p-2"
+                              className="btn btn-primary p-2"
                               disabled={loading}
                             >
                               {loading ? "Loading..." : "Create"}

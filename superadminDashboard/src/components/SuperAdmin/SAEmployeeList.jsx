@@ -30,7 +30,7 @@ const SAEmployeeList = () => {
         setLoading(true);
         try {
           const { data } = await axios.get(
-            "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/getSuperAdminEmployee",
+            "https://2kadam.co.in/api/auth/superAdmin/getSuperAdminEmployee",
             {
               headers: {
                 "Content-Type": "application/json",
@@ -110,7 +110,7 @@ const SAEmployeeList = () => {
             setLoading(true);
             try {
               const { data } = await axios.put(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/activateUser", 
+                "https://2kadam.co.in/api/auth/superAdmin/activateUser", 
                 {
                    userId: id 
                 },
@@ -187,7 +187,7 @@ const SAEmployeeList = () => {
             setLoading(true);
             try {
               const { data } = await axios.put(
-                "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/deactivateUser", 
+                "https://2kadam.co.in/api/auth/superAdmin/deactivateUser", 
                 {
                    userId: id 
                 },
@@ -289,7 +289,11 @@ const SAEmployeeList = () => {
                                                          type="search"
                                                          placeholder="Enter User Name/User Id/Mobile/Email Id"
                                                          value={keyword}
-                              onChange={(e) => setKeyword(e.target.value)}
+                              // onChange={(e) => setKeyword(e.target.value)}
+                              onChange={(e) => {
+                                setKeyword(e.target.value)
+                                setCurrentPage(0);
+                              }}
                                                          />
                                                     </div>
                                                     <div className="col-12 col-md-12 col-lg-12 col-xl-3">
@@ -513,6 +517,7 @@ const SAEmployeeList = () => {
                                                           onPageChange={handlePageChange}
                                                           containerClassName={"pagination"}
                                                           activeClassName={"active"}
+                                                          forcePage={currentPage}
                                                         />
                                                       </PaginationContainer>
                                                 

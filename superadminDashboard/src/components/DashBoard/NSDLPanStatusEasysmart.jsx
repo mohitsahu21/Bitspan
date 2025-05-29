@@ -26,8 +26,8 @@ const NSDLPanStatusEasysmart = () => {
     setLoading(true);
     try {
       const { data } = await axios.post(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/instpay/nsdl-pan-incomplete`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/nsdlpan/easySmartNewPanTransactionStatus`,
+        // `https://2kadam.co.in/api/auth/instpay/nsdl-pan-incomplete`,
+        `https://2kadam.co.in/api/auth/nsdlpan/easySmartNewPanTransactionStatus`,
 
         formData
       );

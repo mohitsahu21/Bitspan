@@ -30,7 +30,8 @@ const CreateDistributor = () => {
   const { token } = useSelector((state) => state.user);
   const userId = useSelector((state) => state.user.currentUser?.userId);
 
-  const host = window.location.host;
+  // const host = window.location.host;
+  const host = window.location.origin;
 
   const [remainingIds, setRemainingIds] = useState({
     remaining_whitelable_id: 0,
@@ -42,7 +43,7 @@ const CreateDistributor = () => {
   const fetchNoOfIds = async () => {
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getRemainingIds/${userId}`,
+        `https://2kadam.co.in/api/auth/superDistributor/getRemainingIds/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -81,7 +82,7 @@ const CreateDistributor = () => {
   const updateNoOfIds = async () => {
     try {
       const response = await axios.put(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/updateUserProfile",
+        "https://2kadam.co.in/api/auth/superDistributor/updateUserProfile",
         updatedFormData,
         {
           headers: {
@@ -166,9 +167,9 @@ const CreateDistributor = () => {
       setLoading(true);
 
       const response = await axios.post(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
+        // "https://2kadam.co.in/api/auth/superAdmin/approveUser",
+        // "https://2kadam.co.in/api/auth/log-reg/user-register",
+        "https://2kadam.co.in/api/auth/log-reg/user-register",
         formData,
 
         {

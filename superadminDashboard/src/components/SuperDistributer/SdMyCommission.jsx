@@ -21,14 +21,107 @@ const SdMyCommission = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser, token } = useSelector((state) => state.user);
-  const package_Id = useSelector((state) => state.user.currentUser?.package_Id);
+  // const package_Id = useSelector((state) => state.user.currentUser?.package_Id);
 
-  // Fetch Package Data
-  const fetchPackageData = async () => {
+  // const fullUrl = window.location.href;
+  const [status, setStatus] = useState(null);
+  // const navigate = useNavigate();
+  // const [isLoading, setIsLoading] = useState("");
+  // const dispatch = useDispatch();
+  const [user, setUser] = useState("");
+  // const userStatus = currentUser?.Status;
+
+  // Logging the current user and token for debugging
+  console.log("Current User:", currentUser);
+  console.log("Token:", token);
+  console.log(status);
+  // UseEffect hook to call the API once when the component mounts
+  useEffect(() => {
+    if (currentUser?.userId && token) {
+      fetchUserData();
+    } else {
+      console.log("Missing userId or token, cannot fetch data.");
+    }
+  }, [currentUser?.userId, token]); // Removed unnecessary `fullUrl` dependency
+
+  const fetchUserData = async () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getPackageData/${package_Id}`, // PackageId dynamically use kar rahe hain
+        `https://2kadam.co.in/api/auth/superDistributor/getUserDetails/${currentUser?.userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("User Details:", response.data?.data);
+      const userData = response.data?.data;
+      setUser(userData); // Setting user state
+
+      const userStatus = userData?.Status;
+      const paymentStatus = userData?.payment_status;
+      const packageId = userData?.package_Id;
+
+      console.log(packageId); // Logging packageId properly
+
+      if (userStatus === "Deactive") {
+        Swal.fire({
+          icon: "error",
+          title: "User Deactive",
+          text: "Please contact Admin!",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else if (paymentStatus === "Pending") {
+        Swal.fire({
+          icon: "error",
+          title: "User Payment is Pending",
+          text: "Please Make Payment First Or Contact Admin if Payment Done",
+        });
+        navigate("/payment");
+      } else if (userStatus === "Pending") {
+        Swal.fire({
+          icon: "error",
+          title: "User KYC is Pending",
+          text: "Please Update KYC details First Or Contact Admin if Already Submitted Kyc details",
+        });
+        navigate("/update-profile");
+      }
+
+      setStatus(userStatus); // Setting status state
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      if (error?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Session Expired",
+          text: "Your session has expired. Please log in again.",
+        });
+        dispatch(clearUser());
+        navigate("/");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong! Please try again later.",
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Fetch Package Data
+  const fetchPackageData = async () => {
+    if (!user?.package_Id) return;
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        `https://2kadam.co.in/api/auth/whiteLabel/getPackageData/${user?.package_Id}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getPackageData/${package_Id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -60,9 +153,15 @@ const SdMyCommission = () => {
     }
   };
   console.log(packageData);
+  // useEffect(() => {
+  //   fetchPackageData(); // Component mount hone par fetch karein
+  // }, [package_Id]);
+
   useEffect(() => {
-    fetchPackageData(); // Component mount hone par fetch karein
-  }, [package_Id]);
+    if (user?.package_Id) {
+      fetchPackageData();
+    }
+  }, [user?.package_Id]);
 
   return (
     <>
@@ -2683,365 +2782,6 @@ const SdMyCommission = () => {
                                             </div>
                                         </div> */}
                   </div>
-                  {/* <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
-                    <div className="text-center  my-5">
-                      <h2>Joining Price (for White Label)</h2>
-                    </div>
-
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        White Label Joining Price
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Enter Price"
-                          name="whitelabel_joining_price"
-                          value={packageData?.whitelabel_joining_price}
-                          required
-                          min={0}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Super Distributor Joining Price
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Enter Price"
-                          name="superDistributor_joining_price"
-                          value={packageData?.superDistributor_joining_price}
-                          required
-                          min={0}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Distributor Joining Price
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Enter Price"
-                          name="distributor_joining_price"
-                          value={packageData?.distributor_joining_price}
-                          required
-                          min={0}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Retailer Joining Price
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Enter Price"
-                          name="retailer_joining_price"
-                          value={packageData?.retailer_joining_price}
-                          required
-                          min={0}
-                        />
-                      </div>
-                    </div>
-
-                  </div> */}
-                  {/* <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
-                    <div className="text-center  my-5">
-                      <h2>User ID Price (For Create Users)</h2>
-                    </div>
-
-                    <div>
-                      <h4>White Label ID Price</h4>
-                    </div>
-
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        White Label Id Price
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Enter Price"
-                          name="whiteLabel_id_price"
-                          value={packageData?.whiteLabel_id_price}
-                          required
-                          min={0}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        White Label Minimum Id limit
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Enter White Label Minimum Id limit"
-                          name="whiteLabel_min_id_limit"
-                          value={packageData?.whiteLabel_min_id_limit}
-                          required
-                          min={0}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        White Label Maximum Id limit
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Enter White Label Maximum Id limit"
-                          name="whiteLabel_max_id_limit"
-                          value={packageData?.whiteLabel_max_id_limit}
-                          required
-                          min={0}
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <h4>Super Distributor ID Price</h4>
-                    </div>
-
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Super Distributor Id Price
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Enter Price"
-                          name="superDistributor_id_price"
-                          value={packageData?.superDistributor_id_price}
-                          required
-                          min={0}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Super Distributor Minimum Id limit
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Enter Super Distributor Minimum Id limit"
-                          name="superDistributor_min_id_limit"
-                          value={packageData?.superDistributor_min_id_limit}
-                          required
-                          min={0}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Super Distributor Maximum Id limit
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Enter Super Distributor Maximum Id limit"
-                          name="superDistributor_max_id_limit"
-                          value={packageData?.superDistributor_max_id_limit}
-                          required
-                          min={0}
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <h4>Distributor ID Price</h4>
-                    </div>
-
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Distributor Id Price
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Enter Price"
-                          name="distributor_id_price"
-                          value={packageData?.distributor_id_price}
-                          required
-                          min={0}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Distributor Minimum Id limit
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Enter Distributor Minimum Id limit"
-                          name="distributor_min_id_limit"
-                          value={packageData?.distributor_min_id_limit}
-                          required
-                          min={0}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Distributor Maximum Id limit
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Enter Distributor Maximum Id limit"
-                          name="distributor_max_id_limit"
-                          value={packageData?.distributor_max_id_limit}
-                          required
-                          min={0}
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <h4>Retailer ID Price</h4>
-                    </div>
-
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Retailer Id Price
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Enter Price"
-                          name="retailer_id_price"
-                          value={packageData?.retailer_id_price}
-                          required
-                          min={0}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Retailer Minimum Id limit
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Enter Retailer Minimum Id limit"
-                          name="retailer_min_id_limit"
-                          value={packageData?.retailer_min_id_limit}
-                          required
-                          min={0}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <label for="name" class="form-label">
-                        Retailer Maximum Id limit
-                      </label>
-                      <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">
-                          {" "}
-                          <MdNumbers />
-                        </span>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder=" Enter Retailer Maximum Id limit"
-                          name="retailer_max_id_limit"
-                          value={packageData?.retailer_max_id_limit}
-                          required
-                          min={0}
-                        />
-                      </div>
-                    </div>
-
-                   
-                  </div> */}
                   <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     {/* <div className="text-center  m-5">
                       <button className="btn p-2">Submit</button>

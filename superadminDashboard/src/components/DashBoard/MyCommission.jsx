@@ -3,8 +3,6 @@
 // import { MdFormatListNumberedRtl } from "react-icons/md";
 // import { BiHomeAlt } from "react-icons/bi";
 
-
-
 // const MyCommission = () => {
 //     return (
 //         <>
@@ -36,14 +34,13 @@
 //                                                 <div className="col-12 d-flex justify-content-center">
 //                                                        <h2>Today's Commission Structure</h2>
 //                                                 </div>
-                                                
 
 //                                             </div>
-                                            
+
 //                                             <div className="row d-flex flex-column g-4">
 
 //                                                 <div className="">
-                                                     
+
 //                                                 {/* <div className="col-12 col-md-4 col-lg-3">
 //                                                         <label for="fromDate" className="form-label">From</label>
 //                                                         <input id="fromDate" className="form-control" type="date" />
@@ -59,7 +56,6 @@
 
 //                                                 </div>
 
-
 //                                                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
 //                                                     <div class="table-responsive">
 //                                                         <table class="table table-striped">
@@ -71,7 +67,6 @@
 //                                                                     <th scope="col">Provider</th>
 //                                                                     <th scope="col">Type</th>
 //                                                                     <th scope="col">My Commission</th>
-                                                                   
 
 //                                                                 </tr>
 //                                                             </thead>
@@ -82,7 +77,6 @@
 //                                                                     <td>2</td>
 //                                                                     <td>% Commission</td>
 //                                                                     <td>3.5</td>
-                                                                   
 
 //                                                                 </tr>
 //                                                                 <tr>
@@ -91,7 +85,6 @@
 //                                                                     <td>2</td>
 //                                                                     <td>% Commission</td>
 //                                                                     <td>3.5</td>
-                                                                   
 
 //                                                                 </tr>
 //                                                                 <tr>
@@ -100,7 +93,6 @@
 //                                                                     <td>2</td>
 //                                                                     <td>% Commission</td>
 //                                                                     <td>3.5</td>
-                                                                   
 
 //                                                                 </tr>
 //                                                                 <tr>
@@ -109,22 +101,20 @@
 //                                                                     <td>2</td>
 //                                                                     <td>% Commission</td>
 //                                                                     <td>3.5</td>
-                                                                   
 
 //                                                                 </tr>
-
 
 //                                                             </tbody>
 //                                                         </table>
 //                                                     </div>
-                                                  
+
 //                                                 </div>
 //                                             </div>
 
 //                                             <div className="row d-flex flex-column g-4 mt-1">
 
 //                                                 <div className="">
-                                                     
+
 //                                                 {/* <div className="col-12 col-md-4 col-lg-3">
 //                                                         <label for="fromDate" className="form-label">From</label>
 //                                                         <input id="fromDate" className="form-control" type="date" />
@@ -140,7 +130,6 @@
 
 //                                                 </div>
 
-
 //                                                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
 //                                                     <div class="table-responsive">
 //                                                         <table class="table table-striped">
@@ -153,7 +142,6 @@
 //                                                                     <th scope="col">Type</th>
 //                                                                     <th scope="col">My Commission</th>
 
-
 //                                                                 </tr>
 //                                                             </thead>
 //                                                             <tbody>
@@ -163,7 +151,6 @@
 //                                                                     <td>2</td>
 //                                                                     <td>% Commission</td>
 //                                                                     <td>3.5</td>
-                                                                   
 
 //                                                                 </tr>
 //                                                                 <tr>
@@ -172,7 +159,6 @@
 //                                                                     <td>2</td>
 //                                                                     <td>% Commission</td>
 //                                                                     <td>3.5</td>
-                                                                   
 
 //                                                                 </tr>
 //                                                                 <tr>
@@ -181,7 +167,6 @@
 //                                                                     <td>2</td>
 //                                                                     <td>% Commission</td>
 //                                                                     <td>3.5</td>
-                                                                   
 
 //                                                                 </tr>
 //                                                                 <tr>
@@ -190,26 +175,23 @@
 //                                                                     <td>2</td>
 //                                                                     <td>% Commission</td>
 //                                                                     <td>3.5</td>
-                                                                   
 
 //                                                                 </tr>
-
 
 //                                                             </tbody>
 //                                                         </table>
 //                                                     </div>
-                                                   
+
 //                                                 </div>
 //                                             </div>
 
 //                                             <div className="row d-flex flex-column g-4 mt-1">
 
 //                                                 <div className="">
-                                                    
+
 //                                                   <h4>DTH Recharge</h4>
 
 //                                                 </div>
-
 
 //                                                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
 //                                                     <div class="table-responsive">
@@ -223,7 +205,6 @@
 //                                                                     <th scope="col">Type</th>
 //                                                                     <th scope="col">My Commission</th>
 
-
 //                                                                 </tr>
 //                                                             </thead>
 //                                                             <tbody>
@@ -233,7 +214,6 @@
 //                                                                     <td>2</td>
 //                                                                     <td>% Commission</td>
 //                                                                     <td>3.5</td>
-                                                                   
 
 //                                                                 </tr>
 //                                                                 <tr>
@@ -242,7 +222,6 @@
 //                                                                     <td>2</td>
 //                                                                     <td>% Commission</td>
 //                                                                     <td>3.5</td>
-                                                                   
 
 //                                                                 </tr>
 //                                                                 <tr>
@@ -251,7 +230,6 @@
 //                                                                     <td>2</td>
 //                                                                     <td>% Commission</td>
 //                                                                     <td>3.5</td>
-                                                                   
 
 //                                                                 </tr>
 //                                                                 <tr>
@@ -260,18 +238,15 @@
 //                                                                     <td>2</td>
 //                                                                     <td>% Commission</td>
 //                                                                     <td>3.5</td>
-                                                                   
 
 //                                                                 </tr>
-
 
 //                                                             </tbody>
 //                                                         </table>
 //                                                     </div>
-                                                   
+
 //                                                 </div>
 //                                             </div>
-
 
 //                                         </div>
 
@@ -304,21 +279,21 @@
 //   th{
 //     font-weight: 500;
 //     font-size: 14px;
-   
+
 //   }
 //   td{
 //    font-size: 14px;
-   
+
 //   }
 //   @media (min-width: 1025px) and (max-width : 1500px){
 //     .formdata {
-     
+
 //       padding-left: 15rem;
 //     }
 //   }
 //   @media (min-width: 1500px) {
 //     .formdata {
-     
+
 //       padding-left: 13rem;
 //     }
 //   }
@@ -354,7 +329,7 @@ const SdMyCommission = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getPackageData/${package_Id}`, // PackageId dynamically use kar rahe hain
+        `https://2kadam.co.in/api/auth/superDistributor/getPackageData/${package_Id}`, // PackageId dynamically use kar rahe hain
         {
           headers: {
             "Content-Type": "application/json",
@@ -455,15 +430,14 @@ const SdMyCommission = () => {
                       </div>
                     </div>
                   </div> */}
-                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                  <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
                     <div className="text-center  my-5">
-                      <h2>Offline Services Price</h2>
+                      <h2>Other Services Price</h2>
                     </div>
 
-                
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        Offline E PAN Card Price
+                        Pan 4.0 E PAN Card Price
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -484,7 +458,7 @@ const SdMyCommission = () => {
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        Offline P PAN Card Price
+                        Pan 4.0 P PAN Card Price
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -680,7 +654,7 @@ const SdMyCommission = () => {
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" className="form-label">
-                        offline KYC e-District Service
+                        KYC e-District Service
                       </label>
                       <div className="input-group flex-nowrap">
                         <span className="input-group-text" id="addon-wrapping">
@@ -745,7 +719,7 @@ const SdMyCommission = () => {
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        offline KYC Income Certificate Price
+                        KYC Income Certificate Price
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -767,7 +741,7 @@ const SdMyCommission = () => {
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        offline KYC Domicile Certificate Price
+                        KYC Domicile Certificate Price
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -854,11 +828,9 @@ const SdMyCommission = () => {
                         />
                       </div>
                     </div>
+                  </div>
 
-                   
-                  </div> 
-
-                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                  <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
                     <div className="text-center  my-5">
                       <h2>Bank Id Price</h2>
                     </div>
@@ -1103,56 +1075,51 @@ const SdMyCommission = () => {
                         />
                       </div>
                     </div>
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                                            <label for="name" class="form-label">
-                                              NSDL PSA ID Price
-                                            </label>
-                                            <div class="input-group flex-nowrap">
-                                              <span class="input-group-text" id="addon-wrapping">
-                                                {" "}
-                                                <MdNumbers />
-                                              </span>
-                                              <input
-                                                type="number"
-                                                
-                                                class="form-control"
-                                                placeholder="Enter price"
-                                                name="NSDL_PSA_ID_Price"
-                                                value={packageData?.NSDL_PSA_ID_Price}
-                                                disabled
-                                                required
-                                                
-                                              />
-                                            </div>
-                                          </div>
-                                          <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                                            <label for="name" class="form-label">
-                                              UTI PSA ID Price
-                                            </label>
-                                            <div class="input-group flex-nowrap">
-                                              <span class="input-group-text" id="addon-wrapping">
-                                                {" "}
-                                                <MdNumbers />
-                                              </span>
-                                              <input
-                                                type="number"
-                                                
-                                                class="form-control"
-                                                placeholder="Enter price"
-                                                name="UTI_PSA_ID_Price"
-                                                value={packageData?.UTI_PSA_ID_Price}
-                                                disabled
-                                                required
-                                               
-                                              />
-                                            </div>
-                                          </div>
-
-                  </div> 
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <label for="name" class="form-label">
+                        NSDL PSA ID Price
+                      </label>
+                      <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping">
+                          {" "}
+                          <MdNumbers />
+                        </span>
+                        <input
+                          type="number"
+                          class="form-control"
+                          placeholder="Enter price"
+                          name="NSDL_PSA_ID_Price"
+                          value={packageData?.NSDL_PSA_ID_Price}
+                          disabled
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <label for="name" class="form-label">
+                        UTI PSA ID Price
+                      </label>
+                      <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping">
+                          {" "}
+                          <MdNumbers />
+                        </span>
+                        <input
+                          type="number"
+                          class="form-control"
+                          placeholder="Enter price"
+                          name="UTI_PSA_ID_Price"
+                          value={packageData?.UTI_PSA_ID_Price}
+                          disabled
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
 
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
                     <div className="text-center  my-5">
-                      <h2>Offline Services Commission</h2>
+                      <h2>Other Services Commission</h2>
                     </div>
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
@@ -1200,7 +1167,7 @@ const SdMyCommission = () => {
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        Offline E PAN Card Commission
+                        Pan 4.0 E PAN Card Commission
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -1220,7 +1187,7 @@ const SdMyCommission = () => {
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        Offline P PAN Card Commission
+                        Pan 4.0 P PAN Card Commission
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -2682,7 +2649,7 @@ const SdMyCommission = () => {
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        Offline Broadband Bill Pay Commission
+                        Broadband Bill Pay Commission
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -2790,7 +2757,7 @@ const SdMyCommission = () => {
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <label for="name" class="form-label">
-                        Offline Electricity Bill Pay Commission
+                        Electricity Bill Pay Commission
                       </label>
                       <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">
@@ -2924,9 +2891,9 @@ const SdMyCommission = () => {
                                         </div> */}
                   </div>
 
-                  {/* <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
+                  <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
                     <div className="text-center  my-5">
-                      <h2>PAN Card Price</h2>
+                      <h2> NSDL/UTI PAN Card Price </h2>
                     </div>
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
@@ -2944,6 +2911,7 @@ const SdMyCommission = () => {
                           placeholder="Enter Price"
                           name="E_PAN_Card_Price"
                           value={packageData?.E_PAN_Card_Price}
+                          di
                         />
                       </div>
                     </div>
@@ -2984,12 +2952,10 @@ const SdMyCommission = () => {
                         />
                       </div>
                     </div>
-
-                   
-                  </div> */}
+                  </div>
                   <div className="row g-4 shadow bg-body-tertiary rounded m-4 mt-5 px-3 pb-5">
                     <div className="text-center  my-5">
-                      <h2>PAN Card Commission</h2>
+                      <h2>NSDL/UTI PAN Card Commission</h2>
                     </div>
 
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">

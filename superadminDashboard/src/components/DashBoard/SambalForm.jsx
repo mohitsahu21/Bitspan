@@ -38,7 +38,7 @@ const SambalForm = () => {
     // setLoading(true);
     try {
       const { data } = await axios.get(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getAllServicesList",
+        "https://2kadam.co.in/api/auth/retailer/getAllServicesList",
         {
           headers: {
             "Content-Type": "application/json",
@@ -67,7 +67,7 @@ const SambalForm = () => {
     const fetchPackage = async () => {
       try {
         const response = await axios.get(
-          `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
+          `https://2kadam.co.in/api/auth/retailer/getPackageData/${currentUser?.package_Id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -110,7 +110,8 @@ const SambalForm = () => {
     if (prices.length > 0) {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        amount: prices[0].verify_edistrict_Certificate_Price,
+        // amount: prices[0].verify_edistrict_Certificate_Price,
+        amount: prices[0].Sambal_Price,
       }));
     }
   }, [prices]);
@@ -136,11 +137,29 @@ const SambalForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    if (
+      formData.amount === null ||
+      formData.amount === undefined ||
+      formData.amount === "" ||
+      isNaN(formData.amount) ||
+      Number(formData.amount) <= 0
+    ) {
+      Swal.fire({
+        title: "Failure",
+        text: "Please connect with admin.",
+        icon: "error",
+      }).then(() => {
+        navigate("/raise-complaint");
+      });
+      setLoading(false);
+      // alert("Please enter a valid amount greater than 0.");
+      return;
+    }
     console.log("Form Data Submitted: ", formData);
     try {
       const response = await axios.post(
         // `http://localhost:7777/api/auth/retailer/addSambalForm`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/addSambalForm`,
+        `https://2kadam.co.in/api/auth/retailer/addSambalForm`,
         formData,
         {
           headers: {
@@ -215,7 +234,7 @@ const SambalForm = () => {
     try {
       const response = await axios.post(
         // `http://localhost:7777/api/auth/log-reg/verify-pin`,
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/verify-pin`,
+        `https://2kadam.co.in/api/auth/log-reg/verify-pin`,
         { user_id: currentUser.userId || "", pin: pin.join("") },
         {
           headers: {
@@ -284,11 +303,11 @@ const SambalForm = () => {
                   </div>
                 </div>
                 <div className="container p-3">
-                  <div className="d-flex justify-content-center align-items-center">
+                  {/* <div className="d-flex justify-content-center align-items-center">
                     <div className="col-6 mb-4 border border-danger rounded shadow-sm">
                       <h5 className="text-center m-0 p-3">Sambal</h5>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="shadow p-3 mb-5 bg-body rounded">
                     <form onSubmit={openPinModal}>
                       <div className="row mb-3">

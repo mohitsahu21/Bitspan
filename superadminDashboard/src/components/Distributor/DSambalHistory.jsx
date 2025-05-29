@@ -38,8 +38,8 @@ const DSambalHistory = () => {
     setDataLoading(true);
     try {
       const response = await axios.get(
-        // `https://bitspan.vimubds5.a2hosted.com/api/auth/superDistributor/getSambalHistory/${userID}`
-        `https://bitspan.vimubds5.a2hosted.com/api/auth/Distributor/getSambalHistory/${userID}`,
+        // `https://2kadam.co.in/api/auth/superDistributor/getSambalHistory/${userID}`
+        `https://2kadam.co.in/api/auth/Distributor/getSambalHistory/${userID}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -325,6 +325,7 @@ const DSambalHistory = () => {
                                 onPageChange={handlePageChange}
                                 containerClassName={"pagination"}
                                 activeClassName={"active"}
+                                forcePage={currentPage}
                               />
                             </PaginationContainer>
                           </div>

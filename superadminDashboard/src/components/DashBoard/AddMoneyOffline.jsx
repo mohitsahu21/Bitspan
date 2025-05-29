@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { FaRupeeSign } from "react-icons/fa";
 import { TbTransactionRupee } from "react-icons/tb";
@@ -6,6 +6,7 @@ import { BiHomeAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const AddMoneyOffline = () => {
   const { currentUser, token } = useSelector((state) => state.user);
@@ -19,8 +20,13 @@ const AddMoneyOffline = () => {
     Payment_Mode: "",
     Transaction_Reference: "",
   });
+  const navigate = useNavigate();
   const [receiptAttachment, setReceiptAttachment] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [paymentDetails, setPaymentDetails] = useState({
+    upiId: "",
+    qrCode: "",
+  });
   const fileInputRef = useRef(null); // Ref for file input
 
   const handleChange = (e) => {
@@ -88,7 +94,7 @@ const AddMoneyOffline = () => {
       }
 
       const response = await axios.post(
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/retailer/add-money-wallet",
+        "https://2kadam.co.in/api/auth/retailer/add-money-wallet",
         data,
         {
           headers: {
@@ -103,6 +109,19 @@ const AddMoneyOffline = () => {
         title: "Form Submitted Successfully",
         text: response.data.message,
         icon: "success",
+      }).then(() => {
+        const receiptData = {
+          Type: "Add Money",
+          user_id: currentUser.userId,
+          userName: currentUser.username,
+          userPhone: currentUser.ContactNo,
+          userEmail: currentUser.email,
+          userRole: currentUser.role,
+          amount: formData.amount,
+        };
+        localStorage.setItem("receiptData", JSON.stringify(receiptData));
+        navigate("/wallet-receipt");
+        // window.open("/wallet-receipt", "_blank");
       });
       setFormData({
         user_id: currentUser.userId,
@@ -133,13 +152,40 @@ const AddMoneyOffline = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchPaymentDetails = async () => {
+      try {
+        const response = await axios.get(
+          "https://2kadam.co.in/api/auth/retailer/getSuperAdminData",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const { data } = response.data;
+        setPaymentDetails({
+          upiId: data[0].UPI_ID,
+          qrCode: data[0].QR_Code,
+        });
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching details:", error);
+      }
+    };
+    fetchPaymentDetails();
+  }, []);
+
+  console.log(paymentDetails);
+
   return (
     <>
       <Wrapper>
         <div className="main">
           <div className="container-fluid ">
             <div className="row flex-wrap justify-content-center ">
-              <div className="col-xxl-3 col-xl-5 col-lg-5 col-md-5 me-md-5 p-0 pe-md-5 d-none ">
+              <div className="col-xxl-3 col-xl-5 col-lg-5 col-md-5 me-md-5 p-0 pe-md-5 d-none sidebar">
                 {/* <Sider /> */}
               </div>
               <div
@@ -190,6 +236,36 @@ const AddMoneyOffline = () => {
                             </div>
                           </div>
 
+                          {formData.Payment_Mode === "UPI ID" &&
+                            paymentDetails.upiId && (
+                              <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                <div class="input-group">
+                                  <span class="input-group-text">UPI ID</span>
+                                  <div class="form-floating">
+                                    <input
+                                      type="text"
+                                      className="form-control"
+                                      value={paymentDetails.upiId}
+                                      readOnly
+                                    />
+                                    <label for="floatingInput">UPI ID</label>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+
+                          {formData.Payment_Mode === "QR Code" &&
+                            paymentDetails.qrCode && (
+                              <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 text-center">
+                                {/* <div className="qr-code-container"> */}
+                                <img
+                                  src={paymentDetails.qrCode}
+                                  alt="QR Code"
+                                  className="qr-code"
+                                />
+                              </div>
+                            )}
+
                           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="input-group">
                               <span class="input-group-text">
@@ -206,7 +282,7 @@ const AddMoneyOffline = () => {
                                   onChange={handleChange}
                                   required
                                 />
-                                <label for="floatingInputGroup2">
+                                <label for="floatingInputGroup2" className="res">
                                   Amount in Rs. {"(Min 100/-)"}
                                 </label>
                               </div>
@@ -227,7 +303,7 @@ const AddMoneyOffline = () => {
                                   value={formData.Transaction_Reference}
                                   onChange={handleChange}
                                 />
-                                <label for="floatingInputGroup2">
+                                <label for="floatingInputGroup2" className="res">
                                   Transaction Reference (If any)
                                 </label>
                               </div>
@@ -285,6 +361,13 @@ const Wrapper = styled.div`
     height: 100%;
     width: 100%;
   }
+  /* index.css or styled-component */
+  @media print {
+    .sidebar {
+      display: none !important;
+    }
+  }
+
   button {
     color: #fff;
     background: #6d70ff;
@@ -301,6 +384,28 @@ const Wrapper = styled.div`
   @media (min-width: 1500px) {
     .formdata {
       padding-left: 13rem;
+    }
+  }
+  .qr-code-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .qr-code {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 5px;
+    background-color: #fff;
+  }
+    .res{
+    @media screen and (max-width: 375px) {
+      white-space: normal;
+      padding: 5px 10px;
     }
   }
 `;

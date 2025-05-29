@@ -30,7 +30,8 @@ const WLCreateDistributor = () => {
   const { token } = useSelector((state) => state.user);
   const userId = useSelector((state) => state.user.currentUser?.userId);
 
-  const host = window.location.host;
+  // const host = window.location.host;
+  const host = window.location.origin;
 
   // const updatedFormData = {
   //   userId: currentUser.userId,
@@ -80,9 +81,9 @@ const WLCreateDistributor = () => {
       setLoading(true);
 
       const response = await axios.post(
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/superAdmin/approveUser",
-        "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
-        // "https://bitspan.vimubds5.a2hosted.com/api/auth/log-reg/user-register",
+        // "https://2kadam.co.in/api/auth/superAdmin/approveUser",
+        "https://2kadam.co.in/api/auth/log-reg/user-register",
+        // "https://2kadam.co.in/api/auth/log-reg/user-register",
         formData,
 
         {
@@ -472,7 +473,7 @@ const WLCreateDistributor = () => {
                         <div className="text-start mb-3">
                           <button
                             type="submit"
-                            className="btn p-2"
+                            className="btn btn-primary p-2"
                             disabled={loading}
                           >
                             {loading ? "Loading..." : "Create"}

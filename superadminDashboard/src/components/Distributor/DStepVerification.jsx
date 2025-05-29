@@ -124,6 +124,9 @@ const Wrapper = styled.div`
 
   .proForm {
     margin: 24px;
+    @media screen and (max-width: 375px) {
+  margin: 0px;
+    }
     @media (min-width: 1024px) and (max-width: 1280px) {
       margin-left: 4.9rem;
     }
