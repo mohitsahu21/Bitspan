@@ -2630,10 +2630,8 @@ const Sider = () => {
   const navigate = useNavigate();
   const handleDropdownClick = (path) => {
     setActiveDropdown((prev) => (prev === path ? null : path));
-
-    
   };
-const closeSidebar = () => setSidebar(false);
+  const closeSidebar = () => setSidebar(false);
 
   const showSidebar = () => setSidebar(!sidebar);
   const [profileImage, setProfileImage] = useState(null);
@@ -2654,6 +2652,20 @@ const closeSidebar = () => setSidebar(false);
       // setLoading(false);
     }
   };
+
+  // const fetchData = async () => {
+  //   // setLoading(true);
+  //   try {
+  //     const { data } = await axios.get(
+  //       `https://2kadam.co.in/api/auth/whiteLabel/getWhitelabelSettings/${currentUser?.userId}`
+  //     );
+  //     setData(data.data);
+  //     // setLoading(false);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //     // setLoading(false);
+  //   }
+  // };
 
   useEffect(() => {
     // Call the API to get the profile image
@@ -2691,7 +2703,7 @@ const closeSidebar = () => setSidebar(false);
     };
 
     // Run once on mount
-    
+
     window.addEventListener("resize", handleResize);
     handleResize();
     return () => window.removeEventListener("resize", handleResize);
@@ -2804,7 +2816,7 @@ const closeSidebar = () => setSidebar(false);
                           key={index}
                           activeDropdown={activeDropdown}
                           handleDropdownClick={handleDropdownClick}
-                                      closeSidebar={closeSidebar}
+                          closeSidebar={closeSidebar}
                         />
                       );
                     })}
@@ -2816,7 +2828,7 @@ const closeSidebar = () => setSidebar(false);
                           key={index}
                           activeDropdown={activeDropdown}
                           handleDropdownClick={handleDropdownClick}
-                           closeSidebar={closeSidebar}
+                          closeSidebar={closeSidebar}
                         />
                       );
                     })}
@@ -2828,8 +2840,7 @@ const closeSidebar = () => setSidebar(false);
                           key={index}
                           activeDropdown={activeDropdown}
                           handleDropdownClick={handleDropdownClick}
-                           closeSidebar={closeSidebar}
-
+                          closeSidebar={closeSidebar}
                         />
                       );
                     })}
@@ -2841,8 +2852,7 @@ const closeSidebar = () => setSidebar(false);
                           key={index}
                           activeDropdown={activeDropdown}
                           handleDropdownClick={handleDropdownClick}
-                           closeSidebar={closeSidebar}
-
+                          closeSidebar={closeSidebar}
                         />
                       );
                     })}
@@ -2854,8 +2864,7 @@ const closeSidebar = () => setSidebar(false);
                           key={index}
                           activeDropdown={activeDropdown}
                           handleDropdownClick={handleDropdownClick}
-                           closeSidebar={closeSidebar}
-
+                          closeSidebar={closeSidebar}
                         />
                       );
                     })}
@@ -2868,8 +2877,7 @@ const closeSidebar = () => setSidebar(false);
                           key={index}
                           activeDropdown={activeDropdown}
                           handleDropdownClick={handleDropdownClick}
-                           closeSidebar={closeSidebar}
-
+                          closeSidebar={closeSidebar}
                         />
                       );
                     })}

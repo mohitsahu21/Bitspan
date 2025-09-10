@@ -610,7 +610,7 @@ const RetailerRoutes = () => {
               }
             /> */}
             <Route path="/raise-complaint" element={<Complaints />} />
-            <Route path="/add-money" element={<AddMoney />} />
+            {/* <Route path="/add-money" element={<AddMoney />} /> */}
             <Route path="/uti-login" element={<UtiPan />} />
             {/* <Route
               path="/uti-login-new"

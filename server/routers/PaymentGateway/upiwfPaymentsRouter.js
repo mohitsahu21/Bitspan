@@ -13,6 +13,7 @@ const {
   MakeUserPaymentINPortalPGVerify,
   SecondcreateOrderToAddWalletMoney,
   SecondaddWalletMoneyUsingPG,
+  createORD,
 } = require("../../controllers/PaymentGateway/upiwfPayments");
 const router = express.Router();
 
@@ -34,5 +35,7 @@ router.post(
   SecondcreateOrderToAddWalletMoney
 );
 router.get("/SecondaddWalletMoneyUsingPG", SecondaddWalletMoneyUsingPG);
+
+router.post("/createORD", createORD);
 
 module.exports = router;

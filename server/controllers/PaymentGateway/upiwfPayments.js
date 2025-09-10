@@ -8,6 +8,7 @@ const axios = require("axios");
 const crypto = require("crypto");
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
+const qs = require("querystring");
 
 const webhook = (req, res) => {
   // const { status, order_id, remark1 } = req.body;
@@ -102,6 +103,7 @@ const webhook = (req, res) => {
 //     res.status(500).send('Internal Server Error.');
 //   }
 // };
+
 const webhook_two = async (req, res) => {
   const clientTxnId = req.query.order_id;
   const website = req.query.website;
@@ -132,7 +134,7 @@ const webhook_two = async (req, res) => {
 
     const response = await axios.post(
       // "https://upi.wf/api/check-order-status",
-      "https://qrpay.index.wf/api/check-order-status",
+      "https://onlinepay.2kadam.com/api/check-order-status",
       postData.toString(),
       { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
     );
@@ -213,7 +215,7 @@ const createOrder = async (req, res) => {
       };
       const response = await axios.post(
         // "https://upi.wf/api/create-order",
-        "https://qrpay.index.wf/api/create-order",
+        "https://onlinepay.2kadam.com/api/create-order",
         postData
       );
       console.log(response);
@@ -246,105 +248,248 @@ const createOrder = async (req, res) => {
   }
 };
 
+// const createOrderToAddWalletMoney = async (req, res) => {
+//   const {
+//     user_id,
+//     amount,
+//     userName,
+//     userPhone,
+//     userEmail,
+//     userRole,
+//     Payment_Mode,
+//     website,
+//   } = req.body;
+//   console.log(
+//     user_id,
+//     amount,
+//     userName,
+//     userPhone,
+//     userEmail,
+//     userRole,
+//     Payment_Mode,
+//     website
+//   );
+//   // const { customer_mobile, amount, remark1, remark2 } = req.body;
+//   const order_id = `WOR${Date.now()}`; // Dynamic order ID based on timestamp
+//   const Transaction_Reference = `Pay Online Payment Gateway Order ID ${order_id}`;
+//   const user_token = process.env.QRPAY_KEY; // Security token from environment
+//   const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+//   const redirect_url = `https://2kadam.co.in/api/auth/upiwf/addWalletMoneyUsingPG?order_id=${order_id}&website=${website}`;
+//   const status = "Pending";
+
+//   // const sql = `
+//   //   INSERT INTO orders (customer_mobile, amount, order_id, remark1, remark2, status, created_at)
+//   //   VALUES (?, ?, ?, ?, ?, ?, ?)`;
+//   const sql = `INSERT INTO user_wallet_add_money_request (order_id, user_id, amount, userName, userPhone, userEmail, userRole, Payment_Mode, Transaction_Reference, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+//   const values = [
+//     order_id,
+//     user_id,
+//     amount,
+//     userName,
+//     userPhone,
+//     userEmail,
+//     userRole,
+//     Payment_Mode,
+//     Transaction_Reference,
+//     status,
+//     createdAt,
+//   ];
+
+//   console.log(req.body);
+
+//   try {
+//     db.query(sql, values, (Error, Results) => {
+//       if (Error) {
+//         // console.error("Error:", Error);
+//         return res
+//           .status(500)
+//           .json({ success: false, message: "Failed to create order" });
+//       } else {
+//         console.log("Order created successfully:", Results);
+//       }
+//     });
+
+//     try {
+//       const postData = {
+//         customer_mobile: userPhone,
+//         user_token,
+//         amount,
+//         order_id,
+//         redirect_url,
+//         upi_id,
+//       };
+//       const response = await axios.post(
+//         // "https://upi.wf/api/create-order",
+//         "https://onlinepay.2kadam.com/api/create-order",
+//         postData
+//       );
+//       console.log(response);
+//       if (response.data && response.data.status === "Success") {
+//         // return data;
+//         res.status(200).json({
+//           status: true,
+//           message: "Order created successfully!",
+//           data: response.data,
+//         });
+//       } else {
+//         throw new Error(response.data.message || "Unknown error");
+//       }
+//     } catch (apiError) {
+//       // console.error("Error in external API call:", apiError.message);
+
+//       res.status(500).json({
+//         status: false,
+//         message: "Error in external API call",
+//         error: apiError.message,
+//       });
+//     }
+//   } catch (dbError) {
+//     // console.error("Error saving order to database:", dbError.message);
+//     res.status(500).json({
+//       status: false,
+//       message: "Error saving order to database",
+//       error: dbError.message,
+//     });
+//   }
+// };
+
+// --------------------------------------
+
+function dbQuery(sql, params) {
+  return new Promise((resolve, reject) => {
+    db.query(sql, params, (err, results) =>
+      err ? reject(err) : resolve(results)
+    );
+  });
+}
+
 const createOrderToAddWalletMoney = async (req, res) => {
-  const {
-    user_id,
-    amount,
-    userName,
-    userPhone,
-    userEmail,
-    userRole,
-    Payment_Mode,
-    website,
-  } = req.body;
-  console.log(
-    user_id,
-    amount,
-    userName,
-    userPhone,
-    userEmail,
-    userRole,
-    Payment_Mode,
-    website
-  );
-  // const { customer_mobile, amount, remark1, remark2 } = req.body;
-  const order_id = `WOR${Date.now()}`; // Dynamic order ID based on timestamp
-  const Transaction_Reference = `Pay Online Payment Gateway Order ID ${order_id}`;
-  const user_token = process.env.QRPAY_KEY; // Security token from environment
-  const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
-  const redirect_url = `https://2kadam.co.in/api/auth/upiwf/addWalletMoneyUsingPG?order_id=${order_id}&website=${website}`;
-  const status = "Pending";
-
-  // const sql = `
-  //   INSERT INTO orders (customer_mobile, amount, order_id, remark1, remark2, status, created_at)
-  //   VALUES (?, ?, ?, ?, ?, ?, ?)`;
-  const sql = `INSERT INTO user_wallet_add_money_request (order_id, user_id, amount, userName, userPhone, userEmail, userRole, Payment_Mode, Transaction_Reference, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-  const values = [
-    order_id,
-    user_id,
-    amount,
-    userName,
-    userPhone,
-    userEmail,
-    userRole,
-    Payment_Mode,
-    Transaction_Reference,
-    status,
-    createdAt,
-  ];
-
   try {
-    db.query(sql, values, (Error, Results) => {
-      if (Error) {
-        console.error("Error:", Error);
-        return res
-          .status(500)
-          .json({ success: false, message: "Failed to create order" });
-      } else {
-        console.log("Order created successfully:", Results);
-      }
-    });
+    const {
+      user_id,
+      amount,
+      userName,
+      userPhone,
+      userEmail,
+      userRole,
+      Payment_Mode,
+      website,
+    } = req.body;
 
-    try {
-      const postData = {
-        customer_mobile: userPhone,
-        user_token,
-        amount,
+    if (!user_id)
+      return res
+        .status(400)
+        .json({ status: false, message: "user_id required" });
+    if (amount === undefined || amount === null || isNaN(Number(amount)))
+      return res
+        .status(400)
+        .json({ status: false, message: "amount must be a number" });
+    if (Number(amount) <= 0)
+      return res
+        .status(400)
+        .json({ status: false, message: "amount must be > 0" });
+    if (!userPhone)
+      return res
+        .status(400)
+        .json({ status: false, message: "userPhone required" });
+    if (!website)
+      return res
+        .status(400)
+        .json({ status: false, message: "website required" });
+
+    const order_id = `WOR${Date.now()}`;
+    const createdAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+    const redirect_url = `http://localhost:7777/api/auth/upiwf/addWalletMoneyUsingPG?order_id=${order_id}&website=${website}`;
+
+    const user_token = process.env.QRPAY_KEY;
+    const safeUpiId = "Q106414904@ybl"; // your merchant VPA
+
+    if (!user_token)
+      return res
+        .status(500)
+        .json({ status: false, message: "Gateway key missing (QRPAY_KEY)" });
+    if (!safeUpiId)
+      return res.status(500).json({
+        status: false,
+        message: "Merchant UPI ID missing (QRPAY_UPI_ID)",
+      });
+
+    const insertSql = `
+      INSERT INTO user_wallet_add_money_request
+      (order_id, user_id, amount, userName, userPhone, userEmail, userRole, Payment_Mode,
+       Transaction_Reference, status, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    const txRef = `Pay Online Payment Gateway Order ID ${order_id}`;
+    await dbQuery(insertSql, [
+      order_id,
+      user_id,
+      Number(amount),
+      userName || null,
+      userPhone,
+      userEmail || null,
+      userRole || null,
+      Payment_Mode || "Online",
+      txRef,
+      "Pending",
+      createdAt,
+    ]);
+
+    // Send multiple aliases for order id (covers most gateways)
+    const payload = {
+      customer_mobile: userPhone,
+      user_token,
+      amount: Number(amount).toFixed(2),
+      redirect_url,
+      upi_id: safeUpiId,
+      order_id, // snake_case
+      client_txn_id: order_id, // common alias
+      orderId: order_id, // camelCase alias
+    };
+
+    console.log("GW payload =>", payload); // debug
+
+    const postData = qs.stringify(payload);
+
+    const gwResp = await axios.post(
+      // "https://onlinepay.2kadam.com/api/create-order",
+      "https://developer.2kadam.co.in/api/create-order",
+      postData,
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Accept: "application/json",
+        },
+        timeout: 20000,
+      }
+    );
+
+    if (gwResp?.data?.status === "Success") {
+      return res.status(200).json({
+        status: true,
+        message: "Order created successfully!",
+        data: gwResp.data,
         order_id,
         redirect_url,
-      };
-      const response = await axios.post(
-        // "https://upi.wf/api/create-order",
-        "https://qrpay.index.wf/api/create-order",
-        postData
+      });
+    } else {
+      await dbQuery(
+        "UPDATE user_wallet_add_money_request SET status=? WHERE order_id=?",
+        ["Failed", order_id]
       );
-      console.log(response);
-      if (response.data && response.data.status === "Success") {
-        // return data;
-        res.status(200).json({
-          status: true,
-          message: "Order created successfully!",
-          data: response.data,
-        });
-      } else {
-        throw new Error(response.data.message || "Unknown error");
-      }
-    } catch (apiError) {
-      console.error("Error in external API call:", apiError.message);
-
-      res.status(500).json({
+      return res.status(502).json({
         status: false,
-        message: "Error in external API call",
-        error: apiError.message,
+        message: "Gateway rejected order",
+        data: gwResp?.data || null,
       });
     }
-  } catch (dbError) {
-    console.error("Error saving order to database:", dbError.message);
-    res.status(500).json({
+  } catch (err) {
+    const details = err?.response?.data || err?.message || String(err);
+    return res.status(500).json({
       status: false,
-      message: "Error saving order to database",
-      error: dbError.message,
+      message: "Error in external API call",
+      error: details,
     });
   }
 };
@@ -378,7 +523,8 @@ const addWalletMoneyUsingPG = async (req, res) => {
     });
     const response = await axios.post(
       // "https://upi.wf/api/check-order-status",
-      "https://qrpay.index.wf/api/check-order-status",
+      // "https://onlinepay.2kadam.com/api/check-order-status",
+      "https://developer.2kadam.co.in/api/check-order-status",
       postData.toString(),
       {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -584,7 +730,7 @@ const createOrderToBuyUserId = async (req, res) => {
       };
       const response = await axios.post(
         // "https://upi.wf/api/create-order",
-        "https://qrpay.index.wf/api/create-order",
+        "https://onlinepay.2kadam.com/api/create-order",
         postData
       );
       console.log(response);
@@ -848,7 +994,7 @@ const BuyUserIdUsingPGVerify = async (req, res) => {
     });
     const response = await axios.post(
       // "https://upi.wf/api/check-order-status",
-      "https://qrpay.index.wf/api/check-order-status",
+      "https://onlinepay.2kadam.com/api/check-order-status",
       postData.toString(),
       {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -1006,7 +1152,7 @@ const createUserOnline = async (req, res) => {
       };
       const response = await axios.post(
         // "https://upi.wf/api/create-order",
-        "https://qrpay.index.wf/api/create-order",
+        "https://onlinepay.2kadam.com/api/create-order",
         postData
       );
       console.log(response);
@@ -1576,7 +1722,7 @@ const userRegiserOnline = async (req, res) => {
 
                     const response = await axios.post(
                       // "https://upi.wf/api/create-order",
-                      "https://qrpay.index.wf/api/create-order",
+                      "https://onlinepay.2kadam.com/api/create-order",
                       postData
                     );
 
@@ -1653,7 +1799,7 @@ const userRegiserOnlinePGVerify = async (req, res) => {
     });
     const response = await axios.post(
       // "https://upi.wf/api/check-order-status",
-      "https://qrpay.index.wf/api/check-order-status",
+      "https://onlinepay.2kadam.com/api/check-order-status",
       postData.toString(),
       {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -1764,7 +1910,7 @@ const MakePaymentINPortal = async (req, res) => {
     };
     const response = await axios.post(
       // "https://upi.wf/api/create-order",
-      "https://qrpay.index.wf/api/create-order",
+      "https://onlinepay.2kadam.com/api/create-order",
       postData
     );
     console.log(response);
@@ -1889,7 +2035,7 @@ const MakeUserPaymentINPortalPGVerify = async (req, res) => {
     });
     const response = await axios.post(
       // "https://upi.wf/api/check-order-status",
-      "https://qrpay.index.wf/api/check-order-status",
+      "https://onlinepay.2kadam.com/api/check-order-status",
       postData.toString(),
       {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -1934,7 +2080,7 @@ const MakeUserPaymentINPortalPGVerify = async (req, res) => {
   }
 };
 
-// Second Payment Gateway for qrpay.index.wf
+// Second Payment Gateway for onlinepay.2kadam.com
 
 const SecondcreateOrderToAddWalletMoney = async (req, res) => {
   const {
@@ -2006,7 +2152,7 @@ const SecondcreateOrderToAddWalletMoney = async (req, res) => {
       };
       const response = await axios.post(
         // "https://upi.wf/api/create-order",
-        "https://qrpay.index.wf/api/create-order",
+        "https://onlinepay.2kadam.com/api/create-order",
         postData
       );
       console.log(response);
@@ -2068,7 +2214,7 @@ const SecondaddWalletMoneyUsingPG = async (req, res) => {
     });
     const response = await axios.post(
       // "https://upi.wf/api/check-order-status",
-      "https://qrpay.index.wf/api/check-order-status",
+      "https://onlinepay.2kadam.com/api/check-order-status",
       postData.toString(),
       {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -2179,6 +2325,48 @@ const SecondaddWalletMoneyUsingPG = async (req, res) => {
   }
 };
 
+const createORD = async (req, res) => {
+  try {
+    // Data ko req.body se bhi le sakte ho
+    const data = {
+      customer_mobile: "8770109518",
+      user_token: "9e026258c3608d8d3bab4797dd815c65",
+      amount: "1",
+      order_id: Date.now().toString(), // unique order id
+      redirect_url: "https://onlinepay.2kadam.com",
+      remark1: "testremark",
+      remark2: "testremark2",
+    };
+
+    const response = await axios.post(
+      "https://onlinepay.2kadam.com/api/create-order",
+      new URLSearchParams(data),
+      {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      }
+    );
+
+    const result = response.data;
+
+    if (result && result.status === "Success") {
+      return res.json({
+        status: result.status,
+        message: result.message,
+        orderId: result.result.orderID, // API me orderID capital hai
+        payment_url: result.result.payment_url, // yaha se direct payment link milegi
+      });
+    } else {
+      return res.json({
+        status: result.status,
+        message: result.message,
+      });
+    }
+  } catch (error) {
+    console.error("Error creating order:", error.message);
+    return res.status(500).json({ error: "Something went wrong" });
+  }
+};
+
 module.exports = {
   webhook,
   webhook_two,
@@ -2193,4 +2381,5 @@ module.exports = {
   MakeUserPaymentINPortalPGVerify,
   SecondcreateOrderToAddWalletMoney,
   SecondaddWalletMoneyUsingPG,
+  createORD,
 };

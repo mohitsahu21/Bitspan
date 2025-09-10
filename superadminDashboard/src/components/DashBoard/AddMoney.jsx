@@ -126,12 +126,11 @@ const AddMoney = () => {
       //   icon: "success",
       // });
     } catch (error) {
-      console.error("Error submitting form:", error.response.data);
-      alert("Failed to submit form. Please try again.");
+      console.error("Error submitting form:", error.response.data.message);
+      // alert("Failed to submit form. Please try again.");
       Swal.fire({
         title: "Error",
-        text:
-          error.response?.data || "Failed to submit form. Please try again.",
+        text: "Failed to submit form. Please try again.",
         icon: "error",
       });
     } finally {
